@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>se.natusoft.markdowndoc</groupId>
+    <artifactId>markdown-doc</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0</version>
+    <modules>
+        <module>Library</module>
+    </modules>
+
+    <name>MarkdownDoc</name>
+    <description>
+        Parses markdown and generates HTML and PDF.
+    </description>
+    <properties>
+        <copyrightYear>2012</copyrightYear>
+        <copyrightHolder>Natusoft AB</copyrightHolder>
+        <copyrightHolderWeb>http://www.natusoft.se/</copyrightHolderWeb>
+        <developer1Name>Tommy Svensson</developer1Name>
+        <developer1Email>tommy@natusoft.se</developer1Email>
+    </properties>
+    <licenses>
+        <license>
+            <!-- Name needs to be in "{type} {version}" or "{type}-{version} format to be reused by the plugin. -->
+            <name>Apache 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+    <organization>
+        <name>${copyrightHolder}</name>
+        <url>${copyrightHolderWeb}</url>
+    </organization>
+    <inceptionYear>${copyrightYear}</inceptionYear>
+    <developers>
+        <developer>
+            <name>${developer1Name}</name>
+            <email>${developer1Email}</email>
+        </developer>
+    </developers>
+    <scm>
+        <connection>https://github.com/tombensve/MarkdownDoc.git</connection>
+        <developerConnection>scm:ssh://git@github.com:tombensve/MarkdownDoc.git</developerConnection>
+        <url>http://github.com/tombensve/MarkdownDoc</url>
+    </scm>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>http://github.com/tombensve/MarkdownDoc/issues</url>
+    </issueManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.3.2</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>2.0.5</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>se.natusoft.tools.optionsmgr</groupId>
+            <artifactId>OptionsManager</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.9</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!--
+        Building
+    -->
+
+    <build>
+
+        <plugins>
+
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <compilerId>groovy-eclipse-compiler</compilerId>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-eclipse-compiler</artifactId>
+                        <version>2.7.0-01</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <createChecksum>true</createChecksum>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>se.natusoft.tools.codelicmgr</groupId>
+                <artifactId>CodeLicenseManager-maven-plugin</artifactId>
+                <version>2.0</version>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>se.natusoft.tools.codelicmgr</groupId>
+                        <artifactId>CodeLicenseManager-licenses-common-opensource</artifactId>
+                        <version>2.0</version>
+                    </dependency>
+                </dependencies>
+
+                <executions>
+                    <execution>
+                        <id>install-licence-info</id>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                        <phase>install</phase>
+                        <configuration>
+
+                            <installOptions>
+                                <verbose>true</verbose>
+                                <licenseDir>${basedir}/target/license</licenseDir>
+                                <thirdpartyLicenseDir>${basedir}/target/license/thirdparty</thirdpartyLicenseDir>
+                            </installOptions>
+
+                            <createLicensesMarkdown>true</createLicensesMarkdown>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+    <!--
+        Distribution Management
+    -->
+
+    <repositories>
+        <repository>
+            <id>maven-natusoft-se</id>
+            <name>
+                Natusofts maven repository
+            </name>
+            <url>http://maven.natusoft.se/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>maven-natusoft-se</id>
+            <name>
+                Natusoft maven repository.
+            </name>
+            <url>http://maven.natusoft.se/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <!--
+        Profiles
+    -->
+
+    <profiles>
+
+        <profile>
+            <!--
+                This profile runs the CodeLicenseManager maven plugin and updates the source code
+                with relevant information specified in this pom.
+            -->
+            <id>apply-licence-info</id>
+            <build>
+                <plugins>
+                    <plugin>
+
+                        <groupId>se.natusoft.tools.codelicmgr</groupId>
+                        <artifactId>CodeLicenseManager-maven-plugin</artifactId>
+                        <version>2.0</version>
+
+                        <dependencies>
+                            <dependency>
+                                <groupId>se.natusoft.tools.codelicmgr</groupId>
+                                <artifactId>CodeLicenseManager-licenses-common-opensource</artifactId>
+                                <version>2.0</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>se.natusoft.tools.codelicmgr</groupId>
+                                <artifactId>CodeLicenseManager-source-updater-slashstar-comment</artifactId>
+                                <version>2.0</version>
+                            </dependency>
+                        </dependencies>
+
+                        <configuration>
+
+                            <project>
+                                <codeVersion>${project.version}</codeVersion>
+                            </project>
+
+                            <!-- All options are optional. -->
+                            <codeOptions>
+                                <verbose>true</verbose>
+                                <!-- If not set uses extension on source file to resolve. -->
+                                <codeLanguage>by-extension</codeLanguage>
+                                <!-- If true updates the license information in source code. -->
+                                <updateLicenseInfo>true</updateLicenseInfo>
+                                <!-- If true updates the copyright information in source code. -->
+                                <updateCopyright>true</updateCopyright>
+                                <!-- If true updates the project information in source code. -->
+                                <updateProject>true</updateProject>
+                                <!-- If true will add authors information to source files that does not have it. This is not always implemented! -->
+                                <addAuthorsBlock>true</addAuthorsBlock>
+                                <!-- The directories to scan for source code to update with project & license information. -->
+                                <sourceCodeDirs>
+                                    src/main/groovy/**/.*.groovy,src/main/resources/**/.*.properties
+                                </sourceCodeDirs>
+
+                            </codeOptions>
+
+                            <userData>
+                                <!--name></name>
+                                <value></value-->
+                            </userData>
+
+                        </configuration>
+
+                        <executions>
+                            <execution>
+                                <id>apply-licence-info</id>
+                                <goals>
+                                    <goal>apply</goal>
+                                </goals>
+                                <phase>generate-sources</phase>
+                            </execution>
+                        </executions>
+
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+
+</project>
