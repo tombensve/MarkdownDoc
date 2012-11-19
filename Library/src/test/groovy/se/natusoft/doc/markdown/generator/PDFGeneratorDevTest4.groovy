@@ -4,7 +4,7 @@ import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.api.Parser
 import se.natusoft.doc.markdown.model.Doc
-import se.natusoft.doc.markdown.parser.markdown.MarkdownParser
+import se.natusoft.doc.markdown.parser.MarkdownParser
 import se.natusoft.tools.optionsmgr.CommandLineOptionsManager
 
 /**

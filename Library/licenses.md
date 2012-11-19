@@ -18,10 +18,4 @@ The following third party products are using this license:
 * [groovy-all-2.0.5](http://groovy.codehaus.org/)
 * [OptionsManager-2.0](http://...)
 
-###[Apache Software License version 2.0](Apache-2.0.md)
-
-The following third party products are using this license:
-
-* [groovy-all-2.0.5](http://groovy.codehaus.org/)
-
 <!-- CLM -->

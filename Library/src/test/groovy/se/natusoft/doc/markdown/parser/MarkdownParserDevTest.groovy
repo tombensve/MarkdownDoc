@@ -3,7 +3,6 @@ package se.natusoft.doc.markdown.parser
 import se.natusoft.doc.markdown.api.Parser
 import se.natusoft.doc.markdown.model.DocItem
 
-import se.natusoft.doc.markdown.parser.markdown.MarkdownParser
 import se.natusoft.doc.markdown.model.Doc
 
 /**

@@ -1,8 +1,6 @@
-<!--
-  This was created by CodeLicenseManager
--->
-##GNU Affero General Public License version v3
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
 <!-- start of server/head-include-1.html -->
@@ -42,10 +40,17 @@
 <div id="null-wrapper">
 
 <!-- start of server/body-include-2 -->
+      <div id="header">
+        <div class="inner" style="position: relative;">
+
+        <h1 id="logo"><a href="/">The GNU Operating System</a></h1>
 
 
 
-
+	<div id="fssbox">
+	  <h4>Sign up for the <a href="http://www.fsf.org/fss">Free Software Supporter</a></h4>
+	  <p>A monthly email newsletter about GNU and Free Software</p>
+	  <form action="https://crm.fsf.org/civicrm/profile/create&amp;reset=1&amp;gid=31" method="post">
 <div><input name="postURL" type="hidden" value="" />
 <input type="hidden" name="group[25]" value="1" />
 
@@ -53,13 +58,21 @@
 <input name="_qf_default" type="hidden" value="Edit:cancel" />
 </div>
 
+	  <p><label>Enter your email address (e.g. richard@example.com)</label></p><p><input type="text" id="frmEmail" name="email-Primary" size="15" maxlength="80" /> &nbsp; <input type="submit" name="_qf_Edit_next" value="Ok" /></p>
+	  </form>
+	</div>
+	</div>
+      </div>
 
 <div id="navigation">
  <div class="inner">
 
   <div id="searcher">
    <form method="get" action="http://www.gnu.org/cgi-bin/estseek.cgi">
+    <div><label class="netscape4" for="phrase">Search:</label>
+    <input name="phrase" id="phrase" type="text" size="18" accesskey="s"
            value="Why GNU/Linux?" onfocus="this.value=''" />
+    <input type="submit" value="Search" /></div><!-- unnamed label -->
    </form>
   </div><!-- /searcher -->
 
@@ -124,6 +137,11 @@
   <li><a href="/licenses/translations.html">Translations
        of the GNU AGPL</a></li>
   <li>The GNU AGPL in other formats: 
+       <a href="/licenses/agpl-3.0.txt">plain text</a>,
+       <a href="/licenses/agpl-3.0.dbk">Docbook</a>,
+       <a href="/licenses/agpl-3.0.tex">LaTeX</a>,
+       <a href="/licenses/agpl-3.0-standalone.html">standalone HTML</a>,
+       <a href="/licenses/agpl-3.0.texi">Texinfo</a></li>
   <li><a href="/graphics/license-logos.html">GNU AGPL logos</a> to use
        with your project</li>
   <li><a href="/licenses/gpl-violation.html">What to do if you see a
@@ -812,9 +830,19 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 </div>
 
+              <!-- begin server/footer-text.html -->
 <div class="inner">
     
 <div class="yui-g" id="fsf-links">
+	<ul>
+		<li><a href="/">GNU&nbsp;home&nbsp;page</a></li>
+		<li><a href="http://www.fsf.org/">FSF&nbsp;home&nbsp;page</a></li>
+		<li><a href="/graphics/graphics.html">GNU&nbsp;Art</a></li>
+		<li><a href="/fun/fun.html">GNU&nbsp;Fun</a></li>
+		<li><a href="/people/people.html">GNU's&nbsp;Who?</a></li>
+		<li><a href="http://directory.fsf.org">Free&nbsp;Software&nbsp;Directory</a></li>
+		<li><a href="/server/sitemap.html">Site&nbsp;map</a></li>
+	</ul>
 </div>
 
 <div class="yui-g" id="mission-statement">

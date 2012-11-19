@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: se.natusoft.doc.markdown.generator.HTMLGeneratorDevTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.538 sec

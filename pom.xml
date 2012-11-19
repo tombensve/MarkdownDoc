@@ -4,12 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>se.natusoft.markdowndoc</groupId>
+    <groupId>se.natusoft.doc.markdowndoc</groupId>
     <artifactId>markdown-doc</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
     <modules>
         <module>Library</module>
+        <module>MavenPlugin</module>
     </modules>
 
     <name>MarkdownDoc</name>
@@ -52,20 +53,6 @@
     </issueManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>itextpdf</artifactId>
-            <version>5.3.2</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>2.0.5</version>
-            <scope>compile</scope>
-        </dependency>
-
         <dependency>
             <groupId>se.natusoft.tools.optionsmgr</groupId>
             <artifactId>OptionsManager</artifactId>
@@ -227,7 +214,7 @@
                                 <addAuthorsBlock>true</addAuthorsBlock>
                                 <!-- The directories to scan for source code to update with project & license information. -->
                                 <sourceCodeDirs>
-                                    src/main/groovy/**/.*.groovy,src/main/resources/**/.*.properties
+                                    src/main/groovy/**/.*.groovy,src/main/java/**/.*.java,src/main/resources/**/.*.properties
                                 </sourceCodeDirs>
 
                             </codeOptions>

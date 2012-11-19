@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>markdown-doc</artifactId>
-        <groupId>se.natusoft.markdowndoc</groupId>
+        <groupId>se.natusoft.doc.markdowndoc</groupId>
         <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -17,9 +17,24 @@
         Parses markdown and generates HTML and PDF.
     </description>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.3.2</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>2.0.5</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <sourceDirectory>src/main/groovy</sourceDirectory>
         <testSourceDirectory>src/test/groovy</testSourceDirectory>
-
     </build>
 </project>

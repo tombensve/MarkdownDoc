@@ -34,7 +34,7 @@
  *         2012-11-04: Created!
  *         
  */
-package se.natusoft.doc.markdown.parser.markdown
+package se.natusoft.doc.markdown.parser
 
 import se.natusoft.doc.markdown.api.Parser
 import se.natusoft.doc.markdown.exception.ParseException

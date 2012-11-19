@@ -1,0 +1,5 @@
+The following products are using the Apache version 2.0 license:
+
+maven-plugin-api version 2.0
+http://maven.apache.org/maven2/
+

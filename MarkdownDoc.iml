@@ -9,8 +9,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: com.itextpdf:itextpdf:5.3.2" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:2.0.5" level="project" />
     <orderEntry type="library" name="Maven: se.natusoft.tools.optionsmgr:OptionsManager:2.0" level="project" />
     <orderEntry type="library" name="Maven: se.natusoft.tools.codelicmgr:CodeLicenseManager-annotations-retention-source:2.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.9" level="project" />
