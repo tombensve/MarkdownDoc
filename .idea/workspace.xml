@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Library/Apache-2.0.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Library/GNU Affero General Public License-v3.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Library/licenses.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Apache-2.0.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/licenses.md" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="MarkdownDoc.iws" />
@@ -63,10 +62,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MarkdownDocMavenPlugin.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="MarkdownDocMavenPlugin.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MavenPlugin/src/main/java/se/natusoft/doc/markdowndoc/MarkdownDocMavenPlugin.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="69" column="16" selection-start="2208" selection-end="2208" vertical-scroll-proportion="0.8914729">
+            <state line="19" column="44" selection-start="469" selection-end="469" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -94,19 +93,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/MavenPlugin/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="21" selection-start="1055" selection-end="1055" vertical-scroll-proportion="-16.875">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="pom.xml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="198" column="73" selection-start="6868" selection-end="6868" vertical-scroll-proportion="0.0">
+            <state line="109" column="46" selection-start="3853" selection-end="3853" vertical-scroll-proportion="0.37994722">
               <folding />
             </state>
           </provider>
@@ -1381,7 +1371,11 @@
       <created>1353350542047</created>
       <updated>1353350542047</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Dev commit.">
+      <created>1353350599628</created>
+      <updated>1353350599628</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1427,7 +1421,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2132103" sideWeight="0.48737374" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1971831" sideWeight="0.6700337" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21272463" sideWeight="0.6700337" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21272463" sideWeight="0.6700337" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.48989898" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="PDF_FIND" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -1498,13 +1492,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/licenses.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="29" selection-start="287" selection-end="287" vertical-scroll-proportion="0.14211886">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_06.jdk/Contents/Home/src.zip!/java/io/File.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1131" column="18" selection-start="48354" selection-end="48354" vertical-scroll-proportion="0.33333334">
@@ -1519,23 +1506,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="198" column="73" selection-start="6868" selection-end="6868" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Library/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="37" column="66" selection-start="1259" selection-end="1259" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MavenPlugin/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="21" selection-start="1055" selection-end="1055" vertical-scroll-proportion="-16.875">
           <folding />
         </state>
       </provider>
@@ -1584,6 +1557,36 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/MavenPlugin/src/main/java/se/natusoft/doc/markdowndoc/SourcePath.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="88" column="73" selection-start="2874" selection-end="2874" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MavenPlugin/licenses.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MavenPlugin/src/main/java/se/natusoft/doc/markdowndoc/MarkdownDocMavenPlugin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="44" selection-start="469" selection-end="469" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MavenPlugin/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="21" selection-start="1055" selection-end="1055" vertical-scroll-proportion="0.35620052">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/options/GeneratorOptions.groovy">
       <provider selected="true" editor-type-id="text-editor">
         <state line="67" column="21" selection-start="2056" selection-end="2056" vertical-scroll-proportion="0.0">
@@ -1593,19 +1596,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MavenPlugin/src/main/java/se/natusoft/doc/markdowndoc/SourcePath.java">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="73" selection-start="2874" selection-end="2874" vertical-scroll-proportion="0.0">
+        <state line="109" column="46" selection-start="3853" selection-end="3853" vertical-scroll-proportion="0.37994722">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MavenPlugin/src/main/java/se/natusoft/doc/markdowndoc/MarkdownDocMavenPlugin.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="16" selection-start="2208" selection-end="2208" vertical-scroll-proportion="0.8914729">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
