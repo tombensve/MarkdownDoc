@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>markdown-doc</artifactId>
+        <groupId>se.natusoft.doc.markdowndoc</groupId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>markdowndoc-cmd-line</artifactId>
+
+    <name>MarkdownDoc Command Line</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>se.natusoft.doc.markdowndoc</groupId>
+            <artifactId>markdown-doc-lib</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--
+                Define project assemblies.
+            -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <!--version>2.3</version-->
+                <configuration>
+                    <descriptors>
+                        <descriptor>file:${basedir}/src/assembly/exec-jar.xml</descriptor>
+                    </descriptors>
+
+                    <archive>
+                        <manifest>
+                            <mainClass>se.natusoft.doc.markdowndoc.Main</mainClass>
+                        </manifest>
+                        <!--manifestEntries>
+                            <Class-Path>./markdowndoc-cmd-line-1.0.jar ./markdown-doc-lib-1.0.jar ./itextpdf-5.3.2.jar ./groovy-all-2.0.5.jar ./OptionsManager-2.0.jar ./CodeLicenseManager-annotations-retention-source-2.0.jar</Class-Path>
+                        </manifestEntries-->
+
+                    </archive>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>package-jar</id>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

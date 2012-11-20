@@ -53,6 +53,7 @@ import se.natusoft.doc.markdown.parser.MarkdownParser;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.StringTokenizer;
 
 /**
  * Goal which touches a timestamp file.
@@ -129,12 +130,14 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
         // Parse
 
         File projRoot = new File(this.baseDir);
-        SourcePath sourcePath = new SourcePath(projRoot, generatorOptions.getInputPaths());
-
         Doc document = new Doc();
         try {
-            for (File sourceFile : sourcePath.getSourceFiles()) {
-                parser.parse(document, sourceFile);
+            StringTokenizer pathTokenizer = new StringTokenizer(generatorOptions.getInputPaths(), ",");
+            while (pathTokenizer.hasMoreTokens()) {
+                SourcePath sourcePath = new SourcePath(projRoot, pathTokenizer.nextToken());
+                for (File sourceFile : sourcePath.getSourceFiles()) {
+                    parser.parse(document, sourceFile);
+                }
             }
         }
         catch (ParseException pe) {

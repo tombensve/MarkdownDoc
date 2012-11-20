@@ -43,6 +43,7 @@ import se.natusoft.tools.optionsmgr.annotations.Description
 import se.natusoft.tools.optionsmgr.annotations.Required
 import se.natusoft.tools.optionsmgr.annotations.Optional
 import se.natusoft.doc.markdown.api.Options
+import se.natusoft.tools.optionsmgr.annotations.Flag
 
 /**
  * Options for the PDFGenerator.
@@ -145,5 +146,12 @@ class PDFGeneratorOptions implements Options {
     @Description("This will generate one first page with a title, version, author, and copyright. Default is false.")
     @Optional
     boolean generateTitlePage = false
+
+    @Option
+    @Name("help")
+    @Description("Shows help.")
+    @Optional
+    @Flag
+    boolean help;
 
 }

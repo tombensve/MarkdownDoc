@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="MacRoman"?>
+
+<assembly>
+    <id>exec</id>
+
+    <formats>
+        <format>jar</format>
+    </formats>
+
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <fileSets>
+        <fileSet>
+            <directory>../CommandLine/target/classes</directory>
+            <outputDirectory>.</outputDirectory>
+            <excludes>
+                <exclude>*MANIFEST.MF</exclude>
+            </excludes>
+        </fileSet>
+
+        <fileSet>
+            <directory>../Library/target/classes</directory>
+            <outputDirectory>.</outputDirectory>
+            <excludes>
+                <exclude>*MANIFEST.MF</exclude>
+            </excludes>
+        </fileSet>
+
+    </fileSets>
+
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>.</outputDirectory>
+            <excludes>
+                <exclude>*MANIFEST.MF</exclude>
+            </excludes>
+            <unpack>true</unpack>
+
+        </dependencySet>
+    </dependencySets>
+
+</assembly>

@@ -44,6 +44,7 @@ import se.natusoft.tools.optionsmgr.annotations.Optional
 import se.natusoft.tools.optionsmgr.annotations.Required
 import se.natusoft.doc.markdown.api.Options
 import com.itextpdf.text.Paragraph
+import se.natusoft.tools.optionsmgr.annotations.Flag
 
 /**
  * This provides options for the HTML generator.
@@ -69,6 +70,11 @@ class HTMLGeneratorOptions implements Options {
     @Required
     String resultFile
 
-    Paragraph para
+    @Option
+    @Name("help")
+    @Description("Shows help.")
+    @Optional
+    @Flag
+    boolean help;
 
 }

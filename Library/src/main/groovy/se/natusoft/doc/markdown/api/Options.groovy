@@ -37,6 +37,9 @@
 package se.natusoft.doc.markdown.api
 
 /**
- * This is an empty marker interface indicating an options model.
+ * This is an marker interface indicating an options model.
  */
-public interface Options {}
+public interface Options {
+
+    public boolean isHelp();
+}
