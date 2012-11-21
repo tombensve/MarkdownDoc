@@ -267,12 +267,30 @@ class Line {
     }
 
     /**
+     * Returns true if this line starts with the specified text ignoring initial whitespace.
+     *
+     * @param startsWith The text to check for.
+     */
+    public boolean startsWithExcludingWhitespace(String startsWith) {
+        return this.origLine.trim().startsWith(startsWith)
+    }
+
+    /**
      * Returns true if this line ends with the specified text.
      *
      * @param endsWith The text to check for.
      */
     public boolean endsWith(String endsWith) {
         return this.origLine.endsWith(endsWith)
+    }
+
+    /**
+     * Returns true if this line ends with the specified text ignoring whitespace.
+     *
+     * @param endsWith The text to check for.
+     */
+    public boolean endsWithExcludingWhitespace(String endsWith) {
+        return this.origLine.trim().endsWith(endsWith)
     }
 
     /**

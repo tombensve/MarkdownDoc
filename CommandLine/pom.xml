@@ -28,6 +28,11 @@
             -->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <!--
+                  I don't know what version I get if I dont set any, but specifying version 2.3
+                  makes the assembly fail! The latest documented version at apache is 2.5,
+                  but that doesn't seem to be available in the standard repository!
+                -->
                 <!--version>2.3</version-->
                 <configuration>
                     <descriptors>
@@ -38,10 +43,6 @@
                         <manifest>
                             <mainClass>se.natusoft.doc.markdowndoc.Main</mainClass>
                         </manifest>
-                        <!--manifestEntries>
-                            <Class-Path>./markdowndoc-cmd-line-1.0.jar ./markdown-doc-lib-1.0.jar ./itextpdf-5.3.2.jar ./groovy-all-2.0.5.jar ./OptionsManager-2.0.jar ./CodeLicenseManager-annotations-retention-source-2.0.jar</Class-Path>
-                        </manifestEntries-->
-
                     </archive>
                 </configuration>
 

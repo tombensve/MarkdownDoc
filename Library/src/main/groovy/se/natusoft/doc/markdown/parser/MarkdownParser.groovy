@@ -304,7 +304,9 @@ public class MarkdownParser implements Parser {
         listItem.addItem(liParagraph)
 
         MDLine peekLine = (MDLine)lineReader.peekNextLine()
-        while (peekLine.isParagraph(this.links) && (peekLine.startsWith("  ") || peekLine.startsWith("\t"))) {
+        while (peekLine.isParagraph(this.links) && !peekLine.startsWithExcludingWhitespace("*") &&
+                (peekLine.startsWith("  ") || peekLine.startsWith("\t"))) {
+
             line = (MDLine)lineReader.readLine()
 
             liParagraph = new Paragraph()
