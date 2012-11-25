@@ -101,8 +101,8 @@
 
                             <installOptions>
                                 <verbose>true</verbose>
-                                <licenseDir>${basedir}/target/license</licenseDir>
-                                <thirdpartyLicenseDir>${basedir}/target/license/thirdparty</thirdpartyLicenseDir>
+                                <licenseDir>target/license</licenseDir>
+                                <thirdpartyLicenseDir>target/license/thirdparty</thirdpartyLicenseDir>
                             </installOptions>
 
                             <markdownTargetSubdir>Docs</markdownTargetSubdir>

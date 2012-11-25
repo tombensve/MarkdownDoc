@@ -49,15 +49,15 @@
                             <generatorOptions>
                                 <generator>pdf</generator>
                                 <inputPaths>
-                                    parts/H1UserGuide.mdpart,
-                                    MarkdownDoc.md,
-                                    ../MavenPlugin/docs/.*.md,
-                                    ../CommandLine/docs/.*.md,
-                                    ../Library/docs/.*.md,
-                                    parts/H1Licenses.mdpart,
-                                    licenses.md,
-                                    parts/H1LicenseTexts.mdpart,
-                                    .*-.*.md
+                                    Docs/parts/H1UserGuide.mdpart,
+                                    Docs/MarkdownDoc.md,
+                                    MavenPlugin/docs/.*.md,
+                                    CommandLine/docs/.*.md,
+                                    Library/docs/.*.md,
+                                    Docs/parts/H1Licenses.mdpart,
+                                    Docs/licenses.md,
+                                    Docs/parts/H1LicenseTexts.mdpart,
+                                    Docs/.*-.*.md
                                 </inputPaths>
                             </generatorOptions>
 

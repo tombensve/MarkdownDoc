@@ -55,9 +55,10 @@ public interface Generator {
      *
      * @param document The model to generate from.
      * @param options The generator options.
+     * @param rootDir The optional root directory to prefix configured output with. Can be null.
      *
      * @throws IOException on I/O failures.
      * @throws GenerateException on other failures to generate target.
      */
-    public void generate(Doc document, Options options) throws IOException, GenerateException
+    public void generate(Doc document, Options options, File rootDir) throws IOException, GenerateException
 }

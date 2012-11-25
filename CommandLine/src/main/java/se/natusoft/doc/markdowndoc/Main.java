@@ -148,6 +148,6 @@ public class Main {
             parser.parse(document, file);
         }
 
-        generator.generate(document, options);
+        generator.generate(document, options, null);
     }
 }

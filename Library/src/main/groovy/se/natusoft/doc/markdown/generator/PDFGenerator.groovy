@@ -211,9 +211,11 @@ class PDFGenerator implements Generator {
      * The main API for the generator. This does the job!
      *
      * @param doc The document model to generate from.
+     * @param opts The generator options.
+     * @param rootDir An optional root directory to prefix output paths with.
      */
     @Override
-    public void generate(Doc doc, Options opts) throws IOException, GenerateException {
+    public void generate(Doc doc, Options opts, File rootDir) throws IOException, GenerateException {
         initRun()
         this.options = (PDFGeneratorOptions)opts
 
@@ -292,7 +294,8 @@ class PDFGenerator implements Generator {
         document = new Document()
         document.setPageSize(pageSize)
 
-        pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(options.resultFile))
+        File resultFile = rootDir != null ? new File(rootDir, options.resultFile) : new File(options.resultFile)
+        pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(resultFile))
         pdfWriter.setPdfVersion(PdfWriter.PDF_VERSION_1_7)
         pdfWriter.setFullCompression()
         pdfWriter.setPageEvent(new PageEventHandler())

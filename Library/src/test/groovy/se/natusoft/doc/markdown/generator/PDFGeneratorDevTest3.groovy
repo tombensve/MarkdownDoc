@@ -42,6 +42,6 @@ class PDFGeneratorDevTest3 extends GroovyTestCase {
         ] as String[]
         Options options = optMgr.loadOptions("--", args)
 
-        generator.generate(doc, options)
+        generator.generate(doc, options, null)
     }
 }

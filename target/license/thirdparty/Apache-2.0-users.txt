@@ -1,5 +1,11 @@
 The following products are using the Apache version 2.0 license:
 
+OptionsManager version 2.0
+http://...
+
+groovy-all version 2.0.5
+http://groovy.codehaus.org/
+
 maven-plugin-api version 2.0
 http://maven.apache.org/maven2/
 

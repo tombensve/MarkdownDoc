@@ -128,7 +128,7 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
 
         // Parse
 
-        File projRoot = new File(this.baseDir);
+        File projRoot = getRootDir();
         Doc document = new Doc();
         try {
             SourcePaths sourcePaths = new SourcePaths(projRoot, generatorOptions.getInputPaths());
@@ -149,7 +149,7 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
         // Generate
 
         try {
-            generator.generate(document, options);
+            generator.generate(document, options, projRoot);
         }
         catch (GenerateException ge) {
             throw new MojoExecutionException("Failed to generate html!", ge);
@@ -159,4 +159,35 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
         }
 
     }
+
+    /**
+     * Returns a File representing the directory whose parent directory does not have a pom.xml.
+     * In other words, the root of a multi-module build.
+     */
+    private File getRootDir() {
+        File root = new File(this.baseDir);
+        while (havePOM(root.getParentFile().listFiles())) {
+            root = root.getParentFile();
+        }
+
+        return root;
+    }
+
+    /**
+     * Checks if any of the passed files is a pom.xml.
+     *
+     * @param files The files to check.
+     *
+     * @return true if found, false otherwise.
+     */
+    private boolean havePOM(File[] files) {
+        for (File file : files) {
+            if (file.getName().toLowerCase().equals("pom.xml")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

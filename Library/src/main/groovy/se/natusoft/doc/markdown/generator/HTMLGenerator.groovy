@@ -60,7 +60,7 @@ class HTMLGenerator implements Generator {
      * Returns the options class required for this generator.
      */
     @Override
-    Class getOptionsClass() {
+    public Class getOptionsClass() {
         return HTMLGeneratorOptions.class
     }
 
@@ -69,13 +69,20 @@ class HTMLGenerator implements Generator {
      *
      * @param document The document model to generate from.
      * @param opts The options.
+     * @param rootDir The optional root to prefix condfigured path with.
      */
     @Override
-    void generate(Doc document, Options opts) throws IOException, GenerateException {
+    public void generate(Doc document, Options opts, File rootDir) throws IOException, GenerateException {
         HTMLGeneratorOptions options = (HTMLGeneratorOptions)opts
-        def writer = new FileWriter(options.resultFile)
+        def writer //= new FileWriter(rootDir != null ? (rootDir.getPath() + File.separator + options.resultFile) : options.resultFile)
+        if (rootDir != null) {
+            writer = new FileWriter(rootDir.getPath() + File.separator + options.resultFile)
+        }
+        else {
+            writer = new FileWriter(options.resultFile)
+        }
         try {
-            generate(document, options, writer)
+            doGenerate(document, options, writer)
         }
         finally {
             writer.close()
@@ -88,7 +95,7 @@ class HTMLGenerator implements Generator {
      * @param document The document model to generate from.
      * @param options The options.
      */
-    void generate(Doc document, HTMLGeneratorOptions options, Writer writer) throws IOException, GenerateException {
+    private void doGenerate(Doc document, HTMLGeneratorOptions options, Writer writer) throws IOException, GenerateException {
 
         PrintWriter printWriter = new PrintWriter(writer)
         def html = new HTMLOutput(pw: printWriter)

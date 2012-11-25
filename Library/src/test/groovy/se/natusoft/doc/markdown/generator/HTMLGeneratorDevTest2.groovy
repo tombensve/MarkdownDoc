@@ -32,6 +32,6 @@ class HTMLGeneratorDevTest2 extends GroovyTestCase {
         def args =  ["--css", "test.css", "--inlineCSS", "false", "--resultFile", htmlFile.toString()] as String[]
         Options options = optMgr.loadOptions("--", args)
 
-        generator.generate(doc, options)
+        generator.generate(doc, options, null)
     }
 }
