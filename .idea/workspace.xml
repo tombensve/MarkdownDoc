@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/license/thirdparty/GNU Affero General Public License-v3-users.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/license/thirdparty/GNU Affero General Public License-v3.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/license/Apache-2.0.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/license/thirdparty/Apache-2.0-users.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/license/thirdparty/Apache-2.0.txt" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="MarkdownDoc.iws" />
@@ -1644,7 +1645,11 @@
       <created>1353866257160</created>
       <updated>1353866257160</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Dev commit.">
+      <created>1353866308794</created>
+      <updated>1353866308794</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
