@@ -748,6 +748,7 @@ class PDFGenerator implements Generator {
      */
     private void writeParagraph(Paragraph paragraph) throws GenerateException {
         PDFParagraph pdfParagraph = new PDFParagraph()
+        pdfParagraph.add(Chunk.NEWLINE)
 
         pdfParagraph.setSpacingAfter(10)
         if (this.options.firstLineParagraphIndent) {
