@@ -44,8 +44,8 @@ import se.natusoft.doc.markdown.parser.markdown.io.MDLine
 import se.natusoft.doc.markdown.parser.markdown.io.MDLineReader
 import se.natusoft.doc.markdown.parser.markdown.model.MDImage
 import se.natusoft.doc.markdown.parser.markdown.model.MDLink
-import se.natusoft.doc.markdown.model.*
 import se.natusoft.doc.markdown.parser.markdown.model.MDList
+import se.natusoft.doc.markdown.model.*
 
 /**
  * A parser that parses Markdown.
@@ -111,7 +111,7 @@ public class MarkdownParser implements Parser {
                         case { it.isLinkURLSpec(this.links)} : parseLinkUrlSpec(line);         break
 
                         // The annoying underline header format.
-                        case { lineReader.peekNextLine() != null && (lineReader.peekNextLine().contains("----") ||
+                        case { lineReader.hasLine() && (lineReader.peekNextLine().contains("----") ||
                                 lineReader.peekNextLine().contains("====")) } :
                             docItem = parseHeader(line, lineReader)
                             break
@@ -135,7 +135,9 @@ public class MarkdownParser implements Parser {
                                     prevDocItem = docItem
                                 }
                                 else if (docItem.isHierarchyUp(prevDocItem)) {
-                                    prevDocItem = hierarchyStack.pop()
+                                    while (docItem.isHierarchyUp(prevDocItem)) {
+                                        prevDocItem = hierarchyStack.pop()
+                                    }
                                 }
                             }
 
@@ -180,7 +182,7 @@ public class MarkdownParser implements Parser {
 
         StringBuilder sb = new StringBuilder()
         if (!mdline.commentEnd) {
-            while (!((MDLine)lineReader.peekNextLine()).commentEnd) {
+            while (lineReader.hasLine() && !((MDLine)lineReader.peekNextLine()).commentEnd) {
                 line = lineReader.readLine()
                 sb.append("\n")
                 sb.append(line.toString())
@@ -220,12 +222,12 @@ public class MarkdownParser implements Parser {
             case { it.startsWith("##")     } : level = Header.Level.H2; break
             case { it.startsWith("#")      } : level = Header.Level.H1; break
 
-            case { lineReader.peekNextLine() != null && lineReader.peekNextLine().contains("===") } :
+            case { lineReader.hasLine() && lineReader.peekNextLine().contains("===") } :
                 level = Header.Level.H1
                 lineReader.readLine()
                 break;
 
-            case { lineReader.peekNextLine() != null && lineReader.peekNextLine().contains("---") } :
+            case { lineReader.hasLine() && lineReader.peekNextLine().contains("---") } :
                 level = Header.Level.H2
                 lineReader.readLine()
                 break
@@ -298,19 +300,21 @@ public class MarkdownParser implements Parser {
     private DocItem parseList(MDLine line, LineReader lineReader) throws IOException {
         MDList list = new MDList(ordered: line.orderedList, indentLevel: line.leadingSpaces)
 
+        boolean isList = true
+        int indent = line.leadingSpaces >= 3 ? line.leadingSpaces : 3
+
         ListItem listItem = new ListItem()
         Paragraph liParagraph = new Paragraph()
-        parseParagraph(liParagraph, line.removeFirstWord(), lineReader)
+        parseParagraph(liParagraph, line.removeFirstWord(), lineReader, isList)
         listItem.addItem(liParagraph)
 
         MDLine peekLine = (MDLine)lineReader.peekNextLine()
-        while (peekLine.isParagraph(this.links) && !peekLine.startsWithExcludingWhitespace("*") &&
-                (peekLine.startsWith("  ") || peekLine.startsWith("\t"))) {
+        while (peekLine != null && peekLine.leadingSpaces >= indent && !peekLine.isList()) {
 
             line = (MDLine)lineReader.readLine()
 
             liParagraph = new Paragraph()
-            parseParagraph(liParagraph, line, lineReader)
+            parseParagraph(liParagraph, line, lineReader, isList)
             listItem.addItem(liParagraph)
 
             peekLine = (MDLine)lineReader.peekNextLine()
@@ -363,6 +367,19 @@ public class MarkdownParser implements Parser {
     private void parseParagraph(Paragraph paragraph, Line line, LineReader lineReader) throws IOException, ParseException {
         parseParagraph(paragraph, line, lineReader, null)
     }
+    /**
+     * Parses a paragraph of text.
+     *
+     * @param paragraph The paragraph to parse.
+     * @param line The current line.
+     * @param lineReader To read more lines from.
+     *
+     * @throws IOException
+     * @throws ParseException
+     */
+    private void parseParagraph(Paragraph paragraph, Line line, LineReader lineReader, boolean isList) throws IOException, ParseException {
+        parseParagraph(paragraph, line, lineReader, null, isList)
+    }
 
     /**
      * Parses a paragraph of text.
@@ -376,6 +393,21 @@ public class MarkdownParser implements Parser {
      * @throws ParseException
      */
     private void parseParagraph(Paragraph paragraph, Line line, LineReader lineReader, String removeBeginningWord) throws IOException, ParseException {
+        parseParagraph(paragraph, line, lineReader, removeBeginningWord, false)
+    }
+
+    /**
+     * Parses a paragraph of text.
+     *
+     * @param paragraph The paragraph to parse.
+     * @param line The current line.
+     * @param lineReader To read more lines from.
+     * @param removeBeginningWord if non null and this matches the first word of a line that word is removed.
+     *
+     * @throws IOException
+     * @throws ParseException
+     */
+    private void parseParagraph(Paragraph paragraph, Line line, LineReader lineReader, String removeBeginningWord, boolean isList) throws IOException, ParseException {
 
         StringBuilder sb = new StringBuilder();
 
@@ -393,6 +425,10 @@ public class MarkdownParser implements Parser {
 
             line = lineReader.readLine()
             done = line == null || line.isEmpty()
+            if (!done && line != null && (isList ? !((MDLine)line).isListParagraph(links) : !((MDLine)line).isParagraph(links))) {
+                done = true
+                lineReader.pushBackLine(line)
+            }
         }
 
         DocItem current = new PlainText(renderPrefixedSpace: false)

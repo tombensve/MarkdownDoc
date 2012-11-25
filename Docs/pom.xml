@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>markdown-doc</artifactId>
+        <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>markdown-doc-docs</artifactId>
+    <version>1.0</version>
+
+    <name>MarkdownDoc Docs</name>
+
+    <description>
+        Contains the documentation.
+    </description>
+
+    <dependencies>
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
+                <artifactId>markdowndoc-maven-plugin</artifactId>
+                <version>1.0</version>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
+                        <artifactId>markdown-doc-lib</artifactId>
+                        <version>1.0</version>
+                    </dependency>
+                </dependencies>
+
+                <executions>
+                    <execution>
+                        <id>generate-docs</id>
+                        <goals>
+                            <goal>doc</goal>
+                        </goals>
+                        <phase>install</phase>
+                        <configuration>
+
+                            <generatorOptions>
+                                <generator>pdf</generator>
+                                <inputPaths>
+                                    parts/H1UserGuide.mdpart,
+                                    MarkdownDoc.md,
+                                    ../MavenPlugin/docs/.*.md,
+                                    ../CommandLine/docs/.*.md,
+                                    ../Library/docs/.*.md,
+                                    parts/H1Licenses.mdpart,
+                                    licenses.md,
+                                    parts/H1LicenseTexts.mdpart,
+                                    .*-.*.md
+                                </inputPaths>
+                            </generatorOptions>
+
+                            <pdfGeneratorOptions>
+                                <resultFile>Docs/MarkdownDoc-User-Guide.pdf</resultFile>
+                                <pageSize>A4</pageSize>
+                                <title>MarkdownDoc</title>
+                                <subject>User Guide</subject>
+                                <version>1.0</version>
+                                <author>Tommy Svensson</author>
+                                <copyright>Copyright © 2012 Natusoft AB</copyright>
+                                <generateTitlePage>true</generateTitlePage>
+                                <generateTOC>true</generateTOC>
+                            </pdfGeneratorOptions>
+
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <artifactId>markdown-doc</artifactId>
-        <groupId>se.natusoft.doc.markdowndoc</groupId>
+        <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
         <version>1.0</version>
     </parent>
 
@@ -22,7 +22,7 @@
             <version>2.0</version>
         </dependency>
         <dependency>
-            <groupId>se.natusoft.doc.markdowndoc</groupId>
+            <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
             <artifactId>markdown-doc-lib</artifactId>
             <version>1.0</version>
         </dependency>

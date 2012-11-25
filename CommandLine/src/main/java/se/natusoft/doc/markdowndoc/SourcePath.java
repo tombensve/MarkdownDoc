@@ -2,13 +2,13 @@
  * 
  * PROJECT
  *     Name
- *         MarkdownDoc Maven Plugin
+ *         MarkdownDoc Command Line
  *     
  *     Code Version
  *         1.0
  *     
  *     Description
- *         A maven plugin for generating documentation from markdown.
+ *         Parses markdown and generates HTML and PDF.
  *         
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
@@ -106,7 +106,7 @@ public class SourcePath {
      * @param projRoot The root dir of the project being built.
      * @param pathExpression The path expression as explained above.
      */
-    public SourcePath(File projRoot, String pathExpression) {
+    public SourcePath(File projRoot , String pathExpression) {
         File pathFile = new File(projRoot, pathExpression);
         // We translate '!' to '\' to support regular expression escaping in windows which would treat '\' in the
         // original path as a path separator. In unix this is of course not a problem.

@@ -225,10 +225,19 @@ class Line {
      */
     public int getLeadingSpaces() {
         int leading = 0
+        int lpos = 0
 
-        while (this.origLine[leading] == " ") {
-            ++leading
-            if (leading == this.origLine.size()) break
+        if (this.origLine.length() > 0) {
+            while (this.origLine[lpos] == " " || this.origLine[lpos] == "\t") {
+                if (this.origLine[lpos] == "\t") {
+                    leading += 4
+                }
+                else {
+                    ++leading
+                }
+                ++lpos
+                if (lpos == this.origLine.size()) break
+            }
         }
 
         return leading

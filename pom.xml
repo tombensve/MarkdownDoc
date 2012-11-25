@@ -4,11 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>se.natusoft.doc.markdowndoc</groupId>
+    <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
     <artifactId>markdown-doc</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
     <modules>
+        <module>Docs</module>
         <module>Library</module>
         <module>MavenPlugin</module>
         <module>CommandLine</module>
@@ -77,29 +78,6 @@
         <plugins>
 
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <compilerId>groovy-eclipse-compiler</compilerId>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.codehaus.groovy</groupId>
-                        <artifactId>groovy-eclipse-compiler</artifactId>
-                        <version>2.7.0-01</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <createChecksum>true</createChecksum>
-                </configuration>
-            </plugin>
-
-            <plugin>
                 <groupId>se.natusoft.tools.codelicmgr</groupId>
                 <artifactId>CodeLicenseManager-maven-plugin</artifactId>
                 <version>2.0</version>
@@ -127,10 +105,34 @@
                                 <thirdpartyLicenseDir>${basedir}/target/license/thirdparty</thirdpartyLicenseDir>
                             </installOptions>
 
+                            <markdownTargetSubdir>Docs</markdownTargetSubdir>
                             <createLicensesMarkdown>true</createLicensesMarkdown>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <compilerId>groovy-eclipse-compiler</compilerId>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-eclipse-compiler</artifactId>
+                        <version>2.7.0-01</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <createChecksum>true</createChecksum>
+                </configuration>
             </plugin>
 
         </plugins>

@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/Library/Library.iml" filepath="$PROJECT_DIR$/Library/Library.iml" />
       <module fileurl="file://$PROJECT_DIR$/MarkdownDoc.iml" filepath="$PROJECT_DIR$/MarkdownDoc.iml" />
       <module fileurl="file://$PROJECT_DIR$/MavenPlugin/MavenPlugin.iml" filepath="$PROJECT_DIR$/MavenPlugin/MavenPlugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Docs/markdown-doc-docs.iml" filepath="$PROJECT_DIR$/Docs/markdown-doc-docs.iml" />
     </modules>
   </component>
 </project>

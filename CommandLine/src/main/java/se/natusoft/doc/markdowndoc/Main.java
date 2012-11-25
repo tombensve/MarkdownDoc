@@ -1,3 +1,39 @@
+/* 
+ * 
+ * PROJECT
+ *     Name
+ *         MarkdownDoc Command Line
+ *     
+ *     Code Version
+ *         1.0
+ *     
+ *     Description
+ *         Parses markdown and generates HTML and PDF.
+ *         
+ * COPYRIGHTS
+ *     Copyright (C) 2012 by Natusoft AB All rights reserved.
+ *     
+ * LICENSE
+ *     Apache 2.0 (Open Source)
+ *     
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *     
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *     
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ *     
+ * AUTHORS
+ *     Tommy Svensson (tommy@natusoft.se)
+ *         Changes:
+ *         2012-11-21: Created!
+ *         
+ */
 package se.natusoft.doc.markdowndoc;
 
 import se.natusoft.doc.markdown.api.Generator;
@@ -15,8 +51,6 @@ import se.natusoft.tools.optionsmgr.OptionsModelException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * This is the main for running from command line.
@@ -109,12 +143,9 @@ public class Main {
         Parser parser = new MarkdownParser();
         Doc document = new Doc();
 
-        StringTokenizer dirTokenizer = new StringTokenizer(fileSpec, ",");
-        while (dirTokenizer.hasMoreTokens()) {
-            SourcePath sourcePath = new SourcePath(dirTokenizer.nextToken());
-            for (File file : sourcePath.getSourceFiles()) {
-                parser.parse(document, file);
-            }
+        SourcePaths sourcePaths = new SourcePaths(fileSpec);
+        for (File file : sourcePaths.getSourceFiles()) {
+            parser.parse(document, file);
         }
 
         generator.generate(document, options);

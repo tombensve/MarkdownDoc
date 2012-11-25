@@ -100,13 +100,34 @@ class MDLine extends Line  {
      * Returns true if this starts a list item.
      */
     public boolean isList() {
+        boolean list = false;
+
         if (super.origLine != null && super.origLine.trim().length() >= 1) {
-            char c = this.origLine.trim().charAt(0)
-            char n = 0
-            try { n = this.origLine.trim().charAt(1)} catch (IndexOutOfBoundsException iobe) {}
-            return  (c == '*' || c == '+' || c == '-' || c.isDigit()) && (n != '*' && n != '+' && n != '-' && !n.isDigit())
+            StringTokenizer lineTokenizer = new StringTokenizer(super.origLine, " ")
+            String firstWord = lineTokenizer.nextToken()
+
+            if (firstWord.endsWith(".")) {
+                firstWord = firstWord.substring(0, firstWord.length() - 1)
+                boolean onlyDigits = true;
+                for (int i = 0; i < firstWord.length(); i++) {
+                    if (!firstWord.charAt(i).digit) {
+                        onlyDigits = false;
+                        break;
+                    }
+                }
+
+                if (onlyDigits) {
+                    list = true;
+                }
+            }
+            else {
+                char c = this.origLine.trim().charAt(0)
+                char n = 0
+                try { n = this.origLine.trim().charAt(1)} catch (IndexOutOfBoundsException iobe) {}
+                list = (c == '*' || c == '+' || c == '-') && (n != '*' && n != '+' && n != '-' && !n.isDigit())
+            }
         }
-        return false
+        return list
     }
 
     /**
@@ -176,6 +197,18 @@ class MDLine extends Line  {
      */
     public boolean isParagraph(Map urls) {
         return !(isCodeBlock() || isBlockQuote() || isList() || isOrderedList() || isHeader() || isHorizRuler() || isLinkURLSpec(urls) ||
+                isCommentStart() || isCommentEnd())
+    }
+
+    /**
+     * returns true if this line is nothing else with the exception of code block.
+     *
+     * @param urls same as passed to isLinkURLSpec().
+     *
+     * @return true if all other return false.
+     */
+    public boolean isListParagraph(Map urls) {
+        return !(isBlockQuote() || isList() || isOrderedList() || isHeader() || isHorizRuler() || isLinkURLSpec(urls) ||
                 isCommentStart() || isCommentEnd())
     }
 }
