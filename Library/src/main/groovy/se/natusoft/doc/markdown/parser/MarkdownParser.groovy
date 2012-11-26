@@ -433,6 +433,8 @@ public class MarkdownParser implements Parser {
 
         DocItem current = new PlainText(renderPrefixedSpace: false)
 
+        LinkedList<DocItem> itemStack = new LinkedList<DocItem>()
+
         char p = 0
         boolean escapeChar = false
 
@@ -499,17 +501,19 @@ public class MarkdownParser implements Parser {
                         if (n == '_' || n == '*') {
                             ++i
                             if (current instanceof Strong) {
-                                current = new PlainText(renderPrefixedSpace: false)
+                                current = itemStack.pop().createNewWithSameConfig()
                             }
                             else {
+                                itemStack.push(current)
                                 current = new Strong(renderPrefixedSpace: false)
                             }
                         }
                         else {
                             if (current instanceof Emphasis) {
-                                current = new PlainText(renderPrefixedSpace: false)
+                                current = itemStack.pop().createNewWithSameConfig()
                             }
                             else {
+                                itemStack.push(current)
                                 current = new Emphasis(renderPrefixedSpace: false)
                             }
                         }
@@ -518,20 +522,23 @@ public class MarkdownParser implements Parser {
                     case '`':
                         paragraph.addItem(current)
                         if (current instanceof Code) {
-                            current = new PlainText(renderPrefixedSpace: false)
+                            current = itemStack.pop().createNewWithSameConfig()
                         }
                         else {
+                            itemStack.push(current)
                             current = new Code(renderPrefixedSpace: false)
                         }
                         break
 
                     case { it == '[' && p != '!' && !(current instanceof Link)}:
                         paragraph.addItem(current)
+                        itemStack.push(current)
                         current = new MDLink(renderPrefixedSpace: false)
                         break
 
                     case { it == '!' && n == '[' && !(current instanceof Link)}:
                         paragraph.addItem(current)
+                        itemStack.push(current)
                         current = new MDImage(renderPrefixedSpace: false)
                         ++i
                         break
@@ -541,7 +548,7 @@ public class MarkdownParser implements Parser {
                             if (n != '(') {
                                 paragraph.addItem(current)
                                 this.links.put(((Link)current).text, current)
-                                current = new PlainText(renderPrefixedSpace: false)
+                                current = itemStack.pop().createNewWithSameConfig()
                             }
                         }
                         else {
@@ -553,7 +560,7 @@ public class MarkdownParser implements Parser {
                         if (current instanceof Link) {
                             paragraph.addItem(current)
                             this.links.put(((Link)current).text, current)
-                            current = new PlainText(renderPrefixedSpace: false)
+                            current = itemStack.pop().createNewWithSameConfig()
                         }
                         else {
                             current << c
@@ -562,12 +569,13 @@ public class MarkdownParser implements Parser {
 
                     case { it == '<' && (current.class == PlainText.class)} :
                         paragraph.addItem(current)
+                        itemStack.push(current)
                         current = new AutoLink(renderPrefixedSpace: false)
                         break;
 
                     case { it == '>' && (current.class == AutoLink.class)}:
                         paragraph.addItem(current)
-                        current = new PlainText(renderPrefixedSpace: false)
+                        current =  itemStack.pop().createNewWithSameConfig()
                         break
 
                     default:

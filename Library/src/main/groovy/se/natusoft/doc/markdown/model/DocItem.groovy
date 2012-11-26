@@ -82,12 +82,15 @@ public class DocItem {
      */
     public DocItem createNewWithSameConfig() {
         DocItem di = this.class.newInstance()
-        di.setKeepConsecutiveTogether(this.keepConsecutiveTogether)
-        di.setAddBetweenKeepTogether(this.addBetweenKeepTogether)
-        di.setIsHierarchy(this.isHierarchy)
-        di.setRenderPrefixedSpace(this.renderPrefixedSpace)
-
+        copyConfig(di)
         return di
+    }
+
+    protected void copyConfig(DocItem docItem) {
+        docItem.setKeepConsecutiveTogether(this.keepConsecutiveTogether)
+        docItem.setAddBetweenKeepTogether(this.addBetweenKeepTogether)
+        docItem.setIsHierarchy(this.isHierarchy)
+        docItem.setRenderPrefixedSpace(this.renderPrefixedSpace)
     }
 
     /**
