@@ -188,26 +188,32 @@ class MDLine extends Line  {
         return this.origLine.trim().endsWith("-->")
     }
 
+    // Both of the following are a bit messy. There is no distinct identifier for a paragraph.
+
     /**
-     * returns true if this line is nothing else.
+     * returns true if this line is a paragraph.
      *
      * @param urls same as passed to isLinkURLSpec().
      *
      * @return true if all other return false.
      */
     public boolean isParagraph(Map urls) {
-        return !(isCodeBlock() || isBlockQuote() || isList() || isOrderedList() || isHeader() || isHorizRuler() || isLinkURLSpec(urls) ||
-                isCommentStart() || isCommentEnd())
+        // Note the distinction: A List contains one or more Paragraph:s. A BlockQuote *is* a Paragraph!
+        return !(isCodeBlock() || isList() || isOrderedList() || isHeader() || isHorizRuler() || isLinkURLSpec(urls) ||
+                isCommentStart() || isCommentEnd()) || isBlockQuote()
     }
 
     /**
-     * returns true if this line is nothing else with the exception of code block.
+     * returns true if this line is a list paragraph (does not check for code block since indented list levels
+     * collide with code blocks).
      *
      * @param urls same as passed to isLinkURLSpec().
      *
      * @return true if all other return false.
      */
     public boolean isListParagraph(Map urls) {
+        // Again, note: isList() does not mean a list paragraph, but a new list (or list item). Each list item contains
+        // a paragraph. It is such a paragraph we are trying to identify here (by the exclusion of other).
         return !(isBlockQuote() || isList() || isOrderedList() || isHeader() || isHorizRuler() || isLinkURLSpec(urls) ||
                 isCommentStart() || isCommentEnd())
     }

@@ -16,9 +16,11 @@ locations in maven can be configured) and I also had the following requirements:
 
 * I just wanted to do it my way OK! :-)
 
-It does also provide a java -jar executable variant. The main functionality is available as a library. It is unfortunately
-written in Groovy, something I start to regret and consider a mistake. I might redo it in plain java later, but at the
-moment it is what it is.
+It does also provide a java -jar executable variant. The main functionality is available as a library.
+
+It is unfortunately written in Groovy, something I start to regret and consider a mistake. I might redo it in plain
+java later, but at the moment it is what it is.
+
 
 ### How markdown is MarkdownDoc ?
 
@@ -38,4 +40,3 @@ The known (and intentional) differences are:
 * No entity encoding of email addresses.
 
 * No multiple block quote levels (as of now).
-

@@ -117,7 +117,9 @@ class PDFGenerator implements Generator {
      *
      * which I'm doing in several places really shouldn't work since the Section constructor is protected!
      * This however not only complies (have already determined that Groovy will more or less compile anything)
-     * but it also works! Groovy happily lets me construct a protected class like this!
+     * but it also works! Groovy happily lets me construct a protected class like this! This of course had
+     * side effects letting me use it in way that should not be possible and it turned out at runtime it
+     * wasn't.
      *
      * Yes, I'm apparently blogging in code now ...
      */
@@ -137,9 +139,16 @@ class PDFGenerator implements Generator {
     private static final FONT_EMPHASIS = new Font(Font.FontFamily.HELVETICA, 10, Font.ITALIC)
     private static final FONT_STRONG = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD)
     private static final FONT_CODE = new Font(Font.FontFamily.COURIER, 9, Font.NORMAL, BaseColor.DARK_GRAY)
-    private static final FONT_ANCHOR = new Font(Font.FontFamily.HELVETICA, 10, Font.UNDERLINE, BaseColor.BLUE)
+    private static final FONT_ANCHOR = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.GRAY)
     private static final FONT_LIST_ITEM = new Font(Font.FontFamily.HELVETICA, 10)
     private static final FONT_FOOTER = new Font(Font.FontFamily.HELVETICA, 8)
+    private static final FONT_TOC = new Font(Font.FontFamily.HELVETICA, 9)
+
+    //
+    // Chunk constants
+    //
+
+    private static final Chunk LIST_NEWLINE = new Chunk("\n", new Font(Font.FontFamily.HELVETICA, 4))
 
     //
     // Private Methods
@@ -444,7 +453,9 @@ class PDFGenerator implements Generator {
      * @param y The Y position of the text.
      */
     private void writeText(PdfContentByte cb, int align, String text, float x, float y) {
-        Phrase phrase = Phrase.getInstance(text)
+        Phrase phrase = new Phrase()
+        Chunk chunk = new Chunk(text, FONT_TOC)
+        phrase.add(chunk)
         ColumnText.showTextAligned(cb, align, phrase, x, y, 0.0f)
     }
 
@@ -723,8 +734,8 @@ class PDFGenerator implements Generator {
                         // We have to fake a paragraph here since adding a (PDF)Paragraph to a (PDF)ListItem which
                         // is a (PDF)Paragraph screws it up making the list dots or numbers disappear. This unfortunately
                         // makes a little more space between paragraphs than for true paragraphs.
-                        listItem.add(Chunk.NEWLINE)
-                        listItem.add(Chunk.NEWLINE)
+                        listItem.add(LIST_NEWLINE)
+                        listItem.add(LIST_NEWLINE)
                     }
                     first = false
                     writeParagraph(listItem, (Paragraph)pg, FONT_LIST_ITEM)
@@ -751,7 +762,6 @@ class PDFGenerator implements Generator {
      */
     private void writeParagraph(Paragraph paragraph) throws GenerateException {
         PDFParagraph pdfParagraph = new PDFParagraph()
-        pdfParagraph.add(Chunk.NEWLINE)
 
         pdfParagraph.setSpacingAfter(10)
         if (this.options.firstLineParagraphIndent) {
@@ -801,6 +811,7 @@ class PDFGenerator implements Generator {
                 case DocFormat.Link:
                     writeLink((Link)docItem, pdfParagraph)
                     break
+
                 case DocFormat.AutoLink:
                     writeLink((AutoLink)docItem, pdfParagraph)
                     break

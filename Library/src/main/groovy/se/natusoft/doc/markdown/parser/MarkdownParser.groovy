@@ -534,12 +534,12 @@ public class MarkdownParser implements Parser {
                         }
                         break
 
-                    case '<':
+                    case { it == '<' && (current.class == PlainText.class)} :
                         paragraph.addItem(current)
                         current = new AutoLink(renderPrefixedSpace: false)
                         break;
 
-                    case '>':
+                    case { it == '>' && (current.class == AutoLink.class)}:
                         paragraph.addItem(current)
                         current = new PlainText(renderPrefixedSpace: false)
                         break
