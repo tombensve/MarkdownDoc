@@ -712,6 +712,7 @@ class PDFGenerator implements Generator {
         PDFList pdfList = listToPDFList(list, this.options)
         writeList(pdfList, list, 0f)
         getOrCreateCurrentSection().add(pdfList)
+        getOrCreateCurrentSection().add(Chunk.NEWLINE)
     }
 
     /**

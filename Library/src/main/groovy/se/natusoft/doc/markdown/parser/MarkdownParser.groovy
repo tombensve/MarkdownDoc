@@ -425,7 +425,7 @@ public class MarkdownParser implements Parser {
 
             line = lineReader.readLine()
             done = line == null || line.isEmpty()
-            if (!done && line != null && (isList ? !((MDLine)line).isListParagraph(links) : !((MDLine)line).isParagraph(links))) {
+            if (!done && line != null && (isList ? !((MDLine)line).isPartOfListParagraph(links) : !((MDLine)line).isPartOfParagraph(links))) {
                 done = true
                 lineReader.pushBackLine(line)
             }
@@ -467,8 +467,34 @@ public class MarkdownParser implements Parser {
                         }
                         break
 
-                    case { it == '_' && !(current instanceof Link)}:
-                    case { it == '*' && !(current instanceof Link)}:
+                    case {
+                        it == '_' &&
+                        !(current instanceof Link) &&
+                        (
+                            (
+                                (current instanceof Strong) ||
+                                (current instanceof Emphasis)
+                            ) ||
+                            (
+                                (i+2) < sb.length() &&
+                                sb.substring(i+2).contains("_")
+                            )
+                        )
+                    }:
+                    case {
+                        it == '*' &&
+                        !(current instanceof Link) &&
+                        (
+                            (
+                                (current instanceof Strong) ||
+                                (current instanceof Emphasis)
+                            ) ||
+                            (
+                                (i+2) < sb.length() &&
+                                 sb.substring(i+2).contains("*")
+                            )
+                        )
+                    }:
                         paragraph.addItem(current)
                         if (n == '_' || n == '*') {
                             ++i

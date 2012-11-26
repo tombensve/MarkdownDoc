@@ -33,7 +33,7 @@ starting at _${basedir}_ and going up until the parent directory does not have a
 found no way to let maven tell me this path. 
 
 The paths can have wildcards in form of regular expressions for the file names. There is
-also a special directory name ** that means any level of subdirectories. 
+also a special directory name ** that means any level of subdirectories.
 
 All the input paths are parsed into the same document model that then gets passed to the
 generator. They are parsed in the order they are specified. When it comes to wildcards

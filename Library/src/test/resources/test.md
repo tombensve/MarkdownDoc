@@ -3,7 +3,7 @@
 -->
 # Headers
 
-This is the headers section of the functional test document.
+This is the ** headers section of the functional test document.
 
 ## Two
 
