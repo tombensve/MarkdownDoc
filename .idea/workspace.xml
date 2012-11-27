@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="Oops! Non relative links need to start with https://">
+    <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/docs/MarkdownDoc-Library.md" afterPath="$PROJECT_DIR$/Library/docs/MarkdownDoc-Library.md" />
     </list>
@@ -133,7 +133,7 @@
       <file leaf-file-name="MarkdownDoc-Library.md" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Library/docs/MarkdownDoc-Library.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="80" column="73" selection-start="3048" selection-end="3048" vertical-scroll-proportion="0.83516484">
+            <state line="72" column="9" selection-start="2756" selection-end="2756" vertical-scroll-proportion="0.7337278">
               <folding />
             </state>
           </provider>
@@ -1319,7 +1319,11 @@
       <created>1354038741885</created>
       <updated>1354038741885</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Oops! Non relative links need to start with https://">
+      <created>1354038911515</created>
+      <updated>1354038911515</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1412,7 +1416,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Githubs markdown apparently does not support autolinks!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Oops! Non relative links need to start with https://" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1433,6 +1437,7 @@
     <MESSAGE value="Apparently quite difficult to link to different parts of documentation. New try." />
     <MESSAGE value="Updated generation of PDF." />
     <MESSAGE value="Githubs markdown apparently does not support autolinks!" />
+    <MESSAGE value="Oops! Non relative links need to start with https://" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1523,7 +1528,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Library/docs/MarkdownDoc-Library.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="80" column="73" selection-start="3048" selection-end="3048" vertical-scroll-proportion="0.83516484">
+        <state line="72" column="9" selection-start="2756" selection-end="2756" vertical-scroll-proportion="0.7337278">
           <folding />
         </state>
       </provider>

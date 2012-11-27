@@ -78,7 +78,7 @@ Example usage:
     }
     
 Please note that the CommandLineOptionsMangager used in the example is part of the OptionsManager
-tool also by me. Available at [githib.com/tombensve/OptionsManager](https://githib.com/tombensve/OptionsManager).
+tool also by me. Available at [github.com/tombensve/OptionsManager](https://github.com/tombensve/OptionsManager).
 
 	
 
