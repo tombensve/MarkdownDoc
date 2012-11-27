@@ -105,8 +105,9 @@
                                 <thirdpartyLicenseDir>target/license/thirdparty</thirdpartyLicenseDir>
                             </installOptions>
 
-                            <markdownTargetSubdir>Docs</markdownTargetSubdir>
                             <createLicensesMarkdown>true</createLicensesMarkdown>
+                            <markdownTargetSubdir>Docs</markdownTargetSubdir>
+                            <markdownLinkPrefix>https://github.com/tombensve/MarkdownDoc/blob/master/Docs/</markdownLinkPrefix>
                         </configuration>
                     </execution>
                 </executions>
