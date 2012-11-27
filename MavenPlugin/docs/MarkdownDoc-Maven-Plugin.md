@@ -164,14 +164,14 @@ Following is a complete plugin specification with all options specified:
                         <backgroundColor>255:255:255</backgroundColor>
                         
 						<!--
-							Specify in R:G:B format to change the background color
+							Specify in R:G:B format to change the text color
 							of block quotes.
 							Optional. Default: 128:128:128 (grey)
 						-->
                         <blockQuoteColor>128:128:128<blockQuoteColor>
                         
 						<!--
-							Specify in R:G:B format to change the background color
+							Specify in R:G:B format to change the text color
 							of code blocks.
 							Optional. Default: 255:255:255 (white)
 						-->

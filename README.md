@@ -10,11 +10,11 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 [Introduction](Docs/MarkdownDoc.md)
 
-[Maven usage](MavenPlugin/docs/MavenUsage.md)
+[Maven usage](MavenPlugin/docs/MarkdownDoc-Maven-Plugin.md)
 
-[Command line usage](CommandLine/docs/CommandLineUsage.md)
+[Command line usage](CommandLine/docs/MarkdownDoc-CommandLine.md)
 
-[Library](Library/docs/Library.md)
+[Library](Library/docs/MarkdownDoc-Library.md)
 
 [Licenses](Docs/licenses.md)
 

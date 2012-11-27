@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Library/src/test/groovy/se/natusoft/doc/markdown/generator/PDFGeneratorDevTest4.groovy" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Library/src/test/resources/GNU_Affero_General_Public_License-v3.md" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Library/docs/MarkdownDoc-Library.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/DocItem.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/DocItem.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/MarkdownParser.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/MarkdownParser.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/api/Options.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/api/Options.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MavenPlugin/docs/MarkdownDoc-Maven-Plugin.md" afterPath="$PROJECT_DIR$/MavenPlugin/docs/MarkdownDoc-Maven-Plugin.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="MarkdownDoc.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -79,55 +79,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Docs/pom.xml">
+      <file leaf-file-name="MarkdownDoc-Maven-Plugin.md" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/MavenPlugin/docs/MarkdownDoc-Maven-Plugin.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="42" selection-start="1342" selection-end="1342" vertical-scroll-proportion="-19.625">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MarkdownParser.groovy" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/MarkdownParser.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="449" column="13" selection-start="16132" selection-end="16132" vertical-scroll-proportion="0.3728223">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AutoLink.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/AutoLink.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="6" selection-start="1191" selection-end="1191" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlainText.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/PlainText.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="73" column="0" selection-start="1743" selection-end="1743" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DocItem.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/DocItem.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="87" column="0" selection-start="2267" selection-end="2407" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="licenses.md" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Docs/licenses.md">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="170" column="69" selection-start="6159" selection-end="6159" vertical-scroll-proportion="2.1963825">
               <folding />
             </state>
           </provider>
@@ -146,9 +101,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/Library/src/test/groovy/se/natusoft/doc/markdown/generator/PDFGeneratorDevTest2.groovy" />
-        <option value="$PROJECT_DIR$/Library/src/test/groovy/se/natusoft/doc/markdown/generator/PDFGeneratorDevTest3.groovy" />
-        <option value="$PROJECT_DIR$/Library/src/test/groovy/se/natusoft/doc/markdown/generator/PDFGeneratorDevTest4.groovy" />
         <option value="$PROJECT_DIR$/Library/src/test/groovy/se/natusoft/doc/markdown/generator/PDFGeneratorDevTest5.groovy" />
         <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/HTMLGenerator.groovy" />
         <option value="$PROJECT_DIR$/pom.xml" />
@@ -156,12 +108,15 @@
         <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/markdown/io/MDLine.groovy" />
         <option value="$PROJECT_DIR$/CommandLine/docs/MarkdownDoc-CommandLine.md" />
         <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy" />
-        <option value="$PROJECT_DIR$/MavenPlugin/docs/MarkdownDoc-Maven-Plugin.md" />
         <option value="$PROJECT_DIR$/Library/src/test/resources/test.md" />
         <option value="$PROJECT_DIR$/Library/src/test/resources/test.css" />
         <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/DocItem.groovy" />
         <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/PlainText.groovy" />
         <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/MarkdownParser.groovy" />
+        <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/api/Options.groovy" />
+        <option value="$PROJECT_DIR$/Library/docs/MarkdownDoc-Library.md" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/MavenPlugin/docs/MarkdownDoc-Maven-Plugin.md" />
       </list>
     </option>
   </component>
@@ -316,8 +271,8 @@
     <option name="jreName" value="1.6" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="323" />
-    <option name="y" value="50" />
+    <option name="x" value="239" />
+    <option name="y" value="58" />
     <option name="width" value="2105" />
     <option name="height" value="1309" />
   </component>
@@ -481,66 +436,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="MavenPlugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MarkdownDoc" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MarkdownDoc" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MavenPlugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MarkdownDoc" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MarkdownDoc" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MavenPlugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="se" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="natusoft" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="doc" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="markdowndoc" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -760,6 +655,116 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="Library" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="groovy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="se" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="natusoft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="doc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="markdown" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="generator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Library" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="groovy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="se" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="natusoft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="doc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="markdown" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="api" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Library" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="docs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="Docs" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -775,6 +780,66 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="CommandLine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CommandLine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CommandLine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="se" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="natusoft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="doc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="markdowndoc" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1249,7 +1314,11 @@
       <created>1353942890793</created>
       <updated>1353942890793</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Dev commit.">
+      <created>1353946225136</created>
+      <updated>1353946225136</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1273,8 +1342,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="323" y="50" width="2105" height="1309" extended-state="0" />
-    <editor active="false" />
+    <frame x="239" y="58" width="2105" height="1309" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Dilbert" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
@@ -1366,51 +1435,95 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/markdown/io/MDLine.groovy">
+    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Link.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="213" column="19" selection-start="6312" selection-end="6312" vertical-scroll-proportion="0.8320413">
+        <state line="41" column="13" selection-start="1150" selection-end="1150" vertical-scroll-proportion="0.39276487">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CommandLine/docs/MarkdownDoc-CommandLine.md">
+    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/AutoLink.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="32" selection-start="1244" selection-end="1244" vertical-scroll-proportion="0.0">
+        <state line="41" column="6" selection-start="1191" selection-end="1191" vertical-scroll-proportion="0.5297158">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy">
+    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/DocItem.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="742" column="17" selection-start="29160" selection-end="29160" vertical-scroll-proportion="0.0">
+        <state line="87" column="0" selection-start="2267" selection-end="2407" vertical-scroll-proportion="0.60465115">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Docs/MarkdownDoc.md">
+    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/PlainText.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="54" selection-start="1907" selection-end="1907" vertical-scroll-proportion="0.42635658">
+        <state line="73" column="0" selection-start="1743" selection-end="1743" vertical-scroll-proportion="0.6770026">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MavenPlugin/docs/MarkdownDoc-Maven-Plugin.md">
+    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/MarkdownParser.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="38" selection-start="1431" selection-end="1431" vertical-scroll-proportion="0.4521964">
+        <state line="449" column="13" selection-start="16132" selection-end="16132" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Library/src/test/resources/test.css">
+    <entry file="file://$USER_HOME$/.m2/settings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="0" selection-start="75" selection-end="75" vertical-scroll-proportion="0.025839793">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Library/src/test/resources/test.md">
+    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Doc.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="27" selection-start="272" selection-end="272" vertical-scroll-proportion="0.2842377">
+        <state line="44" column="6" selection-start="1280" selection-end="1280" vertical-scroll-proportion="0.5684754">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/api/Generator.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="63" column="1" selection-start="1252" selection-end="1913" vertical-scroll-proportion="0.7881137">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/api/Parser.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="57" column="1" selection-start="1245" selection-end="1667" vertical-scroll-proportion="0.7235142">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/api/Options.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="27" selection-start="1223" selection-end="1223" vertical-scroll-proportion="0.5555556">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CommandLine/src/main/java/se/natusoft/doc/markdowndoc/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="109" column="75" selection-start="3610" selection-end="3610" vertical-scroll-proportion="0.90956074">
+          <folding>
+            <element signature="e#2795#2804#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Library/docs/MarkdownDoc-Library.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="81" column="34" selection-start="3120" selection-end="3120" vertical-scroll-proportion="0.87080103">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="35" selection-start="373" selection-end="373" vertical-scroll-proportion="0.20671834">
           <folding />
         </state>
       </provider>
@@ -1424,56 +1537,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Docs/licenses.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="1" column="0" selection-start="39" selection-end="39" vertical-scroll-proportion="0.012919896">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Emphasis.groovy">
+    <entry file="file://$PROJECT_DIR$/MavenPlugin/docs/MarkdownDoc-Maven-Plugin.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="6" selection-start="1152" selection-end="1152" vertical-scroll-proportion="0.5297158">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Code.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="6" selection-start="1146" selection-end="1146" vertical-scroll-proportion="0.5297158">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Link.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="13" selection-start="1150" selection-end="1150" vertical-scroll-proportion="0.39276487">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/AutoLink.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="6" selection-start="1191" selection-end="1191" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/DocItem.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="87" column="0" selection-start="2267" selection-end="2407" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/PlainText.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="73" column="0" selection-start="1743" selection-end="1743" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/MarkdownParser.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="449" column="13" selection-start="16132" selection-end="16132" vertical-scroll-proportion="0.3728223">
+        <state line="170" column="69" selection-start="6159" selection-end="6159" vertical-scroll-proportion="2.1963825">
           <folding />
         </state>
       </provider>
