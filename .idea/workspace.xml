@@ -115,7 +115,7 @@
       <file leaf-file-name="README.md" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="0" selection-start="469" selection-end="469" vertical-scroll-proportion="0.29715762">
+            <state line="22" column="26" selection-start="508" selection-end="508" vertical-scroll-proportion="0.2842377">
               <folding />
             </state>
           </provider>
@@ -1294,7 +1294,11 @@
       <created>1354028207801</created>
       <updated>1354028207801</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Update of idea workspace.">
+      <created>1354028565991</created>
+      <updated>1354028565991</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1387,7 +1391,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Final documentation fix to make it ready for publishing to github." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update of idea workspace." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1403,6 +1407,7 @@
     <MESSAGE value="First version." />
     <MESSAGE value="Dev commit." />
     <MESSAGE value="Final documentation fix to make it ready for publishing to github." />
+    <MESSAGE value="Update of idea workspace." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1521,7 +1526,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="0" selection-start="469" selection-end="469" vertical-scroll-proportion="0.29715762">
+        <state line="22" column="26" selection-start="508" selection-end="508" vertical-scroll-proportion="0.2842377">
           <folding />
         </state>
       </provider>

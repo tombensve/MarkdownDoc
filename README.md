@@ -8,16 +8,16 @@ __Author:__ Tommy Svensson (tommy@natusoft.se)
 
 _A tool for generating HTML and PDF from markdown for the purpose of documentation._
 
-[Introduction](Docs/MarkdownDoc.md)
+[Introduction](MarkdownDoc/Docs/MarkdownDoc.md)
 
-[Maven usage](MavenPlugin/docs/MarkdownDoc-Maven-Plugin.md)
+[Maven usage](MarkdownDoc/MavenPlugin/docs/MarkdownDoc-Maven-Plugin.md)
 
-[Command line usage](CommandLine/docs/MarkdownDoc-CommandLine.md)
+[Command line usage](MarkdownDoc/CommandLine/docs/MarkdownDoc-CommandLine.md)
 
-[Library](Library/docs/MarkdownDoc-Library.md)
+[Library](MarkdownDoc/Library/docs/MarkdownDoc-Library.md)
 
-[Licenses](Docs/licenses.md)
+[Licenses](MarkdownDoc/Docs/licenses.md)
 
 ----
 
-[PDF Version](Docs/MarkdownDoc-User-Guide.pdf)
+[PDF Version](MarkdownDoc/Docs/MarkdownDoc-User-Guide.pdf)
