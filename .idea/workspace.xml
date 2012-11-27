@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/licenses.md" afterPath="$PROJECT_DIR$/Docs/licenses.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="MarkdownDoc.iws" />
@@ -103,19 +104,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="licenses.md" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="licenses.md" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Docs/licenses.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="0" selection-start="39" selection-end="39" vertical-scroll-proportion="0.0">
+            <state line="15" column="120" selection-start="672" selection-end="672" vertical-scroll-proportion="0.19379845">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="README.md" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="26" selection-start="508" selection-end="508" vertical-scroll-proportion="0.2842377">
+            <state line="18" column="80" selection-start="678" selection-end="678" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -143,7 +144,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/Library/src/test/groovy/se/natusoft/doc/markdown/generator/PDFGeneratorDevTest5.groovy" />
         <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/HTMLGenerator.groovy" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/Docs/MarkdownDoc.md" />
@@ -159,6 +159,7 @@
         <option value="$PROJECT_DIR$/MavenPlugin/docs/MarkdownDoc-Maven-Plugin.md" />
         <option value="$PROJECT_DIR$/Library/docs/MarkdownDoc-Library.md" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/Docs/licenses.md" />
       </list>
     </option>
   </component>
@@ -1298,7 +1299,11 @@
       <created>1354028565991</created>
       <updated>1354028565991</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Github seems to use my account as root for relative links in markdown documents.">
+      <created>1354029009297</created>
+      <updated>1354029009297</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1391,7 +1396,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update of idea workspace." />
+    <option name="LAST_COMMIT_MESSAGE" value="Github seems to use my account as root for relative links in markdown documents." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1408,6 +1413,7 @@
     <MESSAGE value="Dev commit." />
     <MESSAGE value="Final documentation fix to make it ready for publishing to github." />
     <MESSAGE value="Update of idea workspace." />
+    <MESSAGE value="Github seems to use my account as root for relative links in markdown documents." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1510,13 +1516,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Docs/licenses.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="0" selection-start="39" selection-end="39" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Library/docs/MarkdownDoc-Library.md">
       <provider selected="true" editor-type-id="text-editor">
         <state line="59" column="25" selection-start="2215" selection-end="2215" vertical-scroll-proportion="0.0">
@@ -1526,7 +1525,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="26" selection-start="508" selection-end="508" vertical-scroll-proportion="0.2842377">
+        <state line="18" column="80" selection-start="678" selection-end="678" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Docs/licenses.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="120" selection-start="672" selection-end="672" vertical-scroll-proportion="0.19379845">
           <folding />
         </state>
       </provider>
