@@ -16,9 +16,13 @@
     </modules>
 
     <name>MarkdownDoc</name>
+
     <description>
         Parses markdown and generates HTML and PDF.
     </description>
+
+    <url>https://github.com/tombensve/MarkdownDoc</url>
+
     <properties>
         <copyrightYear>2012</copyrightYear>
         <copyrightHolder>Natusoft AB</copyrightHolder>
@@ -44,15 +48,6 @@
             <email>${developer1Email}</email>
         </developer>
     </developers>
-    <scm>
-        <connection>https://github.com/tombensve/MarkdownDoc.git</connection>
-        <developerConnection>scm:ssh://git@github.com:tombensve/MarkdownDoc.git</developerConnection>
-        <url>http://github.com/tombensve/MarkdownDoc</url>
-    </scm>
-    <issueManagement>
-        <system>GitHub</system>
-        <url>http://github.com/tombensve/MarkdownDoc/issues</url>
-    </issueManagement>
 
     <dependencies>
         <dependency>
