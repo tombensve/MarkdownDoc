@@ -3,6 +3,22 @@
 The maven plugin is rather straight forward. It has 3 sets of configuration structures, one
 common and one for each generator.
 
+If you dont what to checkout and build this code, add the following to your pom:
+
+	  <project>
+	    ...
+	    <repositories>
+	        ...
+	        <repository>
+	            <id>maven-natusoft-se</id>
+	            <name>Natusoft maven repository</name>
+	            <url>http://maven.natusoft.se/</url>
+	        </repository>
+	    </repositories>
+	    ...
+	  </project>
+
+to have maven download it from my repository.
 
 ## generatorOptions
 
