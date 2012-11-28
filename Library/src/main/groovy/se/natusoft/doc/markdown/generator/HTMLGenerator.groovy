@@ -189,7 +189,8 @@ class HTMLGenerator implements Generator {
         html.tagln("pre")
         html.tagln("code")
         for (DocItem item : codeBlock.items) {
-            html.println(item.toString()) // no <>& translations!
+            html.content(item.toString())
+            html.println("")
         }
         html.etagln("code")
         html.etagln("pre")
