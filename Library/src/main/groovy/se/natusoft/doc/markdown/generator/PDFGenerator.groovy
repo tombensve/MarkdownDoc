@@ -125,7 +125,7 @@ class PDFGenerator implements Generator {
      */
 
     //
-    // Font Constants
+    // Constants
     //
 
     private static final FONT = new Font(Font.FontFamily.HELVETICA, 10)
@@ -144,11 +144,10 @@ class PDFGenerator implements Generator {
     private static final FONT_FOOTER = new Font(Font.FontFamily.HELVETICA, 8)
     private static final FONT_TOC = new Font(Font.FontFamily.HELVETICA, 9)
 
-    //
-    // Chunk constants
-    //
-
     private static final Chunk LIST_NEWLINE = new Chunk("\n", new Font(Font.FontFamily.HELVETICA, 4))
+
+    private static final LineSeparator H2_UNDERLINE = new LineSeparator(0.01f, 100f, BaseColor.GRAY, 0, 12)
+    private static final LineSeparator HORIZONTAL_RULE = new LineSeparator(0.01f, 100f, BaseColor.GRAY, 5, 16)
 
     //
     // Private Methods
@@ -489,7 +488,7 @@ class PDFGenerator implements Generator {
                 PDFParagraph title = new PDFParagraph()
                 title.add(createHeaderChunk(header.text, FONT_H2))
                 title.add(Chunk.NEWLINE);
-                title.add(new LineSeparator(2f, 100f, BaseColor.GRAY, 1, 10))
+                title.add(H2_UNDERLINE)
                 title.add(Chunk.NEWLINE)
                 Section section = null
                 if (this.currentChapter != null) {
@@ -676,7 +675,7 @@ class PDFGenerator implements Generator {
      */
     private void writeHorizontalRule(HorizontalRule horizontalRule) {
         PDFParagraph pdfParagraph = new PDFParagraph()
-        pdfParagraph.add(new LineSeparator(2f, 100f, BaseColor.DARK_GRAY, 0, 12))
+        pdfParagraph.add(HORIZONTAL_RULE)
         getOrCreateCurrentSection().add(pdfParagraph)
     }
 
