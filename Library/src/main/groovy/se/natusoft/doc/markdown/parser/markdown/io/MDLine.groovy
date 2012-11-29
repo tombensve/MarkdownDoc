@@ -178,7 +178,7 @@ class MDLine extends Line  {
      * Returns true if this line represents a comment start.
      */
     public boolean isCommentStart() {
-        return this.origLine.trim().startsWith("<!--")
+        return this.origLine.startsWith("<!--") || this.origLine.startsWith(" <!--") || this.origLine.startsWith("  <!--")
     }
 
     /**
