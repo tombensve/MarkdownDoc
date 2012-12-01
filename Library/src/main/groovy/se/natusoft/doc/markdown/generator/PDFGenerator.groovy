@@ -476,6 +476,7 @@ class PDFGenerator implements Generator {
                 title.add(createHeaderChunk(header.text, FONT_H1))
                 Chapter chapter = new Chapter(title, this.chapterNumber ++)
                 chapter.setNumberStyle(Section.NUMBERSTYLE_DOTTED_WITHOUT_FINAL_DOT)
+                chapter.add(Chunk.NEWLINE)
                 this.currentChapter = chapter
                 this.currentSection = chapter
                 this.currentH2 = chapter
@@ -654,7 +655,7 @@ class PDFGenerator implements Generator {
             codeFont.setColor(new PDFColor(this.options.codeColor))
         }
 
-        paragraph.add(Chunk.NEWLINE)
+//        paragraph.add(Chunk.NEWLINE)
         for (DocItem item : codeBlock.items) {
             Chunk chunk = new Chunk(item.toString(), codeFont)
             chunk.setLineHeight((float)(codeFont.size + 1.0))

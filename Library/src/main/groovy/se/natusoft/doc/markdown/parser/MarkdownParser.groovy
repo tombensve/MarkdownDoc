@@ -104,8 +104,8 @@ public class MarkdownParser implements Parser {
                     switch (line) {
                         case { it.commentStart } : docItem = parseComment    (line, lineReader); break
                         case { it.header       } : docItem = parseHeader     (line, lineReader); break
-                        case { it.codeBlock    } : docItem = parseCodeBlock  (line, lineReader); break
                         case { it.list         } : docItem = parseList       (line, lineReader); break
+                        case { it.codeBlock    } : docItem = parseCodeBlock  (line, lineReader); break
                         case { it.blockQuote   } : docItem = parseBlockQuote (line, lineReader); break
                         case { it.horizRuler   } : docItem = new HorizontalRule();               break
                         case { it.isLinkURLSpec(this.links)} : parseLinkUrlSpec(line);         break
