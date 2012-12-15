@@ -23,3 +23,5 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 ----
 
 [PDF Version](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.pdf)
+
+[markdowndoc-cmd-line-1.0-exec.jar download](http://download.natusoft.se/tools/markdowndoc-cmd-line-1.0-exec.jar)
