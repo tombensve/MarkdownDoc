@@ -7,7 +7,7 @@
     </list>
     <ignored path="MarkdownDoc.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1355577621735" ignored="false" />
+    <file path="/Dummy.txt" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1355577732690" ignored="false" />
     <file path="/a.java" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1354907694466" ignored="false" />
     <file path="$PROJECT_DIR$/../../OSGi/OSGiApplicationPlatformServices/pom.xml" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1355068846570" ignored="false" />
     <file path="/pom.xml" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1355064312970" ignored="false" />
@@ -216,7 +216,7 @@
       <file leaf-file-name="README.md" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="0" selection-start="957" selection-end="957" vertical-scroll-proportion="0.34234995">
+            <state line="25" column="0" selection-start="960" selection-end="960" vertical-scroll-proportion="0.32051283">
               <folding />
             </state>
           </provider>
@@ -1497,7 +1497,11 @@
       <created>1355577628940</created>
       <updated>1355577628940</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Added download link for command line executable jar to README.md.">
+      <created>1355577736016</created>
+      <updated>1355577736016</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1736,7 +1740,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="0" selection-start="957" selection-end="957" vertical-scroll-proportion="0.34234995">
+        <state line="25" column="0" selection-start="960" selection-end="960" vertical-scroll-proportion="0.32051283">
           <folding />
         </state>
       </provider>

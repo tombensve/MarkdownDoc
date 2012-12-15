@@ -14,7 +14,7 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 [Maven usage](https://github.com/tombensve/MarkdownDoc/blob/master/MavenPlugin/docs/MarkdownDoc-Maven-Plugin.md)
 
-[Command line usage](https://github.com/tombensve/MarkdownDoc/blob/master/CommandLine/docs/MarkdownDoc-CommandLine.md)
+[Command line usage](https://github.com/tombensve/MarkdownDoc/blob/master/CommandLine/docs/MarkdownDoc-CommandLine.md) \[[markdowndoc-cmd-line-1.0-exec.jar download](http://download.natusoft.se/tools/markdowndoc-cmd-line-1.0-exec.jar) (execute with java -jar)\]
 
 [Library](https://github.com/tombensve/MarkdownDoc/blob/master/Library/docs/MarkdownDoc-Library.md)
 
@@ -23,5 +23,3 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 ----
 
 [PDF Version](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.pdf)
-
-[markdowndoc-cmd-line-1.0-exec.jar download](http://download.natusoft.se/tools/markdowndoc-cmd-line-1.0-exec.jar) (execute with java -jar)
