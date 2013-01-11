@@ -898,6 +898,7 @@ class PDFGenerator implements Generator {
      */
     private void writeImage(Image image, PDFParagraph pdfParagraph) {
         PDFImage pdfImage = PDFImage.getInstance(new URL(resolveUrl(image.url)))
+        pdfImage.scalePercent(60.0f)
         if (pdfImage != null) {
             pdfParagraph.add(pdfImage)
         }
