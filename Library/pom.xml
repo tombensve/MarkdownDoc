@@ -5,12 +5,11 @@
     <parent>
         <artifactId>markdown-doc</artifactId>
         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
-        <version>1.0</version>
+        <version>1.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>markdown-doc-lib</artifactId>
-    <version>1.0</version>
 
     <name>MarkdownDoc Library</name>
     <description>

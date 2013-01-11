@@ -3,14 +3,13 @@
     <parent>
         <artifactId>markdown-doc</artifactId>
         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
-        <version>1.0</version>
+        <version>1.0.1</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>markdowndoc-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
 
-    <version>1.0</version>
     <name>MarkdownDoc Maven Plugin</name>
 
     <description>A maven plugin for generating documentation from markdown.</description>
@@ -24,7 +23,7 @@
         <dependency>
             <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
             <artifactId>markdown-doc-lib</artifactId>
-            <version>1.0</version>
+            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

@@ -186,6 +186,9 @@ class PDFGenerator implements Generator {
     /** This is only true for the fake render that is only done to generate the TOC. */
     private boolean updateTOC = true
 
+    /** The root dir to prefix paths with. */
+    private File rootDir = null
+
     //
     // Methods
     //
@@ -226,6 +229,7 @@ class PDFGenerator implements Generator {
     public void generate(Doc doc, Options opts, File rootDir) throws IOException, GenerateException {
         initRun()
         this.options = (PDFGeneratorOptions)opts
+        this.rootDir = rootDir
 
         for (DocItem docItem : doc.items) {
             switch (docItem.format) {
@@ -302,7 +306,7 @@ class PDFGenerator implements Generator {
         document = new Document()
         document.setPageSize(pageSize)
 
-        File resultFile = rootDir != null ? new File(rootDir, options.resultFile) : new File(options.resultFile)
+        File resultFile = this.rootDir != null ? new File(this.rootDir, options.resultFile) : new File(options.resultFile)
         pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(resultFile))
         pdfWriter.setPdfVersion(PdfWriter.PDF_VERSION_1_7)
         pdfWriter.setFullCompression()
@@ -853,11 +857,37 @@ class PDFGenerator implements Generator {
     /**
      * Writes strong formatted part within a paragraph.
      *
-     * @param strong The strong formatted text to write.
+     * @param strong The strong formatted text to write
      * @param pdfParagraph The iText paragraph model to add to.
      */
     private void writeStrong(Strong strong, PDFParagraph pdfParagraph) {
         pdfParagraph.add(new Chunk(strong.text, FONT_STRONG))
+    }
+
+    /**
+     * - Adds file: if no protocol is specified.
+     * - If file: then resolved to full path if not found with relative path.
+     *
+     * @param url
+     * @return
+     */
+    private String resolveUrl(String url) {
+        String resolvedUrl = url
+        if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http:")) {
+            resolvedUrl = "file:" + resolvedUrl
+        }
+        if (resolvedUrl.startsWith("file:")) {
+            String path = resolvedUrl.substring(5)
+            File testFile = new File(path)
+            if (!testFile.exists()) {
+                int ix = this.options.getResultFile().lastIndexOf(File.separator)
+                if (ix >= 0) {
+                    path = this.options.getResultFile().substring(0, ix + 1) + path
+                    resolvedUrl = "file:" + this.rootDir.getAbsolutePath() + File.separator + path
+                }
+            }
+        }
+        return resolvedUrl
     }
 
     /**
@@ -867,7 +897,7 @@ class PDFGenerator implements Generator {
      * @param pdfParagraph The iText paragraph model to add to.
      */
     private void writeImage(Image image, PDFParagraph pdfParagraph) {
-        PDFImage pdfImage = PDFImage.getInstance(new URL(image.url))
+        PDFImage pdfImage = PDFImage.getInstance(new URL(resolveUrl(image.url)))
         if (pdfImage != null) {
             pdfParagraph.add(pdfImage)
         }
