@@ -75,7 +75,7 @@ import com.itextpdf.text.Phrase
 import se.natusoft.doc.markdown.io.NullOutputStream
 
 /**
- * This generates a PDF document from the provided Doc model.
+ * This generates a PDF documentItems from the provided Doc model.
  * <p/>
  * <b>PLEASE NOTE:</b> Each instance of this class can only be used in one thread at a time!
  * If you try to run this in multiple threads then you need an instance per thread! This is
@@ -87,11 +87,11 @@ class PDFGenerator implements Generator {
      * A comment about this code and Groovy: Groovy supports "property access" for java bean properties.
      * That is:
      *
-     *     document.setPageSize(pageSize)
+     *     documentItems.setPageSize(pageSize)
      *
      * can be written as:
      *
-     *     document.pageSize = pageSize
+     *     documentItems.pageSize = pageSize
      *
      * which will compile to the same thing. The problem with this however is that there is bad IDE support for
      * Groovy. I'm using IntelliJ Idea (11.1) which has the best support, but it still sucks. It cannot handle
@@ -160,7 +160,7 @@ class PDFGenerator implements Generator {
     private PDFGeneratorOptions options = null
 
     /** This will actually be added to the real Document later on, twice: once for the fake render and once for the real. */
-    private JList<Section> document = null
+    private JList<Section> documentItems = null
 
     private Chapter currentChapter = null
 
@@ -205,7 +205,7 @@ class PDFGenerator implements Generator {
      * Initializes the members for a running a generation pass.
      */
     private void initRun() {
-        this.document = new JArrayList<Section>()
+        this.documentItems = new JArrayList<Section>()
         this.currentChapter = null
         this.currentSection = null
         this.currentH2 = null
@@ -221,7 +221,7 @@ class PDFGenerator implements Generator {
     /**
      * The main API for the generator. This does the job!
      *
-     * @param doc The document model to generate from.
+     * @param doc The documentItems model to generate from.
      * @param opts The generator options.
      * @param rootDir An optional root directory to prefix output paths with.
      */
@@ -234,7 +234,12 @@ class PDFGenerator implements Generator {
         for (DocItem docItem : doc.items) {
             switch (docItem.format) {
                 case DocFormat.Comment:
-                    // We skip comments.
+                    // We skip comments, but act on "@PB" within the comment for doing a page break.
+                    boolean isPageBreak = false;
+                    Comment comment = (Comment)docItem;
+                    if (comment.text.indexOf("@PB") >= 0) {
+                        this.documentItems.add(new NewPage())
+                    }
                     break
 
                 case DocFormat.Paragraph:
@@ -266,10 +271,10 @@ class PDFGenerator implements Generator {
             }
         }
 
-        // Since chapters aren't added to the document until the a new chapter is created we always have the
+        // Since chapters aren't added to the documentItems until the a new chapter is created we always have the
         // last chapter un-added.
         if (this.currentChapter != null) {
-            this.document.add(this.currentChapter)
+            this.documentItems.add(this.currentChapter)
         }
 
 
@@ -293,9 +298,14 @@ class PDFGenerator implements Generator {
             pdfWriter.setPageEvent(new PageEventHandler())
             document.open()
 
-            // Since this.document is just an ArrayList of Sections we have to add them to the real document now.
-            for (Section section : this.document) {
-                document.add(section)
+            // Since this.documentItems is just an ArrayList of Sections we have to add them to the real documentItems now.
+            for (Section section : this.documentItems) {
+                if (section instanceof NewPage) {
+                    document.newPage()
+                }
+                else {
+                    document.add(section)
+                }
             }
 
             document.close()
@@ -318,7 +328,7 @@ class PDFGenerator implements Generator {
         if (options.author != null)     { document.addAuthor(options.author) }
 
         document.addCreationDate()
-        document.addCreator("MarkdownDoc")
+        document.addCreator("MarkdownDoc (https://github.com/tombensve/MarkdownDoc)")
         document.open()
 
         if (this.options.generateTitlePage) {
@@ -329,9 +339,14 @@ class PDFGenerator implements Generator {
             writeTOC(pdfWriter, document)
         }
 
-        // Since this.document is just an ArrayList of Sections we have to add them to the real document now.
-        for (Section section : this.document) {
-            document.add(section)
+        // Since this.documentItems is just an ArrayList of Sections we have to add them to the real documentItems now.
+        for (Section section : this.documentItems) {
+            if (section instanceof NewPage) {
+                document.newPage() // This completely refuses to do anything!!!
+            }
+            else {
+                document.add(section)
+            }
         }
 
         document.close()
@@ -342,7 +357,7 @@ class PDFGenerator implements Generator {
      * Writes a table of content.
      *
      * @param pdfWriter The PdfWriter to write table of content on.
-     * @param document The PDF document being written.
+     * @param document The PDF documentItems being written.
      */
     private void writeTOC(PdfWriter pdfWriter, Document document) {
         PdfContentByte cb = pdfWriter.getDirectContent()
@@ -372,7 +387,7 @@ class PDFGenerator implements Generator {
      * Writes a title page.
      *
      * @param pdfWriter The PdfWriter to write the title page on.
-     * @param document The PDF document being written.
+     * @param document The PDF documentItems being written.
      */
     private void writeTitlePage(PdfWriter pdfWriter, Document document) {
         PdfContentByte cb = pdfWriter.getDirectContent()
@@ -474,7 +489,7 @@ class PDFGenerator implements Generator {
                 // It feels like iText doesn't like it when you add a parent to its parent before
                 // it has all its children ...
                 if (this.currentChapter != null) {
-                    this.document.add(this.currentChapter)
+                    this.documentItems.add(this.currentChapter)
                 }
                 PDFParagraph title = new PDFParagraph()
                 title.add(createHeaderChunk(header.text, FONT_H1))
@@ -503,7 +518,7 @@ class PDFGenerator implements Generator {
                     // Sections can only exist in Chapters so if H1 is skipped and H2 is the first
                     // header than we have to create it as a Chapter rather than a Section.
                     if (this.currentChapter != null) {
-                        this.document.add(this.currentChapter)
+                        this.documentItems.add(this.currentChapter)
                     }
                     section = new Chapter(title, this.chapterNumber++)
                     this.currentChapter = (Chapter)section
@@ -526,7 +541,7 @@ class PDFGenerator implements Generator {
                 else {
                     // Se comment for H2
                     if (this.currentChapter != null) {
-                        this.document.add(this.currentChapter)
+                        this.documentItems.add(this.currentChapter)
                     }
                     section = new Chapter(title, this.chapterNumber++)
                     this.currentChapter = (Chapter)section
@@ -548,7 +563,7 @@ class PDFGenerator implements Generator {
                 else {
                     // Se comment for H2
                     if (this.currentChapter != null) {
-                        this.document.add(this.currentChapter)
+                        this.documentItems.add(this.currentChapter)
                     }
                     section = new Chapter(title, this.chapterNumber++)
                     this.currentChapter = (Chapter)section
@@ -569,7 +584,7 @@ class PDFGenerator implements Generator {
                 else {
                     // Se comment for H2
                     if (this.currentChapter != null) {
-                        this.document.add(this.currentChapter)
+                        this.documentItems.add(this.currentChapter)
                     }
                     section = new Chapter(title, this.chapterNumber++)
                     this.currentChapter = (Chapter)section
@@ -589,7 +604,7 @@ class PDFGenerator implements Generator {
                 else {
                     // Se comment for H2
                     if (this.currentChapter != null) {
-                        this.document.add(this.currentChapter)
+                        this.documentItems.add(this.currentChapter)
                     }
                     section = new Chapter(title, this.chapterNumber++)
                     this.currentChapter = (Chapter)section
@@ -616,7 +631,7 @@ class PDFGenerator implements Generator {
     }
 
     /**
-     * This handles the case where there are no headings at all in the document and thus no chapter nor sections.
+     * This handles the case where there are no headings at all in the documentItems and thus no chapter nor sections.
      * In this case we create a dummy chapter and set it as both currentChapter and currentSection.
      *
      * @return A valid Section
@@ -901,6 +916,8 @@ class PDFGenerator implements Generator {
         pdfImage.scalePercent(60.0f)
         if (pdfImage != null) {
             pdfParagraph.add(pdfImage)
+            // This sometimes helps in keeping text on the correct side of the image, but not always.
+            pdfParagraph.add(Chunk.NEWLINE)
         }
         else {
             pdfParagraph.add(new Chunk("[" + image.text + "]", FONT))
@@ -1004,4 +1021,8 @@ class PDFGenerator implements Generator {
 
     }
 
+    /**
+     * A rather dummy class to indicate that a new page should be generated rather than adding this section to the document.
+     */
+    private static class NewPage extends Section {}
 }
