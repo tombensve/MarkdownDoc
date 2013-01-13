@@ -9,7 +9,7 @@ __[GNU Affero General Public License version v3](https://github.com/tombensve/Ma
 
 The following third party products are using this license:
 
-* [itextpdf-5.3.2](http://www.itextpdf.com/)
+* [itextpdf-5.3.4](http://www.itextpdf.com/)
 
 __[Apache Software License version 2.0](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/Apache-2.0.md)__
 
