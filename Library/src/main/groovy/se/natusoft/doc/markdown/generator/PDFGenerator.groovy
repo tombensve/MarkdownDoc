@@ -232,6 +232,7 @@ class PDFGenerator implements Generator {
         this.rootDir = rootDir
 
         for (DocItem docItem : doc.items) {
+
             switch (docItem.format) {
                 case DocFormat.Comment:
                     // We skip comments, but act on "@PB" within the comment for doing a page break.
@@ -354,6 +355,23 @@ class PDFGenerator implements Generator {
     }
 
     /**
+     * Does some text replacements.
+     *
+     * @param text The original text.
+     *
+     * @return The possibly replaced text.
+     */
+    private String textReplace(String text) {
+        String replaced = text
+
+        replaced = replaced.replace("&lt;", "<")
+        replaced = replaced.replace("&gt;", ">")
+        replaced = replaced.replace("(C)", "©")
+
+        return replaced
+    }
+
+    /**
      * Writes a table of content.
      *
      * @param pdfWriter The PdfWriter to write table of content on.
@@ -419,7 +437,7 @@ class PDFGenerator implements Generator {
 
         if (title != null) {
             Font font = new Font(Font.FontFamily.HELVETICA, 25)
-            Chunk chunk = new Chunk(title, font)
+            Chunk chunk = new Chunk(textReplace(title), font)
             Phrase phrase = new Phrase(chunk)
             ColumnText.showTextAligned(cb, Element.ALIGN_CENTER, phrase, x, yTop, 0.0f)
             yTop = yTop - (yItemSizeTop / 2)
@@ -427,7 +445,7 @@ class PDFGenerator implements Generator {
 
         if (subject != null) {
             Font font = new Font(Font.FontFamily.HELVETICA, 15)
-            Chunk chunk = new Chunk(subject, font)
+            Chunk chunk = new Chunk(textReplace(subject), font)
             Phrase phrase = new Phrase(chunk)
             ColumnText.showTextAligned(cb, Element.ALIGN_CENTER, phrase, x, yTop, 0.0f)
             yTop = yTop - (yItemSizeTop / 2)
@@ -444,7 +462,7 @@ class PDFGenerator implements Generator {
 
         if (copyRight != null) {
             Font font = new Font(Font.FontFamily.HELVETICA, 12)
-            Chunk chunk = new Chunk(copyRight, font)
+            Chunk chunk = new Chunk(textReplace(copyRight), font)
             Phrase phrase = new Phrase(chunk)
             ColumnText.showTextAligned(cb, Element.ALIGN_CENTER, phrase, x, yBottom, 0.0f)
             yBottom = yBottom + (yItemSizeBottom / 2)
@@ -624,7 +642,7 @@ class PDFGenerator implements Generator {
      * @return The created Chunk.
      */
     private Chunk createHeaderChunk(String text, Font font) {
-        Chunk chunk = new Chunk(text, font)
+        Chunk chunk = new Chunk(textReplace(text), font)
         chunk.setTextRise(2f)
         chunk.setLineHeight((float)(font.size + 2.0f))
         return chunk
@@ -866,7 +884,7 @@ class PDFGenerator implements Generator {
      * @param pdfParagraph The iText paragraph model to add to.
      */
     private void writeEmphasis(Emphasis emphasis, PDFParagraph pdfParagraph) {
-        pdfParagraph.add(new Chunk(emphasis.text, FONT_EMPHASIS))
+        pdfParagraph.add(new Chunk(textReplace(emphasis.text), FONT_EMPHASIS))
     }
 
     /**
@@ -876,7 +894,7 @@ class PDFGenerator implements Generator {
      * @param pdfParagraph The iText paragraph model to add to.
      */
     private void writeStrong(Strong strong, PDFParagraph pdfParagraph) {
-        pdfParagraph.add(new Chunk(strong.text, FONT_STRONG))
+        pdfParagraph.add(new Chunk(textReplace(strong.text), FONT_STRONG))
     }
 
     /**
@@ -949,7 +967,7 @@ class PDFGenerator implements Generator {
      * @param font The font to use.
      */
     private void writePlainText(PlainText plainText, PDFParagraph pdfParagraph, Font font) {
-        pdfParagraph.add(new Chunk(plainText.text, font))
+        pdfParagraph.add(new Chunk(textReplace(plainText.text), font))
     }
 
     //
