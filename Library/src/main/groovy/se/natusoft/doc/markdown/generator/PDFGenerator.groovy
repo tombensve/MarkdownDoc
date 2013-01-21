@@ -669,12 +669,14 @@ class PDFGenerator implements Generator {
      */
     private void writeBlockQuote(BlockQuote blockQuote) {
         PDFParagraph pdfParagraph = new PDFParagraph()
-        pdfParagraph.setIndentationLeft(40.0f)
+        pdfParagraph.setIndentationLeft(20.0f)
         Font bqFont = new Font(FONT_BLOCKQUOTE)
         if (this.options.blockQuoteColor != null) {
             bqFont.setColor(new PDFColor(this.options.blockQuoteColor))
         }
         writeParagraph(pdfParagraph, blockQuote, bqFont)
+        pdfParagraph.add(Chunk.NEWLINE)
+        pdfParagraph.add(Chunk.NEWLINE)
         getOrCreateCurrentSection().add(pdfParagraph)
     }
 
@@ -684,8 +686,8 @@ class PDFGenerator implements Generator {
      * @param codeBlock The code block text to write.
      */
     private void writeCodeBlock(CodeBlock codeBlock) {
-        PDFParagraph paragraph = new PDFParagraph()
-        paragraph.setKeepTogether(true)
+        PDFParagraph pdfParagraph = new PDFParagraph()
+        pdfParagraph.setKeepTogether(true)
 
         Font codeFont = new Font(FONT_CODE)
         if (this.options.codeColor != null) {
@@ -698,12 +700,12 @@ class PDFGenerator implements Generator {
             chunk.setLineHeight((float)(codeFont.size + 1.0))
             chunk.setTextRise(-2)
             chunk.setCharacterSpacing(0.5f)
-            paragraph.add(chunk)
-            paragraph.add(Chunk.NEWLINE)
+            pdfParagraph.add(chunk)
+            pdfParagraph.add(Chunk.NEWLINE)
         }
-        paragraph.add(Chunk.NEWLINE)
+        pdfParagraph.add(Chunk.NEWLINE)
 
-        getOrCreateCurrentSection().add(paragraph)
+        getOrCreateCurrentSection().add(pdfParagraph)
     }
 
     /**
