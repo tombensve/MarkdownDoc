@@ -3,10 +3,7 @@
 The library is made up of a document model representing all formats of markdown, a markdown parser and
 a HTML and PDF generator. This design adds the possibility for both more parsers and generators.
 
-Ideas I have is an HTML parser and a markdown generator. I'm also considering an ODT parser since
-that is relatively easy to parse. Since markdown is about the basic primitives of formatting which
-is more than good enough in most cases any parser of formats that contain more will have to ignore
-the more parts and stick to the basics.
+The API docs for the library can be found [here](http://apidoc.natusoft.se/MarkdownDoc).
 
 ## Usage
 
