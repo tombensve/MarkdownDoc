@@ -157,7 +157,6 @@ class JavadocParser implements Parser {
      *             it, we just save the line text possibly adding it to previous text.
      */
     private void parseDeclarationLine(Doc document, String line) {
-        System.out.println("Declararion line: [" + line + "]")
         if (this.declaration == null) {
             this.declaration = line.trim()
         }
