@@ -38,11 +38,18 @@ package se.natusoft.doc.markdown.api
 
 import se.natusoft.doc.markdown.exception.ParseException
 import se.natusoft.doc.markdown.model.Doc
+import se.natusoft.doc.markdown.parser.JavadocParser
+import se.natusoft.doc.markdown.parser.MarkdownParser
 
 /**
  * This defines the API of a parser.
  */
 public interface Parser {
+
+    /**
+     * Available parsers
+     */
+    public static final Parser[] parsers = [new MarkdownParser(), new JavadocParser()]
 
     /**
      * Parses a file and adds its document structure to the passed Doc.
@@ -54,5 +61,14 @@ public interface Parser {
      * @throws ParseException on parse failures.
      */
     public void parse(Doc document, File parseFile) throws IOException, ParseException
+
+    /**
+     * Returns true if extension of the passed fileName is valid for this parser.
+     *
+     * @param fileName The fileName whose extension to test.
+     *
+     * @return true or false.
+     */
+    public boolean validFileExtension(String fileName)
 
 }

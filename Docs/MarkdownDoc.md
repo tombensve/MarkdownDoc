@@ -18,10 +18,6 @@ locations in maven can be configured) and I also had the following requirements:
 
 It does also provide a java -jar executable variant. The main functionality is available as a library.
 
-It is unfortunately written in Groovy, something I start to regret and consider a mistake. I might redo it in plain
-java later, but at the moment it is what it is.
-
-
 ### How markdown is MarkdownDoc ?
 
 Well, it implements the "specification" as documented on [daringfireball.net](http://daringfireball.net/projects/markdown/syntax).

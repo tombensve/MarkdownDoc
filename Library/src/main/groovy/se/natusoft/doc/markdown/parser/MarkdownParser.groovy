@@ -61,6 +61,7 @@ import se.natusoft.doc.markdown.model.*
  * this tool also can generate PDF such HTML specifics should not be in the parsed text.
  */
 public class MarkdownParser implements Parser {
+
     //
     // Private Members
     //
@@ -170,6 +171,16 @@ public class MarkdownParser implements Parser {
     }
 
     /**
+     * Returns true if the extension of the specified file is a valid extension for this parser.
+     *
+     * @param fileName The file to check extension of.
+     */
+    @Override
+    boolean validFileExtension(String fileName) {
+        return fileName.endsWith(".md") || fileName.endsWith(".markdown") || fileName.endsWith(".mdpart")
+    }
+
+/**
      * Parses a html comment
      *
      * @param line The current line.

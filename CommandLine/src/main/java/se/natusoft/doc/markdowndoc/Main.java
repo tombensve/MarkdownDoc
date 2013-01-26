@@ -45,6 +45,7 @@ import se.natusoft.doc.markdown.generator.HTMLGenerator;
 import se.natusoft.doc.markdown.generator.PDFGenerator;
 import se.natusoft.doc.markdown.model.Doc;
 import se.natusoft.doc.markdown.parser.MarkdownParser;
+import se.natusoft.doc.markdown.parser.ParserProvider;
 import se.natusoft.tools.optionsmgr.CommandLineOptionsManager;
 import se.natusoft.tools.optionsmgr.OptionsException;
 import se.natusoft.tools.optionsmgr.OptionsModelException;
@@ -140,11 +141,19 @@ public class Main {
      * @throws GenerateException
      */
     private static void generate(Generator generator, String fileSpec, Options options) throws ParseException, GenerateException, IOException {
-        Parser parser = new MarkdownParser();
         Doc document = new Doc();
 
         SourcePaths sourcePaths = new SourcePaths(fileSpec);
         for (File file : sourcePaths.getSourceFiles()) {
+            Parser parser = ParserProvider.getParserForFile(file);
+            if (parser == null) {
+                ParseException parseException = new ParseException();
+                parseException.setFile(file.getAbsolutePath());
+                parseException.setLineNo(0);
+                parseException.setLine("");
+                parseException.setMessage("Don't know how to parse this file!");
+                throw parseException;
+            }
             parser.parse(document, file);
         }
 

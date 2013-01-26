@@ -57,9 +57,9 @@ class GeneratorOptions {
 
     @Option
     @Name("parser")
-    @Description("The name of the parser to use. Default and only choice for now:\"markdown\".")
+    @Description("The name of the parser to use. Default:\"byExtension\".")
     @Optional
-    String parser = "markdown"
+    String parser = "byExtension"
 
     @Option
     @Name("inputPaths")

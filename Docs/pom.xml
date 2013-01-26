@@ -5,12 +5,11 @@
     <parent>
         <artifactId>markdown-doc</artifactId>
         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
-        <version>1.0.1</version>
+        <version>1.1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>markdown-doc-docs</artifactId>
-    <version>1.0</version>
 
     <name>MarkdownDoc Docs</name>
 
@@ -27,13 +26,13 @@
             <plugin>
                 <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
                 <artifactId>markdowndoc-maven-plugin</artifactId>
-                <version>1.0</version>
+                <version>${project.parent.version}</version>
 
                 <dependencies>
                     <dependency>
                         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
                         <artifactId>markdown-doc-lib</artifactId>
-                        <version>1.0.1</version>
+                        <version>${project.parent.version}</version>
                     </dependency>
                 </dependencies>
 
@@ -66,7 +65,7 @@
                                 <pageSize>A4</pageSize>
                                 <title>MarkdownDoc</title>
                                 <subject>User Guide</subject>
-                                <version>1.0.1</version>
+                                <version>${project.parent.version}</version>
                                 <author>Tommy Svensson</author>
                                 <copyright>Copyright © 2012 Natusoft AB</copyright>
                                 <generateTitlePage>true</generateTitlePage>

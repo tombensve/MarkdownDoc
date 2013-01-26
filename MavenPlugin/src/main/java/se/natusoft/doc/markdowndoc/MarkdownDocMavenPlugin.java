@@ -50,6 +50,7 @@ import se.natusoft.doc.markdown.generator.options.HTMLGeneratorOptions;
 import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions;
 import se.natusoft.doc.markdown.model.Doc;
 import se.natusoft.doc.markdown.parser.MarkdownParser;
+import se.natusoft.doc.markdown.parser.ParserProvider;
 
 import java.io.File;
 import java.io.IOException;
@@ -107,6 +108,9 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
         if (selParser.equals("markdown")) {
             parser = new MarkdownParser();
         }
+        else if (selParser.startsWith("byext")) {
+            // leave parser null!
+        }
         else {
             throw new MojoExecutionException("Unknown parser specified: '" + selParser + "'!");
         }
@@ -135,7 +139,14 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
             System.out.println("Parsing the following files:");
             for (File sourceFile : sourcePaths.getSourceFiles()) {
                 System.out.println("    " + sourceFile);
-                parser.parse(document, sourceFile);
+                Parser fileParser = parser;
+                if (fileParser == null) {
+                    fileParser = ParserProvider.getParserForFile(sourceFile);
+                }
+                if (fileParser == null) {
+                    throw new MojoExecutionException("Don't know how to parse '" + sourceFile.getName() + "'!");
+                }
+                fileParser.parse(document, sourceFile);
             }
             System.out.println("All parsed!");
         }
