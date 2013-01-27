@@ -202,12 +202,20 @@ class JavadocParser implements Parser {
                 p.addItem(pt)
             }
             else {
-                Strong s = new Strong(text: this.declaration.replace(';', ' ').replace('{', ' ').trim())
-                p.addItem(s)
+                if (!this.declaration.trim().startsWith("private") && !this.declaration.trim().startsWith("protected")) {
+                    Strong s = new Strong(text: this.declaration.replace(';', ' ').replace('{', ' ').trim())
+                    p.addItem(s)
+                }
             }
             document.addItem(p)
 
-            parseJavadoc(document, classOrInterface)
+            if (!classOrInterface && !this.declaration.trim().startsWith("private") && !this.declaration.trim().startsWith("protected")) {
+                parseJavadoc(document, classOrInterface)
+            }
+            else if (classOrInterface) {
+                parseJavadoc(document, classOrInterface)
+            }
+
             this.declaration = null
             this.javadoc = null
         }
