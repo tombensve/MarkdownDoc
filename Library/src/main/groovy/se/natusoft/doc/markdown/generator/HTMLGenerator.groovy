@@ -325,6 +325,17 @@ class HTMLGenerator implements Generator {
         //
 
         /**
+         * Provides character replacements.
+         *
+         * @param content The content to replace in.
+         *
+         * @return A new string with replacements.
+         */
+        private String replace(String content) {
+            return content.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+        }
+
+        /**
          * Output as a start tag.
          *
          * @param tag The name of the tag to output.
@@ -340,7 +351,7 @@ class HTMLGenerator implements Generator {
          * @param content The content of the tag.
          */
         public void tag(String tag, String content) {
-            pw.print("<" + tag + ">" + content + "</" + tag + ">")
+            pw.print("<" + tag + ">" + replace(content) + "</" + tag + ">")
         }
 
         /**
@@ -372,16 +383,16 @@ class HTMLGenerator implements Generator {
          */
         public void tagln(String tag, String content) {
             doIndent()
-            pw.println("<" + tag + ">" + content + "</" + tag + ">")
+            pw.println("<" + tag + ">" + replace(content) + "</" + tag + ">")
         }
 
         /**
          * Outputs the content of a tag. This also translates &lt;, &gt;, & into their entities.
          *
-         * @param cont The content to output.
+         * @param content The content to output.
          */
-        public void content(String cont) {
-            pw.print(cont.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"))
+        public void content(String content) {
+            pw.print(replace(content))
         }
 
         /**
