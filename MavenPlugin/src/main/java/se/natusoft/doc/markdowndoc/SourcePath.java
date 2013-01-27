@@ -36,7 +36,7 @@
  */
 package se.natusoft.doc.markdowndoc;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +57,8 @@ public class SourcePath {
     /** A regular expression filter to apply to each found file. Example "*.java" */
     private String fileRegexpFilter = null;
 
+    private File origProjRoot = null;
+
     //
     // Constructors
     //
@@ -65,7 +67,7 @@ public class SourcePath {
      * Creates a new instance.
      * <p>
      * This parses a String that must be in one of the following formats:
-     * <pre></pre>
+     * <pre>
      *     /my/path
      *         All files in the directory pointed to by the path.
      *
@@ -107,6 +109,7 @@ public class SourcePath {
      * @param pathExpression The path expression as explained above.
      */
     public SourcePath(File projRoot , String pathExpression) {
+        this.origProjRoot = projRoot;
         File pathFile = new File(projRoot, pathExpression);
         // We translate '!' to '\' to support regular expression escaping in windows which would treat '\' in the
         // original path as a path separator. In unix this is of course not a problem.
@@ -210,16 +213,74 @@ public class SourcePath {
                     else if (file.isFile()) {
                         if (this.fileRegexpFilter != null) {
                             if (file.getName().matches(this.fileRegexpFilter)) {
-                                sourceFiles.add(file);
+                                provideFile(sourceFiles, file);
                             }
                         }
                         else {
-                            sourceFiles.add(file);
+                            provideFile(sourceFiles, file);
                         }
                     }
                 }
             }
         }
+    }
+
+    /**
+     * Provides the specified file by adding it to sourceFiles, or if the file is a file-set file (.fs) all files
+     * specified by that file are added.
+     *
+     * @param sourceFiles The list of files to add to.
+     * @param file The file to add as is or the files it lists.
+     */
+    private void provideFile(List<File> sourceFiles, File file) {
+        if (file.getName().endsWith(".fs")) {
+            String fileSet = loadFileSetFile(file);
+            if (fileSet != null) {
+                SourcePaths sourcePaths = null;
+                if (this.origProjRoot != null) {
+                    sourcePaths = new SourcePaths(this.origProjRoot, fileSet);
+                }
+                else {
+                    sourcePaths = new SourcePaths(fileSet);
+                }
+                for (File fsFile : sourcePaths.getSourceFiles()) {
+                    sourceFiles.add(fsFile);
+                }
+            }
+        }
+        else {
+            sourceFiles.add(file);
+        }
+    }
+
+    /**
+     * Loads a file-set file returning its content as a String.
+     *
+     * @param fsFile The file to load.
+     *
+     * @return A string with its content or null on failure to load.
+     */
+    private String loadFileSetFile(File fsFile) {
+        String fsSetFiles = null;
+
+        try {
+            StringBuilder sb = new StringBuilder();
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fsFile)));
+
+            String line = "";
+            do {
+                if (!line.trim().startsWith("#")) sb.append(line);
+                line = br.readLine();
+            } while (line != null);
+
+            br.close();
+            fsSetFiles = sb.toString();
+        }
+        catch (IOException ioe) {
+            System.err.println("Failed to load file-set file: " + ioe.getMessage());
+        }
+
+        return fsSetFiles;
     }
 
     /**

@@ -36,3 +36,28 @@ The known (and intentional) differences are:
 * No entity encoding of email addresses.
 
 * No multiple block quote levels (as of now).
+
+## File specifications
+
+With both the maven plugin and the command line execution jar file you can specify a set of files to use
+as input. These are basically a comma separated list of files, but with the following additions:
+
+/my/path
+
+> All files in the directory pointed to by the path.
+
+/my/path/\*\*
+
+> All files in the directory pointed to by the path and sub directories.
+
+/my/path/\*\*/_regexp pattern_
+
+> All files matching the pattern in the directory pointed to by the path and sub directories.
+
+/my/path/_regexp pattern_
+
+> All files matching the pattern in the directory pointed to by the path.
+
+/my/path/fileset.fs
+
+> The above rules are applied to all file specifications in files having the .fs extension. # are comment lines within .fs files.
