@@ -70,7 +70,7 @@
                         </goals>
                         <configuration>
                             <baseDir>${basedir}/target</baseDir>
-                            <files>markdowndoc-cmd-line-1.1.0-exec.jar</files>
+                            <files>markdowndoc-cmd-line-${project.parent.version}-exec.jar</files>
                             <targetHost>${maven.repo.upload}</targetHost>
                             <targetPort>21</targetPort>
                             <targetPath>/download.natusoft.se/public_html/tools</targetPath>
