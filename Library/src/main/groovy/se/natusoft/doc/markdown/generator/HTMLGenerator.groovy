@@ -296,7 +296,7 @@ class HTMLGenerator implements Generator {
     }
 
     private void writeLink(Link link, HTMLOutput html) {
-        html.tag("a src='" + link.url + "' title='" + link.title + "'")
+        html.tag("a href='" + link.url + "' title='" + link.title + "'")
         html.content(link.text)
         html.etag("a")
     }
