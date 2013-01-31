@@ -42,4 +42,6 @@ package se.natusoft.doc.markdown.api
 public interface Options {
 
     public boolean isHelp()
+
+    public String getResultFile();
 }

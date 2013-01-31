@@ -61,4 +61,9 @@ public interface Generator {
      * @throws GenerateException on other failures to generate target.
      */
     public void generate(Doc document, Options options, File rootDir) throws IOException, GenerateException
+
+    /**
+     * @return The name of the generator. This is the name to use to specify the specific generator.
+     */
+    public String getName()
 }

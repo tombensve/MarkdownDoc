@@ -43,6 +43,7 @@ import se.natusoft.doc.markdown.api.Options;
 import se.natusoft.doc.markdown.api.Parser;
 import se.natusoft.doc.markdown.exception.GenerateException;
 import se.natusoft.doc.markdown.exception.ParseException;
+import se.natusoft.doc.markdown.generator.GeneratorProvider;
 import se.natusoft.doc.markdown.generator.HTMLGenerator;
 import se.natusoft.doc.markdown.generator.PDFGenerator;
 import se.natusoft.doc.markdown.generator.options.GeneratorOptions;
@@ -54,6 +55,7 @@ import se.natusoft.doc.markdown.parser.ParserProvider;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 /**
  * Goal which touches a timestamp file.
@@ -118,57 +120,73 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
         Generator generator = null;
         Options options = null;
         String selGenerator = generatorOptions.getGenerator().toLowerCase();
-        if (selGenerator.equals("html")) {
-            generator = new HTMLGenerator();
-            options = this.htmlGeneratorOptions;
+        generator = GeneratorProvider.getGeneratorByName(selGenerator);
+        if (generator == null) {
+            throw new MojoExecutionException("Unknown generator: '" + selGenerator + "'!");
         }
-        else if (selGenerator.equals("pdf")) {
-            generator = new PDFGenerator();
-            options = this.pdfGeneratorOptions;
-        }
-        else {
-            throw new MojoExecutionException("Unknown generator: '" + generator + "'!");
+
+        // Hmm ... We can't get around having an options model for a generator declared as a private member and
+        // plugin parameter. But with this reflection match we only need to add it above.
+        for (Field field : getClass().getDeclaredFields()) {
+            if (field.getType().equals(generator.getOptionsClass())) {
+                try {
+                    options = (Options)field.get(this);
+                    break;
+                }
+                catch (IllegalAccessException iae) {}
+            }
         }
 
         // Parse
 
         File projRoot = getRootDir();
         Doc document = new Doc();
-        try {
-            SourcePaths sourcePaths = new SourcePaths(projRoot, generatorOptions.getInputPaths());
-            System.out.println("Parsing the following files:");
-            for (File sourceFile : sourcePaths.getSourceFiles()) {
-                System.out.println("    " + sourceFile);
-                Parser fileParser = parser;
-                if (fileParser == null) {
-                    fileParser = ParserProvider.getParserForFile(sourceFile);
+        SourcePaths sourcePaths = new SourcePaths(projRoot, generatorOptions.getInputPaths());
+        if (sourcePaths.hasSourceFiles()) {
+            try {
+                System.out.println("Parsing the following files:");
+                for (File sourceFile : sourcePaths.getSourceFiles()) {
+                    System.out.println("    " + sourceFile);
+                    Parser fileParser = parser;
+                    if (fileParser == null) {
+                        fileParser = ParserProvider.getParserForFile(sourceFile);
+                    }
+                    if (fileParser == null) {
+                        throw new MojoExecutionException("Don't know how to parse '" + sourceFile.getName() + "'!");
+                    }
+                    fileParser.parse(document, sourceFile);
                 }
-                if (fileParser == null) {
-                    throw new MojoExecutionException("Don't know how to parse '" + sourceFile.getName() + "'!");
-                }
-                fileParser.parse(document, sourceFile);
+                System.out.println("All parsed!");
             }
-            System.out.println("All parsed!");
-        }
-        catch (ParseException pe) {
-            throw new MojoExecutionException("Parse failure!", pe);
-        }
-        catch (IOException ioe) {
-            throw new MojoExecutionException("I/O failure while parsing input!", ioe);
-        }
+            catch (ParseException pe) {
+                throw new MojoExecutionException("Parse failure!", pe);
+            }
+            catch (IOException ioe) {
+                throw new MojoExecutionException("I/O failure while parsing input!", ioe);
+            }
 
-        // Generate
+            // Generate
 
-        try {
-            generator.generate(document, options, projRoot);
+            try {
+                if (options.getResultFile().startsWith(projRoot.getAbsolutePath())) {
+                    System.out.println("Generating: " + options.getResultFile());
+                    generator.generate(document, options, null);
+                }
+                else {
+                    System.out.println("Generating: " + projRoot.getAbsolutePath() + File.separator + options.getResultFile());
+                    generator.generate(document, options, projRoot);
+                }
+            }
+            catch (GenerateException ge) {
+                throw new MojoExecutionException("Failed to generate html!", ge);
+            }
+            catch (IOException ioe) {
+                throw new MojoExecutionException("I/O problems when generating!", ioe);
+            }
         }
-        catch (GenerateException ge) {
-            throw new MojoExecutionException("Failed to generate html!", ge);
+        else {
+            System.out.println("No document source files were specified, and thus nothing were generated!");
         }
-        catch (IOException ioe) {
-            throw new MojoExecutionException("I/O problems when generating!", ioe);
-        }
-
     }
 
     /**

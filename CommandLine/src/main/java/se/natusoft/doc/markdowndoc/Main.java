@@ -41,6 +41,7 @@ import se.natusoft.doc.markdown.api.Options;
 import se.natusoft.doc.markdown.api.Parser;
 import se.natusoft.doc.markdown.exception.GenerateException;
 import se.natusoft.doc.markdown.exception.ParseException;
+import se.natusoft.doc.markdown.generator.GeneratorProvider;
 import se.natusoft.doc.markdown.generator.HTMLGenerator;
 import se.natusoft.doc.markdown.generator.PDFGenerator;
 import se.natusoft.doc.markdown.model.Doc;
@@ -76,14 +77,9 @@ public class Main {
             Generator generator = null;
             int startArg = args[1].startsWith("--") ? 1 : 2;
 
-            if (selGenerator.equals("html")) {
-                generator = new HTMLGenerator();
-            }
-            else if (selGenerator.equals("pdf")) {
-                generator = new PDFGenerator();
-            }
-            else {
-                System.err.println("Bad generator!");
+            generator = GeneratorProvider.getGeneratorByName(selGenerator);
+            if (generator == null) {
+                System.err.println("Unknown generator: " + selGenerator + "!");
                 help1();
                 System.exit(-1);
             }

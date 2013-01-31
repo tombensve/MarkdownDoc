@@ -47,11 +47,6 @@ import se.natusoft.doc.markdown.parser.MarkdownParser
 public interface Parser {
 
     /**
-     * Available parsers
-     */
-    public static final Parser[] parsers = [new MarkdownParser(), new JavadocParser()]
-
-    /**
      * Parses a file and adds its document structure to the passed Doc.
      *
      * @param document The parsed result is added to this.

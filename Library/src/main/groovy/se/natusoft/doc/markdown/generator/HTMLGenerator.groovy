@@ -65,6 +65,14 @@ class HTMLGenerator implements Generator {
     }
 
     /**
+     * @return The name of this generator.
+     */
+    @Override
+    String getName() {
+        return "html"
+    }
+
+    /**
      * The main API for the generator. This does the job!
      *
      * @param document The document model to generate from.

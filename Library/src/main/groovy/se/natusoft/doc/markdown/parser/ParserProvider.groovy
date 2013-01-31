@@ -28,9 +28,11 @@ class ParserProvider {
     public static Parser getParserForFile(String file) {
         Parser parser = null
 
-        Parser.parsers.each {
-            if (it.validFileExtension(file)) {
-                parser = it
+        ServiceLoader parserLoader = ServiceLoader.load(Parser.class);
+        for (Parser loadedParser : parserLoader) {
+            if (loadedParser.validFileExtension(file)) {
+                parser = loadedParser
+                break
             }
         }
 

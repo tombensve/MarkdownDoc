@@ -77,7 +77,12 @@ class SourcePaths {
     public SourcePaths(File projRoot, String sourcePaths) {
         StringTokenizer pathTokenizer = new StringTokenizer(sourcePaths, ",");
         while (pathTokenizer.hasMoreTokens()) {
-            this.sourcePaths.add(new SourcePath(projRoot, pathTokenizer.nextToken().trim()));
+            String path = pathTokenizer.nextToken().trim();
+            if (path.startsWith(projRoot.getAbsolutePath())) {
+                int projRootLength = projRoot.getAbsolutePath().length();
+                path = path.substring(projRootLength);
+            }
+            this.sourcePaths.add(new SourcePath(projRoot, path));
         }
     }
 
@@ -104,5 +109,12 @@ class SourcePaths {
         }
 
         return all;
+    }
+
+    /**
+     * @return true if there are source files.
+     */
+    public boolean hasSourceFiles() {
+        return !getSourceFiles().isEmpty();
     }
 }

@@ -202,6 +202,14 @@ class PDFGenerator implements Generator {
     }
 
     /**
+     * @return The name of this generator.
+     */
+    @Override
+    String getName() {
+        return "pdf"
+    }
+
+    /**
      * Initializes the members for a running a generation pass.
      */
     private void initRun() {
