@@ -926,7 +926,12 @@ class PDFGenerator implements Generator {
                 int ix = this.options.getResultFile().lastIndexOf(File.separator)
                 if (ix >= 0) {
                     path = this.options.getResultFile().substring(0, ix + 1) + path
-                    resolvedUrl = "file:" + this.rootDir.getAbsolutePath() + File.separator + path
+                    if (this.rootDir != null) {
+                        resolvedUrl = "file:" + this.rootDir.getAbsolutePath() + File.separator + path
+                    }
+                    else {
+                        resolvedUrl = "file:" + path
+                    }
                 }
             }
         }
