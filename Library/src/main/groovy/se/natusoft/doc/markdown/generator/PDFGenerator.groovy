@@ -287,9 +287,9 @@ class PDFGenerator implements Generator {
         }
 
 
-        Rectangle pageSize = new Rectangle(PageSize.getRectangle(options.pageSize))
-        if (options.backgroundColor != null) {
-            pageSize.setBackgroundColor(new PDFColor(options.backgroundColor))
+        Rectangle pageSize = new Rectangle(PageSize.getRectangle(this.options.pageSize))
+        if (this.options.backgroundColor != null) {
+            pageSize.setBackgroundColor(new PDFColor(this.options.backgroundColor))
         }
 
         Document document = null
@@ -325,16 +325,16 @@ class PDFGenerator implements Generator {
         document = new Document()
         document.setPageSize(pageSize)
 
-        File resultFile = this.rootDir != null ? new File(this.rootDir, options.resultFile) : new File(options.resultFile)
+        File resultFile = this.rootDir != null ? new File(this.rootDir, this.options.resultFile) : new File(this.options.resultFile)
         pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(resultFile))
         pdfWriter.setPdfVersion(PdfWriter.PDF_VERSION_1_7)
         pdfWriter.setFullCompression()
         pdfWriter.setPageEvent(new PageEventHandler())
 
-        if (options.title != null)      { document.addTitle(options.title) }
-        if (options.subject != null)    { document.addSubject(options.subject) }
-        if (options.keywords != null)   { document.addKeywords(options.keywords) }
-        if (options.author != null)     { document.addAuthor(options.author) }
+        if (this.options.title != null)      { document.addTitle(this.options.title) }
+        if (this.options.subject != null)    { document.addSubject(this.options.subject) }
+        if (this.options.keywords != null)   { document.addKeywords(this.options.keywords) }
+        if (this.options.author != null)     { document.addAuthor(this.options.author) }
 
         document.addCreationDate()
         document.addCreator("MarkdownDoc (https://github.com/tombensve/MarkdownDoc)")
@@ -1001,6 +1001,10 @@ class PDFGenerator implements Generator {
 
                 // Write the filename centered as page header
                 String fileName = PDFGenerator.this.options.resultFile
+                int fsIx = fileName.lastIndexOf(File.separator)
+                if (fsIx >= 0) {
+                    fileName = fileName.substring(fsIx + 1)
+                }
                 int dotIx = fileName.lastIndexOf('.')
                 fileName = fileName.substring(0, dotIx)
                 Chunk dfChunk = new Chunk(fileName, FONT_FOOTER)
