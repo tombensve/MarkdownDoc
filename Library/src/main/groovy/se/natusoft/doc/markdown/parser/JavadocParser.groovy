@@ -304,14 +304,14 @@ class JavadocParser implements Parser {
         boolean preMode = false
 
         text.each { line ->
-            if (!preMode && line.trim().startsWith("<pre>")) {
+            if (!preMode && line.trim().matches("^<[Pp][Rr][Ee]>.*")) {
                 preMode = true
                 p.addItem(format)
                 document.addItem(p)
                 format = new PlainText()
                 p = new CodeBlock()
             }
-            else if (preMode && line.trim().startsWith("</pre>")) {
+            else if (preMode && line.trim().matches("^</[Pp][Rr][Ee]>.*")) {
                 preMode = false
                 document.addItem(p)
                 p = new BlockQuote()
@@ -322,13 +322,13 @@ class JavadocParser implements Parser {
             }
             else {
                 line.split("\\s+|>\\s*|</").each { word ->
-                    if (word.equals("<p") || word.equals("<p/")) {
+                    if (word.matches("^<[Pp].?") ) {
                         p.addItem(format)
                         format = new PlainText()
                         document.addItem(p)
                         p = new BlockQuote()
                     }
-                    else if (word.equals("</p")) {
+                    else if (word.matches("^</[Pp]")) {
                         // ignore
                     }
                     else {
