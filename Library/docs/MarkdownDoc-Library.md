@@ -100,7 +100,7 @@ Example usage:
 
     	... parsing of document.
 
-		Generator generator = new [PDF|HTML]Generator();
+		Generator generator = new [PDF|HTML|Markdown]Generator();
 
 		// I'm using OptionsManager to load the options in this example.
 		// If you use maven or ant then those tools will have loaded
@@ -123,11 +123,15 @@ tool also by me. Available at [github.com/tombensve/OptionsManager](https://gith
 
 #### se.natusoft.doc.markdown.generator.PDFGenerator
 
-This generator produces a PDF document from the parsed markdown input.
+This generator produces a PDF document.
 
 #### se.natusoft.doc.markdown.generator.HTMLGenerator
 
-This generator produces an HTML document from the parsed markdown input.
+This generator produces an HTML document.
+
+#### se.natusoft.doc.markdown.generator.MarkdownGenerator
+
+This generator produces a Markdown document. So why would we want to generate markdown ? Well, it became needed after I added the JavadocParser. Now I can have both markdown and java files as input and the PDF and HTML files contained the whole result including the javadoc information. The original markdown document however does not have the javadoc parts, and this markdown document is read as is on github and will then not be complete. Therefore I added this generator and moved my real source document into docs/src and also generate a markdown version into docs that will be as complete as the pdf and html version.
 
 
 

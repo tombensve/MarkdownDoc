@@ -16,7 +16,7 @@ making it easy to execute with java -jar.
 
 __generator__
 
-This should be either _pdf_ or _html_.
+This should be either _pdf_, _html_, or _md_.
 
 __filespec__
 
@@ -96,4 +96,10 @@ __--inlineCSS true/false__
 
 __--css text__
     The path to CSS file. 
+    
+## Markdown Generator
+
+__--resultFile text (Required)__
+    Where to write the result. 
+
 

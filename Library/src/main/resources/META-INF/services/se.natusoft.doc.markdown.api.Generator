@@ -1,2 +1,3 @@
 se.natusoft.doc.markdown.generator.HTMLGenerator
 se.natusoft.doc.markdown.generator.PDFGenerator
+se.natusoft.doc.markdown.generator.MarkdownGenerator

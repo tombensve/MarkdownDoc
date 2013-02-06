@@ -48,6 +48,7 @@ import se.natusoft.doc.markdown.generator.HTMLGenerator;
 import se.natusoft.doc.markdown.generator.PDFGenerator;
 import se.natusoft.doc.markdown.generator.options.GeneratorOptions;
 import se.natusoft.doc.markdown.generator.options.HTMLGeneratorOptions;
+import se.natusoft.doc.markdown.generator.options.MarkdownGeneratorOptions;
 import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions;
 import se.natusoft.doc.markdown.model.Doc;
 import se.natusoft.doc.markdown.parser.MarkdownParser;
@@ -82,6 +83,15 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
      * @optional
      */
     private HTMLGeneratorOptions htmlGeneratorOptions = new HTMLGeneratorOptions();
+
+    /**
+     * Provides the options for the MarkdownGenerator. These are only relevant if
+     * generatorOptions.generator == "md".
+     *
+     * @parameter
+     * @optional
+     */
+    private MarkdownGeneratorOptions mdGeneratorOptions = new MarkdownGeneratorOptions();
 
     /**
      * Provides the options for the PDFGenerator. These are only relevant if

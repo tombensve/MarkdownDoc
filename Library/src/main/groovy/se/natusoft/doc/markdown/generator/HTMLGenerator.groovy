@@ -46,11 +46,6 @@ import se.natusoft.doc.markdown.model.*
  * This is a generator that generates HTML from a document model.
  */
 class HTMLGenerator implements Generator {
-    //
-    // Private Members
-    //
-
-    /** Our options. */
 
     //
     // Methods

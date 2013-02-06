@@ -40,7 +40,7 @@ and what input files to include. The following example is from the generation of
         </inputPaths>
     </generatorOptions>
 
-The current valid argument for `<generator>...</generator>` are _pdf_ and _html_.
+The current valid argument for `<generator>...</generator>` are _pdf_, _html_, and _md_.
 
 The input paths are comma separated and are always relative to the root of the maven project. 
 To clarify that, for a multi module maven build it is always the top root with the top pom
@@ -273,4 +273,53 @@ Following is a complete plugin specification with all options specified:
             </execution>
         </executions>
     </plugin>
+
+## mdGeneratorOptions
+
+Following is a complete plugin specification with all options specified:
+
+    <plugin>
+        <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
+        <artifactId>markdowndoc-maven-plugin</artifactId>
+        <version>1.0</version>
+
+        <dependencies>
+            <dependency>
+                <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
+                <artifactId>markdown-doc-lib</artifactId>
+                <version>1.0</version>
+            </dependency>
+        </dependencies>
+
+        <executions>
+            <execution>
+                <id>generate-docs</id>
+                <goals>
+                    <goal>doc</goal>
+                </goals>
+                <phase>install</phase>
+                <configuration>
+
+                    <generatorOptions>
+                        <generator>md</generator>
+                        <inputPaths>
+                            ...
+                        </inputPaths>
+                    </generatorOptions>
+					
+					<htmlGeneratorOptions>
+                    	<!-- 
+                    		The path to the markdown document to produce. Path is relative
+                    		to project root (see comment about root above).
+                    		Required.
+                    	-->
+                        <resultFile>Docs/MarkdownDoc-User-Guide-Complete.md</resultFile>
+                        
+					</htmlGeneratorOptions>
+
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
+
 
