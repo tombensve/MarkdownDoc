@@ -239,15 +239,15 @@ class MarkdownGenerator implements Generator {
     }
 
     private void writeCode(Code code, PrintWriter pw) {
-        pw.print("`" + code.text + "`")
+        pw.print("`" + code.text.trim() + "`")
     }
 
     private void writeEmphasis(Emphasis emphasis, PrintWriter pw) {
-        pw.print("_" + emphasis.text + "_")
+        pw.print("_" + emphasis.text.trim() + "_")
     }
 
     private void writeStrong(Strong strong, PrintWriter pw) {
-        pw.print("__" + strong.text + "__")
+        pw.print("__" + strong.text.trim() + "__")
     }
 
     private void writeImage(Image image, PrintWriter pw) {

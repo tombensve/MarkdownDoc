@@ -148,6 +148,8 @@ class JavadocParser implements Parser {
         p.addItem(new PlainText(text: "}"))
         document.addItem(p)
 
+        document.addItem(new HorizontalRule())
+
         p = new Paragraph()
         p.addItem("    ")
         document.addItem(p)
