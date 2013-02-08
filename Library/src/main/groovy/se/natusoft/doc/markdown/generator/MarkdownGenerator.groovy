@@ -187,7 +187,7 @@ class MarkdownGenerator implements Generator {
                     pw.print(indent + "* ")
                 }
                 li.items.each { pg ->
-                    writeParagraph((Paragraph)pg, html)
+                    writeParagraph((Paragraph)pg, pw)
                 }
             }
         }

@@ -218,7 +218,7 @@ class JavadocParser implements Parser {
                         PlainText pt = new PlainText(text: word)
                         p.addItem(pt)
                     }
-                    else if (word.equals("class") || word.equals("interface")) {
+                    else if (word.equals("class") || word.equals("interface") || word.equals("static")) {
                         Emphasis emp = new Emphasis(text: word)
                         p.addItem(emp)
                     }
