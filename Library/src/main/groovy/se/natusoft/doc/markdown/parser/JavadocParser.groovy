@@ -207,7 +207,8 @@ class JavadocParser implements Parser {
 
             boolean classOrInterface = false;
             Paragraph p = new Paragraph()
-            if (this.declaration.contains("class ") || this.declaration.contains("interface ")) {
+            if ((this.declaration.contains("class ") || this.declaration.contains("interface ")) &&
+                    (this.declaration.trim().startsWith("public") || this.declaration.trim().startsWith("protected"))) {
                 classOrInterface = true
                 String[] words = this.declaration.split("\\s+");
                 boolean handledName = false
@@ -218,7 +219,7 @@ class JavadocParser implements Parser {
                         PlainText pt = new PlainText(text: word)
                         p.addItem(pt)
                     }
-                    else if (word.equals("class") || word.equals("interface") || word.equals("static")) {
+                    else if (word.equals("class") || word.equals("interface") || word.equals("static") || word.equals("abstract")) {
                         Emphasis emp = new Emphasis(text: word)
                         p.addItem(emp)
                     }
@@ -240,14 +241,24 @@ class JavadocParser implements Parser {
                 p.addItem(pt)
             }
             else {
-                if (!this.declaration.trim().startsWith("private") && !this.declaration.trim().startsWith("protected")) {
+                if (this.declaration.trim().startsWith("public") || this.declaration.trim().startsWith("protected")) {
+                    Strong s = new Strong(text: this.declaration.replace(';', ' ').replace('{', ' ').trim())
+                    p.addItem(s)
+                }
+                // For interfaces!
+                else if ((this.declaration.contains("(") || this.declaration.contains(")")) && this.declaration.trim().endsWith(";") &&
+                    !this.declaration.startsWith("private")) {
                     Strong s = new Strong(text: this.declaration.replace(';', ' ').replace('{', ' ').trim())
                     p.addItem(s)
                 }
             }
             document.addItem(p)
 
-            if (!classOrInterface && !this.declaration.trim().startsWith("private") && !this.declaration.trim().startsWith("protected")) {
+            if (!classOrInterface && (this.declaration.trim().startsWith("public") || this.declaration.trim().startsWith("protected"))) {
+                parseJavadoc(document, classOrInterface)
+            }
+            else if ((this.declaration.contains("(") || this.declaration.contains(")")) && this.declaration.trim().endsWith(";") &&
+                    !this.declaration.startsWith("private")) {
                 parseJavadoc(document, classOrInterface)
             }
             else if (classOrInterface) {
@@ -294,6 +305,10 @@ class JavadocParser implements Parser {
             }
             else if (jdline.contains("@return")) {
                 returnDesc = jdline.replace("@return", "").trim()
+            }
+            else if (jdline.trim().startsWith("@")) {
+                text.add("")
+                text.add(jdline)
             }
             else if (textPart) {
                 text.add(jdline)
