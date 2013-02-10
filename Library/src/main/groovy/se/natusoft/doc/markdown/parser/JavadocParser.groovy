@@ -112,34 +112,44 @@ class JavadocParser implements Parser {
         this.declaration = null
 
         parseFile.eachLine { line ->
+            int alt = 0;
             if (!inJavadocBlock && !inDeclarationBlock && line.trim().startsWith("package")) {
                 this.pkg = line.replaceFirst("package ", "").replace(';', ' ').trim()
+                alt = 1
             }
             else if (!inJavadocBlock && !inDeclarationBlock && line.trim().startsWith("/**")) {
                 saveJavadocLine(line)
                 if (!line.trim().endsWith("*/")) {
                     inJavadocBlock = true;
                 }
+                alt = 2
             }
             else if (inJavadocBlock && !line.trim().endsWith("*/")) {
                 saveJavadocLine(line)
+                alt = 3
             }
             else if (inJavadocBlock && line.trim().endsWith("*/")) {
                 inJavadocBlock = false;
+                alt = 4
             }
             else if (
                     !inJavadocBlock && !inDeclarationBlock &&
-                    (line.trim().endsWith(";") || line.trim().endsWith("{")) &&
+                    (line.trim().endsWith(";") || line.trim().endsWith("{") || isEnumConst(line)) &&
                     this.javadoc != null
             ) {
                 parseDeclarationLine(document, line)
-                if (!(line.trim().endsWith(";") || line.trim().endsWith("{"))) {
+                if (!(line.trim().endsWith(";") || line.trim().endsWith("{") || isEnumConst(line))) {
                     inDeclarationBlock = true;
                 }
+                alt = 5
             }
             else if (!inJavadocBlock && inDeclarationBlock) {
                 parseDeclarationLine(document, line)
+                alt = 6
             }
+
+//            System.out.println("inJavaDocBlock:" + this.inJavadocBlock + ", declarationBlock:" + this.inDeclarationBlock + ", javadoc != null:" +
+//                (this.javadoc != null) + ", lineWords:" + line.replace(',', ' ').trim().split(" ").length + ", alt:" + alt + ", line:[" + line + "]")
 
             return null // Apparently the closure must return something even though it does not make any sense in such a case as this.
         }
@@ -153,6 +163,10 @@ class JavadocParser implements Parser {
         p = new Paragraph()
         p.addItem("    ")
         document.addItem(p)
+    }
+
+    private boolean isEnumConst(String line) {
+        return line.replace(',', ' ').trim().split(" ").length == 1 && !line.contains("@")
     }
 
     /**
@@ -202,12 +216,12 @@ class JavadocParser implements Parser {
             this.declaration += " " + line.trim()
         }
 
-        if (this.declaration.trim().endsWith(";") || this.declaration.trim().endsWith("{")) {
+        if (this.declaration.trim().endsWith(";") || this.declaration.trim().endsWith("{") || isEnumConst(this.declaration)) {
             inDeclarationBlock = false
 
             boolean classOrInterface = false;
             Paragraph p = new Paragraph()
-            if ((this.declaration.contains("class ") || this.declaration.contains("interface ")) &&
+            if ((this.declaration.contains("class ") || this.declaration.contains("interface ") || this.declaration.contains("enum ")) &&
                     (this.declaration.trim().startsWith("public") || this.declaration.trim().startsWith("protected"))) {
                 classOrInterface = true
                 String[] words = this.declaration.split("\\s+");
@@ -219,7 +233,13 @@ class JavadocParser implements Parser {
                         PlainText pt = new PlainText(text: word)
                         p.addItem(pt)
                     }
-                    else if (word.equals("class") || word.equals("interface") || word.equals("static") || word.equals("abstract")) {
+                    else if (
+                            word.equals("class") ||
+                            word.equals("interface") ||
+                            word.equals("enum") ||
+                            word.equals("static") ||
+                            word.equals("abstract")
+                    ) {
                         Emphasis emp = new Emphasis(text: word)
                         p.addItem(emp)
                     }
@@ -251,6 +271,10 @@ class JavadocParser implements Parser {
                     Strong s = new Strong(text: this.declaration.replace(';', ' ').replace('{', ' ').trim())
                     p.addItem(s)
                 }
+                else if (isEnumConst(this.declaration)) {
+                    Strong s = new Strong(text: this.declaration.replace(',', ' ').trim())
+                    p.addItem(s)
+                }
             }
             document.addItem(p)
 
@@ -259,6 +283,9 @@ class JavadocParser implements Parser {
             }
             else if ((this.declaration.contains("(") || this.declaration.contains(")")) && this.declaration.trim().endsWith(";") &&
                     !this.declaration.startsWith("private")) {
+                parseJavadoc(document, classOrInterface)
+            }
+            else if (isEnumConst(this.declaration)) {
                 parseJavadoc(document, classOrInterface)
             }
             else if (classOrInterface) {
