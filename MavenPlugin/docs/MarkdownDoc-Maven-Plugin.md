@@ -71,7 +71,7 @@ Following is a complete plugin specification with all options specified:
     <plugin>
         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
         <artifactId>markdowndoc-maven-plugin</artifactId>
-        <version>1.2.1</version>
+        <version>n.n[.n]</version>
 
         <executions>
             <execution>
@@ -211,7 +211,7 @@ Following is a complete plugin specification with all options specified:
     <plugin>
         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
         <artifactId>markdowndoc-maven-plugin</artifactId>
-        <version>1.2.1</version>
+        <version>n.n[.n]</version>
 
         <executions>
             <execution>
@@ -265,7 +265,7 @@ Following is a complete plugin specification with all options specified:
     <plugin>
         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
         <artifactId>markdowndoc-maven-plugin</artifactId>
-        <version>1.2.1</version>
+        <version>n.n[.n]</version>
 
         <executions>
             <execution>

@@ -2,16 +2,16 @@
 
 ## General
 
-MarkdownDoc can be run using `java -jar markdowndoc-cmd-line-1.0-exec.jar`. If you just run it
+MarkdownDoc can be run using `java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar`. If you just run it
 without any arguments you get the following:
 
-    Usage: java -jar markdowndoc-cmd-line-1.0-exec.jar <generator> --help
+    Usage: java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar <generator> --help
            or
-           java -jar markdowndoc-cmd-line-1.0-exec.jar <generator> <fileSpec> --<generator option> ...
+           java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar <generator> <fileSpec> --<generator option> ...
 
 What the generator options are depends on the specified generator.
 
-The markdowndoc-cmd-line-1.0-exec.jar is a jar generated to contain all dependencies in the same jar,
+The markdowndoc-cmd-line-n.n[.n]-exec.jar is a jar generated to contain all dependencies in the same jar,
 making it easy to execute with java -jar.
 
 __generator__
