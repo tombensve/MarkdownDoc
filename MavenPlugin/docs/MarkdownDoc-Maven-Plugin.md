@@ -71,15 +71,7 @@ Following is a complete plugin specification with all options specified:
     <plugin>
         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
         <artifactId>markdowndoc-maven-plugin</artifactId>
-        <version>1.0</version>
-
-        <dependencies>
-            <dependency>
-                <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
-                <artifactId>markdown-doc-lib</artifactId>
-                <version>1.0</version>
-            </dependency>
-        </dependencies>
+        <version>1.2.1</version>
 
         <executions>
             <execution>
@@ -219,15 +211,7 @@ Following is a complete plugin specification with all options specified:
     <plugin>
         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
         <artifactId>markdowndoc-maven-plugin</artifactId>
-        <version>1.0</version>
-
-        <dependencies>
-            <dependency>
-                <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
-                <artifactId>markdown-doc-lib</artifactId>
-                <version>1.0</version>
-            </dependency>
-        </dependencies>
+        <version>1.2.1</version>
 
         <executions>
             <execution>
@@ -281,15 +265,7 @@ Following is a complete plugin specification with all options specified:
     <plugin>
         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
         <artifactId>markdowndoc-maven-plugin</artifactId>
-        <version>1.0</version>
-
-        <dependencies>
-            <dependency>
-                <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
-                <artifactId>markdown-doc-lib</artifactId>
-                <version>1.0</version>
-            </dependency>
-        </dependencies>
+        <version>1.2.1</version>
 
         <executions>
             <execution>
