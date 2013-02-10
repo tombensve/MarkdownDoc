@@ -71,6 +71,11 @@ import java.util.List
  */
 class JavadocParser implements Parser {
 
+    // TODO:
+    // Yes, this code is currently a bit messy! To begin with the need for "declaration" to be a member should be fixed. This
+    // in turn means the file can't be read line by line!
+    // Most of the members shouldn't be there, but a smarter reading of the file could solve most of this.
+
     //
     // Private Members
     //
@@ -112,44 +117,34 @@ class JavadocParser implements Parser {
         this.declaration = null
 
         parseFile.eachLine { line ->
-            int alt = 0;
             if (!inJavadocBlock && !inDeclarationBlock && line.trim().startsWith("package")) {
                 this.pkg = line.replaceFirst("package ", "").replace(';', ' ').trim()
-                alt = 1
             }
             else if (!inJavadocBlock && !inDeclarationBlock && line.trim().startsWith("/**")) {
                 saveJavadocLine(line)
                 if (!line.trim().endsWith("*/")) {
                     inJavadocBlock = true;
                 }
-                alt = 2
             }
             else if (inJavadocBlock && !line.trim().endsWith("*/")) {
                 saveJavadocLine(line)
-                alt = 3
             }
             else if (inJavadocBlock && line.trim().endsWith("*/")) {
                 inJavadocBlock = false;
-                alt = 4
             }
             else if (
                     !inJavadocBlock && !inDeclarationBlock &&
-                    (line.trim().endsWith(";") || line.trim().endsWith("{") || isEnumConst(line)) &&
+                   // (isFieldOrConst(line) || isMethod(line) || isEnumConst(line)) &&
                     this.javadoc != null
             ) {
                 parseDeclarationLine(document, line)
-                if (!(line.trim().endsWith(";") || line.trim().endsWith("{") || isEnumConst(line))) {
+                if (!(isFieldOrConst(line) || isMethod(line) || isEnumConst(line))) {
                     inDeclarationBlock = true;
                 }
-                alt = 5
             }
             else if (!inJavadocBlock && inDeclarationBlock) {
                 parseDeclarationLine(document, line)
-                alt = 6
             }
-
-//            System.out.println("inJavaDocBlock:" + this.inJavadocBlock + ", declarationBlock:" + this.inDeclarationBlock + ", javadoc != null:" +
-//                (this.javadoc != null) + ", lineWords:" + line.replace(',', ' ').trim().split(" ").length + ", alt:" + alt + ", line:[" + line + "]")
 
             return null // Apparently the closure must return something even though it does not make any sense in such a case as this.
         }
@@ -163,6 +158,18 @@ class JavadocParser implements Parser {
         p = new Paragraph()
         p.addItem("    ")
         document.addItem(p)
+    }
+
+    private boolean isFieldOrConst(String line) {
+        return line.trim().endsWith(";")
+    }
+
+    private boolean isInterfaceMethod(String line) {
+        return (line.contains("(") || line.contains(")")) && line.trim().endsWith(";")
+    }
+
+    private boolean isMethod(String line) {
+        return line.trim().endsWith("{")
     }
 
     private boolean isEnumConst(String line) {
@@ -216,30 +223,27 @@ class JavadocParser implements Parser {
             this.declaration += " " + line.trim()
         }
 
-        if (this.declaration.trim().endsWith(";") || this.declaration.trim().endsWith("{") || isEnumConst(this.declaration)) {
+        Visibility visibility = new Visibility(this.declaration)
+        DeclarationType declType = new DeclarationType(this.declaration)
+
+        if (isFieldOrConst(this.declaration) || isMethod(this.declaration) || isEnumConst(this.declaration)) {
             inDeclarationBlock = false
 
             boolean classOrInterface = false;
             Paragraph p = new Paragraph()
-            if ((this.declaration.contains("class ") || this.declaration.contains("interface ") || this.declaration.contains("enum ")) &&
-                    (this.declaration.trim().startsWith("public") || this.declaration.trim().startsWith("protected"))) {
+            if ((declType.isClass() || declType.isInterface() || declType.isEnum()) && (visibility.isPublic() || visibility.isProtected())) {
+
                 classOrInterface = true
                 String[] words = this.declaration.split("\\s+");
                 boolean handledName = false
                 for (int i = 0; i < words.length; i++) {
                     String word = words[i]
 
-                    if (word.equals("public") || word.equals("protected")) {
+                    if (Visibility.isPublic(word) || Visibility.isProtected(word)) {
                         PlainText pt = new PlainText(text: word)
                         p.addItem(pt)
                     }
-                    else if (
-                            word.equals("class") ||
-                            word.equals("interface") ||
-                            word.equals("enum") ||
-                            word.equals("static") ||
-                            word.equals("abstract")
-                    ) {
+                    else if (DeclarationType.isDeclarationType(word) || Modifier.isModifier(word)) {
                         Emphasis emp = new Emphasis(text: word)
                         p.addItem(emp)
                     }
@@ -261,28 +265,26 @@ class JavadocParser implements Parser {
                 p.addItem(pt)
             }
             else {
-                if (this.declaration.trim().startsWith("public") || this.declaration.trim().startsWith("protected")) {
-                    Strong s = new Strong(text: this.declaration.replace(';', ' ').replace('{', ' ').trim())
+                if (visibility.isPublic() || visibility.isProtected()) {
+                    Strong s = new Strong(text: removeAnnotations(this.declaration.replace(';', ' ').replace('{', ' ').trim()))
                     p.addItem(s)
                 }
                 // For interfaces!
-                else if ((this.declaration.contains("(") || this.declaration.contains(")")) && this.declaration.trim().endsWith(";") &&
-                    !this.declaration.startsWith("private")) {
-                    Strong s = new Strong(text: this.declaration.replace(';', ' ').replace('{', ' ').trim())
+                else if (isInterfaceMethod(this.declaration) && !visibility.isPrivate()) {
+                    Strong s = new Strong(text: removeAnnotations(this.declaration.replace(';', ' ').replace('{', ' ').trim()))
                     p.addItem(s)
                 }
                 else if (isEnumConst(this.declaration)) {
-                    Strong s = new Strong(text: this.declaration.replace(',', ' ').trim())
+                    Strong s = new Strong(text: removeAnnotations(this.declaration.replace(',', ' ').trim()))
                     p.addItem(s)
                 }
             }
             document.addItem(p)
 
-            if (!classOrInterface && (this.declaration.trim().startsWith("public") || this.declaration.trim().startsWith("protected"))) {
+            if (!classOrInterface && (visibility.isPublic() || visibility.isProtected())) {
                 parseJavadoc(document, classOrInterface)
             }
-            else if ((this.declaration.contains("(") || this.declaration.contains(")")) && this.declaration.trim().endsWith(";") &&
-                    !this.declaration.startsWith("private")) {
+            else if (isInterfaceMethod(this.declaration) && !visibility.isPrivate()) {
                 parseJavadoc(document, classOrInterface)
             }
             else if (isEnumConst(this.declaration)) {
@@ -295,6 +297,17 @@ class JavadocParser implements Parser {
             this.declaration = null
             this.javadoc = null
         }
+    }
+
+    /**
+     * Removes annotation from the line.
+     *
+     * @param line The line to remove annotations from.
+     *
+     * @return The update line without annotations.
+     */
+    private String removeAnnotations(String line) {
+        return line.replaceAll("(@[A-Z,a-z]+){1} ", "")
     }
 
     /**
@@ -459,5 +472,88 @@ class JavadocParser implements Parser {
     @Override
     boolean validFileExtension(String fileName) {
         return fileName.endsWith(".java")
+    }
+
+    /**
+     * Utility for handling the visibility of a declaration.
+     */
+    private static class Visibility {
+
+        private String visibility
+
+        public Visibility(String declaration) {
+            if (declaration.trim().length() > 0) {
+                this.visibility = declaration.split(" ")[0]
+            }
+            else {
+                this.visibility = ""
+            }
+        }
+
+        public boolean isPublic() {
+            return this.visibility.equals("public")
+        }
+
+        public static boolean isPublic(String word) {
+            return word.equals("public")
+        }
+
+        public boolean isProtected() {
+            return this.visibility.equals("protected")
+        }
+
+        public static boolean isProtected(String word) {
+            return word.equals("protected")
+        }
+
+        public boolean isPrivate() {
+            return this.visibility.equals("private")
+        }
+
+        public static isPrivate(String word) {
+            return word.equals("private")
+        }
+
+        public boolean isPackage() {
+            return !(isPublic() || isProtected() || isPrivate())
+        }
+    }
+
+    /**
+     * Utility for identifying declaration type.
+     */
+    private static class DeclarationType {
+
+        private String declaration;
+
+        public DeclarationType(String declaration) {
+            this.declaration = declaration;
+        }
+
+        public boolean isClass() {
+            return this.declaration.contains("class ")
+        }
+
+        public boolean isInterface() {
+            return this.declaration.contains("interface ")
+        }
+
+        public boolean isEnum() {
+            return this.declaration.contains("enum ")
+        }
+
+        public static boolean isDeclarationType(String word) {
+            return word.equals("class") || word.equals("interface") || word.equals("enum")
+        }
+    }
+
+    /**
+     * Utility for identifying modifiers.
+     */
+    private static class Modifier {
+
+        public static boolean isModifier(String word) {
+            return word.equals("final") || word.equals("abstract") || word.equals("static")
+        }
     }
 }
