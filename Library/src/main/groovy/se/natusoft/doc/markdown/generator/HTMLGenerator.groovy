@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.1
+ *         1.2.2
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -270,6 +270,10 @@ class HTMLGenerator implements Generator {
                 case DocFormat.AutoLink:
                     writeLink((AutoLink)docItem, html)
                     break
+
+                case DocFormat.Space:
+                    html.print("&nbsp;")
+                    break;
 
                 case DocFormat.PlainText:
                     html.content(((PlainText)docItem).text)

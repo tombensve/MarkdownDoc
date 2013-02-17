@@ -7,7 +7,7 @@
     <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
     <artifactId>markdown-doc</artifactId>
     <packaging>pom</packaging>
-    <version><!--VER-->1.2.1</version>
+    <version><!--VER-->1.2.2</version>
     <modules>
         <module>Docs</module>
         <module>Library</module>

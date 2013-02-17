@@ -18,6 +18,10 @@ locations in maven can be configured) and I also had the following requirements:
 
 It does also provide a java -jar executable variant. The main functionality is available as a library.
 
+### New In this version
+
+This version adds support for html passthrough of ”\&\n\b\s\p\;”.    
+
 ### How markdown is MarkdownDoc ?
 
 Well, it implements the "specification" as documented on [daringfireball.net](http://daringfireball.net/projects/markdown/syntax).
@@ -25,10 +29,7 @@ This specification however is not extremely exact so there might be some differe
 
 The known (and intentional) differences are:
 
-* No HMTL pass-through! Well, there is a small exception to that. HTML comments are passed along. Mostly because
-  there is no markdown comment format and I wanted to be able to put comments in my documents. The reason for
-  no HTML pass-through is that MarkdownDoc takes it directly from markdown to PDF without any HTML rendering
-  in between. The main purpose of this tool is to write documentation not generate HTML sites.
+* No HMTL pass-through! Well, there is a small exception to that. HTML comments are passed along. Mostly because there is no markdown comment format and I wanted to be able to put comments in my documents. ”\&\n\b\s\p\;” is also passed through to create indents that are not code blocks. The reason for no HTML pass-through is that MarkdownDoc takes it directly from markdown to PDF without any HTML rendering in between. The main purpose of this tool is to write documentation not generate HTML sites.
 
 * Escaping with '\\'. In MarkdownDoc you can escape any character with \\ and it will be passed through as is
   without being acted on if it has markdown meaning.

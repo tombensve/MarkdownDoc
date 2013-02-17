@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.1
+ *         1.2.2
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -59,5 +59,6 @@ public enum DocFormat {
     Paragraph,
     PlainText,
     HorizontalRule,
-    Comment
+    Comment,
+    Space
 }

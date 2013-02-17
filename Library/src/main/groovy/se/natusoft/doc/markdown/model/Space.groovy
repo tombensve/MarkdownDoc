@@ -31,36 +31,30 @@
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
- *         2013-02-02: Created!
+ *         2013-02-17: Created!
  *         
  */
-package se.natusoft.doc.markdown.generator
-
-import se.natusoft.doc.markdown.api.Generator
+package se.natusoft.doc.markdown.model
 
 /**
- * Provides a generator by its name. The name is what the generators getName() method returns, not its class name!
+ * This represents a single space. <code>&nbsp;</code> results in this.
  */
-class GeneratorProvider {
+class Space extends PlainText {
+
+    public Space() {
+        this.text = " ";
+    }
 
     /**
-     * Provides a generator by its name or null if not found.
-     *
-     * @param name The name of the generator to get.
-     *
-     * @return A Generator or null if not found.
+     * Returns the format this model represents.
      */
-    public static Generator getGeneratorByName(String name) {
-        Generator generator = null
-
-        ServiceLoader<Generator> generators = ServiceLoader.load(Generator.class)
-        for (Generator loadedGenerator : generators) {
-            if (loadedGenerator.getName().equals(name)) {
-                generator = loadedGenerator
-                break
-            }
-        }
-
-        return generator
+    @Override
+    public DocFormat getFormat() {
+        return DocFormat.Space
     }
+
+    public String toString() {
+        return " "
+    }
+
 }
