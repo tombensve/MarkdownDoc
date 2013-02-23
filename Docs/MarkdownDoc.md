@@ -20,7 +20,7 @@ It does also provide a java -jar executable variant. The main functionality is a
 
 ### New In this version
 
-This version adds support for html passthrough of ”\&\n\b\s\p\;”.    
+If image paths are not absolute and not http referenced then they are now looked for relative to the source markdown file first, and then the are looked for relative to the result file as before. This makes it easier to generate a big document for a whole project containing several subproject with local makdown documents and referenced images. The image reference can still be relative to the subproject local markdown file.
 
 ### How markdown is MarkdownDoc ?
 
