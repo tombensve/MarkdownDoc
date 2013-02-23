@@ -143,6 +143,7 @@ class PDFGenerator implements Generator {
     private static final FONT_LIST_ITEM = new Font(Font.FontFamily.HELVETICA, 10)
     private static final FONT_FOOTER = new Font(Font.FontFamily.HELVETICA, 8)
     private static final FONT_TOC = new Font(Font.FontFamily.HELVETICA, 9)
+    private static final FONT_TOC_H1 = new Font(Font.FontFamily.HELVETICA, 9, Font.BOLD)
 
     private static final Chunk LIST_NEWLINE = new Chunk("\n", new Font(Font.FontFamily.HELVETICA, 4))
 
@@ -396,11 +397,18 @@ class PDFGenerator implements Generator {
 
         float y = document.top() - document.topMargin()
 
-        writeText(cb, Element.ALIGN_CENTER, "Table of Contents", (float)(((document.right() - document.left()) / 2) + document.leftMargin()), y)
+        writeText(cb, Element.ALIGN_CENTER, "Table of Contents", (float)(((document.right() - document.left()) / 2) + document.leftMargin()),
+                y, FONT_TOC)
+
         y = y - 28
         for (TOC tocEntry : this.toc) {
-            writeText(cb, Element.ALIGN_LEFT, tocEntry.sectionTitle, (float)(document.left() + document.leftMargin()), y)
-            writeText(cb, Element.ALIGN_RIGHT, "" + tocEntry.pageNumber, (float)(document.right() - document.rightMargin()), y)
+            if (tocEntry.sectionTitle.split(" ")[0].contains(".")) {
+                writeText(cb, Element.ALIGN_LEFT, tocEntry.sectionTitle, (float)(document.left() + document.leftMargin()), y, FONT_TOC)
+            }
+            else {
+                writeText(cb, Element.ALIGN_LEFT, tocEntry.sectionTitle, (float)(document.left() + document.leftMargin()), y, FONT_TOC_H1)
+            }
+            writeText(cb, Element.ALIGN_RIGHT, "" + tocEntry.pageNumber, (float)(document.right() - document.rightMargin()), y, FONT_TOC)
             y = y - 14
             if ( y < document.bottom()) {
                 document.newPage()
@@ -408,6 +416,23 @@ class PDFGenerator implements Generator {
                 ++this.pageOffset
             }
         }
+    }
+
+    /**
+     * Utility method that creates a Phrase from a String and then calls ColumntText.showTextAligned(...).
+     *
+     * @param cb The convar to render on.
+     * @param align The alignment to use.
+     * @param text The text to render.
+     * @param x The X position of the text (actually dependes on alignment).
+     * @param y The Y position of the text.
+     * @param font The font to use.
+     */
+    private void writeText(PdfContentByte cb, int align, String text, float x, float y, Font font) {
+        Phrase phrase = new Phrase()
+        Chunk chunk = new Chunk(text, font)
+        phrase.add(chunk)
+        ColumnText.showTextAligned(cb, align, phrase, x, y, 0.0f)
     }
 
     /**
@@ -486,22 +511,6 @@ class PDFGenerator implements Generator {
 
 
         document.newPage()
-    }
-
-    /**
-     * Utility method that creates a Phrase from a String and then calls ColumntText.showTextAligned(...).
-     *
-     * @param cb The convar to render on.
-     * @param align The alignment to use.
-     * @param text The text to render.
-     * @param x The X position of the text (actually dependes on alignment).
-     * @param y The Y position of the text.
-     */
-    private void writeText(PdfContentByte cb, int align, String text, float x, float y) {
-        Phrase phrase = new Phrase()
-        Chunk chunk = new Chunk(text, FONT_TOC)
-        phrase.add(chunk)
-        ColumnText.showTextAligned(cb, align, phrase, x, y, 0.0f)
     }
 
     /**
