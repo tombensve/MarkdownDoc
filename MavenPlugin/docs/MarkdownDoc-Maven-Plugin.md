@@ -251,6 +251,15 @@ Following is a complete plugin specification with all options specified:
 						-->
 						<css>css/my.css</css>
 						
+						<!—
+							This affects links and images. When specified the resulting 
+							file: URLs in the result will be relative to the path specified by
+							”path” if the absulute path of the URL starts with the specified 
+							path. If a plus sign (+) and a prefix path is specified it will be 
+							prefixed to the final URL.  
+						—>
+						 <makeFileLinksRelativeTo>path[+prefix]</makeFileLinksRelativeTo>						 
+						 
 					</htmlGeneratorOptions>
 
                 </configuration>
@@ -291,6 +300,15 @@ Following is a complete plugin specification with all options specified:
                     	-->
                         <resultFile>Docs/MarkdownDoc-User-Guide-Complete.md</resultFile>
                         
+						<!—
+							This affects links and images. When specified the resulting 
+							file: URLs in the result will be relative to the path specified by
+							”path” if the absulute path of the URL starts with the specified 
+							path. If a plus sign (+) and a prefix path is specified it will be 
+							prefixed to the final URL.  
+						—>
+						 <makeFileLinksRelativeTo>path[+prefix]</makeFileLinksRelativeTo>						 
+						 
 					</htmlGeneratorOptions>
 
                 </configuration>

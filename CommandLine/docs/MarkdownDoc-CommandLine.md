@@ -96,10 +96,16 @@ __--inlineCSS true/false__
 
 __--css text__
     The path to CSS file. 
-    
+ 
+__—makeFileLinksRelativeTo__
+    ”path[+prefix_]”.  This affects links and images. When specified the resulting file: URLs in the result will be relative to the path specified by ”path” if the absulute path of the URL starts with the specified path. If a plus sign (+) and a prefix path is specified it will be prefixed to the final URL.  
+ 
 ## Markdown Generator
 
 __--resultFile text (Required)__
     Where to write the result. 
 
+__—makeFileLinksRelativeTo__
+    ”path[+prefix_]”.  This affects links and images. When specified the resulting file: URLs in the result will be relative to the path specified by ”path” if the absulute path of the URL starts with the specified path. If a plus sign (+) and a prefix path is specified it will be prefixed to the final URL.  
+ 
 

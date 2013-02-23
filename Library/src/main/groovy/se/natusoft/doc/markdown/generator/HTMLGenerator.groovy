@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.3
+ *         1.2.4
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -80,7 +80,7 @@ class HTMLGenerator implements Generator {
      *
      * @param document The document model to generate from.
      * @param opts The options.
-     * @param rootDir The optional root to prefix condfigured path with.
+     * @param rootDir The optional root to prefix configured path with.
      */
     @Override
     public void generate(Doc document, Options opts, File rootDir) throws IOException, GenerateException {
@@ -308,6 +308,16 @@ class HTMLGenerator implements Generator {
         html.tag("strong", strong.text)
     }
 
+    private void writeImage(Image image, HTMLOutput html) {
+        html.tage("img src='" + resolveUrl(image.url, image.parseFile) + "' title='" + image.title + "' alt='" + image.text + "'")
+    }
+
+    private void writeLink(Link link, HTMLOutput html) {
+        html.tag("a href='" + link.url + "' title='" + link.title + "'")
+        html.content(link.text)
+        html.etag("a")
+    }
+
     /**
      * - Adds file: if no protocol is specified.
      * - If file: then resolved to full path if not found with relative path.
@@ -323,42 +333,67 @@ class HTMLGenerator implements Generator {
         if (resolvedUrl.startsWith("file:")) {
             String path = resolvedUrl.substring(5)
             File testFile = new File(path)
+
             if (!testFile.exists()) {
                 // Try relative to parseFile first.
-                File dir = parseFile.parentFile
-                testFile = new File(dir, path)
-                if (testFile.exists()) {
-                    resolvedUrl = "file:" + testFile.absolutePath
+                int ix = parseFile.canonicalPath.lastIndexOf(File.separator)
+                if (ix >= 0) {
+                    String path1 = parseFile.canonicalPath.substring(0, ix + 1) + path
+                    if (this.rootDir != null) {
+                        // The result file is relative to the root dir!
+                        resolvedUrl = "file:" + possiblyMakeRelative(this.rootDir.canonicalPath + File.separator + path1)
+                        testFile = new File(this.rootDir.canonicalPath + File.separator + path1)
+                    }
+                    else {
+                        resolvedUrl = "file:" + possiblyMakeRelative(path1)
+                        testFile = new File(path1)
+                    }
                 }
-                else {
+                if (!testFile.exists()) {
                     // Try relative to result file.
-                    int ix = this.options.resultFile.lastIndexOf(File.separator)
+                    ix = this.options.resultFile.lastIndexOf(File.separator)
                     if (ix >= 0) {
-                        path = this.options.resultFile.substring(0, ix + 1) + path
+                        String path2 = this.options.resultFile.substring(0, ix + 1) + path
                         if (this.rootDir != null) {
                             // The result file is relative to the root dir!
-                            resolvedUrl = "file:" + this.rootDir.absolutePath + File.separator + path
+                            resolvedUrl = "file:" + possiblyMakeRelative(this.rootDir.canonicalPath + File.separator + path2)
                         }
                         else {
-                            resolvedUrl = "file:" + path
+                            resolvedUrl = "file:" + possiblyMakeRelative(path2)
                         }
                     }
                 }
             }
         }
+
         return resolvedUrl
     }
 
-    private void writeImage(Image image, HTMLOutput html) {
-        html.tage("img src='" + resolveUrl(image.url, image.parseFile) + "' title='" + image.title + "' alt='" + image.text + "'")
-    }
+    /**
+     * Checks of a relative path is wanted and if so checks if the specified path can be made relative to the configured
+     * relative path. If so it is made relative.
+     *
+     * @param path The original path to check and convert.
+     *
+     * @return A possibly relative path.
+     */
+    private String possiblyMakeRelative(String path) {
+        String resultPath = path
 
-    private void writeLink(Link link, HTMLOutput html) {
-        html.tag("a href='" + link.url + "' title='" + link.title + "'")
-        html.content(link.text)
-        html.etag("a")
-    }
+        if (this.options.makeFileLinksRelativeTo != null && this.options.makeFileLinksRelativeTo.trim().length() > 0) {
+            String[] relativeToParts = this.options.makeFileLinksRelativeTo.split("\\+")
+            File relFilePath = new File(relativeToParts[0])
+            String expandedRelativePath = relFilePath.canonicalPath
+            if (resultPath.startsWith(expandedRelativePath)) {
+                resultPath = resultPath.substring(expandedRelativePath.length() + 1)
+                if (relativeToParts.length > 1) {
+                    resultPath = relativeToParts[1] + resultPath
+                }
+            }
+        }
 
+        return resultPath
+    }
 
     //
     // Inner Classes

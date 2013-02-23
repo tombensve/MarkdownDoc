@@ -18,9 +18,19 @@ locations in maven can be configured) and I also had the following requirements:
 
 It does also provide a java -jar executable variant. The main functionality is available as a library.
 
-### New In this version
+### Version history
+
+#### 1.2.2
+
+Added support for _&nbsp_ to be able to indent text. This is one more exception to no html passtrhough.
+
+#### 1.2.3
 
 If image paths are not absolute and not http referenced then they are now looked for relative to the source markdown file first, and then the are looked for relative to the result file as before. This makes it easier to generate a big document for a whole project containing several subproject with local makdown documents and referenced images. The image reference can still be relative to the subproject local markdown file.
+
+#### 1.2.4
+
+Added _makeFileLinksRelativeTo_ option for HTMLGenerator and MarkdownGenerator mostly to be able to manipulate _file:_ references to images in the generated result so that the image paths still work in source when editing with a markdown tool and is still correct when generated to a different path. 
 
 ### How markdown is MarkdownDoc ?
 
@@ -62,3 +72,4 @@ as input. These are basically a comma separated list of files, but with the foll
 /my/path/fileset.fs
 
 > The above rules are applied to all file specifications in files having the .fs extension. # are comment lines within .fs files.
+

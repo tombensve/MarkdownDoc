@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.3
+ *         1.2.4
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -294,30 +294,66 @@ class MarkdownGenerator implements Generator {
         if (resolvedUrl.startsWith("file:")) {
             String path = resolvedUrl.substring(5)
             File testFile = new File(path)
+
             if (!testFile.exists()) {
                 // Try relative to parseFile first.
-                File dir = parseFile.parentFile
-                testFile = new File(dir, path)
-                if (testFile.exists()) {
-                    resolvedUrl = "file:" + testFile.absolutePath
+                int ix = parseFile.canonicalPath.lastIndexOf(File.separator)
+                if (ix >= 0) {
+                    String path1 = parseFile.canonicalPath.substring(0, ix + 1) + path
+                    if (this.rootDir != null) {
+                        // The result file is relative to the root dir!
+                        resolvedUrl = "file:" + possiblyMakeRelative(this.rootDir.canonicalPath + File.separator + path1)
+                        testFile = new File(this.rootDir.canonicalPath + File.separator + path1)
+                    }
+                    else {
+                        resolvedUrl = "file:" + possiblyMakeRelative(path1)
+                        testFile = new File(path1)
+                    }
                 }
-                else {
+                if (!testFile.exists()) {
                     // Try relative to result file.
-                    int ix = this.options.resultFile.lastIndexOf(File.separator)
+                    ix = this.options.resultFile.lastIndexOf(File.separator)
                     if (ix >= 0) {
-                        path = this.options.resultFile.substring(0, ix + 1) + path
+                        String path2 = this.options.resultFile.substring(0, ix + 1) + path
                         if (this.rootDir != null) {
                             // The result file is relative to the root dir!
-                            resolvedUrl = "file:" + this.rootDir.absolutePath + File.separator + path
+                            resolvedUrl = "file:" + possiblyMakeRelative(this.rootDir.canonicalPath + File.separator + path2)
                         }
                         else {
-                            resolvedUrl = "file:" + path
+                            resolvedUrl = "file:" + possiblyMakeRelative(path2)
                         }
                     }
                 }
             }
         }
+
         return resolvedUrl
+    }
+
+    /**
+     * Checks of a relative path is wanted and if so checks if the specified path can be made relative to the configured
+     * relative path. If so it is made relative.
+     *
+     * @param path The original path to check and convert.
+     *
+     * @return A possibly relative path.
+     */
+    private String possiblyMakeRelative(String path) {
+        String resultPath = path
+
+        if (this.options.makeFileLinksRelativeTo != null && this.options.makeFileLinksRelativeTo.trim().length() > 0) {
+            String[] relativeToParts = this.options.makeFileLinksRelativeTo.split("\\+")
+            File relFilePath = new File(relativeToParts[0])
+            String expandedRelativePath = relFilePath.canonicalPath
+            if (resultPath.startsWith(expandedRelativePath)) {
+                resultPath = resultPath.substring(expandedRelativePath.length() + 1)
+                if (relativeToParts.length > 1) {
+                    resultPath = relativeToParts[1] + resultPath
+                }
+            }
+        }
+
+        return resultPath
     }
 
 }

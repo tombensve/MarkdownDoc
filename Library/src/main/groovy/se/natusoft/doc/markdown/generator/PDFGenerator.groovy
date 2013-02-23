@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.3
+ *         1.2.4
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -927,27 +927,33 @@ class PDFGenerator implements Generator {
         if (resolvedUrl.startsWith("file:")) {
             String path = resolvedUrl.substring(5)
             File testFile = new File(path)
-            System.out.println("testFile #1: " + testFile)
 
             if (!testFile.exists()) {
                 // Try relative to parseFile first.
-                File dir = parseFile.parentFile
-                testFile = new File(dir, path)
-                System.out.println("testFile #2: " + testFile)
-                if (testFile.exists()) {
-                    resolvedUrl = "file:" + testFile.absolutePath
+                int ix = parseFile.canonicalPath.lastIndexOf(File.separator)
+                if (ix >= 0) {
+                    String path1 = parseFile.canonicalPath.substring(0, ix + 1) + path
+                    if (this.rootDir != null) {
+                        // The result file is relative to the root dir!
+                        resolvedUrl = "file:" + this.rootDir.canonicalPath + File.separator + path1
+                        testFile = new File(this.rootDir.canonicalPath + File.separator + path1)
+                    }
+                    else {
+                        resolvedUrl = "file:" + path1
+                        testFile = new File(path1)
+                    }
                 }
-                else {
+                if (!testFile.exists()) {
                     // Try relative to result file.
-                    int ix = this.options.resultFile.lastIndexOf(File.separator)
+                    ix = this.options.resultFile.lastIndexOf(File.separator)
                     if (ix >= 0) {
-                        path = this.options.resultFile.substring(0, ix + 1) + path
+                        String path2 = this.options.resultFile.substring(0, ix + 1) + path
                         if (this.rootDir != null) {
                             // The result file is relative to the root dir!
-                            resolvedUrl = "file:" + this.rootDir.absolutePath + File.separator + path
+                            resolvedUrl = "file:" + this.rootDir.canonicalPath + File.separator + path2
                         }
                         else {
-                            resolvedUrl = "file:" + path
+                            resolvedUrl = "file:" + path2
                         }
                     }
                 }

@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.3
+ *         1.2.4
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -50,6 +50,11 @@ class MarkdownGeneratorOptions implements Options {
     @Description("Where to write the result.")
     @Required
     String resultFile
+
+    @Option
+    @Name("makeFileLinksRelativeTo")
+    @Description("The path file links should be relative to.")
+    String makeFileLinksRelativeTo = null;
 
     @Option
     @Name("help")
