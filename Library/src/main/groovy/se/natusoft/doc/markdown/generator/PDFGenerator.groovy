@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.2
+ *         1.2.3
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -244,7 +244,6 @@ class PDFGenerator implements Generator {
             switch (docItem.format) {
                 case DocFormat.Comment:
                     // We skip comments, but act on "@PB" within the comment for doing a page break.
-                    boolean isPageBreak = false;
                     Comment comment = (Comment)docItem;
                     if (comment.text.indexOf("@PB") >= 0) {
                         this.documentItems.add(new NewPage())
@@ -276,7 +275,7 @@ class PDFGenerator implements Generator {
                     break
 
                 default:
-                    throw new GenerateException(message: "Unknown format model in Doc! [" + docItem.getClass().getName() + "]")
+                    throw new GenerateException(message: "Unknown format model in Doc! [" + docItem.class.name + "]")
             }
         }
 
@@ -289,8 +288,10 @@ class PDFGenerator implements Generator {
 
         Rectangle pageSize = new Rectangle(PageSize.getRectangle(this.options.pageSize))
         if (this.options.backgroundColor != null) {
-            pageSize.setBackgroundColor(new PDFColor(this.options.backgroundColor))
+            pageSize.backgroundColor = new PDFColor(this.options.backgroundColor)
         }
+
+        // Please note that itext is not really compatible with groovys property access!
 
         Document document = null
         PdfWriter pdfWriter = null
@@ -915,10 +916,10 @@ class PDFGenerator implements Generator {
      * - Adds file: if no protocol is specified.
      * - If file: then resolved to full path if not found with relative path.
      *
-     * @param url
-     * @return
+     * @param url The DocItem item provided url.
+     * @param parseFile The source file of the DocItem item.
      */
-    private String resolveUrl(String url) {
+    private String resolveUrl(String url, File parseFile) {
         String resolvedUrl = url
         if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http:")) {
             resolvedUrl = "file:" + resolvedUrl
@@ -926,15 +927,28 @@ class PDFGenerator implements Generator {
         if (resolvedUrl.startsWith("file:")) {
             String path = resolvedUrl.substring(5)
             File testFile = new File(path)
+            System.out.println("testFile #1: " + testFile)
+
             if (!testFile.exists()) {
-                int ix = this.options.getResultFile().lastIndexOf(File.separator)
-                if (ix >= 0) {
-                    path = this.options.getResultFile().substring(0, ix + 1) + path
-                    if (this.rootDir != null) {
-                        resolvedUrl = "file:" + this.rootDir.getAbsolutePath() + File.separator + path
-                    }
-                    else {
-                        resolvedUrl = "file:" + path
+                // Try relative to parseFile first.
+                File dir = parseFile.parentFile
+                testFile = new File(dir, path)
+                System.out.println("testFile #2: " + testFile)
+                if (testFile.exists()) {
+                    resolvedUrl = "file:" + testFile.absolutePath
+                }
+                else {
+                    // Try relative to result file.
+                    int ix = this.options.resultFile.lastIndexOf(File.separator)
+                    if (ix >= 0) {
+                        path = this.options.resultFile.substring(0, ix + 1) + path
+                        if (this.rootDir != null) {
+                            // The result file is relative to the root dir!
+                            resolvedUrl = "file:" + this.rootDir.absolutePath + File.separator + path
+                        }
+                        else {
+                            resolvedUrl = "file:" + path
+                        }
                     }
                 }
             }
@@ -949,7 +963,7 @@ class PDFGenerator implements Generator {
      * @param pdfParagraph The iText paragraph model to add to.
      */
     private void writeImage(Image image, PDFParagraph pdfParagraph) {
-        PDFImage pdfImage = PDFImage.getInstance(new URL(resolveUrl(image.url)))
+        PDFImage pdfImage = PDFImage.getInstance(new URL(resolveUrl(image.url, image.parseFile)))
         pdfImage.scalePercent(60.0f)
         if (pdfImage != null) {
             pdfParagraph.add(pdfImage)

@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.2
+ *         1.2.3
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -48,6 +48,14 @@ import se.natusoft.doc.markdown.model.*
 class HTMLGenerator implements Generator {
 
     //
+    // Private Members
+    //
+
+    private HTMLGeneratorOptions options
+
+    private File rootDir
+
+    //
     // Methods
     //
 
@@ -76,16 +84,18 @@ class HTMLGenerator implements Generator {
      */
     @Override
     public void generate(Doc document, Options opts, File rootDir) throws IOException, GenerateException {
-        HTMLGeneratorOptions options = (HTMLGeneratorOptions)opts
+        this.options = (HTMLGeneratorOptions)opts
+        this.rootDir = rootDir
+
         def writer //= new FileWriter(rootDir != null ? (rootDir.getPath() + File.separator + options.resultFile) : options.resultFile)
         if (rootDir != null) {
-            writer = new FileWriter(rootDir.getPath() + File.separator + options.resultFile)
+            writer = new FileWriter(rootDir.path + File.separator + this.options.resultFile)
         }
         else {
-            writer = new FileWriter(options.resultFile)
+            writer = new FileWriter(this.options.resultFile)
         }
         try {
-            doGenerate(document, options, writer)
+            doGenerate(document, this.options, writer)
         }
         finally {
             writer.close()
@@ -159,7 +169,7 @@ class HTMLGenerator implements Generator {
                     break
 
                 case DocFormat.HorizontalRule:
-                    writeHorizontalRule((HorizontalRule)docItem, html)
+                    writeHorizontalRule(html)
                     break
 
                 case DocFormat.List:
@@ -167,7 +177,7 @@ class HTMLGenerator implements Generator {
                     break
 
                 default:
-                    throw new GenerateException(message: "Unknown format model in Doc! [" + docItem.getClass().getName() + "]")
+                    throw new GenerateException(message: "Unknown format model in Doc! [" + docItem.class.name + "]")
             }
         }
 
@@ -199,7 +209,7 @@ class HTMLGenerator implements Generator {
         html.etagln("pre")
     }
 
-    private void writeHorizontalRule(HorizontalRule horizontalRule, HTMLOutput html) {
+    private void writeHorizontalRule(HTMLOutput html) {
         html.tage("hr")
     }
 
@@ -280,7 +290,7 @@ class HTMLGenerator implements Generator {
                     break
 
                 default:
-                    throw new GenerateException(message: "Unknown format model in Doc! [" + docItem.getClass().getName() + "]")
+                    throw new GenerateException(message: "Unknown format model in Doc! [" + docItem.class.name + "]")
             }
         }
         html.contentln("")
@@ -298,8 +308,49 @@ class HTMLGenerator implements Generator {
         html.tag("strong", strong.text)
     }
 
+    /**
+     * - Adds file: if no protocol is specified.
+     * - If file: then resolved to full path if not found with relative path.
+     *
+     * @param url The DocItem item provided url.
+     * @param parseFile The source file of the DocItem item.
+     */
+    private String resolveUrl(String url, File parseFile) {
+        String resolvedUrl = url
+        if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http:")) {
+            resolvedUrl = "file:" + resolvedUrl
+        }
+        if (resolvedUrl.startsWith("file:")) {
+            String path = resolvedUrl.substring(5)
+            File testFile = new File(path)
+            if (!testFile.exists()) {
+                // Try relative to parseFile first.
+                File dir = parseFile.parentFile
+                testFile = new File(dir, path)
+                if (testFile.exists()) {
+                    resolvedUrl = "file:" + testFile.absolutePath
+                }
+                else {
+                    // Try relative to result file.
+                    int ix = this.options.resultFile.lastIndexOf(File.separator)
+                    if (ix >= 0) {
+                        path = this.options.resultFile.substring(0, ix + 1) + path
+                        if (this.rootDir != null) {
+                            // The result file is relative to the root dir!
+                            resolvedUrl = "file:" + this.rootDir.absolutePath + File.separator + path
+                        }
+                        else {
+                            resolvedUrl = "file:" + path
+                        }
+                    }
+                }
+            }
+        }
+        return resolvedUrl
+    }
+
     private void writeImage(Image image, HTMLOutput html) {
-        html.tage("img src='" + image.url + "' title='" + image.title + "' alt='" + image.text + "'")
+        html.tage("img src='" + resolveUrl(image.url, image.parseFile) + "' title='" + image.title + "' alt='" + image.text + "'")
     }
 
     private void writeLink(Link link, HTMLOutput html) {
@@ -338,7 +389,7 @@ class HTMLGenerator implements Generator {
          *
          * @return A new string with replacements.
          */
-        private String replace(String content) {
+        private static String replace(String content) {
             return content.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
         }
 

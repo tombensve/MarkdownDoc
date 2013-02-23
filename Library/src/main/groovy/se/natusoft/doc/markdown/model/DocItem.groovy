@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.2
+ *         1.2.3
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -63,6 +63,9 @@ public class DocItem {
     /** This is a rendering hint. */
     boolean renderPrefixedSpace = true
 
+    /** The input file this item comes from. */
+    File parseFile = null;
+
     //
     // Methods
     //
@@ -100,6 +103,17 @@ public class DocItem {
      */
     public void addItem(DocItem docItem) {
         this.items.add(docItem)
+    }
+
+    /**
+     * Adds a list of items.
+     *
+     * @param items the items to add.
+     */
+    public void addItems(JList<DocItem> items) {
+        for (DocItem item : items) {
+            addItem(item);
+        }
     }
 
     /**

@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.2
+ *         1.2.3
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -116,6 +116,8 @@ class JavadocParser implements Parser {
         this.javadoc = null
         this.declaration = null
 
+        Doc localDoc = new Doc();
+
         parseFile.eachLine { line ->
             if (!inJavadocBlock && !inDeclarationBlock && line.trim().startsWith("package")) {
                 this.pkg = line.replaceFirst("package ", "").replace(';', ' ').trim()
@@ -137,13 +139,13 @@ class JavadocParser implements Parser {
                    // (isFieldOrConst(line) || isMethod(line) || isEnumConst(line)) &&
                     this.javadoc != null
             ) {
-                parseDeclarationLine(document, line)
+                parseDeclarationLine(localDoc, line)
                 if (!(isFieldOrConst(line) || isMethod(line) || isEnumConst(line))) {
                     inDeclarationBlock = true;
                 }
             }
             else if (!inJavadocBlock && inDeclarationBlock) {
-                parseDeclarationLine(document, line)
+                parseDeclarationLine(localDoc, line)
             }
 
             return null // Apparently the closure must return something even though it does not make any sense in such a case as this.
@@ -151,13 +153,32 @@ class JavadocParser implements Parser {
 
         Paragraph p = new Paragraph()
         p.addItem(new PlainText(text: "}"))
-        document.addItem(p)
+        localDoc.addItem(p)
 
-        document.addItem(new HorizontalRule())
+        localDoc.addItem(new HorizontalRule())
 
         p = new Paragraph()
         p.addItem("    ")
-        document.addItem(p)
+        localDoc.addItem(p)
+
+        setParseFileOnDocItems(localDoc, parseFile)
+
+        document.addItems(localDoc.items)
+    }
+
+    /**
+     * This will provide the parse file to each DocItem created by this parser run.
+     *
+     * @param docItems
+     * @param parseFile
+     */
+    private void setParseFileOnDocItems(DocItem docItem, File parseFile) {
+        docItem.parseFile = parseFile
+        if (docItem.hasSubItems()) {
+            for (DocItem subDocItem : docItem.items) {
+                setParseFileOnDocItems(subDocItem, parseFile)
+            }
+        }
     }
 
     private boolean isFieldOrConst(String line) {

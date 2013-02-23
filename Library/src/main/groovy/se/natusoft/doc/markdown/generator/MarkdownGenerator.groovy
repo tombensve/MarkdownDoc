@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.2
+ *         1.2.3
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -46,6 +46,13 @@ import se.natusoft.doc.markdown.model.*
  * This is a generator that generates Markdown from a document model.
  */
 class MarkdownGenerator implements Generator {
+    //
+    // Private Members
+    //
+
+    private MarkdownGeneratorOptions options
+
+    private File rootDir
 
     //
     // Methods
@@ -76,16 +83,18 @@ class MarkdownGenerator implements Generator {
      */
     @Override
     public void generate(Doc document, Options opts, File rootDir) throws IOException, GenerateException {
-        MarkdownGeneratorOptions options = (MarkdownGeneratorOptions)opts
+        this.options = (MarkdownGeneratorOptions)opts
+        this.rootDir = rootDir
+
         def writer
         if (rootDir != null) {
-            writer = new FileWriter(rootDir.getPath() + File.separator + options.resultFile)
+            writer = new FileWriter(rootDir.path + File.separator + this.options.resultFile)
         }
         else {
-            writer = new FileWriter(options.resultFile)
+            writer = new FileWriter(this.options.resultFile)
         }
         try {
-            doGenerate(document, options, writer)
+            doGenerate(document, this.options, writer)
         }
         finally {
             writer.close()
@@ -255,7 +264,7 @@ class MarkdownGenerator implements Generator {
     }
 
     private void writeImage(Image image, PrintWriter pw) {
-        pw.print("![" + image.text + "](" + image.url)
+        pw.print("![" + image.text + "](" + resolveUrl(image.url, image.parseFile))
         if (image.title != null && image.title.trim().length() > 0) {
             pw.print(" " + image.title)
         }
@@ -268,6 +277,47 @@ class MarkdownGenerator implements Generator {
             pw.print(" " + link.title)
         }
         pw.print(")")
+    }
+
+    /**
+     * - Adds file: if no protocol is specified.
+     * - If file: then resolved to full path if not found with relative path.
+     *
+     * @param url The DocItem item provided url.
+     * @param parseFile The source file of the DocItem item.
+     */
+    private String resolveUrl(String url, File parseFile) {
+        String resolvedUrl = url
+        if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http:")) {
+            resolvedUrl = "file:" + resolvedUrl
+        }
+        if (resolvedUrl.startsWith("file:")) {
+            String path = resolvedUrl.substring(5)
+            File testFile = new File(path)
+            if (!testFile.exists()) {
+                // Try relative to parseFile first.
+                File dir = parseFile.parentFile
+                testFile = new File(dir, path)
+                if (testFile.exists()) {
+                    resolvedUrl = "file:" + testFile.absolutePath
+                }
+                else {
+                    // Try relative to result file.
+                    int ix = this.options.resultFile.lastIndexOf(File.separator)
+                    if (ix >= 0) {
+                        path = this.options.resultFile.substring(0, ix + 1) + path
+                        if (this.rootDir != null) {
+                            // The result file is relative to the root dir!
+                            resolvedUrl = "file:" + this.rootDir.absolutePath + File.separator + path
+                        }
+                        else {
+                            resolvedUrl = "file:" + path
+                        }
+                    }
+                }
+            }
+        }
+        return resolvedUrl
     }
 
 }

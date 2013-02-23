@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.2
+ *         1.2.3
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -46,6 +46,7 @@ import se.natusoft.doc.markdown.parser.markdown.model.MDImage
 import se.natusoft.doc.markdown.parser.markdown.model.MDLink
 import se.natusoft.doc.markdown.parser.markdown.model.MDList
 import se.natusoft.doc.markdown.model.*
+import java.util.List as JList
 
 /**
  * A parser that parses Markdown.
@@ -157,6 +158,8 @@ public class MarkdownParser implements Parser {
                     }
 
                     if (docItem != null) {
+                        setParseFileOnDocItems(docItem, parseFile)
+
                         doc.addItem(docItem)
                         prevDocItem = docItem
                     }
@@ -166,6 +169,21 @@ public class MarkdownParser implements Parser {
         finally {
             if (lineReader != null) {
                 lineReader.close()
+            }
+        }
+    }
+
+    /**
+     * This will provide the parse file to each DocItem created by this parser run.
+     *
+     * @param docItems
+     * @param parseFile
+     */
+    private void setParseFileOnDocItems(DocItem docItem, File parseFile) {
+        docItem.parseFile = parseFile
+        if (docItem.hasSubItems()) {
+            for (DocItem subDocItem : docItem.items) {
+                setParseFileOnDocItems(subDocItem, parseFile)
             }
         }
     }

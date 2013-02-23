@@ -5,7 +5,7 @@
  *         MarkdownDoc Maven Plugin
  *     
  *     Code Version
- *         1.2.2
+ *         1.2.3
  *     
  *     Description
  *         A maven plugin for generating documentation from markdown.
@@ -54,7 +54,7 @@ public class SourcePath {
     /** If true source files will be searched for recursively, otherwise only in the direct path. */
     private boolean recursive = false;
 
-    /** A regular expression filter to apply to each found file. Example "*.java" */
+    /** A regular expression filter to apply to each found file. Example ".*.java" */
     private String fileRegexpFilter = null;
 
     private File origProjRoot = null;
@@ -140,7 +140,7 @@ public class SourcePath {
      *
      * @param path The path to supply source files for.
      * @param recursive If true source files will be searched for recursively down the file structure.
-     * @param fileRegexpFilter A filter to apply for each file. Example "*.java". This can be null which means no filter.
+     * @param fileRegexpFilter A filter to apply for each file. Example ".*.java". This can be null which means no filter.
      */
     public SourcePath(File path, boolean recursive, String fileRegexpFilter) {
         this.path = path;
@@ -180,7 +180,7 @@ public class SourcePath {
     /**
      * Supply a file filter using a regular expression.
      *
-     * @param fileRegexpFilter A filter to apply for each file. Example "*.java". This can be null which means no filter.
+     * @param fileRegexpFilter A filter to apply for each file. Example ".*.java". This can be null which means no filter.
      */
     public void setFileRegexpFilter(String fileRegexpFilter) {
         this.fileRegexpFilter = fileRegexpFilter;
