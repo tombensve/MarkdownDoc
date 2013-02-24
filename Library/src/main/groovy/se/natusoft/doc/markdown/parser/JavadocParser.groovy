@@ -190,7 +190,7 @@ class JavadocParser implements Parser {
     }
 
     private boolean isMethod(String line) {
-        return line.trim().endsWith("{")
+        return line.trim().endsWith("{") || line.trim().endsWith("{}") || line.trim().endsWith("{ }")
     }
 
     private boolean isEnumConst(String line) {
@@ -287,12 +287,14 @@ class JavadocParser implements Parser {
             }
             else {
                 if (visibility.isPublic() || visibility.isProtected()) {
-                    Strong s = new Strong(text: removeAnnotations(this.declaration.replace(';', ' ').replace('{', ' ').trim()))
+                    Strong s = new Strong(text: removeAnnotations(this.declaration.replace(';', ' ').replace('{', ' ').replace('}', ' ').
+                            trim()))
                     p.addItem(s)
                 }
                 // For interfaces!
                 else if (isInterfaceMethod(this.declaration) && !visibility.isPrivate()) {
-                    Strong s = new Strong(text: removeAnnotations(this.declaration.replace(';', ' ').replace('{', ' ').trim()))
+                    Strong s = new Strong(text: removeAnnotations(this.declaration.replace(';', ' ').replace('{', ' ').replace('}', ' ').
+                            trim()))
                     p.addItem(s)
                 }
                 else if (isEnumConst(this.declaration)) {
