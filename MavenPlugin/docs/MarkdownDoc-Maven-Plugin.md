@@ -38,6 +38,7 @@ and what input files to include. The following example is from the generation of
             Docs/parts/H1LicenseTexts.mdpart,
             Docs/.*-.*.md
         </inputPaths>
+        <parserOptions>option=value,....</parserOptions>
     </generatorOptions>
 
 The current valid argument for `<generator>...</generator>` are _pdf_, _html_, and _md_.
@@ -63,6 +64,7 @@ from the README.md in the root.
 I'm also using this possibility to generate from multiple sources to put the documentation
 for each module project in that project. 
 
+The `<parserOptions>option=value,...</parserOptions>` are passed to each parser. Currently only the _JavadocParser_ has an option: `markdownJavadoc=true`. When this is specified then the class and method descriptions are passed to MarkdownParser instead of being added as text. This is useful in conjunction with using a markdown doclet for javadoc.
 
 ## pdfGeneratorOptions
 

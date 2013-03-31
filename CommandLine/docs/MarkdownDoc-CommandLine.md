@@ -8,6 +8,8 @@ without any arguments you get the following:
     Usage: java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar <generator> --help
            or
            java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar <generator> <fileSpec> --<generator option> ...
+           or
+           java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar <generator> <fileSpec> parserOptions:<parserOptions> —<generator option> ...
 
 What the generator options are depends on the specified generator.
 
@@ -18,13 +20,17 @@ __generator__
 
 This should be either _pdf_, _html_, or _md_.
 
-__filespec__
+__fileSpec__
 
 This is a comma separated list of paths relative to the current directory. The filename
 part of the path can contain regular expressions and the directory part of the path can
 specify .../**/... to mean any levels of subdirectories. 
 
 Example: root/**/docs/.*.md
+
+__parserOptions__
+
+These are in the format ”option=value,...,option=value” with no spaces. Currently there is only one options for the JavadocParser: _markdownJavadoc=true_. When this is specified and java files are part of the input fileSpec then class and method texts are passed to the MarkdownParser instead of being added as text. This can be used in conjunction with a markdown doclet for javadoc.
 
 ## PDF Generator
 
