@@ -18,7 +18,7 @@ __Options__ - This represents options for a generator. It should be seen as a na
 __Parser__ - This represents a parser.
 
 	public interface Parser {
-		public void parse(Doc document, File parseFile) 
+		public void parse(Doc document, File parseFile, Properties parserOptions) 
 		    throws IOException, ParseException;
 	}
 
@@ -72,13 +72,14 @@ it produces a document model looking like this (in markdown format):
     ...
     }
 
-This allows you to include API documentation in your documentation without having to duplicate it.
+This allows you to include API documentation in your documentation without having to duplicate it. Please note that if `markdownJavadoc=true` parser option have been specified then _class javadoc_ and _method javadoc_ will not be ”\>” formatted but passed to the MarkdownParser instead.
 
 Example usage:
 
     Parser parser = new JavadocParser();
     Doc document = new Doc();
-    parser.parse(document, parseFile);
+    Properties parserOptions = new Properties();
+    parser.parse(document, parseFile, parserOptions);
 
 #### se.natusoft.doc.markdown.parser.ParserProvider
 
@@ -89,7 +90,8 @@ Example usage:
 
     Parser parser = ParserProvider.getParserForFile(parseFile);
     Doc document = new Doc();
-    parser.parse(document, parseFie);
+    Properties parserOptions = new Properties();
+    parser.parse(document, parseFie, parserOptions);
 
 ### Generators
 
