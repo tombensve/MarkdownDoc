@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.4
+ *         1.2.5
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -77,6 +77,12 @@ class JavadocParser implements Parser {
     // Most of the members shouldn't be there, but a smarter reading of the file could solve most of this.
 
     //
+    // Constants
+    //
+
+    private static final MARKDOWN_JAVADOC = "markdownJavadoc";
+
+    //
     // Private Members
     //
 
@@ -95,6 +101,9 @@ class JavadocParser implements Parser {
     /** The current declaration found. */
     private String declaration = null
 
+    /** The parser options. */
+    private Properties parserOptions = null;
+
     //
     // Methods
     //
@@ -109,12 +118,27 @@ class JavadocParser implements Parser {
      * @throws ParseException on parse failures.
      */
     @Override
-    void parse(Doc document, File parseFile) throws IOException, ParseException {
+    void parse(Doc document, InputStream parseStream, Properties parserOptions) throws IOException, ParseException {
+        throw new ParseException(message: "Parsing from an InputStream is not supported by this parser!")
+    }
+
+    /**
+     * Parses a java source file and adds its javadoc comments as appropriate markdown models to the passed Doc.
+     *
+     * @param doc The parsed result is added to this.
+     * @param parseFile The file whose content to parse.
+     *
+     * @throws IOException on failure.
+     * @throws ParseException on parse failures.
+     */
+    @Override
+    void parse(Doc document, File parseFile, Properties parserOptions) throws IOException, ParseException {
         this.inJavadocBlock = false
         this.inDeclarationBlock = false
         this.pkg = ""
         this.javadoc = null
         this.declaration = null
+        this.parserOptions = parserOptions
 
         Doc localDoc = new Doc();
 
@@ -378,47 +402,61 @@ class JavadocParser implements Parser {
             }
         }
 
+        DocItem p
+        if (this.parserOptions.getProperty(MARKDOWN_JAVADOC) != null) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream()
+            PrintStream ps = new PrintStream(baos)
+            text.each { line ->
+                ps.println(line)
+            }
+            ps.flush()
+            ps.close()
+            MarkdownParser mdParser = new MarkdownParser()
+            ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray())
+            mdParser.parse(document, bais, this.parserOptions)
+        }
+        else {
+            p = new BlockQuote()
+            PlainText format = new PlainText()
+            boolean preMode = false
 
-        DocItem p = new BlockQuote()
-        PlainText format = new PlainText()
-        boolean preMode = false
-
-        text.each { line ->
-            if (!preMode && line.trim().matches("^<[Pp][Rr][Ee]>.*")) {
-                preMode = true
-                p.addItem(format)
-                document.addItem(p)
-                format = new PlainText()
-                p = new CodeBlock()
-            }
-            else if (preMode && line.trim().matches("^</[Pp][Rr][Ee]>.*")) {
-                preMode = false
-                document.addItem(p)
-                p = new BlockQuote()
-                format = new PlainText()
-            }
-            else if (preMode) {
-                p.addItem(line)
-            }
-            else {
-                line.split("\\s+|>\\s*|</").each { word ->
-                    if (word.matches("^<[Pp].?") ) {
-                        p.addItem(format)
-                        format = new PlainText()
-                        document.addItem(p)
-                        p = new BlockQuote()
-                    }
-                    else if (word.matches("^</[Pp]")) {
-                        // ignore
-                    }
-                    else {
-                        format.text += (word + " ")
+            text.each { line ->
+                if (!preMode && line.trim().matches("^<[Pp][Rr][Ee]>.*")) {
+                    preMode = true
+                    p.addItem(format)
+                    document.addItem(p)
+                    format = new PlainText()
+                    p = new CodeBlock()
+                }
+                else if (preMode && line.trim().matches("^</[Pp][Rr][Ee]>.*")) {
+                    preMode = false
+                    document.addItem(p)
+                    p = new BlockQuote()
+                    format = new PlainText()
+                }
+                else if (preMode) {
+                    p.addItem(line)
+                }
+                else {
+                    line.split("\\s+|>\\s*|</").each { word ->
+                        if (word.matches("^<[Pp].?") ) {
+                            p.addItem(format)
+                            format = new PlainText()
+                            document.addItem(p)
+                            p = new BlockQuote()
+                        }
+                        else if (word.matches("^</[Pp]")) {
+                            // ignore
+                        }
+                        else {
+                            format.text += (word + " ")
+                        }
                     }
                 }
             }
+            p.addItem(format)
+            document.addItem(p)
         }
-        p.addItem(format)
-        document.addItem(p)
 
         if (!classOrInterface) {
 

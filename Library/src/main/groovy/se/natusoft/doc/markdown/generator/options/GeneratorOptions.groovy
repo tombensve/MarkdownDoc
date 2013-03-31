@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.4
+ *         1.2.5
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -66,4 +66,11 @@ class GeneratorOptions {
     @Description("A comma separated list of paths of files to parse as input for one output.")
     @Required
     String inputPaths
+
+    @Option
+    @Name("parserOptions")
+    @Description("This will be passed to each parser and is in the format \"name=value,...,name=value\" no spaces!")
+    @Optional
+    String parserOptions
+
 }

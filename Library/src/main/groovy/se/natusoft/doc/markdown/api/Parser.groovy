@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.4
+ *         1.2.5
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -51,11 +51,24 @@ public interface Parser {
      *
      * @param document The parsed result is added to this.
      * @param parseFile The file whose content to parse.
+     * @param parserOptions options to pass on to the parser.
      *
      * @throws IOException on failure.
      * @throws ParseException on parse failures.
      */
-    public void parse(Doc document, File parseFile) throws IOException, ParseException
+    public void parse(Doc document, File parseFile, Properties parserOptions) throws IOException, ParseException
+
+    /**
+     * Parses a file and adds its document structure to the passed Doc.
+     *
+     * @param document The parsed result is added to this.
+     * @param parseStream The stream whose content to parse.
+     * @param parserOptions options to pass on to the parser.
+     *
+     * @throws IOException on failure.
+     * @throws ParseException on parse failures.
+     */
+    public void parse(Doc document, InputStream parseStream, Properties parserOptions) throws IOException, ParseException
 
     /**
      * Returns true if extension of the passed fileName is valid for this parser.

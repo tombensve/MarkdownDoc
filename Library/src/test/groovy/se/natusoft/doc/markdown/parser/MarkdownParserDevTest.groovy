@@ -20,7 +20,7 @@ class MarkdownParserDevTest extends GroovyTestCase {
             testFile = new File("Library/src/test/resources/test.md") // IntelliJ
         }
         Doc doc = new Doc()
-        parser.parse(doc, testFile)
+        parser.parse(doc, testFile, new Properties())
 
         System.out.println("-------------------------------------------------------------------------------")
         for (DocItem item : doc.items) {

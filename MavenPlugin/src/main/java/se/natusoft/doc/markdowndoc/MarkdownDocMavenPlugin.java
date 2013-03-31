@@ -57,6 +57,7 @@ import se.natusoft.doc.markdown.parser.ParserProvider;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Properties;
 
 /**
  * Goal which touches a timestamp file.
@@ -152,6 +153,14 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
         File projRoot = getRootDir();
         Doc document = new Doc();
         SourcePaths sourcePaths = new SourcePaths(projRoot, generatorOptions.getInputPaths());
+        String parserOptsStr = generatorOptions.getParserOptions();
+        Properties parserOptions = new Properties();
+        if (parserOptsStr != null) {
+            for (String parserOpt : parserOptsStr.split(",")) {
+                String[] nameValue = parserOpt.split("=");
+                parserOptions.put(nameValue[0], nameValue[1]);
+            }
+        }
         if (sourcePaths.hasSourceFiles()) {
             try {
                 System.out.println("Parsing the following files:");
@@ -164,7 +173,7 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
                     if (fileParser == null) {
                         throw new MojoExecutionException("Don't know how to parse '" + sourceFile.getName() + "'!");
                     }
-                    fileParser.parse(document, sourceFile);
+                    fileParser.parse(document, sourceFile, parserOptions);
                 }
                 System.out.println("All parsed!");
             }

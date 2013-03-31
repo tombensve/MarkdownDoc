@@ -53,6 +53,7 @@ import se.natusoft.tools.optionsmgr.OptionsModelException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Properties;
 
 /**
  * This is the main for running from command line.
@@ -73,9 +74,21 @@ public class Main {
             System.exit(-1);
         }
         try {
+            Properties parserOptions = new Properties();
             String selGenerator = args[0].toLowerCase();
             Generator generator = null;
-            int startArg = args[1].startsWith("--") ? 1 : 2;
+            int startArg = 1;
+            if (args.length >= 3 && args[2].startsWith("parserOptions:")) {
+                startArg = 3;
+                String parserOptsStr = args[2].substring(14);
+                for (String parserOpt : parserOptsStr.split(",")) {
+                    String[] nameValue = parserOpt.split("=");
+                    parserOptions.put(nameValue[0], nameValue[1]);
+                }
+            }
+            else {
+                startArg = args[1].startsWith("--") ? 1 : 2;
+            }
 
             generator = GeneratorProvider.getGeneratorByName(selGenerator);
             if (generator == null) {
@@ -91,7 +104,7 @@ public class Main {
             }
             else {
                 String fileSpec = args[1];
-                generate(generator, fileSpec, options);
+                generate(generator, fileSpec, options, parserOptions);
             }
         }
         catch (OptionsModelException ome) {
@@ -130,13 +143,15 @@ public class Main {
     /**
      * Parses the input and generates output.
      *
-     * @param generator
-     * @param fileSpec
-     * @param options
+     * @param generator The generator to run.
+     * @param fileSpec The source files to parse.
+     * @param options The generator options.
+     * @param parserOptions The parser options.
+     *
      * @throws ParseException
      * @throws GenerateException
      */
-    private static void generate(Generator generator, String fileSpec, Options options) throws ParseException, GenerateException, IOException {
+    private static void generate(Generator generator, String fileSpec, Options options, Properties parserOptions) throws ParseException, GenerateException, IOException {
         Doc document = new Doc();
 
         SourcePaths sourcePaths = new SourcePaths(fileSpec);
@@ -150,7 +165,7 @@ public class Main {
                 parseException.setMessage("Don't know how to parse this file!");
                 throw parseException;
             }
-            parser.parse(document, file);
+            parser.parse(document, file, parserOptions);
         }
 
         generator.generate(document, options, null);

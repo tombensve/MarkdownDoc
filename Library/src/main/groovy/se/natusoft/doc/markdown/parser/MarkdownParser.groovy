@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.4
+ *         1.2.5
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -71,7 +71,7 @@ public class MarkdownParser implements Parser {
     private Map<String, Link> links = new HashMap<String, Link>()
 
     /** The file we are parsing. We save this to pass to ParseException. */
-    private String file;
+    private File file;
 
     //
     // Methods
@@ -87,12 +87,26 @@ public class MarkdownParser implements Parser {
      * @throws ParseException on parse failures.
      */
     @Override
-    public void parse(Doc doc, File parseFile) throws IOException, ParseException {
-        this.file = parseFile.toString()
+    public void parse(Doc doc, File parseFile, Properties parserOptions) throws IOException, ParseException {
+        this.file = parseFile
 
+        parse(doc, new FileInputStream(parseFile), parserOptions);
+    }
+
+    /**
+     * Parses a markdown stream and adds its document structure to the passed Doc.
+     *
+     * @param doc The parsed result is added to this.
+     * @param parseStream The stream whose content to parse.
+     *
+     * @throws IOException on failure.
+     * @throws ParseException on parse failures.
+     */
+    @Override
+    public void parse(Doc doc, InputStream parseStream, Properties parserOptions) throws IOException, ParseException {
         LineReader lineReader = null
         try {
-            lineReader = new MDLineReader(new InputStreamReader(new FileInputStream(parseFile)))
+            lineReader = new MDLineReader(new InputStreamReader(parseStream))
 
             DocItem prevDocItem = null
             Stack<DocItem> hierarchyStack = new Stack<DocItem>();
@@ -158,7 +172,7 @@ public class MarkdownParser implements Parser {
                     }
 
                     if (docItem != null) {
-                        setParseFileOnDocItems(docItem, parseFile)
+                        setParseFileOnDocItems(docItem, this.file != null ? this.file : null)
 
                         doc.addItem(docItem)
                         prevDocItem = docItem
@@ -261,7 +275,8 @@ public class MarkdownParser implements Parser {
                 lineReader.readLine()
                 break
 
-            default: throw new ParseException(file: this.file, lineNo: lineReader.lineNo, message: "Bad header found in line: '" + line.toString() + "'!")
+            default: throw new ParseException(file: this.file != null ? this.file.toString() : "stream", lineNo: lineReader.lineNo,
+                    message: "Bad header found in line: '" + line.toString() + "'!")
         }
 
         Header header = new Header(level: level)

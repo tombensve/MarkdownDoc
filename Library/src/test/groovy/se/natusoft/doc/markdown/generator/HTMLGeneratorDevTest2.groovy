@@ -24,7 +24,7 @@ class HTMLGeneratorDevTest2 extends GroovyTestCase {
 
         Parser parser = new MarkdownParser()
         Doc doc = new Doc()
-        parser.parse(doc, testFile)
+        parser.parse(doc, testFile, new Properties())
 
         Generator generator = new HTMLGenerator()
 

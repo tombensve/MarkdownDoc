@@ -5,8 +5,8 @@
 # to change the version number of all tagged versions in the pom.xml files in the project.
 #
 
-version=1.2.4
-oldVersion=1.2.3
+version=1.2.5
+oldVersion=1.2.4
 
 for pom in `find . -name 'pom.xml' -print`
 do
