@@ -48,7 +48,8 @@ Example usage:
 
 	Parser parser = new MarkdownParser();
 	Doc document = new Doc();
-	parser.parse(document, parseFile);
+	Properties parserOptions = new Properties();
+	parser.parse(document, parseFile, parserOptions);
 	
 #### se.natusoft.doc.markdown.parser.JavadocParser
 
