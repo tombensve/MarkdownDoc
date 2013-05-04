@@ -205,19 +205,19 @@ class JavadocParser implements Parser {
         }
     }
 
-    private boolean isFieldOrConst(String line) {
+    private static boolean isFieldOrConst(String line) {
         return line.trim().endsWith(";")
     }
 
-    private boolean isInterfaceMethod(String line) {
+    private static boolean isInterfaceMethod(String line) {
         return (line.contains("(") || line.contains(")")) && line.trim().endsWith(";")
     }
 
-    private boolean isMethod(String line) {
+    private static boolean isMethod(String line) {
         return line.trim().endsWith("{") || line.trim().endsWith("{}") || line.trim().endsWith("{ }")
     }
 
-    private boolean isEnumConst(String line) {
+    private static boolean isEnumConst(String line) {
         return line.replace(',', ' ').trim().split(" ").length == 1 && !line.contains("@")
     }
 
@@ -353,7 +353,7 @@ class JavadocParser implements Parser {
      *
      * @return The update line without annotations.
      */
-    private String removeAnnotations(String line) {
+    private static String removeAnnotations(String line) {
         return line.replaceAll("(@[A-Z,a-z]+){1} ", "")
     }
 
