@@ -136,14 +136,6 @@ This generator produces an HTML document.
 
 This generator produces a Markdown document. So why would we want to generate markdown ? Well, it became needed after I added the JavadocParser. Now I can have both markdown and java files as input and the PDF and HTML files contained the whole result including the javadoc information. The original markdown document however does not have the javadoc parts, and this markdown document is read as is on github and will then not be complete. Therefore I added this generator and moved my real source document into docs/src and also generate a markdown version into docs that will be as complete as the pdf and html version.
 
-#### se.natusoft.doc.markdown.util.MDDocFileHandler
 
-This is a class with one static method that completely handles the _.mddoc_ format.
-
-Usage:
-
-	MDDocFileHandler.execute(”<path to .mddoc file>”);
-	
-This will generate all output formats as specified in the .mddoc file.
 
 

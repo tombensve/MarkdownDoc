@@ -5,7 +5,7 @@
     <parent>
         <artifactId>markdown-doc</artifactId>
         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
-        <version><!--VER-->1.2.5</version>
+        <version><!--VER-->1.2.6</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -50,9 +50,10 @@
                                 <inputPaths>
                                     Docs/parts/H1UserGuide.mdpart,
                                     Docs/MarkdownDoc.md,
-                                    MavenPlugin/docs/.*.md,
                                     CommandLine/docs/.*.md,
+                                    MavenPlugin/docs/.*.md,
                                     Library/docs/.*.md,
+                                    Docs/mddoc.md,
                                     Docs/parts/H1Licenses.mdpart,
                                     Docs/licenses.md,
                                     Docs/parts/H1LicenseTexts.mdpart,

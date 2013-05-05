@@ -20,21 +20,25 @@ It does also provide a java -jar executable variant. The main functionality is a
 
 ### Version history
 
-#### 1.2.2
+#### 1.2.6
 
-Added support for _&nbsp_ to be able to indent text. This is one more exception to no html passtrhough.
+Added the new _.mddoc_ format, which makes command line useage easier, but it is also supported by the maven plugin and the library has a utility that completely handles this format.
 
-#### 1.2.3
+#### 1.2.5 
 
-If image paths are not absolute and not http referenced then they are now looked for relative to the source markdown file first, and then the are looked for relative to the result file as before. This makes it easier to generate a big document for a whole project containing several subproject with local makdown documents and referenced images. The image reference can still be relative to the subproject local markdown file.
+Added _parserOptions_ now used by JavadocParser to markdown parse javadoc comments if markdownJavadoc=true is provided. The Parser API is thus also updated to take a Properties object for the parser options.
 
 #### 1.2.4
 
 Added _makeFileLinksRelativeTo_ option for HTMLGenerator and MarkdownGenerator mostly to be able to manipulate _file:_ references to images in the generated result so that the image paths still work in source when editing with a markdown tool and is still correct when generated to a different path. 
 
-#### 1.2.5 
+#### 1.2.3
 
-Added _parserOptions_ now used by JavadocParser to markdown parse javadoc comments if markdownJavadoc=true is provided. The Parser API is thus also updated to take a Properties object for the parser options.
+If image paths are not absolute and not http referenced then they are now looked for relative to the source markdown file first, and then the are looked for relative to the result file as before. This makes it easier to generate a big document for a whole project containing several subproject with local makdown documents and referenced images. The image reference can still be relative to the subproject local markdown file.
+
+#### 1.2.2
+
+Added support for _&nbsp_ to be able to indent text. This is one more exception to no html passtrhough.
 
 ### How markdown is MarkdownDoc ?
 

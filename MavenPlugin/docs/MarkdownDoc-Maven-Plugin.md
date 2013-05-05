@@ -41,6 +41,8 @@ and what input files to include. The following example is from the generation of
         <parserOptions>option=value,....</parserOptions>
     </generatorOptions>
 
+If the `<inputPaths>...</inputPaths>` section only contain one file of type _.mddoc_ then no other parameters need to be specified, not even `<generator>...</generator>`! In this case all information needed to generate final documents resides in the  _.mddoc_ file. See _’The _mddoc_ file type’_ (section 5) for more information on this file type.
+
 The current valid argument for `<generator>...</generator>` are _pdf_, _html_, and _md_.
 
 The input paths are comma separated and are always relative to the root of the maven project. 
@@ -120,7 +122,7 @@ Following is a complete plugin specification with all options specified:
                         <subject>User Guide</subject>
                         
 						<!-- 
-							This sill be put in PDF metadata. 
+							This will be put in the PDF metadata. 
 							Optional.
 						-->
                         <keywords></keywords>
@@ -183,9 +185,9 @@ Following is a complete plugin specification with all options specified:
 						<!--
 							Specify in R:G:B format to change the text color
 							of code blocks.
-							Optional. Default: 255:255:255 (white)
+							Optional. Default: 0:0:0 (black)
 						-->
-                        <codeColor>255:255:255</codeColor>
+                        <codeColor>0:0:0</codeColor>
                         
 						<!--
 							Set to true to generate a title page. 

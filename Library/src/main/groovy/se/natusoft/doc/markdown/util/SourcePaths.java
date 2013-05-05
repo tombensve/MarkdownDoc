@@ -34,7 +34,9 @@
  *         2012-11-21: Created!
  *         
  */
-package se.natusoft.doc.markdowndoc;
+package se.natusoft.doc.markdown.util;
+
+import se.natusoft.doc.markdown.util.SourcePath;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -44,7 +46,7 @@ import java.util.StringTokenizer;
 /**
  * This handles a comma separated set of SourcePaths.
  */
-class SourcePaths {
+public class SourcePaths {
     //
     // Private Members
     //

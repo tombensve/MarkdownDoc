@@ -10,6 +10,10 @@ without any arguments you get the following:
            java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar <generator> <fileSpec> --<generator option> ...
            or
            java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar <generator> <fileSpec> parserOptions:<parserOptions> —<generator option> ...
+           or
+           java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar <path to a .mddoc file>
+
+The last usage example requires an _.mddoc_ file. See _’The _mddoc_ file type’_ (section 5) for more information on this file type.
 
 What the generator options are depends on the specified generator.
 
@@ -31,6 +35,10 @@ Example: root/**/docs/.*.md
 __parserOptions__
 
 These are in the format ”option=value,...,option=value” with no spaces. Currently there is only one options for the JavadocParser: _markdownJavadoc=true_. When this is specified and java files are part of the input fileSpec then class and method texts are passed to the MarkdownParser instead of being added as text. This can be used in conjunction with a markdown doclet for javadoc.
+
+__generatorOptions__
+
+These depends on the generator being run. 
 
 ## PDF Generator
 

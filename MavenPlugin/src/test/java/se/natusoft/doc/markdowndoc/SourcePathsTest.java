@@ -1,9 +1,9 @@
 package se.natusoft.doc.markdowndoc;
 
 import junit.framework.TestCase;
+import se.natusoft.doc.markdown.util.SourcePaths;
 
 import java.io.File;
-import java.net.URL;
 
 public class SourcePathsTest extends TestCase {
 

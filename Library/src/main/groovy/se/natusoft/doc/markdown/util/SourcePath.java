@@ -34,7 +34,7 @@
  *         2012-11-19: Created!
  *         
  */
-package se.natusoft.doc.markdowndoc;
+package se.natusoft.doc.markdown.util;
 
 import java.io.*;
 import java.util.ArrayList;

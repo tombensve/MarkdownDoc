@@ -5,7 +5,7 @@
  *         MarkdownDoc Maven Plugin
  *     
  *     Code Version
- *         1.2.4
+ *         1.2.6
  *     
  *     Description
  *         A maven plugin for generating documentation from markdown.
@@ -44,8 +44,6 @@ import se.natusoft.doc.markdown.api.Parser;
 import se.natusoft.doc.markdown.exception.GenerateException;
 import se.natusoft.doc.markdown.exception.ParseException;
 import se.natusoft.doc.markdown.generator.GeneratorProvider;
-import se.natusoft.doc.markdown.generator.HTMLGenerator;
-import se.natusoft.doc.markdown.generator.PDFGenerator;
 import se.natusoft.doc.markdown.generator.options.GeneratorOptions;
 import se.natusoft.doc.markdown.generator.options.HTMLGeneratorOptions;
 import se.natusoft.doc.markdown.generator.options.MarkdownGeneratorOptions;
@@ -53,6 +51,8 @@ import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions;
 import se.natusoft.doc.markdown.model.Doc;
 import se.natusoft.doc.markdown.parser.MarkdownParser;
 import se.natusoft.doc.markdown.parser.ParserProvider;
+import se.natusoft.doc.markdown.util.MDDocFileHandler;
+import se.natusoft.doc.markdown.util.SourcePaths;
 
 import java.io.File;
 import java.io.IOException;
@@ -116,6 +116,26 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
      * @throws MojoExecutionException on bad config and other failures.
      */
     public void execute() throws MojoExecutionException {
+        String inputPaths = this.generatorOptions.getInputPaths();
+        if (inputPaths.indexOf(',') == -1 && inputPaths.endsWith(".mddoc")) {
+            try {
+                MDDocFileHandler.execute(inputPaths, true);
+            }
+            catch (ParseException pe) {
+                throw new MojoExecutionException(pe.getMessage(), pe);
+            }
+        }
+        else {
+            executeStd();
+        }
+    }
+
+    /**
+     * Executes this mojo.
+     *
+     * @throws MojoExecutionException on bad config and other failures.
+     */
+    public void executeStd() throws MojoExecutionException {
         Parser parser = null;
         String selParser = this.generatorOptions.getParser().toLowerCase();
         if (selParser.equals("markdown")) {
