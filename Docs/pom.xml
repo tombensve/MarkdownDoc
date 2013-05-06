@@ -54,6 +54,7 @@
                                     MavenPlugin/docs/.*.md,
                                     Library/docs/.*.md,
                                     Docs/mddoc.md,
+                                    Docs/MarkdownReference.md,
                                     Docs/parts/H1Licenses.mdpart,
                                     Docs/licenses.md,
                                     Docs/parts/H1LicenseTexts.mdpart,

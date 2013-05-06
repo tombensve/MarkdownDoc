@@ -120,7 +120,8 @@ public class MarkdownParser implements Parser {
                     switch (line) {
                         case { it.commentStart } : docItem = parseComment    (line, lineReader); break
                         case { it.header       } : docItem = parseHeader     (line, lineReader); break
-                        case { it.list         } : docItem = parseList       (line, lineReader); break
+                        case { it.list && (it.leadingSpaces < 4 || (prevDocItem != null && prevDocItem.isHierarchy)) } :
+                            docItem = parseList       (line, lineReader); break
                         case { it.codeBlock    } : docItem = parseCodeBlock  (line, lineReader); break
                         case { it.blockQuote   } : docItem = parseBlockQuote (line, lineReader); break
                         case { it.horizRuler   } : docItem = new HorizontalRule();               break
@@ -179,6 +180,12 @@ public class MarkdownParser implements Parser {
                     }
                 }
             }
+        }
+        catch (ParseException pe) {
+            throw pe;
+        }
+        catch (Exception e) {
+            throw new ParseException(file: this.file, line: lineReader.getLastReadLine(), lineNo: lineReader.getLineNo(), message: "Unknown error", cause: e)
         }
         finally {
             if (lineReader != null) {

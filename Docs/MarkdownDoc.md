@@ -18,6 +18,19 @@ locations in maven can be configured) and I also had the following requirements:
 
 It does also provide a java -jar executable variant. The main functionality is available as a library.
 
+In short MarkdownDoc provides the following:
+
+* Markdown document model.
+* Markdown parser.
+* Javadoc comment parser.
+* PDF generator.
+* HTML generator.
+* Markdown generator.
+* java -jar commandline executable.
+* Maven plugin.
+
+Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdown](http://daringfireball.net/projects/markdown) document format, and to [iText Software Corp.](http://itextpdf.com) for making an excellent easy to use PDF library and making it available as open source. 
+
 ### Version history
 
 #### 1.2.6

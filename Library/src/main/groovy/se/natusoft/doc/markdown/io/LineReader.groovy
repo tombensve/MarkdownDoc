@@ -53,6 +53,8 @@ public class LineReader {
     /** The current line number. */
     private int lineNo = 1
 
+    private Line lastReadLine = null
+
     //
     // Constructors
     //
@@ -101,6 +103,7 @@ public class LineReader {
 
         ++this.lineNo
 
+        this.lastReadLine = line
         return line
     }
 
@@ -122,11 +125,12 @@ public class LineReader {
      * @throws IOException on any I/O failure.
      */
     public Line peekNextLine() throws IOException {
+        Line saveLastReadLine = this.lastReadLine
         Line line = readLine()
         if (line != null) {
             pushBackLine(line)
         }
-
+        this.lastReadLine = saveLastReadLine
         return line
     }
 
@@ -154,6 +158,13 @@ public class LineReader {
      */
     public int getLineNo() {
         return this.lineNo
+    }
+
+    /**
+     * Returns the last read line.
+     */
+    public Line getLastReadLine() {
+        return this.lastReadLine
     }
 
     /**
