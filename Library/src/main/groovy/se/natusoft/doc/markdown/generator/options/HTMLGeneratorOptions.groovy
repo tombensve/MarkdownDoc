@@ -65,6 +65,12 @@ class HTMLGeneratorOptions implements Options {
     String css = null
 
     @Option
+    @Name("primitiveHMTL")
+    @Description("When true very primitive HMTL will be generated. This will work for rendering with JEditorPane.")
+    @Optional
+    boolean primitiveHTML = false
+
+    @Option
     @Name("makeFileLinksRelativeTo")
     @Description("The path file links should be relative to.")
     String makeFileLinksRelativeTo = null;

@@ -236,6 +236,28 @@ class PDFGenerator implements Generator {
      */
     @Override
     public void generate(Doc doc, Options opts, File rootDir) throws IOException, GenerateException {
+        File resultFile = rootDir != null ? new File(rootDir, opts.resultFile) : new File(opts.resultFile)
+        FileOutputStream resultStream = new FileOutputStream(resultFile)
+        try {
+            generate(doc, opts, rootDir, resultStream)
+        }
+        finally {
+            resultStream.close()
+        }
+    }
+
+    /**
+     * Generates output from DocItem model.
+     *
+     * @param document The model to generate from.
+     * @param options The generator options.
+     * @param rootDir The optional root directory to prefix configured output with. Can be null.
+     * @param resultStream The stream to write the result to.
+     *
+     * @throws IOException on I/O failures.
+     * @throws GenerateException on other failures to generate target.
+     */
+    public void generate(Doc doc, Options opts, File rootDir, OutputStream resultStream) throws IOException, GenerateException {
         initRun()
         this.options = (PDFGeneratorOptions)opts
         this.rootDir = rootDir
@@ -327,8 +349,7 @@ class PDFGenerator implements Generator {
         document = new Document()
         document.setPageSize(pageSize)
 
-        File resultFile = this.rootDir != null ? new File(this.rootDir, this.options.resultFile) : new File(this.options.resultFile)
-        pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(resultFile))
+        pdfWriter = PdfWriter.getInstance(document, resultStream)
         pdfWriter.setPdfVersion(PdfWriter.PDF_VERSION_1_7)
         pdfWriter.setFullCompression()
         pdfWriter.setPageEvent(new PageEventHandler())

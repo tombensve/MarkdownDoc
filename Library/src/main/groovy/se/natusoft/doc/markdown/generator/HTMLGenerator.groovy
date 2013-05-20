@@ -103,6 +103,27 @@ class HTMLGenerator implements Generator {
     }
 
     /**
+     * Generates output from DocItem model.
+     *
+     * @param document The model to generate from.
+     * @param options The generator options.
+     * @param rootDir The optional root directory to prefix configured output with. Can be null.
+     * @param resultStream The stream to write the result to.
+     *
+     * @throws IOException on I/O failures.
+     * @throws GenerateException on other failures to generate target.
+     */
+    @Override
+    public void generate(Doc document, Options opts, File rootDir, OutputStream resultStream) throws IOException, GenerateException {
+        this.options = (HTMLGeneratorOptions)opts
+        this.rootDir = rootDir
+        OutputStreamWriter resultWriter = new OutputStreamWriter(resultStream)
+        doGenerate(document, this.options, resultWriter)
+        resultWriter.close()
+    }
+
+
+    /**
      * The main API for the generator. This does the job!
      *
      * @param document The document model to generate from.
@@ -113,17 +134,29 @@ class HTMLGenerator implements Generator {
         PrintWriter printWriter = new PrintWriter(writer)
         def html = new HTMLOutput(pw: printWriter)
 
-        printWriter.println("<!DOCTYPE html>")
+        if (!options.primitiveHTML) {
+            printWriter.println("<!DOCTYPE html>")
+        }
         html.tagln("html")
         html.tagln("head")
-        html.tage("meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"")
-        html.ln()
-        html.tage("meta name=\"generated-by\" content=\"MarkdownDoc\"")
-        html.ln()
+        if (!options.primitiveHTML) {
+            html.tage("meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"")
+            html.ln()
+            html.tage("meta name=\"generated-by\" content=\"MarkdownDoc\"")
+            html.ln()
+        }
         if (options.css != null && options.css.trim().length() > 0) {
             if (options.inlineCSS) {
                 html.tagln("style type=\"text/css\"")
-                BufferedReader reader = new BufferedReader(new FileReader(options.css))
+                BufferedReader reader = null;
+                if (options.css.startsWith("classpath:")) {
+                    String css = options.css.substring(10)
+                    InputStream inStream = ClassLoader.getSystemResourceAsStream(css)
+                    reader = new BufferedReader(new InputStreamReader(inStream))
+                }
+                else {
+                    reader = new BufferedReader(new FileReader(options.css))
+                }
                 String line = reader.readLine()
                 while (line != null) {
                     html.doIndent()
@@ -336,7 +369,7 @@ class HTMLGenerator implements Generator {
 
             if (!testFile.exists()) {
                 // Try relative to parseFile first.
-                int ix = parseFile.canonicalPath.lastIndexOf(File.separator)
+                int ix = parseFile != null ? parseFile.canonicalPath.lastIndexOf(File.separator) : -1
                 if (ix >= 0) {
                     String path1 = parseFile.canonicalPath.substring(0, ix + 1) + path
                     if (this.rootDir != null) {
@@ -351,7 +384,7 @@ class HTMLGenerator implements Generator {
                 }
                 if (!testFile.exists()) {
                     // Try relative to result file.
-                    ix = this.options.resultFile.lastIndexOf(File.separator)
+                    ix = this.options.resultFile != null ? this.options.resultFile.lastIndexOf(File.separator) : -1
                     if (ix >= 0) {
                         String path2 = this.options.resultFile.substring(0, ix + 1) + path
                         if (this.rootDir != null) {

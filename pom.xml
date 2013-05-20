@@ -13,6 +13,7 @@
         <module>Library</module>
         <module>MavenPlugin</module>
         <module>CommandLine</module>
+        <module>Editor</module>
     </modules>
 
     <name>MarkdownDoc</name>

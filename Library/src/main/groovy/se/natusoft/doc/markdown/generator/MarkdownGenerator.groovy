@@ -39,6 +39,7 @@ package se.natusoft.doc.markdown.generator
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.exception.GenerateException
+import se.natusoft.doc.markdown.generator.options.HTMLGeneratorOptions
 import se.natusoft.doc.markdown.generator.options.MarkdownGeneratorOptions
 import se.natusoft.doc.markdown.model.*
 
@@ -94,7 +95,7 @@ class MarkdownGenerator implements Generator {
             writer = new FileWriter(this.options.resultFile)
         }
         try {
-            doGenerate(document, this.options, writer)
+            doGenerate(document, writer)
         }
         finally {
             writer.close()
@@ -102,12 +103,30 @@ class MarkdownGenerator implements Generator {
     }
 
     /**
+     * Generates output from DocItem model.
+     *
+     * @param document The model to generate from.
+     * @param options The generator options.
+     * @param rootDir The optional root directory to prefix configured output with. Can be null.
+     * @param resultStream The stream to write the result to.
+     *
+     * @throws IOException on I/O failures.
+     * @throws GenerateException on other failures to generate target.
+     */
+    @Override
+    public void generate(Doc document, Options opts, File rootDir, OutputStream resultStream) throws IOException, GenerateException {
+        this.options = (MarkdownGeneratorOptions)opts
+        this.rootDir = rootDir
+        OutputStreamWriter resultWriter = new OutputStreamWriter(resultStream)
+        doGenerate(document, resultWriter)
+    }
+/**
      * The main API for the generator. This does the job!
      *
      * @param document The document model to generate from.
      * @param options The options.
      */
-    private void doGenerate(Doc document, MarkdownGeneratorOptions options, Writer writer) throws IOException, GenerateException {
+    private void doGenerate(Doc document, Writer writer) throws IOException, GenerateException {
 
         PrintWriter pw = new PrintWriter(writer)
 
