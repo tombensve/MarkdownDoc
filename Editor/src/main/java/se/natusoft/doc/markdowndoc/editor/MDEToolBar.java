@@ -33,14 +33,14 @@ class MDEToolBar extends JToolBar {
      * @param function The function to add.
      */
     public void addFunction(EditorFunction function) {
-        if (!this.toolBarGroups.contains(function.getToolBarGroup())) {
-            this.toolBarGroups.add(function.getToolBarGroup());
+        if (!this.toolBarGroups.contains(function.getGroup())) {
+            this.toolBarGroups.add(function.getGroup());
         }
 
-        List<EditorFunction> groupFunctions = this.functions.get(function.getToolBarGroup());
+        List<EditorFunction> groupFunctions = this.functions.get(function.getGroup());
         if (groupFunctions == null) {
             groupFunctions = new LinkedList<EditorFunction>();
-            this.functions.put(function.getToolBarGroup(), groupFunctions);
+            this.functions.put(function.getGroup(), groupFunctions);
         }
 
         groupFunctions.add(function);

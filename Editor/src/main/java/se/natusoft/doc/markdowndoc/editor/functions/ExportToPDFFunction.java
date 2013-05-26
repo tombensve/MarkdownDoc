@@ -47,8 +47,13 @@ public class ExportToPDFFunction implements EditorFunction {
     }
 
     @Override
-    public String getToolBarGroup() {
+    public String getGroup() {
         return ToolBarGroups.export.name();
+    }
+
+    @Override
+    public String getName() {
+        return "Export to PDF";
     }
 
     @Override

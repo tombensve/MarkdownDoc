@@ -73,8 +73,13 @@ public class PreviewFunction implements EditorFunction, KeyListener {
     }
 
     @Override
-    public String getToolBarGroup() {
+    public String getGroup() {
         return ToolBarGroups.preview.name();
+    }
+
+    @Override
+    public String getName() {
+        return "Preview";
     }
 
     @Override
@@ -129,7 +134,7 @@ public class PreviewFunction implements EditorFunction, KeyListener {
         }
         catch (Exception e) {
             JOptionPane.showMessageDialog(
-                    this.editor.getWindowFrame(), e.getMessage(), "Preview error!", JOptionPane.ERROR_MESSAGE);
+                    this.editor.getGUI().getWindowFrame(), e.getMessage(), "Preview error!", JOptionPane.ERROR_MESSAGE);
         }
     }
 

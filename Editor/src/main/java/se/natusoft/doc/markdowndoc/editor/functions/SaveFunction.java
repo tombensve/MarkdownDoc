@@ -58,8 +58,13 @@ public class SaveFunction implements EditorFunction {
     }
 
     @Override
-    public String getToolBarGroup() {
+    public String getGroup() {
         return ToolBarGroups.file.name();
+    }
+
+    @Override
+    public String getName() {
+        return "Save file";
     }
 
     @Override
@@ -90,7 +95,7 @@ public class SaveFunction implements EditorFunction {
         }
         catch (IOException ioe) {
             JOptionPane.showMessageDialog(
-                    this.editor.getWindowFrame(), ioe.getMessage(), "Failed to save!", JOptionPane.ERROR_MESSAGE);
+                    this.editor.getGUI().getWindowFrame(), ioe.getMessage(), "Failed to save!", JOptionPane.ERROR_MESSAGE);
 
         }
     }
@@ -111,7 +116,7 @@ public class SaveFunction implements EditorFunction {
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "Markdown", "md", "markdown");
         fileChooser.setFileFilter(filter);
-        int returnVal = fileChooser.showOpenDialog(this.editor.getWindowFrame());
+        int returnVal = fileChooser.showOpenDialog(this.editor.getGUI().getWindowFrame());
         if(returnVal == JFileChooser.APPROVE_OPTION) {
             saveAs(fileChooser.getSelectedFile());
         }

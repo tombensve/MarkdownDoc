@@ -27,8 +27,13 @@ public class CutSelectionFunction implements EditorFunction {
     }
 
     @Override
-    public String getToolBarGroup() {
+    public String getGroup() {
         return null;
+    }
+
+    @Override
+    public String getName() {
+        return "Cut";
     }
 
     @Override

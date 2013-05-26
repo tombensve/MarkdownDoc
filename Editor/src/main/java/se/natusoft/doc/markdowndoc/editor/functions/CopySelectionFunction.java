@@ -27,8 +27,13 @@ public class CopySelectionFunction implements EditorFunction {
     }
 
     @Override
-    public String getToolBarGroup() {
+    public String getGroup() {
         return null;
+    }
+
+    @Override
+    public String getName() {
+        return "Copy";
     }
 
     @Override

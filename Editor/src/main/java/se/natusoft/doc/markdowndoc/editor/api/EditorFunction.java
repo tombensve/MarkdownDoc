@@ -7,20 +7,18 @@ import javax.swing.*;
 /**
  * This represents an editor function.
  */
-public interface EditorFunction {
-
-    /**
-     * Sets the editor for the function to use.
-     *
-     * @param editor The editor to set.
-     */
-    void setEditor(Editor editor);
+public interface EditorFunction extends EditorComponent {
 
     /**
      * Returns the group in the tool bar this functions should be placed in.
      * A new group will be created if the named group does not exist.
      */
-    String getToolBarGroup();
+    String getGroup();
+
+    /**
+     * Returns the name of the function.
+     */
+    String getName();
 
     /**
      * Returns this functions toolbar button or null if it does not have one.

@@ -13,6 +13,16 @@ import java.io.IOException;
 public interface Editor {
 
     /**
+     * Returns the editor GUI API.
+     */
+    GUI getGUI();
+
+    /**
+     * Returns the config API.
+     */
+    Config getConfig();
+
+    /**
      * Returns the current file or null if none.
      */
     File getCurrentFile();
@@ -93,11 +103,6 @@ public interface Editor {
      * Requests focus for the editor.
      */
     void requestEditorFocus();
-
-    /**
-     * Needed for popping upp dialogs.
-     */
-    JFrame getWindowFrame();
 
     /**
      * Opens a new editor window.

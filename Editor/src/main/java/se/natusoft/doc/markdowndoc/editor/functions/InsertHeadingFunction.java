@@ -51,8 +51,13 @@ public class InsertHeadingFunction implements EditorFunction {
     }
 
     @Override
-    public String getToolBarGroup() {
+    public String getGroup() {
         return ToolBarGroups.format.name();
+    }
+
+    @Override
+    public String getName() {
+        return "Insert heading format";
     }
 
     @Override

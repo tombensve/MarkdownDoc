@@ -50,8 +50,13 @@ public class InsertListFunction implements EditorFunction {
     }
 
     @Override
-    public String getToolBarGroup() {
+    public String getGroup() {
         return ToolBarGroups.format.name();
+    }
+
+    @Override
+    public String getName() {
+        return "Insert list format";
     }
 
     @Override

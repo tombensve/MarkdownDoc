@@ -10,7 +10,7 @@ import java.awt.event.KeyEvent;
 /**
  * This filter provides context help in the editor.
  */
-public class ContextHelpFilter implements EditorInputFilter {
+public class ContextFormatFilter implements EditorInputFilter {
     //
     // Private Members
     //

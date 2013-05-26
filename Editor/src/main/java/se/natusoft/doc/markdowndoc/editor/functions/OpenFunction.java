@@ -61,8 +61,13 @@ public class OpenFunction implements EditorFunction {
     }
 
     @Override
-    public String getToolBarGroup() {
+    public String getGroup() {
         return ToolBarGroups.file.name();
+    }
+
+    @Override
+    public String getName() {
+        return "Open file";
     }
 
     @Override
@@ -99,7 +104,7 @@ public class OpenFunction implements EditorFunction {
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "Markdown", "md", "markdown");
         fileChooser.setFileFilter(filter);
-        int returnVal = fileChooser.showOpenDialog(this.editor.getWindowFrame());
+        int returnVal = fileChooser.showOpenDialog(this.editor.getGUI().getWindowFrame());
         if(returnVal == JFileChooser.APPROVE_OPTION) {
             this.editor.loadFile(fileChooser.getSelectedFile());
         }

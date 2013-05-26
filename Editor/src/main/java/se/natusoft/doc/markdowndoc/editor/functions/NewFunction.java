@@ -50,8 +50,13 @@ public class NewFunction implements EditorFunction {
     }
 
     @Override
-    public String getToolBarGroup() {
+    public String getGroup() {
         return ToolBarGroups.file.name();
+    }
+
+    @Override
+    public String getName() {
+        return "New editor window";
     }
 
     @Override

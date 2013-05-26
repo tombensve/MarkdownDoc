@@ -1,11 +1,9 @@
 package se.natusoft.doc.markdowndoc.editor;
 
 import se.natusoft.doc.markdowndoc.editor.adapters.WindowListenerAdapter;
-import se.natusoft.doc.markdowndoc.editor.api.Editor;
-import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
-import se.natusoft.doc.markdowndoc.editor.api.EditorInputFilter;
-import se.natusoft.doc.markdowndoc.editor.api.Line;
+import se.natusoft.doc.markdowndoc.editor.api.*;
 import se.natusoft.doc.markdowndoc.editor.api.providers.JELine;
+import se.natusoft.doc.markdowndoc.editor.config.*;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -25,23 +23,114 @@ import java.util.List;
 /**
  * This is an editor for editing markdown documents.
  */
-public class MarkdownEditor extends JFrame implements Editor, KeyListener {
+public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
     //
     // Private Members
     //
 
     private MDEToolBar toolBar;
     private JPanel editorPanel;
+    private JPanel editorTopPanel;
+    private JPanel editorBottomPanel;
+    private JPanel editorLeftPanel;
+    private JPanel editorRightPanel;
     private JScrollPane scrollPane;
     private JEditorPane editor;
     private File currentFile;
     private static int instanceCount = 0;
-    private java.util.List<EditorFunction> functions = new LinkedList<EditorFunction>();
-    private static ServiceLoader<EditorFunction> functionLoader = ServiceLoader.load(EditorFunction.class);
-    private List<EditorInputFilter> filters = new LinkedList<EditorInputFilter>();
-    private static ServiceLoader<EditorInputFilter> filterLoader = ServiceLoader.load(EditorInputFilter.class);
     private KeyEvent currentPressedEvent = null;
     private int keyPressedCaretPos = 0;
+
+    private ConfigHolder configs = new ConfigHolder();
+
+    private List<EditorFunction> functions = new LinkedList<EditorFunction>();
+    private List<EditorInputFilter> filters = new LinkedList<EditorInputFilter>();
+
+    private static ServiceLoader<EditorComponent> componentLoader = ServiceLoader.load(EditorComponent.class);
+
+    //
+    // Configuration
+    //
+
+    private ValidSelectionConfigEntry fontConfig =
+            new ValidSelectionConfigEntry("editor.pane.font", "The font to use.", "Helvetica",
+                    new ValidSelectionConfigEntry.ValidValues() {
+                        @Override
+                        public String[] validValues() {
+                            GraphicsEnvironment gEnv = GraphicsEnvironment
+                                    .getLocalGraphicsEnvironment();
+                            return gEnv.getAvailableFontFamilyNames();
+                        }
+                    },
+                    new ConfigEntry.ConfigChanged() {
+                @Override
+                public void configChanged(ConfigEntry ce) {
+                    editor.setFont(Font.decode(ce.getValue()).deriveFont(Float.valueOf(fontSizeConfig.getValue())));
+                }
+            });
+
+    private DoubleConfigEntry fontSizeConfig =
+            new DoubleConfigEntry("editor.pane.font.size", "The size of the font.", 16.0, 8.0, 50.0, new ConfigEntry.ConfigChanged() {
+                @Override
+                public void configChanged(ConfigEntry ce) {
+                    editor.setFont(Font.decode(fontConfig.getValue()).deriveFont(Float.valueOf(ce.getValue())));
+                }
+            });
+
+    private ColorConfigEntry backgroundColorConfig =
+            new ColorConfigEntry("editor.pane.background.color", "The editor background color.", 240, 240, 240,
+                    new ConfigEntry.ConfigChanged() {
+                        @Override
+                        public void configChanged(ConfigEntry ce) {
+                            editor.setBackground(new ConfigColor(ce));
+                        }
+                    });
+
+    private ColorConfigEntry foregroundColorConfig =
+            new ColorConfigEntry("editor.pane.foreground.color", "The editor text color.", 80, 80, 80,
+                    new ConfigEntry.ConfigChanged() {
+                        @Override
+                        public void configChanged(ConfigEntry ce) {
+                            editor.setForeground(new ConfigColor(ce));
+                        }
+                    });
+
+    private ValidSelectionConfigEntry lookAndFeelConfig =
+            new ValidSelectionConfigEntry("editor.lookandfeel", "The LookAndFeel to use.",
+                    UIManager.getSystemLookAndFeelClassName(),
+                    new ValidSelectionConfigEntry.ValidValues() {
+                        @Override
+                        public String[] validValues() {
+                            String[] vv = new String[UIManager.getInstalledLookAndFeels().length];
+                            int i = 0;
+                            for (UIManager.LookAndFeelInfo lfi : UIManager.getInstalledLookAndFeels()) {
+                                vv[i++] = lfi.getClassName();
+                            }
+                            return vv;
+                        }
+                    },
+                    new ConfigEntry.ConfigChanged() {
+                        @Override
+                        public void configChanged(ConfigEntry ce) {
+                            try {
+                                Dimension size = MarkdownEditor.this.getSize();
+                                UIManager.setLookAndFeel(ce.getValue());
+                                SwingUtilities.updateComponentTreeUI(MarkdownEditor.this);  // update awt
+                                MarkdownEditor.this.pack();
+                                MarkdownEditor.this.setSize(size);
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                            } catch (InstantiationException e) {
+                                e.printStackTrace();
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (UnsupportedLookAndFeelException e) {
+                                e.printStackTrace();
+                            }
+                            //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel")
+                        }
+                    }
+            );
 
     //
     // Constructors
@@ -51,6 +140,12 @@ public class MarkdownEditor extends JFrame implements Editor, KeyListener {
      * Creates a new MarkdownEditor instance.
      */
     public MarkdownEditor() {
+    }
+
+    /**
+     * Sets up the gui, etc.
+     */
+    public void initGUI() {
         addWindowListener(new WindowListenerAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -59,6 +154,31 @@ public class MarkdownEditor extends JFrame implements Editor, KeyListener {
             }
 
         });
+
+        // Register configs
+
+        this.configs.registerConfig(this.fontConfig);
+        this.configs.registerConfig(this.fontSizeConfig);
+        this.configs.registerConfig(this.backgroundColorConfig);
+        this.configs.registerConfig(this.foregroundColorConfig);
+        this.configs.registerConfig(lookAndFeelConfig);
+
+        // Set Look and Feel
+
+        if (lookAndFeelConfig.getValue().length() > 0) {
+            try {
+                UIManager.setLookAndFeel(lookAndFeelConfig.getValue());
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (UnsupportedLookAndFeelException e) {
+                e.printStackTrace();
+            }
+            //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel")
+        }
 
         // Main Window
 
@@ -86,13 +206,6 @@ public class MarkdownEditor extends JFrame implements Editor, KeyListener {
             }
 
         };
-        this.editor.setBackground(new Color(200, 200, 200));
-        this.editor.setForeground(new Color(100, 100, 100));
-        this.editor.setFont(Font.decode("Helvetica").deriveFont(16));
-        this.editor.setMargin(new Insets(20, 30, 20, 30));
-        this.editor.setCaret(new MDECaret());
-
-        this.editor.addKeyListener(this);
 
         // Setup active view
 
@@ -106,21 +219,29 @@ public class MarkdownEditor extends JFrame implements Editor, KeyListener {
         this.editorPanel.add(scrollPane, BorderLayout.CENTER);
         add(this.editorPanel, BorderLayout.CENTER);
 
-        // Functions
+        // Load awt
 
-        for (EditorFunction function : functionLoader) {
-            function.setEditor(this);
-            this.functions.add(function);
+        for (EditorComponent component : componentLoader) {
+            component.setEditor(this);
+
+            if (component instanceof EditorFunction) {
+                this.functions.add((EditorFunction) component);
+            }
+
+            if (component instanceof EditorInputFilter) {
+                this.filters.add((EditorInputFilter) component);
+            }
         }
 
+        // Additional setup now that a component have possibly loaded config.
 
-        // Filters
+        this.editor.setBackground(new ConfigColor(backgroundColorConfig));
+        this.editor.setForeground(new ConfigColor(foregroundColorConfig));
+        this.editor.setFont(Font.decode(fontConfig.getValue()).deriveFont(Float.valueOf(fontSizeConfig.getValue())));
+        this.editor.setMargin(new Insets(20, 30, 20, 30));
+        this.editor.setCaret(new MDECaret());
 
-        for (EditorInputFilter filter : filterLoader) {
-            filter.setEditor(this);
-            this.filters.add(filter);
-        }
-
+        this.editor.addKeyListener(this);
 
         // Toolbar
 
@@ -128,20 +249,78 @@ public class MarkdownEditor extends JFrame implements Editor, KeyListener {
         for (EditorFunction function : this.functions) {
 
             // It is OK to not have a tool bar button!
-            if (function.getToolBarGroup() != null && function.getToolBarButton() != null) {
+            if (function.getGroup() != null && function.getToolBarButton() != null) {
                 this.toolBar.addFunction(function);
             }
 
         }
 
         this.toolBar.createToolBarContent();
-        add(toolBar, BorderLayout.NORTH);
+        this.editorPanel.add(toolBar, BorderLayout.NORTH);
 
     }
 
     //
     // Methods
     //
+
+    /**
+     * Returns the editor GUI API.
+     */
+    public GUI getGUI() {
+        return this;
+    }
+
+    /**
+     * Returns the panel above the editor and toolbar.
+     */
+    public JPanel getTopPanel() {
+        if (this.editorTopPanel == null) {
+            this.editorTopPanel = new JPanel();
+            add(this.editorTopPanel, BorderLayout.NORTH);
+        }
+        return this.editorTopPanel;
+    }
+
+    /**
+     * Returns the panel below the editor and toolbar.
+     */
+    public JPanel getBottomPanel() {
+        if (this.editorBottomPanel == null) {
+            this.editorBottomPanel = new JPanel();
+            add(this.editorBottomPanel, BorderLayout.SOUTH);
+        }
+        return this.editorBottomPanel;
+    }
+
+    /**
+     * Returns the panel to the left of the editor and toolbar.
+     */
+    public JPanel getLeftPanel() {
+        if (this.editorLeftPanel == null) {
+            this.editorLeftPanel = new JPanel();
+            add(this.editorLeftPanel, BorderLayout.WEST);
+        }
+        return this.editorLeftPanel;
+    }
+
+    /**
+     * Returns the panel to the right of the editor and toolbar.
+     */
+    public JPanel getRightPanel() {
+        if (this.editorRightPanel == null) {
+            this.editorRightPanel = new JPanel();
+            add(this.editorRightPanel, BorderLayout.EAST);
+        }
+        return this.editorRightPanel;
+    }
+
+    /**
+     * Returns the config API.
+     */
+    public Config getConfig() {
+        return this.configs;
+    }
 
     // KeyListener Implementation.
 
@@ -250,7 +429,7 @@ public class MarkdownEditor extends JFrame implements Editor, KeyListener {
             --i;
         }
 
-        return new JELine(this.editor,i);
+        return new JELine(this.editor, i);
     }
 
     /**
@@ -327,8 +506,7 @@ public class MarkdownEditor extends JFrame implements Editor, KeyListener {
     public void openNewEditorWindow() {
         try {
             openEditor(null);
-        }
-        catch (IOException ioe) {
+        } catch (IOException ioe) {
             JOptionPane.showMessageDialog(
                     this, ioe.getMessage(), "Failed to open new editor!", JOptionPane.ERROR_MESSAGE);
         }
@@ -391,7 +569,6 @@ public class MarkdownEditor extends JFrame implements Editor, KeyListener {
      * Opens the specified file in the editor.
      *
      * @param file The file to open.
-     *
      * @throws java.io.IOException
      */
     public void loadFile(File file) throws IOException {
@@ -405,8 +582,7 @@ public class MarkdownEditor extends JFrame implements Editor, KeyListener {
                 sb.append("\n");
                 line = br.readLine();
             }
-        }
-        finally {
+        } finally {
             br.close();
         }
         setEditorContent(sb.toString());
@@ -414,68 +590,9 @@ public class MarkdownEditor extends JFrame implements Editor, KeyListener {
 
     // ----
 
+    //
     // Static methods
-
-    public static void openEditor(File file) throws IOException {
-        ++instanceCount;
-
-        try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
-        //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel")
-
-        MarkdownEditor me = new MarkdownEditor() {
-            @Override
-            protected void editorClosed() {
-                setVisible(false);
-                --instanceCount;
-                if (instanceCount == 0) {
-                    System.exit(0);
-                }
-
-            }
-
-        };
-
-        enableOSXFullscreenIfOnOSX(me);
-
-        if (file != null) {
-            me.loadFile(file);
-        }
-
-        me.setVisible(true);
-
-//        UIManager.LookAndFeelInfo[] lfis = UIManager.getInstalledLookAndFeels()
-//        for (UIManager.LookAndFeelInfo lfi : lfis) {
-//            System.out.println("" + lfi.toString())
-//        }
-
-    }
-
-    public static void main(String... args) {
-        try {
-            if (args.length > 0) {
-                for (String arg : args) {
-                    File argFile = new File(arg);
-                    openEditor(argFile);
-                }
-
-            } else {
-                openEditor(null);
-            }
-        }
-        catch (IOException ioe) {
-            System.err.println("Failed to open editor: " + ioe.getMessage());
-        }
-    }
+    //
 
     /**
      * Turns on full screen support in Lion+.
@@ -502,6 +619,59 @@ public class MarkdownEditor extends JFrame implements Editor, KeyListener {
             e.printStackTrace(System.err);
         }
 
+    }
+
+    //
+    // Startup
+    //
+
+    public static void openEditor(File file) throws IOException {
+        ++instanceCount;
+
+        MarkdownEditor me = new MarkdownEditor() {
+            @Override
+            protected void editorClosed() {
+                setVisible(false);
+                --instanceCount;
+                if (instanceCount == 0) {
+                    System.exit(0);
+                }
+
+            }
+
+        };
+        me.initGUI();
+
+        enableOSXFullscreenIfOnOSX(me);
+
+        if (file != null) {
+            me.loadFile(file);
+        }
+
+        me.setVisible(true);
+        me.editor.requestFocus();
+
+//        UIManager.LookAndFeelInfo[] lfis = UIManager.getInstalledLookAndFeels()
+//        for (UIManager.LookAndFeelInfo lfi : lfis) {
+//            System.out.println("" + lfi.toString())
+//        }
+
+    }
+
+    public static void main(String... args) {
+        try {
+            if (args.length > 0) {
+                for (String arg : args) {
+                    File argFile = new File(arg);
+                    openEditor(argFile);
+                }
+
+            } else {
+                openEditor(null);
+            }
+        } catch (IOException ioe) {
+            System.err.println("Failed to open editor: " + ioe.getMessage());
+        }
     }
 
 }

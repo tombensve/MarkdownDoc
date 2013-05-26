@@ -50,8 +50,13 @@ public class ExportToHTMLFunction implements EditorFunction {
     }
 
     @Override
-    public String getToolBarGroup() {
+    public String getGroup() {
         return ToolBarGroups.export.name();
+    }
+
+    @Override
+    public String getName() {
+        return "Export to HTML";
     }
 
     @Override

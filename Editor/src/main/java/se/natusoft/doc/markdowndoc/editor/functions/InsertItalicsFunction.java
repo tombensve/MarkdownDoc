@@ -47,8 +47,13 @@ public class InsertItalicsFunction implements EditorFunction {
     }
 
     @Override
-    public String getToolBarGroup() {
+    public String getGroup() {
         return ToolBarGroups.format.name();
+    }
+
+    @Override
+    public String getName() {
+        return "Insert italics format";
     }
 
     @Override
