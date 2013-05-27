@@ -5,12 +5,6 @@ __[Apache Software License version 2.0](https://github.com/tombensve/MarkdownDoc
 
 ## Third Party Licenses
 
-__[GNU Affero General Public License version v3](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/GNUAGPL-v3.md)__
-
-The following third party products are using this license:
-
-* [itextpdf-5.3.4](http://www.itextpdf.com/)
-
 __[Apache Software License version 2.0](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/Apache-2.0.md)__
 
 The following third party products are using this license:

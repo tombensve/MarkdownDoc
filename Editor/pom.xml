@@ -11,6 +11,10 @@
 
     <artifactId>Editor</artifactId>
 
+    <description>
+        An editor that supports editing markdown with formatting preview.
+    </description>
+
     <dependencies>
         <dependency>
             <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
@@ -27,6 +31,4 @@
 
     </dependencies>
 
-    <build>
-    </build>
 </project>

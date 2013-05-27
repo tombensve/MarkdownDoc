@@ -65,7 +65,7 @@ class HTMLGeneratorOptions implements Options {
     String css = null
 
     @Option
-    @Name("primitiveHMTL")
+    @Name("primitiveHTML")
     @Description("When true very primitive HMTL will be generated. This will work for rendering with JEditorPane.")
     @Optional
     boolean primitiveHTML = false

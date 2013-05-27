@@ -1,9 +1,6 @@
 # Library
 
-The library is made up of a document model representing all formats of markdown, parsers and
-generators. The parsers produce a document model and the generators generate from that model.
-The document model represents the markdown formats. Thereby there are no HTML pass-through
-from a markdown document! This tool only deals with markdown, not HTML.
+The library is made up of a document model representing all formats of markdown, parsers and generators. The parsers produce a document model and the generators generate from that model. The document model represents the markdown formats. Thereby there are no HTML pass-through from a markdown document! This tool only deals with markdown, not HTML.
 
 The API docs for the library can be found [here](http://apidoc.natusoft.se/MarkdownDoc).
 
@@ -17,21 +14,19 @@ __Options__ - This represents options for a generator. It should be seen as a na
               
 __Parser__ - This represents a parser.
 
-	public interface Parser {
-		public void parse(Doc document, File parseFile, Properties parserOptions) 
-		    throws IOException, ParseException;
-	}
+    public interface Parser {
+        public void parse(Doc document, File parseFile, Properties parserOptions) throws IOException, ParseException;
+    }
 
 The parser gets passed an already created Doc model allowing the document to be built from multiple
 source files by parsing into the same document. 
 
 __Generator__ - This represents a generator.
 
-	public interface Generator {
-    	public Class getOptionsClass();
-    	public void generate(Doc document, Options options, File rootDir) 
-    	    throws IOException, GenerateException;
-	}
+    public interface Generator {
+        public Class getOptionsClass();
+        public void generate(Doc document, Options options, File rootDir) throws IOException, GenerateException;
+    }
 
 _getOptionsClass()_ returns the class implementing Options and holding all the options for the generator.
 
