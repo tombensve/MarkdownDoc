@@ -37,7 +37,6 @@
 package se.natusoft.doc.markdowndoc.editor.api;
 
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.text.BadLocationException;
 import java.awt.Point;
 import java.io.File;
@@ -56,7 +55,7 @@ public interface Editor {
     /**
      * Returns the config API.
      */
-    Config getConfig();
+    ConfigProvider getConfigProvider();
 
     /**
      * Returns the current file or null if none.

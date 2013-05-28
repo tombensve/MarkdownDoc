@@ -65,27 +65,61 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
     //
 
     private MDEToolBar toolBar;
-    private JPanel editorPanel;
+
+    // These are special panels on each side of the editor panel, but inside of the
+    // toolbar. They are not created and added until some EditorComponent asks for
+    // one of them.
     private JPanel editorTopPanel;
     private JPanel editorBottomPanel;
     private JPanel editorLeftPanel;
     private JPanel editorRightPanel;
+
+    // The scrollPane sits in the center of this and the above editor*Panel resides
+    // NORTH, SOUTH, EAST, and WEST of the editor.
+    private JPanel editorPanel;
+
+    // This sits around the editor.
     private JScrollPane scrollPane;
+
+    // The actual editor component.
     private JEditorPane editor;
+
+    // When a file has been opened, or saved this will point to that file.
+    // On save a file chooser will be opened if this is null otherwise this
+    // file will be used for saving to.
     private File currentFile;
+
+    // This is incremented for each editor window opened and decreased for each closed.
+    // When 0 is reached again the JVM will exit.
     private static int instanceCount = 0;
+
+    // Saved on key "pressed" and reused on "release" which contains other key codes.
     private KeyEvent currentPressedEvent = null;
+
+    // Saved on key "pressed" and used later to get the current caret position.
     private int keyPressedCaretPos = 0;
 
-    private ConfigHolder configs = new ConfigHolder();
+    // Holds all configurations.
+    private ConfigProviderHolder configs = new ConfigProviderHolder();
 
+    // All other than the basic JEditorPane functionality are provided by EditorComponent:s of
+    // which there are 2 sub-variants: EditorFunction (provides toolbar button, trigger key, and
+    // functionality), and EditorInputFilter (receives keyboard events and can manipulate the
+    // editor for automatic list bullets, etc).
+    //
+    // These EditorComponent:s are loaded using ServiceLoader returning EditorComponent
+    // instances.
+
+    private ServiceLoader<EditorComponent> componentLoader = ServiceLoader.load(EditorComponent.class);
+
+    // Holds EditorComponents that are EditorFunction subclasses.
     private List<EditorFunction> functions = new LinkedList<EditorFunction>();
+
+    // Holds EditorComponents that are EditorInputFilter subclasses.
     private List<EditorInputFilter> filters = new LinkedList<EditorInputFilter>();
 
-    private static ServiceLoader<EditorComponent> componentLoader = ServiceLoader.load(EditorComponent.class);
-
     //
-    // Configuration
+    // Configurations (these must be registered with the ConfigProvider to be available)
     //
 
     private ValidSelectionConfigEntry fontConfig =
@@ -99,19 +133,23 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
                         }
                     },
                     new ConfigEntry.ConfigChanged() {
-                @Override
-                public void configChanged(ConfigEntry ce) {
-                    editor.setFont(Font.decode(ce.getValue()).deriveFont(Float.valueOf(fontSizeConfig.getValue())));
-                }
-            });
+                        @Override
+                        public void configChanged(ConfigEntry ce) {
+                            editor.setFont(Font.decode(ce.getValue()).
+                                    deriveFont(Float.valueOf(fontSizeConfig.getValue())));
+                        }
+                    }
+            );
 
     private DoubleConfigEntry fontSizeConfig =
-            new DoubleConfigEntry("editor.pane.font.size", "The size of the font.", 16.0, 8.0, 50.0, new ConfigEntry.ConfigChanged() {
-                @Override
-                public void configChanged(ConfigEntry ce) {
-                    editor.setFont(Font.decode(fontConfig.getValue()).deriveFont(Float.valueOf(ce.getValue())));
-                }
-            });
+            new DoubleConfigEntry("editor.pane.font.size", "The size of the font.", 16.0, 8.0, 50.0,
+                    new ConfigEntry.ConfigChanged() {
+                        @Override
+                        public void configChanged(ConfigEntry ce) {
+                            editor.setFont(Font.decode(fontConfig.getValue()).deriveFont(Float.valueOf(ce.getValue())));
+                        }
+                    }
+            );
 
     private ColorConfigEntry backgroundColorConfig =
             new ColorConfigEntry("editor.pane.background.color", "The editor background color.", 240, 240, 240,
@@ -120,7 +158,8 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
                         public void configChanged(ConfigEntry ce) {
                             editor.setBackground(new ConfigColor(ce));
                         }
-                    });
+                    }
+            );
 
     private ColorConfigEntry foregroundColorConfig =
             new ColorConfigEntry("editor.pane.foreground.color", "The editor text color.", 80, 80, 80,
@@ -129,7 +168,8 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
                         public void configChanged(ConfigEntry ce) {
                             editor.setForeground(new ConfigColor(ce));
                         }
-                    });
+                    }
+            );
 
     private ValidSelectionConfigEntry lookAndFeelConfig =
             new ValidSelectionConfigEntry("editor.lookandfeel", "The LookAndFeel to use.",
@@ -175,7 +215,8 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
     /**
      * Creates a new MarkdownEditor instance.
      */
-    public MarkdownEditor() {}
+    public MarkdownEditor() {
+    }
 
     /**
      * Sets up the gui, etc.
@@ -192,11 +233,11 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
 
         // Register configs
 
-        this.configs.registerConfig(this.fontConfig);
-        this.configs.registerConfig(this.fontSizeConfig);
-        this.configs.registerConfig(this.backgroundColorConfig);
-        this.configs.registerConfig(this.foregroundColorConfig);
-        this.configs.registerConfig(lookAndFeelConfig);
+        getConfigProvider().registerConfig(this.fontConfig);
+        getConfigProvider().registerConfig(this.fontSizeConfig);
+        getConfigProvider().registerConfig(this.backgroundColorConfig);
+        getConfigProvider().registerConfig(this.foregroundColorConfig);
+        getConfigProvider().registerConfig(lookAndFeelConfig);
 
         // Set Look and Feel
 
@@ -254,16 +295,14 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
         this.editorPanel.add(scrollPane, BorderLayout.CENTER);
         add(this.editorPanel, BorderLayout.CENTER);
 
-        // Load awt
+        // Load editor functions.
 
         for (EditorComponent component : componentLoader) {
             component.setEditor(this);
 
             if (component instanceof EditorFunction) {
                 this.functions.add((EditorFunction) component);
-            }
-
-            if (component instanceof EditorInputFilter) {
+            } else if (component instanceof EditorInputFilter) {
                 this.filters.add((EditorInputFilter) component);
             }
         }
@@ -350,7 +389,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
     /**
      * Returns the config API.
      */
-    public Config getConfig() {
+    public ConfigProvider getConfigProvider() {
         return this.configs;
     }
 

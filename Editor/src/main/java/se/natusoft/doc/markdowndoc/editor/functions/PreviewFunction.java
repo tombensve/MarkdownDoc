@@ -79,7 +79,7 @@ public class PreviewFunction implements EditorFunction, KeyListener {
     private boolean enabled = false;
 
     //
-    // Config
+    // ConfigProvider
     //
 
     private ValidSelectionConfigEntry fontConfig =
@@ -148,8 +148,8 @@ public class PreviewFunction implements EditorFunction, KeyListener {
     public void setEditor(Editor editor) {
         this.editor = editor;
 
-        this.editor.getConfig().registerConfig(this.fontConfig);
-        this.editor.getConfig().registerConfig(this.fontSizeConfig);
+        this.editor.getConfigProvider().registerConfig(this.fontConfig);
+        this.editor.getConfigProvider().registerConfig(this.fontSizeConfig);
     }
 
     @Override

@@ -132,8 +132,8 @@ public class SettingsFunction implements EditorFunction {
             this.settingsWindow.setLayout(new BorderLayout());
 
             JPanel contentPanel = new JPanel();
-            contentPanel.setLayout(new GridLayout(this.editor.getConfig().getConfigs().size(), 1));
-            for (ConfigEntry configEntry : this.editor.getConfig().getConfigs()) {
+            contentPanel.setLayout(new GridLayout(this.editor.getConfigProvider().getConfigs().size(), 1));
+            for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
                 ConfigEditPanel configEditPanel = new ConfigEditPanel(configEntry);
                 contentPanel.add(configEditPanel);
                 this.configEditPanels.add(configEditPanel);
@@ -159,7 +159,7 @@ public class SettingsFunction implements EditorFunction {
             cancelButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    for (ConfigEntry configEntry : SettingsFunction.this.editor.getConfig().getConfigs()) {
+                    for (ConfigEntry configEntry : SettingsFunction.this.editor.getConfigProvider().getConfigs()) {
                         configEntry.setValue(SettingsFunction.this.cancelValues.get(configEntry.getKey()));
                     }
 
@@ -181,7 +181,7 @@ public class SettingsFunction implements EditorFunction {
         }
 
         this.cancelValues = new HashMap<String, String>();
-        for (ConfigEntry configEntry : this.editor.getConfig().getConfigs()) {
+        for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
             this.cancelValues.put(configEntry.getKey(), configEntry.getValue());
         }
 
@@ -191,7 +191,7 @@ public class SettingsFunction implements EditorFunction {
     private void save() {
         try {
             Properties props = new Properties();
-            for (ConfigEntry configEntry : this.editor.getConfig().getConfigs()) {
+            for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
                 props.setProperty(configEntry.getKey(), configEntry.getValue());
             }
 
@@ -223,7 +223,7 @@ public class SettingsFunction implements EditorFunction {
 
             for (String propName : props.stringPropertyNames()) {
                 String propValue = props.getProperty(propName);
-                ConfigEntry configEntry = this.editor.getConfig().lookupConfig(propName);
+                ConfigEntry configEntry = this.editor.getConfigProvider().lookupConfig(propName);
                 if (configEntry != null) {
                     configEntry.setValue(propValue);
                 }
@@ -307,7 +307,7 @@ public class SettingsFunction implements EditorFunction {
             }
         }
 
-        // ------ Boolean Config Entry ------
+        // ------ Boolean ConfigProvider Entry ------
 
         private JCheckBox checkBox;
 
@@ -322,7 +322,7 @@ public class SettingsFunction implements EditorFunction {
             this.checkBox.setSelected(configEntry.getBoolValue());
         }
 
-        // ------ Valid Selection Config Entry ------
+        // ------ Valid Selection ConfigProvider Entry ------
 
         JComboBox comboBox;
 
@@ -337,7 +337,7 @@ public class SettingsFunction implements EditorFunction {
             this.comboBox.setSelectedItem(configEntry.getValue());
         }
 
-        // ------ Color Config Entry -------
+        // ------ Color ConfigProvider Entry -------
 
         private JSpinner redSpinner;
         private JSpinner greenSpinner;
@@ -402,7 +402,7 @@ public class SettingsFunction implements EditorFunction {
             this.blueSpinner.setValue(configEntry.getBlue());
         }
 
-        // ------ Double Config Entry ------
+        // ------ Double ConfigProvider Entry ------
 
         private JSpinner doubleSpinner;
 
@@ -426,7 +426,7 @@ public class SettingsFunction implements EditorFunction {
             this.doubleSpinner.setValue(configEntry.getDoubleValue());
         }
 
-        // ------ Integer Config Entry ------
+        // ------ Integer ConfigProvider Entry ------
 
         private JSpinner intSpinner;
 
@@ -450,7 +450,7 @@ public class SettingsFunction implements EditorFunction {
             this.intSpinner.setValue(configEntry.getIntValue());
         }
 
-        // ------ Default Config Entry ------
+        // ------ Default ConfigProvider Entry ------
 
         private JTextField textField;
 
