@@ -22,6 +22,10 @@ public class InsertImageFunction implements EditorFunction {
     private Editor editor;
     private JButton imageButton;
     private JPanel inputPanel;
+    private JTextField imageAltText;
+    private JTextField imageURL;
+    private JTextField imageTitle;
+    private JFrame inputDialog;
 
     //
     // Constructors
@@ -30,7 +34,7 @@ public class InsertImageFunction implements EditorFunction {
     public InsertImageFunction() {
         Icon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddimg.png"));
         this.imageButton = new JButton(imageIcon);
-        imageButton.setToolTipText("Heading (Meta-T)");
+        imageButton.setToolTipText("Heading (Meta-M)");
         imageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -92,7 +96,19 @@ public class InsertImageFunction implements EditorFunction {
      */
     @Override
     public int getKeyCode() {
-        return KeyEvent.VK_I;
+        return KeyEvent.VK_M;
+    }
+
+    private JPanel createLabelPanel(String text) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel.add(new JLabel(text));
+        return panel;
+    }
+
+    private JPanel createTextFieldPanel(JTextField textField) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel.add(textField);
+        return panel;
     }
 
     /**
@@ -103,11 +119,73 @@ public class InsertImageFunction implements EditorFunction {
      */
     @Override
     public void perform() throws FunctionException {
-        this.inputPanel = new JPanel(new FlowLayout());
-        JPanel labelPanel = new JPanel(new GridLayout(2, 1));
-        labelPanel.add(new JLabel("Iamge description:"));
-        labelPanel.add(new JLabel());
+        this.inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel labelPanel = new JPanel(new GridLayout(3, 1));
+        labelPanel.add(createLabelPanel("Alt text:"));
+        labelPanel.add(createLabelPanel("Image URL:"));
+        labelPanel.add(createLabelPanel("Title:"));
+        this.inputPanel.add(labelPanel);
+        JPanel textInputPanel = new JPanel(new GridLayout(3,1));
 
+        this.imageAltText = new JTextField(32);
+        this.imageURL = new JTextField(25);
+        JPanel imageUrlPanel = createTextFieldPanel(this.imageURL);
+        JButton fileSelectButton = new JButton("...");
+        fileSelectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+                int returnVal = fileChooser.showOpenDialog(editor.getGUI().getWindowFrame());
+                if(returnVal == JFileChooser.APPROVE_OPTION) {
+                    imageURL.setText("file:" + fileChooser.getSelectedFile());
+                    inputDialog.requestFocus();
+                }
+
+            }
+        });
+        imageUrlPanel.add(fileSelectButton);
+        this.imageTitle = new JTextField(32);
+
+        textInputPanel.add(createTextFieldPanel(this.imageAltText));
+        textInputPanel.add(imageUrlPanel);
+        textInputPanel.add(createTextFieldPanel(this.imageTitle));
+        this.inputPanel.add(textInputPanel);
+
+        JButton insertButton = new JButton("Insert");
+        this.inputPanel.add(insertButton);
+        JButton cancelButton = new JButton("Cancel");
+        this.inputPanel.add(cancelButton);
+
+        this.inputDialog = new JFrame("Insert image parameters");
+        Rectangle mainBounds = this.editor.getGUI().getWindowFrame().getBounds();
+        this.inputDialog.setLayout(new BorderLayout());
+        this.inputDialog.add(this.inputPanel, BorderLayout.CENTER);
+        System.out.println("" + this.inputDialog.getPreferredSize());
+
+        insertButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                inputDialog.setVisible(false);
+                editor.insertText("![" + imageAltText.getText() + "](" +
+                        imageURL.getText() +
+                        (imageTitle.getText().trim().length() > 0 ? " \"" + imageTitle.getText() + "\"" : "") + ") ");
+                editor.requestEditorFocus();
+            }
+        });
+
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                inputDialog.setVisible(false);
+                editor.requestEditorFocus();
+            }
+        });
+
+        this.inputDialog.setVisible(true);
+
+        // We don't get a correct preferred size until the window has become visible.
+        this.inputDialog.setBounds((int) mainBounds.getX(), (int) mainBounds.getY() + 70, (int) mainBounds.getWidth(), (int) this.inputDialog.getPreferredSize().getHeight());
     }
 
 }

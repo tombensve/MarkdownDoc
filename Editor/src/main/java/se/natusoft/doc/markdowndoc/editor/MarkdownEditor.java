@@ -53,8 +53,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ServiceLoader;
 
 /**
  * This is an editor for editing markdown documents.
@@ -348,7 +349,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
     public JPanel getTopPanel() {
         if (this.editorTopPanel == null) {
             this.editorTopPanel = new JPanel();
-            add(this.editorTopPanel, BorderLayout.NORTH);
+            this.editorPanel.add(this.editorTopPanel, BorderLayout.NORTH);
         }
         return this.editorTopPanel;
     }
@@ -359,7 +360,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
     public JPanel getBottomPanel() {
         if (this.editorBottomPanel == null) {
             this.editorBottomPanel = new JPanel();
-            add(this.editorBottomPanel, BorderLayout.SOUTH);
+            this.editorPanel.add(this.editorBottomPanel, BorderLayout.SOUTH);
         }
         return this.editorBottomPanel;
     }
@@ -370,7 +371,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
     public JPanel getLeftPanel() {
         if (this.editorLeftPanel == null) {
             this.editorLeftPanel = new JPanel();
-            add(this.editorLeftPanel, BorderLayout.WEST);
+            this.editorPanel.add(this.editorLeftPanel, BorderLayout.WEST);
         }
         return this.editorLeftPanel;
     }
@@ -381,7 +382,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
     public JPanel getRightPanel() {
         if (this.editorRightPanel == null) {
             this.editorRightPanel = new JPanel();
-            add(this.editorRightPanel, BorderLayout.EAST);
+            this.editorPanel.add(this.editorRightPanel, BorderLayout.EAST);
         }
         return this.editorRightPanel;
     }

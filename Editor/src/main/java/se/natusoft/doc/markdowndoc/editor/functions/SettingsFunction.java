@@ -145,7 +145,7 @@ public class SettingsFunction implements EditorFunction {
 
             JPanel buttons = new JPanel(new FlowLayout());
 
-            JButton saveButton = new JButton("Persist");
+            JButton saveButton = new JButton("Save");
             saveButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -211,21 +211,26 @@ public class SettingsFunction implements EditorFunction {
 
     private void load() {
         try {
-            Properties props = new Properties();
             String userHome = System.getProperties().getProperty("user.home");
             File loadFile = new File(userHome);
             loadFile = new File(loadFile, ".mddoc-settings.properties");
             if (loadFile.exists()) {
+                Properties props = new Properties();
                 FileReader reader = new FileReader(loadFile);
                 props.load(reader);
                 reader.close();
-            }
 
-            for (String propName : props.stringPropertyNames()) {
-                String propValue = props.getProperty(propName);
-                ConfigEntry configEntry = this.editor.getConfigProvider().lookupConfig(propName);
-                if (configEntry != null) {
-                    configEntry.setValue(propValue);
+                for (String propName : props.stringPropertyNames()) {
+                    String propValue = props.getProperty(propName);
+                    ConfigEntry configEntry = this.editor.getConfigProvider().lookupConfig(propName);
+                    if (configEntry != null) {
+                        configEntry.setValue(propValue);
+                    }
+                }
+            }
+            else {
+                for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
+                    configEntry.setValue(configEntry.getValue()); // force gui update
                 }
             }
         }
@@ -233,6 +238,8 @@ public class SettingsFunction implements EditorFunction {
             JOptionPane.showMessageDialog(this.editor.getGUI().getWindowFrame(), ioe.getMessage(),
                     "Error loading file!", JOptionPane.ERROR_MESSAGE);
         }
+
+        SwingUtilities.updateComponentTreeUI(this.editor.getGUI().getWindowFrame());
     }
 
     //

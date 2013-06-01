@@ -57,7 +57,9 @@ class MDEToolBar extends JToolBar {
     // Constructors
     //
 
-    public MDEToolBar() {}
+    public MDEToolBar() {
+        setRollover(true);
+    }
 
     //
     // Methods

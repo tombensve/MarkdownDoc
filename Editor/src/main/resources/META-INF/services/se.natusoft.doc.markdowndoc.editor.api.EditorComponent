@@ -16,6 +16,7 @@ se.natusoft.doc.markdowndoc.editor.functions.InsertBoldFunction
 se.natusoft.doc.markdowndoc.editor.functions.InsertItalicsFunction
 se.natusoft.doc.markdowndoc.editor.functions.InsertListFunction
 se.natusoft.doc.markdowndoc.editor.functions.InsertQuoteFunction
+se.natusoft.doc.markdowndoc.editor.functions.InsertImageFunction
 se.natusoft.doc.markdowndoc.editor.functions.PreviewFunction
 se.natusoft.doc.markdowndoc.editor.functions.ExportToPDFFunction
 se.natusoft.doc.markdowndoc.editor.functions.ExportToHTMLFunction
