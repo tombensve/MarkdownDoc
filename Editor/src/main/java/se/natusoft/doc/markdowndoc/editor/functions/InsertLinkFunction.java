@@ -50,28 +50,30 @@ import java.awt.event.KeyEvent;
 /**
  * This provides an "insert image" function.
  */
-public class InsertImageFunction implements EditorFunction {
+public class InsertLinkFunction implements EditorFunction {
     //
     // Private Members
     //
 
+    // The editor we supply function for. Received in setEditor(Editor).
     private Editor editor;
-    private JButton imageButton;
+
+    private JButton linkButton;
     private JPanel inputPanel;
-    private JTextField imageAltText;
-    private JTextField imageURL;
-    private JTextField imageTitle;
+    private JTextField linkText;
+    private JTextField linkURL;
+    private JTextField linkTitle;
     private JFrame inputDialog;
 
     //
     // Constructors
     //
 
-    public InsertImageFunction() {
-        Icon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddimg.png"));
-        this.imageButton = new JButton(imageIcon);
-        imageButton.setToolTipText("Image (Meta-M)");
-        imageButton.addActionListener(new ActionListener() {
+    public InsertLinkFunction() {
+        Icon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddlink.png"));
+        this.linkButton = new JButton(imageIcon);
+        linkButton.setToolTipText("Link (Meta-N)");
+        linkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 perform();
@@ -108,7 +110,7 @@ public class InsertImageFunction implements EditorFunction {
      */
     @Override
     public String getName() {
-        return "Insert Image";
+        return "Insert Link";
     }
 
     /**
@@ -116,7 +118,7 @@ public class InsertImageFunction implements EditorFunction {
      */
     @Override
     public JComponent getToolBarButton() {
-        return this.imageButton;
+        return this.linkButton;
     }
 
     /**
@@ -132,7 +134,7 @@ public class InsertImageFunction implements EditorFunction {
      */
     @Override
     public int getKeyCode() {
-        return KeyEvent.VK_M;
+        return KeyEvent.VK_N;
     }
 
     private JPanel createLabelPanel(String text) {
@@ -157,35 +159,19 @@ public class InsertImageFunction implements EditorFunction {
     public void perform() throws FunctionException {
         this.inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JPanel labelPanel = new JPanel(new GridLayout(3, 1));
-        labelPanel.add(createLabelPanel("Alt text:"));
-        labelPanel.add(createLabelPanel("Image URL:"));
-        labelPanel.add(createLabelPanel("Title:"));
+        labelPanel.add(createLabelPanel("Link text:"));
+        labelPanel.add(createLabelPanel("Link URL:"));
+        labelPanel.add(createLabelPanel("Link title:"));
         this.inputPanel.add(labelPanel);
         JPanel textInputPanel = new JPanel(new GridLayout(3,1));
 
-        this.imageAltText = new JTextField(32);
-        this.imageURL = new JTextField(25);
-        JPanel imageUrlPanel = createTextFieldPanel(this.imageURL);
-        JButton fileSelectButton = new JButton("...");
-        fileSelectButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-                int returnVal = fileChooser.showOpenDialog(editor.getGUI().getWindowFrame());
-                if(returnVal == JFileChooser.APPROVE_OPTION) {
-                    imageURL.setText("file:" + fileChooser.getSelectedFile());
-                    inputDialog.requestFocus();
-                }
+        this.linkText = new JTextField(32);
+        this.linkURL = new JTextField(32);
+        this.linkTitle = new JTextField(32);
 
-            }
-        });
-        imageUrlPanel.add(fileSelectButton);
-        this.imageTitle = new JTextField(32);
-
-        textInputPanel.add(createTextFieldPanel(this.imageAltText));
-        textInputPanel.add(imageUrlPanel);
-        textInputPanel.add(createTextFieldPanel(this.imageTitle));
+        textInputPanel.add(createTextFieldPanel(this.linkText));
+        textInputPanel.add(createTextFieldPanel(this.linkURL));
+        textInputPanel.add(createTextFieldPanel(this.linkTitle));
         this.inputPanel.add(textInputPanel);
 
         JButton insertButton = new JButton("Insert");
@@ -202,9 +188,15 @@ public class InsertImageFunction implements EditorFunction {
             @Override
             public void actionPerformed(ActionEvent e) {
                 inputDialog.setVisible(false);
-                editor.insertText("![" + imageAltText.getText() + "](" +
-                        imageURL.getText() +
-                        (imageTitle.getText().trim().length() > 0 ? " \"" + imageTitle.getText() + "\"" : "") + ") ");
+
+                if (linkText.getText().trim().length() > 0) {
+                    editor.insertText("[" + linkText.getText() + "](" + linkURL.getText() +
+                            (linkTitle.getText().trim().length() > 0 ? " \"" + linkTitle.getText() + "\"" : "") + ") ");
+                }
+                else {
+                    editor.insertText("<" + linkURL.getText() + "> ");
+                }
+
                 editor.requestEditorFocus();
             }
         });
