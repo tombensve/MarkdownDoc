@@ -41,18 +41,11 @@ import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 
 /**
@@ -147,4 +140,8 @@ public class OpenFunction implements EditorFunction {
     }
 
 
+    /**
+     * Cleanup and unregister any configs.
+     */
+    public void close() {}
 }

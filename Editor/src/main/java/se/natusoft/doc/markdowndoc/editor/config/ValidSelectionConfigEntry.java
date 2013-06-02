@@ -56,10 +56,9 @@ public class ValidSelectionConfigEntry extends ConfigEntry {
      * @param key The config key.
      * @param description The description of the config.
      * @param validValues The valid values for the config.
-     * @param configChanged Called when config has changed.
      */
-    public ValidSelectionConfigEntry(String key, String description, ValidValues validValues, ConfigChanged configChanged) {
-        super(key, description, configChanged);
+    public ValidSelectionConfigEntry(String key, String description, ValidValues validValues) {
+        super(key, description);
         this.validValues = validValues;
     }
 
@@ -70,10 +69,9 @@ public class ValidSelectionConfigEntry extends ConfigEntry {
      * @param description The description of the config.
      * @param defaultValue The default value of the config.
      * @param validValues The valid values for the config.
-     * @param configChanged Called when config has changed.
      */
-    public ValidSelectionConfigEntry(String key, String description, String defaultValue, ValidValues validValues, ConfigChanged configChanged) {
-        super(key, description, defaultValue, configChanged);
+    public ValidSelectionConfigEntry(String key, String description, String defaultValue, ValidValues validValues) {
+        super(key, description, defaultValue);
         this.validValues = validValues;
     }
 

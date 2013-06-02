@@ -91,4 +91,9 @@ public class CutSelectionFunction implements EditorFunction {
     public void perform() throws FunctionException {
         this.editor.cut();
     }
+
+    /**
+     * Cleanup and unregister any configs.
+     */
+    public void close() {}
 }

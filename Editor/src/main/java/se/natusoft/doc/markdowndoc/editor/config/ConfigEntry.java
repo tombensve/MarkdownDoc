@@ -36,6 +36,8 @@
  */
 package se.natusoft.doc.markdowndoc.editor.config;
 
+import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider;
+
 /**
  * This represents one config entry.
  */
@@ -47,7 +49,8 @@ public class ConfigEntry {
     private String key;
     private String description;
     private String value = "";
-    private ConfigChanged configChanged = null;
+
+    private ConfigProvider configProvider;
 
     //
     // Constructors
@@ -56,32 +59,38 @@ public class ConfigEntry {
     /**
      * Creates a new ConfigEntry.
      *
-     * @param key The config key.
+     * @param key         The config key.
      * @param description The description of the config.
-     * @param configChanged Called when config has changed.
      */
-    public ConfigEntry(String key, String description, ConfigChanged configChanged) {
+    public ConfigEntry(String key, String description) {
         this.key = key;
         this.description = description;
-        this.configChanged = configChanged;
     }
 
     /**
      * Creates a new ConfigEntry.
      *
-     * @param key The config key.
-     * @param description The description of the config.
+     * @param key          The config key.
+     * @param description  The description of the config.
      * @param defaultValue The default value of the config.
-     * @param configChanged Called when config has changed.
      */
-    public ConfigEntry(String key, String description, String defaultValue, ConfigChanged configChanged) {
-        this(key, description, configChanged);
+    public ConfigEntry(String key, String description, String defaultValue) {
+        this(key, description);
         this.value = defaultValue;
     }
 
     //
     // Methods
     //
+
+    /**
+     * Receives the config provided instance managing all configs.
+     *
+     * @param configProvider The received config provider.
+     */
+    public void setConfigProvider(ConfigProvider configProvider) {
+        this.configProvider = configProvider;
+    }
 
     /**
      * Returns the key of the config.
@@ -111,7 +120,9 @@ public class ConfigEntry {
      */
     public void setValue(String value) {
         this.value = value;
-        this.configChanged.configChanged(this);
+        for (ConfigChanged callback : this.configProvider.lookupConfigChanged(this)) {
+            callback.configChanged(this);
+        }
     }
 
     /**
@@ -121,17 +132,4 @@ public class ConfigEntry {
         return this.description;
     }
 
-    //
-    // Inner Classes
-    //
-
-    /**
-     * This is called when a config value is changed.
-     */
-    public interface ConfigChanged {
-        /**
-         * This delivers the changed config entry.
-         */
-        public void configChanged(ConfigEntry ce);
-    }
 }

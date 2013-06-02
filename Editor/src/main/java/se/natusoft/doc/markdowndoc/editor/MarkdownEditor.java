@@ -62,6 +62,13 @@ import java.util.ServiceLoader;
  */
 public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
     //
+    // Static members
+    //
+
+    // Holds all configurations.
+    private static ConfigProvider configs = new ConfigProviderHolder();
+
+    //
     // Private Members
     //
 
@@ -100,9 +107,6 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
     // Saved on key "pressed" and used later to get the current caret position.
     private int keyPressedCaretPos = 0;
 
-    // Holds all configurations.
-    private ConfigProviderHolder configs = new ConfigProviderHolder();
-
     // All other than the basic JEditorPane functionality are provided by EditorComponent:s of
     // which there are 2 sub-variants: EditorFunction (provides toolbar button, trigger key, and
     // functionality), and EditorInputFilter (receives keyboard events and can manipulate the
@@ -120,10 +124,10 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
     private List<EditorInputFilter> filters = new LinkedList<EditorInputFilter>();
 
     //
-    // Configurations (these must be registered with the ConfigProvider to be available)
+    // Configs
     //
 
-    private ValidSelectionConfigEntry fontConfig =
+    private static ValidSelectionConfigEntry fontConfig =
             new ValidSelectionConfigEntry("editor.pane.font", "The font to use.", "Helvetica",
                     new ValidSelectionConfigEntry.ValidValues() {
                         @Override
@@ -132,47 +136,19 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
                                     .getLocalGraphicsEnvironment();
                             return gEnv.getAvailableFontFamilyNames();
                         }
-                    },
-                    new ConfigEntry.ConfigChanged() {
-                        @Override
-                        public void configChanged(ConfigEntry ce) {
-                            editor.setFont(Font.decode(ce.getValue()).
-                                    deriveFont(Float.valueOf(fontSizeConfig.getValue())));
-                        }
                     }
             );
 
-    private DoubleConfigEntry fontSizeConfig =
-            new DoubleConfigEntry("editor.pane.font.size", "The size of the font.", 16.0, 8.0, 50.0,
-                    new ConfigEntry.ConfigChanged() {
-                        @Override
-                        public void configChanged(ConfigEntry ce) {
-                            editor.setFont(Font.decode(fontConfig.getValue()).deriveFont(Float.valueOf(ce.getValue())));
-                        }
-                    }
-            );
+    private static DoubleConfigEntry fontSizeConfig =
+            new DoubleConfigEntry("editor.pane.font.size", "The size of the font.", 16.0, 8.0, 50.0);
 
-    private ColorConfigEntry backgroundColorConfig =
-            new ColorConfigEntry("editor.pane.background.color", "The editor background color.", 240, 240, 240,
-                    new ConfigEntry.ConfigChanged() {
-                        @Override
-                        public void configChanged(ConfigEntry ce) {
-                            editor.setBackground(new ConfigColor(ce));
-                        }
-                    }
-            );
+    private static ColorConfigEntry backgroundColorConfig =
+            new ColorConfigEntry("editor.pane.background.color", "The editor background color.", 240, 240, 240);
 
-    private ColorConfigEntry foregroundColorConfig =
-            new ColorConfigEntry("editor.pane.foreground.color", "The editor text color.", 80, 80, 80,
-                    new ConfigEntry.ConfigChanged() {
-                        @Override
-                        public void configChanged(ConfigEntry ce) {
-                            editor.setForeground(new ConfigColor(ce));
-                        }
-                    }
-            );
+    private static ColorConfigEntry foregroundColorConfig =
+            new ColorConfigEntry("editor.pane.foreground.color", "The editor text color.", 80, 80, 80);
 
-    private ValidSelectionConfigEntry lookAndFeelConfig =
+    private static ValidSelectionConfigEntry lookAndFeelConfig =
             new ValidSelectionConfigEntry("editor.lookandfeel", "The LookAndFeel to use.",
                     UIManager.getSystemLookAndFeelClassName(),
                     new ValidSelectionConfigEntry.ValidValues() {
@@ -185,29 +161,64 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
                             }
                             return vv;
                         }
-                    },
-                    new ConfigEntry.ConfigChanged() {
-                        @Override
-                        public void configChanged(ConfigEntry ce) {
-                            try {
-                                Dimension size = MarkdownEditor.this.getSize();
-                                UIManager.setLookAndFeel(ce.getValue());
-                                SwingUtilities.updateComponentTreeUI(MarkdownEditor.this);  // update awt
-                                MarkdownEditor.this.pack();
-                                MarkdownEditor.this.setSize(size);
-                            } catch (ClassNotFoundException e) {
-                                e.printStackTrace();
-                            } catch (InstantiationException e) {
-                                e.printStackTrace();
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            } catch (UnsupportedLookAndFeelException e) {
-                                e.printStackTrace();
-                            }
-                            //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel")
-                        }
                     }
             );
+
+    //
+    // Config callbacks
+    //
+
+    private ConfigChanged fontConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            editor.setFont(Font.decode(ce.getValue()).
+                    deriveFont(Float.valueOf(fontSizeConfig.getValue())));
+        }
+    };
+
+    private ConfigChanged fontSizeConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            editor.setFont(Font.decode(fontConfig.getValue()).deriveFont(Float.valueOf(ce.getValue())));
+        }
+    };
+
+    private ConfigChanged backgroundColorConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            editor.setBackground(new ConfigColor(ce));
+        }
+    };
+
+    private ConfigChanged foregroundColorConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            editor.setForeground(new ConfigColor(ce));
+        }
+    };
+
+    private ConfigChanged lookAndFeelConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            try {
+                Dimension size = MarkdownEditor.this.getSize();
+                UIManager.setLookAndFeel(ce.getValue());
+                SwingUtilities.updateComponentTreeUI(MarkdownEditor.this);  // update awt
+                MarkdownEditor.this.pack();
+                MarkdownEditor.this.setSize(size);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (UnsupportedLookAndFeelException e) {
+                e.printStackTrace();
+            }
+            //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel")
+        }
+    };
+
 
     //
     // Constructors
@@ -226,19 +237,25 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
         addWindowListener(new WindowListenerAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                ConfigProvider cp = getConfigProvider();
+                cp.unregisterConfigCallback(fontConfig, MarkdownEditor.this.fontConfigChanged);
+                cp.unregisterConfigCallback(fontSizeConfig, MarkdownEditor.this.fontSizeConfigChanged);
+                cp.unregisterConfigCallback(backgroundColorConfig, MarkdownEditor.this.backgroundColorConfigChanged);
+                cp.unregisterConfigCallback(foregroundColorConfig, MarkdownEditor.this.foregroundColorConfigChanged);
+                cp.unregisterConfigCallback(lookAndFeelConfig, MarkdownEditor.this.lookAndFeelConfigChanged);
+
                 MarkdownEditor.this.setVisible(false);
                 MarkdownEditor.this.editorClosed();
             }
-
         });
 
         // Register configs
 
-        getConfigProvider().registerConfig(this.fontConfig);
-        getConfigProvider().registerConfig(this.fontSizeConfig);
-        getConfigProvider().registerConfig(this.backgroundColorConfig);
-        getConfigProvider().registerConfig(this.foregroundColorConfig);
-        getConfigProvider().registerConfig(lookAndFeelConfig);
+        getConfigProvider().registerConfig(fontConfig, this.fontConfigChanged);
+        getConfigProvider().registerConfig(fontSizeConfig, this.fontSizeConfigChanged);
+        getConfigProvider().registerConfig(backgroundColorConfig, this.backgroundColorConfigChanged);
+        getConfigProvider().registerConfig(foregroundColorConfig, this.foregroundColorConfigChanged);
+        getConfigProvider().registerConfig(lookAndFeelConfig, this.lookAndFeelConfigChanged);
 
         // Set Look and Feel
 

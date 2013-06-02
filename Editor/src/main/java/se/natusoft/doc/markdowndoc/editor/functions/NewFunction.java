@@ -41,10 +41,7 @@ import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -120,4 +117,9 @@ public class NewFunction implements EditorFunction {
         });
         openThread.start();
     }
+
+    /**
+     * Cleanup and unregister any configs.
+     */
+    public void close() {}
 }

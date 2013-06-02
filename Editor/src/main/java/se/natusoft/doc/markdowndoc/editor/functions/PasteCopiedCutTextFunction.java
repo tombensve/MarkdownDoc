@@ -91,4 +91,9 @@ public class PasteCopiedCutTextFunction implements EditorFunction {
     public void perform() throws FunctionException {
         this.editor.paste();
     }
+
+    /**
+     * Cleanup and unregister any configs.
+     */
+    public void close() {}
 }

@@ -52,10 +52,9 @@ public class ColorConfigEntry extends ConfigEntry {
      *
      * @param key The config key.
      * @param description The description of the config.
-     * @param configChanged Called when config has changed.
      */
-    public ColorConfigEntry(String key, String description, ConfigChanged configChanged) {
-        super(key, description, configChanged);
+    public ColorConfigEntry(String key, String description) {
+        super(key, description);
     }
 
     /**
@@ -66,11 +65,9 @@ public class ColorConfigEntry extends ConfigEntry {
      * @param defaultRed The default red color part.
      * @param defaultGreen The default green color part.
      * @param defaultBlue The default blue color part.
-     * @param configChanged Called when config has changed.
      */
-    public ColorConfigEntry(String key, String description, int defaultRed, int defaultGreen,
-                            int defaultBlue, ConfigChanged configChanged) {
-        super(key, description, toValue(defaultRed, defaultGreen, defaultBlue), configChanged);
+    public ColorConfigEntry(String key, String description, int defaultRed, int defaultGreen, int defaultBlue) {
+        super(key, description, toValue(defaultRed, defaultGreen, defaultBlue));
     }
 
     //

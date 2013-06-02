@@ -58,6 +58,12 @@ public class ExportToPDFFunction implements EditorFunction {
     private JButton pdfButton;
 
     //
+    // Config
+    //
+
+
+
+    //
     // Constructors
     //
 
@@ -109,6 +115,11 @@ public class ExportToPDFFunction implements EditorFunction {
 
     @Override
     public void perform() throws FunctionException {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
+
+    /**
+     * Cleanup and unregister any configs.
+     */
+    public void close() {}
 }

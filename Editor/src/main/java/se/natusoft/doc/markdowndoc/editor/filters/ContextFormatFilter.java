@@ -127,4 +127,9 @@ public class ContextFormatFilter implements EditorInputFilter {
             ble.printStackTrace(System.err);
         }
     }
+
+    /**
+     * Cleanup and unregister any configs.
+     */
+    public void close() {}
 }

@@ -113,4 +113,9 @@ public class InsertItalicsFunction implements EditorFunction {
         this.editor.moveCaretBack(1);
         this.editor.requestEditorFocus();
     }
+
+    /**
+     * Cleanup and unregister any configs.
+     */
+    public void close() {}
 }

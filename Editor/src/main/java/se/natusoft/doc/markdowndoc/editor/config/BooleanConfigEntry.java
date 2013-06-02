@@ -50,10 +50,9 @@ public class BooleanConfigEntry extends ConfigEntry {
      *
      * @param key The config key.
      * @param description The description of the config.
-     * @param configChanged Called when config has changed.
      */
-    public BooleanConfigEntry(String key, String description, ConfigChanged configChanged) {
-        super(key, description, configChanged);
+    public BooleanConfigEntry(String key, String description) {
+        super(key, description);
     }
 
     /**
@@ -62,10 +61,9 @@ public class BooleanConfigEntry extends ConfigEntry {
      * @param key The config key.
      * @param description The description of the config.
      * @param defaultValue The default value of the config.
-     * @param configChanged Called when config has changed.
      */
-    public BooleanConfigEntry(String key, String description, boolean defaultValue, ConfigChanged configChanged) {
-        super(key, description, "" + defaultValue, configChanged);
+    public BooleanConfigEntry(String key, String description, boolean defaultValue) {
+        super(key, description, "" + defaultValue);
     }
 
     //

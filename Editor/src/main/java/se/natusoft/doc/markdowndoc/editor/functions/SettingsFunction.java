@@ -486,4 +486,9 @@ public class SettingsFunction implements EditorFunction {
             }
         }
     }
+
+    /**
+     * Cleanup and unregister any configs.
+     */
+    public void close() {}
 }

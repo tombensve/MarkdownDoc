@@ -56,10 +56,9 @@ public class IntegerConfigEntry extends ConfigEntry {
      *
      * @param key The config key.
      * @param description The description of the config.
-     * @param configChanged Called when config has changed.
      */
-    public IntegerConfigEntry(String key, String description, ConfigChanged configChanged) {
-        super(key, description, configChanged);
+    public IntegerConfigEntry(String key, String description) {
+        super(key, description);
     }
 
     /**
@@ -70,10 +69,9 @@ public class IntegerConfigEntry extends ConfigEntry {
      * @param defaultValue The default value of the config.
      * @param min The minimum value.
      * @param max The maximum value.
-     * @param configChanged Called when config has changed.
      */
-    public IntegerConfigEntry(String key, String description, int defaultValue, int min, int max, ConfigChanged configChanged) {
-        super(key, description, "" + defaultValue, configChanged);
+    public IntegerConfigEntry(String key, String description, int defaultValue, int min, int max) {
+        super(key, description, "" + defaultValue);
         this.min = min;
         this.max = max;
     }

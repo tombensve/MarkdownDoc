@@ -113,4 +113,9 @@ public class InsertBoldFunction implements EditorFunction {
         this.editor.moveCaretBack(2);
         this.editor.requestEditorFocus();
     }
+
+    /**
+     * Cleanup and unregister any configs.
+     */
+    public void close() {}
 }

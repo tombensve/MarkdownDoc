@@ -40,7 +40,7 @@ import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 
-import javax.swing.JComponent;
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 
 /**
@@ -91,4 +91,9 @@ public class CopySelectionFunction implements EditorFunction {
     public void perform() throws FunctionException {
         this.editor.copy();
     }
+
+    /**
+     * Cleanup and unregister any configs.
+     */
+    public void close() {}
 }

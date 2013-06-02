@@ -215,4 +215,8 @@ public class InsertLinkFunction implements EditorFunction {
         this.inputDialog.setBounds((int) mainBounds.getX(), (int) mainBounds.getY() + 70, (int) mainBounds.getWidth(), (int) this.inputDialog.getPreferredSize().getHeight());
     }
 
+    /**
+     * Cleanup and unregister any configs.
+     */
+    public void close() {}
 }

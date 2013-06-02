@@ -48,4 +48,8 @@ public interface EditorComponent {
      */
     void setEditor(Editor editor);
 
+    /**
+     * Called when instance is no longer needed.
+     */
+    void close();
 }

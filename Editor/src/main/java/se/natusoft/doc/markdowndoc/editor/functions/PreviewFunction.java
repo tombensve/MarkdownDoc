@@ -48,6 +48,7 @@ import se.natusoft.doc.markdowndoc.editor.MDECaret;
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups;
 import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged;
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry;
 import se.natusoft.doc.markdowndoc.editor.config.DoubleConfigEntry;
 import se.natusoft.doc.markdowndoc.editor.config.ValidSelectionConfigEntry;
@@ -79,10 +80,10 @@ public class PreviewFunction implements EditorFunction, KeyListener {
     private boolean enabled = false;
 
     //
-    // ConfigProvider
+    // Configs
     //
 
-    private ValidSelectionConfigEntry fontConfig =
+    private static ValidSelectionConfigEntry fontConfig =
             new ValidSelectionConfigEntry("preview.pane.font", "The preview font to use.", "Helvetica",
                     new ValidSelectionConfigEntry.ValidValues() {
                         @Override
@@ -91,31 +92,37 @@ public class PreviewFunction implements EditorFunction, KeyListener {
                                     .getLocalGraphicsEnvironment();
                             return gEnv.getAvailableFontFamilyNames();
                         }
-                    },
-                    new ConfigEntry.ConfigChanged() {
-                        @Override
-                        public void configChanged(ConfigEntry ce) {
-                            ((HTMLEditorKit) preview.getEditorKit()).getStyleSheet().addRule(
-                                    "body {font-family: " + ce.getValue() + "; font-size: " +
-                                            PreviewFunction.this.fontSizeConfig.getValue() +
-                                            "; margin-left: 50; margin-right:50; margin-top:50; margin-bottom:50; }");
-                            SwingUtilities.updateComponentTreeUI(preview);
-                        }
                     }
             );
 
-    private DoubleConfigEntry fontSizeConfig =
-            new DoubleConfigEntry("preview.pane.font.size", "The size of the preview font.", 16.0, 8.0, 50.0,
-                    new ConfigEntry.ConfigChanged() {
-                        @Override
-                        public void configChanged(ConfigEntry ce) {
-                            ((HTMLEditorKit) preview.getEditorKit()).getStyleSheet().addRule(
-                                    "body {font-family: " + PreviewFunction.this.fontConfig.getValue() + "; font-size: " +
-                                            ce.getValue() + "; margin-left: 50; margin-right:50; margin-top:50; margin-bottom:50; }");
-                            SwingUtilities.updateComponentTreeUI(preview);
-                        }
-                    });
 
+    private static DoubleConfigEntry fontSizeConfig =
+            new DoubleConfigEntry("preview.pane.font.size", "The size of the preview font.", 16.0, 8.0, 50.0);
+
+    //
+    // Config callbacks
+    //
+
+    private ConfigChanged fontConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            ((HTMLEditorKit) preview.getEditorKit()).getStyleSheet().addRule(
+                    "body {font-family: " + ce.getValue() + "; font-size: " +
+                            PreviewFunction.this.fontSizeConfig.getValue() +
+                            "; margin-left: 50; margin-right:50; margin-top:50; margin-bottom:50; }");
+            SwingUtilities.updateComponentTreeUI(preview);
+        }
+    };
+
+    private ConfigChanged fontSizeConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            ((HTMLEditorKit) preview.getEditorKit()).getStyleSheet().addRule(
+                    "body {font-family: " + PreviewFunction.this.fontConfig.getValue() + "; font-size: " +
+                            ce.getValue() + "; margin-left: 50; margin-right:50; margin-top:50; margin-bottom:50; }");
+            SwingUtilities.updateComponentTreeUI(preview);
+        }
+    };
 
     //
     // Constructors
@@ -148,8 +155,14 @@ public class PreviewFunction implements EditorFunction, KeyListener {
     public void setEditor(Editor editor) {
         this.editor = editor;
 
-        this.editor.getConfigProvider().registerConfig(this.fontConfig);
-        this.editor.getConfigProvider().registerConfig(this.fontSizeConfig);
+        this.editor.getConfigProvider().registerConfig(fontConfig, this.fontConfigChanged);
+        this.editor.getConfigProvider().registerConfig(fontSizeConfig, this.fontSizeConfigChanged);
+    }
+
+    @Override
+    public void close() {
+        this.editor.getConfigProvider().unregisterConfigCallback(fontConfig, this.fontConfigChanged);
+        this.editor.getConfigProvider().unregisterConfigCallback(fontSizeConfig, this.fontSizeConfigChanged);
     }
 
     @Override

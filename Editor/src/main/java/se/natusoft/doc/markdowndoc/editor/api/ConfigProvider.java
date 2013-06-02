@@ -36,6 +36,7 @@
  */
 package se.natusoft.doc.markdowndoc.editor.api;
 
+import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged;
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry;
 
 import java.util.List;
@@ -49,8 +50,17 @@ public interface ConfigProvider {
      * This will populate the registered config entry with a user selected value.
      *
      * @param configEntry The config entry to make available and get populated.
+     * @param configChanged A ConfigChanged callback to add to the list of callbacks for the config.
      */
-    void registerConfig(ConfigEntry configEntry);
+    void registerConfig(ConfigEntry configEntry, ConfigChanged configChanged);
+
+    /**
+     * Unregisters a configuration.
+     *
+     * @param configEntry The config entry to unregister a ConfigChanged callback for.
+     * @param configChanged The ConfigChanged callback to unregister.
+     */
+    void unregisterConfigCallback(ConfigEntry configEntry, ConfigChanged configChanged);
 
     /**
      * Returns a list of all registered configs.
@@ -63,4 +73,12 @@ public interface ConfigProvider {
      * @param key The key of the config entry to get.
      */
     ConfigEntry lookupConfig(String key);
+
+    /**
+     * Looks up all ConfigChanged callbacks for the config entry.
+     *
+     * @param configEntry The config entry to lookup ConfigChanged callbacks for.
+     */
+    List<ConfigChanged> lookupConfigChanged(ConfigEntry configEntry);
+
 }

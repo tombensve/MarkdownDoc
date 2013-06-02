@@ -48,8 +48,14 @@ public class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntr
     // Private Members
     //
 
+    /** Keeps the configs in order of registration. */
     private List<ConfigEntry> configList = new LinkedList<ConfigEntry>();
+
+    /** The unique config entries saved on config key. */
     private Map<String, ConfigEntry> configMap = new HashMap<String, ConfigEntry>();
+
+    /** Callbacks per config entry. */
+    private Map<ConfigEntry, List<ConfigChanged>> configChangedCallbacks = new HashMap<ConfigEntry, List<ConfigChanged>>();
 
     //
     // Constructors
@@ -78,11 +84,37 @@ public class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntr
      * This will populate the registered config entry with a user selected value.
      *
      * @param configEntry The config entry to make available and get populated.
+     * @param configChanged A ConfigChanged callback to add to the list of callbacks for the config.
      */
     @Override
-    public void registerConfig(ConfigEntry configEntry) {
-        this.configList.add(configEntry);
-        this.configMap.put(configEntry.getKey(), configEntry);
+    public void registerConfig(ConfigEntry configEntry, ConfigChanged configChanged) {
+        if (!this.configMap.containsKey(configEntry.getKey())) {
+            configEntry.setConfigProvider(this);
+            this.configMap.put(configEntry.getKey(), configEntry);
+            this.configList.add(configEntry);
+        }
+        List<ConfigChanged> configChangedEntries = this.configChangedCallbacks.get(configEntry);
+        if (configChangedEntries == null) {
+            configChangedEntries = new LinkedList<ConfigChanged>();
+            this.configChangedCallbacks.put(configEntry, configChangedEntries);
+        }
+        if (!configChangedEntries.contains(configChanged)) {
+            configChangedEntries.add(configChanged);
+        }
+    }
+
+    /**
+     * Unregisters a configuration.
+     *
+     * @param configEntry The config entry to unregister a ConfigChanged callback for.
+     * @param configChanged The ConfigChanged callback to unregister.
+     */
+    @Override
+    public void unregisterConfigCallback(ConfigEntry configEntry, ConfigChanged configChanged) {
+        List<ConfigChanged> configChangedEntries = this.configChangedCallbacks.get(configEntry);
+        if (configChangedEntries != null) {
+            configChangedEntries.remove(configChanged);
+        }
     }
 
     /**
@@ -101,5 +133,15 @@ public class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntr
     @Override
     public ConfigEntry lookupConfig(String key) {
         return this.configMap.get(key);
+    }
+
+    /**
+     * Looks up all ConfigChanged callbacks for the config entry.
+     *
+     * @param configEntry The config entry to lookup ConfigChanged callbacks for.
+     */
+    @Override
+    public List<ConfigChanged> lookupConfigChanged(ConfigEntry configEntry) {
+        return this.configChangedCallbacks.get(configEntry);
     }
 }

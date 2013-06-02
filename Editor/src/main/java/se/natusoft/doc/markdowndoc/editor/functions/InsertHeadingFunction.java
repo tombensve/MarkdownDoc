@@ -112,4 +112,9 @@ public class InsertHeadingFunction implements EditorFunction {
         this.editor.insertText("#");
         this.editor.requestEditorFocus();
     }
+
+    /**
+     * Cleanup and unregister any configs.
+     */
+    public void close() {}
 }
