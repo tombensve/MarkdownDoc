@@ -42,6 +42,7 @@ import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -148,9 +149,9 @@ public class SaveFunction implements EditorFunction {
     private void save() throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-//        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-//                "Markdown", "md", "markdown");
-//        fileChooser.setFileFilter(filter);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "Markdown", "md", "markdown");
+        fileChooser.setFileFilter(filter);
         int returnVal = fileChooser.showSaveDialog(this.editor.getGUI().getWindowFrame());
         if(returnVal == JFileChooser.APPROVE_OPTION) {
             saveAs(fileChooser.getSelectedFile());

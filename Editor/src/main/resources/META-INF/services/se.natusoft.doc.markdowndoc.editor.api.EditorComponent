@@ -1,13 +1,10 @@
 #
-# Basic components
+# Basic components (just implementing EditorComponent and not any of the sub interfaces).
 #
 
 #
-# Functions
+# Functions (implementing EditorFunction).
 #
-se.natusoft.doc.markdowndoc.editor.functions.CopySelectionFunction
-se.natusoft.doc.markdowndoc.editor.functions.CutSelectionFunction
-se.natusoft.doc.markdowndoc.editor.functions.PasteCopiedCutTextFunction
 se.natusoft.doc.markdowndoc.editor.functions.SaveFunction
 se.natusoft.doc.markdowndoc.editor.functions.OpenFunction
 se.natusoft.doc.markdowndoc.editor.functions.NewFunction
@@ -23,6 +20,19 @@ se.natusoft.doc.markdowndoc.editor.functions.ExportToPDFFunction
 se.natusoft.doc.markdowndoc.editor.functions.ExportToHTMLFunction
 se.natusoft.doc.markdowndoc.editor.functions.SettingsFunction
 #
-# Filters
+# Filters (implementing EditorInputFilter).
 #
 se.natusoft.doc.markdowndoc.editor.filters.ContextFormatFilter
+
+# I think there is a bug in JEditorPane! Before any styling was applied
+# to the JEditorPane instance, copy, cut and paste did not work. I
+# had to catch the keys and call editor.cut(), editor.copy(), and editor.paste()
+# which the below functions does. But after some styles have been applied
+# to the JEditorPane I discovered that pastes got done twice! Once by the
+# JEditorPane itself and once by my function. I have thereby commented out
+# the copy, cut and paste functions, but leave them here for now.
+#
+#se.natusoft.doc.markdowndoc.editor.functions.CopySelectionFunction
+#se.natusoft.doc.markdowndoc.editor.functions.CutSelectionFunction
+#se.natusoft.doc.markdowndoc.editor.functions.PasteCopiedCutTextFunction
+
