@@ -36,9 +36,9 @@
  */
 package se.natusoft.doc.markdowndoc.editor.api;
 
-import javax.swing.JComponent;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
-import java.awt.Point;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -56,6 +56,11 @@ public interface Editor {
      * Returns the config API.
      */
     ConfigProvider getConfigProvider();
+
+    /**
+     * Returns the persistent properties provider.
+     */
+    PersistentProps getPersistentProps();
 
     /**
      * Returns the current file or null if none.

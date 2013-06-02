@@ -64,7 +64,7 @@ public class ExportToHTMLFunction implements EditorFunction {
     public ExportToHTMLFunction() {
         Icon htmlIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddhtml.png"));
         this.htmlButton = new JButton(htmlIcon);
-        htmlButton.setToolTipText("Export as HTML (Alt-H)");
+        htmlButton.setToolTipText("Export as HTML (Ctrl-H)");
         htmlButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {

@@ -52,10 +52,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -63,6 +59,12 @@ import java.util.List;
  * Provides editor setting function.
  */
 public class SettingsFunction implements EditorFunction {
+    //
+    // Constants
+    //
+
+    private static final String SETTINGS_PROP_NAME = "editor-general-settings";
+
     //
     // Private Members
     //
@@ -201,54 +203,29 @@ public class SettingsFunction implements EditorFunction {
     }
 
     private void save() {
-        try {
-            Properties props = new Properties();
-            for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
-                props.setProperty(configEntry.getKey(), configEntry.getValue());
-            }
-
-            String userHome = System.getProperties().getProperty("user.home");
-            File saveFile = new File(userHome);
-            saveFile = new File(saveFile, ".mddoc-settings.properties");
-            FileWriter writer = new FileWriter(saveFile);
-
-            props.store(writer, "Settings for MarkdownDoc editor.");
-            writer.close();
+        Properties props = new Properties();
+        for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
+            props.setProperty(configEntry.getKey(), configEntry.getValue());
         }
-        catch (IOException ioe) {
-            JOptionPane.showMessageDialog(this.editor.getGUI().getWindowFrame(), ioe.getMessage(),
-                    "Error saving file!", JOptionPane.ERROR_MESSAGE);
-        }
+
+        this.editor.getPersistentProps().save(SETTINGS_PROP_NAME, props);
     }
 
     private void load() {
-        try {
-            String userHome = System.getProperties().getProperty("user.home");
-            File loadFile = new File(userHome);
-            loadFile = new File(loadFile, ".mddoc-settings.properties");
-            if (loadFile.exists()) {
-                Properties props = new Properties();
-                FileReader reader = new FileReader(loadFile);
-                props.load(reader);
-                reader.close();
-
-                for (String propName : props.stringPropertyNames()) {
-                    String propValue = props.getProperty(propName);
-                    ConfigEntry configEntry = this.editor.getConfigProvider().lookupConfig(propName);
-                    if (configEntry != null) {
-                        configEntry.setValue(propValue);
-                    }
-                }
-            }
-            else {
-                for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
-                    configEntry.setValue(configEntry.getValue()); // force gui update
+        Properties props = this.editor.getPersistentProps().load(SETTINGS_PROP_NAME);
+        if (props != null) {
+            for (String propName : props.stringPropertyNames()) {
+                String propValue = props.getProperty(propName);
+                ConfigEntry configEntry = this.editor.getConfigProvider().lookupConfig(propName);
+                if (configEntry != null) {
+                    configEntry.setValue(propValue);
                 }
             }
         }
-        catch (IOException ioe) {
-            JOptionPane.showMessageDialog(this.editor.getGUI().getWindowFrame(), ioe.getMessage(),
-                    "Error loading file!", JOptionPane.ERROR_MESSAGE);
+        else {
+            for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
+                configEntry.setValue(configEntry.getValue()); // force gui update
+            }
         }
 
         SwingUtilities.updateComponentTreeUI(this.editor.getGUI().getWindowFrame());

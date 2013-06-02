@@ -40,6 +40,7 @@ import se.natusoft.doc.markdowndoc.editor.ToolBarGroups;
 import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
+import se.natusoft.doc.markdowndoc.editor.functions.utils.FileWindowProps;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -136,6 +137,13 @@ public class OpenFunction implements EditorFunction {
         int returnVal = fileChooser.showOpenDialog(this.editor.getGUI().getWindowFrame());
         if(returnVal == JFileChooser.APPROVE_OPTION) {
             this.editor.loadFile(fileChooser.getSelectedFile());
+        }
+
+        // Loads the previous window position and size if the information is available.
+        FileWindowProps fileWindowProps = new FileWindowProps();
+        fileWindowProps.load(this.editor);
+        if (fileWindowProps.hasProperties()) {
+            this.editor.getGUI().getWindowFrame().setBounds(fileWindowProps.getBounds());
         }
     }
 

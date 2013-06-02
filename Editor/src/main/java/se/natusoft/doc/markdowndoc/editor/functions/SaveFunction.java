@@ -40,6 +40,7 @@ import se.natusoft.doc.markdowndoc.editor.ToolBarGroups;
 import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
+import se.natusoft.doc.markdowndoc.editor.functions.utils.FileWindowProps;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -144,6 +145,10 @@ public class SaveFunction implements EditorFunction {
         finally {
             bw.close();
         }
+
+        FileWindowProps fileWindowProps = new FileWindowProps();
+        fileWindowProps.setBounds(this.editor.getGUI().getWindowFrame().getBounds());
+        fileWindowProps.saveBounds(this.editor);
     }
 
     private void save() throws IOException {

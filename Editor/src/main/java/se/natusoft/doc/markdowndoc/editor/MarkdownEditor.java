@@ -39,6 +39,7 @@ package se.natusoft.doc.markdowndoc.editor;
 import se.natusoft.doc.markdowndoc.editor.adapters.WindowListenerAdapter;
 import se.natusoft.doc.markdowndoc.editor.api.*;
 import se.natusoft.doc.markdowndoc.editor.api.providers.JELine;
+import se.natusoft.doc.markdowndoc.editor.api.providers.PersistentPropertiesProvider;
 import se.natusoft.doc.markdowndoc.editor.config.*;
 
 import javax.swing.*;
@@ -67,6 +68,9 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
 
     // Holds all configurations.
     private static ConfigProvider configs = new ConfigProviderHolder();
+
+    // Manages persistent properties.
+    private static PersistentProps persistentPropertiesProvider = new PersistentPropertiesProvider();
 
     //
     // Private Members
@@ -358,6 +362,13 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
      */
     public GUI getGUI() {
         return this;
+    }
+
+    /**
+     * Returns the persistent properties provider.
+     */
+    public PersistentProps getPersistentProps() {
+        return persistentPropertiesProvider;
     }
 
     /**
