@@ -37,6 +37,7 @@
 package se.natusoft.doc.markdowndoc.editor.functions;
 
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups;
+import se.natusoft.doc.markdowndoc.editor.adapters.WindowListenerAdapter;
 import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
 import se.natusoft.doc.markdowndoc.editor.config.*;
@@ -50,6 +51,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -130,6 +132,12 @@ public class SettingsFunction implements EditorFunction {
         if (this.settingsWindow == null) {
             this.settingsWindow = new JFrame("Markdown Editor Settings");
             this.settingsWindow.setLayout(new BorderLayout());
+            this.settingsWindow.addWindowListener(new WindowListenerAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    cancel();
+                }
+            });
 
             JPanel contentPanel = new JPanel();
             contentPanel.setLayout(new GridLayout(this.editor.getConfigProvider().getConfigs().size(), 1));
@@ -159,11 +167,7 @@ public class SettingsFunction implements EditorFunction {
             cancelButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    for (ConfigEntry configEntry : SettingsFunction.this.editor.getConfigProvider().getConfigs()) {
-                        configEntry.setValue(SettingsFunction.this.cancelValues.get(configEntry.getKey()));
-                    }
-
-                    SettingsFunction.this.settingsWindow.setVisible(false);
+                    cancel();
                 }
             });
             buttons.add(cancelButton);
@@ -172,7 +176,7 @@ public class SettingsFunction implements EditorFunction {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             int x = ((int)screenSize.getWidth() / 2) - 200;
             int y = ((int)screenSize.getHeight() / 2) - 200;
-            this.settingsWindow.setBounds(x, y, 400, 400);
+            this.settingsWindow.setBounds(x, y, 420, 420);
         }
         else {
             for (ConfigEditPanel configEditPanel : this.configEditPanels) {
@@ -186,6 +190,14 @@ public class SettingsFunction implements EditorFunction {
         }
 
         this.settingsWindow.setVisible(true);
+    }
+
+    private void cancel() {
+        for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
+            configEntry.setValue(this.cancelValues.get(configEntry.getKey()));
+        }
+
+        this.settingsWindow.setVisible(false);
     }
 
     private void save() {
