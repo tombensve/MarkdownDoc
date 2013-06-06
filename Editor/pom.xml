@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>Editor</artifactId>
+    <artifactId>MarkdownDocEditor</artifactId>
 
     <description>
         An editor that supports editing markdown with formatting preview.
@@ -30,5 +30,85 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>osxappbundle-maven-plugin</artifactId>
+                <version>1.0-alpha-1</version>
+                <configuration>
+                    <mainClass>se.natusoft.doc.markdowndoc.editor.MarkdownEditor</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>bundle</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <!--
+                  I don't know what version I get if I don't set any, but specifying version 2.3
+                  makes the assembly fail! The latest documented version at apache is 2.5,
+                  but that doesn't seem to be available in the standard repository!
+                -->
+                <!--version>2.3</version-->
+                <configuration>
+                    <descriptors>
+                        <descriptor>file:${basedir}/src/assembly/MarkdownDocEditorApp.xml</descriptor>
+                    </descriptors>
+
+                    <archive>
+                        <manifest>
+                            <mainClass>se.natusoft.doc.markdowndoc.editor.MarkdownEditor</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>package-jar</id>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>se.natusoft.maven.plugin</groupId>
+                <artifactId>ftp-maven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <id>upload</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>upload</goal>
+                        </goals>
+                        <configuration>
+                            <baseDir>${basedir}/target</baseDir>
+                            <files>
+                                MarkdownDocEditor-${project.parent.version}.dmg,
+                                MarkdownDocEditor-${project.parent.version}-App.jar
+                            </files>
+                            <targetHost>${maven.repo.upload}</targetHost>
+                            <targetPort>21</targetPort>
+                            <targetPath>/download.natusoft.se/public_html/tools</targetPath>
+                            <userName>${web.server.user}</userName>
+                            <password>${web.server.pw}</password>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
 
 </project>
