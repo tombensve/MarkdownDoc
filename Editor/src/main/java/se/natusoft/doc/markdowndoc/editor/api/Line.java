@@ -66,6 +66,11 @@ public interface Line {
     Line getPreviousLine();
 
     /**
+     * Return true if the line is the first line.
+     */
+    boolean isFirstLine();
+
+    /**
      * Same as getText().
      */
     String toString();

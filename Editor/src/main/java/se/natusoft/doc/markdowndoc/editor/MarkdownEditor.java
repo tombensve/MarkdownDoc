@@ -512,15 +512,20 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
     /**
      * Returns the current line.
      */
-    public Line getCurrentLine() throws BadLocationException {
+    public Line getCurrentLine() {
         int i = keyPressedCaretPos;
-        while (i >= 0) {
-            String check = this.editor.getText(i, 1);
-            if (check.startsWith("\n")) {
-                ++i;
-                break;
+        try {
+            while (i >= 0) {
+                String check = this.editor.getText(i, 1);
+                if (check.startsWith("\n")) {
+                    ++i;
+                    break;
+                }
+                --i;
             }
-            --i;
+        }
+        catch (BadLocationException ble) {
+            i = 0;
         }
 
         return new JELine(this.editor, i);

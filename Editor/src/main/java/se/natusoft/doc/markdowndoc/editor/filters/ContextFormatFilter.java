@@ -68,7 +68,7 @@ public class ContextFormatFilter implements EditorInputFilter {
             // Catch new lines
             if (keyEvent.getKeyChar() == '\n') {
                 Line currentLine = this.editor.getCurrentLine();
-                System.out.println("Context: currentLine: " + currentLine.getText());
+                //System.out.println("Context: currentLine: " + currentLine.getText());
                 Line prevLine = currentLine;
 
                 if (prevLine != null) {
@@ -76,7 +76,7 @@ public class ContextFormatFilter implements EditorInputFilter {
                 }
 
                 if (prevLine != null) {
-                    System.out.println("Context: workLine: " + prevLine.getText());
+                    //System.out.println("Context: workLine: " + prevLine.getText());
                     String trimmedLine = prevLine.getText().trim();
 
                     // -- Handle list bullets --
@@ -118,6 +118,38 @@ public class ContextFormatFilter implements EditorInputFilter {
                             newLine.append("> ");
                             currentLine.setText(newLine.toString());
                             this.editor.moveCaretForward(newLine.length());
+                        }
+                    }
+                }
+            }
+            else if (keyEvent.getKeyChar() == '\t') {
+                // For some extremely strange reason the key-up event gets triggered twice
+                // when shift is pressed! And to make things even more strange, the second
+                // time the caret is at position 0, making "this.editor.getCurrentLine()"
+                // return the first line, and then thus consequently "line.getPreviousLine()"
+                // will of course return null. In the end when all event have been processed
+                // the caret remains where it was and should be. This is extremely annoying
+                // and this is a very crappy workaround for the lack of a better one!
+                // A side effect of this workaround is that list indent level change with tab
+                // and shift tab does not work on the first line. This is a minor inconvenience
+                // since you usually don't start with a list on the first line.
+                Line line = this.editor.getCurrentLine();
+                if (!line.isFirstLine()) {
+                    if (keyEvent.isShiftDown()) {
+                        // JEditorPane does something weird on shift-tab
+                        line = line.getPreviousLine();
+                    }
+                    if (line.getText().trim().startsWith("*")) {
+                        if (keyEvent.isShiftDown()) {
+                            if (line.getText().startsWith("   ")) {
+                                line.setText(line.getText().substring(3));
+                                // The moving of the caret in this case seems to happen automatically!
+                                //this.editor.moveCaretBack(3);
+                            }
+                        }
+                        else {
+                            line.setText("   " + line.getText().substring(0, line.getText().length() - 1));
+                            this.editor.moveCaretForward(3);
                         }
                     }
                 }

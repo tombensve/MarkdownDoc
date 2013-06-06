@@ -38,7 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.api.providers;
 
 import se.natusoft.doc.markdowndoc.editor.api.Line;
 
-import javax.swing.JEditorPane;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 
 /**
@@ -80,7 +80,12 @@ public class JELine implements Line {
                 check = this.editor.getText(this.endPos, 1);
             }
         }
-        catch (BadLocationException ble) {}
+        catch (BadLocationException ble) {
+            --this.endPos;
+            if (this.endPos < this.startPos) {
+                this.endPos = this.startPos;
+            }
+        }
     }
 
     //
@@ -150,6 +155,13 @@ public class JELine implements Line {
         }
 
         return new JELine(this.editor, sp);
+    }
+
+    /**
+     * Return true if the line is the first line.
+     */
+    public boolean isFirstLine() {
+        return this.startPos == 0;
     }
 
     /**
