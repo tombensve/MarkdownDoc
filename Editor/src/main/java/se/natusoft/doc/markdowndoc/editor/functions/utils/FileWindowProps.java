@@ -72,10 +72,12 @@ public class FileWindowProps {
      * @param editor The editor to save for.
      */
     public void saveBounds(Editor editor) {
+        String boundsNamePart = "default";
         if (editor.getCurrentFile() != null) {
-            editor.getPersistentProps().save(editor.getCurrentFile().getName().replace(".", "_") +
-                    "_bounds", this.props);
+            boundsNamePart = editor.getCurrentFile().getName().replace(".", "_");
         }
+
+        editor.getPersistentProps().save(boundsNamePart + "_bounds", this.props);
     }
 
     /**
@@ -84,12 +86,14 @@ public class FileWindowProps {
      * @param editor The editor to load for.
      */
     public void load(Editor editor) {
+        String boundsNamePart = "default";
         if (editor.getCurrentFile() != null) {
-            this.props = editor.getPersistentProps().load(editor.getCurrentFile().getName().replace(".", "_") +
-                    "_bounds");
-            if (this.props == null) {
-                this.props = new Properties();
-            }
+            boundsNamePart = editor.getCurrentFile().getName().replace(".", "_");
+        }
+
+        this.props = editor.getPersistentProps().load(boundsNamePart + "_bounds");
+        if (this.props == null) {
+            this.props = new Properties();
         }
     }
 

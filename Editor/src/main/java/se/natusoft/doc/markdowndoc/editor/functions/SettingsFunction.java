@@ -42,6 +42,7 @@ import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
 import se.natusoft.doc.markdowndoc.editor.config.*;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
+import se.natusoft.doc.markdowndoc.editor.functions.utils.FileWindowProps;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -209,6 +210,10 @@ public class SettingsFunction implements EditorFunction {
         }
 
         this.editor.getPersistentProps().save(SETTINGS_PROP_NAME, props);
+
+        FileWindowProps fileWindowProps = new FileWindowProps();
+        fileWindowProps.setBounds(this.editor.getGUI().getWindowFrame().getBounds());
+        fileWindowProps.saveBounds(this.editor);
     }
 
     private void load() {
@@ -229,6 +234,13 @@ public class SettingsFunction implements EditorFunction {
         }
 
         SwingUtilities.updateComponentTreeUI(this.editor.getGUI().getWindowFrame());
+
+        FileWindowProps fileWindowProps = new FileWindowProps();
+        fileWindowProps.load(this.editor);
+        if (fileWindowProps.hasProperties()) {
+            this.editor.getGUI().getWindowFrame().setBounds(fileWindowProps.getBounds());
+        }
+
     }
 
     //
@@ -236,7 +248,7 @@ public class SettingsFunction implements EditorFunction {
     //
 
     /**
-     * Manages and edits one CofnigEntry.
+     * Manages and edits one ConfigEntry.
      */
     private class ConfigEditPanel extends JPanel implements ActionListener {
         //
