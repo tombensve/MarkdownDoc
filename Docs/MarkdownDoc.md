@@ -27,6 +27,8 @@ In short MarkdownDoc provides the following:
 * HTML generator.
 * Markdown generator.
 * java -jar commandline executable.
+* Markdown editor with preview and PDF + HTML generation.
+   * Mac OS X app + dmg for install.
 * Maven plugin.
 
 Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdown](http://daringfireball.net/projects/markdown) document format, and to [iText Software Corp.](http://itextpdf.com) for making an excellent easy to use PDF library and making it available as open source. 
@@ -36,6 +38,8 @@ Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdo
 #### 1.2.6
 
 Added the new _.mddoc_ format, which makes command line useage easier, but it is also supported by the maven plugin and the library has a utility that completely handles this format.
+
+Added a Java Swing based editor for editing markdown with support.
 
 #### 1.2.5 
 

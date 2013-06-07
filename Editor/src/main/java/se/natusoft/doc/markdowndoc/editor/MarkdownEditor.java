@@ -586,6 +586,23 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
     }
 
     /**
+     * Returns the caret dot location.
+     */
+    public int getCaretDot() {
+        return this.editor.getCaret().getDot();
+    }
+
+    /**
+     * Sets the caret dot location.
+     *
+     * @param dot The new dot location to set.
+     */
+    public void setCaretDot(int dot) {
+        this.editor.getCaret().setDot(dot);
+    }
+
+
+    /**
      * Requests focus for the editor.
      */
     public void requestEditorFocus() {
@@ -749,11 +766,6 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
 
         me.setVisible(true);
         me.editor.requestFocus();
-
-//        UIManager.LookAndFeelInfo[] lfis = UIManager.getInstalledLookAndFeels()
-//        for (UIManager.LookAndFeelInfo lfi : lfis) {
-//            System.out.println("" + lfi.toString())
-//        }
 
     }
 

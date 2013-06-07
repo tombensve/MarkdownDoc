@@ -134,22 +134,35 @@ public class ContextFormatFilter implements EditorInputFilter {
                 // and shift tab does not work on the first line. This is a minor inconvenience
                 // since you usually don't start with a list on the first line.
                 Line line = this.editor.getCurrentLine();
+                boolean isLastLine = line.isLastLine();
                 if (!line.isFirstLine()) {
                     if (keyEvent.isShiftDown()) {
                         // JEditorPane does something weird on shift-tab
-                        line = line.getPreviousLine();
+                        if (isLastLine) {
+                            line = line.getPreviousLine();
+                        }
                     }
                     if (line.getText().trim().startsWith("*")) {
                         if (keyEvent.isShiftDown()) {
                             if (line.getText().startsWith("   ")) {
                                 line.setText(line.getText().substring(3));
-                                // The moving of the caret in this case seems to happen automatically!
-                                //this.editor.moveCaretBack(3);
+                                if (!isLastLine) {
+                                    this.editor.moveCaretBack(3);
+                                }
                             }
                         }
                         else {
-                            line.setText("   " + line.getText().substring(0, line.getText().length() - 1));
-                            this.editor.moveCaretForward(3);
+                            int startPos = line.getLineStartPost();
+                            int caretLoc = this.editor.getCaretDot();
+                            int tabIx = line.getText().indexOf("\t");
+                            int moveChars = 3;
+
+                            if ((startPos + tabIx) <= caretLoc) {
+                                moveChars = 2;
+                            }
+
+                            line.setText("   " + line.getText().replace("\t", ""));
+                            this.editor.moveCaretForward(moveChars);
                         }
                     }
                 }

@@ -109,6 +109,18 @@ public interface Editor {
     void setCaretLocation(Point location);
 
     /**
+     * Returns the caret dot location.
+     */
+    int getCaretDot();
+
+    /**
+     * Sets the caret dot location.
+     *
+     * @param dot The new dot location to set.
+     */
+    void setCaretDot(int dot);
+
+    /**
      * Makes the editor view visible in the main scrollable view.
      */
     void showEditorComponent();

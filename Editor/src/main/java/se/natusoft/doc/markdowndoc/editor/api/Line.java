@@ -71,6 +71,21 @@ public interface Line {
     boolean isFirstLine();
 
     /**
+     * Returns true if this line is the last line.
+     */
+    boolean isLastLine();
+
+    /**
+     * Returns the position of the beginning of the line.
+     */
+    int getLineStartPost();
+
+    /**
+     * Returns the position of the end of the line.
+     */
+    int getLineEndPos();
+
+    /**
      * Same as getText().
      */
     String toString();

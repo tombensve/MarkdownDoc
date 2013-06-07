@@ -53,6 +53,7 @@
                                     CommandLine/docs/.*.md,
                                     MavenPlugin/docs/.*.md,
                                     Library/docs/.*.md,
+                                    Editor/docs/.*.md,
                                     Docs/mddoc.md,
                                     Docs/MarkdownReference.md,
                                     Docs/parts/H1Licenses.mdpart,

@@ -165,6 +165,39 @@ public class JELine implements Line {
     }
 
     /**
+     * Returns true if this line is the last line.
+     */
+    public boolean isLastLine() {
+        try {
+            int pos = this.startPos;
+            while (true) {
+                String check = this.editor.getText(pos, 1);
+                if (check.equals("\n")) {
+                    return false;
+                }
+                ++pos;
+            }
+        }
+        catch (BadLocationException ble) {
+            return true;
+        }
+    }
+
+    /**
+     * Returns the position of the beginning of the line.
+     */
+    public int getLineStartPost() {
+        return this.startPos;
+    }
+
+    /**
+     * Returns the position of the end of the line.
+     */
+    public int getLineEndPos() {
+        return this.endPos;
+    }
+
+    /**
      * Same as getText().
      */
     public String toString() {
