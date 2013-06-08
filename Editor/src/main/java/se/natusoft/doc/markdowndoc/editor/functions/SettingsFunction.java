@@ -394,12 +394,14 @@ public class SettingsFunction implements EditorFunction {
                     Color selectedColor =
                             JColorChooser.showDialog(SettingsFunction.this.settingsWindow,
                                     "", new ConfigColor(colorConfigEntry));
-                    colorConfigEntry.setRed(selectedColor.getRed());
-                    colorConfigEntry.setGreen(selectedColor.getGreen());
-                    colorConfigEntry.setBlue(selectedColor.getBlue());
-                    redSpinner.setValue(selectedColor.getRed());
-                    greenSpinner.setValue(selectedColor.getGreen());
-                    blueSpinner.setValue(selectedColor.getBlue());
+                    if (selectedColor != null) {
+                        colorConfigEntry.setRed(selectedColor.getRed());
+                        colorConfigEntry.setGreen(selectedColor.getGreen());
+                        colorConfigEntry.setBlue(selectedColor.getBlue());
+                        redSpinner.setValue(selectedColor.getRed());
+                        greenSpinner.setValue(selectedColor.getGreen());
+                        blueSpinner.setValue(selectedColor.getBlue());
+                    }
                 }
             });
         }

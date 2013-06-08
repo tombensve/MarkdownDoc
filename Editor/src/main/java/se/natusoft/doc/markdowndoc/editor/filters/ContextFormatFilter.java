@@ -69,34 +69,32 @@ public class ContextFormatFilter implements EditorInputFilter {
             if (keyEvent.getKeyChar() == '\n') {
                 Line currentLine = this.editor.getCurrentLine();
                 //System.out.println("Context: currentLine: " + currentLine.getText());
-                Line prevLine = currentLine;
 
-                if (prevLine != null) {
-                    prevLine = prevLine.getPreviousLine();
-                }
-
-                if (prevLine != null) {
+                if (currentLine != null) {
                     //System.out.println("Context: workLine: " + prevLine.getText());
-                    String trimmedLine = prevLine.getText().trim();
+                    String trimmedLine = currentLine.getText().trim();
 
                     // -- Handle list bullets --
 
                     // If the previous line only contains a list bullet and no text, blank the line.
                     if (trimmedLine.equals("*")) {
-                        prevLine.setText("");
+                        currentLine.setText("");
                     }
                     // Otherwise start the new line with a new list bullet.
                     else {
                         if (trimmedLine.startsWith("* ")) {
-                            int indentPos = prevLine.getText().indexOf('*');
+                            int indentPos = currentLine.getText().indexOf('*');
                             StringBuilder newLine = new StringBuilder();
                             while (indentPos > 0) {
                                 newLine.append(' ');
                                 --indentPos;
                             }
                             newLine.append("* ");
-                            currentLine.setText(newLine.toString());
-                            this.editor.moveCaretForward(newLine.length());
+                            Line nextLine = currentLine.getNextLine();
+                            if (nextLine != null) {
+                                nextLine.setText(newLine.toString());
+                                this.editor.moveCaretForward(newLine.length());
+                            }
                         }
                     }
 
@@ -104,66 +102,57 @@ public class ContextFormatFilter implements EditorInputFilter {
 
                     // If the previous line only contains a quote (>) char and no text, blank the line
                     if (trimmedLine.equals(">")) {
-                        prevLine.setText("");
+                        currentLine.setText("");
                     }
                     // Otherwise start the new line with a quote (>) character.
                     else {
                         if (trimmedLine.startsWith("> ")) {
-                            int indentPos = prevLine.getText().indexOf('>');
+                            int indentPos = currentLine.getText().indexOf('>');
                             StringBuilder newLine = new StringBuilder();
                             while (indentPos > 0) {
                                 newLine.append(' ');
                                 --indentPos;
                             }
                             newLine.append("> ");
-                            currentLine.setText(newLine.toString());
-                            this.editor.moveCaretForward(newLine.length());
+                            Line nextLine = currentLine.getNextLine();
+                            if (nextLine != null) {
+                                nextLine.setText(newLine.toString());
+                                this.editor.moveCaretForward(newLine.length());
+                            }
                         }
                     }
                 }
             }
             else if (keyEvent.getKeyChar() == '\t') {
-                // For some extremely strange reason the key-up event gets triggered twice
-                // when shift is pressed! And to make things even more strange, the second
-                // time the caret is at position 0, making "this.editor.getCurrentLine()"
-                // return the first line, and then thus consequently "line.getPreviousLine()"
-                // will of course return null. In the end when all event have been processed
-                // the caret remains where it was and should be. This is extremely annoying
-                // and this is a very crappy workaround for the lack of a better one!
-                // A side effect of this workaround is that list indent level change with tab
-                // and shift tab does not work on the first line. This is a minor inconvenience
-                // since you usually don't start with a list on the first line.
                 Line line = this.editor.getCurrentLine();
                 boolean isLastLine = line.isLastLine();
-                if (!line.isFirstLine()) {
+                if (keyEvent.isShiftDown()) {
+                    // JEditorPane does something weird on shift-tab
+                    if (isLastLine) {
+                        line = line.getPreviousLine();
+                    }
+                }
+                if (line.getText().trim().startsWith("*")) {
                     if (keyEvent.isShiftDown()) {
-                        // JEditorPane does something weird on shift-tab
-                        if (isLastLine) {
-                            line = line.getPreviousLine();
+                        if (line.getText().startsWith("   ")) {
+                            line.setText(line.getText().substring(3));
+                            if (!isLastLine) {
+                                this.editor.moveCaretBack(3);
+                            }
                         }
                     }
-                    if (line.getText().trim().startsWith("*")) {
-                        if (keyEvent.isShiftDown()) {
-                            if (line.getText().startsWith("   ")) {
-                                line.setText(line.getText().substring(3));
-                                if (!isLastLine) {
-                                    this.editor.moveCaretBack(3);
-                                }
-                            }
-                        }
-                        else {
-                            int startPos = line.getLineStartPost();
-                            int caretLoc = this.editor.getCaretDot();
-                            int tabIx = line.getText().indexOf("\t");
-                            int moveChars = 3;
+                    else {
+                        int startPos = line.getLineStartPost();
+                        int caretLoc = this.editor.getCaretDot();
+                        int tabIx = line.getText().indexOf("\t");
+                        int moveChars = 3;
 
-                            if ((startPos + tabIx) <= caretLoc) {
-                                moveChars = 2;
-                            }
-
-                            line.setText("   " + line.getText().replace("\t", ""));
-                            this.editor.moveCaretForward(moveChars);
+                        if ((startPos + tabIx) <= caretLoc) {
+                            moveChars = 2;
                         }
+
+                        line.setText("   " + line.getText().replace("\t", ""));
+                        this.editor.moveCaretForward(moveChars);
                     }
                 }
             }

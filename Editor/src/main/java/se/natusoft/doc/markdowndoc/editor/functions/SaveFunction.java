@@ -40,16 +40,11 @@ import se.natusoft.doc.markdowndoc.editor.ToolBarGroups;
 import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
-import se.natusoft.doc.markdowndoc.editor.functions.utils.FileWindowProps;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 
 /**
@@ -123,10 +118,10 @@ public class SaveFunction implements EditorFunction {
     public void perform() throws FunctionException {
         try {
             if (this.editor.getCurrentFile() != null) {
-                saveAs(this.editor.getCurrentFile());
+                this.editor.saveFileAs(this.editor.getCurrentFile());
             }
             else {
-                save();
+                this.editor.save();
             }
             this.editor.requestEditorFocus();
         }
@@ -134,32 +129,6 @@ public class SaveFunction implements EditorFunction {
             JOptionPane.showMessageDialog(
                     this.editor.getGUI().getWindowFrame(), ioe.getMessage(), "Failed to save!", JOptionPane.ERROR_MESSAGE);
 
-        }
-    }
-
-    private void saveAs(File file) throws IOException {
-        BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-        try {
-            bw.write(this.editor.getEditorContent());
-        }
-        finally {
-            bw.close();
-        }
-
-        FileWindowProps fileWindowProps = new FileWindowProps();
-        fileWindowProps.setBounds(this.editor.getGUI().getWindowFrame().getBounds());
-        fileWindowProps.saveBounds(this.editor);
-    }
-
-    private void save() throws IOException {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "Markdown", "md", "markdown");
-        fileChooser.setFileFilter(filter);
-        int returnVal = fileChooser.showSaveDialog(this.editor.getGUI().getWindowFrame());
-        if(returnVal == JFileChooser.APPROVE_OPTION) {
-            saveAs(fileChooser.getSelectedFile());
         }
     }
 

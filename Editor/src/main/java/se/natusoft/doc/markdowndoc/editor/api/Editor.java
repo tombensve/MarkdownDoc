@@ -199,4 +199,21 @@ public interface Editor {
      */
     public void loadFile(File file) throws IOException;
 
+    /**
+     * Saves the currently edited file with the specified path.
+     *
+     * @param file The file path to save to.
+     *
+     * @throws IOException
+     */
+    public void saveFileAs(File file) throws IOException;
+
+    /**
+     * Opens a file chooser for specifying file to save to.
+     *
+     * @throws IOException
+     */
+    public void save() throws IOException;
+
+
 }

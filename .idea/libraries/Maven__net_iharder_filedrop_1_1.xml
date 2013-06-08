@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Maven: net.iharder:filedrop:1.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Editor/lib/filedrop.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

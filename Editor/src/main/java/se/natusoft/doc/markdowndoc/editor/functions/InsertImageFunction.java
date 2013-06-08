@@ -194,6 +194,7 @@ public class InsertImageFunction implements EditorFunction {
         this.inputPanel.add(cancelButton);
 
         this.inputDialog = new JFrame("Insert image parameters");
+        this.inputDialog.setAlwaysOnTop(true);
         Rectangle mainBounds = this.editor.getGUI().getWindowFrame().getBounds();
         this.inputDialog.setLayout(new BorderLayout());
         this.inputDialog.add(this.inputPanel, BorderLayout.CENTER);

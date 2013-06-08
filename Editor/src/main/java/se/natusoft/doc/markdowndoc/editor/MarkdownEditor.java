@@ -36,23 +36,25 @@
  */
 package se.natusoft.doc.markdowndoc.editor;
 
+import net.iharder.dnd.FileDrop;
 import se.natusoft.doc.markdowndoc.editor.adapters.WindowListenerAdapter;
 import se.natusoft.doc.markdowndoc.editor.api.*;
 import se.natusoft.doc.markdowndoc.editor.api.providers.JELine;
 import se.natusoft.doc.markdowndoc.editor.api.providers.PersistentPropertiesProvider;
 import se.natusoft.doc.markdowndoc.editor.config.*;
+import se.natusoft.doc.markdowndoc.editor.functions.utils.FileWindowProps;
 
 import javax.swing.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Caret;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
@@ -275,7 +277,6 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
             } catch (UnsupportedLookAndFeelException e) {
                 e.printStackTrace();
             }
-            //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel")
         }
 
         // Main Window
@@ -288,6 +289,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
 
         this.editorPanel = new JPanel();
         this.editorPanel.setLayout(new BorderLayout());
+        this.editorPanel.setAutoscrolls(true);
 
         this.editor = new JEditorPane() {
             @Override
@@ -304,14 +306,29 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
             }
 
         };
+        this.editor.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent caretEvent) {
+                updateScrollbar();
+            }
+        });
+
+
+        new FileDrop(this.editor, new FileDrop.Listener() {
+            public void filesDropped(java.io.File[] files) {
+                if (files.length >= 1) {
+                    dropFile(files[0]);
+                }
+            }
+        });
 
         // Setup active view
 
-        this.scrollPane = new JScrollPane();
+        this.scrollPane = new JScrollPane(this.editor);
         //scrollPane.setAutoscrolls(true)
         this.scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-        this.scrollPane.setViewportView(this.editor);
+        this.scrollPane.setAutoscrolls(true);
         this.scrollPane.getViewport().setAlignmentY(0.0f);
 
         this.editorPanel.add(scrollPane, BorderLayout.CENTER);
@@ -332,8 +349,6 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
         // Additional setup now that a component have possibly loaded config.
 
         this.editor.setMargin(new Insets(20, 30, 20, 30));
-        this.editor.setCaret(new MDECaret());
-
         this.editor.addKeyListener(this);
 
         // Toolbar
@@ -438,22 +453,48 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
      * a key pressed event.
      */
     public void keyPressed(KeyEvent e) {
-        this.currentPressedEvent = e;
-        this.keyPressedCaretPos = this.editor.getCaretPosition();
+        int keyCode = e.getKeyCode();
+        if (
+                keyCode != KeyEvent.VK_META &&
+                keyCode != KeyEvent.VK_ALT &&
+                keyCode != KeyEvent.VK_CONTROL &&
+                keyCode != KeyEvent.VK_SHIFT
+        ) {
+            this.currentPressedEvent = e;
+            this.keyPressedCaretPos = this.editor.getCaretPosition();
 
-//        System.out.println("e.modifiers=" + e.modifiers + ", e,keyCode=" + e.keyCode)
-        for (EditorFunction function : this.functions) {
-//            System.out.println("f.downKeyMask=" + function.downKeyMask + ", f.keyCode=" + function.keyCode)
-            // Please note that we don't or the downKeyMask with the modifiers since we want it to be
-            // exactly the mask and nothing else. If the function returns 4 (Meta) then no other key
-            // like Alt or Control is accepted in combination.
-            if (e.getModifiers() == function.getDownKeyMask() && e.getKeyCode() == function.getKeyCode()) {
-                function.perform();
-                break;
+            for (EditorFunction function : this.functions) {
+                // Please note that I don't OR the downKeyMask with the modifiers since I want it to be
+                // exactly the mask and nothing else. If the function returns 4 (Meta) then no other key
+                // like Alt or Control is accepted in combination.
+                if (e.getModifiers() == function.getDownKeyMask() && e.getKeyCode() == function.getKeyCode()) {
+                    function.perform();
+                    break;
+                }
+
             }
-
         }
+        updateScrollbar();
+    }
 
+    /**
+     * Updates the vertical scrollbar according to caret position.
+     */
+    private void updateScrollbar() {
+        try {
+            int scrollValue = (int)this.editor.modelToView(this.editor.getCaret().getDot()).getY();
+            scrollValue = scrollValue - (this.scrollPane.getHeight() / 2);
+            if (scrollValue < 0) {
+                scrollValue = 0;
+            }
+            if (scrollValue > this.scrollPane.getVerticalScrollBar().getMaximum()) {
+                scrollValue = this.scrollPane.getVerticalScrollBar().getMaximum();
+            }
+            this.scrollPane.getVerticalScrollBar().setValue(scrollValue);
+        }
+        catch (BadLocationException ble) {
+            //ble.printStackTrace(System.err);
+        }
     }
 
     /**
@@ -462,12 +503,21 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
      * a key released event.
      */
     public void keyReleased(KeyEvent e) {
-        // The current editor position has not been updated for the key event in
-        // keyPressed(...) so we save the pressed event (we get a different event here!)
-        // and execute filters on it now when the editor is in a better state.
-        for (EditorInputFilter filter : this.filters) {
-            filter.keyPressed(this.currentPressedEvent);
+        int keyCode = e.getKeyCode();
+        if (
+                keyCode != KeyEvent.VK_META &&
+                        keyCode != KeyEvent.VK_ALT &&
+                        keyCode != KeyEvent.VK_CONTROL &&
+                        keyCode != KeyEvent.VK_SHIFT
+                ) {
+            // The current editor position has not been updated for the key event in
+            // keyPressed(...) so we save the pressed event (we get a different event here!)
+            // and execute filters on it now when the editor is in a better state.
+            for (EditorInputFilter filter : this.filters) {
+                filter.keyPressed(/*this.currentPressedEvent*/e);
+            }
         }
+
     }
 
     // --- Editor implementation.
@@ -513,7 +563,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
      * Returns the current line.
      */
     public Line getCurrentLine() {
-        int i = keyPressedCaretPos;
+        int i = keyPressedCaretPos - 1;
         try {
             while (i >= 0) {
                 String check = this.editor.getText(i, 1);
@@ -525,6 +575,10 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
             }
         }
         catch (BadLocationException ble) {
+            i = 0;
+        }
+        // If i was < 0 to start with it will still be that here!
+        if (i < 0) {
             i = 0;
         }
 
@@ -702,6 +756,69 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
             br.close();
         }
         setEditorContent(sb.toString());
+        this.editor.setCaretPosition(0);
+    }
+
+    /**
+     * Saves the currently edited file with the specified path.
+     *
+     * @param file The file path to save to.
+     *
+     * @throws IOException
+     */
+    public void saveFileAs(File file) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+        try {
+            bw.write(getEditorContent());
+        }
+        finally {
+            bw.close();
+        }
+
+        FileWindowProps fileWindowProps = new FileWindowProps();
+        fileWindowProps.setBounds(getGUI().getWindowFrame().getBounds());
+        fileWindowProps.saveBounds(this);
+    }
+
+    /**
+     * Opens a file chooser for specifying file to save to.
+     *
+     * @throws IOException
+     */
+    public void save() throws IOException {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "Markdown", "md", "markdown");
+        fileChooser.setFileFilter(filter);
+        int returnVal = fileChooser.showSaveDialog(getGUI().getWindowFrame());
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+            saveFileAs(fileChooser.getSelectedFile());
+        }
+    }
+
+    /**
+     * Handles files being dropped on the editor.
+     *
+     * @param file The file dropped.
+     */
+    private void dropFile(File file)  {
+        try {
+            if (this.currentFile != null) {
+                saveFileAs(this.currentFile);
+            }
+            else {
+                if (this.editor.getText().trim().length() > 0) {
+                    save();
+                }
+            }
+            loadFile(file);
+        }
+        catch (IOException ioe) {
+            JOptionPane.showMessageDialog(
+                    MarkdownEditor.this, ioe.getMessage(),
+                    "Failed to open dropped file!", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // ----

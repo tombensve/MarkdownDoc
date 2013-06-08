@@ -81,7 +81,7 @@ public class JELine implements Line {
             }
         }
         catch (BadLocationException ble) {
-            --this.endPos;
+            //--this.endPos;
             if (this.endPos < this.startPos) {
                 this.endPos = this.startPos;
             }
@@ -121,8 +121,8 @@ public class JELine implements Line {
      */
     public Line getNextLine() {
         try {
-            String verify = this.editor.getText(this.endPos + 2, 1);
-            return new JELine(this.editor, this.endPos + 2);
+            String verify = this.editor.getText(this.endPos + 1, 1);
+            return new JELine(this.editor, this.endPos + 1);
         }
         catch (BadLocationException ble) {
             return null;
