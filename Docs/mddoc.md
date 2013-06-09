@@ -50,14 +50,14 @@ A path to an _.mddoc_ file can be specified as only argument to command line var
     pdf.author: Your Name
     
     # This will be rendered on the title page. Optional.
-    pdf.copyright: Copyright © 2013 Me Myself and I
+    pdf.copyright: Copyright ?? 2013 Me Myself and I
     
     # If true then links will render as plain text and not be clickable.
     # Optional. Default: false
     pdf.hideLinks: true/false
     
     # Specify this if you want to change the bullet for unordered lists.
-    # Optional. Default: • (including space after!)
+    # Optional. Default: ??? (including space after!)
     pdf.unorderedListItemPrefix: *
     
     # Specify true here to have the first line of each paragraph indented.

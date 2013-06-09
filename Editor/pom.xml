@@ -29,12 +29,21 @@
             <scope>compile</scope>
         </dependency>
 
+        <!--
+            This jar in not available in a maven repository and using "system" packaging and pointing
+            out the jar in lib/filedrop.jar works fine when run from IntelliJ Idea, but both the
+            maven-assembly-plugin and osxappbundle-maven-plugin refused to include that jar then.
+            Therefor you must install it in your local maven repository before this can be build.
+
+            Do this:
+
+                mvn install:install-file -Dfile=lib/filedrop.jar -DgroupId=net.iharder -DartifactId=filedrop -Dversion=1.1 -Dpackaging=jar
+        -->
         <dependency>
             <groupId>net.iharder</groupId>
             <artifactId>filedrop</artifactId>
             <version>1.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/filedrop.jar</systemPath>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

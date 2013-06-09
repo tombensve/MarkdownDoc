@@ -58,6 +58,7 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.ServiceLoader;
 
 /**
@@ -152,7 +153,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
             new ColorConfigEntry("editor.pane.background.color", "The editor background color.", 240, 240, 240);
 
     private static ColorConfigEntry foregroundColorConfig =
-            new ColorConfigEntry("editor.pane.foreground.color", "The editor text color.", 80, 80, 80);
+            new ColorConfigEntry("editor.pane.foreground.color", "The editor text color.", 50, 50, 50);
 
     private static ValidSelectionConfigEntry lookAndFeelConfig =
             new ValidSelectionConfigEntry("editor.lookandfeel", "The LookAndFeel to use.",
@@ -312,7 +313,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
                 updateScrollbar();
             }
         });
-
+        this.editor.setLocale(Locale.getDefault());
 
         new FileDrop(this.editor, new FileDrop.Listener() {
             public void filesDropped(java.io.File[] files) {
@@ -757,6 +758,14 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
         }
         setEditorContent(sb.toString());
         this.editor.setCaretPosition(0);
+
+        // Loads the previous window position and size if the information is available.
+        FileWindowProps fileWindowProps = new FileWindowProps();
+        fileWindowProps.load(this);
+        if (fileWindowProps.hasProperties()) {
+            getGUI().getWindowFrame().setBounds(fileWindowProps.getBounds());
+        }
+
     }
 
     /**
