@@ -99,14 +99,14 @@ public class IntegerConfigEntry extends ConfigEntry {
     /**
      * Returns the minimum value.
      */
-    public double getMinValue() {
+    public int getMinValue() {
         return this.min;
     }
 
     /**
      * Returns the maximum value.
      */
-    public double getMaxValue() {
+    public int getMaxValue() {
         return this.max;
     }
 }

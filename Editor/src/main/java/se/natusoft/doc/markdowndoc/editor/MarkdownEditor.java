@@ -58,7 +58,6 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.ServiceLoader;
 
 /**
@@ -153,7 +152,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
             new ColorConfigEntry("editor.pane.background.color", "The editor background color.", 240, 240, 240);
 
     private static ColorConfigEntry foregroundColorConfig =
-            new ColorConfigEntry("editor.pane.foreground.color", "The editor text color.", 50, 50, 50);
+            new ColorConfigEntry("editor.pane.foreground.color", "The editor text color.", 80, 80, 80);
 
     private static ValidSelectionConfigEntry lookAndFeelConfig =
             new ValidSelectionConfigEntry("editor.lookandfeel", "The LookAndFeel to use.",
@@ -170,6 +169,18 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
                         }
                     }
             );
+
+    private static IntegerConfigEntry topMargin = new IntegerConfigEntry("editor.pane.top.margin",
+            "The top margin.", 40, 0, 500);
+
+    private static IntegerConfigEntry bottomMargin = new IntegerConfigEntry("editor.pane.bottom.margin",
+            "The bottom margin.", 40, 0, 500);
+
+    private static IntegerConfigEntry leftMargin = new IntegerConfigEntry("editor.pane.left.margin",
+            "The left margin.", 60, 0, 500);
+
+    private static IntegerConfigEntry rightMargin = new IntegerConfigEntry("editor.pane.right.margin",
+            "The right margin.", 60, 0, 500);
 
     //
     // Config callbacks
@@ -226,6 +237,45 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
         }
     };
 
+    private ConfigChanged topMarginConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            Insets margins = MarkdownEditor.this.editor.getMargin();
+            margins.top = ((IntegerConfigEntry)ce).getIntValue();
+            editor.setMargin(margins);
+            editor.revalidate();
+        }
+    };
+
+    private ConfigChanged bottomMarginConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            Insets margins = MarkdownEditor.this.editor.getMargin();
+            margins.bottom = ((IntegerConfigEntry)ce).getIntValue();
+            editor.setMargin(margins);
+            editor.revalidate();
+        }
+    };
+
+    private ConfigChanged leftMarginConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            Insets margins = MarkdownEditor.this.editor.getMargin();
+            margins.left = ((IntegerConfigEntry)ce).getIntValue();
+            editor.setMargin(margins);
+            editor.revalidate();
+        }
+    };
+
+    private ConfigChanged rightMarginConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            Insets margins = MarkdownEditor.this.editor.getMargin();
+            margins.right = ((IntegerConfigEntry)ce).getIntValue();
+            editor.setMargin(margins);
+            editor.revalidate();
+        }
+    };
 
     //
     // Constructors
@@ -263,6 +313,10 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
         getConfigProvider().registerConfig(backgroundColorConfig, this.backgroundColorConfigChanged);
         getConfigProvider().registerConfig(foregroundColorConfig, this.foregroundColorConfigChanged);
         getConfigProvider().registerConfig(lookAndFeelConfig, this.lookAndFeelConfigChanged);
+        getConfigProvider().registerConfig(topMargin, this.topMarginConfigChanged);
+        getConfigProvider().registerConfig(bottomMargin, this.bottomMarginConfigChanged);
+        getConfigProvider().registerConfig(leftMargin, this.leftMarginConfigChanged);
+        getConfigProvider().registerConfig(rightMargin, this.rightMarginConfigChanged);
 
         // Set Look and Feel
 
@@ -284,7 +338,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
 
         this.setLayout(new BorderLayout());
         this.setSize(new Dimension(800, 800));
-        this.setTitle("MarkdownDoc Editor");
+        this.setTitle("MarkdownDoc Editor 1.2.7");
 
         // Editor
 
@@ -313,7 +367,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
                 updateScrollbar();
             }
         });
-        this.editor.setLocale(Locale.getDefault());
+
 
         new FileDrop(this.editor, new FileDrop.Listener() {
             public void filesDropped(java.io.File[] files) {
@@ -330,7 +384,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
         this.scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         this.scrollPane.setAutoscrolls(true);
-        this.scrollPane.getViewport().setAlignmentY(0.0f);
+        //this.scrollPane.getViewport().setAlignmentY(0.0f);
 
         this.editorPanel.add(scrollPane, BorderLayout.CENTER);
         add(this.editorPanel, BorderLayout.CENTER);
@@ -349,7 +403,13 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
 
         // Additional setup now that a component have possibly loaded config.
 
-        this.editor.setMargin(new Insets(20, 30, 20, 30));
+        Insets margins = new Insets(
+                topMargin.getIntValue(),
+                leftMargin.getIntValue(),
+                bottomMargin.getIntValue(),
+                rightMargin.getIntValue()
+        );
+        this.editor.setMargin(margins);
         this.editor.addKeyListener(this);
 
         // Toolbar
@@ -749,6 +809,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
         try {
             String line = br.readLine();
             while (line != null) {
+                line = line.replace("‚Äù", "\"");
                 sb.append(line);
                 sb.append("\n");
                 line = br.readLine();
@@ -758,14 +819,6 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
         }
         setEditorContent(sb.toString());
         this.editor.setCaretPosition(0);
-
-        // Loads the previous window position and size if the information is available.
-        FileWindowProps fileWindowProps = new FileWindowProps();
-        fileWindowProps.load(this);
-        if (fileWindowProps.hasProperties()) {
-            getGUI().getWindowFrame().setBounds(fileWindowProps.getBounds());
-        }
-
     }
 
     /**
