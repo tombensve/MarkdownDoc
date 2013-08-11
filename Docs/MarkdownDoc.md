@@ -35,6 +35,10 @@ Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdo
 
 ### Version history
 
+#### 1.2.7
+
+Added settings for specifying top, bottom, left, and right margins in editor. Please note that I've been a bit lazy here. The sizes are in pixels, not characters/lines! 
+
 #### 1.2.6
 
 Added the new _.mddoc_ format, which makes command line useage easier, but it is also supported by the maven plugin and the library has a utility that completely handles this format.
@@ -64,7 +68,7 @@ This specification however is not extremely exact so there might be some differe
 
 The known (and intentional) differences are:
 
-* No HMTL pass-through! Well, there is a small exception to that. HTML comments are passed along. Mostly because there is no markdown comment format and I wanted to be able to put comments in my documents. ”\&\n\b\s\p\;” is also passed through to create indents that are not code blocks. The reason for no HTML pass-through is that MarkdownDoc takes it directly from markdown to PDF without any HTML rendering in between. The main purpose of this tool is to write documentation not generate HTML sites.
+* No HMTL pass-through! Well, there is a small exception to that. HTML comments are passed along. Mostly because there is no markdown comment format and I wanted to be able to put comments in my documents. "\&\n\b\s\p\;" is also passed through to create indents that are not code blocks. The reason for no HTML pass-through is that MarkdownDoc takes it directly from markdown to PDF without any HTML rendering in between. The main purpose of this tool is to write documentation not generate HTML sites.
 
 * Escaping with '\\'. In MarkdownDoc you can escape any character with \\ and it will be passed through as is
   without being acted on if it has markdown meaning.
