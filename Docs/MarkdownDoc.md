@@ -35,13 +35,18 @@ Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdo
 
 ### Version history
 
+#### 1.2.8
+
+Headings can now **not** be more than one line (not include LF/CRLF). Before they were treated like paragraphs. This to
+be more compatible with other Markdown tools and Markdown documents.
+
 #### 1.2.7
 
 Added settings for specifying top, bottom, left, and right margins in editor. Please note that I've been a bit lazy here. The sizes are in pixels, not characters/lines! 
 
 #### 1.2.6
 
-Added the new _.mddoc_ format, which makes command line useage easier, but it is also supported by the maven plugin and the library has a utility that completely handles this format.
+Added the new _.mddoc_ format, which makes command line usage easier, but it is also supported by the maven plugin and the library has a utility that completely handles this format.
 
 Added a Java Swing based editor for editing markdown with support.
 

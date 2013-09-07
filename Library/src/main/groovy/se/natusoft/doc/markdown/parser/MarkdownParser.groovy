@@ -40,13 +40,12 @@ import se.natusoft.doc.markdown.api.Parser
 import se.natusoft.doc.markdown.exception.ParseException
 import se.natusoft.doc.markdown.io.Line
 import se.natusoft.doc.markdown.io.LineReader
+import se.natusoft.doc.markdown.model.*
 import se.natusoft.doc.markdown.parser.markdown.io.MDLine
 import se.natusoft.doc.markdown.parser.markdown.io.MDLineReader
 import se.natusoft.doc.markdown.parser.markdown.model.MDImage
 import se.natusoft.doc.markdown.parser.markdown.model.MDLink
 import se.natusoft.doc.markdown.parser.markdown.model.MDList
-import se.natusoft.doc.markdown.model.*
-import java.util.List as JList
 
 /**
  * A parser that parses Markdown.
@@ -289,11 +288,13 @@ public class MarkdownParser implements Parser {
         Header header = new Header(level: level)
 
         header.addItem(line.removeAll("#").removeLeadingSpaces())
-        while (lineReader.hasLine() && !lineReader.peekNextLine().empty) {
-            line = lineReader.readLine()
-            header.addItem(" ")
-            header.addItem(line.removeAll("#").removeLeadingSpaces().toString())
-        }
+
+        // I comment this part out for now since other MD tools seems only allow one line for heading.
+        //while (lineReader.hasLine() && !lineReader.peekNextLine().empty) {
+        //    line = lineReader.readLine()
+        //    header.addItem(" ")
+        //    header.addItem(line.removeAll("#").removeLeadingSpaces().toString())
+        //}
 
         return header
     }
