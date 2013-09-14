@@ -17,9 +17,6 @@ This is a paragraph in a level 2 section.
 
 ###### Six
 
-## Header text
-with text on 2 lines ##
-
 Test of underline header H1
 ===========================
 
