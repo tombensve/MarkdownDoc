@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.6
+ *         1.2.9
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -36,9 +36,10 @@
  */
 package se.natusoft.doc.markdown.model
 
-import java.util.List as JList
-import java.util.LinkedList as JLinkedList
 import se.natusoft.doc.markdown.io.Line
+
+import java.util.LinkedList as JLinkedList
+import java.util.List as JList
 
 /**
  * This is a base API implemented by most of the document structure models.

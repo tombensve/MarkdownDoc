@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.6
+ *         1.2.9
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -36,14 +36,8 @@
  */
 package se.natusoft.doc.markdown.generator.options
 
-import se.natusoft.tools.optionsmgr.annotations.OptionsModel
-import se.natusoft.tools.optionsmgr.annotations.Option
-import se.natusoft.tools.optionsmgr.annotations.Name
-import se.natusoft.tools.optionsmgr.annotations.Description
-import se.natusoft.tools.optionsmgr.annotations.Required
-import se.natusoft.tools.optionsmgr.annotations.Optional
 import se.natusoft.doc.markdown.api.Options
-import se.natusoft.tools.optionsmgr.annotations.Flag
+import se.natusoft.tools.optionsmgr.annotations.*
 
 /**
  * Options for the PDFGenerator.

@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.6
+ *         1.2.9
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -37,7 +37,6 @@
 package se.natusoft.doc.markdown.api
 
 import se.natusoft.doc.markdown.exception.GenerateException
-
 import se.natusoft.doc.markdown.model.Doc
 
 /**

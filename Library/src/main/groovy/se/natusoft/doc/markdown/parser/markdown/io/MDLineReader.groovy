@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.6
+ *         1.2.9
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -36,9 +36,8 @@
  */
 package se.natusoft.doc.markdown.parser.markdown.io
 
-import se.natusoft.doc.markdown.io.LineReader
 import se.natusoft.doc.markdown.io.Line
-import se.natusoft.doc.markdown.parser.markdown.io.MDLine
+import se.natusoft.doc.markdown.io.LineReader
 
 /**
  * Extends LineReader to produce MDLine objects instead of Line objects.

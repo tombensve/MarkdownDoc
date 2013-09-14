@@ -7,7 +7,7 @@
     <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
     <artifactId>markdown-doc</artifactId>
     <packaging>pom</packaging>
-    <version><!--VER-->1.2.8</version>
+    <version><!--VER-->1.2.9</version>
     <modules>
         <module>Docs</module>
         <module>Library</module>
@@ -236,6 +236,24 @@
                                 <!--name></name>
                                 <value></value-->
                             </userData>
+
+                            <scripts>
+                                <!--
+                                    Update the displayed version in MarkdownEditor window title.
+                                -->
+                                <script>
+                                    <fileFilter>.*MarkdownEditor.java</fileFilter>
+                                    <code>
+                                        editor.moveToTopOfFile();
+                                        if (editor.find("this.setTitle\\(\"MarkdownDoc Editor")) {
+                                            display("Updating displayed version in MarkdownEditor!");
+                                            editor.deleteCurrentLine();
+                                            editor.insertLine("        this.setTitle(\"MarkdownDoc Editor ${project.version}\");");
+                                        }
+                                    </code>
+                                </script>
+
+                            </scripts>
 
                         </configuration>
 

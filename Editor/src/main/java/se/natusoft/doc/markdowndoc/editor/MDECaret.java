@@ -2,10 +2,10 @@
  * 
  * PROJECT
  *     Name
- *         Editor
+ *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.2.6
+ *         1.2.9
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -37,7 +37,7 @@
 package se.natusoft.doc.markdowndoc.editor;
 
 import javax.swing.text.DefaultCaret;
-import java.awt.Rectangle;
+import java.awt.*;
 
 /**
  * This provides a Caret variant that does not scroll to the bottom of the file on

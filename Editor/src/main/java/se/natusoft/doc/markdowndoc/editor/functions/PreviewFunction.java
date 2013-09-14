@@ -2,10 +2,10 @@
  * 
  * PROJECT
  *     Name
- *         Editor
+ *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.2.6
+ *         1.2.9
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -36,6 +36,7 @@
  */
 package se.natusoft.doc.markdowndoc.editor.functions;
 
+import net.iharder.dnd.FileDrop;
 import se.natusoft.doc.markdown.api.Generator;
 import se.natusoft.doc.markdown.api.Parser;
 import se.natusoft.doc.markdown.exception.GenerateException;
@@ -61,9 +62,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Properties;
 
 /**
@@ -145,11 +144,57 @@ public class PreviewFunction implements EditorFunction, KeyListener {
         this.preview.setCaret(new MDECaret());
         this.preview.setContentType("text/html");
         this.preview.addKeyListener(this);
+
+        new FileDrop(this.preview, new FileDrop.Listener() {
+            public void filesDropped(java.io.File[] files) {
+                if (files.length >= 1) {
+                    showFile(files[0]);
+                }
+            }
+        });
+
     }
 
     //
     // Methods
     //
+
+    /**
+     *  This will format and show the dropped file assuming it is a markdown file.
+     *  This will not affect the content of the editor. Exiting the preview and entering
+     *  it again will again preview the editor content. This is just a convenience for
+     *  reading markdown files formatted by dropping them on preview mode.
+     *
+     * @param file
+     */
+    private void showFile(File file) {
+        if (file.getName().endsWith("md") || file.getName().endsWith("markdown")) {
+            try {
+                StringBuilder markdownText = new StringBuilder();
+                BufferedReader mdFileReader = new BufferedReader(new FileReader(file));
+                String line = mdFileReader.readLine();
+                while (line != null) {
+                    markdownText.append(line);
+                    markdownText.append("\n");
+                    line = mdFileReader.readLine();
+                }
+                mdFileReader.close();
+
+                String html = markdownToHTML(markdownText.toString());
+                this.preview.setText(html);
+                this.preview.setLocation(0,0);
+            }
+            catch (ParseException pe) {
+                pe.printStackTrace(System.err);
+            }
+            catch (GenerateException ge) {
+                ge.printStackTrace(System.err);
+            }
+            catch (IOException ioe) {
+                ioe.printStackTrace(System.err);
+            }
+        }
+    }
 
     @Override
     public void setEditor(Editor editor) {
@@ -212,13 +257,7 @@ public class PreviewFunction implements EditorFunction, KeyListener {
 
     private void previewOn() {
         try {
-            String html = convertEditorContentToHTML();
-            // This is a workaround for JEditorPane not supporting a CSS rule for making
-            // <code> sensible! It insists on indenting the first row with a tab! With
-            // this workaround it will be indenting a space. The drawback is that there
-            // will be one more empty line, but this still looks better.
-            html = html.replaceAll("<code>", "<code>\n&nbsp;");
-            //System.out.println(html);
+            String html = markdownToHTML(this.editor.getEditorContent());
             this.preview.setText(html);
 
             // Set a relatively correct position in the HTML view based on the
@@ -236,8 +275,7 @@ public class PreviewFunction implements EditorFunction, KeyListener {
         }
     }
 
-    private String convertEditorContentToHTML() throws IOException, ParseException, GenerateException {
-        String markdownText = this.editor.getEditorContent();
+    private String markdownToHTML(String markdownText) throws IOException, ParseException, GenerateException {
         ByteArrayInputStream markDownStream = new ByteArrayInputStream(markdownText.getBytes());
 
         Parser parser = new MarkdownParser();
@@ -256,7 +294,15 @@ public class PreviewFunction implements EditorFunction, KeyListener {
         generator.generate(document, htmlOpts, null, htmlStream);
         htmlStream.close();
 
-        return new String(htmlStream.toByteArray());
+        String html = new String(htmlStream.toByteArray());
+
+        // This is a workaround for JEditorPane not supporting a CSS rule for making
+        // <code> sensible! It insists on indenting the first row with a tab! With
+        // this workaround it will be indenting a space. The drawback is that there
+        // will be one more empty line, but this still looks better.
+        html = html.replaceAll("<code>", "<code>\n&nbsp;");
+
+        return html;
     }
 
     // KeyListener methods

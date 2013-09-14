@@ -5,7 +5,7 @@
  *         MarkdownDoc Command Line
  *     
  *     Code Version
- *         1.2.6
+ *         1.2.9
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -45,10 +45,11 @@ import se.natusoft.doc.markdown.generator.GeneratorProvider;
 import se.natusoft.doc.markdown.model.Doc;
 import se.natusoft.doc.markdown.parser.ParserProvider;
 import se.natusoft.doc.markdown.util.MDDocFileHandler;
-import se.natusoft.tools.optionsmgr.CommandLineOptionsManager;
 import se.natusoft.doc.markdown.util.SourcePaths;
+import se.natusoft.tools.optionsmgr.CommandLineOptionsManager;
 import se.natusoft.tools.optionsmgr.OptionsException;
 import se.natusoft.tools.optionsmgr.OptionsModelException;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;

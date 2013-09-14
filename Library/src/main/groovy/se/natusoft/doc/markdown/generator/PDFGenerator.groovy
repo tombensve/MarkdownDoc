@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.6
+ *         1.2.9
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -36,13 +36,14 @@
  */
 package se.natusoft.doc.markdown.generator
 
-// BE WARNED: This is Groovy! DO NOT LET YOUR IDE AUTOMATICALLY RESOLVE THE IMPORTS!!!!
-// IF YOU DO YOU ARE GUARANTEED TO BE SCREWED!!!! This is just one of the many reasons
-// I have decided that this is both my first and last Groovy code!
-import java.util.List as JList
-import java.util.ArrayList as JArrayList
-import java.util.LinkedList as JLinkedList
-
+import com.itextpdf.text.*
+import com.itextpdf.text.Image as PDFImage
+import com.itextpdf.text.List as PDFList
+import com.itextpdf.text.ListItem as PDFListItem
+import com.itextpdf.text.Paragraph as PDFParagraph
+import com.itextpdf.text.pdf.ColumnText
+import com.itextpdf.text.pdf.PdfContentByte
+import com.itextpdf.text.pdf.PdfPageEventHelper
 import com.itextpdf.text.pdf.PdfWriter
 import com.itextpdf.text.pdf.draw.LineSeparator
 import se.natusoft.doc.markdown.api.Generator
@@ -50,30 +51,18 @@ import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions
 import se.natusoft.doc.markdown.generator.pdfgenerator.PDFColor
+import se.natusoft.doc.markdown.io.NullOutputStream
 import se.natusoft.doc.markdown.model.*
 
-// We rename some com.itextpdf.text classes due to name conflict.
-import com.itextpdf.text.Paragraph as PDFParagraph
-import com.itextpdf.text.List as PDFList
-import com.itextpdf.text.ListItem as PDFListItem
-import com.itextpdf.text.Image as PDFImage
-// Yeah ... should probably continue renaming for consistency ... some day ...
-import com.itextpdf.text.Font
-import com.itextpdf.text.BaseColor
-import com.itextpdf.text.pdf.PdfPageEventHelper
-import com.itextpdf.text.Rectangle
-import com.itextpdf.text.Document
-import com.itextpdf.text.Section
-import com.itextpdf.text.Chapter
-import com.itextpdf.text.Chunk
-import com.itextpdf.text.Anchor
-import com.itextpdf.text.PageSize
-import com.itextpdf.text.pdf.PdfContentByte
-import com.itextpdf.text.Element
-import com.itextpdf.text.pdf.ColumnText
-import com.itextpdf.text.Phrase
-import se.natusoft.doc.markdown.io.NullOutputStream
+import java.util.ArrayList as JArrayList
+import java.util.LinkedList as JLinkedList
+import java.util.List as JList
 
+// BE WARNED: This is Groovy! DO NOT LET YOUR IDE AUTOMATICALLY RESOLVE THE IMPORTS!!!!
+// IF YOU DO YOU ARE GUARANTEED TO BE SCREWED!!!! This is just one of the many reasons
+// I have decided that this is both my first and last Groovy code!
+// We rename some com.itextpdf.text classes due to name conflict.
+// Yeah ... should probably continue renaming for consistency ... some day ...
 /**
  * This generates a PDF documentItems from the provided Doc model.
  * <p/>

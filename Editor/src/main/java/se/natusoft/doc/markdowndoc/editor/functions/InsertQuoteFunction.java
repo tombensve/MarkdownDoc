@@ -2,10 +2,10 @@
  * 
  * PROJECT
  *     Name
- *         Editor
+ *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.2.6
+ *         1.2.9
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
