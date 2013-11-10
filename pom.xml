@@ -50,6 +50,12 @@
         </developer>
     </developers>
 
+    <scm>
+        <connection>scm:git:git@github.com:tombensve/MarkdownDoc.git</connection>
+        <developerConnection>scm:git:git@github.com:tombensve/MarkdownDoc.git</developerConnection>
+        <url>https://github.com/tombensve/MarkdownDoc</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>se.natusoft.tools.optionsmgr</groupId>
@@ -153,6 +159,7 @@
         Distribution Management
     -->
 
+    <!--
     <repositories>
         <repository>
             <id>maven-natusoft-se</id>
@@ -172,6 +179,7 @@
             <url>http://maven.natusoft.se/</url>
         </pluginRepository>
     </pluginRepositories>
+    -->
 
     <!--
         Profiles
@@ -267,6 +275,71 @@
                             </execution>
                         </executions>
 
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>sonaify</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>se.natusoft.tools.fileeditor</groupId>
+                        <artifactId>file-editor-maven-support-plugin</artifactId>
+                        <version>1.0</version>
+
+                        <dependencies>
+                            <dependency>
+                                <groupId>se.natusoft.tools.fileeditor</groupId>
+                                <artifactId>file-editor-maven-support-scripts</artifactId>
+                                <version>1.0</version>
+                            </dependency>
+                        </dependencies>
+                        <executions>
+                            <execution>
+                                <id>upd-parent-and-snapshot</id>
+                                <goals>
+                                    <goal>edit</goal>
+                                </goals>
+                                <phase>generate-sources</phase>
+                                <configuration>
+                                    <scripts>
+                                        <script>
+                                            <forArtifactId>markdown-doc</forArtifactId>
+                                            <scriptFile>script:pom_add_parent.bsh</scriptFile>
+                                            <sourcePath>${basedir}/pom.xml</sourcePath>
+                                            <variables>
+                                                <variable>
+                                                    <name>groupId</name>
+                                                    <value>org.sonatype.oss</value>
+                                                </variable>
+                                                <variable>
+                                                    <name>artifactId</name>
+                                                    <value>oss-parent</value>
+                                                </variable>
+                                                <variable>
+                                                    <name>version</name>
+                                                    <value>7</value>
+                                                </variable>
+                                            </variables>
+                                        </script>
+                                        <script>
+                                            <forArtifactId>markdown-doc</forArtifactId>
+                                            <scriptFile>script:pom_add_snapshot_to_version.bsh</scriptFile>
+                                            <sourcePath>${basedir}/pom.xml</sourcePath>
+                                        </script>
+                                        <script>
+                                            <forArtifactId>markdown-doc</forArtifactId>
+                                            <sourcePath>${basedir}/pom.xml</sourcePath>
+                                            <code>
+                                                editor.replaceAllInFile("tombensve/MarkdownDoc", "tombensve/MarkdownDoc-cenrel");
+                                            </code>
+                                        </script>
+                                    </scripts>
+                                </configuration>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
