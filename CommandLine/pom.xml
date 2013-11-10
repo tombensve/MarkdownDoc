@@ -57,31 +57,40 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>se.natusoft.maven.plugin</groupId>
-                <artifactId>ftp-maven-plugin</artifactId>
-                <version>1.0</version>
-                <executions>
-                    <execution>
-                        <id>upload</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>upload</goal>
-                        </goals>
-                        <configuration>
-                            <baseDir>${basedir}/target</baseDir>
-                            <files>markdowndoc-cmd-line-${project.parent.version}-exec.jar</files>
-                            <targetHost>${maven.repo.upload}</targetHost>
-                            <targetPort>21</targetPort>
-                            <targetPath>/download.natusoft.se/public_html/tools</targetPath>
-                            <userName>${web.server.user}</userName>
-                            <password>${web.server.pw}</password>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
 
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>release-upload</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>se.natusoft.maven.plugin</groupId>
+                        <artifactId>ftp-maven-plugin</artifactId>
+                        <version>1.0</version>
+                        <executions>
+                            <execution>
+                                <id>upload</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>upload</goal>
+                                </goals>
+                                <configuration>
+                                    <baseDir>${basedir}/target</baseDir>
+                                    <files>markdowndoc-cmd-line-${project.parent.version}-exec.jar</files>
+                                    <targetHost>${maven.repo.upload}</targetHost>
+                                    <targetPort>21</targetPort>
+                                    <targetPath>/download.natusoft.se/public_html/tools</targetPath>
+                                    <userName>${web.server.user}</userName>
+                                    <password>${web.server.pw}</password>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

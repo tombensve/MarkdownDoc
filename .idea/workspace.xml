@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+    <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="Updated pom.xml to support release to maven central.">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CommandLine/pom.xml" afterPath="$PROJECT_DIR$/CommandLine/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/pom.xml" afterPath="$PROJECT_DIR$/Editor/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/pom.xml" afterPath="$PROJECT_DIR$/Library/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="97988b78-75ea-4416-b6cb-6f4e26254bee" name="MarkdownDoc-1 Fails to resolve document relative path to images." comment="" />
@@ -17,10 +19,10 @@
     <file path="$PROJECT_DIR$/../../OSGi/OSGiApplicationPlatformServices/APS-Network/APSDiscoveryServiceProvider/bin/testclient.sh" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1355064160118" ignored="false" />
     <file path="$PROJECT_DIR$/../../OSGi/OSGiApplicationPlatformServices/Volumes/PROMISE_PEGASUS/Development/projects/OSGi/OSGiApplicationPlatformServices/target/license/Apache-2.0.txt" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1355055210728" ignored="false" />
     <file path="/a.dummy" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1370535818435" ignored="false" />
-    <file path="/pom.xml" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1384081162980" ignored="false" />
+    <file path="/pom.xml" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1384082700157" ignored="false" />
     <file path="$PROJECT_DIR$/../../OSGi/OSGiApplicationPlatformServices/pom.xml" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1355068846570" ignored="false" />
     <file path="/a.java" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1357925656520" ignored="false" />
-    <file path="/Dummy.txt" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1384080723863" ignored="false" />
+    <file path="/Dummy.txt" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1384081477398" ignored="false" />
     <file path="$PROJECT_DIR$/../../OSGi/OSGiApplicationPlatformServices/.idea/workspace.xml" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1376157895186" ignored="false" />
     <file path="/PDFGenerator.groovy" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1379161561991" ignored="false" />
     <file path="/APSConfigService.md" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1357924090124" ignored="false" />
@@ -59,7 +61,7 @@
     <file path="$PROJECT_DIR$/../../OSGi/OSGiApplicationPlatformServices/APS-Libraries/APSToolsLib/docs/src/APSToolsLib.md" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1376154464369" ignored="false" />
     <file path="/MDStyledDocument.java" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1376156191474" ignored="false" />
     <file path="/MarkdownParser.groovy" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1378475432631" ignored="false" />
-    <file path="$PROJECT_DIR$/../FileEditor/.idea/workspace.xml" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1384081176802" ignored="false" />
+    <file path="$PROJECT_DIR$/../FileEditor/.idea/workspace.xml" changelist="932f4163-a65c-4e3a-88c3-48078b288bdc" time="1384082724053" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -213,7 +215,7 @@
       <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Library/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="85" column="25" selection-start="3540" selection-end="3654" vertical-scroll-proportion="-20.958334">
               <folding />
             </state>
           </provider>
@@ -374,19 +376,37 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="pom.xml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Docs/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="31" selection-start="1266" selection-end="1266" vertical-scroll-proportion="0.0">
+            <state line="36" column="31" selection-start="1266" selection-end="1266" vertical-scroll-proportion="0.5252918">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pom.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Editor/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="135" column="0" selection-start="5470" selection-end="5470" vertical-scroll-proportion="-84.375">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="80" column="7" selection-start="2723" selection-end="2723" vertical-scroll-proportion="1.1673151">
+            <state line="134" column="63" selection-start="4860" selection-end="4860" vertical-scroll-proportion="-26.583334">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CommandLine/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="90" column="29" selection-start="3633" selection-end="3633" vertical-scroll-proportion="-56.25">
               <folding />
             </state>
           </provider>
@@ -419,10 +439,7 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertImageFunction.java" />
-        <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertLinkFunction.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/OpenFunction.java" />
-        <option value="$PROJECT_DIR$/Editor/pom.xml" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/IntegerConfigEntry.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MDStyledDocument.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownEditor.java" />
@@ -435,6 +452,9 @@
         <option value="$PROJECT_DIR$/Library/src/test/resources/test.md" />
         <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy" />
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/Library/pom.xml" />
+        <option value="$PROJECT_DIR$/Editor/pom.xml" />
+        <option value="$PROJECT_DIR$/CommandLine/pom.xml" />
       </list>
     </option>
   </component>
@@ -2229,7 +2249,11 @@
       <created>1384080729822</created>
       <updated>1384080729822</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="Updated pom.xml to support release to maven central.">
+      <created>1384081205992</created>
+      <updated>1384081205992</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers>
       <GitHub shared="false">
         <commitMessageFormat>{id} {summary}</commitMessageFormat>
@@ -2286,7 +2310,7 @@
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25424552" sideWeight="0.48788637" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17982924" sideWeight="0.6751361" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17982924" sideWeight="0.6751361" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36072573" sideWeight="0.5127042" order="0" side_tool="false" content_ui="combo" />
@@ -2404,30 +2428,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/PreviewFunction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="173" column="39" selection-start="6391" selection-end="6391" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Library/src/test/resources/blogEntry.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Editor/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="80" column="34" selection-start="3226" selection-end="3226" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Library/src/test/resources/Apache-2.0.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="39" selection-start="1501" selection-end="1501" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/filters/ContextFormatFilter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="118" column="49" selection-start="4375" selection-end="4375" vertical-scroll-proportion="0.0">
@@ -2499,7 +2499,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="80" column="7" selection-start="2723" selection-end="2723" vertical-scroll-proportion="1.1673151">
+        <state line="134" column="63" selection-start="4860" selection-end="4860" vertical-scroll-proportion="-26.583334">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Library/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="85" column="25" selection-start="3540" selection-end="3654" vertical-scroll-proportion="-20.958334">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Editor/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="135" column="0" selection-start="5470" selection-end="5470" vertical-scroll-proportion="-84.375">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CommandLine/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="90" column="29" selection-start="3633" selection-end="3633" vertical-scroll-proportion="-56.25">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Docs/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="31" selection-start="1266" selection-end="1266" vertical-scroll-proportion="0.5252918">
           <folding />
         </state>
       </provider>
