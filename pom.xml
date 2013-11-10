@@ -71,12 +71,14 @@
         </dependency>
     </dependencies>
 
+    <!--
     <distributionManagement>
         <repository>
             <id>maven-repository-upload</id>
             <url>ftp://${maven.repo.upload}/maven.natusoft.se/public_html</url>
         </repository>
     </distributionManagement>
+    -->
 
     <build>
         <extensions>
