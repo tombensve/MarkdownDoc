@@ -3,7 +3,7 @@
 The maven plugin is rather straight forward. It has 3 sets of configuration structures, one
 common and one for each generator.
 
-If you dont what to checkout and build this code, add the following to your pom:
+**Version 1.2.9 is now available in maven central!** If you want another version, add the following to your pom:
 
 	  <project>
 	    ...
