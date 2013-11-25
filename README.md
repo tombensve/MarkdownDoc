@@ -2,7 +2,7 @@
 
 Copyright © 2012 Natusoft AB
 
-__Version:__ 1.2.9
+__Version:__ 1.2.9 \*\* **Now available in maven central!** \*\* 
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
