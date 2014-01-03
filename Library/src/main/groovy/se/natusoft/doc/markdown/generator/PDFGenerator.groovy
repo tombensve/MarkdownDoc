@@ -387,8 +387,6 @@ class PDFGenerator implements Generator {
     private String textReplace(String text) {
         String replaced = text
 
-        replaced = replaced.replace("&lt;", "<")
-        replaced = replaced.replace("&gt;", ">")
         replaced = replaced.replace("(C)", "©")
 
         return replaced

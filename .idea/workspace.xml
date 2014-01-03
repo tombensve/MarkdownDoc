@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/pom.xml" afterPath="$PROJECT_DIR$/Editor/pom.xml" />
+    <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="Oops. No longer supprots the MacOS X  .app packaging since it worked badly before and not at all in Mavericks. Thereby the link in the README.md file has been removed.">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/MarkdownDoc-User-Guide.pdf" afterPath="$PROJECT_DIR$/Docs/MarkdownDoc-User-Guide.pdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/licenses.md" afterPath="$PROJECT_DIR$/Docs/licenses.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="97988b78-75ea-4416-b6cb-6f4e26254bee" name="MarkdownDoc-1 Fails to resolve document relative path to images." comment="" />
@@ -162,7 +163,7 @@
       <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Library/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="34" selection-start="877" selection-end="877" vertical-scroll-proportion="-15.0" vertical-offset="0" max-vertical-offset="2085">
+            <state line="60" column="60" selection-start="2096" selection-end="2096" vertical-scroll-proportion="-37.5" vertical-offset="0" max-vertical-offset="2085">
               <folding />
             </state>
           </provider>
@@ -258,11 +259,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PDFGenerator.groovy" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="PDFGenerator.groovy" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="952" column="28" selection-start="36673" selection-end="36673" vertical-scroll-proportion="0.0" vertical-offset="14280" max-vertical-offset="16755">
-              <folding />
+            <state line="35" column="3" selection-start="1064" selection-end="1064" vertical-scroll-proportion="0.24976873" vertical-offset="255" max-vertical-offset="16890">
+              <folding>
+                <element signature="e#1109#1138#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -333,7 +336,7 @@
       <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Docs/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="31" selection-start="1238" selection-end="1238" vertical-scroll-proportion="0.0" vertical-offset="540" max-vertical-offset="1350">
+            <state line="47" column="46" selection-start="1592" selection-end="1592" vertical-scroll-proportion="-17.166666" vertical-offset="293" max-vertical-offset="1350">
               <folding />
             </state>
           </provider>
@@ -348,10 +351,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pom.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="25" selection-start="287" selection-end="287" vertical-scroll-proportion="0.056764428" vertical-offset="0" max-vertical-offset="6165">
+            <state line="37" column="54" selection-start="1235" selection-end="1235" vertical-scroll-proportion="175.95833" vertical-offset="4778" max-vertical-offset="6165">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="settings.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.m2/settings.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="41" column="40" selection-start="1877" selection-end="1877" vertical-scroll-proportion="-18.166666" vertical-offset="179" max-vertical-offset="1290">
               <folding />
             </state>
           </provider>
@@ -460,7 +472,6 @@
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/PreviewFunction.java" />
         <option value="$PROJECT_DIR$/Library/src/test/resources/test.md" />
-        <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy" />
         <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/MarkdownGenerator.groovy" />
         <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/HTMLGenerator.groovy" />
         <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/GeneratorProvider.groovy" />
@@ -473,6 +484,7 @@
         <option value="$USER_HOME$/.m2/settings.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/Editor/pom.xml" />
+        <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy" />
       </list>
     </option>
   </component>
@@ -1124,6 +1136,72 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="groovy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="se" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="natusoft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="doc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="markdown" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Library" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="groovy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="se" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="natusoft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="doc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="markdown" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="generator" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1902,7 +1980,7 @@
       <workItem from="1386514196198" duration="606000" />
       <workItem from="1387474852147" duration="1206000" />
       <workItem from="1387727576477" duration="1379000" />
-      <workItem from="1388754753516" duration="7110000" />
+      <workItem from="1388754753516" duration="8646000" />
     </task>
     <task id="LOCAL-00001" summary="First version.">
       <created>1353260479163</created>
@@ -2143,7 +2221,11 @@
       <created>1388761694212</created>
       <updated>1388761694213</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="Oops. No longer supprots the MacOS X  .app packaging since it worked badly before and not at all in Mavericks. Thereby the link in the README.md file has been removed.">
+      <created>1388762120317</created>
+      <updated>1388762120317</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers>
       <GitHub shared="false" url="">
         <commitMessageFormat>{id} {summary}</commitMessageFormat>
@@ -2161,7 +2243,7 @@
     </servers>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21636000" />
+    <option name="totallyTimeSpent" value="23172000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -2209,7 +2291,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2132884" sideWeight="0.51199263" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.48616236" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4861368" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="PDF_FIND" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -2236,7 +2318,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="Fix code rendering bug in HTMLGenerator." />
     <MESSAGE value="Updated pom with an url to the project home on github so that CodeLicenseManager can find and resolve this automatically." />
     <MESSAGE value="- Comments are now only identified as comments if the start in first, second or third char. Otherwise it is a code block.&#10;- Now test for code block before list to avoid * in comments in code block to be interpreted as list items. &#10;- User guide PDF have been updated for unknown reason. Its markdown source is not updated!" />
     <MESSAGE value="- My previous fix created a new bug where list items became code blocks. This is now solved.&#10;- Cosmetica i PDF generation." />
@@ -2261,7 +2342,8 @@
     <MESSAGE value="Updated doc to say that version 1.2.9 is now in maven central." />
     <MESSAGE value="Updated readme to indicate that version 1.2.9 is now in maven central." />
     <MESSAGE value="Added support for &amp;amp;, &amp;gt;, and &amp;lt;. Escaping '&lt;' with '\&lt;' does not work in GitHub markdown which made med use &amp;lgt; and &amp;gt; instead, and thus discovered that MarkdownDoc did not support these!" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added support for &amp;amp;, &amp;gt;, and &amp;lt;. Escaping '&lt;' with '\&lt;' does not work in GitHub markdown which made med use &amp;lgt; and &amp;gt; instead, and thus discovered that MarkdownDoc did not support these!" />
+    <MESSAGE value="Oops. No longer supprots the MacOS X  .app packaging since it worked badly before and not at all in Mavericks. Thereby the link in the README.md file has been removed." />
+    <option name="LAST_COMMIT_MESSAGE" value="Oops. No longer supprots the MacOS X  .app packaging since it worked badly before and not at all in Mavericks. Thereby the link in the README.md file has been removed." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -2343,13 +2425,6 @@
     <entry file="file://$PROJECT_DIR$/Library/src/test/groovy/se/natusoft/doc/markdown/generator/PDFGeneratorDevTest2.groovy">
       <provider selected="true" editor-type-id="text-editor">
         <state line="12" column="6" selection-start="378" selection-end="378" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="825">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="952" column="28" selection-start="36673" selection-end="36673" vertical-scroll-proportion="0.0" vertical-offset="14280" max-vertical-offset="16755">
           <folding />
         </state>
       </provider>
@@ -2515,13 +2590,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Docs/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="31" selection-start="1238" selection-end="1238" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/ParserProvider.groovy">
       <provider selected="true" editor-type-id="text-editor">
         <state line="43" column="6" selection-start="1214" selection-end="1214" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
@@ -2578,13 +2646,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Library/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="34" selection-start="877" selection-end="877" vertical-scroll-proportion="-15.0" vertical-offset="0" max-vertical-offset="2085">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/MavenPlugin/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="28" column="26" selection-start="1115" selection-end="1115" vertical-scroll-proportion="-17.5" vertical-offset="0" max-vertical-offset="615">
@@ -2613,13 +2674,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.m2/settings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="50" selection-start="2313" selection-end="2313" vertical-scroll-proportion="0.5750708" vertical-offset="216" max-vertical-offset="1290">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Editor/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="124" column="0" selection-start="4571" selection-end="4571" vertical-scroll-proportion="-77.5" vertical-offset="0" max-vertical-offset="2205">
@@ -2627,10 +2681,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/.m2/settings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="40" selection-start="1877" selection-end="1877" vertical-scroll-proportion="-18.166666" vertical-offset="179" max-vertical-offset="1290">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="25" selection-start="287" selection-end="287" vertical-scroll-proportion="0.056764428" vertical-offset="0" max-vertical-offset="6165">
+        <state line="37" column="54" selection-start="1235" selection-end="1235" vertical-scroll-proportion="175.95833" vertical-offset="4778" max-vertical-offset="6165">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Library/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="60" column="60" selection-start="2096" selection-end="2096" vertical-scroll-proportion="-37.5" vertical-offset="0" max-vertical-offset="2085">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Docs/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="47" column="46" selection-start="1592" selection-end="1592" vertical-scroll-proportion="-17.166666" vertical-offset="293" max-vertical-offset="1350">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="3" selection-start="1064" selection-end="1064" vertical-scroll-proportion="0.24976873" vertical-offset="255" max-vertical-offset="16890">
+          <folding>
+            <element signature="e#1109#1138#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
