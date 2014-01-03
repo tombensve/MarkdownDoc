@@ -122,7 +122,6 @@
                                 <configuration>
                                     <baseDir>${basedir}/target</baseDir>
                                     <files>
-                                        MarkdownDocEditor-${project.parent.version}.dmg,
                                         MarkdownDocEditor-${project.parent.version}-App.jar
                                     </files>
                                     <targetHost>${maven.repo.upload}</targetHost>

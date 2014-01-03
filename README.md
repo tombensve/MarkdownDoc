@@ -19,7 +19,7 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 [Library](https://github.com/tombensve/MarkdownDoc/blob/master/Library/docs/MarkdownDoc-Library.md)
 
-[Editor](https://github.com/tombensve/MarkdownDoc/blob/master/Editor/docs/MarkdownDoc-Editor.md) \[[MarkdownDocEditor-1.2.10-App.jar](http://download.natusoft.se/tools/MarkdownDocEditor-1.2.10-App.jar)\] \[Mac OS X: [MarkdownDocEditor-1.2.10.dmg](http://download.natusoft.se/tools/MarkdownDocEditor-1.2.10.dmg)\]
+[Editor](https://github.com/tombensve/MarkdownDoc/blob/master/Editor/docs/MarkdownDoc-Editor.md) \[[MarkdownDocEditor-1.2.10-App.jar](http://download.natusoft.se/tools/MarkdownDocEditor-1.2.10-App.jar)\] 
 
 [Licenses](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/licenses.md)
 
