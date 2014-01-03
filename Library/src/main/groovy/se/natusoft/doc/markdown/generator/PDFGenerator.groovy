@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.9
+ *         1.2.10
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -46,42 +46,25 @@ import com.itextpdf.text.pdf.PdfContentByte
 import com.itextpdf.text.pdf.PdfPageEventHelper
 import com.itextpdf.text.pdf.PdfWriter
 import com.itextpdf.text.pdf.draw.LineSeparator
+import groovy.transform.CompileStatic
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions
 import se.natusoft.doc.markdown.generator.pdfgenerator.PDFColor
 import se.natusoft.doc.markdown.io.NullOutputStream
-import se.natusoft.doc.markdown.model.AutoLink
-import se.natusoft.doc.markdown.model.BlockQuote
-import se.natusoft.doc.markdown.model.Code
-import se.natusoft.doc.markdown.model.CodeBlock
-import se.natusoft.doc.markdown.model.Comment
-import se.natusoft.doc.markdown.model.Doc
-import se.natusoft.doc.markdown.model.DocFormat
-import se.natusoft.doc.markdown.model.DocItem
-import se.natusoft.doc.markdown.model.Emphasis
-import se.natusoft.doc.markdown.model.Header
-import se.natusoft.doc.markdown.model.HorizontalRule
-import se.natusoft.doc.markdown.model.Image
-import se.natusoft.doc.markdown.model.Link
-import se.natusoft.doc.markdown.model.List
-import se.natusoft.doc.markdown.model.ListItem
-import se.natusoft.doc.markdown.model.Paragraph
-import se.natusoft.doc.markdown.model.PlainText
-import se.natusoft.doc.markdown.model.PlainText
-import se.natusoft.doc.markdown.model.Space
-import se.natusoft.doc.markdown.model.Strong
+import se.natusoft.doc.markdown.model.*
 
 import java.util.ArrayList as JArrayList
 import java.util.LinkedList as JLinkedList
 import java.util.List as JList
 
 // BE WARNED: This is Groovy! DO NOT LET YOUR IDE AUTOMATICALLY RESOLVE THE IMPORTS!!!!
-// IF YOU DO YOU ARE GUARANTEED TO BE SCREWED!!!! This is just one of the many reasons
-// I have decided that this is both my first and last Groovy code!
-// We rename some com.itextpdf.text classes due to name conflict.
+// IF YOU DO YOU ARE GUARANTEED TO BE SCREWED!!!!
+
+// I rename some com.itextpdf.text classes due to name conflict.
 // Yeah ... should probably continue renaming for consistency ... some day ...
+
 /**
  * This generates a PDF documentItems from the provided Doc model.
  * <p/>
@@ -90,6 +73,7 @@ import java.util.List as JList
  * due to that some data required to do the work must be class members and not method local
  * variables. This due to rendering events needing access to them.
  */
+@CompileStatic
 class PDFGenerator implements Generator {
     /*
      * A comment about this code and Groovy: Groovy supports "property access" for java bean properties.
@@ -136,22 +120,22 @@ class PDFGenerator implements Generator {
     // Constants
     //
 
-    private static final FONT = new Font(Font.FontFamily.HELVETICA, 10)
-    private static final FONT_BLOCKQUOTE = new Font(Font.FontFamily.HELVETICA, 10, Font.ITALIC, BaseColor.GRAY)
-    private static final FONT_H1 = new Font(Font.FontFamily.HELVETICA, 20, Font.BOLD)
-    private static final FONT_H2 = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD)
-    private static final FONT_H3 = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD)
-    private static final FONT_H4 = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD)
-    private static final FONT_H5 = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)
-    private static final FONT_H6 = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD)
-    private static final FONT_EMPHASIS = new Font(Font.FontFamily.HELVETICA, 10, Font.ITALIC)
-    private static final FONT_STRONG = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD)
-    private static final FONT_CODE = new Font(Font.FontFamily.COURIER, 9, Font.NORMAL, BaseColor.DARK_GRAY)
-    private static final FONT_ANCHOR = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.GRAY)
-    private static final FONT_LIST_ITEM = new Font(Font.FontFamily.HELVETICA, 10)
-    private static final FONT_FOOTER = new Font(Font.FontFamily.HELVETICA, 8)
-    private static final FONT_TOC = new Font(Font.FontFamily.HELVETICA, 9)
-    private static final FONT_TOC_H1 = new Font(Font.FontFamily.HELVETICA, 9, Font.BOLD)
+    private static final Font FONT = new Font(Font.FontFamily.HELVETICA, 10)
+    private static final Font FONT_BLOCKQUOTE = new Font(Font.FontFamily.HELVETICA, 10, Font.ITALIC, BaseColor.GRAY)
+    private static final Font FONT_H1 = new Font(Font.FontFamily.HELVETICA, 20, Font.BOLD)
+    private static final Font FONT_H2 = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD)
+    private static final Font FONT_H3 = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD)
+    private static final Font FONT_H4 = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD)
+    private static final Font FONT_H5 = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)
+    private static final Font FONT_H6 = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD)
+    private static final Font FONT_EMPHASIS = new Font(Font.FontFamily.HELVETICA, 10, Font.ITALIC)
+    private static final Font FONT_STRONG = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD)
+    private static final Font FONT_CODE = new Font(Font.FontFamily.COURIER, 9, Font.NORMAL, BaseColor.DARK_GRAY)
+    private static final Font FONT_ANCHOR = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.GRAY)
+    private static final Font FONT_LIST_ITEM = new Font(Font.FontFamily.HELVETICA, 10)
+    private static final Font FONT_FOOTER = new Font(Font.FontFamily.HELVETICA, 8)
+    private static final Font FONT_TOC = new Font(Font.FontFamily.HELVETICA, 9)
+    private static final Font FONT_TOC_H1 = new Font(Font.FontFamily.HELVETICA, 9, Font.BOLD)
 
     private static final Chunk LIST_NEWLINE = new Chunk("\n", new Font(Font.FontFamily.HELVETICA, 4))
 
@@ -494,7 +478,7 @@ class PDFGenerator implements Generator {
 
         float yTop = document.top() - document.topMargin() - (float)(yItemSizeTop / 2) + 15
         float yBottom = document.bottom() + (float)(yItemSizeBottom / 2)
-        float x = (document.right() - document.left()) / 2 + document.leftMargin()
+        float x = (float)(document.right() - document.left()) / 2f + document.leftMargin()
 
         // Rendered from top of page
 
@@ -503,7 +487,7 @@ class PDFGenerator implements Generator {
             Chunk chunk = new Chunk(textReplace(title), font)
             Phrase phrase = new Phrase(chunk)
             ColumnText.showTextAligned(cb, Element.ALIGN_CENTER, phrase, x, yTop, 0.0f)
-            yTop = yTop - (yItemSizeTop / 2)
+            yTop = (float)(yTop - (yItemSizeTop / 2f))
         }
 
         if (subject != null) {
@@ -511,7 +495,7 @@ class PDFGenerator implements Generator {
             Chunk chunk = new Chunk(textReplace(subject), font)
             Phrase phrase = new Phrase(chunk)
             ColumnText.showTextAligned(cb, Element.ALIGN_CENTER, phrase, x, yTop, 0.0f)
-            yTop = yTop - (yItemSizeTop / 2)
+            yTop = (float)(yTop - (yItemSizeTop / 2f))
         }
 
         if (version != null) {
@@ -528,7 +512,7 @@ class PDFGenerator implements Generator {
             Chunk chunk = new Chunk(textReplace(copyRight), font)
             Phrase phrase = new Phrase(chunk)
             ColumnText.showTextAligned(cb, Element.ALIGN_CENTER, phrase, x, yBottom, 0.0f)
-            yBottom = yBottom + (yItemSizeBottom / 2)
+            yBottom = (float)(yBottom + (yItemSizeBottom / 2))
         }
 
         if (author != null) {
@@ -1058,11 +1042,11 @@ class PDFGenerator implements Generator {
 
         @Override
         public void onEndPage(PdfWriter writer, Document document) {
-            if (document.pageNumber > PDFGenerator.this.pageOffset) {
+            if (document.pageNumber > /*PDFGenerator.this.*/pageOffset) {
                 PdfContentByte cb = writer.getDirectContent()
 
                 // Write the filename centered as page header
-                String fileName = PDFGenerator.this.options.resultFile
+                String fileName = /*PDFGenerator.this.*/options.resultFile
                 int fsIx = fileName.lastIndexOf(File.separator)
                 if (fsIx >= 0) {
                     fileName = fileName.substring(fsIx + 1)
@@ -1081,7 +1065,7 @@ class PDFGenerator implements Generator {
                 )
 
                 // Write the page number to the right as a page footer.
-                Chunk pageChunk = new Chunk("Page " + (document.getPageNumber() - PDFGenerator.this.pageOffset), FONT_FOOTER)
+                Chunk pageChunk = new Chunk("Page " + (document.getPageNumber() - /*PDFGenerator.this.*/pageOffset), FONT_FOOTER)
                 Phrase pageNo = new Phrase(pageChunk)
                 ColumnText.showTextAligned(
                         cb,
@@ -1096,15 +1080,15 @@ class PDFGenerator implements Generator {
 
         @Override
         public void onChapter(PdfWriter writer, Document document, float paragraphPosition, PDFParagraph title) {
-            if (PDFGenerator.this.updateTOC && title != null) {
-                PDFGenerator.this.toc.add(new TOC(sectionTitle: title.getContent().split("\n")[0], pageNumber: document.getPageNumber()))
+            if (/*PDFGenerator.this.*/updateTOC && title != null) {
+                /*PDFGenerator.this.*/toc.add(new TOC(sectionTitle: title.getContent().split("\n")[0], pageNumber: document.getPageNumber()))
             }
         }
 
         @Override
         public void onSection(PdfWriter writer, Document document, float paragraphPosition, int depth, PDFParagraph title) {
-            if (PDFGenerator.this.updateTOC && title != null) {
-                PDFGenerator.this.toc.add(new TOC(sectionTitle: title.getContent().split("\n")[0], pageNumber: document.getPageNumber()))
+            if (/*PDFGenerator.this.*/updateTOC && title != null) {
+                /*PDFGenerator.this.*/toc.add(new TOC(sectionTitle: title.getContent().split("\n")[0], pageNumber: document.getPageNumber()))
             }
         }
     }

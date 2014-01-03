@@ -35,6 +35,10 @@ Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdo
 
 ### Version history
 
+#### 1.2.10
+
+* Added support for &amp;lt;, &amp;gt;, and &amp;amp;.
+
 #### 1.2.9
 
 Added markdown file reading feature by allowing markdown files to be dropped on the editor in preview mode, in wihch case the dropped file will be formatted and displayed without changeing the content of the editor. Exiting preview and doing a preview again will again preview the editor content.

@@ -7,7 +7,8 @@
     <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
     <artifactId>markdown-doc</artifactId>
     <packaging>pom</packaging>
-    <version><!--VER-->1.2.9</version>
+    <version>1.2.10</version>
+
     <modules>
         <module>Docs</module>
         <module>Library</module>
@@ -25,6 +26,14 @@
     <url>https://github.com/tombensve/MarkdownDoc</url>
 
     <properties>
+        <!--
+            This is the real project version! When changing version change here, and then
+            run the 'set-version' profile with generate-sources:
+
+                mvn -Pset-version generate-sources
+        -->
+        <projectVersion>1.2.10</projectVersion>
+
         <copyrightYear>2012</copyrightYear>
         <copyrightHolder>Natusoft AB</copyrightHolder>
         <copyrightHolderWeb>http://www.natusoft.se/</copyrightHolderWeb>
@@ -70,15 +79,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <!--
-    <distributionManagement>
-        <repository>
-            <id>maven-repository-upload</id>
-            <url>ftp://${maven.repo.upload}/maven.natusoft.se/public_html</url>
-        </repository>
-    </distributionManagement>
-    -->
 
     <build>
         <extensions>
@@ -129,23 +129,6 @@
             </plugin>
 
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <compilerId>groovy-eclipse-compiler</compilerId>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.codehaus.groovy</groupId>
-                        <artifactId>groovy-eclipse-compiler</artifactId>
-                        <version>2.7.0-01</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-
-            <plugin>
                 <artifactId>maven-install-plugin</artifactId>
                 <version>2.4</version>
                 <configuration>
@@ -161,7 +144,6 @@
         Distribution Management
     -->
 
-    <!--
     <repositories>
         <repository>
             <id>maven-natusoft-se</id>
@@ -181,7 +163,6 @@
             <url>http://maven.natusoft.se/</url>
         </pluginRepository>
     </pluginRepositories>
-    -->
 
     <!--
         Profiles
@@ -282,6 +263,62 @@
             </build>
         </profile>
 
+        <!--
+            This changes the version of this pom and all module poms, including parent.
+            ${projectVersion} must be defined in properties above! So to update version,
+            set it above and run this profile.
+        -->
+        <profile>
+            <id>set-version</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>se.natusoft.tools.fileeditor</groupId>
+                        <artifactId>file-editor-maven-support-plugin</artifactId>
+                        <version>1.0</version>
+
+                        <dependencies>
+                            <dependency>
+                                <groupId>se.natusoft.tools.fileeditor</groupId>
+                                <artifactId>file-editor-maven-support-scripts</artifactId>
+                                <version>1.0</version>
+                            </dependency>
+                        </dependencies>
+                        <executions>
+                            <execution>
+                                <id>upd-parent-and-snapshot</id>
+                                <goals>
+                                    <goal>edit</goal>
+                                </goals>
+                                <phase>generate-sources</phase>
+                                <configuration>
+                                    <scripts>
+                                        <script>
+                                            <scriptFile>script:pom_change_version.bsh</scriptFile>
+                                            <sourcePath>${basedir}/pom.xml</sourcePath>
+                                            <variables>
+                                                <variable>
+                                                    <name>pomVersion</name>
+                                                    <value>${projectVersion}</value>
+                                                </variable>
+                                                <variable>
+                                                    <name>changeParent</name>
+                                                    <value>true</value>
+                                                </variable>
+                                            </variables>
+                                        </script>
+                                    </scripts>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!--
+            This is for releasing to maven central. It edits the pom to fit the requirements of the maven dictatorship: Sonatype!
+        -->
         <profile>
             <id>sonaify</id>
             <build>
@@ -346,6 +383,21 @@
                 </plugins>
             </build>
         </profile>
+
+        <!--
+            Since this cannot be put in settings.xml I put it in a profile, and activate it in settings.xml.
+        -->
+        <profile>
+            <id>repo-upload-dist-management</id>
+            <distributionManagement>
+                <repository>
+                    <id>maven-repository-upload</id>
+                    <url>ftp://${maven.repo.upload}/maven.natusoft.se/public_html</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+
+
     </profiles>
 
 

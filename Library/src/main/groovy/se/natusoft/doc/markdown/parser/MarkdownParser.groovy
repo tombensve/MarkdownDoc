@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.9
+ *         1.2.10
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -571,9 +571,28 @@ public class MarkdownParser implements Parser {
                         }
                         break
 
+                    // &nbsp;
                     case {it == "&" && n == "n"} :
                         paragraph.addItem(new Space())
                         i = i + 5
+                        break;
+
+                    // &gt;
+                    case {it == "&" && n == "g"} :
+                        current << "<"
+                        i = i + 3
+                        break;
+
+                    // &lt;
+                    case {it == "&" && n == "l"} :
+                        current << "<"
+                        i = i + 3
+                        break;
+
+                    // &amp;
+                    case {it == "&" && n =="a"} :
+                        current << "&"
+                        i = i + 4
                         break;
 
                     case '`':

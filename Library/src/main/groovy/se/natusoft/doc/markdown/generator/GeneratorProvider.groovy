@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.9
+ *         1.2.10
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -36,11 +36,13 @@
  */
 package se.natusoft.doc.markdown.generator
 
+import groovy.transform.CompileStatic
 import se.natusoft.doc.markdown.api.Generator
 
 /**
  * Provides a generator by its name. The name is what the generators getName() method returns, not its class name!
  */
+@CompileStatic
 class GeneratorProvider {
 
     /**

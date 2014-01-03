@@ -5,11 +5,12 @@
     <parent>
         <artifactId>markdown-doc</artifactId>
         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
-        <version><!--VER-->1.2.9</version>
+        <version>1.2.10</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>markdown-doc-lib</artifactId>
+    <version>1.2.10</version>
 
     <name>MarkdownDoc Library</name>
     <description>
@@ -19,16 +20,17 @@
     <dependencies>
         <dependency>
             <groupId>com.itextpdf</groupId>
-            <artifactId>itextpdf</artifactId>
-            <version>5.3.4</version>
+            <artifactId>itext-pdfa</artifactId>
+            <version>5.4.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>2.0.5</version>
+            <version>2.2.0</version>
             <scope>compile</scope>
+            <classifier>indy</classifier>
         </dependency>
     </dependencies>
 
@@ -37,6 +39,23 @@
         <testSourceDirectory>src/test/groovy</testSourceDirectory>
 
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <version>1.0-beta-3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <invokeDynamic>true</invokeDynamic>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>

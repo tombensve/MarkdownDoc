@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.9
+ *         1.2.10
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -36,6 +36,7 @@
  */
 package se.natusoft.doc.markdown.generator
 
+import groovy.transform.CompileStatic
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.exception.GenerateException
@@ -45,6 +46,7 @@ import se.natusoft.doc.markdown.model.*
 /**
  * This is a generator that generates Markdown from a document model.
  */
+@CompileStatic
 class MarkdownGenerator implements Generator {
     //
     // Private Members
@@ -201,7 +203,7 @@ class MarkdownGenerator implements Generator {
     private void writeList(List list, PrintWriter pw, String indent) {
         int itemNo = 1;
 
-        list.items.each { li ->
+        list.items.each { DocItem li ->
             if (li instanceof List) {
                 writeList((List)li, pw, indent + "   ")
             }

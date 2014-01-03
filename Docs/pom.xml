@@ -5,7 +5,7 @@
     <parent>
         <artifactId>markdown-doc</artifactId>
         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
-        <version><!--VER-->1.2.9</version>
+        <version>1.2.10</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -26,7 +26,7 @@
             <plugin>
                 <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
                 <artifactId>markdowndoc-maven-plugin</artifactId>
-                <version>${project.parent.version}</version>
+                <version>1.2.10</version>
 
                 <dependencies>
                     <dependency>
