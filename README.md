@@ -3,7 +3,7 @@
 Copyright © 2012 Natusoft AB
 
 __Version:__ 1.2.10  
-_Note:_ The previous version (1.2.9) is available in maven central, this is not! I'm not sure when or if this version will be available there since releasing to maven central is a rather painful experience. The only thing new in this version is support for &amp;lt;, &amp;gt;, and &amp;amp;.
+_Note:_ The previous version (1.2.9) is available in maven central, this is not yet! The only thing new in this version is support for &amp;lt;, &amp;gt;, and &amp;amp;.
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 

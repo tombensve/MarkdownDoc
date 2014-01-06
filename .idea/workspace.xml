@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="Oops. No longer supprots the MacOS X  .app packaging since it worked badly before and not at all in Mavericks. Thereby the link in the README.md file has been removed.">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/MarkdownDoc-User-Guide.pdf" afterPath="$PROJECT_DIR$/Docs/MarkdownDoc-User-Guide.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/licenses.md" afterPath="$PROJECT_DIR$/Docs/licenses.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy" />
+    <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="Damn it! The PDFGenerator stupidly converted &quot;&amp;lt;&quot; to &quot;&lt;&quot; and &quot;&amp;gt;&quot; to &quot;&gt;&quot;. This should of course have been handled in the MarkdownParser as it is now! Having the PDFGenerator do this translation was truly stupid!&#10;">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="97988b78-75ea-4416-b6cb-6f4e26254bee" name="MarkdownDoc-1 Fails to resolve document relative path to images." comment="" />
@@ -163,7 +162,7 @@
       <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Library/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="60" column="60" selection-start="2096" selection-end="2096" vertical-scroll-proportion="-37.5" vertical-offset="0" max-vertical-offset="2085">
+            <state line="60" column="60" selection-start="2096" selection-end="2096" vertical-scroll-proportion="0.0" vertical-offset="900" max-vertical-offset="2085">
               <folding />
             </state>
           </provider>
@@ -172,7 +171,7 @@
       <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MavenPlugin/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="26" selection-start="1115" selection-end="1115" vertical-scroll-proportion="-17.5" vertical-offset="0" max-vertical-offset="615">
+            <state line="28" column="26" selection-start="1115" selection-end="1115" vertical-scroll-proportion="0.0" vertical-offset="420" max-vertical-offset="615">
               <folding />
             </state>
           </provider>
@@ -199,7 +198,7 @@
       <file leaf-file-name="MarkdownParser.groovy" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/MarkdownParser.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="577" column="30" selection-start="21280" selection-end="21280" vertical-scroll-proportion="0.0" vertical-offset="8100" max-vertical-offset="9975">
+            <state line="577" column="30" selection-start="21280" selection-end="21280" vertical-scroll-proportion="0.0" vertical-offset="8655" max-vertical-offset="10110">
               <folding />
             </state>
           </provider>
@@ -217,7 +216,7 @@
       <file leaf-file-name="MarkdownDocEditorApp.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Editor/src/assembly/MarkdownDocEditorApp.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="35" selection-start="426" selection-end="426" vertical-scroll-proportion="-10.625" vertical-offset="0" max-vertical-offset="870">
+            <state line="17" column="35" selection-start="426" selection-end="426" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="870">
               <folding />
             </state>
           </provider>
@@ -262,9 +261,9 @@
       <file leaf-file-name="PDFGenerator.groovy" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="3" selection-start="1064" selection-end="1064" vertical-scroll-proportion="0.24976873" vertical-offset="255" max-vertical-offset="16890">
+            <state line="35" column="3" selection-start="1064" selection-end="1064" vertical-scroll-proportion="0.24930748" vertical-offset="255" max-vertical-offset="16725">
               <folding>
-                <element signature="e#1109#1138#0" expanded="true" />
+                <element signature="e#1109#1135#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -336,7 +335,7 @@
       <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Docs/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="46" selection-start="1592" selection-end="1592" vertical-scroll-proportion="-17.166666" vertical-offset="293" max-vertical-offset="1350">
+            <state line="47" column="46" selection-start="1592" selection-end="1592" vertical-scroll-proportion="0.0" vertical-offset="293" max-vertical-offset="1350">
               <folding />
             </state>
           </provider>
@@ -345,7 +344,7 @@
       <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Editor/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="124" column="0" selection-start="4571" selection-end="4571" vertical-scroll-proportion="-77.5" vertical-offset="0" max-vertical-offset="2205">
+            <state line="124" column="0" selection-start="4571" selection-end="4571" vertical-scroll-proportion="0.0" vertical-offset="1860" max-vertical-offset="2205">
               <folding />
             </state>
           </provider>
@@ -354,7 +353,7 @@
       <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="54" selection-start="1235" selection-end="1235" vertical-scroll-proportion="175.95833" vertical-offset="4778" max-vertical-offset="6165">
+            <state line="37" column="54" selection-start="1235" selection-end="1235" vertical-scroll-proportion="0.0" vertical-offset="555" max-vertical-offset="6150">
               <folding />
             </state>
           </provider>
@@ -363,7 +362,7 @@
       <file leaf-file-name="settings.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/.m2/settings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="40" selection-start="1877" selection-end="1877" vertical-scroll-proportion="-18.166666" vertical-offset="179" max-vertical-offset="1290">
+            <state line="41" column="40" selection-start="1877" selection-end="1877" vertical-scroll-proportion="0.0" vertical-offset="615" max-vertical-offset="1275">
               <folding />
             </state>
           </provider>
@@ -408,7 +407,7 @@
       <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CommandLine/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="0" selection-start="1024" selection-end="1024" vertical-scroll-proportion="-9.125" vertical-offset="246" max-vertical-offset="1470">
+            <state line="31" column="0" selection-start="1024" selection-end="1024" vertical-scroll-proportion="0.0" vertical-offset="246" max-vertical-offset="1470">
               <folding />
             </state>
           </provider>
@@ -417,7 +416,7 @@
       <file leaf-file-name="exec-jar.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CommandLine/src/assembly/exec-jar.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="23" selection-start="783" selection-end="783" vertical-scroll-proportion="-17.5" vertical-offset="0" max-vertical-offset="870">
+            <state line="28" column="23" selection-start="783" selection-end="783" vertical-scroll-proportion="0.0" vertical-offset="420" max-vertical-offset="870">
               <folding />
             </state>
           </provider>
@@ -750,8 +749,8 @@
     <option name="jreName" value="1.7 (1)" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="17" />
-    <option name="y" value="188" />
+    <option name="x" value="230" />
+    <option name="y" value="157" />
     <option name="width" value="2119" />
     <option name="height" value="1200" />
   </component>
@@ -818,6 +817,26 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="Scope">
         <subPane subId="Problems" />
         <subPane subId="Production">
@@ -899,26 +918,6 @@
             <PATH_ELEMENT USER_OBJECT="lib">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MarkdownDoc" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MarkdownDoc" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Editor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -1729,6 +1728,12 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin" singleton="true">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m" />
+      <option name="PROGRAM_PARAMETERS" />
+      <method />
+    </configuration>
     <configuration default="true" type="GrailsRunConfigurationType" factoryName="Grails" singleton="true">
       <module name="" />
       <setting name="vmparams" value="" />
@@ -1737,12 +1742,6 @@
       <setting name="passParentEnv" value="true" />
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <setting name="launchBrowser" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin" singleton="true">
-      <module name="" />
-      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m" />
-      <option name="PROGRAM_PARAMETERS" />
       <method />
     </configuration>
     <configuration default="true" type="MavenRunConfiguration" factoryName="Maven">
@@ -1792,23 +1791,17 @@
       <option name="trusted" value="true" />
       <method />
     </configuration>
-    <configuration default="true" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="myFilePath" />
-      <option name="GLUE" />
-      <option name="myNameFilter" />
-      <option name="myGeneratedName" />
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
       <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
       <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
-      <envs />
       <method />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
@@ -1839,17 +1832,23 @@
       <listeners />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
+    <configuration default="true" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="myFilePath" />
+      <option name="GLUE" />
+      <option name="myNameFilter" />
+      <option name="myGeneratedName" />
       <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
       <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -1980,7 +1979,8 @@
       <workItem from="1386514196198" duration="606000" />
       <workItem from="1387474852147" duration="1206000" />
       <workItem from="1387727576477" duration="1379000" />
-      <workItem from="1388754753516" duration="8646000" />
+      <workItem from="1388754753516" duration="9389000" />
+      <workItem from="1389020188584" duration="87000" />
     </task>
     <task id="LOCAL-00001" summary="First version.">
       <created>1353260479163</created>
@@ -2225,7 +2225,11 @@
       <created>1388762120317</created>
       <updated>1388762120317</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="Damn it! The PDFGenerator stupidly converted &quot;&amp;lt;&quot; to &quot;&lt;&quot; and &quot;&amp;gt;&quot; to &quot;&gt;&quot;. This should of course have been handled in the MarkdownParser as it is now! Having the PDFGenerator do this translation was truly stupid!&#10;">
+      <created>1388763690609</created>
+      <updated>1388763690609</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers>
       <GitHub shared="false" url="">
         <commitMessageFormat>{id} {summary}</commitMessageFormat>
@@ -2243,7 +2247,7 @@
     </servers>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23172000" />
+    <option name="totallyTimeSpent" value="24002000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -2266,8 +2270,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="17" y="188" width="2119" height="1200" extended-state="0" />
-    <editor active="true" />
+    <frame x="230" y="157" width="2119" height="1200" extended-state="0" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32809612" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -2276,33 +2280,33 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962963" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32987654" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32486388" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="BSFConsole" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32971016" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25079873" sideWeight="0.48800737" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32940108" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32911393" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32994455" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25080043" sideWeight="0.48736462" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15214251" sideWeight="0.512939" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15358691" sideWeight="0.512939" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2132884" sideWeight="0.51199263" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2132884" sideWeight="0.51199263" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4861368" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="PDF_FIND" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
-      <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Dilbert" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32915622" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
+      <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3275862" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="IntelliJad Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="BSFConsole" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32971016" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Code Graph" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32958984" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32911393" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -2318,7 +2322,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="Updated pom with an url to the project home on github so that CodeLicenseManager can find and resolve this automatically." />
     <MESSAGE value="- Comments are now only identified as comments if the start in first, second or third char. Otherwise it is a code block.&#10;- Now test for code block before list to avoid * in comments in code block to be interpreted as list items. &#10;- User guide PDF have been updated for unknown reason. Its markdown source is not updated!" />
     <MESSAGE value="- My previous fix created a new bug where list items became code blocks. This is now solved.&#10;- Cosmetica i PDF generation." />
     <MESSAGE value="Added download link for command line executable jar to README.md." />
@@ -2343,7 +2346,8 @@
     <MESSAGE value="Updated readme to indicate that version 1.2.9 is now in maven central." />
     <MESSAGE value="Added support for &amp;amp;, &amp;gt;, and &amp;lt;. Escaping '&lt;' with '\&lt;' does not work in GitHub markdown which made med use &amp;lgt; and &amp;gt; instead, and thus discovered that MarkdownDoc did not support these!" />
     <MESSAGE value="Oops. No longer supprots the MacOS X  .app packaging since it worked badly before and not at all in Mavericks. Thereby the link in the README.md file has been removed." />
-    <option name="LAST_COMMIT_MESSAGE" value="Oops. No longer supprots the MacOS X  .app packaging since it worked badly before and not at all in Mavericks. Thereby the link in the README.md file has been removed." />
+    <MESSAGE value="Damn it! The PDFGenerator stupidly converted &quot;&amp;lt;&quot; to &quot;&lt;&quot; and &quot;&amp;gt;&quot; to &quot;&gt;&quot;. This should of course have been handled in the MarkdownParser as it is now! Having the PDFGenerator do this translation was truly stupid!&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Damn it! The PDFGenerator stupidly converted &quot;&amp;lt;&quot; to &quot;&lt;&quot; and &quot;&amp;gt;&quot; to &quot;&gt;&quot;. This should of course have been handled in the MarkdownParser as it is now! Having the PDFGenerator do this translation was truly stupid!&#10;" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -2366,6 +2370,13 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/GeneratorProvider.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="74" selection-start="897" selection-end="897" vertical-scroll-proportion="0.0" vertical-offset="405" max-vertical-offset="1110">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/Editor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="199" column="16" selection-start="4466" selection-end="4466" vertical-scroll-proportion="0.0" vertical-offset="2985" max-vertical-offset="3375">
@@ -2648,72 +2659,72 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/MavenPlugin/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="26" selection-start="1115" selection-end="1115" vertical-scroll-proportion="-17.5" vertical-offset="0" max-vertical-offset="615">
+        <state line="28" column="26" selection-start="1115" selection-end="1115" vertical-scroll-proportion="0.0" vertical-offset="420" max-vertical-offset="615">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/CommandLine/src/assembly/exec-jar.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="23" selection-start="783" selection-end="783" vertical-scroll-proportion="-17.5" vertical-offset="0" max-vertical-offset="870">
+        <state line="28" column="23" selection-start="783" selection-end="783" vertical-scroll-proportion="0.0" vertical-offset="420" max-vertical-offset="870">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/CommandLine/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="0" selection-start="1024" selection-end="1024" vertical-scroll-proportion="-9.125" vertical-offset="246" max-vertical-offset="1470">
+        <state line="31" column="0" selection-start="1024" selection-end="1024" vertical-scroll-proportion="0.0" vertical-offset="246" max-vertical-offset="1470">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Editor/src/assembly/MarkdownDocEditorApp.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="35" selection-start="426" selection-end="426" vertical-scroll-proportion="-10.625" vertical-offset="0" max-vertical-offset="870">
+        <state line="17" column="35" selection-start="426" selection-end="426" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="870">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Editor/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="124" column="0" selection-start="4571" selection-end="4571" vertical-scroll-proportion="-77.5" vertical-offset="0" max-vertical-offset="2205">
+        <state line="124" column="0" selection-start="4571" selection-end="4571" vertical-scroll-proportion="0.0" vertical-offset="1860" max-vertical-offset="2205">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/.m2/settings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="40" selection-start="1877" selection-end="1877" vertical-scroll-proportion="-18.166666" vertical-offset="179" max-vertical-offset="1290">
+        <state line="41" column="40" selection-start="1877" selection-end="1877" vertical-scroll-proportion="0.0" vertical-offset="615" max-vertical-offset="1275">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="54" selection-start="1235" selection-end="1235" vertical-scroll-proportion="175.95833" vertical-offset="4778" max-vertical-offset="6165">
+        <state line="37" column="54" selection-start="1235" selection-end="1235" vertical-scroll-proportion="0.0" vertical-offset="555" max-vertical-offset="6150">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Library/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="60" selection-start="2096" selection-end="2096" vertical-scroll-proportion="-37.5" vertical-offset="0" max-vertical-offset="2085">
+        <state line="60" column="60" selection-start="2096" selection-end="2096" vertical-scroll-proportion="0.0" vertical-offset="900" max-vertical-offset="2085">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Docs/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="46" selection-start="1592" selection-end="1592" vertical-scroll-proportion="-17.166666" vertical-offset="293" max-vertical-offset="1350">
+        <state line="47" column="46" selection-start="1592" selection-end="1592" vertical-scroll-proportion="0.0" vertical-offset="293" max-vertical-offset="1350">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="3" selection-start="1064" selection-end="1064" vertical-scroll-proportion="0.24976873" vertical-offset="255" max-vertical-offset="16890">
+        <state line="35" column="3" selection-start="1064" selection-end="1064" vertical-scroll-proportion="0.24930748" vertical-offset="255" max-vertical-offset="16725">
           <folding>
-            <element signature="e#1109#1138#0" expanded="true" />
+            <element signature="e#1109#1135#0" expanded="true" />
           </folding>
         </state>
       </provider>
