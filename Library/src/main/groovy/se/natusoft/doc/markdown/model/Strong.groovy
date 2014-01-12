@@ -36,9 +36,12 @@
  */
 package se.natusoft.doc.markdown.model
 
+import groovy.transform.CompileStatic
+
 /**
  * This represents strong text.
  */
+@CompileStatic
 class Strong extends PlainText {
 
     /**

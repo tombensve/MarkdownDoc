@@ -36,12 +36,14 @@
  */
 package se.natusoft.doc.markdown.api
 
+import groovy.transform.CompileStatic
 import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.model.Doc
 
 /**
  * This defines the API of a generator.
  */
+@CompileStatic
 public interface Generator {
 
     /**

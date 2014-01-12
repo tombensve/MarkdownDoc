@@ -36,6 +36,7 @@
  */
 package se.natusoft.doc.markdown.parser
 
+import groovy.transform.CompileStatic
 import se.natusoft.doc.markdown.api.Parser
 import se.natusoft.doc.markdown.exception.ParseException
 import se.natusoft.doc.markdown.io.Line
@@ -60,6 +61,7 @@ import se.natusoft.doc.markdown.parser.markdown.model.MDList
  * &lt;, &gt;, and &amp; is not handled by this parser but by the HTMLGenerator instead since
  * this tool also can generate PDF such HTML specifics should not be in the parsed text.
  */
+@CompileStatic
 public class MarkdownParser implements Parser {
 
     //
@@ -116,15 +118,22 @@ public class MarkdownParser implements Parser {
                 if (!line.empty) {
                     DocItem docItem = null
 
+                    def commentStartCase = { MDLine it -> it.commentStart }
+                    def headerCase       = { MDLine it -> it.header }
+                    def listCase         = { MDLine it -> it.list && (it.leadingSpaces < 4 || (prevDocItem != null && prevDocItem.isHierarchy)) }
+                    def codeBlockCase    = { MDLine it -> it.codeBlock }
+                    def blockQuoteCase   = { MDLine it -> it.blockQuote }
+                    def horizRulerCase   = { MDLine it -> it.horizRuler }
+                    def linkUrlCSpecCase = { MDLine it -> it.isLinkURLSpec(this.links) }
+
                     switch (line) {
-                        case { it.commentStart } : docItem = parseComment    (line, lineReader); break
-                        case { it.header       } : docItem = parseHeader     (line, lineReader); break
-                        case { it.list && (it.leadingSpaces < 4 || (prevDocItem != null && prevDocItem.isHierarchy)) } :
-                            docItem = parseList       (line, lineReader); break
-                        case { it.codeBlock    } : docItem = parseCodeBlock  (line, lineReader); break
-                        case { it.blockQuote   } : docItem = parseBlockQuote (line, lineReader); break
-                        case { it.horizRuler   } : docItem = new HorizontalRule();               break
-                        case { it.isLinkURLSpec(this.links)} : parseLinkUrlSpec(line);         break
+                        case commentStartCase : docItem = parseComment    (line, lineReader); break
+                        case headerCase       : docItem = parseHeader     (line, lineReader); break
+                        case listCase         : docItem = parseList       (line, lineReader); break
+                        case codeBlockCase    : docItem = parseCodeBlock  (line, lineReader); break
+                        case blockQuoteCase   : docItem = parseBlockQuote (line, lineReader); break
+                        case horizRulerCase   : docItem = new HorizontalRule();               break
+                        case linkUrlCSpecCase : parseLinkUrlSpec(line);                       break
 
                         // The annoying underline header format.
                         case { lineReader.hasLine() && (lineReader.peekNextLine().contains("----") ||
@@ -184,7 +193,7 @@ public class MarkdownParser implements Parser {
             throw pe;
         }
         catch (Exception e) {
-            throw new ParseException(file: this.file, line: lineReader.getLastReadLine(), lineNo: lineReader.getLineNo(), message: "Unknown error", cause: e)
+            throw new ParseException(file: this.file.getAbsolutePath(), line: lineReader.getLastReadLine().toString(), lineNo: lineReader.getLineNo(), message: "Unknown error", cause: e)
         }
         finally {
             if (lineReader != null) {
@@ -264,12 +273,12 @@ public class MarkdownParser implements Parser {
 
         Header.Level level = null;
         switch (text) {
-            case { it.startsWith("######") } : level = Header.Level.H6; break
-            case { it.startsWith("#####")  } : level = Header.Level.H5; break
-            case { it.startsWith("####")   } : level = Header.Level.H4; break
-            case { it.startsWith("###")    } : level = Header.Level.H3; break
-            case { it.startsWith("##")     } : level = Header.Level.H2; break
-            case { it.startsWith("#")      } : level = Header.Level.H1; break
+            case { String it -> it.startsWith("######") } : level = Header.Level.H6; break
+            case { String it -> it.startsWith("#####")  } : level = Header.Level.H5; break
+            case { String it -> it.startsWith("####")   } : level = Header.Level.H4; break
+            case { String it -> it.startsWith("###")    } : level = Header.Level.H3; break
+            case { String it -> it.startsWith("##")     } : level = Header.Level.H2; break
+            case { String it -> it.startsWith("#")      } : level = Header.Level.H1; break
 
             case { lineReader.hasLine() && lineReader.peekNextLine().contains("===") } :
                 level = Header.Level.H1
@@ -385,13 +394,13 @@ public class MarkdownParser implements Parser {
     private void parseLinkUrlSpec(Line line) throws ParseException {
         line = line.removeAll("\\[").removeAll("\\]:")
         if (line.numberOfWords < 2) {
-            throw new ParseException(file: this.file, lineNo: line.lineNumber, message: "Bad link url specification: '" +
+            throw new ParseException(file: this.file.getAbsolutePath(), lineNo: line.lineNumber, message: "Bad link url specification: '" +
                     line.toString() + "'!")
         }
 
         Link link = this.links[line.getWord(0)]
         if (link == null) {
-            throw new ParseException(file: this.file, lineNo: line.lineNumber, message: "The specified link is undefined! '" + line.toString() + "'")
+            throw new ParseException(file: this.file.getAbsolutePath(), lineNo: line.lineNumber, message: "The specified link is undefined! '" + line.toString() + "'")
         }
         link.url = line.getWord(1)
         if (line.numberOfWords > 2) {
@@ -417,7 +426,7 @@ public class MarkdownParser implements Parser {
      * @throws ParseException
      */
     private void parseParagraph(Paragraph paragraph, Line line, LineReader lineReader) throws IOException, ParseException {
-        parseParagraph(paragraph, line, lineReader, null)
+        parseParagraph(paragraph, line, lineReader, (String)null)
     }
     /**
      * Parses a paragraph of text.
@@ -430,7 +439,7 @@ public class MarkdownParser implements Parser {
      * @throws ParseException
      */
     private void parseParagraph(Paragraph paragraph, Line line, LineReader lineReader, boolean isList) throws IOException, ParseException {
-        parseParagraph(paragraph, line, lineReader, null, isList)
+        parseParagraph(paragraph, line, lineReader, (String)null, isList)
     }
 
     /**
@@ -494,7 +503,7 @@ public class MarkdownParser implements Parser {
             int j = (i + 1) < sb.length() ? i + 1 : -1
 
             char c = sb.charAt(i);
-            char n = j > 0 ? sb.charAt(j) : 0
+            char n = j > 0 ? sb.charAt(j) : (char)0
 
             if (escapeChar) {
                 current << c
@@ -514,7 +523,7 @@ public class MarkdownParser implements Parser {
                         if (n == ' ') {
                             paragraph.addItem(current)
                             current = current.createNewWithSameConfig()
-                            paragraph.addItem(new PlainText(text: c, renderPrefixedSpace: false))
+                            paragraph.addItem(new PlainText(text: ("" + c), renderPrefixedSpace: false))
                         }
                         else {
                             current << c

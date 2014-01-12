@@ -36,6 +36,8 @@
  */
 package se.natusoft.doc.markdown.model
 
+import groovy.transform.CompileStatic
+
 /**
  * This defines all available formats represented by the different models.
  * All DocItem subclasses available in a Doc will have one of these
@@ -44,6 +46,7 @@ package se.natusoft.doc.markdown.model
  * There are other models that are sub models to one of these. All those
  * have null in DocItem.format!
  */
+@CompileStatic
 public enum DocFormat {
 
     Header,

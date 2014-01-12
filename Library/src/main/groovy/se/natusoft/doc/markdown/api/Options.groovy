@@ -36,9 +36,12 @@
  */
 package se.natusoft.doc.markdown.api
 
+import groovy.transform.CompileStatic
+
 /**
  * This is an marker interface indicating an options model.
  */
+@CompileStatic
 public interface Options {
 
     public boolean isHelp()

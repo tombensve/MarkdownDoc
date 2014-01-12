@@ -1,8 +1,11 @@
 package se.natusoft.doc.markdown.io
 
+import groovy.transform.CompileStatic
+
 /**
  * Test of the Line class.
  */
+@CompileStatic
 class LineTest extends GroovyTestCase {
 
     public void testLine1() throws Exception {

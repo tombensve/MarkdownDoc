@@ -36,9 +36,12 @@
  */
 package se.natusoft.doc.markdown.exception;
 
+import groovy.transform.CompileStatic
+
 /**
  * This is a base exception that supports Groovys bean instantiation of all exception data.
  */
+@CompileStatic
 public class DocException extends Exception {
     //
     // Private Members

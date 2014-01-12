@@ -36,12 +36,14 @@
  */
 package se.natusoft.doc.markdown.parser.markdown.io
 
+import groovy.transform.CompileStatic
 import se.natusoft.doc.markdown.io.Line
 import se.natusoft.doc.markdown.io.LineReader
 
 /**
  * Extends LineReader to produce MDLine objects instead of Line objects.
  */
+@CompileStatic
 public class MDLineReader extends LineReader {
 
     //

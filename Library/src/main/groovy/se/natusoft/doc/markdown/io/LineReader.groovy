@@ -36,9 +36,12 @@
  */
 package se.natusoft.doc.markdown.io
 
+import groovy.transform.CompileStatic
+
 /**
  * A utility for reading text files, line by line and allows for look ahead and push back.
  */
+@CompileStatic
 public class LineReader {
     //
     // Private Members

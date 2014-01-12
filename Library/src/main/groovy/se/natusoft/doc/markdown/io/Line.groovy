@@ -36,9 +36,12 @@
  */
 package se.natusoft.doc.markdown.io
 
+import groovy.transform.CompileStatic
+
 /**
  * This represents a line of text.
  */
+@CompileStatic
 class Line {
     //
     // Private Members
@@ -48,7 +51,7 @@ class Line {
     protected String origLine = null
 
     /** The words of the line. */
-    protected def words = []
+    protected String[] words = new String[0]
 
     /** The current word index. */
     protected int currentWord = -1
@@ -68,10 +71,7 @@ class Line {
      */
     public Line(String line, int lineNumber) {
         this.origLine = line
-        StringTokenizer st = new StringTokenizer(line, " ")
-        while (st.hasMoreTokens()) {
-            words << st.nextToken()
-        }
+        this.words = line.split(" ")
         this.lineNumber = lineNumber
     }
 

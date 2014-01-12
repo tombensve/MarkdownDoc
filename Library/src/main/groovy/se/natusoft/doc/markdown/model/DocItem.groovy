@@ -36,6 +36,7 @@
  */
 package se.natusoft.doc.markdown.model
 
+import groovy.transform.CompileStatic
 import se.natusoft.doc.markdown.io.Line
 
 import java.util.LinkedList as JLinkedList
@@ -44,6 +45,7 @@ import java.util.List as JList
 /**
  * This is a base API implemented by most of the document structure models.
  */
+@CompileStatic
 public class DocItem {
     //
     // Private Members
@@ -85,7 +87,7 @@ public class DocItem {
      * Creates a new DocItem instance of the same type as this instance and with the same base DocItem config as this.
      */
     public DocItem createNewWithSameConfig() {
-        DocItem di = this.class.newInstance()
+        DocItem di = (DocItem)this.class.newInstance()
         copyConfig(di)
         return di
     }

@@ -49,61 +49,87 @@
 
     </dependencies>
 
-    <build>
-        <plugins>
-            <!--
-            This worked bad in MountainLion, and not at all in Mavericks! The MarkdownDocEditor-n-n-n-App.jar assembly works
-            fine also on mac by double clicking on it.
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>osxappbundle-maven-plugin</artifactId>
-                <version>1.0-alpha-1</version>
-                <configuration>
-                    <mainClass>se.natusoft.doc.markdowndoc.editor.MarkdownEditor</mainClass>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>bundle</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            -->
-
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <descriptors>
-                        <descriptor>src/assembly/MarkdownDocEditorApp.xml</descriptor>
-                    </descriptors>
-
-                    <archive>
-                        <manifest>
-                            <mainClass>se.natusoft.doc.markdowndoc.editor.MarkdownEditor</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-
-                <executions>
-                    <execution>
-                        <id>package-jar</id>
-                        <goals>
-                            <goal>assembly</goal>
-                        </goals>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
-            </plugin>
-
-
-        </plugins>
-    </build>
-
     <profiles>
+        <profile>
+            <id>assemble-exec</id>
+            <build>
+                <plugins>
+                    <!--
+                    This worked bad in MountainLion, and not at all in Mavericks! The MarkdownDocEditor-n-n-n-App.jar assembly works
+                    fine also on mac by double clicking on it.
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>osxappbundle-maven-plugin</artifactId>
+                        <version>1.0-alpha-1</version>
+                        <configuration>
+                            <mainClass>se.natusoft.doc.markdowndoc.editor.MarkdownEditor</mainClass>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>bundle</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    -->
+
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>2.2</version>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/assembly/MarkdownDocEditorApp.xml</descriptor>
+                            </descriptors>
+
+                            <archive>
+                                <manifest>
+                                    <mainClass>se.natusoft.doc.markdowndoc.editor.MarkdownEditor</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+
+                        <executions>
+                            <execution>
+                                <id>package-jar</id>
+                                <goals>
+                                    <goal>assembly</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <id>attach-artifacts</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>attach-artifact</goal>
+                                </goals>
+                                <configuration>
+                                    <artifacts>
+                                        <artifact>
+                                            <file>target/${project.artifactId}-${project.version}-App.jar</file>
+                                            <type>App.jar</type>
+                                        </artifact>
+                                    </artifacts>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+
+            </build>
+
+        </profile>
+    <!--
         <profile>
             <id>release-upload</id>
             <build>
@@ -136,6 +162,7 @@
                 </plugins>
             </build>
         </profile>
+    -->
     </profiles>
 
 </project>

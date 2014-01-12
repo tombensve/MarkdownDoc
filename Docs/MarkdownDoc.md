@@ -31,6 +31,8 @@ In short MarkdownDoc provides the following:
    * Mac OS X app + dmg for install.
 * Maven plugin.
 
+**Version 1.2.9 is now available in maven central!** If you want another version, it is available at [Bintray](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md).
+
 Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdown](http://daringfireball.net/projects/markdown) document format, and to [iText Software Corp.](http://itextpdf.com) for making an excellent easy to use PDF library and making it available as open source. 
 
 ### Version history

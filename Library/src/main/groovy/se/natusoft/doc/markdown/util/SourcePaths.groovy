@@ -36,23 +36,19 @@
  */
 package se.natusoft.doc.markdown.util;
 
-import se.natusoft.doc.markdown.util.SourcePath;
-
-import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.StringTokenizer;
+import groovy.transform.CompileStatic
 
 /**
  * This handles a comma separated set of SourcePaths.
  */
+@CompileStatic
 public class SourcePaths {
     //
     // Private Members
     //
 
     /** All the source paths. */
-    List<SourcePath> sourcePaths = new LinkedList<SourcePath>();
+    List<SourcePath> sourcePaths = new LinkedList<SourcePath>()
 
     //
     // Constructors
@@ -64,9 +60,9 @@ public class SourcePaths {
      * @param sourcePaths The comma separated path specifications to parse.
      */
     public SourcePaths(String sourcePaths) {
-        StringTokenizer pathTokenizer = new StringTokenizer(sourcePaths, ",");
+        StringTokenizer pathTokenizer = new StringTokenizer(sourcePaths, ",")
         while (pathTokenizer.hasMoreTokens()) {
-            this.sourcePaths.add(new SourcePath(pathTokenizer.nextToken().trim()));
+            this.sourcePaths.add(new SourcePath(pathTokenizer.nextToken().trim()))
         }
     }
 
@@ -77,14 +73,14 @@ public class SourcePaths {
      * @param sourcePaths The comma separated path specifications to parse.
      */
     public SourcePaths(File projRoot, String sourcePaths) {
-        StringTokenizer pathTokenizer = new StringTokenizer(sourcePaths, ",");
+        StringTokenizer pathTokenizer = new StringTokenizer(sourcePaths, ",")
         while (pathTokenizer.hasMoreTokens()) {
-            String path = pathTokenizer.nextToken().trim();
+            String path = pathTokenizer.nextToken().trim()
             if (path.startsWith(projRoot.getAbsolutePath())) {
-                int projRootLength = projRoot.getAbsolutePath().length();
-                path = path.substring(projRootLength);
+                int projRootLength = projRoot.getAbsolutePath().length()
+                path = path.substring(projRootLength)
             }
-            this.sourcePaths.add(new SourcePath(projRoot, path));
+            this.sourcePaths.add(new SourcePath(projRoot, path))
         }
     }
 
@@ -103,10 +99,10 @@ public class SourcePaths {
      * Returns all files from all source paths (in the order they were specified).
      */
     public List<File> getSourceFiles() {
-        List<File> all = new LinkedList<File>();
+        List<File> all = new LinkedList<File>()
         for (SourcePath sourcePath : this.sourcePaths) {
             for (File file : sourcePath.getSourceFiles()) {
-                all.add(file);
+                all.add(file)
             }
         }
 
@@ -117,6 +113,6 @@ public class SourcePaths {
      * @return true if there are source files.
      */
     public boolean hasSourceFiles() {
-        return !getSourceFiles().isEmpty();
+        return !getSourceFiles().isEmpty()
     }
 }

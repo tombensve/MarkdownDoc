@@ -36,11 +36,13 @@
  */
 package se.natusoft.doc.markdown.parser.markdown.io
 
+import groovy.transform.CompileStatic
 import se.natusoft.doc.markdown.io.Line
 
 /**
  * This represents a line of Markdown text.
  */
+@CompileStatic
 class MDLine extends Line  {
 
     //
@@ -110,7 +112,7 @@ class MDLine extends Line  {
                 firstWord = firstWord.substring(0, firstWord.length() - 1)
                 boolean onlyDigits = true;
                 for (int i = 0; i < firstWord.length(); i++) {
-                    if (!firstWord.charAt(i).digit) {
+                    if (!firstWord.charAt(i).isDigit()) {
                         onlyDigits = false;
                         break;
                     }

@@ -36,12 +36,14 @@
  */
 package se.natusoft.doc.markdown.parser.markdown.model
 
+import groovy.transform.CompileStatic
 import se.natusoft.doc.markdown.model.DocItem
 import se.natusoft.doc.markdown.model.Image
 
 /**
  * This extends Image but provides internal markdown parsing of received data.
  */
+@CompileStatic
 class MDImage extends Image {
 
     //

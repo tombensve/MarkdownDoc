@@ -36,12 +36,14 @@
  */
 package se.natusoft.doc.markdown.api
 
+import groovy.transform.CompileStatic
 import se.natusoft.doc.markdown.exception.ParseException
 import se.natusoft.doc.markdown.model.Doc
 
 /**
  * This defines the API of a parser.
  */
+@CompileStatic
 public interface Parser {
 
     /**

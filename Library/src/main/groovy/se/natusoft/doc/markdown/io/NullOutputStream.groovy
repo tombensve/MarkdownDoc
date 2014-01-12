@@ -36,9 +36,12 @@
  */
 package se.natusoft.doc.markdown.io
 
+import groovy.transform.CompileStatic
+
 /**
  * This is an OutputStream that writes nothing to nowhere!
  */
+@CompileStatic
 class NullOutputStream extends OutputStream {
 
     @Override

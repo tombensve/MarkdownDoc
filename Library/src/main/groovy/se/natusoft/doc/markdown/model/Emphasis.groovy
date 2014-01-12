@@ -36,9 +36,12 @@
  */
 package se.natusoft.doc.markdown.model
 
+import groovy.transform.CompileStatic
+
 /**
  * This represents emphasised text.
  */
+@CompileStatic
 class Emphasis extends PlainText {
 
     /**

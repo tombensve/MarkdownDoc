@@ -43,22 +43,4 @@ This is an editor for editing markdown documents.
   
 ## Executables
 
-MarkdownDocEditor-n.n.n-App.jar (any platform) or MarkdownDocEditor-n.n.n.app (for Mac).
-
-## Bugs
-
-### By Sun/Oracle
-
-Well, this is **not a bug**, but JEditorPane really **SUCKS**! There is no easy way to use it to edit just text and still get things like word wrap. That is why wordwrap is not supported. I have to find another open source editor component.
-
-----
-
-### By Apple
-
-* When the editor is run through the .app packaging fullscreen does not work!
-
-* This being a Java application the .app packaging uses Apples JavaApplicationStub to start the java application. It however refuses to pass along any parameters so associating this editor with .markdown files and double clicking on a markdown file will open this editor but not with the file!
-
-__NOTE:__ Since this does not work at all in Mavericks and badly before, I've removed support for the .app packaging!
-
-----
+MarkdownDocEditor-n.n.n.App.jar

@@ -36,9 +36,12 @@
  */
 package se.natusoft.doc.markdown.model
 
+import groovy.transform.CompileStatic
+
 /**
  * This represents a header.
  */
+@CompileStatic
 public class Header extends PlainText {
     //
     // Private Members

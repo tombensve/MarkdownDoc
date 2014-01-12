@@ -36,6 +36,7 @@
  */
 package se.natusoft.doc.markdown.parser
 
+import groovy.transform.CompileStatic
 import se.natusoft.doc.markdown.api.Parser
 import se.natusoft.doc.markdown.exception.ParseException
 import se.natusoft.doc.markdown.model.*
@@ -69,6 +70,7 @@ import java.util.List
  * Please note that this parser does not try to parse java code more than trying to identify the beginning of a class and method.
  * All other information comes from the javadoc comment block. If there is no javadoc the resulting information will be quite poor.
  */
+@CompileStatic
 class JavadocParser implements Parser {
 
     // TODO:
@@ -80,7 +82,7 @@ class JavadocParser implements Parser {
     // Constants
     //
 
-    private static final MARKDOWN_JAVADOC = "markdownJavadoc";
+    private static final String MARKDOWN_JAVADOC = "markdownJavadoc";
 
     //
     // Private Members
@@ -142,7 +144,7 @@ class JavadocParser implements Parser {
 
         Doc localDoc = new Doc();
 
-        parseFile.eachLine { line ->
+        parseFile.eachLine { String line ->
             if (!inJavadocBlock && !inDeclarationBlock && line.trim().startsWith("package")) {
                 this.pkg = line.replaceFirst("package ", "").replace(';', ' ').trim()
             }
@@ -378,7 +380,7 @@ class JavadocParser implements Parser {
         }
 
         boolean textPart = true;
-        this.javadoc.each { jdline ->
+        this.javadoc.each { String jdline ->
             if (jdline.contains("@param")) {
                 textPart = false;
                 params.add(jdline)
@@ -420,7 +422,7 @@ class JavadocParser implements Parser {
             PlainText format = new PlainText()
             boolean preMode = false
 
-            text.each { line ->
+            text.each { String line ->
                 if (!preMode && line.trim().matches("^<[Pp][Rr][Ee]>.*")) {
                     preMode = true
                     p.addItem(format)
@@ -438,7 +440,7 @@ class JavadocParser implements Parser {
                     p.addItem(line)
                 }
                 else {
-                    line.split("\\s+|>\\s*|</").each { word ->
+                    line.split("\\s+|>\\s*|</").each { String word ->
                         if (word.matches("^<[Pp].?") ) {
                             p.addItem(format)
                             format = new PlainText()
@@ -475,7 +477,7 @@ class JavadocParser implements Parser {
                 p.addItem(new Emphasis(text: "Parameters"))
                 document.addItem(p)
 
-                params.each { param ->
+                params.each { String param ->
                     p = new BlockQuote()
                     String[] words = param.split("\\s+")
                     p.addItem(new Emphasis(text: words[1]))
@@ -496,7 +498,7 @@ class JavadocParser implements Parser {
                 p.addItem(new Emphasis(text: "Throws"))
                 document.addItem(p)
 
-                exceptions.each { exc ->
+                exceptions.each { String exc ->
                     p = new BlockQuote()
                     String[] words = exc.split("\\s+")
                     p.addItem(new Emphasis(text: words[1]))

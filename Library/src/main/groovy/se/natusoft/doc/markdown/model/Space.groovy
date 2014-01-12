@@ -36,9 +36,12 @@
  */
 package se.natusoft.doc.markdown.model
 
+import groovy.transform.CompileStatic
+
 /**
  * This represents a single space. <code>&nbsp;</code> results in this.
  */
+@CompileStatic
 class Space extends PlainText {
 
     public Space() {

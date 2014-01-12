@@ -36,9 +36,12 @@
  */
 package se.natusoft.doc.markdown.model
 
+import groovy.transform.CompileStatic
+
 /**
  * This represents a block of code that is pre-formatted.
  */
+@CompileStatic
 public class CodeBlock extends DocItem {
 
     //

@@ -1,13 +1,14 @@
 package se.natusoft.doc.markdown.parser
 
+import groovy.transform.CompileStatic
 import se.natusoft.doc.markdown.api.Parser
-import se.natusoft.doc.markdown.model.DocItem
-
 import se.natusoft.doc.markdown.model.Doc
+import se.natusoft.doc.markdown.model.DocItem
 
 /**
  * Test for MarkdownParser.
  */
+@CompileStatic
 class MarkdownParserDevTest extends GroovyTestCase {
 
     public void testParser() throws Exception {

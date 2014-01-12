@@ -36,9 +36,12 @@
  */
 package se.natusoft.doc.markdown.model
 
+import groovy.transform.CompileStatic
+
 /**
  * This represents plain text.
  */
+@CompileStatic
 public class PlainText extends DocItem {
     //
     // Private Members

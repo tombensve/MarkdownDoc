@@ -3,23 +3,6 @@
 The maven plugin is rather straight forward. It has 3 sets of configuration structures, one
 common and one for each generator.
 
-**Version 1.2.9 is now available in maven central!** If you want another version, add the following to your pom:
-
-	  <project>
-	    ...
-	    <repositories>
-	        ...
-	        <repository>
-	            <id>maven-natusoft-se</id>
-	            <name>Natusoft maven repository</name>
-	            <url>http://maven.natusoft.se/</url>
-	        </repository>
-	    </repositories>
-	    ...
-	  </project>
-
-to have maven download it from my repository.
-
 ## generatorOptions
 
 There is a config section that is common to all generators and specifys which generator to run

@@ -37,10 +37,12 @@
 package se.natusoft.doc.markdown.generator.pdfgenerator
 
 import com.itextpdf.text.BaseColor
+import groovy.transform.CompileStatic
 
 /**
  * This extends BaseColor and parses configured colors.
  */
+@CompileStatic
 class PDFColor extends BaseColor {
 
     public PDFColor(String color) {

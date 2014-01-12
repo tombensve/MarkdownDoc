@@ -136,6 +136,22 @@
                 </configuration>
             </plugin>
 
+            <!--
+                Package sources.
+            -->
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
 
     </build>
@@ -144,25 +160,13 @@
         Distribution Management
     -->
 
-    <repositories>
+    <distributionManagement>
         <repository>
-            <id>maven-natusoft-se</id>
-            <name>
-                Natusofts maven repository
-            </name>
-            <url>http://maven.natusoft.se/</url>
+            <id>bintray-tommy-maven-MarkdownDoc</id>
+            <name>tommy-maven-MarkdownDoc</name>
+            <url>https://api.bintray.com/maven/tommy/maven/MarkdownDoc</url>
         </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>maven-natusoft-se</id>
-            <name>
-                Natusoft maven repository.
-            </name>
-            <url>http://maven.natusoft.se/</url>
-        </pluginRepository>
-    </pluginRepositories>
+    </distributionManagement>
 
     <!--
         Profiles
@@ -315,88 +319,6 @@
                 </plugins>
             </build>
         </profile>
-
-        <!--
-            This is for releasing to maven central. It edits the pom to fit the requirements of the maven dictatorship: Sonatype!
-        -->
-        <profile>
-            <id>sonaify</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>se.natusoft.tools.fileeditor</groupId>
-                        <artifactId>file-editor-maven-support-plugin</artifactId>
-                        <version>1.0</version>
-
-                        <dependencies>
-                            <dependency>
-                                <groupId>se.natusoft.tools.fileeditor</groupId>
-                                <artifactId>file-editor-maven-support-scripts</artifactId>
-                                <version>1.0</version>
-                            </dependency>
-                        </dependencies>
-                        <executions>
-                            <execution>
-                                <id>upd-parent-and-snapshot</id>
-                                <goals>
-                                    <goal>edit</goal>
-                                </goals>
-                                <phase>generate-sources</phase>
-                                <configuration>
-                                    <scripts>
-                                        <script>
-                                            <forArtifactId>markdown-doc</forArtifactId>
-                                            <scriptFile>script:pom_add_parent.bsh</scriptFile>
-                                            <sourcePath>${basedir}/pom.xml</sourcePath>
-                                            <variables>
-                                                <variable>
-                                                    <name>groupId</name>
-                                                    <value>org.sonatype.oss</value>
-                                                </variable>
-                                                <variable>
-                                                    <name>artifactId</name>
-                                                    <value>oss-parent</value>
-                                                </variable>
-                                                <variable>
-                                                    <name>version</name>
-                                                    <value>7</value>
-                                                </variable>
-                                            </variables>
-                                        </script>
-                                        <script>
-                                            <forArtifactId>markdown-doc</forArtifactId>
-                                            <scriptFile>script:pom_add_snapshot_to_version.bsh</scriptFile>
-                                            <sourcePath>${basedir}/pom.xml</sourcePath>
-                                        </script>
-                                        <script>
-                                            <forArtifactId>markdown-doc</forArtifactId>
-                                            <sourcePath>${basedir}/pom.xml</sourcePath>
-                                            <code>
-                                                editor.replaceAllInFile("tombensve/MarkdownDoc", "tombensve/MarkdownDoc-cenrel");
-                                            </code>
-                                        </script>
-                                    </scripts>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <!--
-            Since this cannot be put in settings.xml I put it in a profile, and activate it in settings.xml.
-        -->
-        <profile>
-            <id>repo-upload-dist-management</id>
-            <distributionManagement>
-                <repository>
-                    <id>maven-repository-upload</id>
-                    <url>ftp://${maven.repo.upload}/maven.natusoft.se/public_html</url>
-                </repository>
-            </distributionManagement>
-        </profile>
-
 
     </profiles>
 

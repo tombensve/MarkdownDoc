@@ -36,11 +36,13 @@
  */
 package se.natusoft.doc.markdown.parser
 
+import groovy.transform.CompileStatic
 import se.natusoft.doc.markdown.api.Parser
 
 /**
  * Provides a parser depending on file extension.
  */
+@CompileStatic
 class ParserProvider {
 
     /**

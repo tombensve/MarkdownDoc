@@ -36,12 +36,14 @@
  */
 package se.natusoft.doc.markdown.generator.options
 
+import groovy.transform.CompileStatic
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.tools.optionsmgr.annotations.*
 
 /**
  * This provides options for the Markdown generator.
  */
+@CompileStatic
 @OptionsModel
 class MarkdownGeneratorOptions implements Options {
 

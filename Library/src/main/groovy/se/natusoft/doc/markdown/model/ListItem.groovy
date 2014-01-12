@@ -36,9 +36,12 @@
  */
 package se.natusoft.doc.markdown.model
 
+import groovy.transform.CompileStatic
+
 /**
  * This represents a list of text items.
  */
+@CompileStatic
 public class ListItem extends DocItem {
 
     /**

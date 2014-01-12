@@ -35,9 +35,13 @@
  *         
  */
 package se.natusoft.doc.markdown.exception
+
+import groovy.transform.CompileStatic
+
 /**
  * This exception represents parsing failures.
  */
+@CompileStatic
 class ParseException extends DocException {
     //
     // Private Members

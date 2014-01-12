@@ -36,11 +36,14 @@
  */
 package se.natusoft.doc.markdown.model
 
+import groovy.transform.CompileStatic
+
 /**
  * This represents a whole document.
  * <p/>
  * This is basically for code readability. This is nothing but a DocItem! Any DocItem can be passed
  * to a generator.
  */
+@CompileStatic
 class Doc extends DocItem{
 }

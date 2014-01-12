@@ -36,9 +36,12 @@
  */
 package se.natusoft.doc.markdown.model
 
+import groovy.transform.CompileStatic
+
 /**
  * This represents a horizontal rule.
  */
+@CompileStatic
 public class HorizontalRule extends DocItem {
 
     /**

@@ -36,9 +36,12 @@
  */
 package se.natusoft.doc.markdown.model
 
+import groovy.transform.CompileStatic
+
 /**
  * This represents a link.
  */
+@CompileStatic
 public class Link extends PlainText {
     //
     // Private Members

@@ -22,42 +22,68 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <!--
-                Define project assemblies.
-            -->
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <descriptors>
-                        <descriptor>src/assembly/exec-jar.xml</descriptor>
-                    </descriptors>
-
-                    <archive>
-                        <manifest>
-                            <mainClass>se.natusoft.doc.markdowndoc.Main</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-
-                <executions>
-                    <execution>
-                        <id>package-jar</id>
-                        <goals>
-                            <goal>assembly</goal>
-                        </goals>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
-            </plugin>
-
-
-        </plugins>
-    </build>
 
     <profiles>
+        <profile>
+            <id>assemble-exec</id>
+            <build>
+                <plugins>
+                    <!--
+                        Define project assemblies.
+                    -->
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>2.2</version>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>${basedir}/src/assembly/exec-jar.xml</descriptor>
+                            </descriptors>
+
+                            <archive>
+                                <manifest>
+                                    <mainClass>se.natusoft.doc.markdowndoc.Main</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+
+                        <executions>
+                            <execution>
+                                <id>package-jar</id>
+                                <goals>
+                                    <goal>assembly</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <id>attach-artifacts</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>attach-artifact</goal>
+                                </goals>
+                                <configuration>
+                                    <artifacts>
+                                        <artifact>
+                                            <file>target/${project.artifactId}-${project.version}-exec.jar</file>
+                                            <type>exec.jar</type>
+                                        </artifact>
+                                    </artifacts>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+
+        </profile>
+        <!--
         <profile>
             <id>release-upload</id>
             <build>
@@ -88,5 +114,6 @@
                 </plugins>
             </build>
         </profile>
+        -->
     </profiles>
 </project>

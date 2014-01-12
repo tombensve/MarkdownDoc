@@ -44,7 +44,7 @@
     <bytecodeTargetLevel>
       <module name="CommandLine" target="1.6" />
       <module name="Editor" target="1.6" />
-      <module name="Library" target="1.6" />
+      <module name="Library" target="1.7" />
       <module name="markdown-doc-docs" target="1.6" />
       <module name="MarkdownDoc" target="1.6" />
       <module name="MavenPlugin" target="1.6" />

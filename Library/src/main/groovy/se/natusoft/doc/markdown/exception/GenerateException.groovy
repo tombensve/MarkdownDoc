@@ -36,9 +36,12 @@
  */
 package se.natusoft.doc.markdown.exception
 
+import groovy.transform.CompileStatic
+
 /**
  * This exception represents generation failure.
  */
+@CompileStatic
 class GenerateException extends DocException {
 
 }

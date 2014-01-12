@@ -36,9 +36,12 @@
  */
 package se.natusoft.doc.markdown.model
 
+import groovy.transform.CompileStatic
+
 /**
  * This represents block quoted text.
  */
+@CompileStatic
 public class BlockQuote extends Paragraph {
 
     /**

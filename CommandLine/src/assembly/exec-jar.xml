@@ -14,7 +14,7 @@
 
     <fileSets>
         <fileSet>
-            <directory>../CommandLine/target/classes</directory>
+            <directory>${basedir}/target/classes</directory>
             <outputDirectory>.</outputDirectory>
             <excludes>
                 <exclude>*MANIFEST.MF</exclude>
@@ -22,7 +22,7 @@
         </fileSet>
 
         <fileSet>
-            <directory>../Library/target/classes</directory>
+            <directory>${basedir}/../Library/target/classes</directory>
             <outputDirectory>.</outputDirectory>
             <excludes>
                 <exclude>*MANIFEST.MF</exclude>

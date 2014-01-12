@@ -36,6 +36,7 @@
  */
 package se.natusoft.doc.markdown.util
 
+import groovy.transform.CompileStatic
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.api.Parser
 import se.natusoft.doc.markdown.exception.ParseException
@@ -49,6 +50,7 @@ import se.natusoft.tools.optionsmgr.CommandLineOptionsManager
 /**
  * This handles reading and running a .mddoc file.
  */
+@CompileStatic
 class MDDocFileHandler {
 
     /**
@@ -98,7 +100,7 @@ class MDDocFileHandler {
             if (verbose) System.out.println("    " + file.getPath() + " ...");
             Parser parser = ParserProvider.getParserForFile(file);
             if (parser == null) {
-                throw new ParseException(file: file.getAbsoluteFile(), lineNo: 0, line: "", message: "Don't know how to parse this file!")
+                throw new ParseException(file: file.getAbsolutePath(), lineNo: 0, line: "", message: "Don't know how to parse this file!")
             }
             parser.parse(document, file, parserOptions);
         }

@@ -1,18 +1,17 @@
 package se.natusoft.doc.markdown.generator
 
-import se.natusoft.doc.markdown.api.Parser
-
-import se.natusoft.doc.markdown.parser.MarkdownParser
-import se.natusoft.doc.markdown.model.Doc
-
+import groovy.transform.CompileStatic
 import se.natusoft.doc.markdown.api.Generator
-
-import se.natusoft.tools.optionsmgr.CommandLineOptionsManager
 import se.natusoft.doc.markdown.api.Options
+import se.natusoft.doc.markdown.api.Parser
+import se.natusoft.doc.markdown.model.Doc
+import se.natusoft.doc.markdown.parser.MarkdownParser
+import se.natusoft.tools.optionsmgr.CommandLineOptionsManager
 
 /**
  * Test for MarkdownParser.
  */
+@CompileStatic
 class HTMLGeneratorDevTest extends GroovyTestCase {
 
     public void testParser() throws Exception {
