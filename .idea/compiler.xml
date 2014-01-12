@@ -37,7 +37,6 @@
         <module name="CommandLine" />
         <module name="Editor" />
         <module name="Library" />
-        <module name="markdown-doc-docs" />
         <module name="MavenPlugin" />
       </profile>
     </annotationProcessing>
