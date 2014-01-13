@@ -48,8 +48,7 @@ import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Caret;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -96,7 +95,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
     private JScrollPane scrollPane;
 
     // The actual editor component.
-    private JEditorPane editor;
+    private JTextPane editor;
 
     // When a file has been opened, or saved this will point to that file.
     // On save a file chooser will be opened if this is null otherwise this
@@ -129,6 +128,13 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
     // Holds EditorComponents that are EditorInputFilter subclasses.
     private List<EditorInputFilter> filters = new LinkedList<EditorInputFilter>();
 
+    // This should be disabled during file load.
+    private boolean styleDoc = true;
+
+    private String monospacedFontFamily = "Monospaced";
+
+    private int monospacedFontSize = 16;
+
     //
     // Configs
     //
@@ -153,6 +159,22 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
 
     private static ColorConfigEntry foregroundColorConfig =
             new ColorConfigEntry("editor.pane.foreground.color", "The editor text color.", 80, 80, 80);
+
+    private static ValidSelectionConfigEntry monospacedFontConfig =
+            new ValidSelectionConfigEntry("editor.pane.monospaced.font", "The monospaced font to use.", "Monospaced",
+                    new ValidSelectionConfigEntry.ValidValues() {
+                        @Override
+                        public String[] validValues() {
+                            GraphicsEnvironment gEnv = GraphicsEnvironment
+                                    .getLocalGraphicsEnvironment();
+                            return gEnv.getAvailableFontFamilyNames();
+                        }
+                    }
+            );
+
+    private static IntegerConfigEntry monospacedFontSizeConfig =
+            new IntegerConfigEntry("editor.pane.font.monospaced.size", "The size of the monospaced font.", 16, 8, 50);
+
 
     private static ValidSelectionConfigEntry lookAndFeelConfig =
             new ValidSelectionConfigEntry("editor.lookandfeel", "The LookAndFeel to use.",
@@ -212,6 +234,44 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
         @Override
         public void configChanged(ConfigEntry ce) {
             editor.setForeground(new ConfigColor(ce));
+        }
+    };
+
+    private ConfigChanged monospacedFontConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            MarkdownEditor.this.monospacedFontFamily = Font.decode(ce.getValue()).getFamily();
+
+            StyledDocument doc = (StyledDocument)MarkdownEditor.this.editor.getDocument();
+            Style base = StyleContext.
+                    getDefaultStyleContext().
+                    getStyle(StyleContext.DEFAULT_STYLE);
+            doc.removeStyle("code");
+            Style code = doc.addStyle("code", base);
+            StyleConstants.setFontFamily(code, MarkdownEditor.this.monospacedFontFamily);
+            StyleConstants.setFontSize(code, MarkdownEditor.this.monospacedFontSize);
+
+            styleDoc();
+            //MarkdownEditor.this.editor.repaint();
+        }
+    };
+
+    private ConfigChanged monospacedFontSizeConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            MarkdownEditor.this.monospacedFontSize = Integer.valueOf(ce.getValue());
+
+            MarkdownEditor.this.monospacedFontFamily = Font.decode(ce.getValue()).getFamily();
+            StyledDocument doc = (StyledDocument)MarkdownEditor.this.editor.getDocument();
+            Style base = StyleContext.
+                    getDefaultStyleContext().
+                    getStyle(StyleContext.DEFAULT_STYLE);
+            doc.removeStyle("code");
+            Style code = doc.addStyle("code", base);
+            StyleConstants.setFontFamily(code, MarkdownEditor.this.monospacedFontFamily);
+            StyleConstants.setFontSize(code, MarkdownEditor.this.monospacedFontSize);
+            styleDoc();
+            //MarkdownEditor.this.editor.repaint();
         }
     };
 
@@ -300,7 +360,12 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
                 cp.unregisterConfigCallback(backgroundColorConfig, MarkdownEditor.this.backgroundColorConfigChanged);
                 cp.unregisterConfigCallback(foregroundColorConfig, MarkdownEditor.this.foregroundColorConfigChanged);
                 cp.unregisterConfigCallback(lookAndFeelConfig, MarkdownEditor.this.lookAndFeelConfigChanged);
-
+                cp.unregisterConfigCallback(monospacedFontConfig, MarkdownEditor.this.monospacedFontConfigChanged);
+                cp.unregisterConfigCallback(monospacedFontSizeConfig, MarkdownEditor.this.monospacedFontSizeConfigChanged);
+                cp.unregisterConfigCallback(topMargin, MarkdownEditor.this.topMarginConfigChanged);
+                cp.unregisterConfigCallback(bottomMargin, MarkdownEditor.this.bottomMarginConfigChanged);
+                cp.unregisterConfigCallback(leftMargin, MarkdownEditor.this.leftMarginConfigChanged);
+                cp.unregisterConfigCallback(rightMargin, MarkdownEditor.this.rightMarginConfigChanged);
                 MarkdownEditor.this.setVisible(false);
                 MarkdownEditor.this.editorClosed();
             }
@@ -313,6 +378,8 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
         getConfigProvider().registerConfig(backgroundColorConfig, this.backgroundColorConfigChanged);
         getConfigProvider().registerConfig(foregroundColorConfig, this.foregroundColorConfigChanged);
         getConfigProvider().registerConfig(lookAndFeelConfig, this.lookAndFeelConfigChanged);
+        getConfigProvider().registerConfig(monospacedFontConfig, MarkdownEditor.this.monospacedFontConfigChanged);
+        getConfigProvider().registerConfig(monospacedFontSizeConfig, MarkdownEditor.this.monospacedFontSizeConfigChanged);
         getConfigProvider().registerConfig(topMargin, this.topMarginConfigChanged);
         getConfigProvider().registerConfig(bottomMargin, this.bottomMarginConfigChanged);
         getConfigProvider().registerConfig(leftMargin, this.leftMarginConfigChanged);
@@ -346,7 +413,43 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
         this.editorPanel.setLayout(new BorderLayout());
         this.editorPanel.setAutoscrolls(true);
 
-        this.editor = new JEditorPane() {
+        StyledDocument doc = new DefaultStyledDocument() {
+            public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
+                super.insertString(offset, str, a);
+                if (MarkdownEditor.this.styleDoc) styleDoc();
+            }
+        };
+        Style base = StyleContext.
+                getDefaultStyleContext().
+                getStyle(StyleContext.DEFAULT_STYLE);
+        Style emphasis = doc.addStyle("emphasis", base);
+        StyleConstants.setItalic(emphasis, true);
+        Style bold = doc.addStyle("bold", base);
+        StyleConstants.setBold(bold, true);
+
+        Style h1 = doc.addStyle("h1", base);
+        StyleConstants.setFontSize(h1, 34);
+        StyleConstants.setBold(h1, true);
+        Style h2 = doc.addStyle("h2", base);
+        StyleConstants.setFontSize(h2, 30);
+        StyleConstants.setBold(h2, true);
+        Style h3 = doc.addStyle("h3", base);
+        StyleConstants.setFontSize(h3, 26);
+        StyleConstants.setBold(h3, true);
+        Style h4 = doc.addStyle("h4", base);
+        StyleConstants.setFontSize(h4, 22);
+        StyleConstants.setBold(h4, true);
+        Style h5 = doc.addStyle("h5", base);
+        StyleConstants.setFontSize(h5, 18);
+        StyleConstants.setBold(h5, true);
+        Style h6 = doc.addStyle("h5", base);
+        StyleConstants.setFontSize(h6, 14);
+        StyleConstants.setBold(h6, true);
+        Style code = doc.addStyle("code", base);
+        StyleConstants.setFontFamily(code, this.monospacedFontFamily);
+        StyleConstants.setFontSize(code, this.monospacedFontSize);
+
+        this.editor = new JTextPane(doc) {
             @Override
             public Dimension getPreferredSize() {
                 Dimension dim = super.getPreferredSize();
@@ -578,7 +681,112 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
                 filter.keyPressed(/*this.currentPressedEvent*/e);
             }
         }
+    }
 
+    private void styleDoc() {
+        try {
+            StyledDocument doc = (StyledDocument)this.editor.getDocument();
+
+            Style base = StyleContext.
+                    getDefaultStyleContext().
+                    getStyle(StyleContext.DEFAULT_STYLE);
+            doc.setCharacterAttributes(0, doc.getLength(), base, true);
+
+            String text = doc.getText(0, doc.getLength());
+
+            int pos;
+            int end = text.length() - 1;
+            for (pos = 0; pos < text.length(); pos++) {
+                try {
+                    char c = text.charAt(pos);
+
+                    // Header
+                    if (c == '#') {
+                        int cnt = 0;
+                        int spos = pos;
+                        while (pos < text.length() && text.charAt(pos) == '#') {
+                            ++cnt;
+                            ++pos;
+                        }
+                        int epos = getPosOfNext(text, pos, '\n');
+                        Style header = null;
+                        switch(cnt) {
+                            case 1:
+                                header = doc.getStyle("h1");
+                                break;
+                            case 2:
+                                header = doc.getStyle("h2");
+                                break;
+                            case 3:
+                                header = doc.getStyle("h3");
+                                break;
+                            case 4:
+                                header = doc.getStyle("h4");
+                                break;
+                            case 5:
+                                header = doc.getStyle("h5");
+                                break;
+                            default:
+                                header = doc.getStyle("h6");
+                        }
+                        doc.setCharacterAttributes(spos, epos - spos, header, true);
+                        pos = epos;
+                    }
+                    // Bold italic
+                    else if (c == '_' || c == '*') {
+                        boolean bold = false;
+                        int spos = pos;
+                        if ((pos + 1) < text.length() && text.charAt(pos + 1) == c) {
+                            bold = true;
+                            ++pos;
+                        }
+                        else if (c == '*' && (pos + 1) < text.length() && text.charAt(pos + 1) == ' ') {
+                            System.out.println("Skipping this one!");
+                            continue; // Skip is there is a spaced after *.
+                        }
+                        char endChar = c;
+
+                        int epos = getPosOfNext(text, pos + 1, endChar);
+
+                        if (bold) {
+                            Style boldStyle = doc.getStyle("bold");
+                            doc.setCharacterAttributes(spos + 2, epos - spos - 2, boldStyle, true);
+                        }
+                        else {
+                            Style emphasisStyle = doc.getStyle("emphasis");
+                            doc.setCharacterAttributes(spos + 1, epos - spos - 1, emphasisStyle, true);
+                        }
+                        pos = epos + 1;
+                    }
+                    // Monospaced
+                    else if (pos >= 4 && c == ' ' && text.charAt(pos + 1) == ' ' &&
+                            text.charAt(pos + 2) == ' ' && text.charAt(pos + 3) == ' ') {
+                        if (text.charAt(pos - 1) == '\n' || pos == 4) {
+                            int epos = getPosOfNext(text, pos, '\n');
+                            Style codeStyle = doc.getStyle("code");
+                            doc.setCharacterAttributes(pos, epos - pos, codeStyle, true);
+                        }
+                    }
+                }
+                catch (IndexOutOfBoundsException iobe) {/* we hide these intentionally! */}
+            }
+        }
+        catch (BadLocationException ble) {
+            ble.printStackTrace(System.err);
+        }
+
+    }
+
+    private int getPosOfNext(String text, int start, char n) {
+        int npos = start;
+        try {
+            while (npos < text.length() && text.charAt(npos) != n) {
+                ++npos;
+            }
+        }
+        catch (IndexOutOfBoundsException iobe) {}
+
+        return npos;
     }
 
     // --- Editor implementation.
@@ -652,7 +860,10 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
      * @param content The new content to set.
      */
     public void setEditorContent(String content) {
+        this.styleDoc = false;
         this.editor.setText(content);
+        this.styleDoc = true;
+        styleDoc();
     }
 
     /**
@@ -661,7 +872,10 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener {
      * @param text The text to insert.
      */
     public void insertText(String text) {
+        this.styleDoc = false;
         this.editor.replaceSelection(text);
+        this.styleDoc = true;
+        styleDoc();
     }
 
     /**
