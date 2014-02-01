@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.2.10
+ *         1.3
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -38,8 +38,8 @@ package se.natusoft.doc.markdowndoc.editor.api.providers;
 
 import se.natusoft.doc.markdowndoc.editor.api.Line;
 
-import javax.swing.*;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.JTextComponent;
 
 /**
  * Provides a Line implementation around a JEdtiorPane.
@@ -50,7 +50,7 @@ public class JELine implements Line {
     //
 
     /** The JEditorPane we represent a line in. */
-    private JEditorPane editor;
+    private JTextComponent editor;
 
     /** The starting position of the line */
     int startPos;
@@ -68,7 +68,7 @@ public class JELine implements Line {
      * @param editor The editor we wrap.
      * @param startPos The starting position of the line.
      */
-    public JELine(JEditorPane editor, int startPos) {
+    public JELine(JTextComponent editor, int startPos) {
         this.editor = editor;
         this.startPos = startPos;
 
@@ -121,7 +121,7 @@ public class JELine implements Line {
      */
     public Line getNextLine() {
         try {
-            String verify = this.editor.getText(this.endPos + 1, 1);
+            this.editor.getText(this.endPos + 1, 1); // Verify!
             return new JELine(this.editor, this.endPos + 1);
         }
         catch (BadLocationException ble) {
@@ -134,7 +134,7 @@ public class JELine implements Line {
      */
     public Line getPreviousLine() {
         try {
-            String verify = this.editor.getText(this.startPos - 2, 1);
+            this.editor.getText(this.startPos - 2, 1);
         }
         catch (BadLocationException ble) {
             return null;

@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.2.10
+ *         1.3
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -110,7 +110,7 @@ public class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntr
      * @param configChanged The ConfigChanged callback to unregister.
      */
     @Override
-    public void unregisterConfigCallback(ConfigEntry configEntry, ConfigChanged configChanged) {
+    public void unregisterConfig(ConfigEntry configEntry, ConfigChanged configChanged) {
         List<ConfigChanged> configChangedEntries = this.configChangedCallbacks.get(configEntry);
         if (configChangedEntries != null) {
             configChangedEntries.remove(configChanged);

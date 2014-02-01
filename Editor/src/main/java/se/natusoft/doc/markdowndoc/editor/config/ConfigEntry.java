@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.2.10
+ *         1.3
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -49,6 +49,7 @@ public class ConfigEntry {
     private String key;
     private String description;
     private String value = "";
+    private String configGroup = "Editor";
 
     private ConfigProvider configProvider;
 
@@ -61,10 +62,12 @@ public class ConfigEntry {
      *
      * @param key         The config key.
      * @param description The description of the config.
+     * @param configGroup The configuration group this config belongs to.
      */
-    public ConfigEntry(String key, String description) {
+    public ConfigEntry(String key, String description, String configGroup) {
         this.key = key;
         this.description = description;
+        this.configGroup = configGroup;
     }
 
     /**
@@ -73,15 +76,23 @@ public class ConfigEntry {
      * @param key          The config key.
      * @param description  The description of the config.
      * @param defaultValue The default value of the config.
+     * @param configGroup The configuration group this config belongs to.
      */
-    public ConfigEntry(String key, String description, String defaultValue) {
-        this(key, description);
+    public ConfigEntry(String key, String description, String defaultValue, String configGroup) {
+        this(key, description, configGroup);
         this.value = defaultValue;
     }
 
     //
     // Methods
     //
+
+    /**
+     * Returns the config group this config belongs to.
+     */
+    public String getConfigGroup() {
+        return this.configGroup;
+    }
 
     /**
      * Receives the config provided instance managing all configs.

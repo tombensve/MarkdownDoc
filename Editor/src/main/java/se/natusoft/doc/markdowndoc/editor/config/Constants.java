@@ -31,51 +31,19 @@
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
- *         2013-05-27: Created!
+ *         2014-02-01: Created!
  *         
  */
-package se.natusoft.doc.markdowndoc.editor.api;
-
-import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
-
-import javax.swing.*;
+package se.natusoft.doc.markdowndoc.editor.config;
 
 /**
- * This represents an editor function.
+ * Holds config constants.
  */
-public interface EditorFunction extends EditorComponent {
+public class Constants {
 
-    /**
-     * Returns the group in the tool bar this functions should be placed in.
-     * A new group will be created if the named group does not exist.
-     */
-    String getGroup();
-
-    /**
-     * Returns the name of the function.
-     */
-    String getName();
-
-    /**
-     * Returns this functions toolbar button or null if it does not have one.
-     */
-    JComponent getToolBarButton();
-
-    /**
-     * Keyboard trigger for the "down" key (shit, ctrl, alt, ...)
-     */
-    int getDownKeyMask();
-
-    /**
-     * The keyboard trigger key code.
-     */
-    int getKeyCode();
-
-    /**
-     * Performs the function.
-     *
-     * @throws FunctionException
-     */
-    void perform() throws FunctionException;
+    public static final String CG_EDITING = "Editing";
+    public static final String CG_MARKDOWN = "Markdown";
+    public static final String CG_TOOL = "Tool";
+    public static final String CG_PREVIEW = "Preview";
 
 }

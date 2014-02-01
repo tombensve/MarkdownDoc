@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.2.10
+ *         1.3
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -56,9 +56,10 @@ public class IntegerConfigEntry extends ConfigEntry {
      *
      * @param key The config key.
      * @param description The description of the config.
+     * @param configGroup The config group this config belongs to.
      */
-    public IntegerConfigEntry(String key, String description) {
-        super(key, description);
+    public IntegerConfigEntry(String key, String description, String configGroup) {
+        super(key, description, configGroup);
     }
 
     /**
@@ -69,9 +70,10 @@ public class IntegerConfigEntry extends ConfigEntry {
      * @param defaultValue The default value of the config.
      * @param min The minimum value.
      * @param max The maximum value.
+     * @param configGroup The config group this config belongs to.
      */
-    public IntegerConfigEntry(String key, String description, int defaultValue, int min, int max) {
-        super(key, description, "" + defaultValue);
+    public IntegerConfigEntry(String key, String description, int defaultValue, int min, int max, String configGroup) {
+        super(key, description, "" + defaultValue, configGroup);
         this.min = min;
         this.max = max;
     }

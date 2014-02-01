@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.2.10
+ *         1.3
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -67,4 +67,9 @@ public interface GUI {
      * Returns the panel to the right of the editor and toolbar.
      */
     JPanel getRightPanel();
+
+    /**
+     * Returns the styler for the editor.
+     */
+    JTextComponentStyler getStyler();
 }

@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.2.10
+ *         1.3
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -70,6 +70,12 @@ import java.util.Properties;
  */
 public class PreviewFunction implements EditorFunction, KeyListener {
     //
+    // Constants
+    //
+
+    public static final String CG_PREVIEW = "Preview";
+
+    //
     // Private Members
     //
 
@@ -91,12 +97,13 @@ public class PreviewFunction implements EditorFunction, KeyListener {
                                     .getLocalGraphicsEnvironment();
                             return gEnv.getAvailableFontFamilyNames();
                         }
-                    }
+                    },
+                    CG_PREVIEW
             );
 
 
     private static DoubleConfigEntry fontSizeConfig =
-            new DoubleConfigEntry("preview.pane.font.size", "The size of the preview font.", 16.0, 8.0, 50.0);
+            new DoubleConfigEntry("preview.pane.font.size", "The size of the preview font.", 16.0, 8.0, 50.0, CG_PREVIEW);
 
     //
     // Config callbacks
@@ -206,8 +213,8 @@ public class PreviewFunction implements EditorFunction, KeyListener {
 
     @Override
     public void close() {
-        this.editor.getConfigProvider().unregisterConfigCallback(fontConfig, this.fontConfigChanged);
-        this.editor.getConfigProvider().unregisterConfigCallback(fontSizeConfig, this.fontSizeConfigChanged);
+        this.editor.getConfigProvider().unregisterConfig(fontConfig, this.fontConfigChanged);
+        this.editor.getConfigProvider().unregisterConfig(fontSizeConfig, this.fontSizeConfigChanged);
     }
 
     @Override

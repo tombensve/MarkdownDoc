@@ -3,6 +3,7 @@
   <component name="BSFConsole">
     <option name="preferredRecentCommandsDividerLocations">
       <map>
+        <entry key="[BSF] beanshell" value="2037" />
         <entry key="[JSR-223] Groovy" value="1354" />
       </map>
     </option>
@@ -24,7 +25,7 @@
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="1.7 (1)" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="1.7.0_45" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />

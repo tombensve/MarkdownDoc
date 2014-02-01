@@ -31,51 +31,53 @@
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
- *         2013-05-27: Created!
+ *         2014-02-01: Created!
  *         
  */
 package se.natusoft.doc.markdowndoc.editor.api;
 
-import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
-
 import javax.swing.*;
 
 /**
- * This represents an editor function.
+ * General API for edit time styling a JTextComponent.
  */
-public interface EditorFunction extends EditorComponent {
-
+public interface JTextComponentStyler {
     /**
-     * Returns the group in the tool bar this functions should be placed in.
-     * A new group will be created if the named group does not exist.
-     */
-    String getGroup();
-
-    /**
-     * Returns the name of the function.
-     */
-    String getName();
-
-    /**
-     * Returns this functions toolbar button or null if it does not have one.
-     */
-    JComponent getToolBarButton();
-
-    /**
-     * Keyboard trigger for the "down" key (shit, ctrl, alt, ...)
-     */
-    int getDownKeyMask();
-
-    /**
-     * The keyboard trigger key code.
-     */
-    int getKeyCode();
-
-    /**
-     * Performs the function.
+     * Initializes the Styler with a component to style.
      *
-     * @throws FunctionException
+     * @param textComponentToStyle The component to style.
      */
-    void perform() throws FunctionException;
+    void init(JTextPane textComponentToStyle);
 
+    /**
+     * Enables styling (on by default)
+     */
+    void enable();
+
+    /**
+     * Disables styling (should be done while loading document!)
+     */
+    void disable();
+
+    /**
+     * Styles the whole document.
+     */
+    void styleDocument();
+
+    /**
+     * Styles the current paragraph.
+     */
+    void styleCurrentParagraph();
+
+    /**
+     * Provides the bounds withing the document model for the paragraph to style.
+     */
+    public static class ParagraphBounds {
+        public int start = 0;
+        public int end = 0;
+
+        public String toString() {
+            return "Bounds: " + start + ":" + end;
+        }
+    }
 }

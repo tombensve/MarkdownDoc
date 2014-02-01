@@ -11,7 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Library" />
+    <orderEntry type="library" name="Maven: se.natusoft.tools.doc.markdowndoc:markdown-doc-lib:1.2.10" level="project" />
     <orderEntry type="library" name="Maven: com.itextpdf:itext-pdfa:5.4.5" level="project" />
     <orderEntry type="library" name="Maven: com.itextpdf:itextpdf:5.4.5" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:indy:2.1.6" level="project" />

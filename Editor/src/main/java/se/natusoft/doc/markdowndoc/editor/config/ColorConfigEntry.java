@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.2.10
+ *         1.3
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -52,9 +52,10 @@ public class ColorConfigEntry extends ConfigEntry {
      *
      * @param key The config key.
      * @param description The description of the config.
+     * @param configGroup The config group this config belongs to.
      */
-    public ColorConfigEntry(String key, String description) {
-        super(key, description);
+    public ColorConfigEntry(String key, String description, String configGroup) {
+        super(key, description, configGroup);
     }
 
     /**
@@ -65,9 +66,10 @@ public class ColorConfigEntry extends ConfigEntry {
      * @param defaultRed The default red color part.
      * @param defaultGreen The default green color part.
      * @param defaultBlue The default blue color part.
+     * @param configGroup The config group this config belongs to.
      */
-    public ColorConfigEntry(String key, String description, int defaultRed, int defaultGreen, int defaultBlue) {
-        super(key, description, toValue(defaultRed, defaultGreen, defaultBlue));
+    public ColorConfigEntry(String key, String description, int defaultRed, int defaultGreen, int defaultBlue, String configGroup) {
+        super(key, description, toValue(defaultRed, defaultGreen, defaultBlue), configGroup);
     }
 
     //

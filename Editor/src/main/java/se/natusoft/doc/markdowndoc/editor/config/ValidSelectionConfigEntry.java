@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.2.10
+ *         1.3
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -56,9 +56,10 @@ public class ValidSelectionConfigEntry extends ConfigEntry {
      * @param key The config key.
      * @param description The description of the config.
      * @param validValues The valid values for the config.
+     * @param configGroup The config group this config belongs to.
      */
-    public ValidSelectionConfigEntry(String key, String description, ValidValues validValues) {
-        super(key, description);
+    public ValidSelectionConfigEntry(String key, String description, ValidValues validValues, String configGroup) {
+        super(key, description, configGroup);
         this.validValues = validValues;
     }
 
@@ -69,9 +70,10 @@ public class ValidSelectionConfigEntry extends ConfigEntry {
      * @param description The description of the config.
      * @param defaultValue The default value of the config.
      * @param validValues The valid values for the config.
+     * @param configGroup The config group this config belongs to.
      */
-    public ValidSelectionConfigEntry(String key, String description, String defaultValue, ValidValues validValues) {
-        super(key, description, defaultValue);
+    public ValidSelectionConfigEntry(String key, String description, String defaultValue, ValidValues validValues, String configGroup) {
+        super(key, description, defaultValue, configGroup);
         this.validValues = validValues;
     }
 

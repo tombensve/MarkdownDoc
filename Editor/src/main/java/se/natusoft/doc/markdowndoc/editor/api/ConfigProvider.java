@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.2.10
+ *         1.3
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -60,7 +60,7 @@ public interface ConfigProvider {
      * @param configEntry The config entry to unregister a ConfigChanged callback for.
      * @param configChanged The ConfigChanged callback to unregister.
      */
-    void unregisterConfigCallback(ConfigEntry configEntry, ConfigChanged configChanged);
+    void unregisterConfig(ConfigEntry configEntry, ConfigChanged configChanged);
 
     /**
      * Returns a list of all registered configs.
