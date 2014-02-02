@@ -65,15 +65,12 @@ import java.awt.event.KeyListener;
 import java.io.*;
 import java.util.Properties;
 
+import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_PREVIEW;
+
 /**
  * This provides formatted markdown preview function.
  */
 public class PreviewFunction implements EditorFunction, KeyListener {
-    //
-    // Constants
-    //
-
-    public static final String CG_PREVIEW = "Preview";
 
     //
     // Private Members
@@ -98,12 +95,12 @@ public class PreviewFunction implements EditorFunction, KeyListener {
                             return gEnv.getAvailableFontFamilyNames();
                         }
                     },
-                    CG_PREVIEW
+                    CONFIG_GROUP_PREVIEW
             );
 
 
     private static DoubleConfigEntry fontSizeConfig =
-            new DoubleConfigEntry("preview.pane.font.size", "The size of the preview font.", 16.0, 8.0, 50.0, CG_PREVIEW);
+            new DoubleConfigEntry("preview.pane.font.size", "The size of the preview font.", 16.0, 8.0, 50.0, CONFIG_GROUP_PREVIEW);
 
     //
     // Config callbacks

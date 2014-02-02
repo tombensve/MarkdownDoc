@@ -41,9 +41,8 @@ package se.natusoft.doc.markdowndoc.editor.config;
  */
 public class Constants {
 
-    public static final String CG_EDITING = "Editing";
-    public static final String CG_MARKDOWN = "Markdown";
-    public static final String CG_TOOL = "Tool";
-    public static final String CG_PREVIEW = "Preview";
+    public static final String CONFIG_GROUP_EDITING = "Editing";
+    public static final String CONFIG_GROUP_TOOL = "Tool";
+    public static final String CONFIG_GROUP_PREVIEW = "Preview";
 
 }

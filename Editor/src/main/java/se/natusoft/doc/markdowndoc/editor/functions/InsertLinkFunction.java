@@ -166,6 +166,9 @@ public class InsertLinkFunction implements EditorFunction {
         JPanel textInputPanel = new JPanel(new GridLayout(3,1));
 
         this.linkText = new JTextField(32);
+        if (this.editor.getEditorSelection() != null) {
+            this.linkText.setText(this.editor.getEditorSelection());
+        }
         this.linkURL = new JTextField(32);
         this.linkTitle = new JTextField(32);
 
@@ -213,7 +216,8 @@ public class InsertLinkFunction implements EditorFunction {
         this.inputDialog.setVisible(true);
 
         // We don't get a correct preferred size until the window has become visible.
-        this.inputDialog.setBounds((int) mainBounds.getX(), (int) mainBounds.getY() + 70, (int) mainBounds.getWidth(), (int) this.inputDialog.getPreferredSize().getHeight());
+        this.inputDialog.setBounds((int) mainBounds.getX(), (int) mainBounds.getY() + 70, (int) mainBounds.getWidth(),
+                (int) this.inputDialog.getPreferredSize().getHeight());
     }
 
     /**

@@ -38,7 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.functions.settings.gui;
 
 import se.natusoft.doc.markdowndoc.editor.adapters.WindowListenerAdapter;
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry;
-import se.natusoft.doc.markdowndoc.editor.gui.VerticalFlowLayout;
+import se.natusoft.doc.markdowndoc.editor.gui.SmartFlowLayout;
 
 import javax.swing.*;
 import java.awt.*;
@@ -107,9 +107,9 @@ public class SettingsWindow extends JFrame {
 
         add(buttons, BorderLayout.SOUTH);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = ((int)screenSize.getWidth() / 2) - 200;
+        int x = ((int)screenSize.getWidth() / 2) - 330;
         int y = ((int)screenSize.getHeight() / 2) - 200;
-        setBounds(x, y, 400, 420);
+        setBounds(x, y, 660, 430);
     }
 
     //
@@ -125,7 +125,7 @@ public class SettingsWindow extends JFrame {
         JPanel groupPanel = this.groupPanels.get(configEntry.getConfigGroup());
         if (groupPanel == null) {
             groupPanel = new JPanel();
-            groupPanel.setLayout(new VerticalFlowLayout());
+            groupPanel.setLayout(new SmartFlowLayout());
             this.groupPanels.put(configEntry.getConfigGroup(), groupPanel);
 
             JScrollPane scrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

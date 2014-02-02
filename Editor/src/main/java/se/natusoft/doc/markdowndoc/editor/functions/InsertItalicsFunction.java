@@ -109,8 +109,13 @@ public class InsertItalicsFunction implements EditorFunction {
 
     @Override
     public void perform() throws FunctionException {
-        this.editor.insertText("__");
-        this.editor.moveCaretBack(1);
+        if (this.editor.getEditorSelection() != null) {
+            this.editor.insertText("_" + this.editor.getEditorSelection() + "_");
+        }
+        else {
+            this.editor.insertText("__");
+            this.editor.moveCaretBack(1);
+        }
         this.editor.requestEditorFocus();
     }
 

@@ -109,8 +109,13 @@ public class InsertBoldFunction implements EditorFunction {
 
     @Override
     public void perform() throws FunctionException {
-        this.editor.insertText("****");
-        this.editor.moveCaretBack(2);
+        if (this.editor.getEditorSelection() != null) {
+            this.editor.insertText("**" + this.editor.getEditorSelection() + "**");
+        }
+        else {
+            this.editor.insertText("****");
+            this.editor.moveCaretBack(2);
+        }
         this.editor.requestEditorFocus();
     }
 

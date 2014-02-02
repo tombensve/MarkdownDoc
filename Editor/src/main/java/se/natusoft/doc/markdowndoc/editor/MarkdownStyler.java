@@ -39,16 +39,13 @@ package se.natusoft.doc.markdowndoc.editor;
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider;
 import se.natusoft.doc.markdowndoc.editor.api.Configurable;
 import se.natusoft.doc.markdowndoc.editor.api.JTextComponentStyler;
-import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged;
-import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry;
-import se.natusoft.doc.markdowndoc.editor.config.IntegerConfigEntry;
-import se.natusoft.doc.markdowndoc.editor.config.ValidSelectionConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.*;
 
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
 
-import static se.natusoft.doc.markdowndoc.editor.config.Constants.CG_MARKDOWN;
+import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_EDITING;
 
 /**
  * This sits on a reference to a JTextPane and provides Markdown styling for it.
@@ -65,16 +62,16 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
     /** When true styling will be done. */
     private boolean enabled = true;
 
-    /** The font family to use for monospaced text. */
-    private String monospacedFontFamily = "Monospaced";
-
-    /** The font size to use for monospaced text. */
-    private int monospacedFontSize = 16;
-
     //
     // Config
     //
 
+    // monospacedFontFamily
+
+    /** The font family to use for monospaced text. */
+    private String monospacedFontFamily = "Monospaced";
+
+    /** Config entry used in SettingsWindow to edit config. */
     private static ValidSelectionConfigEntry monospacedFontConfig =
             new ValidSelectionConfigEntry("editor.pane.monospaced.font", "The monospaced font to use.", "Monospaced",
                     new ValidSelectionConfigEntry.ValidValues() {
@@ -85,12 +82,8 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                             return gEnv.getAvailableFontFamilyNames();
                         }
                     },
-                    CG_MARKDOWN
+                    CONFIG_GROUP_EDITING
             );
-
-    private static IntegerConfigEntry monospacedFontSizeConfig =
-            new IntegerConfigEntry("editor.pane.font.monospaced.size", "The size of the monospaced font.", 16, 8, 50, CG_MARKDOWN);
-
 
     /**
      * Configuration callback for monospaced font.
@@ -112,6 +105,15 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
         }
     };
 
+    // monospacedFontSize
+
+    /** The font size to use for monospaced text. */
+    private int monospacedFontSize = 16;
+
+    /** Config entry used in SettingsWindow to edit config. */
+    private static IntegerConfigEntry monospacedFontSizeConfig =
+            new IntegerConfigEntry("editor.pane.font.monospaced.size", "The size of the monospaced font.", 16, 8, 50, CONFIG_GROUP_EDITING);
+
     /**
      * Configuration callback for monospaced font size.
      */
@@ -132,6 +134,28 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
             styleDocument();
         }
     };
+
+    // markdownFormatWhileEditing
+
+    /** True for markdown styling while editing. */
+    private boolean markdownFormatWhileEditing = true;
+
+    /** Config entry used in SettingsWindow to edit config. */
+    private static BooleanConfigEntry markdownFormatWhileEditingConfig =
+            new BooleanConfigEntry("editor.pane.markdown.format", "Format markdown while editing.", true, CONFIG_GROUP_EDITING);
+
+    /**
+     * Configuration callback for markdown formatting while editing.
+     */
+    private ConfigChanged markdownFormatWhileEditingConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            MarkdownStyler.this.markdownFormatWhileEditing = Boolean.valueOf(ce.getValue());
+
+            styleDocument();
+        }
+    };
+
 
     //
     // Constructors
@@ -197,7 +221,6 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
         StyleConstants.setFontSize(code, this.monospacedFontSize);
 
         this.textComponentToStyle.setDocument(doc);
-        this.textComponentToStyle.setCaretColor(new Color(255, 255, 255));
     }
 
     /**
@@ -208,6 +231,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
     public void registerConfigs(ConfigProvider configProvider) {
         configProvider.registerConfig(monospacedFontConfig, this.monospacedFontConfigChanged);
         configProvider.registerConfig(monospacedFontSizeConfig, this.monospacedFontSizeConfigChanged);
+        configProvider.registerConfig(markdownFormatWhileEditingConfig, this.markdownFormatWhileEditingConfigChanged);
     }
 
     /**
@@ -218,6 +242,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
     public void unregisterConfigs(ConfigProvider configProvider) {
         configProvider.unregisterConfig(monospacedFontConfig, this.monospacedFontConfigChanged);
         configProvider.unregisterConfig(monospacedFontSizeConfig, this.monospacedFontSizeConfigChanged);
+        configProvider.unregisterConfig(markdownFormatWhileEditingConfig, this.markdownFormatWhileEditingConfigChanged);
     }
 
     /**
@@ -292,88 +317,93 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                 text = doc.getText(0, doc.getLength());
             }
             doc.setCharacterAttributes(bounds.start, bounds.end - bounds.start, base, true);
+            if (this.markdownFormatWhileEditing) {
+                for (int pos = bounds.start; pos <= bounds.end; pos++) {
+                    try {
+                        char c = text.charAt(pos);
+                        char p = pos == 0 ? text.charAt(pos) : text.charAt(pos - 1);
+                        char pp = pos <= 1 ? text.charAt(pos) : text.charAt(pos - 2);
 
-            for (int pos = bounds.start; pos <= bounds.end; pos++) {
-                try {
-                    char c = text.charAt(pos);
-                    char p = pos == 0 ? text.charAt(pos) : text.charAt(pos - 1);
-                    char pp = pos <= 1 ? text.charAt(pos) : text.charAt(pos - 2);
+                        // -- Header --------
+                        if (c == '#' && p != '\\') {
+                            int cnt = 0;
+                            int spos = pos;
+                            while (pos < text.length() && text.charAt(pos) == '#') {
+                                ++cnt;
+                                ++pos;
+                            }
+                            int epos = getPosOfNext(text, pos, '\n');
+                            Style header = null;
 
-                    // Header
-                    if (c == '#' && p != '\\') {
-                        int cnt = 0;
-                        int spos = pos;
-                        while (pos < text.length() && text.charAt(pos) == '#') {
-                            ++cnt;
-                            ++pos;
+                            // Only style if it starts at the beginning of a "paragraph".
+                            if (pos == 0 || pos == 1 || text.charAt(pos - cnt - 1) == '\n' || text.charAt(pos - cnt - 1) == '\r') {
+                                switch(cnt) {
+                                    case 1:
+                                        header = doc.getStyle("h1");
+                                        break;
+                                    case 2:
+                                        header = doc.getStyle("h2");
+                                        break;
+                                    case 3:
+                                        header = doc.getStyle("h3");
+                                        break;
+                                    case 4:
+                                        header = doc.getStyle("h4");
+                                        break;
+                                    case 5:
+                                        header = doc.getStyle("h5");
+                                        break;
+                                    default:
+                                        header = doc.getStyle("h6");
+                                }
+                            }
+                            if (header != null) doc.setCharacterAttributes(spos, epos - spos, header, true);
+                            pos = epos;
                         }
-                        int epos = getPosOfNext(text, pos, '\n');
-                        Style header = null;
-                        // Only style if it starts at the beginning of a "paragraph".
-                        if (pos == 0 || pos == 1 || text.charAt(pos - cnt - 1) == '\n' || text.charAt(pos - cnt - 1) == '\r') {
-                            switch(cnt) {
-                                case 1:
-                                    header = doc.getStyle("h1");
-                                    break;
-                                case 2:
-                                    header = doc.getStyle("h2");
-                                    break;
-                                case 3:
-                                    header = doc.getStyle("h3");
-                                    break;
-                                case 4:
-                                    header = doc.getStyle("h4");
-                                    break;
-                                case 5:
-                                    header = doc.getStyle("h5");
-                                    break;
-                                default:
-                                    header = doc.getStyle("h6");
+
+                        // -- Monospaced --------
+                        else if (pos >= 4 && c == ' ' && text.charAt(pos + 1) == ' ' &&
+                                text.charAt(pos + 2) == ' ' && text.charAt(pos + 3) == ' ') {
+                            if (text.charAt(pos - 1) == '\n' || pos == 4) {
+                                if (!getStartOfParagraphText(pos, bounds, text).trim().startsWith("* ")) {
+                                    int epos = getEndOfParagraph(text, pos);
+                                    Style codeStyle = doc.getStyle("code");
+                                    doc.setCharacterAttributes(pos, epos - pos, codeStyle, true);
+                                    pos = epos + 1;
+                                }
                             }
                         }
-                        if (header != null) doc.setCharacterAttributes(spos, epos - spos, header, true);
-                        pos = epos;
-                    }
-                    // Monospaced
-                    else if (pos >= 4 && c == ' ' && text.charAt(pos + 1) == ' ' &&
-                            text.charAt(pos + 2) == ' ' && text.charAt(pos + 3) == ' ') {
-                        if (text.charAt(pos - 1) == '\n' || pos == 4) {
-                            if (!getStartOfParagraphText(pos, bounds, text).trim().startsWith("* ")) {
-                                int epos = getEndOfParagraph(text, pos);
-                                Style codeStyle = doc.getStyle("code");
-                                doc.setCharacterAttributes(pos, epos - pos, codeStyle, true);
-                                pos = epos + 1;
+
+                        // -- Bold italic (when not escaped, but when double escaped) --------
+                        else if ((c == '_' || c == '*') && (p != '\\' || pp == '\\')) {
+                            boolean bold = false;
+                            int spos = pos;
+                            if ((pos + 1) < text.length() && text.charAt(pos + 1) == c) {
+                                bold = true;
+                                ++pos;
                             }
-                        }
-                    }
-                    // Bold italic (when not escaped, but when double escaped)
-                    else if ((c == '_' || c == '*') && (p != '\\' || pp == '\\')) {
-                        boolean bold = false;
-                        int spos = pos;
-                        if ((pos + 1) < text.length() && text.charAt(pos + 1) == c) {
-                            bold = true;
-                            ++pos;
-                        }
-                        else if (c == '*' && (pos + 1) < text.length() && text.charAt(pos + 1) == ' ') {
-                            //System.out.println("Skipping this one!");
-                            continue; // Skip is there is a spaced after *.
+                            else if (c == '*' && (pos + 1) < text.length() && text.charAt(pos + 1) == ' ') {
+                                //System.out.println("Skipping this one!");
+                                continue; // Skip is there is a spaced after *.
+                            }
+
+                            char endChar = c;
+                            int epos = getPosOfNext(text, pos + 1, endChar);
+
+                            if (bold) {
+                                Style boldStyle = doc.getStyle("bold");
+                                doc.setCharacterAttributes(spos + 2, epos - spos - 2, boldStyle, true);
+                            }
+                            else {
+                                Style emphasisStyle = doc.getStyle("emphasis");
+                                doc.setCharacterAttributes(spos + 1, epos - spos - 1, emphasisStyle, true);
+                            }
+                            pos = epos + 1;
                         }
 
-                        char endChar = c;
-                        int epos = getPosOfNext(text, pos + 1, endChar);
-
-                        if (bold) {
-                            Style boldStyle = doc.getStyle("bold");
-                            doc.setCharacterAttributes(spos + 2, epos - spos - 2, boldStyle, true);
-                        }
-                        else {
-                            Style emphasisStyle = doc.getStyle("emphasis");
-                            doc.setCharacterAttributes(spos + 1, epos - spos - 1, emphasisStyle, true);
-                        }
-                        pos = epos + 1;
                     }
+                    catch (IndexOutOfBoundsException iobe) {/* we hide these intentionally! */}
                 }
-                catch (IndexOutOfBoundsException iobe) {/* we hide these intentionally! */}
             }
         }
         catch (BadLocationException ble) {
@@ -381,6 +411,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
         }
 
     }
+
 
     /**
      * Returns the position of the next 'n'.

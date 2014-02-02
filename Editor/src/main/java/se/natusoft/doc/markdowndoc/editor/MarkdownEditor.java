@@ -60,8 +60,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ServiceLoader;
 
-import static se.natusoft.doc.markdowndoc.editor.config.Constants.CG_EDITING;
-import static se.natusoft.doc.markdowndoc.editor.config.Constants.CG_TOOL;
+import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_EDITING;
+import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_TOOL;
 
 /**
  * This is an editor for editing markdown documents.
@@ -151,18 +151,20 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
                             return gEnv.getAvailableFontFamilyNames();
                         }
                     },
-                    CG_EDITING
+                    CONFIG_GROUP_EDITING
             );
 
     private static DoubleConfigEntry fontSizeConfig =
-            new DoubleConfigEntry("editor.pane.font.size", "The size of the font.", 16.0, 8.0, 50.0, CG_EDITING);
+            new DoubleConfigEntry("editor.pane.font.size", "The size of the font.", 16.0, 8.0, 50.0, CONFIG_GROUP_EDITING);
 
     private static ColorConfigEntry backgroundColorConfig =
-            new ColorConfigEntry("editor.pane.background.color", "The editor background color.", 240, 240, 240, CG_EDITING);
+            new ColorConfigEntry("editor.pane.background.color", "The editor background color.", 240, 240, 240, CONFIG_GROUP_EDITING);
 
     private static ColorConfigEntry foregroundColorConfig =
-            new ColorConfigEntry("editor.pane.foreground.color", "The editor text color.", 80, 80, 80, CG_EDITING);
+            new ColorConfigEntry("editor.pane.foreground.color", "The editor text color.", 80, 80, 80, CONFIG_GROUP_EDITING);
 
+    private static ColorConfigEntry caretColorConfig =
+            new ColorConfigEntry("editor.pane.caret.color", "The caret color", 0, 0, 0, CONFIG_GROUP_EDITING);
 
     private static ValidSelectionConfigEntry lookAndFeelConfig =
             new ValidSelectionConfigEntry("editor.lookandfeel", "The LookAndFeel to use.",
@@ -178,20 +180,20 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
                             return vv;
                         }
                     },
-                    CG_TOOL
+                    CONFIG_GROUP_TOOL
             );
 
     private static IntegerConfigEntry topMargin = new IntegerConfigEntry("editor.pane.top.margin",
-            "The top margin.", 40, 0, 500, CG_EDITING);
+            "The top margin.", 40, 0, 500, CONFIG_GROUP_EDITING);
 
     private static IntegerConfigEntry bottomMargin = new IntegerConfigEntry("editor.pane.bottom.margin",
-            "The bottom margin.", 40, 0, 500, CG_EDITING);
+            "The bottom margin.", 40, 0, 500, CONFIG_GROUP_EDITING);
 
     private static IntegerConfigEntry leftMargin = new IntegerConfigEntry("editor.pane.left.margin",
-            "The left margin.", 60, 0, 500, CG_EDITING);
+            "The left margin.", 60, 0, 500, CONFIG_GROUP_EDITING);
 
     private static IntegerConfigEntry rightMargin = new IntegerConfigEntry("editor.pane.right.margin",
-            "The right margin.", 60, 0, 500, CG_EDITING);
+            "The right margin.", 60, 0, 500, CONFIG_GROUP_EDITING);
 
     //
     // Config callbacks
@@ -223,6 +225,13 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
         @Override
         public void configChanged(ConfigEntry ce) {
             editor.setForeground(new ConfigColor(ce));
+        }
+    };
+
+    private ConfigChanged caretColorConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            editor.setCaretColor(new ConfigColor(ce));
         }
     };
 
@@ -297,6 +306,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
         configProvider.registerConfig(bottomMargin, this.bottomMarginConfigChanged);
         configProvider.registerConfig(leftMargin, this.leftMarginConfigChanged);
         configProvider.registerConfig(rightMargin, this.rightMarginConfigChanged);
+        configProvider.registerConfig(caretColorConfig, this.caretColorConfigChanged);
 
     }
 
@@ -307,15 +317,16 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      */
     @Override
     public void unregisterConfigs(ConfigProvider configProvider) {
-        configProvider.unregisterConfig(fontConfig, MarkdownEditor.this.fontConfigChanged);
-        configProvider.unregisterConfig(fontSizeConfig, MarkdownEditor.this.fontSizeConfigChanged);
-        configProvider.unregisterConfig(backgroundColorConfig, MarkdownEditor.this.backgroundColorConfigChanged);
-        configProvider.unregisterConfig(foregroundColorConfig, MarkdownEditor.this.foregroundColorConfigChanged);
-        configProvider.unregisterConfig(lookAndFeelConfig, MarkdownEditor.this.lookAndFeelConfigChanged);
-        configProvider.unregisterConfig(topMargin, MarkdownEditor.this.topMarginConfigChanged);
-        configProvider.unregisterConfig(bottomMargin, MarkdownEditor.this.bottomMarginConfigChanged);
-        configProvider.unregisterConfig(leftMargin, MarkdownEditor.this.leftMarginConfigChanged);
-        configProvider.unregisterConfig(rightMargin, MarkdownEditor.this.rightMarginConfigChanged);
+        configProvider.unregisterConfig(fontConfig, this.fontConfigChanged);
+        configProvider.unregisterConfig(fontSizeConfig, this.fontSizeConfigChanged);
+        configProvider.unregisterConfig(backgroundColorConfig, this.backgroundColorConfigChanged);
+        configProvider.unregisterConfig(foregroundColorConfig, this.foregroundColorConfigChanged);
+        configProvider.unregisterConfig(lookAndFeelConfig, this.lookAndFeelConfigChanged);
+        configProvider.unregisterConfig(topMargin, this.topMarginConfigChanged);
+        configProvider.unregisterConfig(bottomMargin, this.bottomMarginConfigChanged);
+        configProvider.unregisterConfig(leftMargin, this.leftMarginConfigChanged);
+        configProvider.unregisterConfig(rightMargin, this.rightMarginConfigChanged);
+        configProvider.unregisterConfig(caretColorConfig, this.caretColorConfigChanged);
     }
 
     //

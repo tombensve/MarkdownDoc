@@ -89,11 +89,19 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
 
         TitledBorder border = new TitledBorder(configEntry.getDescription());
         setBorder(border);
+
+//        // This for some strange reason works much better than passing the whole
+//        // description string to fm.stringWidth(...) which returns a far to small
+//        // result!
+//        FontMetrics fm = getFontMetrics(getFont());
+//        int widthOfX = fm.stringWidth("x");
+//        minWidth = configEntry.getDescription().length() * widthOfX;
     }
 
     //
     // Methods
     //
+
 
     public void refresh() {
         if (this.configEntry instanceof BooleanConfigEntry) {
@@ -117,6 +125,9 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
     }
 
     // ------ Boolean ConfigProvider Entry ------
+
+    // Yes, this wastes a very small amount of memory by sitting on several component references of which
+    // only one will be instantiated. Its worth it IMHO.
 
     private JCheckBox checkBox;
 
@@ -284,6 +295,10 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
         if (e.getSource() instanceof JComboBox) {
             JComboBox comboBox = (JComboBox)e.getSource();
             this.configEntry.setValue(comboBox.getSelectedItem().toString());
+        }
+        else if (e.getSource() instanceof JCheckBox) {
+            JCheckBox checkBox = (JCheckBox)e.getSource();
+            this.configEntry.setValue("" + checkBox.getModel().isSelected());
         }
         else {
             this.configEntry.setValue(e.getActionCommand());
