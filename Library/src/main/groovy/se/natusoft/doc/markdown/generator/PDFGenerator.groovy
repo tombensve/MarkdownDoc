@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.10
+ *         1.3
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -53,7 +53,26 @@ import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions
 import se.natusoft.doc.markdown.generator.pdfgenerator.PDFColor
 import se.natusoft.doc.markdown.io.NullOutputStream
-import se.natusoft.doc.markdown.model.*
+import se.natusoft.doc.markdown.model.Paragraph
+import se.natusoft.doc.markdown.model.Doc
+import se.natusoft.doc.markdown.model.DocItem
+import se.natusoft.doc.markdown.model.DocFormat
+import se.natusoft.doc.markdown.model.Comment
+import se.natusoft.doc.markdown.model.Header
+import se.natusoft.doc.markdown.model.BlockQuote
+import se.natusoft.doc.markdown.model.CodeBlock
+import se.natusoft.doc.markdown.model.Code
+import se.natusoft.doc.markdown.model.HorizontalRule
+import se.natusoft.doc.markdown.model.PlainText
+import se.natusoft.doc.markdown.model.Link
+import se.natusoft.doc.markdown.model.List
+import se.natusoft.doc.markdown.model.ListItem
+import se.natusoft.doc.markdown.model.Image
+import se.natusoft.doc.markdown.model.Strong
+import se.natusoft.doc.markdown.model.Emphasis
+import se.natusoft.doc.markdown.model.AutoLink
+
+
 
 import java.util.ArrayList as JArrayList
 import java.util.LinkedList as JLinkedList

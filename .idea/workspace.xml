@@ -1,8 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="- Fixed SettingsWindow using a self made LayoutManager to layout the config entries just as I want it. &#10;- Bold and Italics function now look if there is selected text and makes the selected text bold or italic.&#10;- Insert link now uses any selected text as link text. &#10;- It is now possible to enable/disable markdown formatting while writing.&#10;">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertLinkFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertLinkFunction.java" />
+    <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/MarkdownDoc-User-Guide.pdf" afterPath="$PROJECT_DIR$/Docs/MarkdownDoc-User-Guide.pdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/licenses.md" afterPath="$PROJECT_DIR$/Docs/licenses.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/AutoLink.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/AutoLink.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/BlockQuote.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/BlockQuote.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Code.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Code.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/CodeBlock.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/CodeBlock.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Comment.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Comment.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Doc.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Doc.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/exception/DocException.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/exception/DocException.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/DocFormat.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/DocFormat.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/DocItem.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/DocItem.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Emphasis.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Emphasis.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/exception/GenerateException.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/exception/GenerateException.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/api/Generator.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/api/Generator.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/options/GeneratorOptions.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/options/GeneratorOptions.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/GeneratorProvider.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/GeneratorProvider.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/HTMLGenerator.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/HTMLGenerator.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/options/HTMLGeneratorOptions.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/options/HTMLGeneratorOptions.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Header.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Header.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/HorizontalRule.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/HorizontalRule.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Image.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Image.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/JavadocParser.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/JavadocParser.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/io/Line.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/io/Line.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/io/LineReader.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/io/LineReader.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Link.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Link.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/List.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/List.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/ListItem.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/ListItem.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/util/MDDocFileHandler.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/util/MDDocFileHandler.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/markdown/model/MDImage.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/markdown/model/MDImage.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/markdown/io/MDLine.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/markdown/io/MDLine.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/markdown/io/MDLineReader.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/markdown/io/MDLineReader.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/markdown/model/MDLink.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/markdown/model/MDLink.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/markdown/model/MDList.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/markdown/model/MDList.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CommandLine/src/main/java/se/natusoft/doc/markdowndoc/Main.java" afterPath="$PROJECT_DIR$/CommandLine/src/main/java/se/natusoft/doc/markdowndoc/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MavenPlugin/src/main/java/se/natusoft/doc/markdowndoc/MarkdownDocMavenPlugin.java" afterPath="$PROJECT_DIR$/MavenPlugin/src/main/java/se/natusoft/doc/markdowndoc/MarkdownDocMavenPlugin.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/MarkdownGenerator.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/MarkdownGenerator.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/options/MarkdownGeneratorOptions.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/options/MarkdownGeneratorOptions.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/MarkdownParser.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/MarkdownParser.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/io/NullOutputStream.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/io/NullOutputStream.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/api/Options.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/api/Options.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/pdfgenerator/PDFColor.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/pdfgenerator/PDFColor.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/options/PDFGeneratorOptions.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/options/PDFGeneratorOptions.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Paragraph.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Paragraph.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/exception/ParseException.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/exception/ParseException.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/api/Parser.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/api/Parser.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/ParserProvider.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/ParserProvider.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/PlainText.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/PlainText.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/util/SourcePath.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/util/SourcePath.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/util/SourcePaths.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/util/SourcePaths.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Space.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Space.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Strong.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Strong.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MavenPlugin/pom.xml" afterPath="$PROJECT_DIR$/MavenPlugin/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="97988b78-75ea-4416-b6cb-6f4e26254bee" name="MarkdownDoc-1 Fails to resolve document relative path to images." comment="" />
@@ -145,7 +197,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy" line="797" class="se.natusoft.doc.markdown.generator.PDFGenerator" package="se.natusoft.doc.markdown.generator">
+      <breakpoint url="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy" line="816" class="se.natusoft.doc.markdown.generator.PDFGenerator" package="se.natusoft.doc.markdown.generator">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -170,6 +222,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="PDFGenerator.groovy" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="103" column="6" selection-start="3850" selection-end="3850" vertical-scroll-proportion="0.0" vertical-offset="1150" max-vertical-offset="17010">
+              <folding>
+                <element signature="e#1106#1132#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pom.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/MavenPlugin/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="23" column="64" selection-start="931" selection-end="931" vertical-scroll-proportion="0.32639545" vertical-offset="0" max-vertical-offset="1057">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="SettingsFunction.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SettingsFunction.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -339,10 +411,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="InsertLinkFunction.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="InsertLinkFunction.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertLinkFunction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="209" column="56" selection-start="6377" selection-end="6377" vertical-scroll-proportion="0.6947271" vertical-offset="1979" max-vertical-offset="3075">
+            <state line="181" column="53" selection-start="5205" selection-end="5205" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3075">
               <folding />
             </state>
           </provider>
@@ -531,7 +603,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/MarkdownParser.groovy" />
         <option value="$PROJECT_DIR$/Library/src/test/groovy/se/natusoft/doc/markdown/generator/HTMLGeneratorDevTest.groovy" />
         <option value="$PROJECT_DIR$/Library/src/test/groovy/se/natusoft/doc/markdown/generator/HTMLGeneratorDevTest2.groovy" />
         <option value="$PROJECT_DIR$/Library/src/test/groovy/se/natusoft/doc/markdown/generator/PDFGeneratorDevTest.groovy" />
@@ -556,7 +627,6 @@
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/IntegerConfigEntry.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/ValidSelectionConfigEntry.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/TextFormatConfigEntry.java" />
-        <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownStyledTextPane.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/Configurable.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/ConfigProvider.java" />
@@ -582,6 +652,8 @@
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertBoldFunction.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertItalicsFunction.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertLinkFunction.java" />
+        <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy" />
+        <option value="$PROJECT_DIR$/MavenPlugin/pom.xml" />
       </list>
     </option>
   </component>
@@ -646,6 +718,28 @@
         <PATH_ELEMENT>
           <option name="myItemId" value="Lifecycle" />
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$LifecycleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="MarkdownDoc" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Modules" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ModulesNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="MarkdownDoc Maven Plugin" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Dependencies" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependenciesNode" />
         </PATH_ELEMENT>
       </PATH>
       <PATH>
@@ -744,6 +838,28 @@
         <PATH_ELEMENT>
           <option name="myItemId" value="MarkdownDoc Docs" />
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="MarkdownDoc" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Modules" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ModulesNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="MarkdownDoc Docs" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Plugins" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$PluginsNode" />
         </PATH_ELEMENT>
       </PATH>
       <PATH>
@@ -2372,7 +2488,7 @@
       <workItem from="1389545642780" duration="467000" />
       <workItem from="1389636445958" duration="24815000" />
       <workItem from="1390907889503" duration="2862000" />
-      <workItem from="1390999717410" duration="68370000" />
+      <workItem from="1390999717410" duration="69037000" />
     </task>
     <task id="LOCAL-00001" summary="First version.">
       <created>1353260479163</created>
@@ -2645,7 +2761,11 @@
       <created>1391361301794</created>
       <updated>1391361301794</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="- Fixed SettingsWindow using a self made LayoutManager to layout the config entries just as I want it.&#10;- Bold and Italics function now look if there is selected text and makes the selected text bold or italic.&#10;- Insert link now uses any selected text as link text.&#10;- It is now possible to enable/disable markdown formatting while writing.&#10;&#10;">
+      <created>1391361400748</created>
+      <updated>1391361400748</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers>
       <GitHub shared="false" url="">
         <commitMessageFormat>{id} {summary}</commitMessageFormat>
@@ -2663,7 +2783,7 @@
     </servers>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="138656000" />
+    <option name="totallyTimeSpent" value="139323000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -2693,10 +2813,12 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32809612" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32987654" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32940108" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
+      <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32994455" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2132884" sideWeight="0.51199263" order="0" side_tool="false" content_ui="combo" />
@@ -2712,9 +2834,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25080043" sideWeight="0.48736462" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16225325" sideWeight="0.512939" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="PDF_FIND" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Dilbert" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32915622" sideWeight="0.5" order="18" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -2738,7 +2858,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="SaveFunction now only shows .md and .markdown files in save dialog.&#10;" />
     <MESSAGE value="- SaveFunction now only shows .md and .markdown files in save dialog.&#10;- Copy, cut, and paste functions have been commented out since JEditorPane seems to handle this itself now." />
     <MESSAGE value="Refactored configuration so that configs are static, but config changed callbacks are per editor window instance. That is, any change to config will affect all open windows." />
     <MESSAGE value="Bug fix: When settings window were closed by clicking window close button rather than cancel or save neither of these operations were done. Now it is the same as cancel." />
@@ -2763,8 +2882,8 @@
     <MESSAGE value="Added auto styling to the editing. It turned out to be rather easy, I just had to find the right example of how to do it." />
     <MESSAGE value="- Added markdown formatting while editing using new MarkdownStyler (loaded with ServiceLoader!).&#10;- Refactored the SettingsFunction breaking out the gui into SettingsWindow and also moving out ConfigEditPanel to its own class. The gui is also updated to use a JTabbedPane with a tab for each group. This looks much better and is more manageable. &#10;" />
     <MESSAGE value="- Fixed SettingsWindow using a self made LayoutManager to layout the config entries just as I want it. &#10;- Bold and Italics function now look if there is selected text and makes the selected text bold or italic.&#10;- Insert link now uses any selected text as link text. &#10;- It is now possible to enable/disable markdown formatting while writing.&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Fixed SettingsWindow using a self made LayoutManager to layout the config entries just as I want it. &#10;- Bold and Italics function now look if there is selected text and makes the selected text bold or italic.&#10;- Insert link now uses any selected text as link text. &#10;- It is now possible to enable/disable markdown formatting while writing.&#10;" />
-    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <MESSAGE value="- Fixed SettingsWindow using a self made LayoutManager to layout the config entries just as I want it.&#10;- Bold and Italics function now look if there is selected text and makes the selected text bold or italic.&#10;- Insert link now uses any selected text as link text.&#10;- It is now possible to enable/disable markdown formatting while writing.&#10;&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Fixed SettingsWindow using a self made LayoutManager to layout the config entries just as I want it.&#10;- Bold and Italics function now look if there is selected text and makes the selected text bold or italic.&#10;- Insert link now uses any selected text as link text.&#10;- It is now possible to enable/disable markdown formatting while writing.&#10;&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -2786,22 +2905,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/filters/ContextFormatFilter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="112" column="52" selection-start="4078" selection-end="4078" vertical-scroll-proportion="0.0" vertical-offset="1394" max-vertical-offset="2520">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/src.zip!/javax/swing/text/StyleConstants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="283" column="25" selection-start="7711" selection-end="7711" vertical-scroll-proportion="0.0" vertical-offset="10800" max-vertical-offset="12825">
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/ConfigProvider.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="62" column="25" selection-start="1988" selection-end="1988" vertical-scroll-proportion="0.6114709" vertical-offset="224" max-vertical-offset="1305">
@@ -3240,7 +3343,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertLinkFunction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="209" column="56" selection-start="6377" selection-end="6377" vertical-scroll-proportion="0.6947271" vertical-offset="1979" max-vertical-offset="3075">
+        <state line="181" column="53" selection-start="5205" selection-end="5205" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3075">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="103" column="6" selection-start="3850" selection-end="3850" vertical-scroll-proportion="0.0" vertical-offset="1150" max-vertical-offset="17010">
+          <folding>
+            <element signature="e#1106#1132#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MavenPlugin/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="64" selection-start="931" selection-end="931" vertical-scroll-proportion="0.32639545" vertical-offset="0" max-vertical-offset="1057">
           <folding />
         </state>
       </provider>

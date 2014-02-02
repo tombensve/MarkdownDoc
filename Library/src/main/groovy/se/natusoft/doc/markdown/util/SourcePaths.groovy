@@ -2,13 +2,13 @@
  * 
  * PROJECT
  *     Name
- *         MarkdownDoc Maven Plugin
+ *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.2.4
+ *         1.3
  *     
  *     Description
- *         A maven plugin for generating documentation from markdown.
+ *         Parses markdown and generates HTML and PDF.
  *         
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
