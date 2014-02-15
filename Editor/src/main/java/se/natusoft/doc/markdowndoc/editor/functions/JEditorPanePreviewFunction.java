@@ -81,7 +81,7 @@ public class JEditorPanePreviewFunction implements EditorFunction, KeyListener, 
 
     private static final KeyConfigEntry keyboardShortcutConfig =
             new KeyConfigEntry("editor.function.preview.keyboard.shortcut", "Preview keyboard shortcut",
-                    new KeyboardKey("Ctrl+V"), CONFIG_GROUP_KEYBOARD);
+                    new KeyboardKey("Ctrl+F"), CONFIG_GROUP_KEYBOARD);
 
     private static ValidSelectionConfigEntry fontConfig =
             new ValidSelectionConfigEntry("preview.pane.font", "The preview font to use.", "Helvetica",

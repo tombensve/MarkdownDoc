@@ -2,54 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/KeyConfigEntry.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/KeyboardKey.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/MouseMotionProvider.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MultiPopupToolbar.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/tools/ServiceDefLoader.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/SinglePopupToolbar.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/ToolBar.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Editor/src/main/resources/META-INF/services/se.natusoft.doc.markdowndoc.editor.api.ToolBar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MDEToolBar.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/WindowToolBar.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/PreviewFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/JEditorPanePreviewFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/docs/MarkdownDoc-Library.md" afterPath="$PROJECT_DIR$/Library/docs/MarkdownDoc-Library.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/licenses.md" afterPath="$PROJECT_DIR$/Docs/licenses.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/AbstractExportFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/AbstractExportFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/BooleanConfigEntry.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/BooleanConfigEntry.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/ColorConfigEntry.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/ColorConfigEntry.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/settings/gui/ConfigEditPanel.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/settings/gui/ConfigEditPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/ConfigProviderHolder.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/ConfigProviderHolder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/Constants.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/Constants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/CopySelectionFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/CopySelectionFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/CutSelectionFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/CutSelectionFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/DoubleConfigEntry.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/DoubleConfigEntry.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/Editor.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/Editor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/EditorFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/EditorFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/ExportToHTMLFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/ExportToHTMLFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/ExportToPDFFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/ExportToPDFFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/GUI.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/GUI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertBoldFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertBoldFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertHeadingFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertHeadingFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertImageFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertImageFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertItalicsFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertItalicsFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertLinkFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertLinkFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertListFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertListFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertQuoteFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertQuoteFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/IntegerConfigEntry.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/IntegerConfigEntry.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownEditor.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownEditor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownStyler.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownStyler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/NewFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/NewFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/OpenFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/OpenFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy" afterPath="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/PasteCopiedCutTextFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/PasteCopiedCutTextFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SaveFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SaveFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SettingsFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SettingsFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/gui/SmartFlowLayout.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/gui/SmartFlowLayout.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/ToolBarGroups.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/ToolBarGroups.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/ValidSelectionConfigEntry.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/ValidSelectionConfigEntry.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/pom.xml" afterPath="$PROJECT_DIR$/Library/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/resources/META-INF/services/se.natusoft.doc.markdowndoc.editor.api.EditorComponent" afterPath="$PROJECT_DIR$/Editor/src/main/resources/META-INF/services/se.natusoft.doc.markdowndoc.editor.api.EditorComponent" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/JEditorPanePreviewFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/JEditorPanePreviewFunction.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="97988b78-75ea-4416-b6cb-6f4e26254bee" name="MarkdownDoc-1 Fails to resolve document relative path to images." comment="" />
@@ -160,10 +113,39 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AbstractExportFunction.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="AbstractExportFunction.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/AbstractExportFunction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="244" column="78" selection-start="7851" selection-end="7851" vertical-scroll-proportion="3.094357" vertical-offset="45" max-vertical-offset="4815">
+            <state line="14" column="7" selection-start="302" selection-end="302" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="4815">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServiceDefLoader.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/tools/ServiceDefLoader.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="10" selection-start="313" selection-end="313" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2160">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SettingsFunction.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SettingsFunction.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="80" column="6" selection-start="2690" selection-end="2690" vertical-scroll-proportion="0.0" vertical-offset="645" max-vertical-offset="3420">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JEditorPanePreviewFunction.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/JEditorPanePreviewFunction.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="98" column="0" selection-start="3559" selection-end="3559" vertical-scroll-proportion="0.4588344" vertical-offset="584" max-vertical-offset="4950">
               <folding />
             </state>
           </provider>
@@ -260,7 +242,6 @@
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertHeadingFunction.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertItalicsFunction.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertQuoteFunction.java" />
-        <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/JEditorPanePreviewFunction.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/NewFunction.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/OpenFunction.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SaveFunction.java" />
@@ -277,6 +258,7 @@
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/ExportToPDFFunction.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/ExportToHTMLFunction.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/AbstractExportFunction.java" />
+        <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/JEditorPanePreviewFunction.java" />
       </list>
     </option>
   </component>
@@ -2380,7 +2362,7 @@
       <workItem from="1389636445958" duration="24815000" />
       <workItem from="1390907889503" duration="2862000" />
       <workItem from="1390999717410" duration="79670000" />
-      <workItem from="1391800292463" duration="74554000" />
+      <workItem from="1391800292463" duration="75169000" />
     </task>
     <task id="LOCAL-00001" summary="First version.">
       <created>1353260479163</created>
@@ -2661,7 +2643,15 @@
       <created>1391362172766</created>
       <updated>1391362172766</updated>
     </task>
-    <option name="localTasksCounter" value="70" />
+    <task id="LOCAL-00070" summary="- Added 3rd toolbar variant. &#10;- Refactored the popup windows for image, link, PDF, and HMTL heavily. &#10;- Changed how keyboard input is handled between editor and functions.&#10;- Can now configure keys in settings.&#10;">
+      <created>1392488361905</created>
+      <updated>1392488361905</updated>
+    </task>
+    <task id="LOCAL-00071" summary="Regenerated class comment headers with license information.">
+      <created>1392488493186</created>
+      <updated>1392488493186</updated>
+    </task>
+    <option name="localTasksCounter" value="72" />
     <servers>
       <GitHub shared="false" url="">
         <commitMessageFormat>{id} {summary}</commitMessageFormat>
@@ -2679,7 +2669,7 @@
     </servers>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="224510000" />
+    <option name="totallyTimeSpent" value="225125000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -2754,8 +2744,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="Refactored configuration so that configs are static, but config changed callbacks are per editor window instance. That is, any change to config will affect all open windows." />
-    <MESSAGE value="Bug fix: When settings window were closed by clicking window close button rather than cancel or save neither of these operations were done. Now it is the same as cancel." />
     <MESSAGE value="- Added PersistentProps API (available from Editor) for loading and saving properties files under {user home}/.markdownDoc. &#10;- Finished ExportToPDFFunction, which now also saves the latest generation information for reuse the next time. This uses PersistentProps.&#10;- SaveFunction and OpenFunction now also used PersistentProps to save window postition and size on save and reset it on load per filename of edited files.&#10;" />
     <MESSAGE value="Saving settings now also saves the window size and position. If there is no known filename at time of settings save, then size and positions is saved as &quot;default&quot; and will thus be loaded and used when a new empty editor window is opened." />
     <MESSAGE value="Now also exports to html." />
@@ -2779,7 +2767,9 @@
     <MESSAGE value="- Fixed SettingsWindow using a self made LayoutManager to layout the config entries just as I want it. &#10;- Bold and Italics function now look if there is selected text and makes the selected text bold or italic.&#10;- Insert link now uses any selected text as link text. &#10;- It is now possible to enable/disable markdown formatting while writing.&#10;" />
     <MESSAGE value="- Fixed SettingsWindow using a self made LayoutManager to layout the config entries just as I want it.&#10;- Bold and Italics function now look if there is selected text and makes the selected text bold or italic.&#10;- Insert link now uses any selected text as link text.&#10;- It is now possible to enable/disable markdown formatting while writing.&#10;&#10;" />
     <MESSAGE value="- Fixed CompileStatic errors in Groovy code (imports ending in .* does not work in this case!!)&#10;- Let CLM update/add source headers.&#10;&#10;&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Fixed CompileStatic errors in Groovy code (imports ending in .* does not work in this case!!)&#10;- Let CLM update/add source headers.&#10;&#10;&#10;" />
+    <MESSAGE value="- Added 3rd toolbar variant. &#10;- Refactored the popup windows for image, link, PDF, and HMTL heavily. &#10;- Changed how keyboard input is handled between editor and functions.&#10;- Can now configure keys in settings.&#10;" />
+    <MESSAGE value="Regenerated class comment headers with license information." />
+    <option name="LAST_COMMIT_MESSAGE" value="Regenerated class comment headers with license information." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -2878,7 +2868,7 @@
             <element signature="imports" expanded="false" />
             <element signature="e#1731#1732#0" expanded="false" />
             <element signature="e#1767#1768#0" expanded="false" />
-            <marker date="1391967530000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1392488436000" expanded="true" signature="-1:-1" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -3020,16 +3010,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SettingsFunction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="16" selection-start="2374" selection-end="2374" vertical-scroll-proportion="0.0" vertical-offset="900" max-vertical-offset="3495">
-          <folding>
-            <element signature="e#3015#3155#0" expanded="true" />
-            <element signature="e#3148#3149#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertBoldFunction.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="101" column="93" selection-start="3298" selection-end="3298" vertical-scroll-proportion="0.0" vertical-offset="914" max-vertical-offset="2370">
@@ -3157,7 +3137,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="47" column="11" selection-start="1091" selection-end="1091" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="825">
           <folding>
-            <marker date="1392459983000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1392488435000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
           </folding>
         </state>
       </provider>
@@ -3166,15 +3146,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="37" column="13" selection-start="472" selection-end="472" vertical-scroll-proportion="0.0" vertical-offset="810" max-vertical-offset="3525">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/tools/ServiceDefLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="10" selection-start="1083" selection-end="1083" vertical-scroll-proportion="0.0" vertical-offset="269" max-vertical-offset="1620">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3197,20 +3168,6 @@
         <state line="106" column="37" selection-start="3009" selection-end="3009" vertical-scroll-proportion="0.0" vertical-offset="1274" max-vertical-offset="2610">
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/JEditorPanePreviewFunction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="252" column="27" selection-start="9108" selection-end="9108" vertical-scroll-proportion="0.0" vertical-offset="720" max-vertical-offset="5100">
-          <folding>
-            <element signature="e#3035#3500#0" expanded="true" />
-            <element signature="e#3477#3478#0" expanded="true" />
-            <element signature="e#3806#3946#0" expanded="true" />
-            <element signature="e#3939#3940#0" expanded="true" />
-            <element signature="e#8764#8765#0" expanded="true" />
-            <element signature="e#8800#8801#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -3294,7 +3251,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/AbstractExportFunction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="244" column="78" selection-start="7851" selection-end="7851" vertical-scroll-proportion="3.094357" vertical-offset="45" max-vertical-offset="4815">
+        <state line="14" column="7" selection-start="302" selection-end="302" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="4815">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/tools/ServiceDefLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="10" selection-start="313" selection-end="313" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2160">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SettingsFunction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="80" column="6" selection-start="2690" selection-end="2690" vertical-scroll-proportion="0.0" vertical-offset="645" max-vertical-offset="3420">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/JEditorPanePreviewFunction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="98" column="0" selection-start="3559" selection-end="3559" vertical-scroll-proportion="0.4588344" vertical-offset="584" max-vertical-offset="4950">
           <folding />
         </state>
       </provider>
