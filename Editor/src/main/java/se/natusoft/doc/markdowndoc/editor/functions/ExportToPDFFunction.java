@@ -41,10 +41,18 @@ import se.natusoft.doc.markdown.exception.GenerateException;
 import se.natusoft.doc.markdown.generator.PDFGenerator;
 import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions;
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups;
+import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider;
+import se.natusoft.doc.markdowndoc.editor.api.Configurable;
+import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 
 import javax.swing.*;
+import javax.swing.border.SoftBevelBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,10 +63,12 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.LinkedList;
 
+import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD;
+
 /**
  * Provides a function that exports to PDF.
  */
-public class ExportToPDFFunction extends AbstractExportFunction implements EditorFunction {
+public class ExportToPDFFunction extends AbstractExportFunction implements EditorFunction, Configurable {
     //
     // Constants
     //
@@ -78,8 +88,43 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
 
     // The following are referenced from GUI callbacks and thus must be part of the instance.
 
-//    /** The PDF meta data / options dialog. */
-    private JFrame pdfMetaDataDialog = null;
+    /** The PDF meta data / options dialog. */
+    private JWindow pdfMetaDataDialog = null;
+
+    //
+    // Config
+    //
+
+    private static final KeyConfigEntry keyboardShortcutConfig =
+            new KeyConfigEntry("editor.function.export.pdf.keyboard.shortcut", "Export PDF keyboard shortcut",
+                    new KeyboardKey("Ctrl+P"), CONFIG_GROUP_KEYBOARD);
+
+    private ConfigChanged keyboardShortcutConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            updateTooltipText();
+        }
+    };
+
+    /**
+     * Register configurations.
+     *
+     * @param configProvider The config provider to register with.
+     */
+    @Override
+    public void registerConfigs(ConfigProvider configProvider) {
+        configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
+
+    /**
+     * Unregister configurations.
+     *
+     * @param configProvider The config provider to unregister with.
+     */
+    @Override
+    public void unregisterConfigs(ConfigProvider configProvider) {
+        configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
 
     /**
      * This holds components that will be added to the pdfMetaDataDialog in perform().
@@ -129,25 +174,29 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
         super(GENERATED_PDF_FILE);
         Icon pdfIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddpdf.png"));
         this.pdfToolbarButton = new JButton(pdfIcon);
-        this.pdfToolbarButton.setToolTipText("Export as PDF (Ctrl-P)");
         this.pdfToolbarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 perform();
             }
         });
+        updateTooltipText();
     }
 
     //
     // Methods
     //
 
+    private void updateTooltipText() {
+        this.pdfToolbarButton.setToolTipText("Export as PDF (" + keyboardShortcutConfig.getKeyboardKey() + ")");
+    }
+
     /**
      * Returns the group name the function belongs to.
      */
     @Override
     public String getGroup() {
-        return ToolBarGroups.export.name();
+        return ToolBarGroups.EXPORT.name();
     }
 
     /**
@@ -167,19 +216,11 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
     }
 
     /**
-     * Returns the down key mast to react on for this function.
+     * Returns the keyboard shortcut for the function.
      */
     @Override
-    public int getDownKeyMask() {
-        return KeyEvent.CTRL_MASK;
-    }
-
-    /**
-     * Returns the key code that activate this function.
-     */
-    @Override
-    public int getKeyCode() {
-        return KeyEvent.VK_P;
+    public KeyboardKey getKeyboardShortcut() {
+        return keyboardShortcutConfig.getKeyboardKey();
     }
 
     /**
@@ -192,17 +233,23 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
         this.exportFile = getExportOutputFile("PDF", "pdf", "pdf");
 
         if (this.exportFile != null) {
-            this.pdfMetaDataDialog = new JFrame("PDF document data");
+            this.pdfMetaDataDialog = new JWindow(this.editor.getGUI().getWindowFrame());
             this.pdfMetaDataDialog.setLayout(new BorderLayout());
 
+            JPanel borderPanel = new JPanel(new BorderLayout());
+            borderPanel.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED));
+            this.pdfMetaDataDialog.add(borderPanel, BorderLayout.CENTER);
+
             this.pdfData.loadPDFDataValues();
+            this.pdfData.setBackgroundColor(editor.getGUI().getWindowFrame().getBackground());
 
             JPanel dataLabelPanel = new JPanel(new GridLayout(this.pdfData.exportDataValues.size(),1));
-            this.pdfMetaDataDialog.add(dataLabelPanel, BorderLayout.WEST);
+            borderPanel.add(dataLabelPanel, BorderLayout.WEST);
 
             JPanel dataValuePanel = new JPanel(new GridLayout(this.pdfData.exportDataValues.size(),1));
-            this.pdfMetaDataDialog.add(dataValuePanel, BorderLayout.CENTER);
+            borderPanel.add(dataValuePanel, BorderLayout.CENTER);
 
+            borderPanel.add(Box.createRigidArea(new Dimension(12, 12)), BorderLayout.EAST);
 
             for (ExportDataValue exportDataValue : this.pdfData.exportDataValues) {
                 dataLabelPanel.add(exportDataValue.label);
@@ -228,7 +275,7 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
             });
             buttonPanel.add(cancelButton);
 
-            this.pdfMetaDataDialog.add(buttonPanel, BorderLayout.SOUTH);
+            borderPanel.add(buttonPanel, BorderLayout.SOUTH);
 
             // Set initial values to last saved values for the specified file.
             if (this.editor.getCurrentFile() != null) {
@@ -236,12 +283,12 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
             }
 
             this.pdfMetaDataDialog.setVisible(true);
-            this.pdfMetaDataDialog.setBounds(
-                    this.editor.getGUI().getWindowFrame().getX() + 40,
-                    this.editor.getGUI().getWindowFrame().getY() + 40,
-                    (int) this.pdfMetaDataDialog.getPreferredSize().getWidth(),
-                    (int) this.pdfMetaDataDialog.getPreferredSize().getHeight()
-            );
+            this.pdfMetaDataDialog.setSize(this.pdfMetaDataDialog.getPreferredSize());
+
+            Rectangle mainBounds = this.editor.getGUI().getWindowFrame().getBounds();
+            int x = mainBounds.x + (mainBounds.width / 2) - (this.pdfMetaDataDialog.getWidth() / 2);
+            int y = mainBounds.y + 70;
+            this.pdfMetaDataDialog.setLocation(x, y);
         }
     }
 

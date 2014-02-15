@@ -76,10 +76,10 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
             new ValidSelectionConfigEntry("editor.pane.monospaced.font", "The monospaced font to use.", "Monospaced",
                     new ValidSelectionConfigEntry.ValidValues() {
                         @Override
-                        public String[] validValues() {
+                        public ValidSelectionConfigEntry.Value[] validValues() {
                             GraphicsEnvironment gEnv = GraphicsEnvironment
                                     .getLocalGraphicsEnvironment();
-                            return gEnv.getAvailableFontFamilyNames();
+                            return ValidSelectionConfigEntry.convertToValues(gEnv.getAvailableFontFamilyNames());
                         }
                     },
                     CONFIG_GROUP_EDITING
@@ -156,6 +156,26 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
         }
     };
 
+    // Make styling chars tiny
+
+    /** True to make styling characters tiny. */
+    private boolean makeStylingCharsTiny = false;
+
+    /** Config entry used in SettingsWindow to edit config. */
+    private static BooleanConfigEntry makeStylingCharsTinyConfig =
+            new BooleanConfigEntry("editor.pane.formatting.chars.tiny", "Make formatting chars tiny", false, CONFIG_GROUP_EDITING);
+
+    /**
+     * Configuration callback.
+     */
+    private ConfigChanged makeStylingCharsTinyConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            MarkdownStyler.this.makeStylingCharsTiny = ce.getBoolValue();
+
+            styleDocument();
+        }
+    };
 
     //
     // Constructors
@@ -213,9 +233,12 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
         Style h5 = doc.addStyle("h5", base);
         StyleConstants.setFontSize(h5, 18);
         StyleConstants.setBold(h5, true);
-        Style h6 = doc.addStyle("h5", base);
+        Style h6 = doc.addStyle("h6", base);
         StyleConstants.setFontSize(h6, 14);
         StyleConstants.setBold(h6, true);
+        Style tiny = doc.addStyle("tiny", base);
+        StyleConstants.setBold(tiny, false);
+        StyleConstants.setFontSize(tiny, 6);
         Style code = doc.addStyle("code", base);
         StyleConstants.setFontFamily(code, this.monospacedFontFamily);
         StyleConstants.setFontSize(code, this.monospacedFontSize);
@@ -232,6 +255,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
         configProvider.registerConfig(monospacedFontConfig, this.monospacedFontConfigChanged);
         configProvider.registerConfig(monospacedFontSizeConfig, this.monospacedFontSizeConfigChanged);
         configProvider.registerConfig(markdownFormatWhileEditingConfig, this.markdownFormatWhileEditingConfigChanged);
+        configProvider.registerConfig(makeStylingCharsTinyConfig, this.makeStylingCharsTinyConfigChanged);
     }
 
     /**
@@ -243,6 +267,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
         configProvider.unregisterConfig(monospacedFontConfig, this.monospacedFontConfigChanged);
         configProvider.unregisterConfig(monospacedFontSizeConfig, this.monospacedFontSizeConfigChanged);
         configProvider.unregisterConfig(markdownFormatWhileEditingConfig, this.markdownFormatWhileEditingConfigChanged);
+        configProvider.unregisterConfig(makeStylingCharsTinyConfig, this.makeStylingCharsTinyConfigChanged);
     }
 
     /**
@@ -336,28 +361,44 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                             Style header = null;
 
                             // Only style if it starts at the beginning of a "paragraph".
+                            int hsize = 0;
                             if (pos == 0 || pos == 1 || text.charAt(pos - cnt - 1) == '\n' || text.charAt(pos - cnt - 1) == '\r') {
                                 switch(cnt) {
                                     case 1:
                                         header = doc.getStyle("h1");
+                                        hsize = 2;
                                         break;
                                     case 2:
                                         header = doc.getStyle("h2");
+                                        hsize = 3;
                                         break;
                                     case 3:
                                         header = doc.getStyle("h3");
+                                        hsize = 4;
                                         break;
                                     case 4:
                                         header = doc.getStyle("h4");
+                                        hsize = 5;
                                         break;
                                     case 5:
                                         header = doc.getStyle("h5");
+                                        hsize = 6;
                                         break;
                                     default:
+                                        hsize = 7;
                                         header = doc.getStyle("h6");
                                 }
                             }
-                            if (header != null) doc.setCharacterAttributes(spos, epos - spos, header, true);
+                            if (header != null) {
+                                if (this.makeStylingCharsTiny) {
+                                    doc.setCharacterAttributes(spos + hsize, epos - (spos + hsize), header, true);
+                                    Style hstyle = doc.getStyle("tiny");
+                                    doc.setCharacterAttributes(spos, hsize, hstyle, true);
+                                }
+                                else {
+                                    doc.setCharacterAttributes(spos, epos - spos, header, true);
+                                }
+                            }
                             pos = epos;
                         }
 
@@ -393,10 +434,20 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                             if (bold) {
                                 Style boldStyle = doc.getStyle("bold");
                                 doc.setCharacterAttributes(spos + 2, epos - spos - 2, boldStyle, true);
+                                if (this.makeStylingCharsTiny) {
+                                    Style tiny = doc.getStyle("tiny");
+                                    doc.setCharacterAttributes(spos, 2, tiny, true);
+                                    doc.setCharacterAttributes(epos, 2, tiny, true);
+                                }
                             }
                             else {
                                 Style emphasisStyle = doc.getStyle("emphasis");
                                 doc.setCharacterAttributes(spos + 1, epos - spos - 1, emphasisStyle, true);
+                                if (this.makeStylingCharsTiny) {
+                                    Style tiny = doc.getStyle("tiny");
+                                    doc.setCharacterAttributes(spos, 1, tiny, true);
+                                    doc.setCharacterAttributes(epos, 1, tiny, true);
+                                }
                             }
                             pos = epos + 1;
                         }
@@ -541,6 +592,6 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
         if (bounds.start == 0) { // Possibly the whole document!
             bounds = findParagraphBounds(currentPos, text);
         }
-        return text.substring(bounds.start, bounds.start + 10);
+        return text.substring(bounds.start, bounds.start + 60);
     }
 }

@@ -52,17 +52,6 @@ public class ColorConfigEntry extends ConfigEntry {
      *
      * @param key The config key.
      * @param description The description of the config.
-     * @param configGroup The config group this config belongs to.
-     */
-    public ColorConfigEntry(String key, String description, String configGroup) {
-        super(key, description, configGroup);
-    }
-
-    /**
-     * Creates a new ConfigEntry.
-     *
-     * @param key The config key.
-     * @param description The description of the config.
      * @param defaultRed The default red color part.
      * @param defaultGreen The default green color part.
      * @param defaultBlue The default blue color part.

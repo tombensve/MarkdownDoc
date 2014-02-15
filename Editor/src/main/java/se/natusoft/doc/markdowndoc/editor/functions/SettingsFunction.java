@@ -37,9 +37,14 @@
 package se.natusoft.doc.markdowndoc.editor.functions;
 
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups;
+import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider;
+import se.natusoft.doc.markdowndoc.editor.api.Configurable;
 import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged;
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 import se.natusoft.doc.markdowndoc.editor.functions.settings.gui.ConfigEditPanel;
 import se.natusoft.doc.markdowndoc.editor.functions.settings.gui.SettingsWindow;
@@ -51,10 +56,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.*;
 
+import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD;
+
 /**
  * Provides editor setting function.
  */
-public class SettingsFunction implements EditorFunction {
+public class SettingsFunction implements EditorFunction, Configurable {
     //
     // Constants
     //
@@ -71,7 +78,40 @@ public class SettingsFunction implements EditorFunction {
 
     private Map<String, String> cancelValues = null;
 
-    private List<ConfigEditPanel> configEditPanels = new LinkedList<ConfigEditPanel>();
+    //
+    // Config
+    //
+
+    private static final KeyConfigEntry keyboardShortcutConfig =
+            new KeyConfigEntry("editor.function.settings.keyboard.shortcut", "Settings keyboard shortcut",
+                    new KeyboardKey("Ctrl+E"), CONFIG_GROUP_KEYBOARD);
+
+    private ConfigChanged keyboardShortcutConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            updateTooltipText();
+        }
+    };
+
+    /**
+     * Register configurations.
+     *
+     * @param configProvider The config provider to register with.
+     */
+    @Override
+    public void registerConfigs(ConfigProvider configProvider) {
+        configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
+
+    /**
+     * Unregister configurations.
+     *
+     * @param configProvider The config provider to unregister with.
+     */
+    @Override
+    public void unregisterConfigs(ConfigProvider configProvider) {
+        configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
 
     //
     // Constructors
@@ -80,18 +120,22 @@ public class SettingsFunction implements EditorFunction {
     public SettingsFunction() {
         Icon settingsIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddsettings.png"));
         this.settingsButton = new JButton(settingsIcon);
-        this.settingsButton.setToolTipText("Settings (Alt-S)");
         this.settingsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 perform();
             }
         });
+        updateTooltipText();
     }
 
     //
     // Methods
     //
+
+    private void updateTooltipText() {
+        this.settingsButton.setToolTipText("Settings (" + keyboardShortcutConfig.getKeyboardKey() + ")");
+    }
 
     @Override
     public void setEditor(Editor editor) {
@@ -102,7 +146,7 @@ public class SettingsFunction implements EditorFunction {
 
     @Override
     public String getGroup() {
-        return ToolBarGroups.config.name();
+        return ToolBarGroups.CONFIG.name();
     }
 
     @Override
@@ -115,14 +159,12 @@ public class SettingsFunction implements EditorFunction {
         return this.settingsButton;
     }
 
+    /**
+     * Returns the keyboard shortcut for the function.
+     */
     @Override
-    public int getDownKeyMask() {
-        return KeyEvent.CTRL_MASK;
-    }
-
-    @Override
-    public int getKeyCode() {
-        return KeyEvent.VK_S;
+    public KeyboardKey getKeyboardShortcut() {
+        return keyboardShortcutConfig.getKeyboardKey();
     }
 
     @Override
@@ -143,11 +185,6 @@ public class SettingsFunction implements EditorFunction {
 
             for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
                 this.settingsWindow.addConfig(configEntry);
-            }
-        }
-        else {
-            for (ConfigEditPanel configEditPanel : this.configEditPanels) {
-                configEditPanel.refresh();
             }
         }
 

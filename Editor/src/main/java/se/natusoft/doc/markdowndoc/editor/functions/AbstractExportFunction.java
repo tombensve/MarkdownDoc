@@ -130,6 +130,12 @@ public abstract class AbstractExportFunction implements EditorFunction {
                     AbstractExportFunction.this.exportFile.getAbsolutePath());
             AbstractExportFunction.this.editor.getPersistentProps().save(fileToPropertiesName(file), props);
         }
+
+        public void setBackgroundColor(Color bgColor) {
+            for (ExportDataValue edv : this.exportDataValues) {
+                edv.setBackgroundColor(bgColor);
+            }
+        }
     }
 
     /**
@@ -145,6 +151,10 @@ public abstract class AbstractExportFunction implements EditorFunction {
 
         public String getKey() {
             return this.label.getText().trim().toLowerCase().replaceAll(" ", "-").replaceAll(":", "");
+        }
+
+        public void setBackgroundColor(Color bgColor) {
+            this.value.setBackground(bgColor);
         }
 
         public abstract String getValue();
@@ -248,6 +258,14 @@ public abstract class AbstractExportFunction implements EditorFunction {
 
         public String getFile() {
             return this.fileName.getText();
+        }
+
+        @Override
+        public void setBackground(Color bgColor) {
+            super.setBackground(bgColor);
+            if (this.fileName != null) {
+                this.fileName.setBackground(bgColor);
+            }
         }
     }
 

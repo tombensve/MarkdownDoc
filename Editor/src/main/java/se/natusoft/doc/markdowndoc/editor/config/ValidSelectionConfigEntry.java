@@ -36,6 +36,8 @@
  */
 package se.natusoft.doc.markdowndoc.editor.config;
 
+import java.util.List;
+
 /**
  * This is a ConfigEntry with a set of valid values.
  */
@@ -80,8 +82,66 @@ public class ValidSelectionConfigEntry extends ConfigEntry {
     /**
      * Returns the valid values.
      */
-    public String[] getValidValues() {
+    public Value[] getValidValues() {
         return this.validValues.validValues();
+    }
+
+    /**
+     * Returns a show adapted value for display in settings.
+     */
+    public String getShowValue() {
+        String value = getValue();
+        if (value.indexOf('.') > 0) {
+            value = value.substring(value.lastIndexOf('.') + 1);
+        }
+
+        return value;
+    }
+
+    //
+    // Static utilities
+    //
+
+    /**
+     * A convenience to convert a String List to a String array.
+     *
+     * @param strings The String List to convert.
+     */
+    public static String[] stringListToArray(List<String> strings) {
+        String[] array = new String[strings.size()];
+        return strings.toArray(array);
+    }
+
+    /**
+     * Convenience to convert a String array to a Value array.
+     *
+     * @param stringValues The string array to convert.
+     */
+    public static Value[] convertToValues(String[] stringValues) {
+        Value[] values = new Value[stringValues.length];
+        for (int i = 0; i < stringValues.length; i++) {
+            values[i] = new Value(stringValues[i]);
+        }
+
+        return values;
+    }
+
+    /**
+     * Convenience to convert a String array to a Value array providing both use and show by
+     * making show be the last part after the last occurance of the specified character.
+     *
+     * @param stringValues The string array to convert.
+     * @param cutAtLast The character to find last of and use text after as show text.
+     */
+    public static Value[] convertToValues(String[] stringValues, char cutAtLast) {
+        Value[] values = new Value[stringValues.length];
+        for (int i = 0; i < stringValues.length; i++) {
+            String use = stringValues[i];
+            String show = use.substring(use.lastIndexOf(cutAtLast) + 1);
+            values[i] = new Value(show, use);
+        }
+
+        return values;
     }
 
     //
@@ -89,9 +149,73 @@ public class ValidSelectionConfigEntry extends ConfigEntry {
     //
 
     /**
+     * The point of this is to be able to show a nicer text to the user and associate it with the real
+     * but less user friendly value. LookAndFeel and classes loaded with ServiceLoader where there is
+     * a choice of which to use are all class names with full package path. In this case the show part
+     * is passed as everything after the last '.' character. This makes it slightly more user friendly.
+     */
+    public static class Value {
+        private String show;
+        private String use;
+
+        /**
+         * Creates a new Value.
+         *
+         * @param show The part of the value to show in the gui.
+         * @param use The real/full value to store in config and use.
+         */
+        public Value(String show, String use) {
+            this.show = show;
+            this.use = use;
+        }
+
+        /**
+         * Creates a new Value.
+         *
+         * @param use The real value to use. This is also set as show value.
+         */
+        public Value(String use) {
+            this.show = use;
+            this.use = use;
+        }
+
+        /**
+         * Returns the show value.
+         */
+        public String getShow() {
+            return this.show;
+        }
+
+        /**
+         * Returns the use value.
+         */
+        public String getUse() {
+            return this.use;
+        }
+
+        /**
+         * Returns the show value. This so that a Value array can be passed as values to a JComboBox and it
+         * will only display the show value in the gui.
+         */
+        public String toString() {
+            return this.show;
+        }
+
+        /**
+         * This is needed for JComboBox.setSelectedItem(...) to match existing Value instance with new Value wrapped around loaded config
+         * value. This is why it compares on show and only show.
+         *
+         * @param o The object to compare to.
+         */
+        public boolean equals(Object o) {
+            return o instanceof Value && ((Value) o).show.equals(this.show);
+        }
+    }
+
+    /**
      * Defines the valid values.
      */
     public interface ValidValues {
-        String[] validValues();
+        Value[] validValues();
     }
 }

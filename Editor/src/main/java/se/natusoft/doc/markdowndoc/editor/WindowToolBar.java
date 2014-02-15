@@ -36,28 +36,31 @@
  */
 package se.natusoft.doc.markdowndoc.editor;
 
+import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
-
+import se.natusoft.doc.markdowndoc.editor.api.ToolBar;
 import javax.swing.*;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * This is the editor toolbar.
  */
-class MDEToolBar extends JToolBar {
+class WindowToolBar extends JToolBar implements ToolBar {
     //
     // Private Members
     //
 
-    private List<String> toolBarGroups = new LinkedList<String>();
+    private List<String> toolBarGroups = new LinkedList<>();
 
-    private Map<String, List<EditorFunction>> functions = new HashMap<String, List<EditorFunction>>();
+    private Map<String, List<EditorFunction>> functions = new HashMap<>();
 
     //
     // Constructors
     //
 
-    public MDEToolBar() {
+    public WindowToolBar() {
         setRollover(true);
     }
 
@@ -70,6 +73,7 @@ class MDEToolBar extends JToolBar {
      *
      * @param function The function to add.
      */
+    @Override
     public void addFunction(EditorFunction function) {
         if (!this.toolBarGroups.contains(function.getGroup())) {
             this.toolBarGroups.add(function.getGroup());
@@ -77,7 +81,7 @@ class MDEToolBar extends JToolBar {
 
         List<EditorFunction> groupFunctions = this.functions.get(function.getGroup());
         if (groupFunctions == null) {
-            groupFunctions = new LinkedList<EditorFunction>();
+            groupFunctions = new LinkedList<>();
             this.functions.put(function.getGroup(), groupFunctions);
         }
 
@@ -88,6 +92,7 @@ class MDEToolBar extends JToolBar {
      * Creates the content of the toolbar. This cannot be done until all
      * functions have been provided.
      */
+    @Override
     public void createToolBarContent() {
         Iterator<String> groupIterator = this.toolBarGroups.iterator();
         while (groupIterator.hasNext()) {
@@ -109,6 +114,7 @@ class MDEToolBar extends JToolBar {
      *
      * @param group The tool bar group to enable.
      */
+    @Override
     public void disableGroup(String group) {
         List<EditorFunction> functions = this.functions.get(group);
         if (functions != null) {
@@ -126,6 +132,7 @@ class MDEToolBar extends JToolBar {
      *
      * @param group The tool bar group to disable.
      */
+    @Override
     public void enableGroup(String group) {
         List<EditorFunction> functions = this.functions.get(group);
         if (functions != null) {
@@ -137,4 +144,25 @@ class MDEToolBar extends JToolBar {
             throw new RuntimeException("Cannot enable non existent group '" + group + "'!");
         }
     }
+
+    /**
+     * Provides the toolbar with the editor it is associated.
+     *
+     * @param editor The associated editor provided.
+     */
+    @Override
+    public void attach(Editor editor) {
+        editor.getGUI().getEditorPanel().add(this, BorderLayout.NORTH);
+    }
+
+    /**
+     * Removes the association with the editor.
+     *
+     * @param editor The editor to detach from.
+     */
+    @Override
+    public void detach(Editor editor) {
+        editor.getGUI().getEditorPanel().remove(this);
+    }
+
 }

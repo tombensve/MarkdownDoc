@@ -201,13 +201,22 @@ public class SmartFlowLayout implements LayoutManager2 {
             }
         }
 
+        int noCols = realBoundsContainer.getWidth() / cwidth;
+        int leftOfWidth = realBoundsContainer.getWidth() - (cwidth * noCols);
+        if (noCols > 1) {
+            cwidth = cwidth + (leftOfWidth / noCols);
+        }
+        else if (noCols == 1) {
+            cwidth = realBoundsContainer.getWidth() - 2;
+        }
+
         for (Component comp : this.components) {
             Dimension compPreferred = comp.getPreferredSize();
             if (this.commonWidth) {
                 compPreferred.setSize(cwidth, compPreferred.getHeight());
             }
 
-            if (x + (int)compPreferred.getWidth() <= realBoundsContainer.getWidth()) {
+            if ((x + cwidth) <= realBoundsContainer.getWidth()) {
                 // Do nothing
             }
             else {
@@ -216,10 +225,10 @@ public class SmartFlowLayout implements LayoutManager2 {
             }
             if (update) {
                 comp.setLocation(x, y);
-                comp.setSize(compPreferred);
+                comp.setSize(cwidth, cheight/*(int)compPreferred.getHeight()*/);
             }
 
-            x = x + (int)compPreferred.getWidth() + this.hgap;
+            x = x + cwidth + this.hgap;
         }
 
         int minWidth = x + insets.right;

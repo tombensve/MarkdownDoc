@@ -42,20 +42,20 @@ package se.natusoft.doc.markdowndoc.editor;
 public enum ToolBarGroups {
 
     /** functions like open, save, etc. */
-    file,
+    FILE,
 
     /** Markdown formatting help. */
-    format,
+    FORMAT,
 
     /** Preview of rendered markdown */
-    preview,
+    PREVIEW,
 
     /** Export functions. */
-    export,
+    EXPORT,
 
     /** User added functions. */
-    user,
+    USER,
 
     /** Editor configuration */
-    config
+    CONFIG
 }

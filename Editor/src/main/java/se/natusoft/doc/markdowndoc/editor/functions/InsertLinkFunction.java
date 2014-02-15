@@ -37,33 +37,82 @@
 package se.natusoft.doc.markdowndoc.editor.functions;
 
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups;
+import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider;
+import se.natusoft.doc.markdowndoc.editor.api.Configurable;
 import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
+import se.natusoft.doc.markdowndoc.editor.gui.SmartFlowLayout;
 
 import javax.swing.*;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD;
+
 /**
  * This provides an "insert image" function.
  */
-public class InsertLinkFunction implements EditorFunction {
+public class InsertLinkFunction implements EditorFunction, Configurable {
     //
     // Private Members
     //
 
-    // The editor we supply function for. Received in setEditor(Editor).
+    // The editor we supply function for. Received in attach(Editor).
     private Editor editor;
 
+    // The toolbar button.
     private JButton linkButton;
+
+    // Popup GUI
     private JPanel inputPanel;
     private JTextField linkText;
     private JTextField linkURL;
     private JTextField linkTitle;
-    private JFrame inputDialog;
+    private JWindow inputDialog;
+
+    //
+    // Config
+    //
+
+    private static final KeyConfigEntry keyboardShortcutConfig =
+            new KeyConfigEntry("editor.function.insert.link.keyboard.shortcut", "Insert link keyboard shortcut",
+                    new KeyboardKey("Ctrl+N"), CONFIG_GROUP_KEYBOARD);
+
+    private ConfigChanged keyboardShortcutConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            updateTooltipText();
+        }
+    };
+
+    /**
+     * Register configurations.
+     *
+     * @param configProvider The config provider to register with.
+     */
+    @Override
+    public void registerConfigs(ConfigProvider configProvider) {
+        configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
+
+    /**
+     * Unregister configurations.
+     *
+     * @param configProvider The config provider to unregister with.
+     */
+    @Override
+    public void unregisterConfigs(ConfigProvider configProvider) {
+        configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
 
     //
     // Constructors
@@ -72,19 +121,22 @@ public class InsertLinkFunction implements EditorFunction {
     public InsertLinkFunction() {
         Icon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddlink.png"));
         this.linkButton = new JButton(imageIcon);
-        linkButton.setToolTipText("Link (Meta-N)");
         linkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 perform();
             }
         });
-
+        updateTooltipText();
     }
 
     //
     // Methods
     //
+
+    private void updateTooltipText() {
+        linkButton.setToolTipText("Link (" + keyboardShortcutConfig.getKeyboardKey() + ")");
+    }
 
     /**
      * Sets the editor for the component to use.
@@ -102,7 +154,7 @@ public class InsertLinkFunction implements EditorFunction {
      */
     @Override
     public String getGroup() {
-        return ToolBarGroups.format.name();
+        return ToolBarGroups.FORMAT.name();
     }
 
     /**
@@ -124,17 +176,12 @@ public class InsertLinkFunction implements EditorFunction {
     /**
      * Keyboard trigger for the "down" key (shit, ctrl, alt, ...)
      */
-    @Override
-    public int getDownKeyMask() {
-        return KeyEvent.META_MASK;
-    }
-
     /**
-     * The keyboard trigger key code.
+     * Returns the keyboard shortcut for the function.
      */
     @Override
-    public int getKeyCode() {
-        return KeyEvent.VK_N;
+    public KeyboardKey getKeyboardShortcut() {
+        return keyboardShortcutConfig.getKeyboardKey();
     }
 
     private JPanel createLabelPanel(String text) {
@@ -157,41 +204,38 @@ public class InsertLinkFunction implements EditorFunction {
      */
     @Override
     public void perform() throws FunctionException {
-        this.inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JPanel labelPanel = new JPanel(new GridLayout(3, 1));
-        labelPanel.add(createLabelPanel("Link text:"));
-        labelPanel.add(createLabelPanel("Link URL:"));
-        labelPanel.add(createLabelPanel("Link title:"));
-        this.inputPanel.add(labelPanel);
-        JPanel textInputPanel = new JPanel(new GridLayout(3,1));
+        Color bgColor = this.editor.getGUI().getWindowFrame().getBackground();
 
+        Box vBox = Box.createVerticalBox();
+
+        JPanel linkTextPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         this.linkText = new JTextField(32);
-        if (this.editor.getEditorSelection() != null) {
-            this.linkText.setText(this.editor.getEditorSelection());
-        }
+        this.linkText.setBackground(bgColor);
+        this.linkText.setBorder(new TitledBorder("Link text:"));
+        linkTextPanel.add(this.linkText);
+        vBox.add(linkTextPanel);
+
+        JPanel linkURLPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         this.linkURL = new JTextField(32);
+        this.linkURL.setBackground(bgColor);
+        this.linkURL.setBorder(new TitledBorder("Link URL:"));
+        linkURLPanel.add(this.linkURL);
+        vBox.add(linkURLPanel);
+
+        JPanel linkTitlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         this.linkTitle = new JTextField(32);
+        this.linkTitle.setBackground(bgColor);
+        this.linkTitle.setBorder(new TitledBorder("Link title:"));
+        linkTitlePanel.add(this.linkTitle);
+        vBox.add(linkTitlePanel);
 
-        textInputPanel.add(createTextFieldPanel(this.linkText));
-        textInputPanel.add(createTextFieldPanel(this.linkURL));
-        textInputPanel.add(createTextFieldPanel(this.linkTitle));
-        this.inputPanel.add(textInputPanel);
-
+        JPanel insertCancelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton insertButton = new JButton("Insert");
-        this.inputPanel.add(insertButton);
-        JButton cancelButton = new JButton("Cancel");
-        this.inputPanel.add(cancelButton);
-
-        this.inputDialog = new JFrame("Insert image parameters");
-        this.inputDialog.setAlwaysOnTop(true);
-        Rectangle mainBounds = this.editor.getGUI().getWindowFrame().getBounds();
-        this.inputDialog.setLayout(new BorderLayout());
-        this.inputDialog.add(this.inputPanel, BorderLayout.CENTER);
-
         insertButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 inputDialog.setVisible(false);
+                linkButton.setEnabled(true);
 
                 if (linkText.getText().trim().length() > 0) {
                     editor.insertText("[" + linkText.getText() + "](" + linkURL.getText() +
@@ -204,20 +248,31 @@ public class InsertLinkFunction implements EditorFunction {
                 editor.requestEditorFocus();
             }
         });
-
+        insertCancelPanel.add(insertButton);
+        JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 inputDialog.setVisible(false);
+                linkButton.setEnabled(true);
                 editor.requestEditorFocus();
             }
         });
+        insertCancelPanel.add(cancelButton);
+        vBox.add(insertCancelPanel);
 
+        this.inputDialog = new JWindow(this.editor.getGUI().getWindowFrame());
+        this.inputDialog.setLayout(new BorderLayout());
+        vBox.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED));
+        this.inputDialog.add(vBox, BorderLayout.CENTER);
+        this.inputDialog.setSize(this.inputDialog.getPreferredSize());
+        this.linkButton.setEnabled(false);
         this.inputDialog.setVisible(true);
+        Rectangle mainBounds = this.editor.getGUI().getWindowFrame().getBounds();
+        int x = mainBounds.x + (mainBounds.width / 2) - (this.inputDialog.getWidth() / 2);
+        int y = mainBounds.y + 70;
+        this.inputDialog.setLocation(x,y);
 
-        // We don't get a correct preferred size until the window has become visible.
-        this.inputDialog.setBounds((int) mainBounds.getX(), (int) mainBounds.getY() + 70, (int) mainBounds.getWidth(),
-                (int) this.inputDialog.getPreferredSize().getHeight());
     }
 
     /**

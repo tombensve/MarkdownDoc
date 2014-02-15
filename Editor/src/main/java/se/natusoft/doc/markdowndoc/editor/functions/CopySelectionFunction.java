@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.functions;
 
 import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
+import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 
 import javax.swing.*;
@@ -78,13 +79,8 @@ public class CopySelectionFunction implements EditorFunction {
     }
 
     @Override
-    public int getDownKeyMask() {
-        return KeyEvent.META_MASK;
-    }
-
-    @Override
-    public int getKeyCode() {
-        return KeyEvent.VK_C;
+    public KeyboardKey getKeyboardShortcut() {
+        return new KeyboardKey("Meta+C");
     }
 
     @Override

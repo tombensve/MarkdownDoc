@@ -37,8 +37,14 @@
 package se.natusoft.doc.markdowndoc.editor.functions;
 
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups;
+import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider;
+import se.natusoft.doc.markdowndoc.editor.api.Configurable;
 import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 
 import javax.swing.*;
@@ -46,10 +52,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD;
+
 /**
  * This provides a function that inserts list markdown format.
  */
-public class InsertListFunction implements EditorFunction {
+public class InsertListFunction implements EditorFunction, Configurable {
     //
     // Private Members
     //
@@ -58,24 +66,63 @@ public class InsertListFunction implements EditorFunction {
     private JButton listButton;
 
     //
+    // Config
+    //
+
+    private static final KeyConfigEntry keyboardShortcutConfig =
+            new KeyConfigEntry("editor.function.insert.list.keyboard.shortcut", "Insert list keyboard shortcut",
+                    new KeyboardKey("Ctrl+L"), CONFIG_GROUP_KEYBOARD);
+
+    private ConfigChanged keyboardShortcutConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            updateTooltipText();
+        }
+    };
+
+    /**
+     * Register configurations.
+     *
+     * @param configProvider The config provider to register with.
+     */
+    @Override
+    public void registerConfigs(ConfigProvider configProvider) {
+        configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
+
+    /**
+     * Unregister configurations.
+     *
+     * @param configProvider The config provider to unregister with.
+     */
+    @Override
+    public void unregisterConfigs(ConfigProvider configProvider) {
+        configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
+
+    //
     // Constructors
     //
 
     public InsertListFunction() {
         Icon listIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddlist.png"));
         this.listButton = new JButton(listIcon);
-        listButton.setToolTipText("List (Meta-L)");
         listButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 perform();
             }
         });
+        updateTooltipText();
     }
 
     //
     // Methods
     //
+
+    private void updateTooltipText() {
+        listButton.setToolTipText("List (" + keyboardShortcutConfig.getKeyboardKey() + ")");
+    }
 
     @Override
     public void setEditor(Editor editor) {
@@ -84,7 +131,7 @@ public class InsertListFunction implements EditorFunction {
 
     @Override
     public String getGroup() {
-        return ToolBarGroups.format.name();
+        return ToolBarGroups.FORMAT.name();
     }
 
     @Override
@@ -97,14 +144,12 @@ public class InsertListFunction implements EditorFunction {
         return this.listButton;
     }
 
+    /**
+     * Returns the keyboard shortcut for the function.
+     */
     @Override
-    public int getDownKeyMask() {
-        return KeyEvent.META_MASK;
-    }
-
-    @Override
-    public int getKeyCode() {
-        return KeyEvent.VK_L;
+    public KeyboardKey getKeyboardShortcut() {
+        return keyboardShortcutConfig.getKeyboardKey();
     }
 
     @Override

@@ -36,7 +36,8 @@
  */
 package se.natusoft.doc.markdown.generator
 
-import com.itextpdf.text.*
+import com.itextpdf.text.Phrase
+import com.itextpdf.text.Document
 import com.itextpdf.text.Image as PDFImage
 import com.itextpdf.text.List as PDFList
 import com.itextpdf.text.ListItem as PDFListItem
@@ -46,7 +47,7 @@ import com.itextpdf.text.pdf.PdfContentByte
 import com.itextpdf.text.pdf.PdfPageEventHelper
 import com.itextpdf.text.pdf.PdfWriter
 import com.itextpdf.text.pdf.draw.LineSeparator
-import groovy.transform.CompileStatic
+import com.itextpdf.text.*
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.exception.GenerateException
@@ -72,7 +73,7 @@ import se.natusoft.doc.markdown.model.Strong
 import se.natusoft.doc.markdown.model.Emphasis
 import se.natusoft.doc.markdown.model.AutoLink
 
-
+import groovy.transform.CompileStatic
 
 import java.util.ArrayList as JArrayList
 import java.util.LinkedList as JLinkedList
@@ -91,49 +92,11 @@ import java.util.List as JList
  * If you try to run this in multiple threads then you need an instance per thread! This is
  * due to that some data required to do the work must be class members and not method local
  * variables. This due to rendering events needing access to them.
+ * <p/>
+ * <b>Short version:</p> Not thread safe!
  */
 @CompileStatic
 class PDFGenerator implements Generator {
-    /*
-     * A comment about this code and Groovy: Groovy supports "property access" for java bean properties.
-     * That is:
-     *
-     *     documentItems.setPageSize(pageSize)
-     *
-     * can be written as:
-     *
-     *     documentItems.pageSize = pageSize
-     *
-     * which will compile to the same thing. The problem with this however is that there is bad IDE support for
-     * Groovy. I'm using IntelliJ Idea (11.1) which has the best support, but it still sucks. It cannot handle
-     * the second syntax, complaining about not being able to assign a Rectangle to a boolean. Since I don't
-     * want annoying error marks in the IDE for code that still compiles and runs perfectly I'm avoiding that
-     * syntax.
-     *
-     * I can also add, while complaining that it is impossible to do "Step Into" in the debugger when debugging
-     * Groovy code. It will simply ignore the step into and to a step over instead. Thereby you have to set
-     * a lot of breakpoints.
-     *
-     * The biggest thing I have against Groovy is that I can code a call to a non existent method and neither
-     * the IDE nor the compiler will complain about that. It will happily compile and then fail runtime!!!!
-     * If I thought that was OK I might as well become a JavaScript developer! I could never recommend
-     * Groovy as a language to a customer. It puts higher demands on the developer. The usual setup in my
-     * experience is a few experienced developers and then fill up with cheap developers. I don't say
-     * that that setup is necessarily wrong, but with high demand languages like Groovy it will be bad
-     * and costly IMHO.
-     *
-     * I just discovered that:
-     *
-     *     Section section = new Section(title, level)
-     *
-     * which I'm doing in several places really shouldn't work since the Section constructor is protected!
-     * This however not only complies (have already determined that Groovy will more or less compile anything)
-     * but it also works! Groovy happily lets me construct a protected class like this! This of course had
-     * side effects letting me use it in way that should not be possible and it turned out at runtime it
-     * wasn't.
-     *
-     * Yes, I'm apparently blogging in code now ...
-     */
 
     //
     // Constants

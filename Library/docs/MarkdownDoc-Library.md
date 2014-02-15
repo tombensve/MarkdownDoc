@@ -68,7 +68,7 @@ it produces a document model looking like this (in markdown format):
     ...
     }
 
-This allows you to include API documentation in your documentation without having to duplicate it. Please note that if `markdownJavadoc=true` parser option have been specified then _class javadoc_ and _method javadoc_ will not be ”\>” formatted but passed to the MarkdownParser instead.
+This allows you to include API documentation in your documentation without having to duplicate it. Please note that if `markdownJavadoc=true` parser option have been specified then _class javadoc_ and _method javadoc_ will not be formatted but passed to the MarkdownParser instead.
 
 Example usage:
 
@@ -98,12 +98,12 @@ Example usage:
 
     	... parsing of document.
 
-		Generator generator = new [PDF|HTML|Markdown]Generator();
+         Generator generator = new [PDF|HTML|Markdown]Generator();
 
-		// I'm using OptionsManager to load the options in this example.
-		// If you use maven or ant then those tools will have loaded
-		// the options for you and getOptionsClass() is not relevant
-		// in that case.
+         // I'm using OptionsManager to load the options in this example.
+         // If you use maven or ant then those tools will have loaded
+         // the options for you and getOptionsClass() is not relevant
+         // in that case.
     	CommandLineOptionsManager<Options> optMgr =
         	new CommandLineOptionsManager<Options>(generator.getOptionsClass());
     	Options options = optMgr.loadOptions("--", args);
@@ -137,7 +137,7 @@ This is a class with one static method that completely handles the _.mddoc_ form
 
 Usage:
 
-	MDDocFileHandler.execute(”<path to .mddoc file>”);
+	MDDocFileHandler.execute("<path to .mddoc file>");
 	
 This will generate all output formats as specified in the .mddoc file.
 

@@ -56,17 +56,6 @@ public class DoubleConfigEntry extends ConfigEntry {
      *
      * @param key The config key.
      * @param description The description of the config.
-     * @param configGroup The config group this config belongs to.
-     */
-    public DoubleConfigEntry(String key, String description, String configGroup) {
-        super(key, description, configGroup);
-    }
-
-    /**
-     * Creates a new DoubleConfigEntry.
-     *
-     * @param key The config key.
-     * @param description The description of the config.
      * @param defaultValue The default value of the config.
      * @param min The minimum value.
      * @param max The maximum value.

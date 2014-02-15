@@ -37,8 +37,14 @@
 package se.natusoft.doc.markdowndoc.editor.functions;
 
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups;
+import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider;
+import se.natusoft.doc.markdowndoc.editor.api.Configurable;
 import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 
 import javax.swing.*;
@@ -46,10 +52,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD;
+
 /**
  * Provides a "new" function that opens a new editor window.
  */
-public class NewFunction implements EditorFunction {
+public class NewFunction implements EditorFunction, Configurable {
     //
     // Private Members
     //
@@ -58,24 +66,63 @@ public class NewFunction implements EditorFunction {
     private JButton newButton;
 
     //
+    // Config
+    //
+
+    private static final KeyConfigEntry keyboardShortcutConfig =
+            new KeyConfigEntry("editor.function.new.editor.keyboard.shortcut", "New editor keyboard shortcut",
+                    new KeyboardKey("Ctrl+N"), CONFIG_GROUP_KEYBOARD);
+
+    private ConfigChanged keyboardShortcutConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            updateTooltipText();
+        }
+    };
+
+    /**
+     * Register configurations.
+     *
+     * @param configProvider The config provider to register with.
+     */
+    @Override
+    public void registerConfigs(ConfigProvider configProvider) {
+        configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
+
+    /**
+     * Unregister configurations.
+     *
+     * @param configProvider The config provider to unregister with.
+     */
+    @Override
+    public void unregisterConfigs(ConfigProvider configProvider) {
+        configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
+
+    //
     // Constructors
     //
 
     public NewFunction() {
         Icon newIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddnew.png"));
         this.newButton = new JButton(newIcon);
-        newButton.setToolTipText("New document (Meta-N)");
         newButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 perform();
             }
         });
+        updateTooltipText();
     }
 
     //
     // Methods
     //
+
+    private void updateTooltipText() {
+        newButton.setToolTipText("New document (" + keyboardShortcutConfig.getKeyboardKey() + ")");
+    }
 
     @Override
     public void setEditor(Editor editor) {
@@ -84,7 +131,7 @@ public class NewFunction implements EditorFunction {
 
     @Override
     public String getGroup() {
-        return ToolBarGroups.file.name();
+        return ToolBarGroups.FILE.name();
     }
 
     @Override
@@ -97,14 +144,12 @@ public class NewFunction implements EditorFunction {
         return this.newButton;
     }
 
+    /**
+     * Returns the keyboard shortcut for the function.
+     */
     @Override
-    public int getDownKeyMask() {
-        return KeyEvent.META_MASK;
-    }
-
-    @Override
-    public int getKeyCode() {
-        return KeyEvent.VK_N;
+    public KeyboardKey getKeyboardShortcut() {
+        return keyboardShortcutConfig.getKeyboardKey();
     }
 
     @Override

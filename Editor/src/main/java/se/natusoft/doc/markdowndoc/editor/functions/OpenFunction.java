@@ -37,8 +37,14 @@
 package se.natusoft.doc.markdowndoc.editor.functions;
 
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups;
+import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider;
+import se.natusoft.doc.markdowndoc.editor.api.Configurable;
 import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 
 import javax.swing.*;
@@ -48,10 +54,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
+import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD;
+
 /**
  * Provides an open function.
  */
-public class OpenFunction implements EditorFunction {
+public class OpenFunction implements EditorFunction, Configurable {
     //
     // Private Members
     //
@@ -60,24 +68,63 @@ public class OpenFunction implements EditorFunction {
     private JButton openButton;
 
     //
+    // Config
+    //
+
+    private static final KeyConfigEntry keyboardShortcutConfig =
+            new KeyConfigEntry("editor.function.open.keyboard.shortcut", "Open keyboard shortcut",
+                    new KeyboardKey("Ctrl+O"), CONFIG_GROUP_KEYBOARD);
+
+    private ConfigChanged keyboardShortcutConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            updateTooltipText();
+        }
+    };
+
+    /**
+     * Register configurations.
+     *
+     * @param configProvider The config provider to register with.
+     */
+    @Override
+    public void registerConfigs(ConfigProvider configProvider) {
+        configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
+
+    /**
+     * Unregister configurations.
+     *
+     * @param configProvider The config provider to unregister with.
+     */
+    @Override
+    public void unregisterConfigs(ConfigProvider configProvider) {
+        configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
+
+    //
     // Constructors
     //
 
     public OpenFunction() {
         Icon openIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddopen.png"));
         this.openButton = new JButton(openIcon);
-        this.openButton.setToolTipText("Open (Meta-O)");
         this.openButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 perform();
             }
         });
+        updateTooltipText();
     }
 
     //
     // Methods
     //
+
+    private void updateTooltipText() {
+        this.openButton.setToolTipText("Open (Meta-O)");
+    }
 
     /**
      * Sets the editor for the function to use.
@@ -91,7 +138,7 @@ public class OpenFunction implements EditorFunction {
 
     @Override
     public String getGroup() {
-        return ToolBarGroups.file.name();
+        return ToolBarGroups.FILE.name();
     }
 
     @Override
@@ -105,13 +152,8 @@ public class OpenFunction implements EditorFunction {
     }
 
     @Override
-    public int getDownKeyMask() {
-        return KeyEvent.META_MASK;
-    }
-
-    @Override
-    public int getKeyCode() {
-        return KeyEvent.VK_O;
+    public KeyboardKey getKeyboardShortcut() {
+        return keyboardShortcutConfig.getKeyboardKey();
     }
 
     @Override
@@ -144,4 +186,5 @@ public class OpenFunction implements EditorFunction {
      * Cleanup and unregister any configs.
      */
     public void close() {}
+
 }

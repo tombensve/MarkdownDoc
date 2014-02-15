@@ -37,8 +37,14 @@
 package se.natusoft.doc.markdowndoc.editor.functions;
 
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups;
+import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider;
+import se.natusoft.doc.markdowndoc.editor.api.Configurable;
 import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 
 import javax.swing.*;
@@ -47,10 +53,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
+import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD;
+
 /**
  * Provides a save function.
  */
-public class SaveFunction implements EditorFunction {
+public class SaveFunction implements EditorFunction, Configurable {
     //
     // Private Members
     //
@@ -59,25 +67,63 @@ public class SaveFunction implements EditorFunction {
     private JButton saveButton;
 
     //
+    // Config
+    //
+
+    private static final KeyConfigEntry keyboardShortcutConfig =
+            new KeyConfigEntry("editor.function.save.keyboard.shortcut", "Save keyboard shortcut",
+                    new KeyboardKey("Ctrl+S"), CONFIG_GROUP_KEYBOARD);
+
+    private ConfigChanged keyboardShortcutConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            updateTooltipText();
+        }
+    };
+
+    /**
+     * Register configurations.
+     *
+     * @param configProvider The config provider to register with.
+     */
+    @Override
+    public void registerConfigs(ConfigProvider configProvider) {
+        configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
+
+    /**
+     * Unregister configurations.
+     *
+     * @param configProvider The config provider to unregister with.
+     */
+    @Override
+    public void unregisterConfigs(ConfigProvider configProvider) {
+        configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
+
+    //
     // Constructors
     //
 
     public SaveFunction() {
         Icon saveIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddsave.png"));
         this.saveButton = new JButton(saveIcon);
-        this.saveButton.setToolTipText("Save (Meta-S)");
         this.saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 perform();
             }
         });
-
+        updateTooltipText();
     }
 
     //
     // Methods
     //
+
+    private void updateTooltipText() {
+        this.saveButton.setToolTipText("Save (" + keyboardShortcutConfig.getKeyboardKey() + ")");
+    }
 
     /**
      * Sets the editor for the function to use.
@@ -91,7 +137,7 @@ public class SaveFunction implements EditorFunction {
 
     @Override
     public String getGroup() {
-        return ToolBarGroups.file.name();
+        return ToolBarGroups.FILE.name();
     }
 
     @Override
@@ -104,14 +150,12 @@ public class SaveFunction implements EditorFunction {
         return this.saveButton;
     }
 
+    /**
+     * Returns the keyboard shortcut for the function.
+     */
     @Override
-    public int getDownKeyMask() {
-        return KeyEvent.META_MASK;
-    }
-
-    @Override
-    public int getKeyCode() {
-        return KeyEvent.VK_S;
+    public KeyboardKey getKeyboardShortcut() {
+        return keyboardShortcutConfig.getKeyboardKey();
     }
 
     @Override

@@ -37,31 +37,75 @@
 package se.natusoft.doc.markdowndoc.editor.functions;
 
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups;
+import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider;
+import se.natusoft.doc.markdowndoc.editor.api.Configurable;
 import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 
 import javax.swing.*;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD;
+
 /**
  * This provides an "insert image" function.
  */
-public class InsertImageFunction implements EditorFunction {
+public class InsertImageFunction implements EditorFunction, Configurable {
     //
     // Private Members
     //
 
     private Editor editor;
     private JButton imageButton;
-    private JPanel inputPanel;
     private JTextField imageAltText;
     private JTextField imageURL;
     private JTextField imageTitle;
-    private JFrame inputDialog;
+    private JWindow inputDialog;
+
+    //
+    // Config
+    //
+
+    private static final KeyConfigEntry keyboardShortcutConfig =
+            new KeyConfigEntry("editor.function.insert.image.keyboard.shortcut", "Insert image keyboard shortcut",
+                    new KeyboardKey("Ctrl+M"), CONFIG_GROUP_KEYBOARD);
+
+    private ConfigChanged keyboardShortcutConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            updateTooltipText();
+        }
+    };
+
+    /**
+     * Register configurations.
+     *
+     * @param configProvider The config provider to register with.
+     */
+    @Override
+    public void registerConfigs(ConfigProvider configProvider) {
+        configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
+
+    /**
+     * Unregister configurations.
+     *
+     * @param configProvider The config provider to unregister with.
+     */
+    @Override
+    public void unregisterConfigs(ConfigProvider configProvider) {
+        configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
 
     //
     // Constructors
@@ -70,19 +114,22 @@ public class InsertImageFunction implements EditorFunction {
     public InsertImageFunction() {
         Icon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddimg.png"));
         this.imageButton = new JButton(imageIcon);
-        imageButton.setToolTipText("Image (Meta-M)");
         imageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 perform();
             }
         });
-
+        updateTooltipText();
     }
 
     //
     // Methods
     //
+
+    private void updateTooltipText() {
+        imageButton.setToolTipText("Image (" + keyboardShortcutConfig.getKeyboardKey() + ")");
+    }
 
     /**
      * Sets the editor for the component to use.
@@ -100,7 +147,7 @@ public class InsertImageFunction implements EditorFunction {
      */
     @Override
     public String getGroup() {
-        return ToolBarGroups.format.name();
+        return ToolBarGroups.FORMAT.name();
     }
 
     /**
@@ -120,19 +167,11 @@ public class InsertImageFunction implements EditorFunction {
     }
 
     /**
-     * Keyboard trigger for the "down" key (shit, ctrl, alt, ...)
+     * Returns the keyboard shortcut for the function.
      */
     @Override
-    public int getDownKeyMask() {
-        return KeyEvent.META_MASK;
-    }
-
-    /**
-     * The keyboard trigger key code.
-     */
-    @Override
-    public int getKeyCode() {
-        return KeyEvent.VK_M;
+    public KeyboardKey getKeyboardShortcut() {
+        return keyboardShortcutConfig.getKeyboardKey();
     }
 
     private JPanel createLabelPanel(String text) {
@@ -155,17 +194,22 @@ public class InsertImageFunction implements EditorFunction {
      */
     @Override
     public void perform() throws FunctionException {
-        this.inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JPanel labelPanel = new JPanel(new GridLayout(3, 1));
-        labelPanel.add(createLabelPanel("Alt text:"));
-        labelPanel.add(createLabelPanel("Image URL:"));
-        labelPanel.add(createLabelPanel("Title:"));
-        this.inputPanel.add(labelPanel);
-        JPanel textInputPanel = new JPanel(new GridLayout(3,1));
+        Color bgColor = this.editor.getGUI().getWindowFrame().getBackground();
 
+        Box vBox = Box.createVerticalBox();
+
+        JPanel altTextPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         this.imageAltText = new JTextField(32);
+        this.imageAltText.setBackground(bgColor);
+        this.imageAltText.setBorder(new TitledBorder("Alt text:"));
+        altTextPanel.add(this.imageAltText);
+        vBox.add(altTextPanel);
+
+        JPanel imageUrlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         this.imageURL = new JTextField(25);
-        JPanel imageUrlPanel = createTextFieldPanel(this.imageURL);
+        this.imageURL.setBackground(bgColor);
+        this.imageURL.setBorder(new TitledBorder("Image URL:"));
+        imageUrlPanel.add(this.imageURL);
         JButton fileSelectButton = new JButton("...");
         fileSelectButton.addActionListener(new ActionListener() {
             @Override
@@ -173,7 +217,7 @@ public class InsertImageFunction implements EditorFunction {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
                 int returnVal = fileChooser.showOpenDialog(editor.getGUI().getWindowFrame());
-                if(returnVal == JFileChooser.APPROVE_OPTION) {
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
                     imageURL.setText("file:" + fileChooser.getSelectedFile());
                     inputDialog.requestFocus();
                 }
@@ -181,47 +225,52 @@ public class InsertImageFunction implements EditorFunction {
             }
         });
         imageUrlPanel.add(fileSelectButton);
+        vBox.add(imageUrlPanel);
+
+        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         this.imageTitle = new JTextField(32);
+        this.imageTitle.setBackground(bgColor);
+        this.imageTitle.setBorder(new TitledBorder("Image title:"));
+        titlePanel.add(this.imageTitle);
+        vBox.add(titlePanel);
 
-        textInputPanel.add(createTextFieldPanel(this.imageAltText));
-        textInputPanel.add(imageUrlPanel);
-        textInputPanel.add(createTextFieldPanel(this.imageTitle));
-        this.inputPanel.add(textInputPanel);
-
+        JPanel insertCancelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton insertButton = new JButton("Insert");
-        this.inputPanel.add(insertButton);
-        JButton cancelButton = new JButton("Cancel");
-        this.inputPanel.add(cancelButton);
-
-        this.inputDialog = new JFrame("Insert image parameters");
-        this.inputDialog.setAlwaysOnTop(true);
-        Rectangle mainBounds = this.editor.getGUI().getWindowFrame().getBounds();
-        this.inputDialog.setLayout(new BorderLayout());
-        this.inputDialog.add(this.inputPanel, BorderLayout.CENTER);
-
         insertButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 inputDialog.setVisible(false);
+                imageButton.setEnabled(true);
                 editor.insertText("![" + imageAltText.getText() + "](" +
                         imageURL.getText() +
                         (imageTitle.getText().trim().length() > 0 ? " \"" + imageTitle.getText() + "\"" : "") + ") ");
                 editor.requestEditorFocus();
             }
         });
-
+        insertCancelPanel.add(insertButton);
+        JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 inputDialog.setVisible(false);
+                imageButton.setEnabled(true);
                 editor.requestEditorFocus();
             }
         });
+        insertCancelPanel.add(cancelButton);
+        vBox.add(insertCancelPanel);
 
+        this.inputDialog = new JWindow(this.editor.getGUI().getWindowFrame());
+        this.inputDialog.setLayout(new BorderLayout());
+        vBox.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED));
+        this.inputDialog.add(vBox, BorderLayout.CENTER);
+        this.inputDialog.setSize(this.inputDialog.getPreferredSize());
+        this.imageButton.setEnabled(false);
         this.inputDialog.setVisible(true);
-
-        // We don't get a correct preferred size until the window has become visible.
-        this.inputDialog.setBounds((int) mainBounds.getX(), (int) mainBounds.getY() + 70, (int) mainBounds.getWidth(), (int) this.inputDialog.getPreferredSize().getHeight());
+        Rectangle mainBounds = this.editor.getGUI().getWindowFrame().getBounds();
+        int x = mainBounds.x + (mainBounds.width / 2) - (this.inputDialog.getWidth() / 2);
+        int y = mainBounds.y + 70;
+        this.inputDialog.setLocation(x,y);
     }
 
     /**

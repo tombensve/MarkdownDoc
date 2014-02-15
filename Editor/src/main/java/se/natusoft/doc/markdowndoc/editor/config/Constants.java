@@ -44,5 +44,6 @@ public class Constants {
     public static final String CONFIG_GROUP_EDITING = "Editing";
     public static final String CONFIG_GROUP_TOOL = "Tool";
     public static final String CONFIG_GROUP_PREVIEW = "Preview";
+    public static final String CONFIG_GROUP_KEYBOARD = "Keyboard";
 
 }

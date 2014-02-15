@@ -47,30 +47,24 @@ import se.natusoft.doc.markdown.model.Doc;
 import se.natusoft.doc.markdown.parser.MarkdownParser;
 import se.natusoft.doc.markdowndoc.editor.MDECaret;
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups;
-import se.natusoft.doc.markdowndoc.editor.api.Editor;
-import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
-import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged;
-import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry;
-import se.natusoft.doc.markdowndoc.editor.config.DoubleConfigEntry;
-import se.natusoft.doc.markdowndoc.editor.config.ValidSelectionConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.api.*;
+import se.natusoft.doc.markdowndoc.editor.config.*;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 
 import javax.swing.*;
 import javax.swing.text.html.HTMLEditorKit;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.io.*;
 import java.util.Properties;
 
+import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD;
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_PREVIEW;
 
 /**
  * This provides formatted markdown preview function.
  */
-public class PreviewFunction implements EditorFunction, KeyListener {
+public class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMotionProvider, Configurable {
 
     //
     // Private Members
@@ -82,17 +76,21 @@ public class PreviewFunction implements EditorFunction, KeyListener {
     private boolean enabled = false;
 
     //
-    // Configs
+    // Config
     //
+
+    private static final KeyConfigEntry keyboardShortcutConfig =
+            new KeyConfigEntry("editor.function.preview.keyboard.shortcut", "Preview keyboard shortcut",
+                    new KeyboardKey("Ctrl+V"), CONFIG_GROUP_KEYBOARD);
 
     private static ValidSelectionConfigEntry fontConfig =
             new ValidSelectionConfigEntry("preview.pane.font", "The preview font to use.", "Helvetica",
                     new ValidSelectionConfigEntry.ValidValues() {
                         @Override
-                        public String[] validValues() {
+                        public ValidSelectionConfigEntry.Value[] validValues() {
                             GraphicsEnvironment gEnv = GraphicsEnvironment
                                     .getLocalGraphicsEnvironment();
-                            return gEnv.getAvailableFontFamilyNames();
+                            return ValidSelectionConfigEntry.convertToValues(gEnv.getAvailableFontFamilyNames());
                         }
                     },
                     CONFIG_GROUP_PREVIEW
@@ -102,16 +100,19 @@ public class PreviewFunction implements EditorFunction, KeyListener {
     private static DoubleConfigEntry fontSizeConfig =
             new DoubleConfigEntry("preview.pane.font.size", "The size of the preview font.", 16.0, 8.0, 50.0, CONFIG_GROUP_PREVIEW);
 
-    //
-    // Config callbacks
-    //
+    private ConfigChanged keyboardShortcutConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            updateTooltipText();
+        }
+    };
 
     private ConfigChanged fontConfigChanged = new ConfigChanged() {
         @Override
         public void configChanged(ConfigEntry ce) {
             ((HTMLEditorKit) preview.getEditorKit()).getStyleSheet().addRule(
                     "body {font-family: " + ce.getValue() + "; font-size: " +
-                            PreviewFunction.this.fontSizeConfig.getValue() +
+                            JEditorPanePreviewFunction.this.fontSizeConfig.getValue() +
                             "; margin-left: 50; margin-right:50; margin-top:50; margin-bottom:50; }");
             SwingUtilities.updateComponentTreeUI(preview);
         }
@@ -121,24 +122,47 @@ public class PreviewFunction implements EditorFunction, KeyListener {
         @Override
         public void configChanged(ConfigEntry ce) {
             ((HTMLEditorKit) preview.getEditorKit()).getStyleSheet().addRule(
-                    "body {font-family: " + PreviewFunction.this.fontConfig.getValue() + "; font-size: " +
+                    "body {font-family: " + JEditorPanePreviewFunction.this.fontConfig.getValue() + "; font-size: " +
                             ce.getValue() + "; margin-left: 50; margin-right:50; margin-top:50; margin-bottom:50; }");
             SwingUtilities.updateComponentTreeUI(preview);
         }
     };
 
+    /**
+     * Register configurations.
+     *
+     * @param configProvider The config provider to register with.
+     */
+    @Override
+    public void registerConfigs(ConfigProvider configProvider) {
+        configProvider.registerConfig(keyboardShortcutConfig, this.keyboardShortcutConfigChanged);
+        configProvider.registerConfig(fontConfig, this.fontConfigChanged);
+        configProvider.registerConfig(fontSizeConfig, this.fontSizeConfigChanged);
+    }
+
+    /**
+     * Unregister configurations.
+     *
+     * @param configProvider The config provider to unregister with.
+     */
+    @Override
+    public void unregisterConfigs(ConfigProvider configProvider) {
+        configProvider.unregisterConfig(keyboardShortcutConfig, this.keyboardShortcutConfigChanged);
+        configProvider.unregisterConfig(fontConfig, this.fontConfigChanged);
+        configProvider.unregisterConfig(fontSizeConfig, this.fontSizeConfigChanged);
+    }
+
     //
     // Constructors
     //
 
-    public PreviewFunction() {
+    public JEditorPanePreviewFunction() {
         Icon previewIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddpreview.png"));
         this.previewButton = new JToggleButton(previewIcon);
-        this.previewButton.setToolTipText("Preview (Meta-P)");
         this.previewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                PreviewFunction.this.enabled = !PreviewFunction.this.previewButton.isSelected();
+                JEditorPanePreviewFunction.this.enabled = !JEditorPanePreviewFunction.this.previewButton.isSelected();
                 perform();
             }
         });
@@ -157,11 +181,16 @@ public class PreviewFunction implements EditorFunction, KeyListener {
             }
         });
 
+        updateTooltipText();
     }
 
     //
     // Methods
     //
+
+    private void updateTooltipText() {
+        this.previewButton.setToolTipText("Preview (" + keyboardShortcutConfig.getKeyboardKey() + ")");
+    }
 
     /**
      *  This will format and show the dropped file assuming it is a markdown file.
@@ -203,20 +232,15 @@ public class PreviewFunction implements EditorFunction, KeyListener {
     @Override
     public void setEditor(Editor editor) {
         this.editor = editor;
-
-        this.editor.getConfigProvider().registerConfig(fontConfig, this.fontConfigChanged);
-        this.editor.getConfigProvider().registerConfig(fontSizeConfig, this.fontSizeConfigChanged);
     }
 
     @Override
     public void close() {
-        this.editor.getConfigProvider().unregisterConfig(fontConfig, this.fontConfigChanged);
-        this.editor.getConfigProvider().unregisterConfig(fontSizeConfig, this.fontSizeConfigChanged);
     }
 
     @Override
     public String getGroup() {
-        return ToolBarGroups.preview.name();
+        return ToolBarGroups.PREVIEW.name();
     }
 
     @Override
@@ -229,14 +253,12 @@ public class PreviewFunction implements EditorFunction, KeyListener {
         return this.previewButton;
     }
 
+    /**
+     * Returns the keyboard shortcut for the function.
+     */
     @Override
-    public int getDownKeyMask() {
-        return KeyEvent.META_MASK;
-    }
-
-    @Override
-    public int getKeyCode() {
-        return KeyEvent.VK_P;
+    public KeyboardKey getKeyboardShortcut() {
+        return keyboardShortcutConfig.getKeyboardKey();
     }
 
     @Override
@@ -256,7 +278,7 @@ public class PreviewFunction implements EditorFunction, KeyListener {
     private void previewOff() {
         this.editor.showEditorComponent();
 
-        this.editor.enableToolBarGroup(ToolBarGroups.format.name());
+        this.editor.enableToolBarGroup(ToolBarGroups.FORMAT.name());
     }
 
     private void previewOn() {
@@ -270,7 +292,7 @@ public class PreviewFunction implements EditorFunction, KeyListener {
 
             this.editor.showOtherComponent(this.preview);
 
-            this.editor.disableToolBarGroup(ToolBarGroups.format.name());
+            this.editor.disableToolBarGroup(ToolBarGroups.FORMAT.name());
 
             this.preview.requestFocus();
         } catch (Exception e) {
@@ -313,16 +335,36 @@ public class PreviewFunction implements EditorFunction, KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
+        ((KeyListener)this.editor).keyTyped(e);
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getModifiers() == KeyEvent.META_MASK && e.getKeyCode() == KeyEvent.VK_P) {
-            perform();
-        }
+        ((KeyListener)this.editor).keyPressed(e);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        ((KeyListener)this.editor).keyReleased(e);
+    }
+
+    /**
+     * Adds a mouse motion listener to receive mouse motion events.
+     *
+     * @param listener The listener to add.
+     */
+    @Override
+    public void addMouseMotionListener(MouseMotionListener listener) {
+        this.preview.addMouseMotionListener(listener);
+    }
+
+    /**
+     * Removes a mouse motion listener.
+     *
+     * @param listener The listener to remove.
+     */
+    @Override
+    public void removeMouseMotionListener(MouseMotionListener listener) {
+        this.preview.removeMouseMotionListener(listener);
     }
 }

@@ -37,8 +37,14 @@
 package se.natusoft.doc.markdowndoc.editor.functions;
 
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups;
+import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider;
+import se.natusoft.doc.markdowndoc.editor.api.Configurable;
 import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 
 import javax.swing.*;
@@ -46,10 +52,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD;
+
 /**
  * Provides an insert heading function.
  */
-public class InsertHeadingFunction implements EditorFunction {
+public class InsertHeadingFunction implements EditorFunction, Configurable {
     //
     // Private Members
     //
@@ -58,24 +66,63 @@ public class InsertHeadingFunction implements EditorFunction {
     private JButton headerButton;
 
     //
+    // Config
+    //
+
+    private static final KeyConfigEntry keyboardShortcutConfig =
+            new KeyConfigEntry("editor.function.format.heading.keyboard.shortcut", "Heading format keyboard shortcut",
+                    new KeyboardKey("Ctrl+T"), CONFIG_GROUP_KEYBOARD);
+
+    private ConfigChanged keyboardShortcutConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            updateTooltipText();
+        }
+    };
+
+    /**
+     * Register configurations.
+     *
+     * @param configProvider The config provider to register with.
+     */
+    @Override
+    public void registerConfigs(ConfigProvider configProvider) {
+        configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
+
+    /**
+     * Unregister configurations.
+     *
+     * @param configProvider The config provider to unregister with.
+     */
+    @Override
+    public void unregisterConfigs(ConfigProvider configProvider) {
+        configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
+
+    //
     // Constructors
     //
 
     public InsertHeadingFunction() {
         Icon headingIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddheading.png"));
         this.headerButton = new JButton(headingIcon);
-        headerButton.setToolTipText("Heading (Meta-T)");
         headerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 perform();
             }
         });
+        updateTooltipText();
     }
 
     //
     // Methods
     //
+
+    private void updateTooltipText() {
+        headerButton.setToolTipText("Heading (" + keyboardShortcutConfig.getKeyboardKey() + ")");
+    }
 
     @Override
     public void setEditor(Editor editor) {
@@ -84,7 +131,7 @@ public class InsertHeadingFunction implements EditorFunction {
 
     @Override
     public String getGroup() {
-        return ToolBarGroups.format.name();
+        return ToolBarGroups.FORMAT.name();
     }
 
     @Override
@@ -97,14 +144,12 @@ public class InsertHeadingFunction implements EditorFunction {
         return this.headerButton;
     }
 
+    /**
+     * Returns the keyboard shortcut for the function.
+     */
     @Override
-    public int getDownKeyMask() {
-        return KeyEvent.META_MASK;
-    }
-
-    @Override
-    public int getKeyCode() {
-        return KeyEvent.VK_T;
+    public KeyboardKey getKeyboardShortcut() {
+        return keyboardShortcutConfig.getKeyboardKey();
     }
 
     @Override

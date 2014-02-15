@@ -45,12 +45,22 @@ import java.io.IOException;
 /**
  * This is passed to EditorFunction.perform(...).
  */
-public interface Editor {
+public interface Editor extends MouseMotionProvider {
 
     /**
      * Returns the editor GUI API.
      */
     GUI getGUI();
+
+    /**
+     * Returns the top margin.
+     */
+    int getTopMargin();
+
+    /**
+     * Returns the width of the editor.
+     */
+    int getWidth();
 
     /**
      * Returns the config API.
@@ -214,6 +224,5 @@ public interface Editor {
      * @throws IOException
      */
     public void save() throws IOException;
-
 
 }

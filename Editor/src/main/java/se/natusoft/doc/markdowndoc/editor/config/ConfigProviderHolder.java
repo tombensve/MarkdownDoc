@@ -98,7 +98,7 @@ public class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntr
             configChangedEntries = new LinkedList<ConfigChanged>();
             this.configChangedCallbacks.put(configEntry, configChangedEntries);
         }
-        if (!configChangedEntries.contains(configChanged)) {
+        if (configChanged != null && !configChangedEntries.contains(configChanged)) {
             configChangedEntries.add(configChanged);
         }
     }
@@ -112,7 +112,7 @@ public class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntr
     @Override
     public void unregisterConfig(ConfigEntry configEntry, ConfigChanged configChanged) {
         List<ConfigChanged> configChangedEntries = this.configChangedCallbacks.get(configEntry);
-        if (configChangedEntries != null) {
+        if (configChangedEntries != null && configChanged != null) {
             configChangedEntries.remove(configChanged);
         }
     }

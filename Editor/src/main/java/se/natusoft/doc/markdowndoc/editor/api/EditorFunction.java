@@ -36,6 +36,7 @@
  */
 package se.natusoft.doc.markdowndoc.editor.api;
 
+import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 
 import javax.swing.*;
@@ -62,14 +63,9 @@ public interface EditorFunction extends EditorComponent {
     JComponent getToolBarButton();
 
     /**
-     * Keyboard trigger for the "down" key (shit, ctrl, alt, ...)
+     * Returns the keyboard shortcut for triggering the function via keyboard.
      */
-    int getDownKeyMask();
-
-    /**
-     * The keyboard trigger key code.
-     */
-    int getKeyCode();
+    KeyboardKey getKeyboardShortcut();
 
     /**
      * Performs the function.

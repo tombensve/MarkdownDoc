@@ -69,6 +69,11 @@ public interface GUI {
     JPanel getRightPanel();
 
     /**
+     * Returns the editor panel. A toolbar can for example be added here!
+     */
+    JPanel getEditorPanel();
+
+    /**
      * Returns the styler for the editor.
      */
     JTextComponentStyler getStyler();

@@ -45,6 +45,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  * Manages and edits one ConfigEntry.
@@ -54,9 +56,14 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
     // Private Members
     //
 
+    /** The edited config entry.  */
     private ConfigEntry configEntry;
 
+    /** The settings window. */
     private JFrame parent;
+
+    /** The minimum width. */
+    private int minWidth = 100;
 
     //
     // Constructors
@@ -69,7 +76,7 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
         setLayout(new GridLayout(1,1));
 
         if (this.configEntry instanceof BooleanConfigEntry) {
-            setupBooleanConfigEntry((BooleanConfigEntry)configEntry);
+            setupBooleanConfigEntry((BooleanConfigEntry) configEntry);
         }
         else if (this.configEntry instanceof ValidSelectionConfigEntry) {
             setupValidSelectionConfigEntry((ValidSelectionConfigEntry) configEntry);
@@ -81,7 +88,10 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
             setupDoubleConfigEntry((DoubleConfigEntry) configEntry);
         }
         else if (this.configEntry instanceof IntegerConfigEntry) {
-            setupIntegerConfigEntry((IntegerConfigEntry)configEntry);
+            setupIntegerConfigEntry((IntegerConfigEntry) configEntry);
+        }
+        else if (this.configEntry instanceof KeyConfigEntry) {
+            setupKeyboardKeyConfigEntry((KeyConfigEntry) configEntry);
         }
         else {
             setupDefaultConfigEntry(configEntry);
@@ -90,12 +100,8 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
         TitledBorder border = new TitledBorder(configEntry.getDescription());
         setBorder(border);
 
-//        // This for some strange reason works much better than passing the whole
-//        // description string to fm.stringWidth(...) which returns a far to small
-//        // result!
-//        FontMetrics fm = getFontMetrics(getFont());
-//        int widthOfX = fm.stringWidth("x");
-//        minWidth = configEntry.getDescription().length() * widthOfX;
+        FontMetrics fm = getFontMetrics(getFont());
+        minWidth = fm.stringWidth(configEntry.getDescription()) + 30;
     }
 
     //
@@ -119,9 +125,27 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
         else if (this.configEntry instanceof IntegerConfigEntry) {
             refreshIntegerConfigEntry((IntegerConfigEntry) configEntry);
         }
+        else if (this.configEntry instanceof KeyConfigEntry) {
+            refreshKeyboardKeyConfigEntry(configEntry);
+        }
         else {
             refreshDefaultConfigEntry(configEntry);
         }
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        Dimension preferredSize = super.getPreferredSize();
+        if (preferredSize.width < this.minWidth) {
+            preferredSize.width = minWidth;
+        }
+
+        return preferredSize;
+    }
+
+    @Override
+    public Dimension getMinimumSize() {
+        return getPreferredSize();
     }
 
     // ------ Boolean ConfigProvider Entry ------
@@ -144,17 +168,18 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
 
     // ------ Valid Selection ConfigProvider Entry ------
 
-    JComboBox<String> comboBox;
+    JComboBox<ValidSelectionConfigEntry.Value> comboBox;
 
     private void setupValidSelectionConfigEntry(ValidSelectionConfigEntry configEntry) {
         this.comboBox = new JComboBox<>(configEntry.getValidValues());
+        //this.comboBox.setToolTipText(configEntry.getDescription());
         add(this.comboBox);
         this.comboBox.addActionListener(this);
         refreshValidSelectionConfigEntry(configEntry);
     }
 
     private void refreshValidSelectionConfigEntry(ValidSelectionConfigEntry configEntry) {
-        this.comboBox.setSelectedItem(configEntry.getValue());
+        this.comboBox.setSelectedItem(new ValidSelectionConfigEntry.Value(configEntry.getShowValue()));
     }
 
     // ------ Color ConfigProvider Entry -------
@@ -272,13 +297,51 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
         this.intSpinner.setValue(configEntry.getIntValue());
     }
 
+    // ------ KeyboardKey ConfigProvider Entry ------
+
+    private JTextField keyboardKeyField;
+    private KeyEvent keyPressedEvent;
+
+    private void setupKeyboardKeyConfigEntry(final KeyConfigEntry configEntry) {
+        this.keyboardKeyField = new JTextField();
+        //this.keyboardKeyField.setEditable(false);
+        JPanel panel = new JPanel(new GridLayout(1,1));
+        panel.add(this.keyboardKeyField);
+        add(panel);
+        this.keyboardKeyField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                keyPressedEvent = e;
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                KeyboardKey keyboardKey = new KeyboardKey(keyPressedEvent);
+                System.out.println("Setting: " + keyboardKey);
+                keyboardKeyField.setText(keyboardKey.toString());
+                configEntry.setKeyboardKey(keyboardKey);
+            }
+        });
+        refreshKeyboardKeyConfigEntry(configEntry);
+    }
+
+    private void refreshKeyboardKeyConfigEntry(ConfigEntry configEntry) {
+        this.keyboardKeyField.setText(configEntry.getValue());
+    }
+
     // ------ Default ConfigProvider Entry ------
 
     private JTextField textField;
 
     private void setupDefaultConfigEntry(ConfigEntry configEntry) {
         this.textField = new JTextField();
-        add(this.textField);
+        JPanel panel = new JPanel(new FlowLayout());
+        panel.add(this.textField);
+        add(panel);
         this.textField.addActionListener(this);
         refreshDefaultConfigEntry(configEntry);
     }
@@ -294,7 +357,12 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof JComboBox) {
             JComboBox comboBox = (JComboBox)e.getSource();
-            this.configEntry.setValue(comboBox.getSelectedItem().toString());
+            if (comboBox.getSelectedItem() instanceof ValidSelectionConfigEntry.Value) {
+                this.configEntry.setValue(((ValidSelectionConfigEntry.Value)comboBox.getSelectedItem()).getUse());
+            }
+            else {
+                this.configEntry.setValue(comboBox.getSelectedItem().toString());
+            }
         }
         else if (e.getSource() instanceof JCheckBox) {
             JCheckBox checkBox = (JCheckBox)e.getSource();
@@ -304,4 +372,5 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
             this.configEntry.setValue(e.getActionCommand());
         }
     }
+
 }

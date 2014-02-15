@@ -41,25 +41,33 @@ import se.natusoft.doc.markdown.exception.GenerateException;
 import se.natusoft.doc.markdown.generator.HTMLGenerator;
 import se.natusoft.doc.markdown.generator.options.HTMLGeneratorOptions;
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups;
+import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider;
+import se.natusoft.doc.markdowndoc.editor.api.Configurable;
 import se.natusoft.doc.markdowndoc.editor.api.Editor;
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 
 import javax.swing.*;
+import javax.swing.border.SoftBevelBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.LinkedList;
 
+import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD;
+
 /**
  * Provides a function that exports to HTML.
  */
-public class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunction {
+public class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunction, Configurable {
     //
     // Constants
     //
@@ -80,7 +88,47 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
     // The following are referenced from GUI callbacks and thus must be part of the instance.
 
     /** The PDF meta data / options dialog. */
-    private JFrame htmlMetaDataDialog = null;
+    private JWindow htmlMetaDataDialog = null;
+
+    //
+    // Config
+    //
+
+    private static final KeyConfigEntry keyboardShortcutConfig =
+            new KeyConfigEntry("editor.function.export.html.keyboard.shortcut", "Export HTML keyboard shortcut",
+                    new KeyboardKey("Ctrl+H"), CONFIG_GROUP_KEYBOARD);
+
+    private ConfigChanged keyboardShortcutConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            updateTooltipText();
+        }
+    };
+
+    /**
+     * Register configurations.
+     *
+     * @param configProvider The config provider to register with.
+     */
+    @Override
+    public void registerConfigs(ConfigProvider configProvider) {
+        configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
+
+    /**
+     * Unregister configurations.
+     *
+     * @param configProvider The config provider to unregister with.
+     */
+    @Override
+    public void unregisterConfigs(ConfigProvider configProvider) {
+        configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged);
+    }
+
+
+    //
+    // Inner Classes
+    //
 
     /**
      * This holds components that will be added to the htmlMetaDataDialog in perform().
@@ -96,7 +144,7 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
          * Initializes the exportDataValues list with all the fields
          * for easier dynamic access.
          */
-        private void loadPDFDataValues() {
+        private void loadHTMLDataValues() {
             exportDataValues = new LinkedList<ExportDataValue>();
             for (Field field : HTMLData.class.getDeclaredFields()) {
                 if (field.getType() == ExportDataValue.class) {
@@ -120,18 +168,22 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
         super(GENERATED_HTML_FILE);
         Icon htmlIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddhtml.png"));
         this.htmlButton = new JButton(htmlIcon);
-        htmlButton.setToolTipText("Export as HTML (Ctrl-H)");
         htmlButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 perform();
             }
         });
+        updateTooltipText();
     }
 
     //
     // Methods
     //
+
+    private void updateTooltipText() {
+        htmlButton.setToolTipText("Export as HTML (" + keyboardShortcutConfig.getKeyboardKey() + ")");
+    }
 
     @Override
     public void setEditor(Editor editor) {
@@ -140,7 +192,7 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
 
     @Override
     public String getGroup() {
-        return ToolBarGroups.export.name();
+        return ToolBarGroups.EXPORT.name();
     }
 
     @Override
@@ -149,18 +201,13 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
     }
 
     @Override
+    public KeyboardKey getKeyboardShortcut() {
+        return keyboardShortcutConfig.getKeyboardKey();
+    }
+
+    @Override
     public JComponent getToolBarButton() {
         return this.htmlButton;
-    }
-
-    @Override
-    public int getDownKeyMask() {
-        return KeyEvent.CTRL_MASK;
-    }
-
-    @Override
-    public int getKeyCode() {
-        return KeyEvent.VK_H;
     }
 
     /**
@@ -173,17 +220,23 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
         this.exportFile = getExportOutputFile("HTML", "html", "html", "htm");
 
         if (this.exportFile != null) {
-            this.htmlMetaDataDialog = new JFrame("PDF document data");
+            this.htmlMetaDataDialog = new JWindow(this.editor.getGUI().getWindowFrame());
             this.htmlMetaDataDialog.setLayout(new BorderLayout());
 
-            this.htmlData.loadPDFDataValues();
+            JPanel borderPanel = new JPanel(new BorderLayout());
+            borderPanel.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED));
+            this.htmlMetaDataDialog.add(borderPanel, BorderLayout.CENTER);
+
+            this.htmlData.loadHTMLDataValues();
+            this.htmlData.setBackgroundColor(this.editor.getGUI().getWindowFrame().getBackground());
 
             JPanel dataLabelPanel = new JPanel(new GridLayout(this.htmlData.exportDataValues.size(),1));
-            this.htmlMetaDataDialog.add(dataLabelPanel, BorderLayout.WEST);
+            borderPanel.add(dataLabelPanel, BorderLayout.WEST);
 
             JPanel dataValuePanel = new JPanel(new GridLayout(this.htmlData.exportDataValues.size(),1));
-            this.htmlMetaDataDialog.add(dataValuePanel, BorderLayout.CENTER);
+            borderPanel.add(dataValuePanel, BorderLayout.CENTER);
 
+            borderPanel.add(Box.createRigidArea(new Dimension(12, 12)), BorderLayout.EAST);
 
             for (ExportDataValue exportDataValue : this.htmlData.exportDataValues) {
                 dataLabelPanel.add(exportDataValue.label);
@@ -209,7 +262,7 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
             });
             buttonPanel.add(cancelButton);
 
-            this.htmlMetaDataDialog.add(buttonPanel, BorderLayout.SOUTH);
+            borderPanel.add(buttonPanel, BorderLayout.SOUTH);
 
             // Set initial values to last saved values for the specified file.
             if (this.editor.getCurrentFile() != null) {
@@ -217,12 +270,13 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
             }
 
             this.htmlMetaDataDialog.setVisible(true);
-            this.htmlMetaDataDialog.setBounds(
-                    this.editor.getGUI().getWindowFrame().getX() + 40,
-                    this.editor.getGUI().getWindowFrame().getY() + 40,
-                    (int) this.htmlMetaDataDialog.getPreferredSize().getWidth(),
-                    (int) this.htmlMetaDataDialog.getPreferredSize().getHeight()
-            );
+            this.htmlMetaDataDialog.setSize(this.htmlMetaDataDialog.getPreferredSize());
+
+            Rectangle mainBounds = this.editor.getGUI().getWindowFrame().getBounds();
+            int x = mainBounds.x + (mainBounds.width / 2) - (this.htmlMetaDataDialog.getWidth() / 2);
+            int y = mainBounds.y + 70;
+            this.htmlMetaDataDialog.setLocation(x, y);
+
         }
     }
 
