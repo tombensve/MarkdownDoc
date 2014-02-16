@@ -41,6 +41,7 @@ import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
 import se.natusoft.doc.markdowndoc.editor.api.ToolBar;
 
 import javax.swing.*;
+import javax.swing.border.SoftBevelBorder;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -165,15 +166,19 @@ public class SinglePopupToolbar implements ToolBar {
 
         if (create) {
             this.toolBarWindow = new JWindow(parent);
-            this.toolBarWindow.setLayout(new FlowLayout(FlowLayout.LEFT));
+            this.toolBarWindow.setLayout(new BorderLayout());
+            JPanel panel = new JPanel();
+            panel.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED));
+            this.toolBarWindow.add(panel, BorderLayout.CENTER);
+            panel.setLayout(new FlowLayout(FlowLayout.LEFT));
             boolean separator = false;
             for (String group : this.toolBarGroups) {
                 if (separator) {
-                    this.toolBarWindow.add(new JToolBar.Separator());
+                    panel.add(new JToolBar.Separator());
                 }
                 for (EditorFunction editorFunction : this.functions.get(group)) {
                     JComponent toolbarButton = editorFunction.getToolBarButton();
-                    this.toolBarWindow.add(toolbarButton);
+                    panel.add(toolbarButton);
                 }
                 separator = true;
             }
