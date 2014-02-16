@@ -190,7 +190,7 @@
       <file leaf-file-name="settings.xml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$USER_HOME$/.m2/settings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="97" column="62" selection-start="3607" selection-end="3647" vertical-scroll-proportion="0.65941346" vertical-offset="758" max-vertical-offset="1845">
+            <state line="58" column="3" selection-start="2415" selection-end="2415" vertical-scroll-proportion="0.20934579" vertical-offset="758" max-vertical-offset="1845">
               <folding />
             </state>
           </provider>
@@ -2556,7 +2556,7 @@
       <workItem from="1390907889503" duration="2862000" />
       <workItem from="1390999717410" duration="79670000" />
       <workItem from="1391800292463" duration="78533000" />
-      <workItem from="1392542373331" duration="16300000" />
+      <workItem from="1392542373331" duration="16603000" />
     </task>
     <task id="LOCAL-00001" summary="First version.">
       <created>1353260479163</created>
@@ -2877,7 +2877,11 @@
       <created>1392571229056</created>
       <updated>1392571229056</updated>
     </task>
-    <option name="localTasksCounter" value="80" />
+    <task id="LOCAL-00080" summary="Updated README.md pointing out bintray JCentral for maven artifact availability.&#10;&#10;">
+      <created>1392572877399</created>
+      <updated>1392572877399</updated>
+    </task>
+    <option name="localTasksCounter" value="81" />
     <servers>
       <GitHub shared="false" url="">
         <commitMessageFormat>{id} {summary}</commitMessageFormat>
@@ -2895,7 +2899,7 @@
     </servers>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="244789000" />
+    <option name="totallyTimeSpent" value="245092000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -2919,7 +2923,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="199" y="107" width="2184" height="1200" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32809612" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
@@ -2943,8 +2947,8 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13958918" sideWeight="0.512939" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2194211" sideWeight="0.5120148" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.48243994" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2194211" sideWeight="0.5120148" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.48243994" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="PDF_FIND" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Dilbert" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32915622" sideWeight="0.5" order="18" side_tool="false" content_ui="tabs" />
@@ -2970,7 +2974,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="Added markdown file reading feature by dropping markdown files on editor in preview mode. This will format and show the dropped file without changing the content of the editor. Exiting preview mode will bring you back to the editor content and entering preview mode again will again preview the editor content." />
     <MESSAGE value="Updated pom.xml to support release to maven central." />
     <MESSAGE value="Updated doc to say that version 1.2.9 is now in maven central." />
     <MESSAGE value="Updated readme to indicate that version 1.2.9 is now in maven central." />
@@ -2995,7 +2998,8 @@
     <MESSAGE value="Updated README.md to point to correct versions of jars and to point at the new place on bintray.&#10;" />
     <MESSAGE value="Damn it! Rebuild of editor only regenerated incomplete license.md file!&#10;" />
     <MESSAGE value="Updated README.md." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated README.md." />
+    <MESSAGE value="Updated README.md pointing out bintray JCentral for maven artifact availability.&#10;&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated README.md pointing out bintray JCentral for maven artifact availability.&#10;&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -3457,7 +3461,7 @@
     </entry>
     <entry file="file://$USER_HOME$/.m2/settings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="97" column="62" selection-start="3607" selection-end="3647" vertical-scroll-proportion="0.65941346" vertical-offset="758" max-vertical-offset="1845">
+        <state line="58" column="3" selection-start="2415" selection-end="2415" vertical-scroll-proportion="0.20934579" vertical-offset="758" max-vertical-offset="1845">
           <folding />
         </state>
       </provider>

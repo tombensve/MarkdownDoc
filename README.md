@@ -26,6 +26,6 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 ----
 
-Available through maven at bintray JCentral: [http://jcenter.bintray.com](http://jcenter.bintray.com).
+Available through maven at bintray JCentral: [http://jcenter.bintray.com](http://jcenter.bintray.com). MarkdownDoc on [Bintray](https://bintray.com/tommy/maven/MarkdownDoc).
 
 
