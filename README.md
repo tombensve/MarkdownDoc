@@ -22,7 +22,10 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 [Licenses](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/licenses.md)
 
+[PDF Version](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.pdf)
+
 ----
 
-[PDF Version](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.pdf)
+Available through maven at bintray JCentral: [http://jcenter.bintray.com](http://jcenter.bintray.com).
+
 
