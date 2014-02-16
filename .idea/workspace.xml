@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/MarkdownDoc-User-Guide.pdf" afterPath="$PROJECT_DIR$/Docs/MarkdownDoc-User-Guide.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/licenses.md" afterPath="$PROJECT_DIR$/Docs/licenses.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="97988b78-75ea-4416-b6cb-6f4e26254bee" name="MarkdownDoc-1 Fails to resolve document relative path to images." comment="" />
@@ -175,7 +174,7 @@
       <file leaf-file-name="pom.xml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Editor/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="114" column="4" selection-start="4519" selection-end="4519" vertical-scroll-proportion="0.33301798" vertical-offset="1358" max-vertical-offset="2685">
+            <state line="144" column="21" selection-start="5760" selection-end="5760" vertical-scroll-proportion="0.75875115" vertical-offset="1358" max-vertical-offset="2685">
               <folding />
             </state>
           </provider>
@@ -2550,7 +2549,7 @@
       <workItem from="1390907889503" duration="2862000" />
       <workItem from="1390999717410" duration="79670000" />
       <workItem from="1391800292463" duration="78533000" />
-      <workItem from="1392542373331" duration="14549000" />
+      <workItem from="1392542373331" duration="14909000" />
     </task>
     <task id="LOCAL-00001" summary="First version.">
       <created>1353260479163</created>
@@ -2863,7 +2862,11 @@
       <created>1392570611128</created>
       <updated>1392570611129</updated>
     </task>
-    <option name="localTasksCounter" value="78" />
+    <task id="LOCAL-00078" summary="Damn it! Rebuild of editor only regenerated incomplete license.md file!&#10;">
+      <created>1392570910478</created>
+      <updated>1392570910478</updated>
+    </task>
+    <option name="localTasksCounter" value="79" />
     <servers>
       <GitHub shared="false" url="">
         <commitMessageFormat>{id} {summary}</commitMessageFormat>
@@ -2881,7 +2884,7 @@
     </servers>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="243038000" />
+    <option name="totallyTimeSpent" value="243398000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -2956,7 +2959,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="Added configurable margins." />
     <MESSAGE value="Now only allows heading to be one line (up to LF/CRLF). Heading where treated like paragraphs before. This change is to be compatible with other Markdown tools." />
     <MESSAGE value="Added markdown file reading feature by dropping markdown files on editor in preview mode. This will format and show the dropped file without changing the content of the editor. Exiting preview mode will bring you back to the editor content and entering preview mode again will again preview the editor content." />
     <MESSAGE value="Updated pom.xml to support release to maven central." />
@@ -2981,7 +2983,8 @@
     <MESSAGE value="Now renders a beveled raised border on the popup, making it consistent with other popups." />
     <MESSAGE value="- Added small popup feedback on save.&#10;- Updated documentation.&#10;" />
     <MESSAGE value="Updated README.md to point to correct versions of jars and to point at the new place on bintray.&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated README.md to point to correct versions of jars and to point at the new place on bintray.&#10;" />
+    <MESSAGE value="Damn it! Rebuild of editor only regenerated incomplete license.md file!&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Damn it! Rebuild of editor only regenerated incomplete license.md file!&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -3436,7 +3439,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Editor/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="114" column="4" selection-start="4519" selection-end="4519" vertical-scroll-proportion="0.33301798" vertical-offset="1358" max-vertical-offset="2685">
+        <state line="144" column="21" selection-start="5760" selection-end="5760" vertical-scroll-proportion="0.75875115" vertical-offset="1358" max-vertical-offset="2685">
           <folding />
         </state>
       </provider>
