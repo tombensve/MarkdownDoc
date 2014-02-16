@@ -37,11 +37,13 @@
 package se.natusoft.doc.markdown.io
 
 import groovy.transform.CompileStatic
+import se.natusoft.doc.markdown.annotation.Immutable
 
 /**
  * This represents a line of text.
  */
 @CompileStatic
+@Immutable
 class Line {
     //
     // Private Members
@@ -71,13 +73,28 @@ class Line {
      */
     public Line(String line, int lineNumber) {
         this.origLine = line
-        this.words = line.split(" ")
+        this.words = line.split("\\s+")
         this.lineNumber = lineNumber
     }
 
     //
     // Methods
     //
+
+    /**
+     * Removes the specified text at the beginning of line. Any whitespace before is ignored (and also removed!).
+     *
+     * @param beg The string to remove.
+     */
+    public Line removeBeg(String beg) {
+        if (this.origLine.trim().startsWith(beg)) {
+            int ix = this.origLine.indexOf(beg);
+            String nwLine = this.origLine.substring(ix + 1);
+            return newLine(nwLine)
+        }
+
+        return this
+    }
 
     /**
      * Creates a new Line.

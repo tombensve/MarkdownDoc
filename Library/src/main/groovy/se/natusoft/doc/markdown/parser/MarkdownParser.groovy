@@ -364,6 +364,12 @@ public class MarkdownParser implements Parser {
         boolean isList = true
         int indent = line.leadingSpaces >= 3 ? line.leadingSpaces : 3
 
+        // QD fix for a hard to find bug. List entries not at top level still retain their "list" char
+        // even though they have been identified as list entries.
+        line = (MDLine)line.removeBeg("*")
+        line = (MDLine)line.removeBeg("+")
+        line = (MDLine)line.removeBeg("-")
+
         ListItem listItem = new ListItem()
         Paragraph liParagraph = new Paragraph()
         parseParagraph(liParagraph, line.removeFirstWord(), lineReader, isList)
@@ -588,7 +594,7 @@ public class MarkdownParser implements Parser {
 
                     // &gt;
                     case {it == "&" && n == "g"} :
-                        current << "<"
+                        current << ">"
                         i = i + 3
                         break;
 
