@@ -332,6 +332,9 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
      * @param text The text of the document to style.
      */
     private void styleDocument(ParagraphBounds bounds, String text) {
+        // Speedup by disabling component while styling.
+        this.textComponentToStyle.setEnabled(false);
+
         StyledDocument doc = (StyledDocument)this.textComponentToStyle.getDocument();
         Style base = StyleContext.
                 getDefaultStyleContext().
@@ -424,8 +427,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                                 ++pos;
                             }
                             else if (c == '*' && (pos + 1) < text.length() && text.charAt(pos + 1) == ' ') {
-                                //System.out.println("Skipping this one!");
-                                continue; // Skip is there is a spaced after *.
+                                continue; // Skip if there is a spaced after *. This means it is a list entry.
                             }
 
                             char endChar = c;
@@ -451,7 +453,6 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                             }
                             pos = epos + 1;
                         }
-
                     }
                     catch (IndexOutOfBoundsException iobe) {/* we hide these intentionally! */}
                 }
@@ -461,6 +462,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
             ble.printStackTrace(System.err);
         }
 
+        this.textComponentToStyle.setEnabled(true);
     }
 
 
