@@ -2,7 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/JEditorPanePreviewFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/JEditorPanePreviewFunction.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_groovy_groovy_all_2_0_5.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/docs/MarkdownDoc-Editor.md" afterPath="$PROJECT_DIR$/Editor/docs/MarkdownDoc-Editor.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/MarkdownDoc-User-Guide.pdf" afterPath="$PROJECT_DIR$/Docs/MarkdownDoc-User-Guide.pdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/MarkdownDoc.md" afterPath="$PROJECT_DIR$/Docs/MarkdownDoc.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/Editor.iml" afterPath="$PROJECT_DIR$/Editor/Editor.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/assembly/MarkdownDocEditorApp.xml" afterPath="$PROJECT_DIR$/Editor/src/assembly/MarkdownDocEditorApp.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownStyler.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownStyler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SaveFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SaveFunction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/pom.xml" afterPath="$PROJECT_DIR$/Editor/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="97988b78-75ea-4416-b6cb-6f4e26254bee" name="MarkdownDoc-1 Fails to resolve document relative path to images." comment="" />
@@ -85,6 +94,21 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SaveFunction.java" line="146" class="se.natusoft.doc.markdowndoc.editor.functions.SaveFunction" package="se.natusoft.doc.markdowndoc.editor.functions">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
     </line_breakpoints>
     <breakpoint_rules />
     <ui_properties />
@@ -95,96 +119,81 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="InsertImageFunction.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertImageFunction.java">
+      <file leaf-file-name="JELine.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/providers/JELine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="273" column="0" selection-start="9061" selection-end="9312" vertical-scroll-proportion="0.0" vertical-offset="2490" max-vertical-offset="3660">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ExportToHTMLFunction.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/ExportToHTMLFunction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="219" column="77" selection-start="6978" selection-end="6978" vertical-scroll-proportion="0.0" vertical-offset="2324" max-vertical-offset="4575">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AbstractExportFunction.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/AbstractExportFunction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="7" selection-start="302" selection-end="302" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="4815">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServiceDefLoader.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/tools/ServiceDefLoader.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="10" selection-start="313" selection-end="313" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2160">
+            <state line="36" column="28" selection-start="1110" selection-end="1110" vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="3150">
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="imports" expanded="false" />
+                <element signature="e#4902#4903#0" expanded="false" />
+                <element signature="e#4938#4939#0" expanded="false" />
+                <element signature="e#5040#5041#0" expanded="false" />
+                <element signature="e#5074#5075#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SettingsFunction.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SettingsFunction.java">
+      <file leaf-file-name="MarkdownStyler.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownStyler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="80" column="6" selection-start="2690" selection-end="2690" vertical-scroll-proportion="0.0" vertical-offset="645" max-vertical-offset="3420">
+            <state line="346" column="84" selection-start="12529" selection-end="12529" vertical-scroll-proportion="0.084181316" vertical-offset="4739" max-vertical-offset="8715">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="JEditorPanePreviewFunction.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/JEditorPanePreviewFunction.java">
+      <file leaf-file-name="SaveFunction.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SaveFunction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="98" column="0" selection-start="3559" selection-end="3559" vertical-scroll-proportion="0.4588344" vertical-offset="584" max-vertical-offset="4950">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="InsertLinkFunction.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertLinkFunction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="226" column="46" selection-start="6886" selection-end="6886" vertical-scroll-proportion="0.0" vertical-offset="2669" max-vertical-offset="3795">
+            <state line="157" column="13" selection-start="4525" selection-end="4525" vertical-scroll-proportion="0.0" vertical-offset="1634" max-vertical-offset="2715">
               <folding>
-                <element signature="e#2956#3096#0" expanded="true" />
-                <element signature="e#3089#3090#0" expanded="true" />
+                <element signature="imports" expanded="false" />
+                <element signature="e#2592#2732#0" expanded="false" />
+                <element signature="e#2725#2726#0" expanded="false" />
+                <element signature="e#3592#3754#0" expanded="false" />
+                <element signature="e#3743#3744#0" expanded="false" />
+                <element signature="e#4133#4134#0" expanded="false" />
+                <element signature="e#4169#4170#0" expanded="false" />
+                <element signature="e#4400#4401#0" expanded="false" />
+                <element signature="e#4438#4439#0" expanded="false" />
+                <marker date="1392558456000" expanded="true" signature="5263:6150" placeholder="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ExportToPDFFunction.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/ExportToPDFFunction.java">
+      <file leaf-file-name="MarkdownDocEditorApp.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Editor/src/assembly/MarkdownDocEditorApp.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="315" column="58" selection-start="11429" selection-end="11429" vertical-scroll-proportion="0.0" vertical-offset="1409" max-vertical-offset="4875">
+            <state line="7" column="0" selection-start="182" selection-end="182" vertical-scroll-proportion="-4.375" vertical-offset="0" max-vertical-offset="750">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="JWindow.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/src.zip!/javax/swing/JWindow.java">
+      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Editor/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="91" column="13" selection-start="2932" selection-end="2932" vertical-scroll-proportion="0.0" vertical-offset="900" max-vertical-offset="9915">
+            <state line="103" column="40" selection-start="4100" selection-end="4100" vertical-scroll-proportion="-61.541668" vertical-offset="68" max-vertical-offset="2685">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="JFrame.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/src.zip!/javax/swing/JFrame.java">
+      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Library/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="222" column="11" selection-start="7704" selection-end="7704" vertical-scroll-proportion="0.0" vertical-offset="2820" max-vertical-offset="13935">
+            <state line="30" column="24" selection-start="1038" selection-end="1039" vertical-scroll-proportion="-18.75" vertical-offset="0" max-vertical-offset="2220">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SinglePopupToolbar.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/SinglePopupToolbar.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="154" column="0" selection-start="4298" selection-end="4298" vertical-scroll-proportion="0.0" vertical-offset="2085" max-vertical-offset="4290">
               <folding />
             </state>
           </provider>
@@ -208,17 +217,12 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/CSSBoxPreviewFunction.java" />
-        <option value="$PROJECT_DIR$/Library/pom.xml" />
-        <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/generator/PDFGenerator.groovy" />
-        <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/ToolBarGroups.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/GUI.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MDEToolBar.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/MouseMotionProvider.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/Editor.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/PopupToolbar.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/resources/META-INF/services/se.natusoft.doc.markdowndoc.editor.api.EditorComponent" />
-        <option value="$PROJECT_DIR$/Editor/pom.xml" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/Constants.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/KeyConfigValue.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/ConfigEntry.java" />
@@ -235,7 +239,6 @@
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/settings/gui/ConfigEditPanel.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/ValidSelectionConfigEntry.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SettingsFunction.java" />
-        <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownStyler.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownEditor.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertListFunction.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertBoldFunction.java" />
@@ -244,14 +247,12 @@
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertQuoteFunction.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/NewFunction.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/OpenFunction.java" />
-        <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SaveFunction.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/gui/SmartFlowLayout.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/WindowToolBar.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/ToolBar.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/resources/META-INF/services/se.natusoft.doc.markdowndoc.editor.api.ToolBar" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/tools/ServiceDefLoader.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/PopupToolbar2.java" />
-        <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/SinglePopupToolbar.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/KeyboardKey.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertLinkFunction.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertImageFunction.java" />
@@ -259,6 +260,14 @@
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/ExportToHTMLFunction.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/AbstractExportFunction.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/JEditorPanePreviewFunction.java" />
+        <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/annotation/Immutable.groovy" />
+        <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/io/Line.groovy" />
+        <option value="$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/MarkdownParser.groovy" />
+        <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/SinglePopupToolbar.java" />
+        <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SaveFunction.java" />
+        <option value="$PROJECT_DIR$/Editor/src/assembly/MarkdownDocEditorApp.xml" />
+        <option value="$PROJECT_DIR$/Editor/pom.xml" />
+        <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownStyler.java" />
       </list>
     </option>
   </component>
@@ -618,26 +627,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MarkdownDoc" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MarkdownDoc" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Editor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -886,7 +875,149 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="generator" />
+              <option name="myItemId" value="parser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Library" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="groovy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="se" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="natusoft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="doc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="markdown" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="markdown" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Library" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="groovy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="se" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="natusoft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="doc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="markdown" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Library" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="groovy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="se" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="natusoft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="doc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="markdown" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="annotation" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1672,6 +1803,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="Docs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="CommandLine" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -1859,6 +2008,26 @@
             <PATH_ELEMENT USER_OBJECT="lib">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarkdownDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -2362,7 +2531,8 @@
       <workItem from="1389636445958" duration="24815000" />
       <workItem from="1390907889503" duration="2862000" />
       <workItem from="1390999717410" duration="79670000" />
-      <workItem from="1391800292463" duration="75169000" />
+      <workItem from="1391800292463" duration="78533000" />
+      <workItem from="1392542373331" duration="11706000" />
     </task>
     <task id="LOCAL-00001" summary="First version.">
       <created>1353260479163</created>
@@ -2651,7 +2821,23 @@
       <created>1392488493186</created>
       <updated>1392488493186</updated>
     </task>
-    <option name="localTasksCounter" value="72" />
+    <task id="LOCAL-00072" summary="Changed default preview keyboard shortcut from Ctrl+V (which is paste on windows) to Ctrl+F.">
+      <created>1392488919487</created>
+      <updated>1392488919487</updated>
+    </task>
+    <task id="LOCAL-00073" summary="Bug fix: list entries of lower levels than top retained the list char in generated output. &#10;">
+      <created>1392551785546</created>
+      <updated>1392551785546</updated>
+    </task>
+    <task id="LOCAL-00074" summary="Speedup of styling by disabling styled component while styling.">
+      <created>1392554665951</created>
+      <updated>1392554665951</updated>
+    </task>
+    <task id="LOCAL-00075" summary="Now renders a beveled raised border on the popup, making it consistent with other popups.">
+      <created>1392554719918</created>
+      <updated>1392554719918</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers>
       <GitHub shared="false" url="">
         <commitMessageFormat>{id} {summary}</commitMessageFormat>
@@ -2669,7 +2855,7 @@
     </servers>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="225125000" />
+    <option name="totallyTimeSpent" value="240195000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -2693,40 +2879,40 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="199" y="107" width="2184" height="1200" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32809612" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32902032" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32987654" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32439926" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="BSFConsole" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32902032" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25079873" sideWeight="0.48800737" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32940108" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32809612" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32994455" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2194211" sideWeight="0.5120148" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.48336414" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32902032" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3271719" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="BSFConsole" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32902032" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32439926" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25079873" sideWeight="0.48800737" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32809612" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2194211" sideWeight="0.48798522" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13865547" sideWeight="0.512939" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13958918" sideWeight="0.512939" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2194211" sideWeight="0.5120148" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.48243994" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="PDF_FIND" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
-      <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Dilbert" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32915622" sideWeight="0.5" order="18" side_tool="false" content_ui="tabs" />
+      <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3271719" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="IntelliJad Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Code Graph" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32958984" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -2744,10 +2930,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="- Added PersistentProps API (available from Editor) for loading and saving properties files under {user home}/.markdownDoc. &#10;- Finished ExportToPDFFunction, which now also saves the latest generation information for reuse the next time. This uses PersistentProps.&#10;- SaveFunction and OpenFunction now also used PersistentProps to save window postition and size on save and reset it on load per filename of edited files.&#10;" />
-    <MESSAGE value="Saving settings now also saves the window size and position. If there is no known filename at time of settings save, then size and positions is saved as &quot;default&quot; and will thus be loaded and used when a new empty editor window is opened." />
-    <MESSAGE value="Now also exports to html." />
-    <MESSAGE value="- Added support for list bullet indent level change in both directions with tab and shift-tab.&#10;- Ran CodeLicenseManager &quot;apply&quot; to insert/update license header information in source files." />
     <MESSAGE value="The editor is now packaged as:&#10;- A clickable, executable Jar file.&#10;- A Mac OS X App in a .dmg file.&#10;" />
     <MESSAGE value="- Debugged.&#10;- Added editor docs.&#10;" />
     <MESSAGE value="Added configurable margins." />
@@ -2769,7 +2951,11 @@
     <MESSAGE value="- Fixed CompileStatic errors in Groovy code (imports ending in .* does not work in this case!!)&#10;- Let CLM update/add source headers.&#10;&#10;&#10;" />
     <MESSAGE value="- Added 3rd toolbar variant. &#10;- Refactored the popup windows for image, link, PDF, and HMTL heavily. &#10;- Changed how keyboard input is handled between editor and functions.&#10;- Can now configure keys in settings.&#10;" />
     <MESSAGE value="Regenerated class comment headers with license information." />
-    <option name="LAST_COMMIT_MESSAGE" value="Regenerated class comment headers with license information." />
+    <MESSAGE value="Changed default preview keyboard shortcut from Ctrl+V (which is paste on windows) to Ctrl+F." />
+    <MESSAGE value="Bug fix: list entries of lower levels than top retained the list char in generated output. &#10;" />
+    <MESSAGE value="Speedup of styling by disabling styled component while styling." />
+    <MESSAGE value="Now renders a beveled raised border on the popup, making it consistent with other popups." />
+    <option name="LAST_COMMIT_MESSAGE" value="Now renders a beveled raised border on the popup, making it consistent with other popups." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -2791,88 +2977,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/src.zip!/java/awt/event/InputEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="279" column="8" selection-start="9587" selection-end="9587" vertical-scroll-proportion="0.0" vertical-offset="3255" max-vertical-offset="7770">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/src.zip!/java/awt/event/KeyEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1189" column="74" selection-start="42551" selection-end="42551" vertical-scroll-proportion="0.0" vertical-offset="974" max-vertical-offset="25155">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/DoubleConfigEntry.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="0" selection-start="1388" selection-end="1388" vertical-scroll-proportion="0.0" vertical-offset="464" max-vertical-offset="1575">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/ConfigColor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="13" selection-start="1243" selection-end="1243" vertical-scroll-proportion="0.0" vertical-offset="434" max-vertical-offset="1560">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/BooleanConfigEntry.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="0" selection-start="1275" selection-end="1275" vertical-scroll-proportion="0.0" vertical-offset="194" max-vertical-offset="1275">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/ColorConfigEntry.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="0" selection-start="1431" selection-end="1431" vertical-scroll-proportion="0.0" vertical-offset="285" max-vertical-offset="2100">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/IntegerConfigEntry.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="0" selection-start="1387" selection-end="1387" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="1575">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/ConfigProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="62" column="9" selection-start="1969" selection-end="1969" vertical-scroll-proportion="0.0" vertical-offset="224" max-vertical-offset="1305">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/ConfigProviderHolder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="112" column="75" selection-start="3591" selection-end="3591" vertical-scroll-proportion="0.0" vertical-offset="1154" max-vertical-offset="2235">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/EditorFunction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="66" column="0" selection-start="1879" selection-end="1879" vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="1200">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/CutSelectionFunction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="82" column="41" selection-start="2103" selection-end="2103" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="1395">
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1731#1732#0" expanded="false" />
-            <element signature="e#1767#1768#0" expanded="false" />
-            <marker date="1392488436000" expanded="true" signature="-1:-1" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Editor/src/main/resources/META-INF/services/se.natusoft.doc.markdowndoc.editor.api.EditorComponent">
       <provider selected="true" editor-type-id="text-editor">
         <state line="16" column="33" selection-start="740" selection-end="740" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="660">
@@ -2882,57 +2986,25 @@
     </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/src.zip!/javax/swing/JComboBox.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="193" column="11" selection-start="5856" selection-end="5856" vertical-scroll-proportion="0.0" vertical-offset="2310" max-vertical-offset="35625">
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#8575#8576#0" expanded="false" />
-            <element signature="e#8607#8608#0" expanded="false" />
-            <element signature="e#9862#9863#0" expanded="false" />
-            <element signature="e#9894#9895#0" expanded="false" />
-            <element signature="e#11981#11982#0" expanded="false" />
-            <element signature="e#12027#12028#0" expanded="false" />
-            <element signature="e#13199#13200#0" expanded="false" />
-            <element signature="e#13232#13233#0" expanded="false" />
-            <element signature="e#14213#14214#0" expanded="false" />
-            <element signature="e#14251#14252#0" expanded="false" />
-            <element signature="e#15671#15672#0" expanded="false" />
-            <element signature="e#15702#15703#0" expanded="false" />
-            <element signature="e#16899#16900#0" expanded="false" />
-            <element signature="e#16928#16929#0" expanded="false" />
-            <element signature="e#22400#22401#0" expanded="false" />
-            <element signature="e#22444#22445#0" expanded="false" />
-            <element signature="e#34351#34352#0" expanded="false" />
-            <element signature="e#34391#34392#0" expanded="false" />
-            <element signature="e#34653#34654#0" expanded="false" />
-            <element signature="e#34689#34690#0" expanded="false" />
-            <element signature="e#38395#38396#0" expanded="false" />
-            <element signature="e#38424#38425#0" expanded="false" />
-            <element signature="e#49840#49841#0" expanded="false" />
-            <element signature="e#49886#49887#0" expanded="false" />
-            <element signature="e#50086#50087#0" expanded="false" />
-            <element signature="e#50128#50129#0" expanded="false" />
-            <element signature="e#64252#64253#0" expanded="false" />
-            <element signature="e#64307#64308#0" expanded="false" />
-          </folding>
-        </state>
+        <state line="193" column="11" selection-start="5856" selection-end="5856" vertical-scroll-proportion="0.0" vertical-offset="2310" max-vertical-offset="35625" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/settings/gui/ConfigEditPanel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="170" column="56" selection-start="5416" selection-end="5416" vertical-scroll-proportion="0.0" vertical-offset="2159" max-vertical-offset="5580">
           <folding>
-            <element signature="e#6522#6780#0" expanded="true" />
-            <element signature="e#6769#6770#0" expanded="true" />
-            <element signature="e#6976#7241#0" expanded="true" />
-            <element signature="e#7230#7231#0" expanded="true" />
-            <element signature="e#7433#7695#0" expanded="true" />
-            <element signature="e#7684#7685#0" expanded="true" />
-            <element signature="e#7845#8635#0" expanded="true" />
-            <element signature="e#8624#8625#0" expanded="true" />
-            <element signature="e#9432#9699#0" expanded="true" />
-            <element signature="e#9688#9689#0" expanded="true" />
-            <element signature="e#10377#10637#0" expanded="true" />
-            <element signature="e#10626#10627#0" expanded="true" />
+            <element signature="e#6522#6780#0" expanded="false" />
+            <element signature="e#6769#6770#0" expanded="false" />
+            <element signature="e#6976#7241#0" expanded="false" />
+            <element signature="e#7230#7231#0" expanded="false" />
+            <element signature="e#7433#7695#0" expanded="false" />
+            <element signature="e#7684#7685#0" expanded="false" />
+            <element signature="e#7845#8635#0" expanded="false" />
+            <element signature="e#8624#8625#0" expanded="false" />
+            <element signature="e#9432#9699#0" expanded="false" />
+            <element signature="e#9688#9689#0" expanded="false" />
+            <element signature="e#10377#10637#0" expanded="false" />
+            <element signature="e#10626#10627#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2941,10 +3013,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="17" column="7" selection-start="353" selection-end="353" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3405">
           <folding>
-            <element signature="e#5600#5601#0" expanded="true" />
-            <element signature="e#5640#5641#0" expanded="true" />
-            <element signature="e#5732#5733#0" expanded="true" />
-            <element signature="e#5771#5772#0" expanded="true" />
+            <element signature="e#5600#5601#0" expanded="false" />
+            <element signature="e#5640#5641#0" expanded="false" />
+            <element signature="e#5732#5733#0" expanded="false" />
+            <element signature="e#5771#5772#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2960,24 +3032,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownStyler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="448" column="70" selection-start="18397" selection-end="18397" vertical-scroll-proportion="0.0" vertical-offset="5474" max-vertical-offset="8775">
-          <folding>
-            <element signature="e#2342#2807#0" expanded="true" />
-            <element signature="e#2784#2785#0" expanded="true" />
-            <element signature="e#6395#6606#0" expanded="true" />
-            <element signature="e#6599#6600#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/config/ConfigEntry.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="43" column="13" selection-start="1255" selection-end="1255" vertical-scroll-proportion="0.0" vertical-offset="359" max-vertical-offset="2160">
           <folding>
-            <element signature="e#3060#3061#0" expanded="true" />
-            <element signature="e#3093#3094#0" expanded="true" />
+            <element signature="e#3060#3061#0" expanded="false" />
+            <element signature="e#3093#3094#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2993,10 +3053,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="74" column="0" selection-start="2497" selection-end="2497" vertical-scroll-proportion="0.0" vertical-offset="374" max-vertical-offset="2220">
           <folding>
-            <element signature="e#2556#2696#0" expanded="true" />
-            <element signature="e#2689#2690#0" expanded="true" />
-            <element signature="e#3982#3983#0" expanded="true" />
-            <element signature="e#4018#4019#0" expanded="true" />
+            <element signature="e#2689#2690#0" expanded="false" />
+            <element signature="e#3982#3983#0" expanded="false" />
+            <element signature="e#4018#4019#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3014,12 +3073,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="101" column="93" selection-start="3298" selection-end="3298" vertical-scroll-proportion="0.0" vertical-offset="914" max-vertical-offset="2370">
           <folding>
-            <element signature="e#2551#2691#0" expanded="true" />
-            <element signature="e#2684#2685#0" expanded="true" />
-            <element signature="e#3979#3980#0" expanded="true" />
-            <element signature="e#4015#4016#0" expanded="true" />
-            <element signature="e#4257#4258#0" expanded="true" />
-            <element signature="e#4295#4296#0" expanded="true" />
+            <element signature="e#2684#2685#0" expanded="false" />
+            <element signature="e#3979#3980#0" expanded="false" />
+            <element signature="e#4015#4016#0" expanded="false" />
+            <element signature="e#4257#4258#0" expanded="false" />
+            <element signature="e#4295#4296#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3028,12 +3086,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="99" column="93" selection-start="3289" selection-end="3289" vertical-scroll-proportion="0.0" vertical-offset="689" max-vertical-offset="2250">
           <folding>
-            <element signature="e#2544#2684#0" expanded="true" />
-            <element signature="e#2677#2678#0" expanded="true" />
-            <element signature="e#3991#3992#0" expanded="true" />
-            <element signature="e#4027#4028#0" expanded="true" />
-            <element signature="e#4272#4273#0" expanded="true" />
-            <element signature="e#4312#4313#0" expanded="true" />
+            <element signature="e#2544#2684#0" expanded="false" />
+            <element signature="e#2677#2678#0" expanded="false" />
+            <element signature="e#3991#3992#0" expanded="false" />
+            <element signature="e#4027#4028#0" expanded="false" />
+            <element signature="e#4272#4273#0" expanded="false" />
+            <element signature="e#4312#4313#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3042,10 +3100,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="99" column="93" selection-start="3315" selection-end="3315" vertical-scroll-proportion="0.0" vertical-offset="464" max-vertical-offset="2310">
           <folding>
-            <element signature="e#2570#2710#0" expanded="true" />
-            <element signature="e#2703#2704#0" expanded="true" />
-            <element signature="e#4020#4021#0" expanded="true" />
-            <element signature="e#4056#4057#0" expanded="true" />
+            <element signature="e#2703#2704#0" expanded="false" />
+            <element signature="e#4020#4021#0" expanded="false" />
+            <element signature="e#4056#4057#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3054,12 +3111,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="99" column="93" selection-start="3298" selection-end="3298" vertical-scroll-proportion="0.0" vertical-offset="509" max-vertical-offset="2250">
           <folding>
-            <element signature="e#2553#2693#0" expanded="true" />
-            <element signature="e#2686#2687#0" expanded="true" />
-            <element signature="e#3987#3988#0" expanded="true" />
-            <element signature="e#4023#4024#0" expanded="true" />
-            <element signature="e#4266#4267#0" expanded="true" />
-            <element signature="e#4305#4306#0" expanded="true" />
+            <element signature="e#2686#2687#0" expanded="false" />
+            <element signature="e#3987#3988#0" expanded="false" />
+            <element signature="e#4023#4024#0" expanded="false" />
+            <element signature="e#4266#4267#0" expanded="false" />
+            <element signature="e#4305#4306#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3068,10 +3124,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="99" column="93" selection-start="3289" selection-end="3289" vertical-scroll-proportion="0.0" vertical-offset="749" max-vertical-offset="2220">
           <folding>
-            <element signature="e#2544#2684#0" expanded="true" />
-            <element signature="e#2677#2678#0" expanded="true" />
-            <element signature="e#3965#3966#0" expanded="true" />
-            <element signature="e#4001#4002#0" expanded="true" />
+            <element signature="e#2677#2678#0" expanded="false" />
+            <element signature="e#3965#3966#0" expanded="false" />
+            <element signature="e#4001#4002#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3080,20 +3135,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="101" column="93" selection-start="3332" selection-end="3332" vertical-scroll-proportion="0.0" vertical-offset="943" max-vertical-offset="2805">
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2587#2727#0" expanded="true" />
-            <element signature="e#2720#2721#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SaveFunction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="17" selection-start="2569" selection-end="2569" vertical-scroll-proportion="0.0" vertical-offset="719" max-vertical-offset="2475">
-          <folding>
-            <element signature="e#2663#2664#0" expanded="true" />
-            <element signature="e#4071#4072#0" expanded="true" />
-            <element signature="e#4107#4108#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#2587#2727#0" expanded="false" />
+            <element signature="e#2720#2721#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3116,12 +3160,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="259" column="0" selection-start="10692" selection-end="10692" vertical-scroll-proportion="0.0" vertical-offset="2712" max-vertical-offset="16560">
           <folding>
-            <element signature="e#5380#5845#0" expanded="true" />
-            <element signature="e#5822#5823#0" expanded="true" />
-            <element signature="e#6872#7756#0" expanded="true" />
-            <element signature="e#7733#7734#0" expanded="true" />
-            <element signature="e#8031#8704#0" expanded="true" />
-            <element signature="e#8681#8682#0" expanded="true" />
+            <element signature="e#5380#5845#0" expanded="false" />
+            <element signature="e#5822#5823#0" expanded="false" />
+            <element signature="e#6872#7756#0" expanded="false" />
+            <element signature="e#7733#7734#0" expanded="false" />
+            <element signature="e#8031#8704#0" expanded="false" />
+            <element signature="e#8681#8682#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3136,38 +3180,30 @@
     <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/ToolBar.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="47" column="11" selection-start="1091" selection-end="1091" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="825">
-          <folding>
-            <marker date="1392488435000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/src.zip!/java/awt/Point.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="13" selection-start="472" selection-end="472" vertical-scroll-proportion="0.0" vertical-offset="810" max-vertical-offset="3525">
-          <folding />
-        </state>
+        <state line="37" column="13" selection-start="472" selection-end="472" vertical-scroll-proportion="0.0" vertical-offset="810" max-vertical-offset="3525" />
       </provider>
     </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/src.zip!/javax/swing/JSeparator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="73" column="13" selection-start="1896" selection-end="1896" vertical-scroll-proportion="0.0" vertical-offset="660" max-vertical-offset="4335">
-          <folding />
-        </state>
+        <state line="73" column="13" selection-start="1896" selection-end="1896" vertical-scroll-proportion="0.0" vertical-offset="660" max-vertical-offset="4335" />
       </provider>
     </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/src.zip!/javax/swing/JToolBar.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="598" column="15" selection-start="18143" selection-end="18143" vertical-scroll-proportion="0.0" vertical-offset="8115" max-vertical-offset="12585">
-          <folding />
-        </state>
+        <state line="598" column="15" selection-start="18143" selection-end="18143" vertical-scroll-proportion="0.0" vertical-offset="8115" max-vertical-offset="12585" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/WindowToolBar.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="106" column="37" selection-start="3009" selection-end="3009" vertical-scroll-proportion="0.0" vertical-offset="1274" max-vertical-offset="2610">
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3176,7 +3212,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="144" column="17" selection-start="4278" selection-end="4278" vertical-scroll-proportion="0.0" vertical-offset="1544" max-vertical-offset="3945">
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3185,15 +3221,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="15" column="0" selection-start="670" selection-end="670" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="315">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/SinglePopupToolbar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="124" column="7" selection-start="3352" selection-end="3352" vertical-scroll-proportion="0.0" vertical-offset="1755" max-vertical-offset="3825">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3206,25 +3233,22 @@
     </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/src.zip!/javax/swing/JFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="222" column="11" selection-start="7704" selection-end="7704" vertical-scroll-proportion="0.0" vertical-offset="2820" max-vertical-offset="13935">
+        <state line="222" column="11" selection-start="7704" selection-end="7704" vertical-scroll-proportion="0.013850415" vertical-offset="3315" max-vertical-offset="14190">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/src.zip!/javax/swing/JWindow.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="91" column="13" selection-start="2932" selection-end="2932" vertical-scroll-proportion="0.0" vertical-offset="900" max-vertical-offset="9915">
+        <state line="91" column="13" selection-start="2932" selection-end="2932" vertical-scroll-proportion="0.013850415" vertical-offset="1350" max-vertical-offset="10140">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/InsertLinkFunction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="226" column="46" selection-start="6886" selection-end="6886" vertical-scroll-proportion="0.0" vertical-offset="2669" max-vertical-offset="3795">
-          <folding>
-            <element signature="e#2956#3096#0" expanded="true" />
-            <element signature="e#3089#3090#0" expanded="true" />
-          </folding>
+        <state line="226" column="46" selection-start="6886" selection-end="6886" vertical-scroll-proportion="0.14127424" vertical-offset="3237" max-vertical-offset="4320">
+          <folding />
         </state>
       </provider>
     </entry>
@@ -3237,7 +3261,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/ExportToPDFFunction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="315" column="58" selection-start="11429" selection-end="11429" vertical-scroll-proportion="0.0" vertical-offset="3794" max-vertical-offset="4875">
+        <state line="315" column="58" selection-start="11429" selection-end="11429" vertical-scroll-proportion="0.23822714" vertical-offset="4467" max-vertical-offset="5550">
           <folding />
         </state>
       </provider>
@@ -3259,9 +3283,7 @@
     <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/tools/ServiceDefLoader.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="15" column="10" selection-start="313" selection-end="313" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2160">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -3274,7 +3296,126 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/JEditorPanePreviewFunction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="98" column="0" selection-start="3559" selection-end="3559" vertical-scroll-proportion="0.4588344" vertical-offset="584" max-vertical-offset="4950">
+        <state line="14" column="7" selection-start="302" selection-end="302" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4950">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/Paragraph.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="29" selection-start="1225" selection-end="1225" vertical-scroll-proportion="0.6094183" vertical-offset="0" max-vertical-offset="1083">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/model/DocItem.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="13" selection-start="1368" selection-end="1368" vertical-scroll-proportion="0.013850415" vertical-offset="705" max-vertical-offset="3330">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/src.zip!/java/lang/annotation/RetentionPolicy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="12" selection-start="577" selection-end="577" vertical-scroll-proportion="0.49861497" vertical-offset="0" max-vertical-offset="1083">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/annotation/Immutable.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="72" selection-start="279" selection-end="279" vertical-scroll-proportion="0.11080332" vertical-offset="0" max-vertical-offset="1083">
+          <folding>
+            <element signature="e#1107#1146#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/io/Line.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="93" column="9" selection-start="2407" selection-end="2407" vertical-scroll-proportion="0.34903046" vertical-offset="1017" max-vertical-offset="5670">
+          <folding>
+            <element signature="e#1099#1136#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/markdown/io/MDLine.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="45" column="6" selection-start="1267" selection-end="1267" vertical-scroll-proportion="0.0" vertical-offset="839" max-vertical-offset="3405">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Library/src/main/groovy/se/natusoft/doc/markdown/parser/MarkdownParser.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="377" column="59" selection-start="14212" selection-end="14212" vertical-scroll-proportion="0.083102494" vertical-offset="5430" max-vertical-offset="10230">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/api/providers/JELine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="28" selection-start="1110" selection-end="1110" vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="3150">
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#4902#4903#0" expanded="false" />
+            <element signature="e#4938#4939#0" expanded="false" />
+            <element signature="e#5040#5041#0" expanded="false" />
+            <element signature="e#5074#5075#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/SinglePopupToolbar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="154" column="0" selection-start="4298" selection-end="4298" vertical-scroll-proportion="0.0" vertical-offset="2085" max-vertical-offset="4290">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SaveFunction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="157" column="13" selection-start="4525" selection-end="4525" vertical-scroll-proportion="0.0" vertical-offset="1634" max-vertical-offset="2715">
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#2592#2732#0" expanded="false" />
+            <element signature="e#2725#2726#0" expanded="false" />
+            <element signature="e#3592#3754#0" expanded="false" />
+            <element signature="e#3743#3744#0" expanded="false" />
+            <element signature="e#4133#4134#0" expanded="false" />
+            <element signature="e#4169#4170#0" expanded="false" />
+            <element signature="e#4400#4401#0" expanded="false" />
+            <element signature="e#4438#4439#0" expanded="false" />
+            <marker date="1392558456000" expanded="true" signature="5263:6150" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Library/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="24" selection-start="1038" selection-end="1039" vertical-scroll-proportion="-18.75" vertical-offset="0" max-vertical-offset="2220">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Editor/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="103" column="40" selection-start="4100" selection-end="4100" vertical-scroll-proportion="-61.541668" vertical-offset="68" max-vertical-offset="2685">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Editor/src/assembly/MarkdownDocEditorApp.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="0" selection-start="182" selection-end="182" vertical-scroll-proportion="-4.375" vertical-offset="0" max-vertical-offset="750">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownStyler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="346" column="84" selection-start="12529" selection-end="12529" vertical-scroll-proportion="0.084181316" vertical-offset="4739" max-vertical-offset="8715">
           <folding />
         </state>
       </provider>

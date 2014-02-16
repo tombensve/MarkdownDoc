@@ -365,7 +365,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
 
                             // Only style if it starts at the beginning of a "paragraph".
                             int hsize = 0;
-                            if (pos == 0 || pos == 1 || text.charAt(pos - cnt - 1) == '\n' || text.charAt(pos - cnt - 1) == '\r') {
+                            if (pos <= 5 || text.charAt(pos - cnt - 1) == '\n' || text.charAt(pos - cnt - 1) == '\r') {
                                 switch(cnt) {
                                     case 1:
                                         header = doc.getStyle("h1");

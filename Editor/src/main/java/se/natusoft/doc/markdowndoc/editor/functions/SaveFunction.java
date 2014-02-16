@@ -48,6 +48,8 @@ import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 
 import javax.swing.*;
+import javax.swing.border.SoftBevelBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -167,6 +169,7 @@ public class SaveFunction implements EditorFunction, Configurable {
             else {
                 this.editor.save();
             }
+            showSavedInfo();
             this.editor.requestEditorFocus();
         }
         catch (IOException ioe) {
@@ -174,6 +177,28 @@ public class SaveFunction implements EditorFunction, Configurable {
                     this.editor.getGUI().getWindowFrame(), ioe.getMessage(), "Failed to save!", JOptionPane.ERROR_MESSAGE);
 
         }
+    }
+
+    private void showSavedInfo() {
+        new Thread() {
+            @Override
+            public void run() {
+                int x = editor.getGUI().getWindowFrame().getX();
+                int y = editor.getGUI().getWindowFrame().getY();
+
+                JWindow window = new JWindow(editor.getGUI().getWindowFrame());
+                window.setLayout(new BorderLayout());
+                JPanel panel = new JPanel(new BorderLayout());
+                panel.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED));
+                window.add(panel, BorderLayout.CENTER);
+                panel.add(new JLabel("Saved!"));
+                window.setLocation(x + 10, y + 30);
+                window.setVisible(true);
+                window.setSize(window.getPreferredSize());
+                try {Thread.sleep(2500);} catch (Exception e) {}
+                window.setVisible(false);
+            }
+        }.start();
     }
 
     /**

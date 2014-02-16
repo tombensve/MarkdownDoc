@@ -1,16 +1,10 @@
 ## Introduction
 
-MarkdownDoc is a tool that basically does what the name sounds like. My intention with this tool was to be able to
-document my java opensource tools in markdown and be able to generate both html and PDF from it using a maven plugin.
+MarkdownDoc is a tool that basically does what the name sounds like. My intention with this tool was to be able to document my java opensource tools in markdown and be able to generate both html and PDF from it using a maven plugin.
 
-So why not use mavens site plugin which does support markdown ? Since maven3 the site plugin is not what it used to 
-be and these days generating a whole site for your project seems a bit much. Both Bitbucket and GitHub supports 
-markdown documentation right off in a nice and easy way. I want to choose where to put my documentation (ok, most
-locations in maven can be configured) and I also had the following requirements:
+So why not use mavens site plugin which does support markdown ? Since maven3 the site plugin is not what it used to be and these days generating a whole site for your project seems a bit much. Both Bitbucket and GitHub supports markdown documentation right off in a nice and easy way. I want to choose where to put my documentation (ok, most locations in maven can be configured) and I also had the following requirements:
 
-* Be able to generate one PDF document from a whole collection of separate markdown documents so that I can spread
-  them out in different subproject for multi maven project projects. If you are reading this in PDF format this
-  PDF have been put together from multiple sources. 
+* Be able to generate one PDF document from a whole collection of separate markdown documents so that I can spread them out in different subproject for multi maven project projects. If you are reading this in PDF format this PDF have been put together from multiple sources. 
 
 * Be able to generate a table of contents and a title page. 
 
@@ -28,18 +22,23 @@ In short MarkdownDoc provides the following:
 * Markdown generator.
 * java -jar commandline executable.
 * Markdown editor with preview and PDF + HTML generation.
-   * Mac OS X app + dmg for install.
 * Maven plugin.
 
-**Version 1.2.9 is now available in maven central!** If you want another version, it is available at [Bintray](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md).
+**Version 1.2.9 is now available in maven central!** Newer versions will first be made available at [Bintray](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md), and then to maven central.
 
 Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdown](http://daringfireball.net/projects/markdown) document format, and to [iText Software Corp.](http://itextpdf.com) for making an excellent easy to use PDF library and making it available as open source. 
 
 ### Version history
 
+#### 1.3
+
+Made big changes to the editor, finally making it into what I want, with some markdown formatting as you write, and far more configuration in settings dialog, which have also been redone.
+
+Bug fixes. 
+
 #### 1.2.10
 
-* Added support for &amp;lt;, &amp;gt;, and &amp;amp;.
+Added support for &amp;lt;, &amp;gt;, and &amp;amp;.
 
 #### 1.2.9
 
@@ -47,8 +46,7 @@ Added markdown file reading feature by allowing markdown files to be dropped on 
 
 #### 1.2.8
 
-Headings can now **not** be more than one line (not include LF/CRLF). Before they were treated like paragraphs. This to
-be more compatible with other Markdown tools and Markdown documents.
+Headings can now **not** be more than one line (not include LF/CRLF). Before they were treated like paragraphs. This to be more compatible with other Markdown tools and Markdown documents.
 
 #### 1.2.7
 

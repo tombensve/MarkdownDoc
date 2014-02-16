@@ -20,14 +20,7 @@
         <dependency>
             <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
             <artifactId>markdown-doc-lib</artifactId>
-            <version>1.2.10</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>2.0.5</version>
-            <scope>compile</scope>
+            <version>${project.version}</version>
         </dependency>
 
         <!--

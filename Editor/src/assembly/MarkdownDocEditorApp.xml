@@ -21,14 +21,6 @@
             </excludes>
         </fileSet>
 
-        <fileSet>
-            <directory>${basedir}/../Library/target/classes</directory>
-            <outputDirectory>.</outputDirectory>
-            <excludes>
-                <exclude>*MANIFEST.MF</exclude>
-            </excludes>
-        </fileSet>
-
     </fileSets>
 
     <dependencySets>
