@@ -14,11 +14,11 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 [Maven usage](https://github.com/tombensve/MarkdownDoc/blob/master/MavenPlugin/docs/MarkdownDoc-Maven-Plugin.md)
 
-[Command line usage](https://github.com/tombensve/MarkdownDoc/blob/master/CommandLine/docs/MarkdownDoc-CommandLine.md) \[[markdowndoc-cmd-line-1.2.10-exec.jar download](http://download.natusoft.se/tools/markdowndoc-cmd-line-1.2.10-exec.jar)\] 
+[Command line usage](https://github.com/tombensve/MarkdownDoc/blob/master/CommandLine/docs/MarkdownDoc-CommandLine.md) \[[markdowndoc-cmd-line-1.3.exec.jar download](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/1.3/markdowndoc-cmd-line-1.3.exec.jar)\] 
 
 [Library](https://github.com/tombensve/MarkdownDoc/blob/master/Library/docs/MarkdownDoc-Library.md)
 
-[Editor](https://github.com/tombensve/MarkdownDoc/blob/master/Editor/docs/MarkdownDoc-Editor.md) \[[MarkdownDocEditor-1.2.10-App.jar](http://download.natusoft.se/tools/MarkdownDocEditor-1.2.10-App.jar)\] 
+[Editor](https://github.com/tombensve/MarkdownDoc/blob/master/Editor/docs/MarkdownDoc-Editor.md) \[[MarkdownDocEditor-1.3.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/1.3/MarkdownDocEditor-1.3.App.jar)\] 
 
 [Licenses](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/licenses.md)
 

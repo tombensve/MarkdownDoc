@@ -2,15 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_groovy_groovy_all_2_0_5.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/docs/MarkdownDoc-Editor.md" afterPath="$PROJECT_DIR$/Editor/docs/MarkdownDoc-Editor.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/MarkdownDoc-User-Guide.pdf" afterPath="$PROJECT_DIR$/Docs/MarkdownDoc-User-Guide.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/MarkdownDoc.md" afterPath="$PROJECT_DIR$/Docs/MarkdownDoc.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/Editor.iml" afterPath="$PROJECT_DIR$/Editor/Editor.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/assembly/MarkdownDocEditorApp.xml" afterPath="$PROJECT_DIR$/Editor/src/assembly/MarkdownDocEditorApp.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownStyler.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownStyler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SaveFunction.java" afterPath="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SaveFunction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/licenses.md" afterPath="$PROJECT_DIR$/Docs/licenses.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/pom.xml" afterPath="$PROJECT_DIR$/Editor/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -109,6 +103,21 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownStyler.java" line="356" class="se.natusoft.doc.markdowndoc.editor.MarkdownStyler" package="se.natusoft.doc.markdowndoc.editor">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
     </line_breakpoints>
     <breakpoint_rules />
     <ui_properties />
@@ -134,10 +143,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MarkdownStyler.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="MarkdownStyler.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownStyler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="346" column="84" selection-start="12529" selection-end="12529" vertical-scroll-proportion="0.084181316" vertical-offset="4739" max-vertical-offset="8715">
+            <state line="353" column="0" selection-start="12910" selection-end="12910" vertical-scroll-proportion="0.0" vertical-offset="4739" max-vertical-offset="8715">
               <folding />
             </state>
           </provider>
@@ -148,15 +157,8 @@
           <provider selected="true" editor-type-id="text-editor">
             <state line="157" column="13" selection-start="4525" selection-end="4525" vertical-scroll-proportion="0.0" vertical-offset="1634" max-vertical-offset="2715">
               <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#2592#2732#0" expanded="false" />
-                <element signature="e#2725#2726#0" expanded="false" />
-                <element signature="e#3592#3754#0" expanded="false" />
-                <element signature="e#3743#3744#0" expanded="false" />
-                <element signature="e#4133#4134#0" expanded="false" />
-                <element signature="e#4169#4170#0" expanded="false" />
-                <element signature="e#4400#4401#0" expanded="false" />
-                <element signature="e#4438#4439#0" expanded="false" />
+                <element signature="e#5273#6135#0" expanded="true" />
+                <element signature="e#6124#6125#0" expanded="true" />
                 <marker date="1392558456000" expanded="true" signature="5263:6150" placeholder="{...}" />
               </folding>
             </state>
@@ -172,10 +174,28 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="pom.xml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Editor/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="103" column="40" selection-start="4100" selection-end="4100" vertical-scroll-proportion="-61.541668" vertical-offset="68" max-vertical-offset="2685">
+            <state line="114" column="4" selection-start="4519" selection-end="4519" vertical-scroll-proportion="0.3614002" vertical-offset="1328" max-vertical-offset="2685">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="settings.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.m2/settings.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="31.25" vertical-offset="750" max-vertical-offset="1845">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="142" column="60" selection-start="5077" selection-end="5077" vertical-scroll-proportion="-19.666666" vertical-offset="1658" max-vertical-offset="4980">
               <folding />
             </state>
           </provider>
@@ -266,8 +286,8 @@
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/SinglePopupToolbar.java" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/SaveFunction.java" />
         <option value="$PROJECT_DIR$/Editor/src/assembly/MarkdownDocEditorApp.xml" />
-        <option value="$PROJECT_DIR$/Editor/pom.xml" />
         <option value="$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownStyler.java" />
+        <option value="$PROJECT_DIR$/Editor/pom.xml" />
       </list>
     </option>
   </component>
@@ -2066,14 +2086,14 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
-    <property name="options.lastSelected" value="preferences.pluginManager" />
+    <property name="options.lastSelected" value="MavenSettings" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="options.searchVisible" value="true" />
     <property name="dynamic.classpath" value="false" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
     <property name="LayoutCode.rearrangeEntriesJava" value="false" />
-    <property name="SearchEverywhereHistory" value="" />
+    <property name="SearchEverywhereHistory" value="_" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -2532,7 +2552,7 @@
       <workItem from="1390907889503" duration="2862000" />
       <workItem from="1390999717410" duration="79670000" />
       <workItem from="1391800292463" duration="78533000" />
-      <workItem from="1392542373331" duration="11706000" />
+      <workItem from="1392542373331" duration="14251000" />
     </task>
     <task id="LOCAL-00001" summary="First version.">
       <created>1353260479163</created>
@@ -2837,7 +2857,11 @@
       <created>1392554719918</created>
       <updated>1392554719918</updated>
     </task>
-    <option name="localTasksCounter" value="76" />
+    <task id="LOCAL-00076" summary="- Added small popup feedback on save.&#10;- Updated documentation.&#10;">
+      <created>1392568066228</created>
+      <updated>1392568066228</updated>
+    </task>
+    <option name="localTasksCounter" value="77" />
     <servers>
       <GitHub shared="false" url="">
         <commitMessageFormat>{id} {summary}</commitMessageFormat>
@@ -2855,7 +2879,7 @@
     </servers>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="240195000" />
+    <option name="totallyTimeSpent" value="242740000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -2879,7 +2903,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="199" y="107" width="2184" height="1200" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32809612" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
@@ -2903,7 +2927,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13958918" sideWeight="0.512939" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2194211" sideWeight="0.5120148" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2194211" sideWeight="0.5120148" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.48243994" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="PDF_FIND" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
@@ -2930,7 +2954,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="The editor is now packaged as:&#10;- A clickable, executable Jar file.&#10;- A Mac OS X App in a .dmg file.&#10;" />
     <MESSAGE value="- Debugged.&#10;- Added editor docs.&#10;" />
     <MESSAGE value="Added configurable margins." />
     <MESSAGE value="Now only allows heading to be one line (up to LF/CRLF). Heading where treated like paragraphs before. This change is to be compatible with other Markdown tools." />
@@ -2955,7 +2978,8 @@
     <MESSAGE value="Bug fix: list entries of lower levels than top retained the list char in generated output. &#10;" />
     <MESSAGE value="Speedup of styling by disabling styled component while styling." />
     <MESSAGE value="Now renders a beveled raised border on the popup, making it consistent with other popups." />
-    <option name="LAST_COMMIT_MESSAGE" value="Now renders a beveled raised border on the popup, making it consistent with other popups." />
+    <MESSAGE value="- Added small popup feedback on save.&#10;- Updated documentation.&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Added small popup feedback on save.&#10;- Updated documentation.&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -2977,18 +3001,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Editor/src/main/resources/META-INF/services/se.natusoft.doc.markdowndoc.editor.api.EditorComponent">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="33" selection-start="740" selection-end="740" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="660">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/src.zip!/javax/swing/JComboBox.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="193" column="11" selection-start="5856" selection-end="5856" vertical-scroll-proportion="0.0" vertical-offset="2310" max-vertical-offset="35625" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/functions/settings/gui/ConfigEditPanel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="170" column="56" selection-start="5416" selection-end="5416" vertical-scroll-proportion="0.0" vertical-offset="2159" max-vertical-offset="5580">
@@ -3378,15 +3390,8 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="157" column="13" selection-start="4525" selection-end="4525" vertical-scroll-proportion="0.0" vertical-offset="1634" max-vertical-offset="2715">
           <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#2592#2732#0" expanded="false" />
-            <element signature="e#2725#2726#0" expanded="false" />
-            <element signature="e#3592#3754#0" expanded="false" />
-            <element signature="e#3743#3744#0" expanded="false" />
-            <element signature="e#4133#4134#0" expanded="false" />
-            <element signature="e#4169#4170#0" expanded="false" />
-            <element signature="e#4400#4401#0" expanded="false" />
-            <element signature="e#4438#4439#0" expanded="false" />
+            <element signature="e#5273#6135#0" expanded="true" />
+            <element signature="e#6124#6125#0" expanded="true" />
             <marker date="1392558456000" expanded="true" signature="5263:6150" placeholder="{...}" />
           </folding>
         </state>
@@ -3395,13 +3400,6 @@
     <entry file="file://$PROJECT_DIR$/Library/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="30" column="24" selection-start="1038" selection-end="1039" vertical-scroll-proportion="-18.75" vertical-offset="0" max-vertical-offset="2220">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Editor/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="103" column="40" selection-start="4100" selection-end="4100" vertical-scroll-proportion="-61.541668" vertical-offset="68" max-vertical-offset="2685">
           <folding />
         </state>
       </provider>
@@ -3415,7 +3413,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Editor/src/main/java/se/natusoft/doc/markdowndoc/editor/MarkdownStyler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="346" column="84" selection-start="12529" selection-end="12529" vertical-scroll-proportion="0.084181316" vertical-offset="4739" max-vertical-offset="8715">
+        <state line="353" column="0" selection-start="12910" selection-end="12910" vertical-scroll-proportion="0.0" vertical-offset="4739" max-vertical-offset="8715">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.m2/settings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="31.25" vertical-offset="750" max-vertical-offset="1845">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="142" column="60" selection-start="5077" selection-end="5077" vertical-scroll-proportion="-19.666666" vertical-offset="1658" max-vertical-offset="4980">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Editor/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="114" column="4" selection-start="4519" selection-end="4519" vertical-scroll-proportion="0.3614002" vertical-offset="1328" max-vertical-offset="2685">
           <folding />
         </state>
       </provider>
