@@ -8,9 +8,7 @@ The API docs for the library can be found [here](http://apidoc.natusoft.se/Markd
 
 In package se.natusoft.doc.markdown.api there are 3 API classes:
 
-__Options__ - This represents options for a generator. It should be seen as a narrow variant of Object
-              representing only generator options, but any such. It has one method common to all
-              `public boolean isHelp()`. Implementations should have a default constructor.
+__Options__ - This represents options for a generator. It should be seen as a narrow variant of Object representing only generator options, but any such. It has one method common to all `public boolean isHelp()`. Implementations should have a default constructor.
               
 __Parser__ - This represents a parser.
 
@@ -41,10 +39,10 @@ This parser parses markdown and only markdown! It ignores HTML with the exceptio
 
 Example usage:
 
-	Parser parser = new MarkdownParser();
-	Doc document = new Doc();
-	Properties parserOptions = new Properties();
-	parser.parse(document, parseFile, parserOptions);
+    Parser parser = new MarkdownParser();
+    Doc document = new Doc();
+    Properties parserOptions = new Properties();
+    parser.parse(document, parseFile, parserOptions);
 	
 #### se.natusoft.doc.markdown.parser.JavadocParser
 

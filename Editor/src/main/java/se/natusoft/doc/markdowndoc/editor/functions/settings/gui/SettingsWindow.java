@@ -101,6 +101,7 @@ public class SettingsWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cancelSettings();
+                setVisible(false);
             }
         });
         buttons.add(cancelButton);

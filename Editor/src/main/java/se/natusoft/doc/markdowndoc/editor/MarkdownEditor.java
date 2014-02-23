@@ -421,7 +421,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
 
         this.setLayout(new BorderLayout());
         this.setSize(new Dimension(800, 800));
-        this.setTitle("MarkdownDoc Editor 1.3");
+        this.setTitle("MarkdownDoc Editor 1.3.1");
 
         // Editor
 
@@ -532,21 +532,6 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
         // Toolbar
 
         this.toolbarConfigChanged.configChanged(toolbarConfig);
-
-        //this.toolBar = new MultiPopupToolbar();
-        //this.toolBar = new WindowToolBar();
-//        this.toolBar = this.toolBarLoader.iterator().next();
-//        this.toolBar.attach(this);
-//        for (EditorFunction function : this.functions) {
-//
-//            // It is OK to not have a tool bar button!
-//            if (function.getGroup() != null && function.getToolBarButton() != null) {
-//                this.toolBar.addFunction(function);
-//            }
-//
-//        }
-//
-//        this.toolBar.createToolBarContent();
 
     }
 
@@ -693,6 +678,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
+        //System.out.println("Keycode: " + keyCode);
         if (
                 keyCode != KeyEvent.VK_META &&
                 keyCode != KeyEvent.VK_ALT &&
@@ -717,6 +703,9 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * Updates the vertical scrollbar according to caret position.
      */
     private void updateScrollbar() {
+        // This will center the cursor vertically in the window. I found that it got confusing
+        // so I decided to leave this out, but keep it commented out for a while. Maybe I enable
+        // it with a setting later.
 //        try {
 //            int scrollValue = (int)this.editor.modelToView(this.editor.getCaret().getDot()).getY();
 //            scrollValue = scrollValue - (this.scrollPane.getHeight() / 2);
@@ -1019,6 +1008,8 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
         }
         setEditorContent(sb.toString());
         this.editor.setCaretPosition(0);
+
+        getConfigProvider().refreshConfigs();
     }
 
     /**

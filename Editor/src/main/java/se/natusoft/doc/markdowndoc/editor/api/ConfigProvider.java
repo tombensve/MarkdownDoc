@@ -81,4 +81,9 @@ public interface ConfigProvider {
      */
     List<ConfigChanged> lookupConfigChanged(ConfigEntry configEntry);
 
+    /**
+     * Refreshes all configs by triggering callbacks.
+     */
+    void refreshConfigs();
+
 }

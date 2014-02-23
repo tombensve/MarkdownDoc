@@ -122,7 +122,6 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
         public void configChanged(ConfigEntry ce) {
             MarkdownStyler.this.monospacedFontSize = Integer.valueOf(ce.getValue());
 
-            MarkdownStyler.this.monospacedFontFamily = Font.decode(ce.getValue()).getFamily();
             StyledDocument doc = (StyledDocument)MarkdownStyler.this.textComponentToStyle.getDocument();
             Style base = StyleContext.
                     getDefaultStyleContext().
@@ -412,7 +411,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                                 if (!getStartOfParagraphText(pos, bounds, text).trim().startsWith("* ")) {
                                     int epos = getEndOfParagraph(text, pos);
                                     Style codeStyle = doc.getStyle("code");
-                                    doc.setCharacterAttributes(pos, epos - pos, codeStyle, true);
+                                    doc.setCharacterAttributes(pos, (epos - pos) + 1, codeStyle, true);
                                     pos = epos + 1;
                                 }
                             }

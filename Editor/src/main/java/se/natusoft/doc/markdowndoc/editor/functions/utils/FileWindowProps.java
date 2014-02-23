@@ -126,11 +126,12 @@ public class FileWindowProps {
         if (editor.getCurrentFile() != null) {
             boundsNamePart = editor.getCurrentFile().getName().replace(".", "_");
         }
-
+        System.out.println("Props file: " + boundsNamePart + "_bounds");
         this.props = editor.getPersistentProps().load(boundsNamePart + "_bounds");
         if (this.props == null) {
             this.props = new Properties();
         }
+        System.out.println("#Props: " + this.props.size());
     }
 
     /**

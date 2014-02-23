@@ -21,14 +21,26 @@ In short MarkdownDoc provides the following:
 * HTML generator.
 * Markdown generator.
 * java -jar commandline executable.
-* Markdown editor with preview and PDF + HTML generation.
+* Markdown editor that formats Markdown while writing with preview and PDF + HTML generation. Can be run with java -jar.
 * Maven plugin.
 
-**Version 1.2.9 is now available in maven central!** Newer versions will first be made available at [Bintray](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md), and then to maven central.
+### Binaries
+
+Version 1.2.9 was available in maven central.
+
+Binaries for newer versions will be made available at [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/view) and Bintrays JCenter repository: http://jcenter.bintray.com which should also contain everything in maven central.
+
+### Thanks
 
 Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdown](http://daringfireball.net/projects/markdown) document format, and to [iText Software Corp.](http://itextpdf.com) for making an excellent easy to use PDF library and making it available as open source. 
 
 ### Version history
+
+#### 1.3.1
+
+Bug fixes. Monospaced font now rendering correctly. 
+
+Deleting text with backspace have strange effects on text layout. That is, the place where a senetence is broken to the right and moved down to the next line keeps moving around while deleting text, in some completely different paragraph! This is entirely handled by JTextPane. I have tried to find a way to intercept the delete key and handle delete myself, but I have not been successful in finding a way to do that if it is even possible. Continuing writing new text after deleting text seems to restore the layout. This oddity has no effect on the final text, it is just the layout while editing that is affacted. You will also only see this if you write paragraphs as one block of text that wraps around into multiple lines without pressing return until the end of the paragraph.
 
 #### 1.3
 

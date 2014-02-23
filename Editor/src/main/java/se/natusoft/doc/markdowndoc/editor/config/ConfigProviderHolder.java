@@ -144,4 +144,13 @@ public class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntr
     public List<ConfigChanged> lookupConfigChanged(ConfigEntry configEntry) {
         return this.configChangedCallbacks.get(configEntry);
     }
+
+    /**
+     * Refreshes all configs by triggering callbacks.
+     */
+    public void refreshConfigs() {
+        for (ConfigEntry ce : getConfigs()) {
+            ce.setValue(ce.getValue());
+        }
+    }
 }

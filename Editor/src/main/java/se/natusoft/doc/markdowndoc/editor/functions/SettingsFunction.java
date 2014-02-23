@@ -169,23 +169,21 @@ public class SettingsFunction implements EditorFunction, Configurable {
 
     @Override
     public void perform() throws FunctionException {
-        if (this.settingsWindow == null) {
-            this.settingsWindow = new SettingsWindow() {
+        this.settingsWindow = new SettingsWindow() {
 
-                @Override
-                protected void cancelSettings() {
-                    cancel();
-                }
-
-                @Override
-                protected void saveSettings() {
-                    save();
-                }
-            };
-
-            for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
-                this.settingsWindow.addConfig(configEntry);
+            @Override
+            protected void cancelSettings() {
+                cancel();
             }
+
+            @Override
+            protected void saveSettings() {
+                save();
+            }
+        };
+
+        for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
+            this.settingsWindow.addConfig(configEntry);
         }
 
         this.cancelValues = new HashMap<String, String>();
@@ -197,7 +195,6 @@ public class SettingsFunction implements EditorFunction, Configurable {
     }
 
     private void cancel() {
-        this.settingsWindow.setVisible(false);
 
         for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
             configEntry.setValue(this.cancelValues.get(configEntry.getKey()));
