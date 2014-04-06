@@ -11,12 +11,9 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Library" />
-    <orderEntry type="library" name="Maven: com.itextpdf:itext-pdfa:5.4.5" level="project" />
-    <orderEntry type="library" name="Maven: com.itextpdf:itextpdf:5.4.5" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:indy:2.1.6" level="project" />
-    <orderEntry type="library" name="Maven: se.natusoft.tools.optionsmgr:OptionsManager:2.0" level="project" />
-    <orderEntry type="library" name="Maven: se.natusoft.tools.codelicmgr:CodeLicenseManager-annotations-retention-source:2.0" level="project" />
     <orderEntry type="library" name="Maven: net.iharder:filedrop:1.1" level="project" />
+    <orderEntry type="library" name="Maven: se.natusoft.tools.optionsmgr:OptionsManager:2.0.1" level="project" />
+    <orderEntry type="library" name="Maven: se.natusoft.tools.codelicmgr:CodeLicenseManager-annotations-retention-source:2.1.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.9" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
   </component>

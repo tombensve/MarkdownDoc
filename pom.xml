@@ -7,7 +7,7 @@
     <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
     <artifactId>markdown-doc</artifactId>
     <packaging>pom</packaging>
-    <version>1.3.1</version>
+    <version>1.3.2</version>
 
     <modules>
         <module>Docs</module>
@@ -32,13 +32,16 @@
 
                 mvn -Pset-version generate-sources
         -->
-        <projectVersion>1.3.1</projectVersion>
+        <projectVersion>1.3.2</projectVersion>
 
         <copyrightYear>2012</copyrightYear>
         <copyrightHolder>Natusoft AB</copyrightHolder>
         <copyrightHolderWeb>http://www.natusoft.se/</copyrightHolderWeb>
         <developer1Name>Tommy Svensson</developer1Name>
         <developer1Email>tommy@natusoft.se</developer1Email>
+        
+        <!-- Dependency versions -->
+        <clm>2.1.2</clm>
     </properties>
     <licenses>
         <license>
@@ -69,18 +72,130 @@
         <dependency>
             <groupId>se.natusoft.tools.optionsmgr</groupId>
             <artifactId>OptionsManager</artifactId>
-            <version>2.0</version>
         </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.9</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>se.natusoft.tools.optionsmgr</groupId>
+                <artifactId>OptionsManager</artifactId>
+                <version>2.0.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.itextpdf</groupId>
+                <artifactId>itext-pdfa</artifactId>
+                <version>5.4.5</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-all</artifactId>
+                <version>2.1.6</version>
+                <classifier>indy</classifier>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-plugin-api</artifactId>
+                <version>3.0.5</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.9</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.2.1</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>2.2</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.6</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>se.natusoft.tools.codelicmgr</groupId>
+                    <artifactId>CodeLicenseManager-maven-plugin</artifactId>
+                    <version>2.1.2</version>
+
+                    <dependencies>
+                        <dependency>
+                            <groupId>se.natusoft.tools.codelicmgr</groupId>
+                            <artifactId>CodeLicenseManager-source-updater-slashstar-comment</artifactId>
+                            <version>2.1.2</version>
+                        </dependency>
+
+                        <dependency>
+                            <groupId>se.natusoft.tools.codelicmgr</groupId>
+                            <artifactId>CodeLicenseManager-licenses-common-opensource</artifactId>
+                            <version>2.1.2</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+                <plugin>
+                    <groupId>se.natusoft.tools.fileeditor</groupId>
+                    <artifactId>file-editor-maven-support-plugin</artifactId>
+                    <version>1.0</version>
+
+                    <dependencies>
+                        <dependency>
+                            <groupId>se.natusoft.tools.fileeditor</groupId>
+                            <artifactId>file-editor-maven-support-scripts</artifactId>
+                            <version>1.0</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>1.8</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.gmavenplus</groupId>
+                    <artifactId>gmavenplus-plugin</artifactId>
+                    <version>1.0</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>se.natusoft.maven.plugin</groupId>
+                    <artifactId>ftp-maven-plugin</artifactId>
+                    <version>1.0.1</version>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+
         <extensions>
             <!-- Enabling the use of FTP -->
             <extension>
@@ -95,15 +210,6 @@
             <plugin>
                 <groupId>se.natusoft.tools.codelicmgr</groupId>
                 <artifactId>CodeLicenseManager-maven-plugin</artifactId>
-                <version>2.1.1</version>
-
-                <dependencies>
-                    <dependency>
-                        <groupId>se.natusoft.tools.codelicmgr</groupId>
-                        <artifactId>CodeLicenseManager-licenses-common-opensource</artifactId>
-                        <version>2.1.1</version>
-                    </dependency>
-                </dependencies>
 
                 <executions>
                     <execution>
@@ -130,7 +236,6 @@
 
             <plugin>
                 <artifactId>maven-install-plugin</artifactId>
-                <version>2.4</version>
                 <configuration>
                     <createChecksum>true</createChecksum>
                 </configuration>
@@ -186,18 +291,16 @@
 
                         <groupId>se.natusoft.tools.codelicmgr</groupId>
                         <artifactId>CodeLicenseManager-maven-plugin</artifactId>
-                        <version>2.1.1</version>
 
                         <dependencies>
                             <dependency>
                                 <groupId>se.natusoft.tools.codelicmgr</groupId>
                                 <artifactId>CodeLicenseManager-licenses-common-opensource</artifactId>
-                                <version>2.1.1</version>
                             </dependency>
+
                             <dependency>
                                 <groupId>se.natusoft.tools.codelicmgr</groupId>
                                 <artifactId>CodeLicenseManager-source-updater-slashstar-comment</artifactId>
-                                <version>2.1.1</version>
                             </dependency>
                         </dependencies>
 
@@ -279,15 +382,14 @@
                     <plugin>
                         <groupId>se.natusoft.tools.fileeditor</groupId>
                         <artifactId>file-editor-maven-support-plugin</artifactId>
-                        <version>1.0</version>
 
                         <dependencies>
                             <dependency>
                                 <groupId>se.natusoft.tools.fileeditor</groupId>
                                 <artifactId>file-editor-maven-support-scripts</artifactId>
-                                <version>1.0</version>
                             </dependency>
                         </dependencies>
+
                         <executions>
                             <execution>
                                 <id>upd-parent-and-snapshot</id>
