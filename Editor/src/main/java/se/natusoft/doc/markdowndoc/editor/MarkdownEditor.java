@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.3
+ *         1.3.3
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -66,6 +66,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_T
  * This is an editor for editing markdown documents.
  */
 public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configurable, MouseMotionProvider {
+
     //
     // Static members
     //
@@ -137,11 +138,12 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
     // The components that delivers mouse motion events.
     private List<MouseMotionProvider> mouseMotionProviders = new LinkedList<>();
 
-    //
-    // Configs
-    //
-
+    // All Configurable instances of components or filters are stored in this.
     private List<Configurable> configurables = new LinkedList<>();
+
+    //
+    // Editor Configs
+    //
 
     private static ValidSelectionConfigEntry fontConfig =
             new ValidSelectionConfigEntry("editor.pane.font", "The font to use.", "Helvetica",
@@ -421,7 +423,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
 
         this.setLayout(new BorderLayout());
         this.setSize(new Dimension(800, 800));
-        this.setTitle("MarkdownDoc Editor 1.3.1");
+        this.setTitle("MarkdownDoc Editor 1.3.3");
 
         // Editor
 
@@ -438,7 +440,6 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
 
                 return dim;
             }
-
             @Override
             public Dimension getMinimumSize() {
                 return getPreferredSize();
@@ -498,6 +499,8 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
 
         // Load editor functions.
 
+        List<DelayedInitializer> delayedInitializers = new LinkedList<>();
+
         for (EditorComponent component : componentLoader) {
             if (component instanceof Configurable) {
                 ((Configurable)component).registerConfigs(getConfigProvider());
@@ -516,6 +519,14 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
                 this.mouseMotionProviders.add((MouseMotionProvider)component);
             }
 
+            if (component instanceof DelayedInitializer) {
+                delayedInitializers.add((DelayedInitializer)component);
+            }
+
+        }
+
+        for (DelayedInitializer delayedInitializer : delayedInitializers) {
+            delayedInitializer.init();
         }
 
         // Additional setup now that a component have possibly loaded config.
@@ -528,6 +539,8 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
         );
         this.editor.setMargin(margins);
         this.editor.addKeyListener(this);
+
+        this.editor.setRequestFocusEnabled(true);
 
         // Toolbar
 
@@ -667,8 +680,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * a key typed event.
      */
     @Override
-    public void keyTyped(KeyEvent e) {
-    }
+    public void keyTyped(KeyEvent e) {}
 
     /**
      * Invoked when a key has been pressed.
@@ -749,7 +761,8 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * This gets called when the window is closed. This can be overriden to
      * handle more more actions like exiting the JVM for example.
      */
-    protected void editorClosed() {
+    @Override
+    public void editorClosed() {
     }
 
     /**
@@ -820,10 +833,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      */
     @Override
     public void setEditorContent(String content) {
-        this.editorStyler.disable();
         this.editor.setText(content);
-        this.editorStyler.enable();
-        this.editorStyler.styleDocument();
     }
 
     /**
@@ -837,6 +847,13 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
         this.editor.replaceSelection(text);
         this.editorStyler.enable();
         this.editorStyler.styleCurrentParagraph();
+    }
+
+    /**
+     * Adds a blank line.
+     */
+    public void addBlankLine() {
+        this.editor.replaceSelection("\n");
     }
 
     /**
@@ -903,7 +920,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      */
     @Override
     public void requestEditorFocus() {
-        this.editor.requestFocus();
+        this.editor.requestFocusInWindow();
     }
 
     /**
@@ -1006,10 +1023,16 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
                 line = br.readLine();
             }
         }
-        setEditorContent(sb.toString());
-        this.editor.setCaretPosition(0);
 
-        getConfigProvider().refreshConfigs();
+        this.editorStyler.disable();
+        {
+            setEditorContent(sb.toString());
+            this.editor.setCaretPosition(0);
+
+            getConfigProvider().refreshConfigs();
+        }
+        this.editorStyler.enable();
+        this.editorStyler.styleDocument();
     }
 
     /**
@@ -1099,7 +1122,9 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
             params[1] = Boolean.TYPE;
             Method method = util.getMethod("setWindowCanFullScreen", params);
             method.invoke(util, window, true);
-        } catch (ClassNotFoundException cnfe) {/* Not on Mac OS X! */} catch (Exception e) {
+        } catch (ClassNotFoundException cnfe) {
+            /* Not on Mac OS X! */
+        } catch (Exception e) {
             e.printStackTrace(System.err);
         }
 
@@ -1121,7 +1146,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
 
         MarkdownEditor me = new MarkdownEditor() {
             @Override
-            protected void editorClosed() {
+            public void editorClosed() {
                 setVisible(false);
                 --instanceCount;
                 if (instanceCount == 0) {

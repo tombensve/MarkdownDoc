@@ -19,6 +19,8 @@ se.natusoft.doc.markdowndoc.editor.functions.JEditorPanePreviewFunction
 se.natusoft.doc.markdowndoc.editor.functions.ExportToPDFFunction
 se.natusoft.doc.markdowndoc.editor.functions.ExportToHTMLFunction
 se.natusoft.doc.markdowndoc.editor.functions.SettingsFunction
+se.natusoft.doc.markdowndoc.editor.functions.PasteRestyleFunction
+se.natusoft.doc.markdowndoc.editor.functions.RestyleDocumentFunction
 #
 # Filters (implementing EditorInputFilter).
 #

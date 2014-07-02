@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.3
+ *         1.3.3
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -37,23 +37,18 @@
 package se.natusoft.doc.markdowndoc.editor.functions;
 
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups;
-import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider;
-import se.natusoft.doc.markdowndoc.editor.api.Configurable;
-import se.natusoft.doc.markdowndoc.editor.api.Editor;
-import se.natusoft.doc.markdowndoc.editor.api.EditorFunction;
+import se.natusoft.doc.markdowndoc.editor.api.*;
 import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged;
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry;
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry;
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
-import se.natusoft.doc.markdowndoc.editor.functions.settings.gui.ConfigEditPanel;
 import se.natusoft.doc.markdowndoc.editor.functions.settings.gui.SettingsWindow;
 import se.natusoft.doc.markdowndoc.editor.functions.utils.FileWindowProps;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.util.*;
 
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD;
@@ -61,7 +56,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
 /**
  * Provides editor setting function.
  */
-public class SettingsFunction implements EditorFunction, Configurable {
+public class SettingsFunction implements EditorFunction, Configurable, DelayedInitializer {
     //
     // Constants
     //
@@ -140,8 +135,6 @@ public class SettingsFunction implements EditorFunction, Configurable {
     @Override
     public void setEditor(Editor editor) {
         this.editor = editor;
-
-        load();
     }
 
     @Override
@@ -194,6 +187,9 @@ public class SettingsFunction implements EditorFunction, Configurable {
         this.settingsWindow.setVisible(true);
     }
 
+    /**
+     * Cancel any changes made.
+     */
     private void cancel() {
 
         for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
@@ -202,6 +198,9 @@ public class SettingsFunction implements EditorFunction, Configurable {
 
     }
 
+    /**
+     * Saves config to disk.
+     */
     private void save() {
         Properties props = new Properties();
         for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
@@ -215,6 +214,9 @@ public class SettingsFunction implements EditorFunction, Configurable {
         fileWindowProps.saveBounds(this.editor);
     }
 
+    /**
+     * Loads config from disk.
+     */
     private void load() {
         Properties props = this.editor.getPersistentProps().load(SETTINGS_PROP_NAME);
         if (props != null) {
@@ -222,6 +224,7 @@ public class SettingsFunction implements EditorFunction, Configurable {
                 String propValue = props.getProperty(propName);
                 ConfigEntry configEntry = this.editor.getConfigProvider().lookupConfig(propName);
                 if (configEntry != null) {
+                    //System.out.println("configEntry {" + configEntry.getKey() + ", " + configEntry.getValue() + ", " + propValue + "}");
                     configEntry.setValue(propValue);
                 }
             }
@@ -247,5 +250,13 @@ public class SettingsFunction implements EditorFunction, Configurable {
      */
     public void close() {
 
+    }
+
+    /**
+     * Initializes the component.
+     */
+    @Override
+    public void init() {
+        load();
     }
 }

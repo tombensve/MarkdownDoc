@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.3
+ *         1.3.3
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -148,6 +148,11 @@ public interface Editor extends MouseMotionProvider {
     void insertText(String text);
 
     /**
+     * Adds a blank line.
+     */
+    void addBlankLine();
+
+    /**
      * Moves the cared backwards.
      *
      * @param noChars The number of characters to move caret.
@@ -207,7 +212,7 @@ public interface Editor extends MouseMotionProvider {
      *
      * @throws java.io.IOException
      */
-    public void loadFile(File file) throws IOException;
+    void loadFile(File file) throws IOException;
 
     /**
      * Saves the currently edited file with the specified path.
@@ -216,13 +221,25 @@ public interface Editor extends MouseMotionProvider {
      *
      * @throws IOException
      */
-    public void saveFileAs(File file) throws IOException;
+    void saveFileAs(File file) throws IOException;
 
     /**
      * Opens a file chooser for specifying file to save to.
      *
      * @throws IOException
      */
-    public void save() throws IOException;
+    void save() throws IOException;
+
+    /**
+     * Returns the styler for the editor.
+     */
+    JTextComponentStyler getStyler();
+
+    /**
+     * This gets called when the window is closed. This can be overriden to
+     * handle more more actions like exiting the JVM for example.
+     */
+    void editorClosed();
+
 
 }

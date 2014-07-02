@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.3
+ *         1.3.3
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -58,6 +58,11 @@ public interface JTextComponentStyler {
      * Disables styling (should be done while loading document!)
      */
     void disable();
+
+    /**
+     * Returns true if styling is enabled.
+     */
+    boolean isEnabled();
 
     /**
      * Styles the whole document.

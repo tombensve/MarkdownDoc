@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.3
+ *         1.3.3
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -36,22 +36,66 @@
  */
 package se.natusoft.doc.markdowndoc.editor.filters;
 
-import se.natusoft.doc.markdowndoc.editor.api.Editor;
-import se.natusoft.doc.markdowndoc.editor.api.EditorInputFilter;
-import se.natusoft.doc.markdowndoc.editor.api.Line;
+import se.natusoft.doc.markdowndoc.editor.api.*;
+import se.natusoft.doc.markdowndoc.editor.config.BooleanConfigEntry;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged;
+import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry;
 
 import javax.swing.text.BadLocationException;
 import java.awt.event.KeyEvent;
 
+import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_EDITING;
+
 /**
  * This filter provides context help in the editor.
  */
-public class ContextFormatFilter implements EditorInputFilter {
+public class ContextFormatFilter implements EditorInputFilter, Configurable {
     //
     // Private Members
     //
 
     private Editor editor;
+
+    //
+    // Config
+    //
+
+    /** True for double spaced bullets. */
+    private boolean doubleSpacedBullets = false;
+
+    /** Config entry used in SettingsWindow to edit config. */
+    private static BooleanConfigEntry doubleSpacedBulletsConfig =
+            new BooleanConfigEntry("editor.contextformatfilter", "Double space bullets", false, CONFIG_GROUP_EDITING);
+
+    /**
+     * Configuration callback for markdown formatting while editing.
+     */
+    private ConfigChanged doubleSpacedBulletsConfigChanged = new ConfigChanged() {
+        @Override
+        public void configChanged(ConfigEntry ce) {
+            ContextFormatFilter.this.doubleSpacedBullets = Boolean.valueOf(ce.getValue());
+        }
+    };
+
+    /**
+     * Register configurations.
+     *
+     * @param configProvider The config provider to register with.
+     */
+    @Override
+    public void registerConfigs(ConfigProvider configProvider) {
+        configProvider.registerConfig(doubleSpacedBulletsConfig, doubleSpacedBulletsConfigChanged);
+    }
+
+    /**
+     * Unregister configurations.
+     *
+     * @param configProvider The config provider to unregister with.
+     */
+    @Override
+    public void unregisterConfigs(ConfigProvider configProvider) {
+        configProvider.unregisterConfig(doubleSpacedBulletsConfig, doubleSpacedBulletsConfigChanged);
+    }
 
     //
     // Methods
@@ -84,6 +128,10 @@ public class ContextFormatFilter implements EditorInputFilter {
                     else {
                         if (trimmedLine.startsWith("* ")) {
                             int indentPos = currentLine.getText().indexOf('*');
+                            if (this.doubleSpacedBullets) {
+                                this.editor.addBlankLine();
+                                currentLine = currentLine.getNextLine();
+                            }
                             StringBuilder newLine = new StringBuilder();
                             while (indentPos > 0) {
                                 newLine.append(' ');
@@ -160,10 +208,13 @@ public class ContextFormatFilter implements EditorInputFilter {
         catch (BadLocationException ble) {
             ble.printStackTrace(System.err);
         }
+
+        this.editor.requestEditorFocus();
     }
 
     /**
      * Cleanup and unregister any configs.
      */
     public void close() {}
+
 }

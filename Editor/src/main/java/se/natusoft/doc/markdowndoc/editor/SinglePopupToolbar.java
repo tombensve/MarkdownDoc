@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.3
+ *         1.3.3
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -99,13 +99,15 @@ public class SinglePopupToolbar implements ToolBar {
 
             @Override
             public void mouseMoved(MouseEvent e) {
-                int y = e.getYOnScreen();
-                y = y - getParentFrame().getY() - 25;
+                int y = e.getY();
                 if (y <= getTopMargin() && e.getX() >= 0 && e.getX() <= getEditorWidth()) {
                     if (!isOpen()) {
                         int toolbarWidth = calculateWidth();
                         int x = getParentFrame().getX() + (getParentFrame().getWidth() / 2) - (toolbarWidth / 2);
-                        open(getParentFrame(), x, getParentFrame().getY() + 25);
+
+                        int titleBarHeight =
+                                (int)(getParentFrame().getBounds().getHeight() - getParentFrame().getContentPane().getBounds().getHeight());
+                        open(getParentFrame(), x, getParentFrame().getY() + titleBarHeight + 2);
                     }
                 }
                 else {

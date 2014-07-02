@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.3
+ *         1.3.3
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -52,4 +52,5 @@ public interface EditorComponent {
      * Called when instance is no longer needed.
      */
     void close();
+
 }

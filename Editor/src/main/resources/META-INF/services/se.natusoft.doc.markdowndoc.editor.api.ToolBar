@@ -2,7 +2,15 @@
 #
 # This toolbar is a standard Swing JToolBar that defaults to the top but
 # can be dragged around to any side of the editor.
-se.natusoft.doc.markdowndoc.editor.WindowToolBar
+#
+# This does not work due to it always getting the focus on any keypress!!!
+# It beats the hell out of me why! I've tried everything, but the toolbar
+# still gets the focus after each key press even though the last thing
+# done oneach keyboard event is editor.requestFocus(). I've also tried
+# requestFocusInWindow(), and doing setFocusable(false) on the toolbar,
+# but the toolbar still gets the focus.
+#
+#se.natusoft.doc.markdowndoc.editor.WindowToolBar
 
 #
 # This toolbar pops up when the mouse gets up to the top margin area of the editor.

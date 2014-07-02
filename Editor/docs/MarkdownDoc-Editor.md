@@ -4,6 +4,16 @@ This is an editor for editing markdown documents.
 
 ## Features
 
+### New in 1.3.3
+
+* Removed window toolbar. Some strange and so far incomprehensible bug causes the toolbar to get focus on each keypress. Until that can be resolved the only the two popup toolbars are available. These are nicer IMHO.
+
+* Fixed bug that caused styling on load to be done more than once. That is, now it is only done once.
+
+* Restyles whole document on Ctrl+V with short delay so that pasted text gets styled even if there are several paragraphs being pasted. For very large documents this can be a bit slow. Settings/Keyboard can change the key for this. The default is for windows. On a mac you want to change the key to Cmd+R (Meta+R in Java language).
+
+* Ctrl+R function that restyles the whole document. The key can be changed in Setting/Keyboard.
+
 ### New in 1.3
 
 Can markdown format realtime as you are editing! Headings, bold, italics, and monospaced are formatted. This can be turned off in settings. Formats the whole document on load, and after that reformats only the currently edited paragraph for performance reasons.
@@ -41,4 +51,8 @@ Supports fullscreen on Mac OS X.
 ## Executables
 
 MarkdownDocEditor-n.n.n-App.jar
+
+## Extending
+
+
 

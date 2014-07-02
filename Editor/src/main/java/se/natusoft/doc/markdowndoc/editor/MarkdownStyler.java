@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.3
+ *         1.3.3
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -40,6 +40,8 @@ import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider;
 import se.natusoft.doc.markdowndoc.editor.api.Configurable;
 import se.natusoft.doc.markdowndoc.editor.api.JTextComponentStyler;
 import se.natusoft.doc.markdowndoc.editor.config.*;
+
+import static se.natusoft.doc.markdowndoc.editor.StaticClarity.*;
 
 import javax.swing.*;
 import javax.swing.text.*;
@@ -177,6 +179,24 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
     };
 
     //
+    // Styles
+    //
+
+    @SuppressWarnings("FieldCanBeLocal")
+    private Style baseStyle;
+    private Style emphasisStyle;
+    private Style boldStyle;
+//    private Style bullet;
+    private Style h1Style;
+    private Style h2Style;
+    private Style h3Style;
+    private Style h4Style;
+    private Style h5Syle;
+    private Style h6Style;
+    private Style tinyStyle;
+    private Style codeStyle;
+
+    //
     // Constructors
     //
 
@@ -209,38 +229,51 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                 if (MarkdownStyler.this.enabled) styleCurrentParagraph();
             }
         };
-        Style base = StyleContext.
+
+        baseStyle = StyleContext.
                 getDefaultStyleContext().
                 getStyle(StyleContext.DEFAULT_STYLE);
-        Style emphasis = doc.addStyle("emphasis", base);
-        StyleConstants.setItalic(emphasis, true);
-        Style bold = doc.addStyle("bold", base);
-        StyleConstants.setBold(bold, true);
 
-        Style h1 = doc.addStyle("h1", base);
-        StyleConstants.setFontSize(h1, 34);
-        StyleConstants.setBold(h1, true);
-        Style h2 = doc.addStyle("h2", base);
-        StyleConstants.setFontSize(h2, 30);
-        StyleConstants.setBold(h2, true);
-        Style h3 = doc.addStyle("h3", base);
-        StyleConstants.setFontSize(h3, 26);
-        StyleConstants.setBold(h3, true);
-        Style h4 = doc.addStyle("h4", base);
-        StyleConstants.setFontSize(h4, 22);
-        StyleConstants.setBold(h4, true);
-        Style h5 = doc.addStyle("h5", base);
-        StyleConstants.setFontSize(h5, 18);
-        StyleConstants.setBold(h5, true);
-        Style h6 = doc.addStyle("h6", base);
-        StyleConstants.setFontSize(h6, 14);
-        StyleConstants.setBold(h6, true);
-        Style tiny = doc.addStyle("tiny", base);
-        StyleConstants.setBold(tiny, false);
-        StyleConstants.setFontSize(tiny, 6);
-        Style code = doc.addStyle("code", base);
-        StyleConstants.setFontFamily(code, this.monospacedFontFamily);
-        StyleConstants.setFontSize(code, this.monospacedFontSize);
+        emphasisStyle = doc.addStyle("emphasis", baseStyle);
+        StyleConstants.setItalic(emphasisStyle, true);
+
+        boldStyle = doc.addStyle("bold", baseStyle);
+        StyleConstants.setBold(boldStyle, true);
+
+//        bullet = doc.addStyle("bullet", baseStyle);
+//        StyleConstants.setBold(bullet, true);
+
+        h1Style = doc.addStyle("h1", baseStyle);
+        StyleConstants.setFontSize(h1Style, 34);
+        StyleConstants.setBold(h1Style, true);
+
+        h2Style = doc.addStyle("h2", baseStyle);
+        StyleConstants.setFontSize(h2Style, 30);
+        StyleConstants.setBold(h2Style, true);
+
+        h3Style = doc.addStyle("h3", baseStyle);
+        StyleConstants.setFontSize(h3Style, 26);
+        StyleConstants.setBold(h3Style, true);
+
+        h4Style = doc.addStyle("h4", baseStyle);
+        StyleConstants.setFontSize(h4Style, 22);
+        StyleConstants.setBold(h4Style, true);
+
+        h5Syle = doc.addStyle("h5", baseStyle);
+        StyleConstants.setFontSize(h5Syle, 18);
+        StyleConstants.setBold(h5Syle, true);
+
+        h6Style = doc.addStyle("h6", baseStyle);
+        StyleConstants.setFontSize(h6Style, 14);
+        StyleConstants.setBold(h6Style, true);
+
+        tinyStyle = doc.addStyle("tiny", baseStyle);
+        StyleConstants.setBold(tinyStyle, false);
+        StyleConstants.setFontSize(tinyStyle, 6);
+
+        codeStyle = doc.addStyle("code", baseStyle);
+        StyleConstants.setFontFamily(codeStyle, this.monospacedFontFamily);
+        StyleConstants.setFontSize(codeStyle, this.monospacedFontSize);
 
         this.textComponentToStyle.setDocument(doc);
     }
@@ -286,22 +319,31 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
     }
 
     /**
+     * Returns true if styling is enabled.
+     */
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
+    /**
      * Styles the whole document.
      */
     @Override
     public void styleDocument() {
-        try {
-            StyledDocument doc = (StyledDocument)this.textComponentToStyle.getDocument();
+        if (isEnabled()) {
+            try {
+                StyledDocument doc = (StyledDocument) this.textComponentToStyle.getDocument();
 
-            String text = doc.getText(0, doc.getLength());
+                String text = doc.getText(0, doc.getLength());
 
-            ParagraphBounds bounds = new ParagraphBounds();
-            bounds.start = 0;
-            bounds.end = text.length() - 1;
-            styleDocument(bounds, text);
-        }
-        catch (BadLocationException ble) {
-            ble.printStackTrace(System.err);
+                ParagraphBounds bounds = new ParagraphBounds();
+                bounds.start = 0;
+                bounds.end = text.length() - 1;
+                styleDocument(bounds, text);
+            } catch (BadLocationException ble) {
+                ble.printStackTrace(System.err);
+            }
         }
     }
 
@@ -310,17 +352,18 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
      */
     @Override
     public void styleCurrentParagraph() {
-        try {
-            StyledDocument doc = (StyledDocument)this.textComponentToStyle.getDocument();
+        if (isEnabled()) {
+            try {
+                StyledDocument doc = (StyledDocument) this.textComponentToStyle.getDocument();
 
-            String text = doc.getText(0, doc.getLength());
+                String text = doc.getText(0, doc.getLength());
 
-            ParagraphBounds bounds = findParagraphBounds(this.textComponentToStyle.getCaretPosition() - 1, text);
-            styleDocument(bounds, text);
+                ParagraphBounds bounds = findParagraphBounds(this.textComponentToStyle.getCaretPosition() - 1, text);
+                styleDocument(bounds, text);
 
-        }
-        catch (BadLocationException ble) {
-            ble.printStackTrace(System.err);
+            } catch (BadLocationException ble) {
+                ble.printStackTrace(System.err);
+            }
         }
     }
 
@@ -350,6 +393,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                         char c = text.charAt(pos);
                         char p = pos == 0 ? text.charAt(pos) : text.charAt(pos - 1);
                         char pp = pos <= 1 ? text.charAt(pos) : text.charAt(pos - 2);
+//                        char a = pos == doc.getLength() ? '!' : text.charAt(pos + 1); // The '!' is a dummy char in this case.
 
                         // -- Header --------
                         if (c == '#' && p != '\\') {
@@ -367,35 +411,34 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                             if (pos <= 5 || text.charAt(pos - cnt - 1) == '\n' || text.charAt(pos - cnt - 1) == '\r') {
                                 switch(cnt) {
                                     case 1:
-                                        header = doc.getStyle("h1");
+                                        header = this.h1Style;
                                         hsize = 2;
                                         break;
                                     case 2:
-                                        header = doc.getStyle("h2");
+                                        header = this.h2Style;
                                         hsize = 3;
                                         break;
                                     case 3:
-                                        header = doc.getStyle("h3");
+                                        header = this.h3Style;
                                         hsize = 4;
                                         break;
                                     case 4:
-                                        header = doc.getStyle("h4");
+                                        header = this.h4Style;
                                         hsize = 5;
                                         break;
                                     case 5:
-                                        header = doc.getStyle("h5");
+                                        header = this.h5Syle;
                                         hsize = 6;
                                         break;
                                     default:
                                         hsize = 7;
-                                        header = doc.getStyle("h6");
+                                        header = this.h6Style;
                                 }
                             }
                             if (header != null) {
                                 if (this.makeStylingCharsTiny) {
                                     doc.setCharacterAttributes(spos + hsize, epos - (spos + hsize), header, true);
-                                    Style hstyle = doc.getStyle("tiny");
-                                    doc.setCharacterAttributes(spos, hsize, hstyle, true);
+                                    doc.setCharacterAttributes(spos, hsize, this.tinyStyle, true);
                                 }
                                 else {
                                     doc.setCharacterAttributes(spos, epos - spos, header, true);
@@ -407,11 +450,10 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                         // -- Monospaced --------
                         else if (pos >= 4 && c == ' ' && text.charAt(pos + 1) == ' ' &&
                                 text.charAt(pos + 2) == ' ' && text.charAt(pos + 3) == ' ') {
-                            if (text.charAt(pos - 1) == '\n' || pos == 4) {
+                            if ((text.charAt(pos - 1) == '\n' && (text.charAt(pos - 2) == '\n' || doc.getCharacterElement(pos - 2).getAttributes().containsAttributes(this.codeStyle))) || pos == 4) {
                                 if (!getStartOfParagraphText(pos, bounds, text).trim().startsWith("* ")) {
                                     int epos = getEndOfParagraph(text, pos);
-                                    Style codeStyle = doc.getStyle("code");
-                                    doc.setCharacterAttributes(pos, (epos - pos) + 1, codeStyle, true);
+                                    doc.setCharacterAttributes(pos, (epos - pos) + 1, this.codeStyle, true);
                                     pos = epos + 1;
                                 }
                             }
@@ -429,25 +471,23 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                                 continue; // Skip if there is a spaced after *. This means it is a list entry.
                             }
 
+                            @SuppressWarnings("UnnecessaryLocalVariable") // No, this is not unnecessary! It makes it
+                                                                          // clear what it is!
                             char endChar = c;
                             int epos = getPosOfNext(text, pos + 1, endChar);
 
                             if (bold) {
-                                Style boldStyle = doc.getStyle("bold");
-                                doc.setCharacterAttributes(spos + 2, epos - spos - 2, boldStyle, true);
+                                doc.setCharacterAttributes(spos + 2, epos - spos - 2, this.boldStyle, true);
                                 if (this.makeStylingCharsTiny) {
-                                    Style tiny = doc.getStyle("tiny");
-                                    doc.setCharacterAttributes(spos, 2, tiny, true);
-                                    doc.setCharacterAttributes(epos, 2, tiny, true);
+                                    doc.setCharacterAttributes(spos, 2, this.tinyStyle, true);
+                                    doc.setCharacterAttributes(epos, 2, this.tinyStyle, true);
                                 }
                             }
                             else {
-                                Style emphasisStyle = doc.getStyle("emphasis");
-                                doc.setCharacterAttributes(spos + 1, epos - spos - 1, emphasisStyle, true);
+                                doc.setCharacterAttributes(spos + 1, epos - spos - 1, this.emphasisStyle, true);
                                 if (this.makeStylingCharsTiny) {
-                                    Style tiny = doc.getStyle("tiny");
-                                    doc.setCharacterAttributes(spos, 1, tiny, true);
-                                    doc.setCharacterAttributes(epos, 1, tiny, true);
+                                    doc.setCharacterAttributes(spos, 1, this.tinyStyle, true);
+                                    doc.setCharacterAttributes(epos, 1, this.tinyStyle, true);
                                 }
                             }
                             pos = epos + 1;
@@ -502,7 +542,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                 ++npos;
             }
         }
-        catch (IndexOutOfBoundsException iobe) {/*OK*/}
+        catch (IndexOutOfBoundsException iobe) { IntentionallyDoNothing(); }
 
         if (npos >= text.length()) {
             npos = text.length() - 1;
@@ -570,16 +610,6 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
         //System.out.println("" + bounds);
 
         return bounds;
-    }
-
-    /**
-     * Returns the paragraph as a String.
-     *
-     * @param bounds The paragraph bounds.
-     * @param text The whole document text.
-     */
-    private String getParagraphText(ParagraphBounds bounds, String text) {
-        return text.substring(bounds.start, bounds.end);
     }
 
     /**

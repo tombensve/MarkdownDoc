@@ -2,7 +2,7 @@
 
 MarkdownDoc is a tool that basically does what the name sounds like. My intention with this tool was to be able to document my java opensource tools in markdown and be able to generate both html and PDF from it using a maven plugin.
 
-So why not use mavens site plugin which does support markdown ? Since maven3 the site plugin is not what it used to be and these days generating a whole site for your project seems a bit much. Both Bitbucket and GitHub supports markdown documentation right off in a nice and easy way. I want to choose where to put my documentation (ok, most locations in maven can be configured) and I also had the following requirements:
+So why not use mavens site plugin which does support markdown ? These days generating a whole site for your project seems a bit much. Both Bitbucket and GitHub supports markdown documentation right off in a nice and easy way. I want to choose where to put my documentation (ok, most locations in maven can be configured) and I also had the following requirements:
 
 * Be able to generate one PDF document from a whole collection of separate markdown documents so that I can spread them out in different subproject for multi maven project projects. If you are reading this in PDF format this PDF have been put together from multiple sources. 
 
@@ -35,6 +35,16 @@ Binaries for newer versions will be made available at [Bintray](https://bintray.
 Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdown](http://daringfireball.net/projects/markdown) document format, and to [iText Software Corp.](http://itextpdf.com) for making an excellent easy to use PDF library and making it available as open source. 
 
 ### Version history
+
+#### 1.3.3
+
+Bug fixes.
+
+
+
+#### 1.3.2
+
+Added markdown formatting as you write. 
 
 #### 1.3.1
 
