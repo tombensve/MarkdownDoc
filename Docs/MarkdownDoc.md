@@ -38,9 +38,7 @@ Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdo
 
 #### 1.3.3
 
-Bug fixes.
-
-
+Ironed out all _known_ bugs in editor. This version only has changes in the editor. 
 
 #### 1.3.2
 
