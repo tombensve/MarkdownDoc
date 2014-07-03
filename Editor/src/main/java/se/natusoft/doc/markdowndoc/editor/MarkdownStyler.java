@@ -45,6 +45,7 @@ import static se.natusoft.doc.markdowndoc.editor.StaticClarity.*;
 
 import javax.swing.*;
 import javax.swing.text.*;
+import javax.swing.undo.UndoManager;
 import java.awt.*;
 
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_EDITING;
@@ -186,7 +187,6 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
     private Style baseStyle;
     private Style emphasisStyle;
     private Style boldStyle;
-//    private Style bullet;
     private Style h1Style;
     private Style h2Style;
     private Style h3Style;
@@ -230,6 +230,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
             }
         };
 
+
         baseStyle = StyleContext.
                 getDefaultStyleContext().
                 getStyle(StyleContext.DEFAULT_STYLE);
@@ -239,9 +240,6 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
 
         boldStyle = doc.addStyle("bold", baseStyle);
         StyleConstants.setBold(boldStyle, true);
-
-//        bullet = doc.addStyle("bullet", baseStyle);
-//        StyleConstants.setBold(bullet, true);
 
         h1Style = doc.addStyle("h1", baseStyle);
         StyleConstants.setFontSize(h1Style, 34);
@@ -448,13 +446,29 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                         }
 
                         // -- Monospaced --------
-                        else if (pos >= 4 && c == ' ' && text.charAt(pos + 1) == ' ' &&
-                                text.charAt(pos + 2) == ' ' && text.charAt(pos + 3) == ' ') {
-                            if ((text.charAt(pos - 1) == '\n' && (text.charAt(pos - 2) == '\n' || doc.getCharacterElement(pos - 2).getAttributes().containsAttributes(this.codeStyle))) || pos == 4) {
-                                if (!getStartOfParagraphText(pos, bounds, text).trim().startsWith("* ")) {
-                                    int epos = getEndOfParagraph(text, pos);
-                                    doc.setCharacterAttributes(pos, (epos - pos) + 1, this.codeStyle, true);
-                                    pos = epos + 1;
+                        else if ((pos >= 4 && c == ' ' && text.charAt(pos + 1) == ' ' &&
+                                text.charAt(pos + 2) == ' ' && text.charAt(pos + 3) == ' ') ||
+                                (pos >= 2 && c == '\t')) {
+
+                            boolean isList = true;
+                            if (pos >= 5) {
+                                int checkPos = pos + 4;
+                                while (text.charAt(checkPos) == ' ') {
+                                    ++checkPos;
+                                }
+                                char p4 = text.charAt(checkPos);
+                                if (p4 != '-' && p4 != '+' && p4 != '*') {
+                                    isList = false;
+                                }
+                            }
+
+                            if (!isList) {
+                                if ((text.charAt(pos - 1) == '\n' && (text.charAt(pos - 2) == '\n' || doc.getCharacterElement(pos - 2).getAttributes().containsAttributes(this.codeStyle))) || pos == 4) {
+                                    if (!getStartOfParagraphText(pos, bounds, text).trim().startsWith("* ")) {
+                                        int epos = getEndOfParagraph(text, pos);
+                                        doc.setCharacterAttributes(pos, (epos - pos) + 1, this.codeStyle, true);
+                                        pos = epos + 1;
+                                    }
                                 }
                             }
                         }

@@ -98,13 +98,15 @@ public class MultiPopupToolbar implements ToolBar {
 
             @Override
             public void mouseMoved(MouseEvent e) {
-                int y = e.getYOnScreen();
-                y = y - getParentFrame().getY() - 25;
+                int y = e.getY() - MultiPopupToolbar.this.editor.getGUI().getEditorVisibleY();
                 if (y <= getTopMargin() && e.getX() >= 0 && e.getX() <= getEditorWidth()) {
                     if (!isOpen()) {
                         int toolbarWidth = calculateWidth();
                         int x = getParentFrame().getX() + (getParentFrame().getWidth() / 2) - (toolbarWidth / 2);
-                        open(getParentFrame(), x, getParentFrame().getY() + 25);
+
+                        int titleBarHeight =
+                                (int)(getParentFrame().getBounds().getHeight() - getParentFrame().getContentPane().getBounds().getHeight());
+                        open(getParentFrame(), x, getParentFrame().getY() + titleBarHeight + 2);
                     }
                 }
                 else {
@@ -242,7 +244,7 @@ public class MultiPopupToolbar implements ToolBar {
 
         List<EditorFunction> groupFunctions = this.functions.get(function.getGroup());
         if (groupFunctions == null) {
-            groupFunctions = new LinkedList<EditorFunction>();
+            groupFunctions = new LinkedList<>();
             this.functions.put(function.getGroup(), groupFunctions);
         }
 

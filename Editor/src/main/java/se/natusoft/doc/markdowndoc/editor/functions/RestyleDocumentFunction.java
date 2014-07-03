@@ -48,6 +48,8 @@ import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 
 import javax.swing.*;
 
+import java.awt.*;
+
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD;
 
 /**
@@ -129,7 +131,14 @@ public class RestyleDocumentFunction implements EditorFunction, Configurable {
 
     @Override
     public void perform() throws FunctionException {
-        this.editor.getStyler().styleDocument();
+        this.editor.refreshStyling();
+//        String text = this.editor.getEditorContent();
+//        int caretDot = this.editor.getCaretDot();
+//        this.editor.getGUI().getStyler().disable();
+//        this.editor.setEditorContent(text);
+//        this.editor.setCaretDot(caretDot);
+//        this.editor.getGUI().getStyler().enable();
+//        this.editor.getStyler().styleDocument();
     }
 
     /**

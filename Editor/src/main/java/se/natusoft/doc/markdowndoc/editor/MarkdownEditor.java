@@ -39,8 +39,6 @@ package se.natusoft.doc.markdowndoc.editor;
 import net.iharder.dnd.FileDrop;
 import se.natusoft.doc.markdowndoc.editor.adapters.WindowListenerAdapter;
 import se.natusoft.doc.markdowndoc.editor.api.*;
-import se.natusoft.doc.markdowndoc.editor.api.providers.JELine;
-import se.natusoft.doc.markdowndoc.editor.api.providers.PersistentPropertiesProvider;
 import se.natusoft.doc.markdowndoc.editor.config.*;
 import se.natusoft.doc.markdowndoc.editor.functions.utils.FileWindowProps;
 import se.natusoft.doc.markdowndoc.editor.tools.ServiceDefLoader;
@@ -51,6 +49,7 @@ import javax.swing.event.CaretListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Caret;
+import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -446,6 +445,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
             }
 
         };
+
         this.mouseMotionProviders.add(new MouseMotionProvider() {
             @Override
             public void addMouseMotionListener(MouseMotionListener listener) {
@@ -458,11 +458,13 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
             }
 
         });
+
         this.editorStyler = this.stylerLoader.iterator().next();
         if (this.editorStyler == null) {
             throw new RuntimeException("No META-INF/services/se.natusoft.doc.markdowndoc.editor.api.JTextComponentStyler " +
                     "file pointing out an implementation to use have been provided!");
         }
+
         this.editorStyler.init(this.editor);
         if (this.editorStyler instanceof Configurable) {
             ((Configurable)this.editorStyler).registerConfigs(getConfigProvider());
@@ -657,6 +659,14 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
     }
 
     /**
+     * Returns the y coordinate of the top of the scrollable editor view.
+     */
+    @Override
+    public int getEditorVisibleY() {
+        return this.scrollPane.getViewport().getViewRect().y;
+    }
+
+    /**
      * Returns the styler for the editor.
      */
     @Override
@@ -690,7 +700,6 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
-        //System.out.println("Keycode: " + keyCode);
         if (
                 keyCode != KeyEvent.VK_META &&
                 keyCode != KeyEvent.VK_ALT &&
@@ -699,8 +708,8 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
         ) {
             this.keyPressedCaretPos = this.editor.getCaretPosition();
 
+            KeyboardKey keyboardKey = new KeyboardKey(e);
             for (EditorFunction function : this.functions) {
-                KeyboardKey keyboardKey = new KeyboardKey(e);
                 if (function.getKeyboardShortcut() != null && function.getKeyboardShortcut().equals(keyboardKey)) {
                     function.perform();
                     break;
@@ -709,6 +718,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
             }
         }
         updateScrollbar();
+
     }
 
     /**
@@ -742,7 +752,6 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
     @Override
     public void keyReleased(KeyEvent e) {
         int keyCode = e.getKeyCode();
-        //System.out.println("Keycode: " + keyCode);
         if (
                 keyCode != KeyEvent.VK_META &&
                         keyCode != KeyEvent.VK_ALT &&
@@ -1005,6 +1014,20 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
     }
 
     /**
+     * Refreshes styling and formatting of the document.
+     */
+    @Override
+    public void refreshStyling() {
+        String text = getEditorContent();
+        int caretDot = getCaretDot();
+        getGUI().getStyler().disable();
+        setEditorContent(text);
+        setCaretDot(caretDot);
+        getGUI().getStyler().enable();
+        getStyler().styleDocument();
+    }
+
+    /**
      * Opens the specified file in the editor.
      *
      * @param file The file to open.
@@ -1032,6 +1055,13 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
             getConfigProvider().refreshConfigs();
         }
         this.editorStyler.enable();
+
+        FileWindowProps fileWindowProps = new FileWindowProps();
+        fileWindowProps.load(this);
+        if (fileWindowProps.hasProperties()) {
+            getGUI().getWindowFrame().setBounds(fileWindowProps.getBounds());
+        }
+
         this.editorStyler.styleDocument();
     }
 

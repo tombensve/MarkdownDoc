@@ -74,6 +74,11 @@ public interface GUI {
     JPanel getEditorPanel();
 
     /**
+     * Returns the y coordinate of the top of the scrollable editor view.
+     */
+    public int getEditorVisibleY();
+
+    /**
      * Returns the styler for the editor.
      */
     JTextComponentStyler getStyler();

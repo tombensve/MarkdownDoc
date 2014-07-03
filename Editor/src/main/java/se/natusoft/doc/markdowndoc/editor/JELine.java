@@ -34,7 +34,7 @@
  *         2013-05-27: Created!
  *         
  */
-package se.natusoft.doc.markdowndoc.editor.api.providers;
+package se.natusoft.doc.markdowndoc.editor;
 
 import se.natusoft.doc.markdowndoc.editor.api.Line;
 

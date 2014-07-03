@@ -4,55 +4,123 @@ This is an editor for editing markdown documents.
 
 ## Features
 
-### New in 1.3.3
+### Styling as you type
 
-* Removed window toolbar. Some strange and so far incomprehensible bug causes the toolbar to get focus on each keypress. Until that can be resolved the only the two popup toolbars are available. These are nicer IMHO.
+Can markdown style as you write. Headings, bold, italics, and monospaced are styled. This can be turned on/off in settings. Styles the whole document on load, and after that restyles only the currently edited paragraph due to performance reasons. There is a function (default Ctrl+R) that restyles the whole document. This is also done on paste if you have mapped the correct paste key in Settings/Keyboard.
 
-* Fixed bug that caused styling on load to be done more than once. That is, now it is only done once.
+### HTML Preview
 
-* Restyles whole document on Ctrl+V with short delay so that pasted text gets styled even if there are several paragraphs being pasted. For very large documents this can be a bit slow. Settings/Keyboard can change the key for this. The default is for windows. On a mac you want to change the key to Cmd+R (Meta+R in Java language).
+Can preview in HTML format (toggles between preview and edit mode). This is activated by a toolbar button (the eye) and a keyboard shortcut.
 
-* Ctrl+R function that restyles the whole document. The key can be changed in Setting/Keyboard.
+### Editing effects
 
-### New in 1.3
+Can make formatting characters to be made very tiny while editing, by enabling a settings option. Try it to see the effect!
 
-Can markdown format realtime as you are editing! Headings, bold, italics, and monospaced are formatted. This can be turned off in settings. Formats the whole document on load, and after that reformats only the currently edited paragraph for performance reasons.
+### Generate PDF & HTML
 
-Formatting characters can be made very tiny while editing by enabling a settings option. Try it to see the effect!
+Can generate both PDF and HTML from the editor window. Use toolbar button or keyboard shortcut.
 
-New default keyboard shortcuts for functions that should be more platform independent, and all keyboard shortcuts can now be configured in settings. 
+### Configurable
 
-New settings configurable toolbars: The old in window toolbar, and 2 popup toolbar variants that are only visible when the mouse is moved to the top of the editor window. This also means that you can get a text only distraction free fullscreen (real fullscreen on Mac OS X). 
+The settings dialog allows you to configure almost anything/everything:
 
-The settings dialog have been redone and now features tabs for different groups of settings, and much better and smarter layout of content in settings dialog. 
+- All keyboard shortcuts. 
 
-Special feature: When in preview mode and you drop a markdown document on the window the dropped markdown document will be formatted and displayed without affecting the currently edited document. When you exit preview mode you have your original document there again, and can preview it again. This is a convenience function to quickly be able to read markdown documents formatted by dropping them on the window in preview mode. 
+   - Don't write the keyboard shortcut in text, just press the keyboard shortcut you want to set.
 
-### Previous version
+   - Configured keyboard values are stored in their string representation and matched as strings. 
 
-Toolbar buttons for markdown formats. The toolbar can be dragged to any side of the window. Each toolbar button has a keyboard shortcut (shown in tooltip). 
-      
-Can switch back and forth between editing and preview mode. The preview will try as much as it can to show the same section of the document as the cursor were at att the time of the previev.
+      - This means that the code does not have to do a humongous if statement set for each possible alternative.
 
-Can generate a PDF document directly from your markdown. Supports table of contents and a title page. All generate settings for a documents are remembered.
+      - This also means that due to differences in java implementations and versions the string representation might be Ctrl+K or ^+K. So if you change java version you might also have to update keyboard mappings in settings. 
 
-Provides list support. Pressing &lt;Return&gt; on a line starting with a list bullet (\*) will automatically produce a new bullet on the next line at the same indent level. Pressing &lt;Return&gt; again without writing anything for the bullet will remove the bullet. Pressing &lt;Tab&gt; on a list bullet line will indent the line 3 spaces. The whole line will be indented and it does not matter where on the line the cursor is. Pressing &lt;Shift&gt;-&lt;Tab&gt; on a list bullet line will do the opposite of &lt;Tab&gt;, unindenting the line.
+- Margins.
 
-Provides quote support. Pressing &lt;Return&gt; on a line starting with a quote (&gt;) will produce a new quote (&gt;) on the next line. Pressing &lt;Return&gt; again without writing anything will remove it.
+- Editor font.
 
-You can modfiy visuals to your liking in settings. Any changes made there are reflected in the editor immediately! If you cancel the revert back to what you had before.
+- Monospaced font.
 
-You can load markdown files by drag and drop onto the editing window.
+- Preview font.
 
-Can be run with java -jar or double clicking the jar on most platforms.
+- Font sizes.
 
-Supports fullscreen on Mac OS X.
+- Background color.
+
+- Text color.
+
+- Toolbar variant to use.
+
+### Load file by drag & drop
+
+Instead of using the GUI open dialog you can just drag and drop a file in the editor to edit it.
+
+### Special preview drag & drop feature
+
+While in preview mode, drag and drop a markdown file on the preview window to have it formatted and displayed. This does not affect the edit buffer in any way. Exiting preview mode will bring you back to whatever you have in the editor, and previewing again will preview the editor content. 
+
+But by just opening an empty editor and entering a blank preview you can quickly read multiple markdown documents formatted by just dropping them on the window.
+
+### Mac OS X Fullscreen support
+
+When you run this editor on a Mac with Lion+ you will get a litte double arrow in the right corner of the window titlebar, which will bring upp the editor window in fullscreen. 
   
-## Executables
+## Running
 
-MarkdownDocEditor-n.n.n-App.jar
+Can be run with java -jar or double clicked on. If you are using Windows 7 or 8 take a look at this page: [http://johann.loefflmann.net/en/software/jarfix/index.html]
+(http://johann.loefflmann.net/en/software/jarfix/index.html). 
 
-## Extending
+The executable jar have the following name: MarkdownDocEditor-n.n.n-App.jar
+
+One or more files can be specified as arguments.
+
+## Requirements
+
+This requires Java 7+!
+
+## Functions
+
+Do note that since all keyboard actions can be configured in settings this documents the default keyboard settings. Also note that the defaults are adapted for Windows and Linux. On a mac you might want to change Ctrl to the Cmd key instead. 
+
+	                Keyboard default    Available in toolbar
+	________________________________________________________
+	Save file             Ctrl+S               Yes
+	Open file             Ctrl+O               Yes
+	Open new window       Ctrl+N               Yes
+	Insert heading        Ctrl+T               Yes
+	Insert bold           Ctrl+B               Yes
+	Insert italics        Ctrl+I               Yes
+	Insert list           Ctrl+L               Yes
+	Insert quote          Ctrl+Q               Yes
+	Insert image          Ctrl+M               Yes
+	Insert link           Ctrl+N               Yes
+	Preview               Ctrl+F               Yes
+	Generate PDF          Ctrl+P               Yes
+	Generate HTML         Ctrl+H               Yes
+	Settings              Ctrl+E               Yes
+	Restyle document      Ctrl+R               No
+	Restyle on paste (*)  Ctrl+V               No
+
+(\*) This can be disabled by setting the key to anything other than the paste key.
+
+## If you're on a Mac
+
+If you are on a Mac you might want to change the keyboard mappings to use Cmd rather than Ctrl. Do note however that Cmd+H and Cmd+Q are really nasty on Mac OS X! Since these keys immedialtely kills the app theses keys are impossible to set in the first place, but you will loose other unsaved settings when you try.
+
+## Currently Missing
+
+Fancy functions like search and replace.
+
+Undo capability.
+
+## Bugs
+
+### By me
+
+I have now ironed out all known bugs for the moment. 
+
+### By Oracle
+
+This editor uses the standard Swing component JTextPane. This is unfortunately not an optimal component. Specially for styling it gets slow for large documents. In earlier versions of Java 7 this component had a word wrap problem when deleting text either using backspace or cutting text. In that case it rerendered the text screwing up the format until new text was entered again. _As of update 60 this bug is fixed_, but other new bugs have been added. They are however smaller and don't occur so often, and are only visual.
 
 
 

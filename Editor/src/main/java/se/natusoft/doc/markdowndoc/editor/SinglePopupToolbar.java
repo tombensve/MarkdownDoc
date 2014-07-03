@@ -99,7 +99,7 @@ public class SinglePopupToolbar implements ToolBar {
 
             @Override
             public void mouseMoved(MouseEvent e) {
-                int y = e.getY();
+                int y = e.getY() - SinglePopupToolbar.this.editor.getGUI().getEditorVisibleY();
                 if (y <= getTopMargin() && e.getX() >= 0 && e.getX() <= getEditorWidth()) {
                     if (!isOpen()) {
                         int toolbarWidth = calculateWidth();
@@ -241,7 +241,7 @@ public class SinglePopupToolbar implements ToolBar {
 
         List<EditorFunction> groupFunctions = this.functions.get(function.getGroup());
         if (groupFunctions == null) {
-            groupFunctions = new LinkedList<EditorFunction>();
+            groupFunctions = new LinkedList<>();
             this.functions.put(function.getGroup(), groupFunctions);
         }
 

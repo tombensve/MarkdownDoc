@@ -106,27 +106,54 @@ public class ContextFormatFilter implements EditorInputFilter, Configurable {
         this.editor = editor;
     }
 
+    private boolean isBulletChar(char bulletChar) {
+        return bulletChar == '+' || bulletChar == '-' || bulletChar == '*';
+    }
+
+    private boolean isBulletChar(String bulletChar) {
+        return bulletChar.length() > 0 && isBulletChar(bulletChar.charAt(0));
+    }
+
+    private boolean isBulletStart(String line) {
+        return line.length() > 1 && isBulletChar(line.charAt(0)) && line.charAt(1) == ' ';
+    }
+
     @Override
     public void keyPressed(KeyEvent keyEvent) {
         try {
             // Catch new lines
             if (keyEvent.getKeyChar() == '\n') {
                 Line currentLine = this.editor.getCurrentLine();
-                //System.out.println("Context: currentLine: " + currentLine.getText());
 
                 if (currentLine != null) {
-                    //System.out.println("Context: workLine: " + prevLine.getText());
                     String trimmedLine = currentLine.getText().trim();
+
+                    // -- Handle preformatted --
+
+                    if (currentLine.getText().charAt(0) == '\t' || currentLine.getText().startsWith("    ")) {
+                        if (currentLine.getText().charAt(0) == '\t') {
+                            currentLine.getNextLine().setText("\t");
+                            this.editor.moveCaretForward(1);
+                        }
+                        else {
+                            currentLine.getNextLine().setText("    ");
+                            this.editor.moveCaretForward(4);
+                        }
+                    }
 
                     // -- Handle list bullets --
 
                     // If the previous line only contains a list bullet and no text, blank the line.
-                    if (trimmedLine.equals("*")) {
+                    else if (trimmedLine.length() == 1 && isBulletChar(trimmedLine)) {
                         currentLine.setText("");
                     }
                     // Otherwise start the new line with a new list bullet.
-                    else {
-                        if (trimmedLine.startsWith("* ")) {
+                    else if (isBulletStart(trimmedLine)) {
+                        // Since the user just pressed return whatever was after the cursor will be on
+                        // the next line. If return was pressed at the end of the line the next line
+                        // will be empty (with the exception of possible whitespace). In this case we
+                        // add a new bullet. If it is not empty we don't to anything.
+                        if (currentLine.getNextLine().getText().trim().length() == 0) {
                             int indentPos = currentLine.getText().indexOf('*');
                             if (this.doubleSpacedBullets) {
                                 this.editor.addBlankLine();
@@ -137,7 +164,7 @@ public class ContextFormatFilter implements EditorInputFilter, Configurable {
                                 newLine.append(' ');
                                 --indentPos;
                             }
-                            newLine.append("* ");
+                            newLine.append(trimmedLine.substring(0, 2));
                             Line nextLine = currentLine.getNextLine();
                             if (nextLine != null) {
                                 nextLine.setText(newLine.toString());
@@ -149,24 +176,22 @@ public class ContextFormatFilter implements EditorInputFilter, Configurable {
                     // -- Handle quotes --
 
                     // If the previous line only contains a quote (>) char and no text, blank the line
-                    if (trimmedLine.equals(">")) {
+                    else if (trimmedLine.equals(">")) {
                         currentLine.setText("");
                     }
                     // Otherwise start the new line with a quote (>) character.
-                    else {
-                        if (trimmedLine.startsWith("> ")) {
-                            int indentPos = currentLine.getText().indexOf('>');
-                            StringBuilder newLine = new StringBuilder();
-                            while (indentPos > 0) {
-                                newLine.append(' ');
-                                --indentPos;
-                            }
-                            newLine.append("> ");
-                            Line nextLine = currentLine.getNextLine();
-                            if (nextLine != null) {
-                                nextLine.setText(newLine.toString());
-                                this.editor.moveCaretForward(newLine.length());
-                            }
+                    else if (trimmedLine.startsWith("> ")) {
+                        int indentPos = currentLine.getText().indexOf('>');
+                        StringBuilder newLine = new StringBuilder();
+                        while (indentPos > 0) {
+                            newLine.append(' ');
+                            --indentPos;
+                        }
+                        newLine.append("> ");
+                        Line nextLine = currentLine.getNextLine();
+                        if (nextLine != null) {
+                            nextLine.setText(newLine.toString());
+                            this.editor.moveCaretForward(newLine.length());
                         }
                     }
                 }

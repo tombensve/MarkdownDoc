@@ -129,17 +129,13 @@ public class PasteRestyleFunction implements EditorFunction, Configurable {
 
     @Override
     public void perform() throws FunctionException {
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    Thread.sleep(500);
-                    PasteRestyleFunction.this.editor.getStyler().styleDocument();
-                }
-                catch (Exception e) {
-                    System.err.println("ERROR: " + e.getMessage());
-                }
-            }
-        }).start();
+
+        try {
+            PasteRestyleFunction.this.editor.refreshStyling();
+        }
+        catch (Exception e) {
+            System.err.println("ERROR: " + e.getMessage());
+        }
     }
 
     /**

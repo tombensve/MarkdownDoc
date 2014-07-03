@@ -12,12 +12,13 @@
 #
 #se.natusoft.doc.markdowndoc.editor.WindowToolBar
 
+# This toolbar pops up when the mouse gets up to the top margin area of the editor.
+# When the mouse moves away from this area it closes again. This however is just one
+# popup window with a JToolBar in it.
+se.natusoft.doc.markdowndoc.editor.SinglePopupToolbar
+
 #
 # This toolbar pops up when the mouse gets up to the top margin area of the editor.
 # When the mouse moves away from this area it closes again.
 se.natusoft.doc.markdowndoc.editor.MultiPopupToolbar
 
-# This toolbar pops up when the mouse gets up to the top margin area of the editor.
-# When the mouse moves away from this area it closes again. This however is just one
-# popup window with a JToolBar in it.
-se.natusoft.doc.markdowndoc.editor.SinglePopupToolbar

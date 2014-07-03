@@ -206,6 +206,11 @@ public interface Editor extends MouseMotionProvider {
     void disableToolBarGroup(String groupName);
 
     /**
+     * Refreshes styling and formatting of the document.
+     */
+    public void refreshStyling();
+
+    /**
      * Opens the specified file in the editor.
      *
      * @param file The file to open.
