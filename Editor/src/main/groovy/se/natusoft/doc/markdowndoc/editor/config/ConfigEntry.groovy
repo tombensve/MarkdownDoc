@@ -113,7 +113,7 @@ public class ConfigEntry {
      */
     public void setValue(String value) {
         this.value = value
-        for (Closure configChanged : this.configProvider.lookupConfigChanged(this)) {
+        this.configProvider.lookupConfigChanged(this).each { Closure configChanged ->
             configChanged(this)
         }
     }

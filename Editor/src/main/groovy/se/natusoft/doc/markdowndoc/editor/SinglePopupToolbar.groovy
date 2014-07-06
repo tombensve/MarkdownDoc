@@ -180,11 +180,11 @@ public class SinglePopupToolbar implements ToolBar {
             this.toolBarWindow.add(panel, BorderLayout.CENTER)
             panel.setLayout(new FlowLayout(FlowLayout.LEFT))
             boolean separator = false
-            for (String group : this.toolBarGroups) {
+            this.toolBarGroups.each { String group ->
                 if (separator) {
                     panel.add(new JToolBar.Separator())
                 }
-                for (EditorFunction editorFunction : this.functions.get(group)) {
+                this.functions.get(group)?.each { EditorFunction editorFunction ->
                     JComponent toolbarButton = editorFunction.getToolBarButton()
                     panel.add(toolbarButton)
                 }
@@ -217,8 +217,8 @@ public class SinglePopupToolbar implements ToolBar {
     private int calculateWidth() {
         int width = this.calculatedWidth
         if (width == 0) {
-            for (String group : this.toolBarGroups) {
-                for (EditorFunction editorFunction : this.functions.get(group)) {
+            this.toolBarGroups.each { String group ->
+                this.functions.get(group)?.each { EditorFunction editorFunction ->
                     width = (int)(width + editorFunction.getToolBarButton().getPreferredSize().width)
                 }
                 width = width + 10
@@ -271,7 +271,7 @@ public class SinglePopupToolbar implements ToolBar {
     public void disableGroup(String group) {
         List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
-            for (EditorFunction function : functions) {
+            functions.each { EditorFunction function ->
                 function.getToolBarButton().setEnabled(false)
             }
         }
@@ -288,7 +288,7 @@ public class SinglePopupToolbar implements ToolBar {
     public void enableGroup(String group) {
         List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
-            for (EditorFunction function : functions) {
+            functions.each { EditorFunction function ->
                 function.getToolBarButton().setEnabled(true)
             }
         }

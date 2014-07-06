@@ -173,16 +173,17 @@ public class SettingsFunction implements EditorFunction, Configurable, DelayedIn
             }
         }
 
-        for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
+        this.cancelValues = new HashMap<>()
+        withAllConfigEntriesDo { ConfigEntry configEntry ->
             this.settingsWindow.addConfig(configEntry)
-        }
-
-        this.cancelValues = new HashMap<String, String>()
-        for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
             this.cancelValues.put(configEntry.getKey(), configEntry.getValue())
         }
 
         this.settingsWindow.setVisible(true)
+    }
+
+    private void withAllConfigEntriesDo(Closure ceClosure) {
+        this.editor.getConfigProvider().getConfigs().each ceClosure
     }
 
     /**
@@ -190,7 +191,7 @@ public class SettingsFunction implements EditorFunction, Configurable, DelayedIn
      */
     protected void cancel() {
 
-        for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
+        withAllConfigEntriesDo { ConfigEntry configEntry ->
             configEntry.setValue(this.cancelValues.get(configEntry.getKey()))
         }
 
@@ -201,7 +202,7 @@ public class SettingsFunction implements EditorFunction, Configurable, DelayedIn
      */
     protected void save() {
         Properties props = new Properties()
-        for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
+        withAllConfigEntriesDo { ConfigEntry configEntry ->
             props.setProperty(configEntry.getKey(), configEntry.getValue())
         }
 
@@ -218,7 +219,7 @@ public class SettingsFunction implements EditorFunction, Configurable, DelayedIn
     private void load() {
         Properties props = this.editor.getPersistentProps().load(SETTINGS_PROP_NAME)
         if (props != null) {
-            for (String propName : props.stringPropertyNames()) {
+            props.stringPropertyNames().each { String propName ->
                 String propValue = props.getProperty(propName)
                 ConfigEntry configEntry = this.editor.getConfigProvider().lookupConfig(propName)
                 if (configEntry != null) {
@@ -228,7 +229,7 @@ public class SettingsFunction implements EditorFunction, Configurable, DelayedIn
             }
         }
         else {
-            for (ConfigEntry configEntry : this.editor.getConfigProvider().getConfigs()) {
+            withAllConfigEntriesDo { ConfigEntry configEntry ->
                 configEntry.setValue(configEntry.getValue()) // force gui update
             }
         }

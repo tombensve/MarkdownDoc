@@ -255,8 +255,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
         }
         try {
             this.toolBar = (ToolBar)Class.forName(ce.getValue()).newInstance()
-            for (EditorFunction function : functions) {
-
+            functions.each { EditorFunction function ->
                 // It is OK to not have a tool bar button!
                 if (function.getGroup() != null && function.getToolBarButton() != null) {
                     this.toolBar.addFunction(function)
@@ -352,7 +351,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
 
     protected void closeWindow() {
         ConfigProvider cp = getConfigProvider()
-        for (Configurable configurable : configurables) {
+        configurables.each {Configurable configurable ->
             configurable.unregisterConfigs(cp)
         }
         setVisible(false)
@@ -469,7 +468,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
 
         List<DelayedInitializer> delayedInitializers = new LinkedList<>()
 
-        for (EditorComponent component : componentLoader) {
+        componentLoader.each { EditorComponent component ->
             if (component instanceof Configurable) {
                 ((Configurable)component).registerConfigs(getConfigProvider())
                 this.configurables.add((Configurable)component)
@@ -493,9 +492,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
 
         }
 
-        for (DelayedInitializer delayedInitializer : delayedInitializers) {
-            delayedInitializer.init()
-        }
+        delayedInitializers.each { DelayedInitializer delayedInitializer -> delayedInitializer.init() }
 
         // Additional setup now that a component have possibly loaded config.
 
@@ -543,9 +540,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      */
     @Override
     public void addMouseMotionListener(MouseMotionListener listener) {
-        for (MouseMotionProvider mouseMotionProvider : this.mouseMotionProviders) {
-            mouseMotionProvider.addMouseMotionListener(listener)
-        }
+        this.mouseMotionProviders.each { MouseMotionProvider mmp -> mmp.addMouseMotionListener(listener) }
     }
 
     /**
@@ -555,9 +550,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      */
     @Override
     public void removeMouseMotionListener(MouseMotionListener listener) {
-        for (MouseMotionProvider mouseMotionProvider : this.mouseMotionProviders) {
-            mouseMotionProvider.removeMouseMotionListener(listener)
-        }
+        this.mouseMotionProviders.each { MouseMotionProvider mmp -> mmp.removeMouseMotionListener(listener) }
     }
 
     /**
@@ -675,13 +668,10 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
             this.keyPressedCaretPos = this.editorPane.getCaretPosition()
 
             KeyboardKey keyboardKey = new KeyboardKey(e)
-            for (EditorFunction function : this.functions) {
-                if (function.getKeyboardShortcut() != null && function.getKeyboardShortcut().equals(keyboardKey)) {
-                    function.perform()
-                    break
-                }
 
-            }
+            this.functions.find { EditorFunction function ->
+                function.getKeyboardShortcut() != null && function.getKeyboardShortcut().equals(keyboardKey)
+            }?.perform()
         }
         updateScrollbar()
 
@@ -724,7 +714,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
                         keyCode != KeyEvent.VK_CONTROL &&
                         keyCode != KeyEvent.VK_SHIFT
                 ) {
-            for (EditorInputFilter filter : this.filters) {
+            this.filters.each { EditorInputFilter filter ->
                 filter.keyPressed(e)
             }
         }
@@ -1172,7 +1162,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
     private static void startup(String... args) {
         try {
             if (args.length > 0) {
-                for (String arg : args) {
+                args.each { String arg ->
                     File argFile = new File(arg)
                     openEditor(argFile)
                 }

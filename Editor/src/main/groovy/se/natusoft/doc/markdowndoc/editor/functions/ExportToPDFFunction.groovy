@@ -148,15 +148,16 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
          */
         private void loadPDFDataValues() {
             exportDataValues = new LinkedList<ExportDataValue>()
-            for (Field field : PDFData.class.getDeclaredFields()) {
-                if (field.getType() == ExportDataValue.class) {
-                    field.setAccessible(true)
-                    try {
-                        exportDataValues.add((ExportDataValue)field.get(this))
-                    }
-                    catch (Exception e) {
-                        System.err.println("ERROR: " + e.getMessage())
-                    }
+
+            PDFData.class.declaredFields.findAll { Field field ->
+                field.type == ExportDataValue.class
+            }.each { Field field ->
+                field.accessible = true
+                try {
+                    exportDataValues.add((ExportDataValue)field.get(this))
+                }
+                catch (Exception e) {
+                    System.err.println("ERROR: " + e.getMessage())
                 }
             }
         }
@@ -250,7 +251,7 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
 
             borderPanel.add(Box.createRigidArea(new Dimension(12, 12)), BorderLayout.EAST)
 
-            for (ExportDataValue exportDataValue : this.pdfData.exportDataValues) {
+            this.pdfData.exportDataValues.each { ExportDataValue exportDataValue ->
                 dataLabelPanel.add(exportDataValue.labelComp)
                 dataValuePanel.add(exportDataValue.valueComp)
             }

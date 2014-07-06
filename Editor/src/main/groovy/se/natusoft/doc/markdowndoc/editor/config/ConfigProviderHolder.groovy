@@ -149,7 +149,7 @@ public class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntr
      * Refreshes all configs by triggering callbacks.
      */
     public void refreshConfigs() {
-        for (ConfigEntry ce : getConfigs()) {
+        getConfigs().each { ConfigEntry ce ->
             ce.setValue(ce.getValue())
         }
     }

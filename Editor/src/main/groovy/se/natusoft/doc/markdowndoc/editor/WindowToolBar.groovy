@@ -95,6 +95,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
      * Creates the content of the toolbar. This cannot be done until all
      * functions have been provided.
      */
+    @SuppressWarnings("UnnecessaryQualifiedReference")
     @Override
     public void createToolBarContent() {
         Iterator<String> groupIterator = this.toolBarGroups.iterator()
@@ -102,7 +103,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
             String group = groupIterator.next()
 
             List<EditorFunction> functions = this.functions.get(group)
-            for (EditorFunction function : functions) {
+            functions.each { EditorFunction function ->
                 add(function.getToolBarButton())
             }
 
@@ -121,7 +122,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
     public void disableGroup(String group) {
         List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
-            for (EditorFunction function : functions) {
+            functions.each { EditorFunction function ->
                 function.getToolBarButton().setEnabled(false)
             }
         }
@@ -139,7 +140,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
     public void enableGroup(String group) {
         List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
-            for (EditorFunction function : functions) {
+            functions.each { EditorFunction function ->
                 function.getToolBarButton().setEnabled(true)
             }
         }

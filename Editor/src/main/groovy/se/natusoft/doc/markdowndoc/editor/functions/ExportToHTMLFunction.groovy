@@ -154,15 +154,16 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
          */
         public void loadHTMLDataValues() {
             exportDataValues = new LinkedList<>()
-            for (Field field : HTMLData.class.getDeclaredFields()) {
-                if (field.getType() == ExportDataValue.class) {
-                    field.setAccessible(true)
-                    try {
-                        exportDataValues.add((ExportDataValue)field.get(this))
-                    }
-                    catch (Exception e) {
-                        System.err.println("ERROR: " + e.getMessage())
-                    }
+
+            HTMLData.class.declaredFields.findAll { Field field ->
+                field.type == ExportDataValue.class
+            }.each { Field field ->
+                field.accessible = true
+                try {
+                    exportDataValues.add((ExportDataValue)field.get(this))
+                }
+                catch (Exception e) {
+                    System.err.println("ERROR: " + e.getMessage())
                 }
             }
         }
@@ -241,20 +242,24 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
 
             borderPanel.add(Box.createRigidArea(new Dimension(12, 12)), BorderLayout.EAST)
 
-            for (ExportDataValue exportDataValue : this.htmlData.exportDataValues) {
+            this.htmlData.exportDataValues.each { ExportDataValue exportDataValue ->
                 dataLabelPanel.add(exportDataValue.labelComp)
                 dataValuePanel.add(exportDataValue.valueComp)
             }
 
             JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
             JButton generateButton = new JButton("Generate")
-            generateButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    /*ExportToHTMLFunction.this.*/htmlMetaDataDialog.setVisible(false)
-                    generateHTML()
-                }
-            })
+//            generateButton.addActionListener(new ActionListener() {
+//                @Override
+//                public void actionPerformed(ActionEvent actionEvent) {
+//                    /*ExportToHTMLFunction.this.*/htmlMetaDataDialog.setVisible(false)
+//                    generateHTML()
+//                }
+//            })
+            generateButton.addActionListener({ ActionEvent actionEvent ->
+                this.htmlMetaDataDialog.setVisible(false)
+                generateHTML()
+            } as ActionListener)
             buttonPanel.add(generateButton)
             JButton cancelButton = new JButton("Cancel")
             cancelButton.addActionListener(new ActionListener() {

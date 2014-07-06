@@ -17,23 +17,19 @@ public class ExportData {
         this.delayedServicesData = localServiceData
     }
 
-    protected DelayedServiceData getLocalServicesData() {
-        return this.delayedServicesData
-    }
-
     /**
      * Loads the values of the fields in this class from the specified properties file.
      *
      * @param file The properties file to load from.
      */
-    protected void loadExportData(File file) {
+    public void loadExportData(File file) {
         Properties props = this.delayedServicesData.getPersistentProps().load(fileToPropertiesName(file))
         if (props != null) {
-            for (String propName : props.stringPropertyNames()) {
-                for (ExportDataValue exportDataValue : exportDataValues) {
-                    if (exportDataValue.getKey().equals(propName)) {
-                        exportDataValue.setValue(props.getProperty(propName))
-                    }
+            props.stringPropertyNames().each { String propName ->
+                exportDataValues.findAll { ExportDataValue exportDataValue ->
+                    exportDataValue.getKey().equals(propName)
+                }.each { ExportDataValue exportDataValue ->
+                    exportDataValue.setValue(props.getProperty(propName))
                 }
             }
         }
@@ -44,9 +40,9 @@ public class ExportData {
      *
      * @param file The properties file to save to.
      */
-    protected void saveExportData(File file) {
+    public void saveExportData(File file) {
         Properties props = new Properties()
-        for (ExportDataValue exportDataValue : exportDataValues) {
+        exportDataValues.each { ExportDataValue exportDataValue ->
             props.setProperty(exportDataValue.getKey(), exportDataValue.getValue())
         }
         props.setProperty(delayedServicesData.defaultsPropKey,
@@ -54,8 +50,13 @@ public class ExportData {
         delayedServicesData.getPersistentProps().save(fileToPropertiesName(file), props)
     }
 
+    /**
+     * Sets the background color to use.
+     *
+     * @param bgColor The background color to set.
+     */
     public void setBackgroundColor(Color bgColor) {
-        for (ExportDataValue edv : this.exportDataValues) {
+        this.exportDataValues.each { ExportDataValue edv ->
             edv.setBackgroundColor(bgColor)
         }
     }
@@ -66,7 +67,7 @@ public class ExportData {
      *
      * @param file The file to convert to properties name.
      */
-    protected String fileToPropertiesName(File file) {
+    private static String fileToPropertiesName(File file) {
         return file.getName().replace(".", "_")
     }
 
