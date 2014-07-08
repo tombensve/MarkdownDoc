@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Editor/docs/MarkdownDoc-Editor.md" afterPath="$PROJECT_DIR$/Editor/docs/MarkdownDoc-Editor.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/MarkdownDoc-User-Guide.pdf" afterPath="$PROJECT_DIR$/Docs/MarkdownDoc-User-Guide.pdf" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/licenses.md" afterPath="$PROJECT_DIR$/Docs/licenses.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -78,6 +78,9 @@
     <breakpoint_rules converted="true" />
     <ui_properties converted="true" />
   </component>
+  <component name="DiffToolSettings">
+    <option name="WHITESPACES" value="true" />
+  </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="MarkdownDoc" />
@@ -147,8 +150,8 @@
       <file leaf-file-name="pom.xml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.5541825" vertical-offset="0" max-vertical-offset="6675">
-              <caret line="109" column="60" selection-start-line="109" selection-start-column="60" selection-end-line="109" selection-end-column="60" />
+            <state vertical-scroll-proportion="0.2851711" vertical-offset="885" max-vertical-offset="6675">
+              <caret line="79" column="31" selection-start-line="79" selection-start-column="31" selection-end-line="79" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -1816,7 +1819,7 @@
       <workItem from="1404475344610" duration="17914000" />
       <workItem from="1404567978152" duration="13058000" />
       <workItem from="1404630997869" duration="23681000" />
-      <workItem from="1404672998227" duration="14911000" />
+      <workItem from="1404672998227" duration="15623000" />
     </task>
     <task id="LOCAL-00001" summary="First version.">
       <created>1353260479163</created>
@@ -2189,7 +2192,11 @@
       <created>1404838423136</created>
       <updated>1404838423136</updated>
     </task>
-    <option name="localTasksCounter" value="93" />
+    <task id="LOCAL-00093" summary="Added a note about the groovy artifact used in the main pom.">
+      <created>1404841368722</created>
+      <updated>1404841368722</updated>
+    </task>
+    <option name="localTasksCounter" value="94" />
     <servers>
       <GitHub shared="false" url="">
         <commitMessageFormat>{id} {summary}</commitMessageFormat>
@@ -2207,7 +2214,7 @@
     </servers>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="408033000" />
+    <option name="totallyTimeSpent" value="408745000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -2286,7 +2293,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="- Fixed SettingsWindow using a self made LayoutManager to layout the config entries just as I want it. &#10;- Bold and Italics function now look if there is selected text and makes the selected text bold or italic.&#10;- Insert link now uses any selected text as link text. &#10;- It is now possible to enable/disable markdown formatting while writing.&#10;" />
     <MESSAGE value="- Fixed SettingsWindow using a self made LayoutManager to layout the config entries just as I want it.&#10;- Bold and Italics function now look if there is selected text and makes the selected text bold or italic.&#10;- Insert link now uses any selected text as link text.&#10;- It is now possible to enable/disable markdown formatting while writing.&#10;&#10;" />
     <MESSAGE value="- Fixed CompileStatic errors in Groovy code (imports ending in .* does not work in this case!!)&#10;- Let CLM update/add source headers.&#10;&#10;&#10;" />
     <MESSAGE value="- Added 3rd toolbar variant. &#10;- Refactored the popup windows for image, link, PDF, and HMTL heavily. &#10;- Changed how keyboard input is handled between editor and functions.&#10;- Can now configure keys in settings.&#10;" />
@@ -2311,7 +2317,8 @@
     <MESSAGE value="Currently using my own fork of groovy-core-2.4.0-SNAPSHOT with an NPE during compilation fix. This fork is available &#10;at https://github.com/tombensve/groovy-core.&#10;" />
     <MESSAGE value="CSS rules doesn't seem to work as well in JEditorPane as of Java 7 update 60. Changed settings of margins to setMargins(...) on JEditorPane instead of adding CSS rule." />
     <MESSAGE value="Small fixes." />
-    <option name="LAST_COMMIT_MESSAGE" value="Small fixes." />
+    <MESSAGE value="Added a note about the groovy artifact used in the main pom." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added a note about the groovy artifact used in the main pom." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2756,8 +2763,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.5541825" vertical-offset="0" max-vertical-offset="6675">
-          <caret line="109" column="60" selection-start-line="109" selection-start-column="60" selection-end-line="109" selection-end-column="60" />
+        <state vertical-scroll-proportion="0.2851711" vertical-offset="885" max-vertical-offset="6675">
+          <caret line="79" column="31" selection-start-line="79" selection-start-column="31" selection-end-line="79" selection-end-column="31" />
           <folding />
         </state>
       </provider>

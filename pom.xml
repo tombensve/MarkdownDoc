@@ -92,7 +92,7 @@
             <dependency>
                 <groupId>com.itextpdf</groupId>
                 <artifactId>itext-pdfa</artifactId>
-                <version>5.4.5</version>
+                <version>5.5.1</version>
             </dependency>
 
             <dependency>
