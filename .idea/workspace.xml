@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="932f4163-a65c-4e3a-88c3-48078b288bdc" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/MarkdownDoc-User-Guide.pdf" afterPath="$PROJECT_DIR$/Docs/MarkdownDoc-User-Guide.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Docs/licenses.md" afterPath="$PROJECT_DIR$/Docs/licenses.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="97988b78-75ea-4416-b6cb-6f4e26254bee" name="MarkdownDoc-1 Fails to resolve document relative path to images." comment="" />
@@ -147,11 +145,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pom.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2851711" vertical-offset="885" max-vertical-offset="6675">
+            <state vertical-scroll-proportion="-12.5" vertical-offset="885" max-vertical-offset="6675">
               <caret line="79" column="31" selection-start-line="79" selection-start-column="31" selection-end-line="79" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.4042751" vertical-offset="0" max-vertical-offset="1076">
+              <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -195,7 +203,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/Editor/src/main/groovy/se/natusoft/doc/markdowndoc/editor/functions/export/ExportDataTextValue.groovy" />
         <option value="$PROJECT_DIR$/Editor/src/main/groovy/se/natusoft/doc/markdowndoc/editor/functions/export/ExportDataValue.groovy" />
         <option value="$PROJECT_DIR$/Editor/src/main/groovy/se/natusoft/doc/markdowndoc/editor/api/EnvServices.groovy" />
         <option value="$PROJECT_DIR$/Editor/src/main/groovy/se/natusoft/doc/markdowndoc/editor/api/Editor.groovy" />
@@ -246,6 +253,7 @@
         <option value="$PROJECT_DIR$/Editor/pom.xml" />
         <option value="$PROJECT_DIR$/Library/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -1819,7 +1827,7 @@
       <workItem from="1404475344610" duration="17914000" />
       <workItem from="1404567978152" duration="13058000" />
       <workItem from="1404630997869" duration="23681000" />
-      <workItem from="1404672998227" duration="15623000" />
+      <workItem from="1404672998227" duration="16395000" />
     </task>
     <task id="LOCAL-00001" summary="First version.">
       <created>1353260479163</created>
@@ -2196,7 +2204,11 @@
       <created>1404841368722</created>
       <updated>1404841368722</updated>
     </task>
-    <option name="localTasksCounter" value="94" />
+    <task id="LOCAL-00094" summary="Regenerated docs.">
+      <created>1404845416554</created>
+      <updated>1404845416554</updated>
+    </task>
+    <option name="localTasksCounter" value="95" />
     <servers>
       <GitHub shared="false" url="">
         <commitMessageFormat>{id} {summary}</commitMessageFormat>
@@ -2214,7 +2226,7 @@
     </servers>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="408745000" />
+    <option name="totallyTimeSpent" value="409517000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -2238,7 +2250,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1200" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32730561" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
@@ -2259,7 +2271,7 @@
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32971016" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24440895" sideWeight="0.42391303" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15974441" sideWeight="0.50554526" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15974441" sideWeight="0.50554526" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25825346" sideWeight="0.57608694" order="0" side_tool="false" content_ui="combo" />
@@ -2293,7 +2305,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="- Fixed SettingsWindow using a self made LayoutManager to layout the config entries just as I want it.&#10;- Bold and Italics function now look if there is selected text and makes the selected text bold or italic.&#10;- Insert link now uses any selected text as link text.&#10;- It is now possible to enable/disable markdown formatting while writing.&#10;&#10;" />
     <MESSAGE value="- Fixed CompileStatic errors in Groovy code (imports ending in .* does not work in this case!!)&#10;- Let CLM update/add source headers.&#10;&#10;&#10;" />
     <MESSAGE value="- Added 3rd toolbar variant. &#10;- Refactored the popup windows for image, link, PDF, and HMTL heavily. &#10;- Changed how keyboard input is handled between editor and functions.&#10;- Can now configure keys in settings.&#10;" />
     <MESSAGE value="Regenerated class comment headers with license information." />
@@ -2318,7 +2329,8 @@
     <MESSAGE value="CSS rules doesn't seem to work as well in JEditorPane as of Java 7 update 60. Changed settings of margins to setMargins(...) on JEditorPane instead of adding CSS rule." />
     <MESSAGE value="Small fixes." />
     <MESSAGE value="Added a note about the groovy artifact used in the main pom." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added a note about the groovy artifact used in the main pom." />
+    <MESSAGE value="Regenerated docs." />
+    <option name="LAST_COMMIT_MESSAGE" value="Regenerated docs." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2705,14 +2717,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="690">
-          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_60.jdk/Contents/Home/src.zip!/javax/swing/JComponent.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="69482" max-vertical-offset="80760">
@@ -2763,8 +2767,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2851711" vertical-offset="885" max-vertical-offset="6675">
+        <state vertical-scroll-proportion="-12.5" vertical-offset="885" max-vertical-offset="6675">
           <caret line="79" column="31" selection-start-line="79" selection-start-column="31" selection-end-line="79" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4042751" vertical-offset="0" max-vertical-offset="1076">
+          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
           <folding />
         </state>
       </provider>

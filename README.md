@@ -21,8 +21,7 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 [Library](https://github.com/tombensve/MarkdownDoc/blob/master/Library/docs/MarkdownDoc-Library.md)
 
-[Editor](https://github.com/tombensve/MarkdownDoc/blob/master/Editor/docs/MarkdownDoc-Editor.md) \[[MarkdownDocEditor-1.3.3.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/
-MarkdownDocEditor/1.3.3/MarkdownDocEditor-1.3.3.App.jar)\] 
+[Editor](https://github.com/tombensve/MarkdownDoc/blob/master/Editor/docs/MarkdownDoc-Editor.md) \[[MarkdownDocEditor-1.3.3.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/1.3.3/MarkdownDocEditor-1.3.3.App.jar)\] 
 Now with realtime markdown formatting as you edit, and known bugs ironed out. 
 
 [Licenses](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/licenses.md)
