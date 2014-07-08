@@ -57,6 +57,7 @@ import javax.swing.text.html.HTMLEditorKit
 import java.awt.*
 import java.awt.event.*
 
+import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_EDITING
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_PREVIEW
 
@@ -100,6 +101,19 @@ public class JEditorPanePreviewFunction implements EditorFunction, KeyListener, 
     private static DoubleConfigEntry fontSizeConfig =
             new DoubleConfigEntry("preview.pane.font.size", "The size of the preview font.", 16.0, 8.0, 50.0, CONFIG_GROUP_PREVIEW)
 
+    private static IntegerConfigEntry topMarginConfig = new IntegerConfigEntry("preview.pane.top.margin",
+            "The top margin.", 40, 0, 500, CONFIG_GROUP_PREVIEW)
+
+    private static IntegerConfigEntry bottomMarginConfig = new IntegerConfigEntry("preview.pane.bottom.margin",
+            "The bottom margin.", 40, 0, 500, CONFIG_GROUP_PREVIEW)
+
+    private static IntegerConfigEntry leftMarginConfig = new IntegerConfigEntry("preview.pane.left.margin",
+            "The left margin.", 60, 0, 500, CONFIG_GROUP_PREVIEW)
+
+    private static IntegerConfigEntry rightMarginConfig = new IntegerConfigEntry("preview.pane.right.margin",
+            "The right margin.", 60, 0, 500, CONFIG_GROUP_PREVIEW)
+
+
     private Closure keyboardShortcutConfigChanged = { ConfigEntry ce ->
         updateTooltipText()
     }
@@ -107,17 +121,36 @@ public class JEditorPanePreviewFunction implements EditorFunction, KeyListener, 
     private Closure fontConfigChanged = { ConfigEntry ce ->
         ((HTMLEditorKit) preview.getEditorKit()).getStyleSheet().addRule(
                 "body {font-family: " + ce.getValue() + " font-size: " +
-                        /*JEditorPanePreviewFunction.this.*/fontSizeConfig.getValue() +
-                        " margin-left: 50 margin-right:50 margin-top:50 margin-bottom:50 }")
+                        fontSizeConfig.getValue() + " }")
         SwingUtilities.updateComponentTreeUI(preview)
     }
 
     private Closure fontSizeConfigChanged = { ConfigEntry ce ->
         ((HTMLEditorKit) preview.getEditorKit()).getStyleSheet().addRule(
-                "body {font-family: " + /*JEditorPanePreviewFunction.this.*/fontConfig.getValue() + " font-size: " +
-                        ce.getValue() + " margin-left: 50 margin-right:50 margin-top:50 margin-bottom:50 }")
+                "body {font-family: " + fontConfig.getValue() + " }")
         SwingUtilities.updateComponentTreeUI(preview)
     }
+
+    private Closure topMarginConfigChanged = { ConfigEntry ce ->
+        this.preview.margin.top = ((IntegerConfigEntry)ce).intValue
+        this.preview.revalidate()
+    }
+
+    private Closure bottomMarginConfigChanged = { ConfigEntry ce ->
+        this.preview.margin.bottom = ((IntegerConfigEntry)ce).intValue
+        this.preview.revalidate()
+    }
+
+    private Closure leftMarginConfigChanged = { ConfigEntry ce ->
+        this.preview.margin.left = ((IntegerConfigEntry)ce).intValue
+        this.preview.revalidate()
+    }
+
+    private Closure rightMarginConfigChanged = { ConfigEntry ce ->
+        this.preview.margin.right = ((IntegerConfigEntry)ce).intValue
+        this.preview.revalidate()
+    }
+
 
     /**
      * Register configurations.
@@ -129,6 +162,10 @@ public class JEditorPanePreviewFunction implements EditorFunction, KeyListener, 
         configProvider.registerConfig(keyboardShortcutConfig, this.keyboardShortcutConfigChanged)
         configProvider.registerConfig(fontConfig, this.fontConfigChanged)
         configProvider.registerConfig(fontSizeConfig, this.fontSizeConfigChanged)
+        configProvider.registerConfig(topMarginConfig, topMarginConfigChanged)
+        configProvider.registerConfig(bottomMarginConfig, bottomMarginConfigChanged)
+        configProvider.registerConfig(leftMarginConfig, leftMarginConfigChanged)
+        configProvider.registerConfig(rightMarginConfig, rightMarginConfigChanged)
     }
 
     /**
@@ -141,6 +178,10 @@ public class JEditorPanePreviewFunction implements EditorFunction, KeyListener, 
         configProvider.unregisterConfig(keyboardShortcutConfig, this.keyboardShortcutConfigChanged)
         configProvider.unregisterConfig(fontConfig, this.fontConfigChanged)
         configProvider.unregisterConfig(fontSizeConfig, this.fontSizeConfigChanged)
+        configProvider.unregisterConfig(topMarginConfig, topMarginConfigChanged)
+        configProvider.unregisterConfig(bottomMarginConfig, bottomMarginConfigChanged)
+        configProvider.unregisterConfig(leftMarginConfig, leftMarginConfigChanged)
+        configProvider.unregisterConfig(rightMarginConfig, rightMarginConfigChanged)
     }
 
     //
@@ -159,9 +200,16 @@ public class JEditorPanePreviewFunction implements EditorFunction, KeyListener, 
         })
 
         this.preview = new JEditorPane()
-        this.preview.setEditable(false)
-        this.preview.setCaret(new MDECaret())
-        this.preview.setContentType("text/html")
+        this.preview.editable = false
+        this.preview.caret = new MDECaret()
+        this.preview.contentType = "text/html"
+        this.preview.margin = new Insets(
+                                  topMarginConfig.intValue,
+                                  leftMarginConfig.intValue,
+                                  bottomMarginConfig.intValue,
+                                  rightMarginConfig.intValue
+                              )
+
         this.preview.addKeyListener(this)
 
         new FileDrop(this.preview, new FileDrop.Listener() {
