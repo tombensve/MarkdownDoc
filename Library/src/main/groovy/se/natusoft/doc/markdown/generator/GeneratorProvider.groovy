@@ -53,16 +53,6 @@ class GeneratorProvider {
      * @return A Generator or null if not found.
      */
     public static Generator getGeneratorByName(String name) {
-        Generator generator = null
-
-        ServiceLoader<Generator> generators = ServiceLoader.load(Generator.class)
-        for (Generator loadedGenerator : generators) {
-            if (loadedGenerator.getName().equals(name)) {
-                generator = loadedGenerator
-                break
-            }
-        }
-
-        return generator
+        return (Generator)ServiceLoader.load(Generator.class).find { Generator generator -> generator.getName().equals(name) }
     }
 }

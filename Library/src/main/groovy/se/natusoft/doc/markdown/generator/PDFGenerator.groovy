@@ -236,7 +236,7 @@ class PDFGenerator implements Generator {
         this.options = (PDFGeneratorOptions)opts
         this.rootDir = rootDir
 
-        for (DocItem docItem : doc.items) {
+        doc.items.each { DocItem docItem ->
 
             switch (docItem.format) {
                 case DocFormat.Comment:
@@ -306,7 +306,7 @@ class PDFGenerator implements Generator {
             document.open()
 
             // Since this.documentItems is just an ArrayList of Sections we have to add them to the real documentItems now.
-            for (Section section : this.documentItems) {
+            this.documentItems.each {Section section ->
                 if (section instanceof NewPage) {
                     document.newPage()
                 }
@@ -328,10 +328,10 @@ class PDFGenerator implements Generator {
         pdfWriter.setFullCompression()
         pdfWriter.setPageEvent(new PageEventHandler())
 
-        if (this.options.title != null)      { document.addTitle(this.options.title) }
-        if (this.options.subject != null)    { document.addSubject(this.options.subject) }
+        if (this.options.title != null)      { document.addTitle(this.options.title)       }
+        if (this.options.subject != null)    { document.addSubject(this.options.subject)   }
         if (this.options.keywords != null)   { document.addKeywords(this.options.keywords) }
-        if (this.options.author != null)     { document.addAuthor(this.options.author) }
+        if (this.options.author != null)     { document.addAuthor(this.options.author)     }
 
         document.addCreationDate()
         document.addCreator("MarkdownDoc (https://github.com/tombensve/MarkdownDoc)")
@@ -346,7 +346,7 @@ class PDFGenerator implements Generator {
         }
 
         // Since this.documentItems is just an ArrayList of Sections we have to add them to the real documentItems now.
-        for (Section section : this.documentItems) {
+        this.documentItems.each { Section section ->
             if (section instanceof NewPage) {
                 document.newPage() // This completely refuses to do anything!!!
             }

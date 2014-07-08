@@ -1,2 +1,2 @@
 se.natusoft.doc.markdown.parser.MarkdownParser
-se.natusoft.doc.markdown.parser.JavadocParser
+se.natusoft.doc.markdown.parser.Javadoc2MDParser

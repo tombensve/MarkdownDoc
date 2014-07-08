@@ -623,13 +623,13 @@ public class MarkdownParser implements Parser {
 
                     case { it == '[' && p != '!' && !(current instanceof Link)}:
                         paragraph.addItem(current)
-                        itemStack.push(current)
+                        itemStack.push((DocItem)current)
                         current = new MDLink(renderPrefixedSpace: false)
                         break
 
                     case { it == '!' && n == '[' && !(current instanceof Link)}:
                         paragraph.addItem(current)
-                        itemStack.push(current)
+                        itemStack.push((DocItem)current)
                         current = new MDImage(renderPrefixedSpace: false)
                         ++i
                         break
@@ -638,7 +638,7 @@ public class MarkdownParser implements Parser {
                         if (current instanceof Link) {
                             if (n != '(') {
                                 paragraph.addItem(current)
-                                this.links.put(((Link)current).text, current)
+                                this.links.put(((Link)current).text, (Link)current)
                                 current = itemStack.pop().createNewWithSameConfig()
                             }
                         }
@@ -650,7 +650,7 @@ public class MarkdownParser implements Parser {
                     case ')':
                         if (current instanceof Link) {
                             paragraph.addItem(current)
-                            this.links.put(((Link)current).text, current)
+                            this.links.put(((Link)current).text, (Link)current)
                             current = itemStack.pop().createNewWithSameConfig()
                         }
                         else {

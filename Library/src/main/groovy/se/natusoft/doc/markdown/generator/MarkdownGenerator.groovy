@@ -131,7 +131,7 @@ class MarkdownGenerator implements Generator {
 
         PrintWriter pw = new PrintWriter(writer)
 
-        for (DocItem docItem : document.items) {
+        document.items.each { DocItem docItem ->
             switch (docItem.format) {
                 case DocFormat.Comment:
                     pw.println("<!--")
@@ -184,7 +184,7 @@ class MarkdownGenerator implements Generator {
     }
 
     private void writeCodeBlock(CodeBlock codeBlock, PrintWriter pw) {
-        for (DocItem item : codeBlock.items) {
+        codeBlock.items.each { DocItem item ->
             pw.print("    " + item.toString())
             pw.println()
         }
@@ -224,7 +224,7 @@ class MarkdownGenerator implements Generator {
 
     private void writeParagraph(Paragraph paragraph, PrintWriter pw) throws GenerateException {
         boolean first = true
-        for (DocItem docItem : paragraph.items) {
+        paragraph.items.each { DocItem docItem ->
             if (docItem.renderPrefixedSpace && !first) {
                 pw.print(" ")
             }

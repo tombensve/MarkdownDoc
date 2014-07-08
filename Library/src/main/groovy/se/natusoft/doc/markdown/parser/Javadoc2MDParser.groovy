@@ -71,7 +71,7 @@ import java.util.List
  * All other information comes from the javadoc comment block. If there is no javadoc the resulting information will be quite poor.
  */
 @CompileStatic
-class JavadocParser implements Parser {
+class Javadoc2MDParser implements Parser {
 
     // TODO:
     // Yes, this code is currently a bit messy! To begin with the need for "declaration" to be a member should be fixed. This
@@ -82,7 +82,7 @@ class JavadocParser implements Parser {
     // Constants
     //
 
-    private static final String MARKDOWN_JAVADOC = "markdownJavadoc";
+    private static final String MARKDOWN_JAVADOC = "markdownJavadoc"
 
     //
     // Private Members
@@ -104,7 +104,7 @@ class JavadocParser implements Parser {
     private String declaration = null
 
     /** The parser options. */
-    private Properties parserOptions = null;
+    private Properties parserOptions = null
 
     //
     // Methods
@@ -120,7 +120,7 @@ class JavadocParser implements Parser {
      * @throws ParseException on parse failures.
      */
     @Override
-    void parse(Doc document, InputStream parseStream, Properties parserOptions) throws IOException, ParseException {
+    public void parse(Doc document, InputStream parseStream, Properties parserOptions) throws IOException, ParseException {
         throw new ParseException(message: "Parsing from an InputStream is not supported by this parser!")
     }
 
@@ -134,7 +134,7 @@ class JavadocParser implements Parser {
      * @throws ParseException on parse failures.
      */
     @Override
-    void parse(Doc document, File parseFile, Properties parserOptions) throws IOException, ParseException {
+    public void parse(Doc document, File parseFile, Properties parserOptions) throws IOException, ParseException {
         this.inJavadocBlock = false
         this.inDeclarationBlock = false
         this.pkg = ""
@@ -151,30 +151,26 @@ class JavadocParser implements Parser {
             else if (!inJavadocBlock && !inDeclarationBlock && line.trim().startsWith("/**")) {
                 saveJavadocLine(line)
                 if (!line.trim().endsWith("*/")) {
-                    inJavadocBlock = true;
+                    inJavadocBlock = true
                 }
             }
             else if (inJavadocBlock && !line.trim().endsWith("*/")) {
                 saveJavadocLine(line)
             }
             else if (inJavadocBlock && line.trim().endsWith("*/")) {
-                inJavadocBlock = false;
+                inJavadocBlock = false
             }
-            else if (
-                    !inJavadocBlock && !inDeclarationBlock &&
-                   // (isFieldOrConst(line) || isMethod(line) || isEnumConst(line)) &&
-                    this.javadoc != null
-            ) {
+            else if (!inJavadocBlock && !inDeclarationBlock && this.javadoc != null) {
                 parseDeclarationLine(localDoc, line)
                 if (!(isFieldOrConst(line) || isMethod(line) || isEnumConst(line))) {
-                    inDeclarationBlock = true;
+                    inDeclarationBlock = true
                 }
             }
             else if (!inJavadocBlock && inDeclarationBlock) {
                 parseDeclarationLine(localDoc, line)
             }
 
-            return null // Apparently the closure must return something even though it does not make any sense in such a case as this.
+            return "" // Apparently the closure must return something even though it does not make any sense in such a case as this.
         }
 
         Paragraph p = new Paragraph()
@@ -270,8 +266,8 @@ class JavadocParser implements Parser {
             this.declaration += " " + line.trim()
         }
 
-        Visibility visibility = new Visibility(this.declaration)
-        DeclarationType declType = new DeclarationType(this.declaration)
+        VisibilityUtil visibility = new VisibilityUtil(this.declaration)
+        DeclarationTypeUtil declType = new DeclarationTypeUtil(this.declaration)
 
         if (isFieldOrConst(this.declaration) || isMethod(this.declaration) || isEnumConst(this.declaration)) {
             inDeclarationBlock = false
@@ -281,16 +277,16 @@ class JavadocParser implements Parser {
             if ((declType.isClass() || declType.isInterface() || declType.isEnum()) && (visibility.isPublic() || visibility.isProtected())) {
 
                 classOrInterface = true
-                String[] words = this.declaration.split("\\s+");
+                String[] words = this.declaration.split("\\s+")
                 boolean handledName = false
                 for (int i = 0; i < words.length; i++) {
                     String word = words[i]
 
-                    if (Visibility.isPublic(word) || Visibility.isProtected(word)) {
+                    if (VisibilityUtil.isPublic(word) || VisibilityUtil.isProtected(word)) {
                         PlainText pt = new PlainText(text: word)
                         p.addItem(pt)
                     }
-                    else if (DeclarationType.isDeclarationType(word) || Modifier.isModifier(word)) {
+                    else if (DeclarationTypeUtil.isDeclarationType(word) || ModifierUtil.isModifier(word)) {
                         Emphasis emp = new Emphasis(text: word)
                         p.addItem(emp)
                     }
@@ -379,10 +375,10 @@ class JavadocParser implements Parser {
             this.javadoc.add("(No Javadoc provided!)")
         }
 
-        boolean textPart = true;
+        boolean textPart = true
         this.javadoc.each { String jdline ->
             if (jdline.contains("@param")) {
-                textPart = false;
+                textPart = false
                 params.add(jdline)
             }
             else if (jdline.contains("@exception") || jdline.contains("@throws")) {
@@ -533,18 +529,19 @@ class JavadocParser implements Parser {
      * @param fileName The file to check extension of.
      */
     @Override
-    boolean validFileExtension(String fileName) {
+    public boolean validFileExtension(String fileName) {
         return fileName.endsWith(".java")
     }
 
     /**
      * Utility for handling the visibility of a declaration.
      */
-    private static class Visibility {
+    @CompileStatic
+    private static class VisibilityUtil {
 
         private String visibility
 
-        public Visibility(String declaration) {
+        public VisibilityUtil(String declaration) {
             if (declaration.trim().length() > 0) {
                 this.visibility = declaration.split(" ")[0]
             }
@@ -585,12 +582,13 @@ class JavadocParser implements Parser {
     /**
      * Utility for identifying declaration type.
      */
-    private static class DeclarationType {
+    @CompileStatic
+    private static class DeclarationTypeUtil {
 
-        private String declaration;
+        private String declaration
 
-        public DeclarationType(String declaration) {
-            this.declaration = declaration;
+        public DeclarationTypeUtil(String declaration) {
+            this.declaration = declaration
         }
 
         public boolean isClass() {
@@ -613,7 +611,8 @@ class JavadocParser implements Parser {
     /**
      * Utility for identifying modifiers.
      */
-    private static class Modifier {
+    @CompileStatic
+    private static class ModifierUtil {
 
         public static boolean isModifier(String word) {
             return word.equals("final") || word.equals("abstract") || word.equals("static")

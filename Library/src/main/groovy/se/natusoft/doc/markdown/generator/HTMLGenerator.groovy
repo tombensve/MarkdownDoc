@@ -176,7 +176,7 @@ class HTMLGenerator implements Generator {
         html.etagln("head")
         html.tagln("body")
 
-        for (DocItem docItem : document.items) {
+        document.items.each { DocItem docItem ->
             switch (docItem.format) {
                 case DocFormat.Comment:
                     html.doIndent()
@@ -236,7 +236,7 @@ class HTMLGenerator implements Generator {
     private void writeCodeBlock(CodeBlock codeBlock, HTMLOutput html) {
         html.tagln("pre")
         html.tagln("code")
-        for (DocItem item : codeBlock.items) {
+        codeBlock.items.each { DocItem item ->
             html.content(item.toString())
             html.println("")
         }
@@ -285,7 +285,7 @@ class HTMLGenerator implements Generator {
 
     private void writeParagraphContent(Paragraph paragraph, HTMLOutput html) throws GenerateException {
         boolean first = true
-        for (DocItem docItem : paragraph.items) {
+        paragraph.items.each { DocItem docItem ->
             if (docItem.renderPrefixedSpace && !first) {
                 html.content(" ")
             }
