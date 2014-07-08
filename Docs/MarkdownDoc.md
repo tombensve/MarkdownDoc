@@ -26,7 +26,7 @@ In short MarkdownDoc provides the following:
 
 ### Binaries
 
-Version 1.2.9 was available in maven central.
+Version 1.2.9 is available in maven central.
 
 Binaries for newer versions will be made available at [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/view) and Bintrays JCenter repository: http://jcenter.bintray.com which should also contain everything in maven central.
 
@@ -38,7 +38,7 @@ Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdo
 
 #### 1.3.3
 
-Ironed out all _known_ bugs in editor. This version only has changes in the editor. 
+Ironed out all _known_ bugs in editor.
 
 #### 1.3.2
 
@@ -103,8 +103,7 @@ The known (and intentional) differences are:
 
 * No HMTL pass-through! Well, there is a small exception to that. HTML comments are passed along. Mostly because there is no markdown comment format and I wanted to be able to put comments in my documents. "\&\n\b\s\p\;" is also passed through to create indents that are not code blocks. The reason for no HTML pass-through is that MarkdownDoc takes it directly from markdown to PDF without any HTML rendering in between. The main purpose of this tool is to write documentation not generate HTML sites.
 
-* Escaping with '\\'. In MarkdownDoc you can escape any character with \\ and it will be passed through as is
-  without being acted on if it has markdown meaning.
+* Escaping with '\\'. In MarkdownDoc you can escape any character with \\ and it will be passed through as is without being acted on if it has markdown meaning.
 
 * No entity encoding of email addresses.
 

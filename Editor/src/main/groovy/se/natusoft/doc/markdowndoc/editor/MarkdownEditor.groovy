@@ -539,7 +539,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @param listener The listener to add.
      */
     @Override
-    public void addMouseMotionListener(MouseMotionListener listener) {
+    public synchronized void addMouseMotionListener(MouseMotionListener listener) {
         this.mouseMotionProviders.each { MouseMotionProvider mmp -> mmp.addMouseMotionListener(listener) }
     }
 
@@ -549,7 +549,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @param listener The listener to remove.
      */
     @Override
-    public void removeMouseMotionListener(MouseMotionListener listener) {
+    public synchronized void removeMouseMotionListener(MouseMotionListener listener) {
         this.mouseMotionProviders.each { MouseMotionProvider mmp -> mmp.removeMouseMotionListener(listener) }
     }
 
