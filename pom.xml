@@ -98,7 +98,12 @@
             <dependency>
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy-all</artifactId>
-                <version>2.1.6</version>
+                <!--
+                    NOTE that this is a local fork of groovy-core on github containing an NPE during compilation
+                    fix! A pull request have been submitted. Until this bug is solved in an official version
+                    you can get my fixed version at https://github.com/tombensve/groovy-core.
+                -->
+                <version>2.4.0-SNAPSHOT</version>
                 <classifier>indy</classifier>
             </dependency>
 
@@ -138,7 +143,12 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-antrun-plugin</artifactId>
-                    <version>1.6</version>
+                    <version>1.7</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.1</version>
                 </plugin>
 
                 <plugin>
@@ -184,7 +194,7 @@
                 <plugin>
                     <groupId>org.codehaus.gmavenplus</groupId>
                     <artifactId>gmavenplus-plugin</artifactId>
-                    <version>1.0</version>
+                    <version>1.2</version>
                 </plugin>
 
                 <plugin>
