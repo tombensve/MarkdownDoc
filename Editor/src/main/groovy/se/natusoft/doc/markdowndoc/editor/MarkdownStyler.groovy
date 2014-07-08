@@ -495,7 +495,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                             pos = epos + 1
                         }
                     }
-                    catch (IndexOutOfBoundsException iobe) {/* we hide these intentionally! */}
+                    catch (IndexOutOfBoundsException ignore) {/* we hide these intentionally! */}
                 }
             }
         }
@@ -514,7 +514,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
      * @param start The position to start at.
      * @param n The character to find.
      */
-    private int getPosOfNext(String text, int start, char n) {
+    private static int getPosOfNext(String text, int start, char n) {
         int npos = start
         try {
             char prev = ' '
@@ -525,7 +525,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                 ++npos
             }
         }
-        catch (IndexOutOfBoundsException iobe) {/*OK*/}
+        catch (IndexOutOfBoundsException ignore) {/*OK*/}
 
         return npos
     }
@@ -536,7 +536,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
      * @param text The text to search.
      * @param start The position to start searching at.
      */
-    private int getEndOfParagraph(String text, int start) {
+    private static int getEndOfParagraph(String text, int start) {
         int npos = start
 
         try {
@@ -544,7 +544,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                 ++npos
             }
         }
-        catch (IndexOutOfBoundsException iobe) { /* Intentionally_DoNothing */ }
+        catch (IndexOutOfBoundsException ignore) { /* Intentionally_DoNothing */ }
 
         if (npos >= text.length()) {
             npos = text.length() - 1
@@ -561,11 +561,11 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
      * @param text The text to get the character from.
      * @param position The position in the text of the character to get.
      */
-    private char safeGetChar(String text, int position) {
+    private static char safeGetChar(String text, int position) {
         try {
             return text.charAt(position)
         }
-        catch (StringIndexOutOfBoundsException siobe) {
+        catch (StringIndexOutOfBoundsException ignore) {
             return ' ' as char
         }
     }
@@ -576,11 +576,11 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
      * @param text The text to the character from.
      * @param position The position of the character to check.
      */
-    private boolean checkPgBound(String text, int position) {
+    private static boolean checkPgBound(String text, int position) {
         return _intCheckPgBound(text, position) && _intCheckPgBound(text, position + 1)
     }
 
-    private boolean _intCheckPgBound(String text, int position) {
+    private static boolean _intCheckPgBound(String text, int position) {
         //System.out.println("\"\\n\\r\".indexOf(safeGetChar(text, " + position + ")) = '"+ safeGetChar(text, position) + "'")
         return position < text.length() && position >= 0 && ( text[position] == '\n' || text[position] == '\r' )
     }
@@ -591,7 +591,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
      * @param currentPos The current position in the text to scan.
      * @param text The text to scan.
      */
-    private ParagraphBounds findParagraphBounds(int currentPos, String text) {
+    private static ParagraphBounds findParagraphBounds(int currentPos, String text) {
         //System.out.println("CurrentPos: " + currentPos)
         if (currentPos < 0) currentPos = 0
         ParagraphBounds bounds = new ParagraphBounds()
@@ -621,7 +621,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
      * @param bounds The paragraph bounds.
      * @param text The whole document text.
      */
-    private String getStartOfParagraphText(int currentPos, ParagraphBounds bounds, String text) {
+    private static String getStartOfParagraphText(int currentPos, ParagraphBounds bounds, String text) {
         if (bounds.start == 0) { // Possibly the whole document!
             bounds = findParagraphBounds(currentPos, text)
         }
