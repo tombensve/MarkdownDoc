@@ -97,6 +97,13 @@
 
             <dependency>
                 <groupId>org.codehaus.groovy</groupId>
+                <!--
+                    NOTE at runtime we really only need the smaller groovy artifact, but that is missing the
+                    groovy compiler. Specifying only the 'groovy' artifact here and then specifying the
+                    'groovy-all' artifact in the maven-antrun-plugin however fails. So currently I have
+                    no good solution for only using groovy-all when building and the smaller 'groovy' at
+                    runtime.
+                -->
                 <artifactId>groovy-all</artifactId>
                 <!--
                     NOTE that this is a local fork of groovy-core on github containing an NPE during compilation

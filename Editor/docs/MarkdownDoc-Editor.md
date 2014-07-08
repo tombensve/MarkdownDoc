@@ -104,7 +104,7 @@ Do note that since all keyboard actions can be configured in settings this docum
 
 ## If you're on a Mac
 
-If you are on a Mac you might want to change the keyboard mappings to use Cmd rather than Ctrl. Do note however that Cmd+H and Cmd+Q are really nasty on Mac OS X! Since these keys immedialtely kills the app theses keys are impossible to set in the first place, but you will loose other unsaved settings when you try.
+If you are on a Mac you might want to change the keyboard mappings to use Cmd rather than Ctrl. Do note however that Cmd+H and Cmd+Q are really nasty on Mac OS X! Since these keys immedialtely kills the app these keys are impossible to set in the first place, but you will loose other unsaved settings when you try.
 
 ## Currently Missing
 
@@ -120,7 +120,7 @@ I have now ironed out all known bugs for the moment.
 
 ### By Oracle
 
-This editor uses the standard Swing component JTextPane. This is unfortunately not an optimal component. Specially for styling it gets slow for large documents. In earlier versions of Java 7 this component had a word wrap problem when deleting text either using backspace or cutting text. In that case it rerendered the text screwing up the format until new text was entered again. _As of update 60 this bug is fixed_, but other new bugs have been added. They are however smaller and don't occur so often, and are only visual.
+This editor uses the standard Swing component JTextPane. This is unfortunately not an optimal component. Specially for styling it gets slow for large documents. In earlier versions of Java 7 this component had a word wrap problem when deleting text either using backspace or cutting text. In that case it rerendered the text screwing up the format until new text was entered again. _As of Java 8 this bug is fixed_, but other new bugs have been added. They are however smaller and don't occur so often.
 
 
 
