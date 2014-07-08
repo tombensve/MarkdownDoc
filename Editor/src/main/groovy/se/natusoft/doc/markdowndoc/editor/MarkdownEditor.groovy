@@ -443,7 +443,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
             }
         })
 
-
+        //noinspection GroovyResultOfObjectAllocationIgnored,UnnecessaryQualifiedReference
         new FileDrop(this.editorPane, new FileDrop.Listener() {
             public void filesDropped(java.io.File[] files) {
                 if (files.length >= 1) {
@@ -636,6 +636,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
     /**
      * Returns the config API.
      */
+    @SuppressWarnings("UnnecessaryQualifiedReference")
     @Override
     public ConfigProvider getConfigProvider() {
         return MarkdownEditor.configs
@@ -780,7 +781,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
                 --i
             }
         }
-        catch (BadLocationException ble) {
+        catch (BadLocationException ignored) {
             i = 0
         }
         // If i was < 0 to start with it will still be that here!
@@ -1104,7 +1105,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
             params[1] = Boolean.TYPE
             Method method = util.getMethod("setWindowCanFullScreen", params)
             method.invoke(util, window, true)
-        } catch (ClassNotFoundException cnfe) {
+        } catch (ClassNotFoundException ignored) {
             /* Not on Mac OS X! */
         } catch (Exception e) {
             e.printStackTrace(System.err)
@@ -1127,7 +1128,8 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      *
      * @throws IOException
      */
-    public static void openEditor(File file) throws IOException {
+    @SuppressWarnings("UnnecessaryQualifiedReference")
+    public static void openEditor(final File file) throws IOException {
         ++MarkdownEditor.instanceCount
 
         MarkdownEditor me = new MarkdownEditor() {
