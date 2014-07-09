@@ -4,7 +4,9 @@ Copyright (C) 2012 Natusoft AB
 
 __Version:__ 1.3.3
 
-__Note:__ The only change in this version are fixes for the editor.
+__Note 1:__ The only change in this version are fixes for the editor.
+
+__Note 2:__ This version will not build without my fork of groovy-core that needs to be checked out and built and installed in local maven repo before building. The groovy guys have however fixed this problem in version 2.3.5, and I will update the groovy version to that and verify as soon as it becomes available on bintray.
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
