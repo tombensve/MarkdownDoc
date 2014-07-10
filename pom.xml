@@ -27,6 +27,10 @@
 
     <properties>
         <!--
+            Versions
+        -->
+
+        <!--
             This is the real project version! When changing version change here, and then
             run the 'set-version' profile with generate-sources:
 
@@ -34,14 +38,32 @@
         -->
         <projectVersion>1.3.3</projectVersion>
 
+        <!--
+            These are used in dependencyManagement and pluginManagement below, but here the versions are
+            more collected together and I only have to specify them once.
+        -->
+
+        <clm.ver>2.1.3</clm.ver>
+        <optmgr.ver>2.0.3</optmgr.ver>
+        <fileeditor-maven-support.ver>1.1</fileeditor-maven-support.ver>
+        <ftp-maven-plugin.ver>1.0.1</ftp-maven-plugin.ver>
+        <itext.ver>5.5.1</itext.ver>
+        <!--
+            NOTE that this is a local fork of groovy-core on github containing an NPE during compilation
+            fix! A pull request have been submitted. Until this bug is solved in an official version
+            you can get my fixed version at https://github.com/tombensve/groovy-core. The fix will be
+            available in version 2.3.5 when that gets released on bintray.
+        -->
+        <groovy.ver>2.4.0-SNAPSHOT</groovy.ver>
+
+        <!-- ======================================= -->
+
         <copyrightYear>2012</copyrightYear>
         <copyrightHolder>Natusoft AB</copyrightHolder>
         <copyrightHolderWeb>http://www.natusoft.se/</copyrightHolderWeb>
         <developer1Name>Tommy Svensson</developer1Name>
         <developer1Email>tommy@natusoft.se</developer1Email>
         
-        <!-- Dependency versions -->
-        <clm>2.1.2</clm>
     </properties>
     <licenses>
         <license>
@@ -86,13 +108,13 @@
             <dependency>
                 <groupId>se.natusoft.tools.optionsmgr</groupId>
                 <artifactId>OptionsManager</artifactId>
-                <version>2.0.1</version>
+                <version>${optmgr.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.itextpdf</groupId>
                 <artifactId>itext-pdfa</artifactId>
-                <version>5.5.1</version>
+                <version>${itext.ver}</version>
             </dependency>
 
             <dependency>
@@ -105,12 +127,7 @@
                     runtime.
                 -->
                 <artifactId>groovy-all</artifactId>
-                <!--
-                    NOTE that this is a local fork of groovy-core on github containing an NPE during compilation
-                    fix! A pull request have been submitted. Until this bug is solved in an official version
-                    you can get my fixed version at https://github.com/tombensve/groovy-core.
-                -->
-                <version>2.4.0-SNAPSHOT</version>
+                <version>${groovy.ver}</version>
                 <classifier>indy</classifier>
             </dependency>
 
@@ -161,19 +178,19 @@
                 <plugin>
                     <groupId>se.natusoft.tools.codelicmgr</groupId>
                     <artifactId>CodeLicenseManager-maven-plugin</artifactId>
-                    <version>2.1.2</version>
+                    <version>${clm.ver}</version>
 
                     <dependencies>
                         <dependency>
                             <groupId>se.natusoft.tools.codelicmgr</groupId>
                             <artifactId>CodeLicenseManager-source-updater-slashstar-comment</artifactId>
-                            <version>2.1.2</version>
+                            <version>${clm.ver}</version>
                         </dependency>
 
                         <dependency>
                             <groupId>se.natusoft.tools.codelicmgr</groupId>
                             <artifactId>CodeLicenseManager-licenses-common-opensource</artifactId>
-                            <version>2.1.2</version>
+                            <version>${clm.ver}</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -181,13 +198,13 @@
                 <plugin>
                     <groupId>se.natusoft.tools.fileeditor</groupId>
                     <artifactId>file-editor-maven-support-plugin</artifactId>
-                    <version>1.1</version>
+                    <version>${fileeditor-maven-support.ver}</version>
 
                     <dependencies>
                         <dependency>
                             <groupId>se.natusoft.tools.fileeditor</groupId>
                             <artifactId>file-editor-maven-support-scripts</artifactId>
-                            <version>1.1</version>
+                            <version>${fileeditor-maven-support.ver}</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -199,15 +216,9 @@
                 </plugin>
 
                 <plugin>
-                    <groupId>org.codehaus.gmavenplus</groupId>
-                    <artifactId>gmavenplus-plugin</artifactId>
-                    <version>1.2</version>
-                </plugin>
-
-                <plugin>
                     <groupId>se.natusoft.maven.plugin</groupId>
                     <artifactId>ftp-maven-plugin</artifactId>
-                    <version>1.0.1</version>
+                    <version>${ftp-maven-plugin.ver}</version>
                 </plugin>
 
             </plugins>
@@ -227,7 +238,7 @@
             <plugin>
                 <groupId>se.natusoft.tools.codelicmgr</groupId>
                 <artifactId>CodeLicenseManager-maven-plugin</artifactId>
-                <version>2.1.2</version>
+                <version>${clm.ver}</version>
 
                 <executions>
                     <execution>
@@ -309,19 +320,19 @@
 
                         <groupId>se.natusoft.tools.codelicmgr</groupId>
                         <artifactId>CodeLicenseManager-maven-plugin</artifactId>
-                        <version>2.1.2</version>
+                        <version>${clm.ver}</version>
 
                         <dependencies>
                             <dependency>
                                 <groupId>se.natusoft.tools.codelicmgr</groupId>
                                 <artifactId>CodeLicenseManager-licenses-common-opensource</artifactId>
-                                <version>2.1.2</version>
+                                <version>${clm.ver}</version>
                             </dependency>
 
                             <dependency>
                                 <groupId>se.natusoft.tools.codelicmgr</groupId>
                                 <artifactId>CodeLicenseManager-source-updater-slashstar-comment</artifactId>
-                                <version>2.1.2</version>
+                                <version>${clm.ver}</version>
                             </dependency>
                         </dependencies>
 
