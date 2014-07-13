@@ -6,7 +6,7 @@ __Version:__ 1.3.3
 
 __Note 1:__ The only change in this version are fixes for the editor.
 
-__Note 2:__ This version requires version 2.4.0-SNAPSHOT or later of groovy to build! Accoring to https://jira.codehaus.org/browse/GROOVY-6929 the bug that causes this problem will be first available in version 2.3.5, but until a binaray for that version has been released, the groovy-core code at github needs to be checked out and built, and installed in your local ~/.m2/repository. I provide already built binaries on bintray. Links to the can be found below.
+__Note 2:__ This version requires version 2.4.0-SNAPSHOT or later of groovy to build! Accoring to https://jira.codehaus.org/browse/GROOVY-6929 the bug that causes this problem will be first available in version 2.3.5, but until a binary for that version has been released, the groovy-core code at github needs to be checked out and built, and installed in your local ~/.m2/repository. I provide already built binaries on bintray. Links to the can be found below.
 
 __Note 3:__ There is a swing bug I've run into for the editor. Please see the bottom of the Editor documentation (link below).
 
