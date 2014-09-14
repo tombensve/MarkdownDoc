@@ -134,7 +134,7 @@ class PDFGenerator implements Generator {
 
     private PDFGeneratorOptions options = null
 
-    /** This will actually be added to the real Document later on, twice: once for the fake render and once for the real. */
+    // This will actually be added to the real Document later on, twice: once for the fake render and once for the real.
     private JList<Section> documentItems = null
 
     private Chapter currentChapter = null
@@ -161,7 +161,7 @@ class PDFGenerator implements Generator {
     /** This is only true for the fake render that is only done to generate the TOC. */
     private boolean updateTOC = true
 
-    /** The root dir to prefix paths with. */
+    /** A root dir to prefix paths with. */
     private File rootDir = null
 
     //
@@ -206,7 +206,7 @@ class PDFGenerator implements Generator {
      *
      * @param doc The documentItems model to generate from.
      * @param opts The generator options.
-     * @param rootDir An optional root directory to prefix output paths with.
+     * @param rootDir An optional root directory to prefix output paths with. This overrides the rootDir in options!
      */
     @Override
     public void generate(Doc doc, Options opts, File rootDir) throws IOException, GenerateException {
@@ -225,7 +225,7 @@ class PDFGenerator implements Generator {
      *
      * @param document The model to generate from.
      * @param options The generator options.
-     * @param rootDir The optional root directory to prefix configured output with. Can be null.
+     * @param rootDir The optional root directory to prefix configured output with. Can be null. This overrides the rootDir in options!
      * @param resultStream The stream to write the result to.
      *
      * @throws IOException on I/O failures.
@@ -233,8 +233,16 @@ class PDFGenerator implements Generator {
      */
     public void generate(Doc doc, Options opts, File rootDir, OutputStream resultStream) throws IOException, GenerateException {
         initRun()
-        this.options = (PDFGeneratorOptions)opts
+        this.options = opts as PDFGeneratorOptions
         this.rootDir = rootDir
+
+        if (this.rootDir == null && this.options.rootDir != null) {
+            this.rootDir = new File(this.options.rootDir)
+        }
+
+        if (this.rootDir != null && !this.rootDir.isDirectory()) {
+            this.rootDir = this.rootDir.getParentFile()
+        }
 
         doc.items.each { DocItem docItem ->
 
@@ -923,39 +931,54 @@ class PDFGenerator implements Generator {
      */
     private String resolveUrl(String url, File parseFile) {
         String resolvedUrl = url
-        if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http:")) {
+        if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http")) {
             resolvedUrl = "file:" + resolvedUrl
         }
+        String fallbackUrl = resolvedUrl
+
         if (resolvedUrl.startsWith("file:")) {
+            // Try for absolute path or relative to current directory first.
             String path = resolvedUrl.substring(5)
             File testFile = new File(path)
 
             if (!testFile.exists()) {
-                // Try relative to parseFile first.
+                // Then try relative to parseFile.
                 int ix = parseFile.canonicalPath.lastIndexOf(File.separator)
                 if (ix >= 0) {
-                    String path1 = parseFile.canonicalPath.substring(0, ix + 1) + path
-                    if (this.rootDir != null) {
-                        // The result file is relative to the root dir!
-                        resolvedUrl = "file:" + this.rootDir.canonicalPath + File.separator + path1
-                        testFile = new File(this.rootDir.canonicalPath + File.separator + path1)
-                    }
-                    else {
-                        resolvedUrl = "file:" + path1
-                        testFile = new File(path1)
-                    }
+                    // Since this is based on parseFile.canonicalPath it will be a full path from the filesystem root.
+                    resolvedUrl = "file:" + ensureSeparatorAtEnd(parseFile.canonicalPath.substring(0, ix + 1))  + path
+                    testFile = new File(ensureSeparatorAtEnd(parseFile.canonicalPath.substring(0, ix + 1))  + path)
                 }
+
                 if (!testFile.exists()) {
-                    // Try relative to result file.
-                    ix = this.options.resultFile.lastIndexOf(File.separator)
+                    // Then try relative to result file.
+                    File resultFile = new File(this.options.resultFile)
+                    ix = resultFile.canonicalPath.lastIndexOf(File.separator)
                     if (ix >= 0) {
-                        String path2 = this.options.resultFile.substring(0, ix + 1) + path
-                        if (this.rootDir != null) {
-                            // The result file is relative to the root dir!
-                            resolvedUrl = "file:" + this.rootDir.canonicalPath + File.separator + path2
-                        }
-                        else {
-                            resolvedUrl = "file:" + path2
+                        resolvedUrl = "file:" + ensureSeparatorAtEnd(resultFile.canonicalPath.substring(0, ix + 1)) + path
+                        testFile = new File(ensureSeparatorAtEnd(resultFile.canonicalPath.substring(0, ix + 1)) + path)
+
+                        if (!testFile.exists()) {
+                            // Finally try root dir.
+                            if (this.rootDir != null) {
+                                ix = this.rootDir.canonicalPath.lastIndexOf(File.separator)
+                                if (ix > 0) {
+                                    resolvedUrl = "file:" + ensureSeparatorAtEnd(this.rootDir.canonicalPath.substring(0, ix + 1) + path)
+                                    testFile = new File(ensureSeparatorAtEnd(this.rootDir.canonicalPath.substring(0, ix + 1)) + path)
+                                    if (!testFile.exists()) {
+                                        // Give up!
+                                        resolvedUrl = fallbackUrl
+                                    }
+                                }
+                                else {
+                                    // Give up!
+                                    resolvedUrl = fallbackUrl
+                                }
+                            }
+                            else {
+                                // Give up!
+                                resolvedUrl = fallbackUrl
+                            }
                         }
                     }
                 }
@@ -963,6 +986,29 @@ class PDFGenerator implements Generator {
         }
         return resolvedUrl
     }
+
+    /**
+     * Makes sure the path ends file File.separator.
+     *
+     * @param path The path to ensure.
+     *
+     * @return Possibly updated path.
+     */
+    private String ensureSeparatorAtEnd(String path) {
+        if (!path.trim().endsWith(File.separator)) {
+            path = path + File.separator
+        }
+
+        return path
+    }
+
+//    public static void main(String[] args) {
+//        PDFGenerator pdfGen = new PDFGenerator()
+//        pdfGen.rootDir = new File("/Users/tommy")
+//        pdfGen.options = new PDFGeneratorOptions()
+//        pdfGen.options.resultFile = "/Users/tommy/test/out.file"
+//        pdfGen.resolveUrl("out.file" , new File("/Users/tommy/Dropbox/Backups/.last-backup"))
+//    }
 
     /**
      * Writes an image within a paragraph.

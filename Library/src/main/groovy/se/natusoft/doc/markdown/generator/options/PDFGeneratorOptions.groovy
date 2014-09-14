@@ -54,6 +54,12 @@ class PDFGeneratorOptions implements Options {
     String resultFile
 
     @Option
+    @Name("rootDir")
+    @Description("A root dir to make image paths relative to.")
+    @Optional
+    String rootDir = null
+
+    @Option
     @Name("pageSize")
     @Description("The pagesize name like LETTER or A4.")
     @Optional

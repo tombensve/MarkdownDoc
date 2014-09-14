@@ -7,7 +7,7 @@
     <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
     <artifactId>markdown-doc</artifactId>
     <packaging>pom</packaging>
-    <version>1.3.3</version>
+    <version>1.3.4</version>
 
     <modules>
         <module>Docs</module>
@@ -36,7 +36,7 @@
 
                 mvn -Pset-version generate-sources
         -->
-        <projectVersion>1.3.3</projectVersion>
+        <projectVersion>1.3.4</projectVersion>
 
         <!--
             These are used in dependencyManagement and pluginManagement below, but here the versions are
@@ -48,13 +48,7 @@
         <fileeditor-maven-support.ver>1.1</fileeditor-maven-support.ver>
         <ftp-maven-plugin.ver>1.0.1</ftp-maven-plugin.ver>
         <itext.ver>5.5.1</itext.ver>
-        <!--
-            NOTE that this is a local fork of groovy-core on github containing an NPE during compilation
-            fix! A pull request have been submitted. Until this bug is solved in an official version
-            you can get my fixed version at https://github.com/tombensve/groovy-core. The fix will be
-            available in version 2.3.5 when that gets released on bintray.
-        -->
-        <groovy.ver>2.4.0-SNAPSHOT</groovy.ver>
+        <groovy.ver>2.3.5</groovy.ver>
 
         <!-- ======================================= -->
 
@@ -423,7 +417,7 @@
 
                         <executions>
                             <execution>
-                                <id>upd-parent-and-snapshot</id>
+                                <id>upd-parent</id>
                                 <goals>
                                     <goal>edit</goal>
                                 </goals>
