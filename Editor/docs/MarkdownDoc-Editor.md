@@ -2,6 +2,8 @@
 
 This is an editor for editing markdown documents. 
 
+![](images/MarkdownDocEditor.png) 
+
 ## Features
 
 ### Styling as you type
@@ -116,7 +118,7 @@ Undo capability.
 
 ### By me
 
-I have now ironed out all known bugs for the moment. 
+Only images with absolute path (even http: urls) are rendered in preview. Not sure I can fix this since the preview is generated in memory. I don't really know what the JTextPane sees links relative to then. Possibly if I can resolve the full path to a relative image using the same scheme as used in the PDFGenerator.
 
 ### By Oracle
 

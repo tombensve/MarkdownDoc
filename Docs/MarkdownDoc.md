@@ -36,6 +36,18 @@ Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdo
 
 ### Version history
 
+#### 1.3.4
+
+Fixed a bug with relative path for images using _PDFGenerator_ reported by Maher Gamal. There are now 5 ways to specifiy paths to images for PDF:
+
+1. Absolute path
+2. Relative to current directory.
+3. Relative to markdown document.
+4. Relative to resulting PDF document.
+5. Relative to a supplied root dir. This can now be specified in the PDF generator options. If using the library, passing rootDir will override the options rootDir.
+
+These paths will be automatically resolved. 
+
 #### 1.3.3
 
 Ironed out all _known_ bugs in editor.
