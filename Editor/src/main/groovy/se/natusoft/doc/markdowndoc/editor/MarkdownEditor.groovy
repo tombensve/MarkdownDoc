@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.3.3
+ *         1.3.5
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -16,7 +16,7 @@
  * LICENSE
  *     Apache 2.0 (Open Source)
  *     
- *     Licensed under the Apache License, Version 2.0 (the "License")
+ *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
  *     
@@ -387,7 +387,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
 
         this.setLayout(new BorderLayout())
         this.setSize(new Dimension(800, 800))
-        this.setTitle("MarkdownDoc Editor 1.3.3")
+        this.setTitle("MarkdownDoc Editor 1.3.5");
 
         // Editor
 

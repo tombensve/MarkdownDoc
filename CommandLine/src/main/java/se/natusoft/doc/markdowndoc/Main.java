@@ -5,7 +5,7 @@
  *         MarkdownDoc Command Line
  *     
  *     Code Version
- *         1.3.3
+ *         1.3.5
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.

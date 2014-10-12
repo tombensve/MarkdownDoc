@@ -7,7 +7,7 @@
     <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
     <artifactId>markdown-doc</artifactId>
     <packaging>pom</packaging>
-    <version>1.3.4</version>
+    <version>1.3.5</version>
 
     <modules>
         <module>Docs</module>
@@ -36,7 +36,7 @@
 
                 mvn -Pset-version generate-sources
         -->
-        <projectVersion>1.3.4</projectVersion>
+        <projectVersion>1.3.5</projectVersion>
 
         <!--
             These are used in dependencyManagement and pluginManagement below, but here the versions are
@@ -57,7 +57,7 @@
         <copyrightHolderWeb>http://www.natusoft.se/</copyrightHolderWeb>
         <developer1Name>Tommy Svensson</developer1Name>
         <developer1Email>tommy@natusoft.se</developer1Email>
-        
+
     </properties>
     <licenses>
         <license>
@@ -372,7 +372,7 @@
                                     Update the displayed version in MarkdownEditor window title.
                                 -->
                                 <script>
-                                    <fileFilter>.*MarkdownEditor.java</fileFilter>
+                                    <fileFilter>.*MarkdownEditor.groovy</fileFilter>
                                     <code>
                                         editor.moveToTopOfFile();
                                         if (editor.find("this.setTitle\\(\"MarkdownDoc Editor")) {

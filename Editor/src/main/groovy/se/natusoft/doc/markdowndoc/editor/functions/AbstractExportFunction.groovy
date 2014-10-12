@@ -1,11 +1,11 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.3.3
+ *         1.3.5
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -16,7 +16,7 @@
  * LICENSE
  *     Apache 2.0 (Open Source)
  *     
- *     Licensed under the Apache License, Version 2.0 (the "License")
+ *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
  *     
@@ -32,7 +32,7 @@
  *     tommy ()
  *         Changes:
  *         2013-06-06: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdowndoc.editor.functions
 
@@ -91,35 +91,35 @@ public abstract class AbstractExportFunction implements EditorFunction {
              * Returns the default property key.
              */
             public String getDefaultsPropKey() {
-                return defaultsPropKey
+                return AbstractExportFunction.this.defaultsPropKey
             }
 
             /**
              *  Returns the file to export to.
              */
             public File getExportFile() {
-                return exportFile
+                return AbstractExportFunction.this.exportFile
             }
 
             /**
              * Returns the editorPane GUI API.
              */
             public GUI getGUI() {
-                return editor.getGUI()
+                return AbstractExportFunction.this.editor.getGUI()
             }
 
             /**
              * Returns the config API.
              */
             public ConfigProvider getConfigProvider() {
-                return editor.getConfigProvider()
+                return AbstractExportFunction.this.editor.getConfigProvider()
             }
 
             /**
              * Returns the persistent properties provider.
              */
             public PersistentProps getPersistentProps() {
-                return editor.getPersistentProps()
+                return AbstractExportFunction.this.editor.getPersistentProps()
             }
 
         }
