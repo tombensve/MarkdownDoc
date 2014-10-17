@@ -36,6 +36,10 @@ Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdo
 
 ### Version history
 
+#### 1.3.5
+
+Fixed StackOverflowError caused by Groovy property gotcha.
+
 #### 1.3.4
 
 Fixed a bug with relative path for images using _PDFGenerator_ reported by Maher Gamal. There are now 5 ways to specifiy paths to images for PDF:
