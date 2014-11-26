@@ -163,7 +163,7 @@ Following is a complete plugin specification with all options specified:
 							of block quotes.
 							Optional. Default: 128:128:128 (grey)
 						-->
-                        <blockQuoteColor>128:128:128<blockQuoteColor>
+                        <blockQuoteColor>128:128:128</blockQuoteColor>
                         
 						<!--
 							Specify in R:G:B format to change the text color
