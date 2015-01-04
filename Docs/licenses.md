@@ -10,7 +10,7 @@ __[Apache Software License version 2.0](http://www.apache.org/licenses/LICENSE-2
 The following third party products are using this license:
 
 * [OptionsManager-2.0.3](http://github.com/tombensve/OptionsManager)
-* [groovy-all-2.3.5](http://groovy.codehaus.org/)
+* [groovy-all-2.3.6](http://groovy.codehaus.org/)
 
 __[GNU Affero General Public License version v3](http://www.fsf.org/licensing/licenses/agpl-3.0.html)__
 

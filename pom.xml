@@ -7,7 +7,7 @@
     <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
     <artifactId>markdown-doc</artifactId>
     <packaging>pom</packaging>
-    <version>1.3.5</version>
+    <version>1.3.6</version>
 
     <modules>
         <module>Docs</module>
@@ -36,7 +36,7 @@
 
                 mvn -Pset-version generate-sources
         -->
-        <projectVersion>1.3.5</projectVersion>
+        <projectVersion>1.3.6</projectVersion>
 
         <!--
             These are used in dependencyManagement and pluginManagement below, but here the versions are
@@ -48,7 +48,7 @@
         <fileeditor-maven-support.ver>1.1</fileeditor-maven-support.ver>
         <ftp-maven-plugin.ver>1.0.1</ftp-maven-plugin.ver>
         <itext.ver>5.5.1</itext.ver>
-        <groovy.ver>2.3.5</groovy.ver>
+        <groovy.ver>2.3.6</groovy.ver>
 
         <!-- ======================================= -->
 

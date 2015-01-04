@@ -1,38 +1,38 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.3.5
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
  *         2014-02-01: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdowndoc.editor
 
@@ -99,9 +99,9 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                 getDefaultStyleContext().
                 getStyle(StyleContext.DEFAULT_STYLE)
         doc.removeStyle("code")
-        Style code = doc.addStyle("code", base)
-        StyleConstants.setFontFamily(code, this.monospacedFontFamily)
-        StyleConstants.setFontSize(code, this.monospacedFontSize)
+        this.codeStyle = doc.addStyle("code", base)
+        StyleConstants.setFontFamily(this.codeStyle, this.monospacedFontFamily)
+        StyleConstants.setFontSize(this.codeStyle, this.monospacedFontSize)
         styleDocument()
     }
 
@@ -112,7 +112,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
 
     /** Config entry used in SettingsWindow to edit config. */
     private static IntegerConfigEntry monospacedFontSizeConfig =
-            new IntegerConfigEntry("editorPane.pane.font.monospaced.size", "The size of the monospaced font.", 16, 8, 50, CONFIG_GROUP_EDITING)
+            new IntegerConfigEntry("editorPane.pane.font.monospaced.size", "The size of the monospaced font.", 14, 8, 50, CONFIG_GROUP_EDITING)
 
     /**
      * Configuration callback for monospaced font size.
@@ -125,9 +125,9 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                 getDefaultStyleContext().
                 getStyle(StyleContext.DEFAULT_STYLE)
         doc.removeStyle("code")
-        Style code = doc.addStyle("code", base)
-        StyleConstants.setFontFamily(code, this.monospacedFontFamily)
-        StyleConstants.setFontSize(code, this.monospacedFontSize)
+        this.codeStyle = doc.addStyle("code", base)
+        StyleConstants.setFontFamily(this.codeStyle, this.monospacedFontFamily)
+        StyleConstants.setFontSize(this.codeStyle, this.monospacedFontSize)
         styleDocument()
     }
 
@@ -368,6 +368,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                 getDefaultStyleContext().
                 getStyle(StyleContext.DEFAULT_STYLE)
 
+//        System.out.println("Start styling")
         try {
             if (text == null) {
                 text = doc.getText(0, doc.getLength())
@@ -379,7 +380,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                         char c = text.charAt(pos)
                         char p = pos == 0 ? text.charAt(pos) : text.charAt(pos - 1)
                         char pp = pos <= 1 ? text.charAt(pos) : text.charAt(pos - 2)
-//                        char a = pos == doc.getLength() ? '!' : text.charAt(pos + 1) // The '!' is a dummy char in this case.
+                        //System.out.print(c);
 
                         // -- Header --------
                         if (c == '#' && p != '\\') {
@@ -422,6 +423,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                                 }
                             }
                             if (header != null) {
+//                                System.out.println("\nHeader identified!")
                                 if (this.makeStylingCharsTiny) {
                                     doc.setCharacterAttributes(spos + hsize, epos - (spos + hsize), header, true)
                                     doc.setCharacterAttributes(spos, hsize, this.tinyStyle, true)
@@ -451,14 +453,14 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                             }
 
                             if (!isList) {
-                                if ((text.charAt(pos - 1) == '\n' && (text.charAt(pos - 2) == '\n' || doc.getCharacterElement(pos - 2).getAttributes().containsAttributes(this.codeStyle))) || pos == 4) {
-                                    if (!getStartOfParagraphText(pos, bounds, text).trim().startsWith("* ")) {
-                                        int epos = getEndOfParagraph(text, pos)
-                                        doc.setCharacterAttributes(pos, (epos - pos) + 1, this.codeStyle, true)
-                                        pos = epos + 1
-                                    }
-                                }
+//                                System.out.println("\nMonospaced identified!")
+                                int epos = getEndOfParagraph(text, pos)
+                                doc.setCharacterAttributes(pos, (epos - pos), this.codeStyle, true)
+                                pos = epos
                             }
+//                            else {
+//                                System.out.println("\nList bullet identified!")
+//                            }
                         }
 
                         // -- Bold italic (when not escaped, but when double escaped) --------
@@ -479,6 +481,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                             int epos = getPosOfNext(text, pos + 1, endChar)
 
                             if (bold) {
+//                                System.out.println("\nBold identified!")
                                 doc.setCharacterAttributes(spos + 2, epos - spos - 2, this.boldStyle, true)
                                 if (this.makeStylingCharsTiny) {
                                     doc.setCharacterAttributes(spos, 2, this.tinyStyle, true)
@@ -486,6 +489,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                                 }
                             }
                             else {
+//                                System.out.println("\nEmphasis identified!")
                                 doc.setCharacterAttributes(spos + 1, epos - spos - 1, this.emphasisStyle, true)
                                 if (this.makeStylingCharsTiny) {
                                     doc.setCharacterAttributes(spos, 1, this.tinyStyle, true)
@@ -502,6 +506,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
         catch (BadLocationException ble) {
             ble.printStackTrace(System.err)
         }
+//        System.out.println("Done styling.")
 
         this.textComponentToStyle.setEnabled(true)
     }
@@ -540,8 +545,16 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
         int npos = start
 
         try {
-            while (npos < text.length() && (safeGetChar(text, npos) != '\n' && safeGetChar(text, npos + 1) != '\n')) {
-                ++npos
+            // I'm leaving this commented out just to remind me of my stupidity!
+            //while (npos < text.length() && safeGetChar(text, npos) != '\n' && safeGetChar(text, (npos + 1)) != '\n') {
+            //    ++npos
+            //}
+            while (npos < text.length()) {
+//                System.out.print(text.charAt(npos))
+                if (safeGetChar(text, npos) == '\n' && safeGetChar(text, npos + 1) == '\n') {
+                    break
+                }
+                ++npos;
             }
         }
         catch (IndexOutOfBoundsException ignore) { /* Intentionally_DoNothing */ }

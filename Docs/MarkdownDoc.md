@@ -36,6 +36,20 @@ Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdo
 
 ### Version history
 
+#### 1.3.6
+
+Bug fixes in MarkdownDocEditor:
+
+- Preformatted styling should now behave correctly.
+
+- Preformatted font (monospace) settings now work. Also defaulted font size of monospace to 14 rather than 16.
+
+#### 1.3.5
+
+What I did not mention in the information for version 1.3.4 is that the editor was converted from Java to Groovy. Here I apparently ran into a Groovy gotcha: What looked to be a member reference were actually a property reference to the same method that tried to reference member. In this case it was an anonymously implemented interface with a getter whose implementation tried to reference the outer class member of same name as getter property, and got the property rather than the member causing a never ending loop resulting in java.lang.StackOverflowError.
+
+This affected only generating of PDF and HTML. The error occured after writing generated output, but before opening the generated output (when told to do so by checkbox setting). This problem is now fixed by this version and is the only thing that differs from previous version.  
+
 #### 1.3.4
 
 Fixed a bug with relative path for images using _PDFGenerator_ reported by Maher Gamal. There are now 5 ways to specifiy paths to images for PDF:
