@@ -2,7 +2,7 @@
 
 Copyright (C) 2012 Natusoft AB
 
-__Version:__ 1.3.6
+__Version:__ 1.3.7
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
@@ -15,11 +15,11 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 [Maven usage](https://github.com/tombensve/MarkdownDoc/blob/master/MavenPlugin/docs/MarkdownDoc-Maven-Plugin.md)
 
 [Command line usage](https://github.com/tombensve/MarkdownDoc/blob/master/CommandLine/docs/MarkdownDoc-CommandLine.md)
-\[[markdowndoc-cmd-line-1.3.6.exec.jar download](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/1.3.6/markdowndoc-cmd-line-1.3.6.exec.jar)\]
+\[[markdowndoc-cmd-line-1.3.7.exec.jar download](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/1.3.7/markdowndoc-cmd-line-1.3.7.exec.jar)\]
 
 [Library](https://github.com/tombensve/MarkdownDoc/blob/master/Library/docs/MarkdownDoc-Library.md)
 
-[Editor](https://github.com/tombensve/MarkdownDoc/blob/master/Editor/docs/MarkdownDoc-Editor.md) \[[MarkdownDocEditor-1.3.6.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/1.3.6/MarkdownDocEditor-1.3.6.App.jar)\].
+[Editor](https://github.com/tombensve/MarkdownDoc/blob/master/Editor/docs/MarkdownDoc-Editor.md) \[[MarkdownDocEditor-1.3.7.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/1.3.7/MarkdownDocEditor-1.3.7.App.jar)\].
 
 [Licenses](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/licenses.md)
 

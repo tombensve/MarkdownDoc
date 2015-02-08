@@ -5,7 +5,7 @@
     <parent>
         <artifactId>markdown-doc</artifactId>
         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
-        <version>1.3.6</version>
+        <version>1.3.7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

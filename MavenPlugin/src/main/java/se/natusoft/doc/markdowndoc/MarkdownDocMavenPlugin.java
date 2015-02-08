@@ -1,11 +1,11 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDoc Maven Plugin
  *     
  *     Code Version
- *         1.3.5
+ *         1.3.7
  *     
  *     Description
  *         A maven plugin for generating documentation from markdown.
@@ -32,7 +32,7 @@
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
  *         2012-11-18: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdowndoc;
 
@@ -63,7 +63,7 @@ import java.util.Properties;
  * Goal which touches a timestamp file.
  *
  * @goal doc
- * 
+ *
  * @phase generate-sources
  */
 public class MarkdownDocMavenPlugin extends AbstractMojo {
@@ -117,16 +117,19 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
      */
     public void execute() throws MojoExecutionException {
         String inputPaths = this.generatorOptions.getInputPaths();
-        if (inputPaths.indexOf(',') == -1 && inputPaths.endsWith(".mddoc")) {
-            try {
-                MDDocFileHandler.execute(inputPaths, true);
-            }
-            catch (ParseException pe) {
-                throw new MojoExecutionException(pe.getMessage(), pe);
+        if (inputPaths != null && inputPaths.trim().length() > 0) {
+            if (inputPaths.indexOf(',') == -1 && inputPaths.endsWith(".mddoc")) {
+                try {
+                    MDDocFileHandler.execute(inputPaths, true);
+                } catch (ParseException pe) {
+                    throw new MojoExecutionException(pe.getMessage(), pe);
+                }
+            } else {
+                executeStd();
             }
         }
         else {
-            executeStd();
+            getLog().error("No markdown files to generate from have been specified!");
         }
     }
 
@@ -168,6 +171,10 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
             }
         }
 
+        if (options == null) {
+            throw new MojoExecutionException("No options provided for " + generator.getOptionsClass().getSimpleName() + "!");
+        }
+
         // Parse
 
         File projRoot = getRootDir();
@@ -183,7 +190,7 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
         }
         if (sourcePaths.hasSourceFiles()) {
             try {
-                System.out.println("Parsing the following files:");
+                getLog().info("Parsing the following files:");
                 for (File sourceFile : sourcePaths.getSourceFiles()) {
                     System.out.println("    " + sourceFile);
                     Parser fileParser = parser;
@@ -195,7 +202,7 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
                     }
                     fileParser.parse(document, sourceFile, parserOptions);
                 }
-                System.out.println("All parsed!");
+                getLog().info("All parsed!");
             }
             catch (ParseException pe) {
                 throw new MojoExecutionException("Parse failure!", pe);
