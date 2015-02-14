@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.3.7
+ *         1.3.8
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -387,7 +387,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
 
         this.setLayout(new BorderLayout())
         this.setSize(new Dimension(800, 800))
-        this.setTitle("MarkdownDoc Editor 1.3.7");
+        this.setTitle("MarkdownDoc Editor 1.3.8");
 
         // Editor
 
