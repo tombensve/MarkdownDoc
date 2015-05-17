@@ -1,11 +1,11 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.3.8
+ *         1.3.9
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -32,7 +32,7 @@
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
  *         2013-05-27: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdowndoc.editor.functions
 
@@ -147,26 +147,6 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
             ((ExportFileValue)css).delayedServiceData = delayedServiceData
             ((ExportFileValue)fileLinks).delayedServiceData = delayedServiceData
         }
-
-        /**
-         * Initializes the exportDataValues list with all the fields
-         * for easier dynamic access.
-         */
-        public void loadHTMLDataValues() {
-            exportDataValues = new LinkedList<>()
-
-            HTMLData.class.declaredFields.findAll { Field field ->
-                field.type == ExportDataValue.class
-            }.each { Field field ->
-                field.accessible = true
-                try {
-                    exportDataValues.add((ExportDataValue)field.get(this))
-                }
-                catch (Exception e) {
-                    System.err.println("ERROR: " + e.getMessage())
-                }
-            }
-        }
     }
 
     //
@@ -177,12 +157,7 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
         super(GENERATED_HTML_FILE)
         Icon htmlIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddhtml.png"))
         this.htmlButton = new JButton(htmlIcon)
-        htmlButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                perform()
-            }
-        })
+        htmlButton.addActionListener({ ActionEvent actionEvent -> perform() } as ActionListener)
         updateTooltipText()
     }
 
@@ -231,7 +206,7 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
             borderPanel.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED))
             this.htmlMetaDataDialog.add(borderPanel, BorderLayout.CENTER)
 
-            this.htmlData.loadHTMLDataValues()
+            this.htmlData.loadDataValues()
             this.htmlData.setBackgroundColor(this.editor.getGUI().getWindowFrame().getBackground())
 
             JPanel dataLabelPanel = new JPanel(new GridLayout(this.htmlData.exportDataValues.size(),1))
@@ -249,25 +224,15 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
 
             JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
             JButton generateButton = new JButton("Generate")
-//            generateButton.addActionListener(new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent actionEvent) {
-//                    /*ExportToHTMLFunction.this.*/htmlMetaDataDialog.setVisible(false)
-//                    generateHTML()
-//                }
-//            })
             generateButton.addActionListener({ ActionEvent actionEvent ->
                 this.htmlMetaDataDialog.setVisible(false)
                 generateHTML()
             } as ActionListener)
             buttonPanel.add(generateButton)
             JButton cancelButton = new JButton("Cancel")
-            cancelButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    /*ExportToHTMLFunction.this.*/htmlMetaDataDialog.setVisible(false)
-                }
-            })
+            cancelButton.addActionListener({ ActionEvent actionEvent ->
+                this.htmlMetaDataDialog.setVisible(false)
+            } as ActionListener)
             buttonPanel.add(cancelButton)
 
             borderPanel.add(buttonPanel, BorderLayout.SOUTH)

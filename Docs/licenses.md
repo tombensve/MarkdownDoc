@@ -16,6 +16,6 @@ __[GNU Affero General Public License version v3](http://www.fsf.org/licensing/li
 
 The following third party products are using this license:
 
-* [itext-pdfa-5.5.1](http://www.itextpdf.com/)
+* [itext-pdfa-5.5.6-1](http://itextpdf.com)
 
 <!-- CLM -->

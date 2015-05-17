@@ -1,11 +1,11 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.3.8
+ *         1.3.9
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -32,7 +32,7 @@
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
  *         2014-10-12: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdowndoc.editor.functions.export
 
@@ -52,7 +52,7 @@ public class ExportDataSelectValue extends ExportDataValue {
 
     public ExportDataSelectValue(String labelText, boolean defaultValue) {
         this(labelText)
-        ((JCheckBox)super.valueComp).setSelected(defaultValue)
+        ((JCheckBox)ensureValueComp()).setSelected(defaultValue)
     }
 
     public String getValue() {
@@ -61,6 +61,6 @@ public class ExportDataSelectValue extends ExportDataValue {
 
     public void setValue(String value) {
         boolean selected = Boolean.valueOf(value)
-        ((JCheckBox)super.valueComp).setSelected(selected)
+        ((JCheckBox)ensureValueComp()).setSelected(selected)
     }
 }

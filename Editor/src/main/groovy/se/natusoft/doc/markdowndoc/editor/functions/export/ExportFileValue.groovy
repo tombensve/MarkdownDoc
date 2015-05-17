@@ -1,11 +1,11 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.3.8
+ *         1.3.9
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -32,11 +32,13 @@
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
  *         2014-10-12: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdowndoc.editor.functions.export
 
 import groovy.transform.CompileStatic
+
+import javax.swing.JComponent
 
 @CompileStatic
 public class ExportFileValue extends ExportDataValue {
@@ -51,18 +53,24 @@ public class ExportFileValue extends ExportDataValue {
         this.whatFile = whatFile
     }
 
+    @Override
+    protected JComponent ensureValueComp() {
+        if (super.valueComp == null) {
+            super.valueComp = new FileSelector(this.whatFile, delayedServiceData)
+        }
+
+        return super.valueComp
+    }
+
     public String getValue() {
         if (whatFile == null || delayedServiceData == null) {
             throw new IllegalStateException("'whatFile' and 'gui' properties must have been provided before this call" +
                     " can be made!")
         }
-        if (valueComp == null) {
-            valueComp = new FileSelector(this.whatFile, delayedServiceData)
-        }
-        return ((FileSelector)valueComp).getFile()
+        return ((FileSelector)ensureValueComp()).getFile()
     }
 
     public void setValue(String value) {
-        ((FileSelector)valueComp).setFile(value)
+        ((FileSelector)ensureValueComp()).setFile(value)
     }
 }

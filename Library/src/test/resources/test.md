@@ -107,7 +107,10 @@ A paragraph is simply one or more consecutive lines of text, separated by one or
 tabs is considered blank.) Normal paragraphs should not be indented with spaces or tabs.
 
 This is a _formatting_ __Paragraph__. Here is [a link](http://to.somewhere.net/). Another [link] to somewhere. This paragraph
-also contains a `simple code block`. And here is an ![image](http://groovy.codehaus.org/images/groovy-logo-medium.png).
+also contains a `simple code block`. And here is an 
+
+![image](https://raw.githubusercontent.com/dcurtis/markdown-mark/master/png/32x20-solid.png).
+
 Some more text in this paragraph. <www.somewhere.net> ends this paragraph.
 
 \* This is not a list since the \'\*\' is escaped!
@@ -116,5 +119,6 @@ Some more text in this paragraph. <www.somewhere.net> ends this paragraph.
 
 [link]: http://to.somewhere.net/ "This links to somewhere on the net"
 
-[image2]: http://groovy.codehaus.org/images/groovy-logo-medium.png
+[image2]: https://raw.githubusercontent.com/dcurtis/markdown-mark/master/png/32x20-solid.png
+
 

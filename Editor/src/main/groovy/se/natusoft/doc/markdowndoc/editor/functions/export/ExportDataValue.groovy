@@ -1,11 +1,11 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.3.8
+ *         1.3.9
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -32,7 +32,7 @@
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
  *         2014-10-12: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdowndoc.editor.functions.export
 
@@ -59,7 +59,14 @@ public abstract class ExportDataValue {
     }
 
     public void setBackgroundColor(Color bgColor) {
-        this.valueComp.setBackground(bgColor)
+        ensureValueComp().setBackground(bgColor)
+    }
+
+    /**
+     * This must be overridden by subclasses that wants to delay the creation of the valueComp.
+     */
+    protected JComponent ensureValueComp() {
+        return this.valueComp
     }
 
     public abstract String getValue()

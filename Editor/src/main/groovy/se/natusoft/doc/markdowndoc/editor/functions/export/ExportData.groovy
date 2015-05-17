@@ -1,11 +1,11 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.3.8
+ *         1.3.9
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -32,13 +32,14 @@
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
  *         2014-10-12: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdowndoc.editor.functions.export
 
 import groovy.transform.CompileStatic
 
 import java.awt.*
+import java.lang.reflect.Field
 import java.util.List
 
 @CompileStatic
@@ -51,6 +52,26 @@ public class ExportData {
 
     public ExportData(DelayedServiceData localServiceData) {
         this.delayedServicesData = localServiceData
+    }
+
+    /**
+     * Initializes the exportDataValues list with all the fields
+     * for easier dynamic access.
+     */
+    public void loadDataValues() {
+        exportDataValues = new LinkedList<ExportDataValue>()
+
+        this.class.declaredFields.findAll { Field field ->
+            field.type == ExportDataValue.class
+        }.each { Field field ->
+            field.accessible = true
+            try {
+                exportDataValues.add((ExportDataValue)field.get(this))
+            }
+            catch (Exception e) {
+                System.err.println("ERROR: " + e.getMessage())
+            }
+        }
     }
 
     /**

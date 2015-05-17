@@ -1,11 +1,11 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.3.8
+ *         1.3.9
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -32,7 +32,7 @@
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
  *         2013-05-27: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdowndoc.editor.functions
 
@@ -141,26 +141,6 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
         public PDFData(DelayedServiceData delayedServiceData) {
             super(delayedServiceData)
         }
-
-        /**
-         * Initializes the exportDataValues list with all the fields
-         * for easier dynamic access.
-         */
-        private void loadPDFDataValues() {
-            exportDataValues = new LinkedList<ExportDataValue>()
-
-            PDFData.class.declaredFields.findAll { Field field ->
-                field.type == ExportDataValue.class
-            }.each { Field field ->
-                field.accessible = true
-                try {
-                    exportDataValues.add((ExportDataValue)field.get(this))
-                }
-                catch (Exception e) {
-                    System.err.println("ERROR: " + e.getMessage())
-                }
-            }
-        }
     }
 
     //
@@ -174,12 +154,7 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
         super(GENERATED_PDF_FILE)
         Icon pdfIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddpdf.png"))
         this.pdfToolbarButton = new JButton(pdfIcon)
-        this.pdfToolbarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                perform()
-            }
-        })
+        this.pdfToolbarButton.addActionListener({ ActionEvent actionEvent -> perform() } as ActionListener)
         updateTooltipText()
     }
 
@@ -240,7 +215,7 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
             borderPanel.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED))
             this.pdfMetaDataDialog.add(borderPanel, BorderLayout.CENTER)
 
-            this.pdfData.loadPDFDataValues()
+            this.pdfData.loadDataValues()
             this.pdfData.setBackgroundColor(editor.getGUI().getWindowFrame().getBackground())
 
             JPanel dataLabelPanel = new JPanel(new GridLayout(this.pdfData.exportDataValues.size(),1))
@@ -258,21 +233,13 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
 
             JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
             JButton generateButton = new JButton("Generate")
-            generateButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    /*ExportToPDFFunction.this.*/pdfMetaDataDialog.setVisible(false)
-                    generatePDF()
-                }
-            })
+            generateButton.addActionListener({ ActionEvent actionEvent ->
+                this.pdfMetaDataDialog.setVisible(false)
+                generatePDF()
+            } as ActionListener)
             buttonPanel.add(generateButton)
             JButton cancelButton = new JButton("Cancel")
-            cancelButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    /*ExportToPDFFunction.this.*/pdfMetaDataDialog.setVisible(false)
-                }
-            })
+            cancelButton.addActionListener({ ActionEvent actionEvent -> pdfMetaDataDialog.setVisible(false) } as ActionListener)
             buttonPanel.add(cancelButton)
 
             borderPanel.add(buttonPanel, BorderLayout.SOUTH)

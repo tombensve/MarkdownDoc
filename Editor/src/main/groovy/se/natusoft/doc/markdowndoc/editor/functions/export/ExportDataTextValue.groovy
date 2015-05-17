@@ -1,11 +1,11 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.3.8
+ *         1.3.9
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -32,7 +32,7 @@
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
  *         2014-10-12: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdowndoc.editor.functions.export
 
@@ -57,10 +57,10 @@ public class ExportDataTextValue extends ExportDataValue {
     }
 
     public String getValue() {
-        return ((JTextField)valueComp).getText()
+        return ((JTextField)ensureValueComp()).getText()
     }
 
     public void setValue(String value) {
-        ((JTextField)valueComp).setText(value)
+        ((JTextField)ensureValueComp()).setText(value)
     }
 }
