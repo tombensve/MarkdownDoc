@@ -1,38 +1,38 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.3.9
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
  *         2012-11-16: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdown.generator.options
 
@@ -109,7 +109,7 @@ class PDFGeneratorOptions implements Options {
 
     @Option
     @Name("unorderedListItemPrefix")
-    @Description("What item marking to use for unuredered lists. Default is '- '.")
+    @Description("What item marking to use for unordered lists. Default is '- '.")
     @Optional
     String unorderedListItemPrefix = "• "
 
@@ -136,6 +136,12 @@ class PDFGeneratorOptions implements Options {
     @Description("The code color to use in this document in \"R:G:B\" format where each R, G, and B are a number 0 - 255.")
     @Optional
     String codeColor = null
+
+    @Option
+    @Name("generateSectionNumbers")
+    @Description("If true all chapters and sections will be numbered. This was the only option before version 1.4.")
+    @Optional
+    boolean generateSectionNumbers = true
 
     @Option
     @Name("generateTOC")

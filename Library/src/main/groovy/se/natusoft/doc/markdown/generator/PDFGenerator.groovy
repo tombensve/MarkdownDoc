@@ -1,53 +1,61 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.3.9
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
  *         2012-11-16: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdown.generator
 
+import com.itextpdf.text.Anchor
+import com.itextpdf.text.BaseColor
+import com.itextpdf.text.Chapter
+import com.itextpdf.text.Chunk
+import com.itextpdf.text.Element
+import com.itextpdf.text.Font
+import com.itextpdf.text.PageSize
 import com.itextpdf.text.Phrase
-import com.itextpdf.text.Document
+import com.itextpdf.text.Document as PDFDocument
 import com.itextpdf.text.Image as PDFImage
 import com.itextpdf.text.List as PDFList
 import com.itextpdf.text.ListItem as PDFListItem
 import com.itextpdf.text.Paragraph as PDFParagraph
+import com.itextpdf.text.Rectangle
+import com.itextpdf.text.Section
 import com.itextpdf.text.pdf.ColumnText
 import com.itextpdf.text.pdf.PdfContentByte
 import com.itextpdf.text.pdf.PdfPageEventHelper
 import com.itextpdf.text.pdf.PdfWriter
 import com.itextpdf.text.pdf.draw.LineSeparator
-import com.itextpdf.text.*
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.exception.GenerateException
@@ -102,27 +110,34 @@ class PDFGenerator implements Generator {
     // Constants
     //
 
-    private static final Font FONT = new Font(Font.FontFamily.HELVETICA, 10)
-    private static final Font FONT_BLOCKQUOTE = new Font(Font.FontFamily.HELVETICA, 10, Font.ITALIC, BaseColor.GRAY)
-    private static final Font FONT_H1 = new Font(Font.FontFamily.HELVETICA, 20, Font.BOLD)
-    private static final Font FONT_H2 = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD)
-    private static final Font FONT_H3 = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD)
-    private static final Font FONT_H4 = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD)
-    private static final Font FONT_H5 = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)
-    private static final Font FONT_H6 = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD)
-    private static final Font FONT_EMPHASIS = new Font(Font.FontFamily.HELVETICA, 10, Font.ITALIC)
-    private static final Font FONT_STRONG = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD)
-    private static final Font FONT_CODE = new Font(Font.FontFamily.COURIER, 9, Font.NORMAL, BaseColor.DARK_GRAY)
-    private static final Font FONT_ANCHOR = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.GRAY)
-    private static final Font FONT_LIST_ITEM = new Font(Font.FontFamily.HELVETICA, 10)
-    private static final Font FONT_FOOTER = new Font(Font.FontFamily.HELVETICA, 8)
-    private static final Font FONT_TOC = new Font(Font.FontFamily.HELVETICA, 9)
-    private static final Font FONT_TOC_H1 = new Font(Font.FontFamily.HELVETICA, 9, Font.BOLD)
-
     private static final Chunk LIST_NEWLINE = new Chunk("\n", new Font(Font.FontFamily.HELVETICA, 4))
 
     private static final LineSeparator H2_UNDERLINE = new LineSeparator(0.01f, 100f, BaseColor.GRAY, 0, 12)
     private static final LineSeparator HORIZONTAL_RULE = new LineSeparator(0.01f, 100f, BaseColor.GRAY, 5, 16)
+
+    //
+    // Font Styling
+    //
+
+    private static class FontStyles {
+        Font FONT = new Font(Font.FontFamily.HELVETICA, 10)
+        Font FONT_BLOCKQUOTE = new Font(Font.FontFamily.HELVETICA, 10, Font.ITALIC, BaseColor.GRAY)
+        Font FONT_H1 = new Font(Font.FontFamily.HELVETICA, 20, Font.BOLD)
+        Font FONT_H2 = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD)
+        Font FONT_H3 = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD)
+        Font FONT_H4 = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD)
+        Font FONT_H5 = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)
+        Font FONT_H6 = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD)
+        Font FONT_EMPHASIS = new Font(Font.FontFamily.HELVETICA, 10, Font.ITALIC)
+        Font FONT_STRONG = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD)
+        Font FONT_CODE = new Font(Font.FontFamily.COURIER, 9, Font.NORMAL, BaseColor.DARK_GRAY)
+        Font FONT_ANCHOR = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.GRAY)
+        Font FONT_LIST_ITEM = new Font(Font.FontFamily.HELVETICA, 10)
+        Font FONT_FOOTER = new Font(Font.FontFamily.HELVETICA, 8)
+        Font FONT_TOC = new Font(Font.FontFamily.HELVETICA, 9)
+        Font FONT_TOC_H1 = new Font(Font.FontFamily.HELVETICA, 9, Font.BOLD)
+
+    }
 
     //
     // Private Methods
@@ -133,6 +148,8 @@ class PDFGenerator implements Generator {
     // put it here instead.
 
     private PDFGeneratorOptions options = null
+
+    private FontStyles fontStyles = new FontStyles()
 
     // This will actually be added to the real Document later on, twice: once for the fake render and once for the real.
     private JList<Section> documentItems = null
@@ -196,7 +213,7 @@ class PDFGenerator implements Generator {
         this.currentH4 = null
         this.currentH5 = null
         this.chapterNumber = 1
-        this.currentParagraphFont = FONT
+        this.currentParagraphFont = this.fontStyles.FONT
         this.toc = new JLinkedList<TOC>()
         this.pageOffset = 0
     }
@@ -298,13 +315,13 @@ class PDFGenerator implements Generator {
 
         // Please note that itext is not really compatible with groovys property access!
 
-        Document document = null
+        PDFDocument document = null
         PdfWriter pdfWriter = null
 
         if (this.options.generateTOC) {
             // Do a fake render to generate TOC.
             this.updateTOC = true
-            document = new Document()
+            document = new PDFDocument()
             document.setPageSize(pageSize)
 
             pdfWriter = PdfWriter.getInstance(document, new NullOutputStream())
@@ -328,7 +345,7 @@ class PDFGenerator implements Generator {
 
         // Render for real
         this.updateTOC = false // Don't generate a new TOC on the second pass.
-        document = new Document()
+        document = new PDFDocument()
         document.setPageSize(pageSize)
 
         pdfWriter = PdfWriter.getInstance(document, resultStream)
@@ -388,7 +405,7 @@ class PDFGenerator implements Generator {
      * @param pdfWriter The PdfWriter to write table of content on.
      * @param document The PDF documentItems being written.
      */
-    private void writeTOC(PdfWriter pdfWriter, Document document) {
+    private void writeTOC(PdfWriter pdfWriter, PDFDocument document) {
         PdfContentByte cb = pdfWriter.getDirectContent()
 
         ++this.pageOffset
@@ -399,17 +416,17 @@ class PDFGenerator implements Generator {
         float y = document.top() - document.topMargin()
 
         writeText(cb, Element.ALIGN_CENTER, "Table of Contents", (float)(((document.right() - document.left()) / 2) + document.leftMargin()),
-                y, FONT_TOC)
+                y, this.fontStyles.FONT_TOC)
 
         y = y - 28
         for (TOC tocEntry : this.toc) {
             if (tocEntry.sectionTitle.split(" ")[0].contains(".")) {
-                writeText(cb, Element.ALIGN_LEFT, tocEntry.sectionTitle, (float)(document.left() + document.leftMargin()), y, FONT_TOC)
+                writeText(cb, Element.ALIGN_LEFT, tocEntry.sectionTitle, (float)(document.left() + document.leftMargin()), y, this.fontStyles.FONT_TOC)
             }
             else {
-                writeText(cb, Element.ALIGN_LEFT, tocEntry.sectionTitle, (float)(document.left() + document.leftMargin()), y, FONT_TOC_H1)
+                writeText(cb, Element.ALIGN_LEFT, tocEntry.sectionTitle, (float)(document.left() + document.leftMargin()), y, this.fontStyles.FONT_TOC_H1)
             }
-            writeText(cb, Element.ALIGN_RIGHT, "" + tocEntry.pageNumber, (float)(document.right() - document.rightMargin()), y, FONT_TOC)
+            writeText(cb, Element.ALIGN_RIGHT, "" + tocEntry.pageNumber, (float)(document.right() - document.rightMargin()), y, this.fontStyles.FONT_TOC)
             y = y - 14
             if ( y < document.bottom()) {
                 document.newPage()
@@ -442,7 +459,7 @@ class PDFGenerator implements Generator {
      * @param pdfWriter The PdfWriter to write the title page on.
      * @param document The PDF documentItems being written.
      */
-    private void writeTitlePage(PdfWriter pdfWriter, Document document) {
+    private void writeTitlePage(PdfWriter pdfWriter, PDFDocument document) {
         PdfContentByte cb = pdfWriter.getDirectContent()
 
         ++this.pageOffset
@@ -515,6 +532,19 @@ class PDFGenerator implements Generator {
     }
 
     /**
+     * Handle section options.
+     *
+     * @param section The section to handle.
+     */
+    private void handleSectionOpts(Section section) {
+        section.numberStyle = Section.NUMBERSTYLE_DOTTED_WITHOUT_FINAL_DOT
+
+        if (!this.options.generateSectionNumbers) {
+            section.numberDepth = 0
+        }
+    }
+
+    /**
      * Writes a header text (H1 - H6).
      *
      * @param header The header model to write.
@@ -529,10 +559,13 @@ class PDFGenerator implements Generator {
                     this.documentItems.add(this.currentChapter)
                 }
                 PDFParagraph title = new PDFParagraph()
-                title.add(createHeaderChunk(header.text, FONT_H1))
+                title.add(createHeaderChunk(header.text, this.fontStyles.FONT_H1))
                 Chapter chapter = new Chapter(title, this.chapterNumber ++)
-                chapter.setNumberStyle(Section.NUMBERSTYLE_DOTTED_WITHOUT_FINAL_DOT)
+
+                handleSectionOpts(chapter)
+
                 chapter.add(Chunk.NEWLINE)
+
                 this.currentChapter = chapter
                 this.currentSection = chapter
                 this.currentH2 = chapter
@@ -543,7 +576,7 @@ class PDFGenerator implements Generator {
 
             case { it == Header.Level.H2 } :
                 PDFParagraph title = new PDFParagraph()
-                title.add(createHeaderChunk(header.text, FONT_H2))
+                title.add(createHeaderChunk(header.text, this.fontStyles.FONT_H2))
                 title.add(Chunk.NEWLINE);
                 title.add(H2_UNDERLINE)
                 title.add(Chunk.NEWLINE)
@@ -560,7 +593,9 @@ class PDFGenerator implements Generator {
                     section = new Chapter(title, this.chapterNumber++)
                     this.currentChapter = (Chapter)section
                 }
-                section.setNumberStyle(Section.NUMBERSTYLE_DOTTED_WITHOUT_FINAL_DOT)
+
+                handleSectionOpts(section)
+
                 this.currentSection = section
                 this.currentH2 = section
                 this.currentH3 = section
@@ -570,7 +605,7 @@ class PDFGenerator implements Generator {
 
             case { it == Header.Level.H3 } :
                 PDFParagraph title = new PDFParagraph()
-                title.add(createHeaderChunk(header.text, FONT_H3))
+                title.add(createHeaderChunk(header.text, this.fontStyles.FONT_H3))
                 Section section = null
                 if (this.currentH2 != null) {
                     section = this.currentH2.addSection(title, 3)
@@ -583,7 +618,9 @@ class PDFGenerator implements Generator {
                     section = new Chapter(title, this.chapterNumber++)
                     this.currentChapter = (Chapter)section
                 }
-                section.setNumberStyle(Section.NUMBERSTYLE_DOTTED_WITHOUT_FINAL_DOT)
+
+                handleSectionOpts(section)
+
                 this.currentSection = section
                 this.currentH3 = section
                 this.currentH4 = section
@@ -592,7 +629,7 @@ class PDFGenerator implements Generator {
 
             case { it == Header.Level.H4 } :
                 PDFParagraph title = new PDFParagraph()
-                title.add(createHeaderChunk(header.text, FONT_H4))
+                title.add(createHeaderChunk(header.text, this.fontStyles.FONT_H4))
                 Section section = null
                 if (this.currentH3 != null) {
                     section = this.currentH3.addSection(title, 4)
@@ -605,7 +642,9 @@ class PDFGenerator implements Generator {
                     section = new Chapter(title, this.chapterNumber++)
                     this.currentChapter = (Chapter)section
                 }
-                section.setNumberStyle(Section.NUMBERSTYLE_DOTTED_WITHOUT_FINAL_DOT)
+
+                handleSectionOpts(section)
+
                 this.currentSection = section
                 this.currentH4 = section
                 this.currentH5 = section
@@ -613,7 +652,7 @@ class PDFGenerator implements Generator {
 
             case { it == Header.Level.H5 } :
                 PDFParagraph title = new PDFParagraph()
-                title.add(createHeaderChunk(header.text, FONT_H5))
+                title.add(createHeaderChunk(header.text, this.fontStyles.FONT_H5))
                 Section section = null
                 if (this.currentH4 != null) {
                     section = this.currentH4.addSection(title, 5)
@@ -626,14 +665,16 @@ class PDFGenerator implements Generator {
                     section = new Chapter(title, this.chapterNumber++)
                     this.currentChapter = (Chapter)section
                 }
-                section.setNumberStyle(Section.NUMBERSTYLE_DOTTED_WITHOUT_FINAL_DOT)
+
+                handleSectionOpts(section)
+
                 this.currentSection = section
                 this.currentH5 = section
                 break
 
             case { it == Header.Level.H6 } :
                 PDFParagraph title = new PDFParagraph()
-                title.add(createHeaderChunk(header.text, FONT_H6))
+                title.add(createHeaderChunk(header.text, this.fontStyles.FONT_H6))
                 Section section = null
                 if (this.currentH5 != null) {
                     section = this.currentH5.addSection(title, 6)
@@ -646,7 +687,9 @@ class PDFGenerator implements Generator {
                     section = new Chapter(title, this.chapterNumber++)
                     this.currentChapter = (Chapter)section
                 }
-                section.setNumberStyle(Section.NUMBERSTYLE_DOTTED_WITHOUT_FINAL_DOT)
+
+                handleSectionOpts(section)
+
                 this.currentSection = section
                 break
         }
@@ -689,7 +732,7 @@ class PDFGenerator implements Generator {
     private void writeBlockQuote(BlockQuote blockQuote) {
         PDFParagraph pdfParagraph = new PDFParagraph()
         pdfParagraph.setIndentationLeft(20.0f)
-        Font bqFont = new Font(FONT_BLOCKQUOTE)
+        Font bqFont = new Font(this.fontStyles.FONT_BLOCKQUOTE)
         if (this.options.blockQuoteColor != null) {
             bqFont.setColor(new PDFColor(this.options.blockQuoteColor))
         }
@@ -708,7 +751,7 @@ class PDFGenerator implements Generator {
         PDFParagraph pdfParagraph = new PDFParagraph()
         pdfParagraph.setKeepTogether(true)
 
-        Font codeFont = new Font(FONT_CODE)
+        Font codeFont = new Font(this.fontStyles.FONT_CODE)
         if (this.options.codeColor != null) {
             codeFont.setColor(new PDFColor(this.options.codeColor))
         }
@@ -797,7 +840,7 @@ class PDFGenerator implements Generator {
                         listItem.add(LIST_NEWLINE)
                     }
                     first = false
-                    writeParagraph(listItem, (Paragraph)pg, FONT_LIST_ITEM)
+                    writeParagraph(listItem, (Paragraph)pg, this.fontStyles.FONT_LIST_ITEM)
                 }
                 pdfList.add(listItem)
             }
@@ -826,7 +869,7 @@ class PDFGenerator implements Generator {
         if (this.options.firstLineParagraphIndent) {
             pdfParagraph.setFirstLineIndent(10.0f)
         }
-        writeParagraph(pdfParagraph, paragraph, FONT)
+        writeParagraph(pdfParagraph, paragraph, this.fontStyles.FONT)
 
         getOrCreateCurrentSection().add(pdfParagraph)
     }
@@ -896,7 +939,7 @@ class PDFGenerator implements Generator {
      * @param pdfParagraph The iText paragraph model to add to.
      */
     private void writeCode(Code code, PDFParagraph pdfParagraph) {
-        Chunk chunk = new Chunk(code.text, FONT_CODE)
+        Chunk chunk = new Chunk(code.text, this.fontStyles.FONT_CODE)
         chunk.setLineHeight(8)
         chunk.setCharacterSpacing(1.0f)
         pdfParagraph.add(chunk)
@@ -909,7 +952,7 @@ class PDFGenerator implements Generator {
      * @param pdfParagraph The iText paragraph model to add to.
      */
     private void writeEmphasis(Emphasis emphasis, PDFParagraph pdfParagraph) {
-        pdfParagraph.add(new Chunk(textReplace(emphasis.text), FONT_EMPHASIS))
+        pdfParagraph.add(new Chunk(textReplace(emphasis.text), this.fontStyles.FONT_EMPHASIS))
     }
 
     /**
@@ -919,7 +962,7 @@ class PDFGenerator implements Generator {
      * @param pdfParagraph The iText paragraph model to add to.
      */
     private void writeStrong(Strong strong, PDFParagraph pdfParagraph) {
-        pdfParagraph.add(new Chunk(textReplace(strong.text), FONT_STRONG))
+        pdfParagraph.add(new Chunk(textReplace(strong.text), this.fontStyles.FONT_STRONG))
     }
 
     /**
@@ -1025,7 +1068,7 @@ class PDFGenerator implements Generator {
             pdfParagraph.add(Chunk.NEWLINE)
         }
         else {
-            pdfParagraph.add(new Chunk("[" + image.text + "]", FONT))
+            pdfParagraph.add(new Chunk("[" + image.text + "]", this.fontStyles.FONT))
         }
     }
 
@@ -1037,10 +1080,10 @@ class PDFGenerator implements Generator {
      */
     private void writeLink(Link link, PDFParagraph pdfParagraph) {
         if (this.options.hideLinks) {
-            writePlainText(link, pdfParagraph, FONT)
+            writePlainText(link, pdfParagraph, this.fontStyles.FONT)
         }
         else {
-            Anchor anchor = new Anchor(link.text, FONT_ANCHOR)
+            Anchor anchor = new Anchor(link.text, this.fontStyles.FONT_ANCHOR)
             anchor.setReference(link.url)
             pdfParagraph.add(anchor)
         }
@@ -1067,7 +1110,7 @@ class PDFGenerator implements Generator {
     private class PageEventHandler extends PdfPageEventHelper {
 
         @Override
-        public void onEndPage(PdfWriter writer, Document document) {
+        public void onEndPage(PdfWriter writer, PDFDocument document) {
             if (document.pageNumber > /*PDFGenerator.this.*/pageOffset) {
                 PdfContentByte cb = writer.getDirectContent()
 
@@ -1079,7 +1122,7 @@ class PDFGenerator implements Generator {
                 }
                 int dotIx = fileName.lastIndexOf('.')
                 fileName = fileName.substring(0, dotIx)
-                Chunk dfChunk = new Chunk(fileName, FONT_FOOTER)
+                Chunk dfChunk = new Chunk(fileName, PDFGenerator.this.fontStyles.FONT_FOOTER)
                 Phrase documentFile = new Phrase(dfChunk)
                 ColumnText.showTextAligned(
                         cb,
@@ -1091,7 +1134,7 @@ class PDFGenerator implements Generator {
                 )
 
                 // Write the page number to the right as a page footer.
-                Chunk pageChunk = new Chunk("Page " + (document.getPageNumber() - /*PDFGenerator.this.*/pageOffset), FONT_FOOTER)
+                Chunk pageChunk = new Chunk("Page " + (document.getPageNumber() - /*PDFGenerator.this.*/pageOffset), PDFGenerator.this.fontStyles.FONT_FOOTER)
                 Phrase pageNo = new Phrase(pageChunk)
                 ColumnText.showTextAligned(
                         cb,
@@ -1105,14 +1148,14 @@ class PDFGenerator implements Generator {
         }
 
         @Override
-        public void onChapter(PdfWriter writer, Document document, float paragraphPosition, PDFParagraph title) {
+        public void onChapter(PdfWriter writer, PDFDocument document, float paragraphPosition, PDFParagraph title) {
             if (/*PDFGenerator.this.*/updateTOC && title != null) {
                 /*PDFGenerator.this.*/toc.add(new TOC(sectionTitle: title.getContent().split("\n")[0], pageNumber: document.getPageNumber()))
             }
         }
 
         @Override
-        public void onSection(PdfWriter writer, Document document, float paragraphPosition, int depth, PDFParagraph title) {
+        public void onSection(PdfWriter writer, PDFDocument document, float paragraphPosition, int depth, PDFParagraph title) {
             if (/*PDFGenerator.this.*/updateTOC && title != null) {
                 /*PDFGenerator.this.*/toc.add(new TOC(sectionTitle: title.getContent().split("\n")[0], pageNumber: document.getPageNumber()))
             }

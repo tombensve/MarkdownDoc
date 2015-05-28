@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.3.9
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -134,6 +134,7 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
         private ExportDataValue version = new ExportDataTextValue("Version:")
         private ExportDataValue copyrightYear = new ExportDataTextValue("Copyright year:")
         private ExportDataValue copyrightBy = new ExportDataTextValue("Copyright by:")
+        private ExportDataValue generateSectionNumbers = new ExportDataSelectValue("Generate section numbers:")
         private ExportDataValue generateTitlePage = new ExportDataSelectValue("Generate title page:")
         private ExportDataValue generateTOC = new ExportDataSelectValue("Generate TOC:")
         private ExportDataValue openResult = new ExportDataSelectValue("Open result:")
@@ -288,6 +289,7 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
         pdfOpts.setCopyright("Copyright © " + this.pdfData.copyrightYear.getValue() + " by " +
             this.pdfData.copyrightBy.getValue())
         pdfOpts.setPageSize(this.pdfData.pageSize.getValue())
+        pdfOpts.setGenerateSectionNumbers(Boolean.valueOf(this.pdfData.generateSectionNumbers.getValue()))
         pdfOpts.setGenerateTitlePage(Boolean.valueOf(this.pdfData.generateTitlePage.getValue()))
         pdfOpts.setGenerateTOC(Boolean.valueOf(this.pdfData.generateTOC.getValue()))
 
