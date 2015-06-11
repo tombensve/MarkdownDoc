@@ -115,10 +115,10 @@ Some more text in this paragraph. <www.somewhere.net> ends this paragraph.
 
 \* This is not a list since the \'\*\' is escaped!
 
-![Another Image](http://www.natusoft.se/Natusoft/Startsida_files/Skarmavbild%202009-12-12%20kl.%2017.40.40.jpg) ![image2]
+![imageref]
 
 [link]: http://to.somewhere.net/ "This links to somewhere on the net"
 
-[image2]: https://raw.githubusercontent.com/dcurtis/markdown-mark/master/png/32x20-solid.png
+[imageref]: https://raw.githubusercontent.com/dcurtis/markdown-mark/master/png/32x20-solid.png
 
 

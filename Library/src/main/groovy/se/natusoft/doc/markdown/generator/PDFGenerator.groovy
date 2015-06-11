@@ -120,7 +120,7 @@ class PDFGenerator implements Generator {
     //
 
     private static class FontStyles {
-        Font FONT = new Font(Font.FontFamily.HELVETICA, 10)
+        Font FONT_DEFAULT = new Font(Font.FontFamily.HELVETICA, 10)
         Font FONT_BLOCKQUOTE = new Font(Font.FontFamily.HELVETICA, 10, Font.ITALIC, BaseColor.GRAY)
         Font FONT_H1 = new Font(Font.FontFamily.HELVETICA, 20, Font.BOLD)
         Font FONT_H2 = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD)
@@ -140,7 +140,7 @@ class PDFGenerator implements Generator {
     }
 
     //
-    // Private Methods
+    // Private Members
     //
 
     // Note: Since we need to put some variables here due to event handler access there is
@@ -174,9 +174,6 @@ class PDFGenerator implements Generator {
 
     /** This is to exclude the title and tables of content pages from the page numbering. */
     private int pageOffset
-
-    /** This is only true for the fake render that is only done to generate the TOC. */
-    private boolean updateTOC = true
 
     /** A root dir to prefix paths with. */
     private File rootDir = null
@@ -213,7 +210,7 @@ class PDFGenerator implements Generator {
         this.currentH4 = null
         this.currentH5 = null
         this.chapterNumber = 1
-        this.currentParagraphFont = this.fontStyles.FONT
+        this.currentParagraphFont = this.fontStyles.FONT_DEFAULT
         this.toc = new JLinkedList<TOC>()
         this.pageOffset = 0
     }
@@ -307,7 +304,6 @@ class PDFGenerator implements Generator {
             this.documentItems.add(this.currentChapter)
         }
 
-
         Rectangle pageSize = new Rectangle(PageSize.getRectangle(this.options.pageSize))
         if (this.options.backgroundColor != null) {
             pageSize.backgroundColor = new PDFColor(this.options.backgroundColor)
@@ -320,14 +316,21 @@ class PDFGenerator implements Generator {
 
         if (this.options.generateTOC) {
             // Do a fake render to generate TOC.
-            this.updateTOC = true
             document = new PDFDocument()
             document.setPageSize(pageSize)
 
             pdfWriter = PdfWriter.getInstance(document, new NullOutputStream())
             pdfWriter.setPdfVersion(PdfWriter.PDF_VERSION_1_7)
             pdfWriter.setFullCompression()
-            pdfWriter.setPageEvent(new PageEventHandler())
+            pdfWriter.setPageEvent(
+                    new PageEventHandler(
+                        resultFile: this.options.resultFile,
+                        pageOffset: this.pageOffset,
+                        updateTOC: true,
+                        toc: this.toc,
+                        fontStyles: this.fontStyles
+                    )
+            )
             document.open()
 
             // Since this.documentItems is just an ArrayList of Sections we have to add them to the real documentItems now.
@@ -344,14 +347,21 @@ class PDFGenerator implements Generator {
         }
 
         // Render for real
-        this.updateTOC = false // Don't generate a new TOC on the second pass.
         document = new PDFDocument()
         document.setPageSize(pageSize)
 
         pdfWriter = PdfWriter.getInstance(document, resultStream)
         pdfWriter.setPdfVersion(PdfWriter.PDF_VERSION_1_7)
         pdfWriter.setFullCompression()
-        pdfWriter.setPageEvent(new PageEventHandler())
+        pdfWriter.setPageEvent(
+                new PageEventHandler(
+                        resultFile: this.options.resultFile,
+                        pageOffset: this.pageOffset,
+                        updateTOC: false,
+                        toc: this.toc,
+                        fontStyles: this.fontStyles
+                )
+        )
 
         if (this.options.title != null)      { document.addTitle(this.options.title)       }
         if (this.options.subject != null)    { document.addSubject(this.options.subject)   }
@@ -869,7 +879,7 @@ class PDFGenerator implements Generator {
         if (this.options.firstLineParagraphIndent) {
             pdfParagraph.setFirstLineIndent(10.0f)
         }
-        writeParagraph(pdfParagraph, paragraph, this.fontStyles.FONT)
+        writeParagraph(pdfParagraph, paragraph, this.fontStyles.FONT_DEFAULT)
 
         getOrCreateCurrentSection().add(pdfParagraph)
     }
@@ -1045,14 +1055,6 @@ class PDFGenerator implements Generator {
         return path
     }
 
-//    public static void main(String[] args) {
-//        PDFGenerator pdfGen = new PDFGenerator()
-//        pdfGen.rootDir = new File("/Users/tommy")
-//        pdfGen.options = new PDFGeneratorOptions()
-//        pdfGen.options.resultFile = "/Users/tommy/test/out.file"
-//        pdfGen.resolveUrl("out.file" , new File("/Users/tommy/Dropbox/Backups/.last-backup"))
-//    }
-
     /**
      * Writes an image within a paragraph.
      *
@@ -1068,7 +1070,7 @@ class PDFGenerator implements Generator {
             pdfParagraph.add(Chunk.NEWLINE)
         }
         else {
-            pdfParagraph.add(new Chunk("[" + image.text + "]", this.fontStyles.FONT))
+            pdfParagraph.add(new Chunk("[" + image.text + "]", this.fontStyles.FONT_DEFAULT))
         }
     }
 
@@ -1080,7 +1082,7 @@ class PDFGenerator implements Generator {
      */
     private void writeLink(Link link, PDFParagraph pdfParagraph) {
         if (this.options.hideLinks) {
-            writePlainText(link, pdfParagraph, this.fontStyles.FONT)
+            writePlainText(link, pdfParagraph, this.fontStyles.FONT_DEFAULT)
         }
         else {
             Anchor anchor = new Anchor(link.text, this.fontStyles.FONT_ANCHOR)
@@ -1107,22 +1109,28 @@ class PDFGenerator implements Generator {
     /**
      * Handles page rendering events to write header and footer and generate a table of contents.
      */
-    private class PageEventHandler extends PdfPageEventHelper {
+    private static class PageEventHandler extends PdfPageEventHelper {
+
+        int pageOffset
+        String resultFile
+        boolean updateTOC
+        JList<TOC> toc
+        FontStyles fontStyles
 
         @Override
         public void onEndPage(PdfWriter writer, PDFDocument document) {
-            if (document.pageNumber > /*PDFGenerator.this.*/pageOffset) {
+            if (document.pageNumber > this.pageOffset) {
                 PdfContentByte cb = writer.getDirectContent()
 
                 // Write the filename centered as page header
-                String fileName = /*PDFGenerator.this.*/options.resultFile
+                String fileName = this.resultFile
                 int fsIx = fileName.lastIndexOf(File.separator)
                 if (fsIx >= 0) {
                     fileName = fileName.substring(fsIx + 1)
                 }
                 int dotIx = fileName.lastIndexOf('.')
                 fileName = fileName.substring(0, dotIx)
-                Chunk dfChunk = new Chunk(fileName, PDFGenerator.this.fontStyles.FONT_FOOTER)
+                Chunk dfChunk = new Chunk(fileName, this.fontStyles.FONT_FOOTER)
                 Phrase documentFile = new Phrase(dfChunk)
                 ColumnText.showTextAligned(
                         cb,
@@ -1134,7 +1142,7 @@ class PDFGenerator implements Generator {
                 )
 
                 // Write the page number to the right as a page footer.
-                Chunk pageChunk = new Chunk("Page " + (document.getPageNumber() - /*PDFGenerator.this.*/pageOffset), PDFGenerator.this.fontStyles.FONT_FOOTER)
+                Chunk pageChunk = new Chunk("Page " + (document.getPageNumber() - this.pageOffset), this.fontStyles.FONT_FOOTER)
                 Phrase pageNo = new Phrase(pageChunk)
                 ColumnText.showTextAligned(
                         cb,
@@ -1149,15 +1157,15 @@ class PDFGenerator implements Generator {
 
         @Override
         public void onChapter(PdfWriter writer, PDFDocument document, float paragraphPosition, PDFParagraph title) {
-            if (/*PDFGenerator.this.*/updateTOC && title != null) {
-                /*PDFGenerator.this.*/toc.add(new TOC(sectionTitle: title.getContent().split("\n")[0], pageNumber: document.getPageNumber()))
+            if (this.updateTOC && title != null) {
+                this.toc.add(new TOC(sectionTitle: title.getContent().split("\n")[0], pageNumber: document.getPageNumber()))
             }
         }
 
         @Override
         public void onSection(PdfWriter writer, PDFDocument document, float paragraphPosition, int depth, PDFParagraph title) {
-            if (/*PDFGenerator.this.*/updateTOC && title != null) {
-                /*PDFGenerator.this.*/toc.add(new TOC(sectionTitle: title.getContent().split("\n")[0], pageNumber: document.getPageNumber()))
+            if (this.updateTOC && title != null) {
+                this.toc.add(new TOC(sectionTitle: title.getContent().split("\n")[0], pageNumber: document.getPageNumber()))
             }
         }
     }
@@ -1166,11 +1174,9 @@ class PDFGenerator implements Generator {
      * Stores a table of content entry.
      */
     private static class TOC {
-
+        // Properties
         String sectionTitle
-
         int pageNumber
-
     }
 
     /**

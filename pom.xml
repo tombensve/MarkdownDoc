@@ -7,7 +7,7 @@
     <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
     <artifactId>markdown-doc</artifactId>
     <packaging>pom</packaging>
-    <version>1.3.9</version>
+    <version>1.4</version>
 
     <modules>
         <module>Docs</module>
@@ -20,7 +20,7 @@
     <name>MarkdownDoc</name>
 
     <description>
-        Parses markdown and generates HTML and PDF.
+        Parses markdown and generates HTML, PDF, and markdown.
     </description>
 
     <url>https://github.com/tombensve/MarkdownDoc</url>
@@ -36,7 +36,7 @@
 
                 mvn -Pset-version generate-sources
         -->
-        <projectVersion>1.3.9</projectVersion>
+        <projectVersion>1.4</projectVersion>
 
         <!--
             These are used in dependencyManagement and pluginManagement below, but here the versions are
@@ -405,6 +405,13 @@
                                 <phase>generate-sources</phase>
                                 <configuration>
                                     <scripts>
+                                        <!--
+                                            Do note that IDE's tend to have a problem with plugin specific configuration
+                                            and red mark it. It would make a ton of more sense if they would just say
+                                            "I don't know what should be here, so I wont make any assumptions about it".
+                                            Instead they go with "I don't know what should be here, so I'll assume it is wrong!".
+                                            I've been told that I have too high expectations on people. Maybe I do.
+                                        -->
                                         <script>
                                             <scriptFile>script:pom_change_version.bsh</scriptFile>
                                             <sourcePath>${basedir}/pom.xml</sourcePath>
