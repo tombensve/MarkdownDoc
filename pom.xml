@@ -43,20 +43,13 @@
             more collected together and I only have to specify them once.
         -->
 
-        <clm.ver>2.1.4</clm.ver>
+        <clm.ver>2.1.5</clm.ver>
         <optmgr.ver>2.0.3</optmgr.ver>
         <fileeditor-maven-support.ver>1.1</fileeditor-maven-support.ver>
         <ftp-maven-plugin.ver>1.0.1</ftp-maven-plugin.ver>
         <itext.ver>5.5.1</itext.ver>
-        <groovy.ver>2.3.6</groovy.ver>
-
-        <!-- ======================================= -->
-
-        <copyrightYear>2012</copyrightYear>
-        <copyrightHolder>Natusoft AB</copyrightHolder>
-        <copyrightHolderWeb>http://www.natusoft.se/</copyrightHolderWeb>
-        <developer1Name>Tommy Svensson</developer1Name>
-        <developer1Email>tommy@natusoft.se</developer1Email>
+        <groovy.ver>2.4.3</groovy.ver> <groovy.artifact>groovy</groovy.artifact>
+        <gmaven-plus.ver>1.5</gmaven-plus.ver>
 
     </properties>
     <licenses>
@@ -67,14 +60,14 @@
         </license>
     </licenses>
     <organization>
-        <name>${copyrightHolder}</name>
-        <url>${copyrightHolderWeb}</url>
+        <name>Natusoft AB</name>
+        <url>http://www.natusoft.se/</url>
     </organization>
-    <inceptionYear>${copyrightYear}</inceptionYear>
+    <inceptionYear>2012</inceptionYear>
     <developers>
         <developer>
-            <name>${developer1Name}</name>
-            <email>${developer1Email}</email>
+            <name>Tommy Svensson</name>
+            <email>tommy@natusoft.se</email>
         </developer>
     </developers>
 
@@ -95,6 +88,12 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-test</artifactId>
+            <version>${groovy.ver}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -113,14 +112,7 @@
 
             <dependency>
                 <groupId>org.codehaus.groovy</groupId>
-                <!--
-                    NOTE at runtime we really only need the smaller groovy artifact, but that is missing the
-                    groovy compiler. Specifying only the 'groovy' artifact here and then specifying the
-                    'groovy-all' artifact in the maven-antrun-plugin however fails. So currently I have
-                    no good solution for only using groovy-all when building and the smaller 'groovy' at
-                    runtime.
-                -->
-                <artifactId>groovy-all</artifactId>
+                <artifactId>${groovy.artifact}</artifactId>
                 <version>${groovy.ver}</version>
                 <classifier>indy</classifier>
             </dependency>
@@ -187,6 +179,12 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
                     <version>1.8</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.gmavenplus</groupId>
+                    <artifactId>gmavenplus-plugin</artifactId>
+                    <version>${gmaven-plus.ver}</version>
                 </plugin>
 
                 <plugin>

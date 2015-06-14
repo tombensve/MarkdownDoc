@@ -34,20 +34,49 @@
  *         2012-11-16: Created!
  *
  */
-package se.natusoft.doc.markdown.generator.pdfgenerator
+package se.natusoft.doc.markdown.generator.styles
 
-import com.itextpdf.text.BaseColor
 import groovy.transform.CompileStatic
+import groovy.transform.TypeChecked
 
 /**
  * This extends BaseColor and parses configured colors.
  */
 @CompileStatic
-class PDFColor extends BaseColor {
+@TypeChecked
+class JSSColor implements JSSStyleValue {
+    //
+    // Constants
+    //
 
-    public PDFColor(String color) {
-        super(getRed(color), getGreen(color), getBlue(color))
+    static final JSSColor BLACK = new JSSColor(color: "0:0:0")
+    static final JSSColor WHITE = new JSSColor(color: "255:255:255")
+
+    //
+    // Properties
+    //
+
+    JSSColor parent = null
+    private int _red = -1
+    private int _green = -1
+    private int _blue = -1
+
+    int getRed() { (this._red == -1 && this.parent != null) ? this.parent.red : this._red }
+    int getGreen() { (this._green == -1 && this.parent != null) ? this.parent.green : this._green }
+    int getBlue() { (this._blue == -1 && this.parent != null) ? this.parent.blue : this._blue }
+
+    void setRed(int red) { this._red = red }
+    void setGreen(int green) { this._green = green }
+    void setBlue(int blue) { this._blue = blue }
+    void setColor(String color) {
+        this._red = getRed(color)
+        this._green = getGreen(color)
+        this._blue = getBlue(color)
     }
+
+    //
+    // Static Methods
+    //
 
     public static final int getRed(String color) {
         String[] rgb = color.split(":")

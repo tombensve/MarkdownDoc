@@ -1,7 +1,8 @@
-package se.natusoft.doc.markdown.generator.pdfgenerator
+package se.natusoft.doc.markdown.generator.pdf
 
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Font
+import se.natusoft.doc.markdown.generator.styles.JSSColor
 
 /**
  * This represents all PDF styles.
@@ -25,9 +26,9 @@ class PDFStyles {
     Font FONT_TOC = new Font(Font.FontFamily.HELVETICA, 9)
     Font FONT_TOC_H1 = new Font(Font.FontFamily.HELVETICA, 9, Font.BOLD)
 
-    PDFColor COLOR_BACKGROUND = new PDFColor("ff:ff:ff")
-    PDFColor COLOR_BLOCKQUOTE = new PDFColor("0:0:0")
-    PDFColor COLOR_CODE = new PDFColor("0:0:0")
+    JSSColor COLOR_BACKGROUND = new JSSColor("ff:ff:ff")
+    JSSColor COLOR_BLOCKQUOTE = new JSSColor("0:0:0")
+    JSSColor COLOR_CODE = new JSSColor("0:0:0")
 
     public static PDFStyles fromStyleFile(String path) throws IOException {
         FileInputStream styleFileStream = new FileInputStream(path)

@@ -73,7 +73,7 @@ public class ConfigColor extends Color {
     }
 
     /**
-     * Returns the red part of the color spec.
+     * Returns the _red part of the color spec.
      *
      * @param colorStr The complete config color spec.
      */

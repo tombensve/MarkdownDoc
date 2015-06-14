@@ -40,9 +40,9 @@ import groovy.transform.CompileStatic
 
 /**
  * This is a config entry holding a color valueComp making it available as
- * separate red, green and blue values that can individually be changed.
+ * separate _red, green and blue values that can individually be changed.
  * <p/>
- * The config valueComp is stored as "red:green:blue".
+ * The config valueComp is stored as "_red:green:blue".
  */
 @CompileStatic
 public class ColorConfigEntry extends ConfigEntry {
@@ -55,7 +55,7 @@ public class ColorConfigEntry extends ConfigEntry {
      *
      * @param key The config key.
      * @param description The description of the config.
-     * @param defaultRed The default red color part.
+     * @param defaultRed The default _red color part.
      * @param defaultGreen The default green color part.
      * @param defaultBlue The default blue color part.
      * @param configGroup The config group this config belongs to.
@@ -69,9 +69,9 @@ public class ColorConfigEntry extends ConfigEntry {
     //
 
     /**
-     * Converts red, green, and blue int values to a config valueComp string.
+     * Converts _red, green, and blue int values to a config valueComp string.
      *
-     * @param red The red color part.
+     * @param red The _red color part.
      * @param green The green color part.
      * @param blue The blue color part.
      */
@@ -89,7 +89,7 @@ public class ColorConfigEntry extends ConfigEntry {
     }
 
     /**
-     * Returns the red color part.
+     * Returns the _red color part.
      */
     public int getRed() {
         return valueToColor(ColorPart.RED)
@@ -110,9 +110,9 @@ public class ColorConfigEntry extends ConfigEntry {
     }
 
     /**
-     * Sets the red color part.
+     * Sets the _red color part.
      *
-     * @param red The red valueComp to set.
+     * @param red The _red valueComp to set.
      */
     public void setRed(int red) {
         setValue(toValue(red, getGreen(), getBlue()))

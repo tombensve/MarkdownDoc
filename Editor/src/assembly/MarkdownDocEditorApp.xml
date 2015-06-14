@@ -20,7 +20,6 @@
                 <exclude>*MANIFEST.MF</exclude>
             </excludes>
         </fileSet>
-
     </fileSets>
 
     <dependencySets>
@@ -30,11 +29,10 @@
                 <exclude>*MANIFEST.MF</exclude>
             </excludes>
             <!--
-                Unfortunately I had to set this to true. I tried to package just the jars and provide
-                a Class-Path: entry, but then the Main class was found but the other dependencies was
-                not. I suspect that each individual jar within the jar must have their own MANIFEST.MF
-                with a Class-Path: for that to work. It just became to messy, so I took the simple
-                approach. /Tommy
+                From: https://docs.oracle.com/javase/tutorial/deployment/jar/downman.html
+
+                Note: The Class-Path header points to classes or JAR files on the local network, not JAR files within the JAR
+                file or classes accessible over Internet protocols.
             -->
             <unpack>true</unpack>
 
