@@ -60,7 +60,7 @@ import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions
-import se.natusoft.doc.markdown.generator.styles.JSSColor
+import se.natusoft.doc.markdown.generator.styles.MSSColor
 import se.natusoft.doc.markdown.io.NullOutputStream
 import se.natusoft.doc.markdown.model.Paragraph
 import se.natusoft.doc.markdown.model.Doc
@@ -306,7 +306,7 @@ class PDFGenerator implements Generator {
 
         Rectangle pageSize = new Rectangle(PageSize.getRectangle(this.options.pageSize))
         if (this.options.backgroundColor != null) {
-            pageSize.backgroundColor = new JSSColor(this.options.backgroundColor)
+            pageSize.backgroundColor = new MSSColor(color: this.options.backgroundColor)
         }
 
         // Please note that itext is not really compatible with groovys property access!
@@ -744,7 +744,7 @@ class PDFGenerator implements Generator {
         pdfParagraph.setIndentationLeft(20.0f)
         Font bqFont = new Font(this.fontStyles.FONT_BLOCKQUOTE)
         if (this.options.blockQuoteColor != null) {
-            bqFont.setColor(new JSSColor(this.options.blockQuoteColor))
+            bqFont.setColor(new MSSColor(this.options.blockQuoteColor))
         }
         writeParagraph(pdfParagraph, blockQuote, bqFont)
         pdfParagraph.add(Chunk.NEWLINE)
@@ -763,7 +763,7 @@ class PDFGenerator implements Generator {
 
         Font codeFont = new Font(this.fontStyles.FONT_CODE)
         if (this.options.codeColor != null) {
-            codeFont.setColor(new JSSColor(this.options.codeColor))
+            codeFont.setColor(new MSSColor(this.options.codeColor))
         }
 
 //        paragraph.add(Chunk.NEWLINE)

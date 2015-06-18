@@ -4,10 +4,13 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 
 /**
- * This represents any style value.
+ * This represents a style like bold, italics, etc.
  */
 @CompileStatic
 @TypeChecked
-interface JSSStyleValue {
-
+enum MSSFontStyle {
+    NORMAL,
+    BOLD,
+    ITALIC,
+    UNDERLINE
 }

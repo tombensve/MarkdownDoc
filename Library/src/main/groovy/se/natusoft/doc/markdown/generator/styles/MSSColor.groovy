@@ -40,38 +40,28 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 
 /**
- * This extends BaseColor and parses configured colors.
+ * This parses configured colors.
  */
 @CompileStatic
 @TypeChecked
-class JSSColor implements JSSStyleValue {
+class MSSColor {
     //
     // Constants
     //
 
-    static final JSSColor BLACK = new JSSColor(color: "0:0:0")
-    static final JSSColor WHITE = new JSSColor(color: "255:255:255")
+    static final MSSColor BLACK = new MSSColor(color: "0:0:0")
+    static final MSSColor WHITE = new MSSColor(color: "255:255:255")
 
     //
     // Properties
     //
 
-    JSSColor parent = null
-    private int _red = -1
-    private int _green = -1
-    private int _blue = -1
+    int red, green, blue
 
-    int getRed() { (this._red == -1 && this.parent != null) ? this.parent.red : this._red }
-    int getGreen() { (this._green == -1 && this.parent != null) ? this.parent.green : this._green }
-    int getBlue() { (this._blue == -1 && this.parent != null) ? this.parent.blue : this._blue }
-
-    void setRed(int red) { this._red = red }
-    void setGreen(int green) { this._green = green }
-    void setBlue(int blue) { this._blue = blue }
     void setColor(String color) {
-        this._red = getRed(color)
-        this._green = getGreen(color)
-        this._blue = getBlue(color)
+        this.red = getRed(color)
+        this.green = getGreen(color)
+        this.blue = getBlue(color)
     }
 
     //
