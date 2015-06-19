@@ -40,15 +40,15 @@ import com.itextpdf.text.Anchor
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Chapter
 import com.itextpdf.text.Chunk
+import com.itextpdf.text.Document as PDFDocument
 import com.itextpdf.text.Element
 import com.itextpdf.text.Font
-import com.itextpdf.text.PageSize
-import com.itextpdf.text.Phrase
-import com.itextpdf.text.Document as PDFDocument
 import com.itextpdf.text.Image as PDFImage
 import com.itextpdf.text.List as PDFList
 import com.itextpdf.text.ListItem as PDFListItem
+import com.itextpdf.text.PageSize
 import com.itextpdf.text.Paragraph as PDFParagraph
+import com.itextpdf.text.Phrase
 import com.itextpdf.text.Rectangle
 import com.itextpdf.text.Section
 import com.itextpdf.text.pdf.ColumnText
@@ -56,39 +56,36 @@ import com.itextpdf.text.pdf.PdfContentByte
 import com.itextpdf.text.pdf.PdfPageEventHelper
 import com.itextpdf.text.pdf.PdfWriter
 import com.itextpdf.text.pdf.draw.LineSeparator
+import groovy.transform.CompileStatic
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions
+import se.natusoft.doc.markdown.generator.pdf.PDFColor
 import se.natusoft.doc.markdown.generator.styles.MSSColor
 import se.natusoft.doc.markdown.io.NullOutputStream
-import se.natusoft.doc.markdown.model.Paragraph
-import se.natusoft.doc.markdown.model.Doc
-import se.natusoft.doc.markdown.model.DocItem
-import se.natusoft.doc.markdown.model.DocFormat
-import se.natusoft.doc.markdown.model.Comment
-import se.natusoft.doc.markdown.model.Header
+import se.natusoft.doc.markdown.model.AutoLink
 import se.natusoft.doc.markdown.model.BlockQuote
-import se.natusoft.doc.markdown.model.CodeBlock
 import se.natusoft.doc.markdown.model.Code
+import se.natusoft.doc.markdown.model.CodeBlock
+import se.natusoft.doc.markdown.model.Comment
+import se.natusoft.doc.markdown.model.Doc
+import se.natusoft.doc.markdown.model.DocFormat
+import se.natusoft.doc.markdown.model.DocItem
+import se.natusoft.doc.markdown.model.Emphasis
+import se.natusoft.doc.markdown.model.Header
 import se.natusoft.doc.markdown.model.HorizontalRule
-import se.natusoft.doc.markdown.model.PlainText
+import se.natusoft.doc.markdown.model.Image
 import se.natusoft.doc.markdown.model.Link
 import se.natusoft.doc.markdown.model.List
 import se.natusoft.doc.markdown.model.ListItem
-import se.natusoft.doc.markdown.model.Image
+import se.natusoft.doc.markdown.model.Paragraph
+import se.natusoft.doc.markdown.model.PlainText
 import se.natusoft.doc.markdown.model.Strong
-import se.natusoft.doc.markdown.model.Emphasis
-import se.natusoft.doc.markdown.model.AutoLink
-
-import groovy.transform.CompileStatic
 
 import java.util.ArrayList as JArrayList
 import java.util.LinkedList as JLinkedList
 import java.util.List as JList
-
-// BE WARNED: This is Groovy! DO NOT LET YOUR IDE AUTOMATICALLY RESOLVE THE IMPORTS!!!!
-// IF YOU DO YOU ARE GUARANTEED TO BE SCREWED!!!!
 
 // I rename some com.itextpdf.text classes due to name conflict.
 // Yeah ... should probably continue renaming for consistency ... some day ...
@@ -306,7 +303,7 @@ class PDFGenerator implements Generator {
 
         Rectangle pageSize = new Rectangle(PageSize.getRectangle(this.options.pageSize))
         if (this.options.backgroundColor != null) {
-            pageSize.backgroundColor = new MSSColor(color: this.options.backgroundColor)
+            pageSize.backgroundColor = new PDFColor(new MSSColor(color: this.options.backgroundColor))
         }
 
         // Please note that itext is not really compatible with groovys property access!
@@ -744,7 +741,7 @@ class PDFGenerator implements Generator {
         pdfParagraph.setIndentationLeft(20.0f)
         Font bqFont = new Font(this.fontStyles.FONT_BLOCKQUOTE)
         if (this.options.blockQuoteColor != null) {
-            bqFont.setColor(new MSSColor(this.options.blockQuoteColor))
+            bqFont.setColor(new PDFColor(new MSSColor(color:  this.options.blockQuoteColor)))
         }
         writeParagraph(pdfParagraph, blockQuote, bqFont)
         pdfParagraph.add(Chunk.NEWLINE)
@@ -763,7 +760,7 @@ class PDFGenerator implements Generator {
 
         Font codeFont = new Font(this.fontStyles.FONT_CODE)
         if (this.options.codeColor != null) {
-            codeFont.setColor(new MSSColor(this.options.codeColor))
+            codeFont.setColor(new PDFColor(new MSSColor(color:  this.options.codeColor)))
         }
 
 //        paragraph.add(Chunk.NEWLINE)
@@ -855,8 +852,8 @@ class PDFGenerator implements Generator {
                 pdfList.add(listItem)
             }
             else if (item instanceof List) {
-                PDFList subList = listToPDFList((List)item, this.options)
-                writeList(subList, (List)item, (float)(indent + 10f))
+                PDFList subList = listToPDFList(item as List, this.options)
+                writeList(subList, item as List, (float)(indent + 10f))
                 pdfList.add(subList)
             }
             else {

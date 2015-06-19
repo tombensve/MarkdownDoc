@@ -51,7 +51,9 @@ class MSS {
         emphasis,
         strong,
         code,
-        list_item
+        anchor,
+        list_item,
+        footer
     }
 
     /**
@@ -108,7 +110,7 @@ class MSS {
     // Private Members
     //
 
-    /** We hold the whole JSS files as a top level JSONObject in general. Some values are cached in other form when fetched. */
+    /** We hold the whole MSS files as a top level JSONObject in general. Some values are cached in other form when fetched. */
     private final JSONObject mss
 
     /** A cached instance of the "document" section of the MSS. */
@@ -127,7 +129,7 @@ class MSS {
     private JSONObject _toc = null
 
     /** Holds a cache of resolved color values. */
-    private Map<String, MSSColor> colorMap = null
+    private Map<String, MSSColor> colorMap = new HashMap<>()
 
     //
     // Constructors
@@ -221,7 +223,7 @@ class MSS {
      * <p/>
      * So why not use the null-safe operator in Groovy ? Because I don't just want to return a null back,
      * not providing any clue as to what went wrong! Any nulls here is probably because the user has done
-     * something wrong in the JSS file, and the provided error message is to help the user find where.
+     * something wrong in the MSS file, and the provided error message is to help the user find where.
      *
      * @param object The object to get value from.
      * @param field The name of the field to get.
@@ -239,8 +241,8 @@ class MSS {
     }
 
     /**
-     * Returns a path to a true type font as specified in the JSS file. Do note that if the specified path
-     * returned is relative to something, the JSS file for example it is the responsibility of the user of
+     * Returns a path to a true type font as specified in the MSS file. Do note that if the specified path
+     * returned is relative to something, the MSS file for example it is the responsibility of the user of
      * this call to resolve what it is relative to. This method can never provide a full path!
      *
      * @param name
@@ -267,11 +269,11 @@ class MSS {
     }
 
     /**
-     * Uses the "colors" section of the JSS to translate a color from a name to its numeric values.
+     * Uses the "colors" section of the MSS to translate a color from a name to its numeric values.
      *
      * @param name The name to translate.
      *
-     * @return a JSSColor object.
+     * @return a MSSColor object.
      *
      * @throws MSSException On reference to non defined color.
      */
@@ -284,7 +286,7 @@ class MSS {
             } else {
                 JSONObject jssColors = this.mss.getProperty(MSS_Top.colors.name()) as JSONObject
                 if (jssColors == null) {
-                    throw new MSSException("No color names have been defined in the \"colors\" section of the JSS file! " +
+                    throw new MSSException("No color names have been defined in the \"colors\" section of the MSS file! " +
                             "'${name}' was asked for!")
                 } else {
                     String colorValue = jssColors.getProperty(name)?.toString()
@@ -410,7 +412,7 @@ class MSS {
     }
 
     /**
-     * Returns a JSSColorPair containing foreground and background color to use for the section.
+     * Returns a MSSColorPair containing foreground and background color to use for the section.
      *
      * @param section The front page section to get color pair for.
      */
@@ -474,7 +476,7 @@ class MSS {
     }
 
     /**
-     * Returns a JSSColorPair containing foreground and background color to use for the TOC section.
+     * Returns a MSSColorPair containing foreground and background color to use for the TOC section.
      *
      * @param section The TOC section to use the color pair for.
      */
@@ -653,8 +655,8 @@ class MSS {
      *      },
      *
      *      "toc": {
-     *         "color": 0:0:0",
-     *         "background": 255:255:255",
+     *         "color": "0:0:0",
+     *         "background": "255:255:255",
      *         "family": "HELVETICA",
      *         "size": 10,
      *         "style": "NORMAL",
@@ -717,7 +719,7 @@ class MSS {
     }
 
     /**
-     * Validates the JSS property names, but not the structure. This recurse down sub objects.
+     * Validates the MSS property names, but not the structure. This recurse down sub objects.
      *
      * @param jssPart The JSONObject to validate.
      * @param path The current path (to help provide a better error message).
@@ -726,7 +728,9 @@ class MSS {
     private static void validateMSS(@NotNull final JSONObject jssPart, @NotNull String path) throws IOException {
         jssPart.propertyNames.each { JSONString name ->
             if (!validName(name.toString())) {
-                throw new IOException("Bad JSS field name: '${name}' in path '${path}'!")
+                if (!path.endsWith("divs/") && !path.endsWith("colors/")) {
+                    throw new IOException("Bad MSS field name: '${name}' in path '${path}'!")
+                }
             }
             JSONValue value = jssPart.getProperty(name)
             if (value instanceof JSONObject) {
@@ -746,30 +750,39 @@ class MSS {
         boolean ok = false
 
         if (!ok) {
-            ok = MSS_Top.valueOf(name) != null
+            ok = safe( { MSS_Top.valueOf(name) != null } )
         }
         if (!ok) {
-            ok = MSS_Document.valueOf(name) != null
+            ok = safe( { MSS_Document.valueOf(name) != null } )
         }
         if (!ok) {
-            ok = MSS_Pages.valueOf(name) != null
+            ok = safe( { MSS_Pages.valueOf(name) != null } )
         }
         if (!ok) {
-            ok = MSS_Front_Page.valueOf(name) != null
+            ok = safe( { MSS_Front_Page.valueOf(name) != null } )
         }
         if (!ok) {
-            ok = MSS_TOC.valueOf(name) != null
+            ok = safe( { MSS_TOC.valueOf(name) != null } )
         }
         if (!ok) {
-            ok = MSS_Font.valueOf(name) != null
+            ok = safe( { MSS_Font.valueOf(name) != null } )
         }
         if (!ok) {
-            ok = MSS_Colors.valueOf(name) != null
+            ok = safe( { MSS_Colors.valueOf(name) != null } )
         }
         if (!ok) {
-            ok = MSS_PDF.valueOf(name) != null
+            ok = safe( { MSS_PDF.valueOf(name) != null } )
         }
 
         return ok
+    }
+
+    private static boolean safe(Closure<Boolean> enumCheck) {
+        try {
+            return enumCheck.call()
+        }
+        catch (IllegalArgumentException iae) {}
+
+        return false
     }
 }

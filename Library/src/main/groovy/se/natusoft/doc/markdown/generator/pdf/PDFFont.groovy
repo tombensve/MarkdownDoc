@@ -13,10 +13,10 @@ class PDFFont extends Font {
         super(toFontFamily(mssFont.family), mssFont.size, toStyle(mssFont.style))
     }
 
-    private static final FontFamily toFontFamily(String family) {
-        FontFamily ffam = FontFamily.valueOf(family.toUpperCase())
+    private static final Font.FontFamily toFontFamily(String family) {
+        Font.FontFamily ffam = Font.FontFamily.valueOf(family.toUpperCase())
         if (ffam == null) {
-            ffam = FontFamily.HELVETICA
+            ffam = Font.FontFamily.HELVETICA
         }
 
         return ffam
