@@ -10,7 +10,8 @@
 
    "colors": {
       "white": "255:255:255",
-      "black": "0:0:0"
+      "black": "0:0:0",
+      "grey": "128:128:128"
    },
 
    "document": {
@@ -23,7 +24,7 @@
       "pages": {
          "block_quote": {
              "family": "HELVETICA",
-             "size": 10,
+             "size": 11,
              "style": "Italic",
              "color": "128:128:128",
              "background": "white"
@@ -94,9 +95,13 @@
       },
 
       "divs": {
-         "<divname>": {
-
-         }
+         "testdiv": {
+            "block_quote": {
+               "family": "COURIER",
+               "color": "120:120:120",
+               "background": "10:11:12"
+             }
+          }
       }
    },
 
@@ -108,9 +113,9 @@
       "style": "NORMAL",
 
       "title": {
-          "family": "HELVETICA",
+          "family": "COURIER",
           "size": 25,
-          "style": "NORMAL"
+          "style": "UNDERLINE"
       },
       "subject": {
           "family": "HELVETICA",
@@ -121,18 +126,15 @@
           "family": "HELVETICA",
           "size": 12,
           "style": "NORMAL",
-          "label": "Version: "
+          "label": "Version:"
       },
       "copyright": {
-          "family": "HELVETICA",
-          "size": 12,
-          "style": "NORMAL"
       },
       "author": {
           "family": "HELVETICA",
           "size": 12,
           "style": "NORMAL",
-          "label": "Author: "
+          "label": "Author:"
       }
    },
 
@@ -144,7 +146,7 @@
       "style": "NORMAL",
 
       "h1": {
-          "family": "HELVETICA",
+          "family": "COURIER",
           "size": 9,
           "style": "BOLD"
       },
@@ -169,9 +171,6 @@
           "style": "NORMAL"
       },
       "h6": {
-          "family": "HELVETICA",
-          "size": 9,
-          "style": "NORMAL"
       }
    }
 }

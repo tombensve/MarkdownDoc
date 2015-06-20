@@ -12,6 +12,8 @@ import se.natusoft.json.JSONObject
 import se.natusoft.json.JSONString
 import se.natusoft.json.JSONValue
 
+import java.lang.annotation.Documented
+
 /**
  * Markdown Style Sheet. This can be used for all non HTML generators to allow users
  * provide style data at generation time.
@@ -250,22 +252,27 @@ class MSS {
      * @throws IOException
      */
     @NotNull String getPdfTrueTypeFontPath(@NotNull String name) throws MSSException {
+        String result = null
+
         JSONObject pdf = (JSONObject) this.mss.getProperty(MSS_Top.pdf.name())
-        if (pdf == null) throw new MSSException("No TTF fonts specified under 'pdf' seciton in MSS file!")
+        if (pdf == null) throw new MSSException("No TTF fonts specified under 'pdf' section in MSS file!")
 
         JSONArray ttfArray = (JSONArray) pdf.getProperty(MSS_PDF.ttf.name());
         if (ttfArray == null) throw new MSSException("No TTF fonts specified under 'pdf/ttf' seciton in MSS file!")
 
-        ttfArray.asList.each { JSONValue entry ->
+        ttfArray.asList.each { JSONValue entry -> // Notera att detta är en "closure"!
             if (!(entry instanceof JSONObject)) throw new MSSException("Bad MSS: pdf/ttf does not contain a list of objects!")
 
             JSONObject entryObject = entry as JSONObject
             if (getNullSafe(entryObject, MSS_PDF.family.name(), "Error: TTF entry without 'family' field!").toString() == name) {
-                return getNullSafe(entryObject, MSS_PDF.path.name(), "Error: TTF entry without 'path' field!").toString()
+                result = getNullSafe(entryObject, MSS_PDF.path.name(), "Error: TTF entry without 'path' field!").toString()
+                return // from closure!
             }
         }
 
-        throw new MSSException("Error: Asked for TTF font '${name}' was not defined in MSS!")
+        if (result == null) throw new MSSException("Error: Asked for TTF font '${name}' was not defined in MSS!")
+
+        return result
     }
 
     /**
@@ -333,7 +340,7 @@ class MSS {
         font.updateFamilyIfNotSet(family?.toString())
 
         JSONNumber size = section?.getProperty(MSS_Font.size.name()) as JSONNumber
-        font.updateSizeIfNotSet(size != null ? size.toInt() : (int)-1)
+        font.updateSizeIfNotSet((int)size != null ? size.toInt() : (int)-1)
 
         JSONString style = section?.getProperty(MSS_Font.style.name()) as JSONString
         if (style != null) {
@@ -411,6 +418,20 @@ class MSS {
         return ensureFont(font)
     }
 
+    class ForDocument {
+        @NotNull MSSColorPair getColorPair(@Nullable String divName, @NotNull MSS_Pages section) {
+            return getColorPairForDocument(divName, section)
+        }
+
+        @NotNull MSSFont getFont(@Nullable String divName, @NotNull MSS_Pages section) {
+            return getFontForDocument(divName, section)
+        }
+    }
+
+    private ForDocument forDocument = new ForDocument()
+
+    ForDocument getForDocument() {return this.forDocument}
+
     /**
      * Returns a MSSColorPair containing foreground and background color to use for the section.
      *
@@ -475,6 +496,29 @@ class MSS {
         return verLabel
     }
 
+    class ForFrontPage {
+        @NotNull MSSColorPair getColorPair(@NotNull MSS_Front_Page section) {
+            return getColorPairForFrontPage(section)
+        }
+
+        @NotNull MSSFont getFont(@NotNull MSS_Front_Page section) {
+            return getFontForFrontPage(section)
+        }
+
+        @NotNull String getVersionLabel(@NotNull String _default) {
+            return getVersionLabelForFrontPage(_default)
+        }
+
+        @NotNull String getAuthorLabel(@NotNull String _default) {
+            return getAuthorLabelForFrontPage(_default)
+        }
+    }
+
+    private ForFrontPage forFrontPage = new ForFrontPage()
+
+    ForFrontPage getForFrontPage() {return this.forFrontPage}
+
+
     /**
      * Returns a MSSColorPair containing foreground and background color to use for the TOC section.
      *
@@ -502,6 +546,26 @@ class MSS {
 
         return ensureFont(font)
     }
+
+    class ForTOC {
+        @NotNull MSSColorPair getColorPair(@NotNull MSS_TOC section) {
+            return getColorPairForTOC(section)
+        }
+
+        @NotNull MSSFont getFont(@NotNull MSS_TOC section) {
+            return getFontForTOC(section)
+        }
+    }
+
+    private ForTOC forTOC = new ForTOC()
+
+    ForTOC getForTOC() {return this.forTOC}
+
+
+
+    //
+    // Util
+    //
 
     //
     // Static Methods
@@ -612,8 +676,12 @@ class MSS {
      *         },
      *
      *         "divs": {
-     *            "<divname>": {
-     *               ... (same as pages)
+     *            "testdiv": {
+     *               "block_quote": {
+     *                  "family": "COURIER",
+     *                   "color": "120:120:120",
+     *                   "background": "10:11:12"
+     *               }
      *            }
      *         },
      *      },

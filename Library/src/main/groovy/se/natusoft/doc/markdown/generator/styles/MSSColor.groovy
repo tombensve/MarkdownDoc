@@ -51,6 +51,7 @@ class MSSColor {
 
     static final MSSColor BLACK = new MSSColor(color: "0:0:0")
     static final MSSColor WHITE = new MSSColor(color: "255:255:255")
+    static final MSSColor GREY = new MSSColor(color: "128:128:128")
 
     //
     // Properties
@@ -153,5 +154,22 @@ class MSSColor {
         }
 
         return value
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MSSColor)) return false
+        MSSColor other = obj as MSSColor
+        return this.red == other.red && this.blue == other.blue && this.green == other.green
+    }
+
+    @Override
+    public int hashCode() {
+        Objects.hash(this.red, this.green, this.blue)
+    }
+
+    @Override
+    public String toString() {
+        return "${this.red}:${this.green}:${this.blue}"
     }
 }

@@ -42,4 +42,26 @@ class MSSFont {
     static MSSFont createDefaultFont() {
         return new MSSFont(family: "HELVETICA", size: 10, style: MSSFontStyle.NORMAL)
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MSSFont)) return false
+        MSSFont other = obj as MSSFont
+        return this.family == other.family && this.size == other.size && this.style == other.style
+    }
+
+    @Override
+    public int hashCode() {
+        Objects.hash(this.family, this.size, this.style)
+    }
+
+    @Override
+    public String toString() {
+        return "{\n" +
+                "family: \"${this.family}\",\n" +
+                "size: ${this.size},\n" +
+                "style: \"${this.style.name()}\"\n" +
+                "}"
+    }
+
 }
