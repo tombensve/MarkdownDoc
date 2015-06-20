@@ -60,6 +60,7 @@ class MSSColor {
     int red, green, blue
 
     void setColor(String color) {
+        if (color[0] == "#") color = color[1..6]
         this.red = getRed(color)
         this.green = getGreen(color)
         this.blue = getBlue(color)
@@ -70,24 +71,40 @@ class MSSColor {
     //
 
     public static final int getRed(String color) {
-        String[] rgb = color.split(":")
-        return Integer.valueOf(handleHex(rgb[0]))
+        if (color.contains(':')) {
+            String[] rgb = color.split(":")
+            return Integer.valueOf(handleHex(rgb[0]))
+        }
+        else {
+            return Integer.valueOf(handleHex(color[0..1]))
+        }
     }
 
     public static final int getGreen(String color) {
-        String[] rgb = color.split(":")
-        return Integer.valueOf(handleHex(rgb[1]))
+        if (color.contains(':')) {
+            String[] rgb = color.split(":")
+            return Integer.valueOf(handleHex(rgb[1]))
+        }
+        else {
+            return Integer.valueOf(handleHex(color[2..3]))
+        }
     }
 
     public static final int getBlue(String color) {
-        String[] rgb = color.split(":")
-        return Integer.valueOf(handleHex(rgb[2]))
+        if (color.contains(':')) {
+            String[] rgb = color.split(":")
+            return Integer.valueOf(handleHex(rgb[2]))
+        }
+        else {
+            return Integer.valueOf(handleHex(color[4..5]))
+        }
     }
 
     private static String handleHex(String color) {
-        if (color.trim().length() == 2 && color.matches("[a-f,A-F,0-9][a-f,A-F,0-9]")) {
-            char d1 = color.trim().charAt(0)
-            char d2 = color.trim().charAt(1)
+        color = color.trim().toLowerCase()
+        if (color.length() == 2 && color.matches("[a-f,0-9][a-f,0-9]")) {
+            char d1 = color.charAt(0)
+            char d2 = color.charAt(1)
             int value = (hexValue(d1) * 16) + hexValue(d2)
             color = "" + value
         }
@@ -96,7 +113,7 @@ class MSSColor {
     }
 
     private static int hexValue(char c) {
-        int value
+        int value = 0
         switch (c) {
             case '0':
                 value = 0
@@ -128,27 +145,21 @@ class MSSColor {
             case '9':
                 value = 9
                 break
-            case 'A':
             case 'a':
                 value = 10
                 break
-            case 'B':
             case 'b':
                 value = 11
                 break
-            case 'C':
             case 'c':
                 value = 12
                 break
-            case 'D':
             case 'd':
                 value = 13
                 break
-            case 'E':
             case 'e':
                 value = 14
                 break
-            case 'F':
             case 'f':
                 value = 15
         }

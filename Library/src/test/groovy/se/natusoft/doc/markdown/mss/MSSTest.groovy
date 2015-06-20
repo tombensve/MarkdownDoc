@@ -6,7 +6,24 @@ import se.natusoft.doc.markdown.generator.styles.MSSFontStyle
 
 class MSSTest extends GroovyTestCase {
 
-    void testMSS1() throws Exception {
+    void testMSSColor() throws Exception {
+        MSSColor c1 = new MSSColor(color: "127:128:129")
+        assert c1.red == 127
+        assert c1.green == 128
+        assert c1.blue == 129
+
+        MSSColor c2 = new MSSColor(color: "FAEBD7")
+        assert c2.red == 0xfa
+        assert c2.green == 0xeb
+        assert c2.blue == 0xd7
+
+        MSSColor c3 = new MSSColor(color: "#faebd7;")
+        assert c3.red == 0xfa
+        assert c3.green == 0xeb
+        assert c3.blue == 0xd7
+    }
+
+    void testMSS() throws Exception {
         File testFile = new File("src/test/resources/test.mss") // Maven
         if (!testFile.exists()) {
             testFile = new File("Library/src/test/resources/test.mss") // IntelliJ
