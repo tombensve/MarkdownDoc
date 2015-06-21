@@ -119,23 +119,32 @@ class PDFGeneratorOptions implements Options {
     @Optional
     boolean firstLineParagraphIndent = false
 
+    @Deprecated
     @Option
     @Name("backgroundColor")
-    @Description("The background color of the document in \"R:G:B\" format where each R, G, and B are a number 0 - 255.")
+    @Description("DEPRECATED! Use an .mss file instead! [ The background color of the document in \"R:G:B\" format where each R, G, and B are a number 0 - 255.]")
     @Optional
     String backgroundColor = null
 
+    @Deprecated
     @Option
     @Name("blockQuoteColor")
-    @Description("The blockquote color to use in this document in \"R:G:B\" format where each R, G, and B are a number 0 - 255.")
+    @Description("DEPRECATED! Use an .mss file instead! [The blockquote color to use in this document in \"R:G:B\" format where each R, G, and B are a number 0 - 255.]")
     @Optional
     String blockQuoteColor = null
 
+    @Deprecated
     @Option
     @Name("codeColor")
-    @Description("The code color to use in this document in \"R:G:B\" format where each R, G, and B are a number 0 - 255.")
+    @Description("DEPRECATED! Use and .mss file instead! The code color to use in this document in \"R:G:B\" format where each R, G, and B are a number 0 - 255.")
     @Optional
     String codeColor = null
+
+    @Option
+    @Name("mss")
+    @Description("This specifies the path to an .mss file to use for setting fonts and colors of the generated document.")
+    @Optional
+    String mss
 
     @Option
     @Name("generateSectionNumbers")

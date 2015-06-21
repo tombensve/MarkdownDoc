@@ -1,40 +1,44 @@
 package se.natusoft.doc.markdown.generator.pdf
 
 import com.itextpdf.text.Font
+import groovy.transform.CompileStatic
+import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
+import se.natusoft.doc.markdown.generator.styles.MSSColorPair
 import se.natusoft.doc.markdown.generator.styles.MSSFont
 import se.natusoft.doc.markdown.generator.styles.MSSFontStyle
 
 /**
  * Creates a PDF font from an MSSFont.
  */
+@CompileStatic
+@TypeChecked
 class PDFFont extends Font {
+    //
+    // Private Members
+    //
 
-    PDFFont(MSSFont mssFont) {
-        super(toFontFamily(mssFont.family), mssFont.size, toStyle(mssFont.style))
-    }
-
-    private static final Font.FontFamily toFontFamily(String family) {
-        Font.FontFamily ffam = Font.FontFamily.valueOf(family.toUpperCase())
-        if (ffam == null) {
-            ffam = Font.FontFamily.HELVETICA
-        }
-
-        return ffam
+    PDFFont(@NotNull MSSFont mssFont, @Nullable MSSColorPair mssColorPair) {
+        setFamily(mssFont.family)
+        setSize((float)mssFont.size)
+        setStyle(toStyle(mssFont.style))
+        setColor(new PDFColor(mssColorPair.foreground))
     }
 
     private static final int toStyle(MSSFontStyle fontStyle) {
         int result = NORMAL
         switch (fontStyle) {
-            case NORMAL:
+            case MSSFontStyle.NORMAL:
                 result = NORMAL
                 break
-            case BOLD:
+            case MSSFontStyle.BOLD:
                 result = BOLD
                 break;
-            case ITALIC:
+            case MSSFontStyle.ITALIC:
                 result = ITALIC
                 break;
-            case UNDERLINE:
+            case MSSFontStyle.UNDERLINE:
                 result = UNDERLINE
         }
 

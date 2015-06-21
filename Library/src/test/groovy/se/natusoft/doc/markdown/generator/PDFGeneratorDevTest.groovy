@@ -12,7 +12,7 @@ import se.natusoft.tools.optionsmgr.CommandLineOptionsManager
  * Test for MarkdownParser.
  */
 @CompileStatic
-class MSSPDFGeneratorDevTest extends GroovyTestCase {
+class PDFGeneratorDevTest extends GroovyTestCase {
 
     public void testParser() throws Exception {
 

@@ -1,10 +1,14 @@
 package se.natusoft.doc.markdown.generator.styles
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeChecked
 import org.jetbrains.annotations.Nullable
 
 /**
  * Represents a pair of colors: foreground, and background.
  */
+@CompileStatic
+@TypeChecked
 class MSSColorPair {
     //
     // Properties

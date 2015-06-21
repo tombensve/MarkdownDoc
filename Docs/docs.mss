@@ -155,7 +155,7 @@
   },
   "document": {
     "color": "black",
-    "background": "white",
+    "background": "AntiqueWhite",
     "family": "HELVETICA",
     "size": 10,
     "style": "Normal",

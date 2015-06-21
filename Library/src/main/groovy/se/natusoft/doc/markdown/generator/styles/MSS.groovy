@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
+import se.natusoft.doc.markdown.util.TestSafeResource
 import se.natusoft.json.JSON
 import se.natusoft.json.JSONArray
 import se.natusoft.json.JSONErrorHandler
@@ -48,6 +49,7 @@ class MSS {
      * This represents style sections of the "pages" section.
      */
     static enum MSS_Pages {
+        standard,
         h1, h2, h3, h4, h5, h6,
         block_quote,
         emphasis,
@@ -74,6 +76,7 @@ class MSS {
      * This represents style sections of the "toc" section.
      */
     static enum MSS_TOC {
+        toc,
         h1,
         h2,
         h3,
@@ -784,6 +787,21 @@ class MSS {
         validateMSS(mss, "/")
 
         new MSS(mss)
+    }
+
+    /**
+     * Returns the default MSS.
+     *
+     * @throws IOException Theoretically this should never happen ...
+     */
+    static @NotNull MSS defaultMSS() throws IOException {
+        InputStream mssStream = TestSafeResource.getResource("mss/default.mss")
+        try {
+            return fromInputStream(mssStream)
+        }
+        finally {
+            mssStream.close()
+        }
     }
 
     /**
