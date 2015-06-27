@@ -177,7 +177,8 @@
       "h2": {
         "family": "HELVETICA",
         "size": 18,
-        "style": "BOLD"
+        "style": "BOLD",
+        "hr": true
       },
       "h3": {
         "family": "HELVETICA",

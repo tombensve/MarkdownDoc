@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.util.TestSafeResource
 import se.natusoft.json.JSON
 import se.natusoft.json.JSONArray
+import se.natusoft.json.JSONBoolean
 import se.natusoft.json.JSONErrorHandler
 import se.natusoft.json.JSONNumber
 import se.natusoft.json.JSONObject
@@ -91,7 +92,8 @@ class MSS {
     static enum MSS_Font {
         family,
         size,
-        style
+        style,
+        /** Meant for h1 to h6 to produce an horizontal line under the heading text. */hr
     }
 
     /**
@@ -351,6 +353,11 @@ class MSS {
             if (mssFontStyle == null) { throw new MSSException("'${style}' is not a valid font style!") }
             font.updateStyleIfNotSet(mssFontStyle)
         }
+
+        JSONBoolean hr = section?.getProperty(MSS_Font.hr.name()) as JSONBoolean
+        if (hr != null) {
+            font.updateHrIfNotSet(hr.asBoolean)
+        }
     }
 
     /**
@@ -421,6 +428,11 @@ class MSS {
         return ensureFont(font)
     }
 
+    boolean isHr(MSS_Pages section) {
+        JSONString hr = this.pages.getProperty(section.name()) as JSONString
+        return hr != null && hr.toString().toLowerCase().equals("hr")
+    }
+
     class ForDocument {
         @NotNull MSSColorPair getColorPair(@Nullable String divName, @NotNull MSS_Pages section) {
             return getColorPairForDocument(divName, section)
@@ -428,6 +440,10 @@ class MSS {
 
         @NotNull MSSFont getFont(@Nullable String divName, @NotNull MSS_Pages section) {
             return getFontForDocument(divName, section)
+        }
+
+        boolean isHr(MSS_Pages section) {
+            return MSS.this.isHr(section)
         }
     }
 
@@ -622,7 +638,8 @@ class MSS {
      *            "h2": {
      *                "family": "HELVETICA",
      *                "size": 18,
-     *                "style": "BOLD"
+     *                "style": "BOLD",
+     *                "hr": true
      *            },
      *            "h3": {
      *                "family": "HELVETICA",

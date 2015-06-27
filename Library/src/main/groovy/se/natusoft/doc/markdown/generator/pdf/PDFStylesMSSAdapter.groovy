@@ -13,7 +13,7 @@ import se.natusoft.doc.markdown.generator.styles.MSSFont
  */
 @CompileStatic
 @TypeChecked
-class PDFStyles {
+class PDFStylesMSSAdapter {
 
     public static final String DIV_NONE = null
 
@@ -21,9 +21,9 @@ class PDFStyles {
     // Private Members
     //
 
-    private Map<String, PDFFont> documentCache = new HashMap<>()
-    private Map<String, PDFFont> frontPageCache = new HashMap<>()
-    private Map<String, PDFFont> tocCache = new HashMap<>()
+    private Map<String, PDFFontMSSAdapter> documentCache = new HashMap<>()
+    private Map<String, PDFFontMSSAdapter> frontPageCache = new HashMap<>()
+    private Map<String, PDFFontMSSAdapter> tocCache = new HashMap<>()
 
     //
     // Properties
@@ -46,16 +46,16 @@ class PDFStyles {
      * @param div The div to get font for or null if no div applies.
      * @param section The section to get font for.
      */
-    @NotNull PDFFont getFont(@Nullable String div, @NotNull MSS.MSS_Pages section) {
+    @NotNull PDFFontMSSAdapter getFont(@Nullable String div, @NotNull MSS.MSS_Pages section) {
         validate()
 
         String key = (div != null ? div : "") + section.name()
-        PDFFont font = this.documentCache.get(key)
+        PDFFontMSSAdapter font = this.documentCache.get(key)
 
         if (font == null) {
             MSSFont mssFont = this.mss.forDocument.getFont(div, section)
             MSSColorPair mssColorPair = this.mss.forDocument.getColorPair(div, section)
-            font = new PDFFont(mssFont, mssColorPair)
+            font = new PDFFontMSSAdapter(mssFont, mssColorPair)
             this.documentCache.put(key, font)
         }
 
@@ -67,7 +67,7 @@ class PDFStyles {
      *
      * @param section The section to get font for.
      */
-    @NotNull PDFFont getFont(@NotNull MSS.MSS_Pages section) {
+    @NotNull PDFFontMSSAdapter getFont(@NotNull MSS.MSS_Pages section) {
         return getFont(DIV_NONE, section)
     }
 
@@ -76,14 +76,14 @@ class PDFStyles {
      *
      * @param section The TOC section to get font for.
      */
-    @NotNull PDFFont getFont(@NotNull MSS.MSS_TOC section) {
+    @NotNull PDFFontMSSAdapter getFont(@NotNull MSS.MSS_TOC section) {
         validate()
-        PDFFont font = this.tocCache.get(section.name())
+        PDFFontMSSAdapter font = this.tocCache.get(section.name())
 
         if (font == null) {
             MSSFont mssFont = this.mss.forTOC.getFont(section)
             MSSColorPair mssColorPair = this.mss.forTOC.getColorPair(section)
-            font = new PDFFont(mssFont, mssColorPair)
+            font = new PDFFontMSSAdapter(mssFont, mssColorPair)
             this.tocCache.put(section.name(), font)
         }
 
@@ -95,15 +95,15 @@ class PDFStyles {
      *
      * @param section The front page section to get font for.
      */
-    @NotNull PDFFont getFont(@NotNull MSS.MSS_Front_Page section) {
+    @NotNull PDFFontMSSAdapter getFont(@NotNull MSS.MSS_Front_Page section) {
         validate()
 
-        PDFFont font = this.frontPageCache.get(section.name())
+        PDFFontMSSAdapter font = this.frontPageCache.get(section.name())
 
         if (font == null) {
             MSSFont mssFont = this.mss.forFrontPage.getFont(section)
             MSSColorPair mssColorPair = this.mss.forFrontPage.getColorPair(section)
-            font = new PDFFont(mssFont, mssColorPair)
+            font = new PDFFontMSSAdapter(mssFont, mssColorPair)
             this.frontPageCache.put(section.name(), font)
         }
 

@@ -18,6 +18,11 @@ class MSSFont {
     String family = null
     int size = -1
     MSSFontStyle style = null
+    Boolean hr = null
+
+    Boolean getHr() {
+        return this.hr != null ? this.hr : Boolean.FALSE
+    }
 
     //
     // Methods
@@ -33,6 +38,10 @@ class MSSFont {
 
     void updateStyleIfNotSet(@Nullable MSSFontStyle style) {
         if (this.style == null) this.style = style
+    }
+
+    void updateHrIfNotSet(boolean hr) {
+        if (this.hr == null) this.hr = hr
     }
 
     //

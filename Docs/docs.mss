@@ -155,7 +155,7 @@
   },
   "document": {
     "color": "black",
-    "background": "AntiqueWhite",
+    "background": "white",
     "family": "HELVETICA",
     "size": 10,
     "style": "Normal",
@@ -166,8 +166,7 @@
         "family": "HELVETICA",
         "size": 10,
         "style": "Italic",
-        "color": "mddgrey",
-        "background": "white"
+        "color": "mddgrey"
       },
       "h1": {
         "family": "HELVETICA",
@@ -177,7 +176,9 @@
       "h2": {
         "family": "HELVETICA",
         "size": 18,
-        "style": "BOLD"
+        "style": "ITALIC",
+        "color": "SaddleBrown",
+        "hr": true
       },
       "h3": {
         "family": "HELVETICA",
@@ -243,15 +244,15 @@
   },
 
   "front_page": {
-    "color": "0:0:0",
-    "background": "255:255:255",
+    "color": "black",
     "family": "HELVETICA",
     "size": 10,
     "style": "NORMAL",
     "title": {
       "family": "COURIER",
-      "size": 25,
-      "style": "UNDERLINE"
+      "size": 30,
+      "style": "UNDERLINE",
+      "color": "SaddleBrown"
     },
     "subject": {
       "family": "HELVETICA",
@@ -275,7 +276,7 @@
   },
 
   "toc": {
-    "color": "0:0:0",
+    "color": "black",
     "background": "255:255:255",
     "family": "HELVETICA",
     "size": 9,
@@ -286,6 +287,8 @@
       "style": "BOLD"
     },
     "h2": {
+      "style": "ITALIC",
+      "color": "SaddleBrown"
     },
     "h3": {
     },

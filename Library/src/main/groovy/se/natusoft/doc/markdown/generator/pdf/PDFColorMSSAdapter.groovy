@@ -10,9 +10,9 @@ import se.natusoft.doc.markdown.generator.styles.MSSColor
  */
 @CompileStatic
 @TypeChecked
-class PDFColor extends BaseColor {
+class PDFColorMSSAdapter extends BaseColor {
 
-    PDFColor(final MSSColor color) {
+    PDFColorMSSAdapter(final MSSColor color) {
         super(color.red, color.green, color.blue)
     }
 }

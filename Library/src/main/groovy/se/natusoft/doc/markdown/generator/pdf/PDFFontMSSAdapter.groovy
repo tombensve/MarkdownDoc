@@ -14,16 +14,16 @@ import se.natusoft.doc.markdown.generator.styles.MSSFontStyle
  */
 @CompileStatic
 @TypeChecked
-class PDFFont extends Font {
+class PDFFontMSSAdapter extends Font {
     //
     // Private Members
     //
 
-    PDFFont(@NotNull MSSFont mssFont, @Nullable MSSColorPair mssColorPair) {
+    PDFFontMSSAdapter(@NotNull MSSFont mssFont, @Nullable MSSColorPair mssColorPair) {
         setFamily(mssFont.family)
         setSize((float)mssFont.size)
         setStyle(toStyle(mssFont.style))
-        setColor(new PDFColor(mssColorPair.foreground))
+        setColor(new PDFColorMSSAdapter(mssColorPair.foreground))
     }
 
     private static final int toStyle(MSSFontStyle fontStyle) {

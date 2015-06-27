@@ -62,9 +62,9 @@ import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions
-import se.natusoft.doc.markdown.generator.pdf.PDFColor
+import se.natusoft.doc.markdown.generator.pdf.PDFColorMSSAdapter
 import se.natusoft.doc.markdown.generator.pdf.PDFHeaderLevelCache
-import se.natusoft.doc.markdown.generator.pdf.PDFStyles
+import se.natusoft.doc.markdown.generator.pdf.PDFStylesMSSAdapter
 import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.generator.styles.MSSColor
 import se.natusoft.doc.markdown.io.NullOutputStream
@@ -78,7 +78,6 @@ import se.natusoft.doc.markdown.model.DocFormat
 import se.natusoft.doc.markdown.model.DocItem
 import se.natusoft.doc.markdown.model.Emphasis
 import se.natusoft.doc.markdown.model.Header
-import se.natusoft.doc.markdown.model.HorizontalRule
 import se.natusoft.doc.markdown.model.Image
 import se.natusoft.doc.markdown.model.Link
 import se.natusoft.doc.markdown.model.List
@@ -112,44 +111,53 @@ class PDFGenerator implements Generator {
     // Constants
     //
 
+    /** Constant to produce a new line in list entries. */
     private static final Chunk LIST_NEWLINE = new Chunk("\n", new Font(Font.FontFamily.HELVETICA, 4))
 
-    private static final LineSeparator H2_UNDERLINE = new LineSeparator(0.01f, 100f, BaseColor.GRAY, 0, 12)
+    /** Constant to produce an underline for H2 headers. */
+    private static final LineSeparator HEADING_UNDERLINE = new LineSeparator(0.01f, 100f, BaseColor.GRAY, 0, 12)
+
+    /** Constant to produce a horizontal line.  */
     private static final LineSeparator HORIZONTAL_RULE = new LineSeparator(0.01f, 100f, BaseColor.GRAY, 5, 16)
 
     //
     // Private Members
     //
 
-    // Note: Since we need to put some variables here due to event handler access there is
-    // no point in passing other stuff around in the previous this inner class so I
-    // put it here instead.
-
+    /** The options for the PDF generation. This makes use of OptionsManager. */
     private PDFGeneratorOptions options = null
 
-    private PDFStyles pdfStyles = new PDFStyles()
+    /** Adapter between MSS and iText fonts. */
+    private PDFStylesMSSAdapter pdfStyles = new PDFStylesMSSAdapter()
 
+    /** This is needed for generating TOC with correct styles. */
     private PDFHeaderLevelCache headerLevelCache = new PDFHeaderLevelCache()
 
-    // This will actually be added to the real Document later on, twice: once for the fake render and once for the real.
+    /** This will actually be added to the real Document later on, twice: once for the fake TOC resolve render and once for the real. */
     private JList<Section> documentItems = null
 
+    /** Current part tracker. */
     private Chapter currentChapter = null
 
+    /** Current part tracker. */
     private Section currentSection = null
 
+    /** Current part tracker. */
     private Section currentH2 = null
 
+    /** Current part tracker. */
     private Section currentH3 = null
 
+    /** Current part tracker. */
     private Section currentH4 = null
 
+    /** Current part tracker. */
     private Section currentH5 = null
 
+    /** Keeps track of the chapter. */
     private int chapterNumber
 
-    private Font currentParagraphFont = null
-
+    /** The table of contents. */
     private JList<TOC> toc
 
     /** This is to exclude the title and tables of content pages from the page numbering. */
@@ -190,7 +198,6 @@ class PDFGenerator implements Generator {
         this.currentH4 = null
         this.currentH5 = null
         this.chapterNumber = 1
-        this.currentParagraphFont = this.pdfStyles.getFont(MSS.MSS_Pages.standard)
         this.toc = new JLinkedList<TOC>()
         this.pageOffset = 0
     }
@@ -281,7 +288,7 @@ class PDFGenerator implements Generator {
                     break
 
                 case DocFormat.HorizontalRule:
-                    writeHorizontalRule((HorizontalRule)docItem)
+                    writeHorizontalRule()
                     break
 
                 case DocFormat.List:
@@ -301,16 +308,16 @@ class PDFGenerator implements Generator {
 
         Rectangle pageSize = new Rectangle(PageSize.getRectangle(this.options.pageSize))
         if (this.options.backgroundColor != null) {
-            pageSize.backgroundColor = new PDFColor(new MSSColor(color: this.options.backgroundColor))
+            pageSize.backgroundColor = new PDFColorMSSAdapter(new MSSColor(color: this.options.backgroundColor))
         }
         else {
-            pageSize.backgroundColor = new PDFColor(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.standard).background)
+            pageSize.backgroundColor = new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.standard).background)
         }
 
         // Please note that itext is not really compatible with groovys property access!
 
         PDFDocument document = null
-        PdfWriter pdfWriter = null
+        PdfWriter pdfWriter
 
         if (this.options.generateTOC) {
             // Do a fake render to generate TOC.
@@ -455,9 +462,9 @@ class PDFGenerator implements Generator {
      * @param font The font to use.
      */
     private static void writeText(PdfContentByte cb, int align, String text, float x, float y, Font font) {
-        Phrase phrase = new Phrase()
-        Chunk chunk = new Chunk(text, font)
-        phrase.add(chunk)
+        Phrase phrase = new Phrase(text, font)
+        // The following unfortunately only accept NORMAL and BOLD styles. ITALIC and UNDERLINE is ignored!
+        // Colors are also ignored!
         ColumnText.showTextAligned(cb, align, phrase, x, y, 0.0f)
     }
 
@@ -468,7 +475,16 @@ class PDFGenerator implements Generator {
      * @param document The PDF documentItems being written.
      */
     private void writeTitlePage(PdfWriter pdfWriter, PDFDocument document) {
-        PdfContentByte cb = pdfWriter.getDirectContent()
+        PdfContentByte canvas = pdfWriter.getDirectContent()
+
+        PDFColorMSSAdapter background = new PDFColorMSSAdapter(this.pdfStyles.mss.forFrontPage.getColorPair(MSS.MSS_Front_Page.title).background)
+        Rectangle rect = new Rectangle(document.left(), document.top(), document.right(), document.bottom());
+        rect.borderWidthBottom = 0
+        rect.borderColorBottom = background
+        rect.borderWidthLeft = 0
+        rect.borderColorLeft = background
+        rect.backgroundColor = background
+        canvas.rectangle(rect);
 
         ++this.pageOffset
 
@@ -499,7 +515,7 @@ class PDFGenerator implements Generator {
             Font font = this.pdfStyles.getFont(MSS.MSS_Front_Page.title)
             Chunk chunk = new Chunk(textReplace(title), font)
             Phrase phrase = new Phrase(chunk)
-            ColumnText.showTextAligned(cb, Element.ALIGN_CENTER, phrase, x, yTop, 0.0f)
+            ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, phrase, x, yTop, 0.0f)
             yTop = (float)(yTop - (yItemSizeTop / 2f))
         }
 
@@ -507,7 +523,7 @@ class PDFGenerator implements Generator {
             Font font = this.pdfStyles.getFont(MSS.MSS_Front_Page.subject)
             Chunk chunk = new Chunk(textReplace(subject), font)
             Phrase phrase = new Phrase(chunk)
-            ColumnText.showTextAligned(cb, Element.ALIGN_CENTER, phrase, x, yTop, 0.0f)
+            ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, phrase, x, yTop, 0.0f)
             yTop = (float)(yTop - (yItemSizeTop / 2f))
         }
 
@@ -515,7 +531,7 @@ class PDFGenerator implements Generator {
             Font font = this.pdfStyles.getFont(MSS.MSS_Front_Page.version)
             Chunk chunk = new Chunk("${this.pdfStyles.mss.forFrontPage.getVersionLabel("Version:")} " + version, font)
             Phrase phrase = new Phrase(chunk)
-            ColumnText.showTextAligned(cb, Element.ALIGN_CENTER, phrase, x, yTop, 0.0f)
+            ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, phrase, x, yTop, 0.0f)
         }
 
         // Rendered from bottom of page
@@ -524,7 +540,7 @@ class PDFGenerator implements Generator {
             Font font = this.pdfStyles.getFont(MSS.MSS_Front_Page.copyright)
             Chunk chunk = new Chunk(textReplace(copyRight), font)
             Phrase phrase = new Phrase(chunk)
-            ColumnText.showTextAligned(cb, Element.ALIGN_CENTER, phrase, x, yBottom, 0.0f)
+            ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, phrase, x, yBottom, 0.0f)
             yBottom = (float)(yBottom + (yItemSizeBottom / 2))
         }
 
@@ -532,9 +548,8 @@ class PDFGenerator implements Generator {
             Font font = this.pdfStyles.getFont(MSS.MSS_Front_Page.author)
             Chunk chunk = new Chunk("${this.pdfStyles.mss.forFrontPage.getAuthorLabel("Author:")} " + author, font)
             Phrase phrase = new Phrase(chunk)
-            ColumnText.showTextAligned(cb, Element.ALIGN_CENTER, phrase, x, yBottom, 0.0f)
+            ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, phrase, x, yBottom, 0.0f)
         }
-
 
         document.newPage()
     }
@@ -568,7 +583,8 @@ class PDFGenerator implements Generator {
                     this.documentItems.add(this.currentChapter)
                 }
                 PDFParagraph title = new PDFParagraph()
-                title.add(createHeaderChunk(header.text, MSS.MSS_Pages.h1))
+                updateHeaderParagraph(title, header.text, MSS.MSS_Pages.h1)
+
                 Chapter chapter = new Chapter(title, this.chapterNumber ++)
 
                 handleSectionOpts(chapter)
@@ -586,11 +602,9 @@ class PDFGenerator implements Generator {
             case { it == Header.Level.H2 } :
                 this.headerLevelCache.put(header.text, MSS.MSS_TOC.h2)
                 PDFParagraph title = new PDFParagraph()
-                title.add(createHeaderChunk(header.text, MSS.MSS_Pages.h2))
-                title.add(Chunk.NEWLINE);
-                title.add(H2_UNDERLINE)
-                title.add(Chunk.NEWLINE)
-                Section section = null
+                updateHeaderParagraph(title, header.text, MSS.MSS_Pages.h2)
+
+                Section section
                 if (this.currentChapter != null) {
                     section = this.currentChapter.addSection(title, 2)
                 }
@@ -616,8 +630,9 @@ class PDFGenerator implements Generator {
             case { it == Header.Level.H3 } :
                 this.headerLevelCache.put(header.text, MSS.MSS_TOC.h3)
                 PDFParagraph title = new PDFParagraph()
-                title.add(createHeaderChunk(header.text, MSS.MSS_Pages.h3))
-                Section section = null
+                updateHeaderParagraph(title, header.text, MSS.MSS_Pages.h3)
+
+                Section section
                 if (this.currentH2 != null) {
                     section = this.currentH2.addSection(title, 3)
                 }
@@ -641,8 +656,9 @@ class PDFGenerator implements Generator {
             case { it == Header.Level.H4 } :
                 this.headerLevelCache.put(header.text, MSS.MSS_TOC.h4)
                 PDFParagraph title = new PDFParagraph()
-                title.add(createHeaderChunk(header.text, MSS.MSS_Pages.h4))
-                Section section = null
+                updateHeaderParagraph(title, header.text, MSS.MSS_Pages.h4)
+
+                Section section
                 if (this.currentH3 != null) {
                     section = this.currentH3.addSection(title, 4)
                 }
@@ -665,8 +681,9 @@ class PDFGenerator implements Generator {
             case { it == Header.Level.H5 } :
                 this.headerLevelCache.put(header.text, MSS.MSS_TOC.h5)
                 PDFParagraph title = new PDFParagraph()
-                title.add(createHeaderChunk(header.text, MSS.MSS_Pages.h5))
-                Section section = null
+                updateHeaderParagraph(title, header.text, MSS.MSS_Pages.h5)
+
+                Section section
                 if (this.currentH4 != null) {
                     section = this.currentH4.addSection(title, 5)
                 }
@@ -688,8 +705,9 @@ class PDFGenerator implements Generator {
             case { it == Header.Level.H6 } :
                 this.headerLevelCache.put(header.text, MSS.MSS_TOC.h6)
                 PDFParagraph title = new PDFParagraph()
-                title.add(createHeaderChunk(header.text, MSS.MSS_Pages.h6))
-                Section section = null
+                updateHeaderParagraph(title, header.text, MSS.MSS_Pages.h6)
+
+                Section section
                 if (this.currentH5 != null) {
                     section = this.currentH5.addSection(title, 6)
                 }
@@ -722,8 +740,24 @@ class PDFGenerator implements Generator {
         Chunk chunk = new Chunk(textReplace(text), font)
         chunk.setTextRise(2f)
         chunk.setLineHeight((float)(font.size + 2.0f))
-        chunk.background = new PDFColor(this.pdfStyles.mss.forDocument.getColorPair(null, level).background)
+        chunk.background = new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(null, level).background)
         return chunk
+    }
+
+    /**
+     * Adds header text plus an eventual horizontal ruler depending on style.
+     *
+     * @param header The header paragraph to add to.
+     * @param text The header text to add.
+     * @param level The level of the header.
+     */
+    private void updateHeaderParagraph(PDFParagraph header, String text, MSS.MSS_Pages level) {
+        header.add(createHeaderChunk(text, level))
+        if(this.pdfStyles.mss.forDocument.getFont(null, level).hr) {
+            header.add(Chunk.NEWLINE);
+            header.add(HEADING_UNDERLINE)
+            header.add(Chunk.NEWLINE)
+        }
     }
 
     /**
@@ -752,9 +786,9 @@ class PDFGenerator implements Generator {
         // Since the MSS stylesheet always return a color, it cannot be used to override options colors.
         // It has to be the other way around.
         if (this.options.blockQuoteColor != null) {
-            bqFont.setColor(new PDFColor(new MSSColor(color:  this.options.blockQuoteColor)))
+            bqFont.setColor(new PDFColorMSSAdapter(new MSSColor(color:  this.options.blockQuoteColor)))
         }
-        PDFColor background = new PDFColor(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.block_quote).background)
+        PDFColorMSSAdapter background = new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.block_quote).background)
         writeParagraph(pdfParagraph, blockQuote, bqFont, background)
         pdfParagraph.add(Chunk.NEWLINE)
         pdfParagraph.add(Chunk.NEWLINE)
@@ -772,7 +806,7 @@ class PDFGenerator implements Generator {
 
         Font codeFont = new Font(this.pdfStyles.getFont(MSS.MSS_Pages.code))
         if (this.options.codeColor != null) {
-            codeFont.setColor(new PDFColor(new MSSColor(color:  this.options.codeColor)))
+            codeFont.setColor(new PDFColorMSSAdapter(new MSSColor(color:  this.options.codeColor)))
         }
 
 //        paragraph.add(Chunk.NEWLINE)
@@ -781,7 +815,7 @@ class PDFGenerator implements Generator {
             chunk.setLineHeight((float)(codeFont.size + 1.0))
             chunk.setTextRise(-2)
             chunk.setCharacterSpacing(0.5f)
-            chunk.setBackground(new PDFColor(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.code).background))
+            chunk.setBackground(new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.code).background))
             pdfParagraph.add(chunk)
             pdfParagraph.add(Chunk.NEWLINE)
         }
@@ -792,10 +826,8 @@ class PDFGenerator implements Generator {
 
     /**
      * Writes a horizontal rule.
-     *
-     * @param horizontalRule The model representing the horizontal rule. This is just a marker it contains no text.
      */
-    private void writeHorizontalRule(HorizontalRule horizontalRule) {
+    private void writeHorizontalRule() {
         PDFParagraph pdfParagraph = new PDFParagraph()
         pdfParagraph.add(HORIZONTAL_RULE)
         getOrCreateCurrentSection().add(pdfParagraph)
@@ -810,7 +842,7 @@ class PDFGenerator implements Generator {
      * @return a configured PDFList object.
      */
     private static PDFList listToPDFList(List list, PDFGeneratorOptions options) {
-        PDFList pdfList = null
+        PDFList pdfList
         if (list.ordered) {
             pdfList = new PDFList(PDFList.ORDERED)
         }
@@ -861,7 +893,7 @@ class PDFGenerator implements Generator {
                     }
                     first = false
                     writeParagraph(listItem, (Paragraph)pg, this.pdfStyles.getFont(MSS.MSS_Pages.list_item),
-                        new PDFColor(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.list_item).background))
+                        new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.list_item).background))
                 }
                 pdfList.add(listItem)
             }
@@ -906,7 +938,7 @@ class PDFGenerator implements Generator {
      */
     private void writeParagraph(PDFParagraph pdfParagraph, Paragraph paragraph, Font font) throws GenerateException {
         writeParagraph(pdfParagraph, paragraph, font,
-                new PDFColor(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.standard).background))
+                new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.standard).background))
     }
 
     /**
@@ -918,7 +950,7 @@ class PDFGenerator implements Generator {
      *
      * @throws GenerateException on failure to write paragraph.
      */
-    private void writeParagraph(PDFParagraph pdfParagraph, Paragraph paragraph, Font font, PDFColor background) throws GenerateException {
+    private void writeParagraph(PDFParagraph pdfParagraph, Paragraph paragraph, Font font, PDFColorMSSAdapter background) throws GenerateException {
 
         boolean first = true
         for (DocItem docItem : paragraph.items) {
@@ -991,7 +1023,7 @@ class PDFGenerator implements Generator {
         Chunk chunk = new Chunk(textReplace(emphasis.text), this.pdfStyles.getFont(MSS.MSS_Pages.emphasis))
         // BUG: There seem to be a bug in iText here. For Italics iText seem to always render a white background
         //      no matter what color is in chunk.background. It works fine for Bold below.
-        chunk.background = new PDFColor(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.emphasis).background)
+        chunk.background = new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.emphasis).background)
         pdfParagraph.add(chunk)
     }
 
@@ -1003,7 +1035,7 @@ class PDFGenerator implements Generator {
      */
     private void writeStrong(Strong strong, PDFParagraph pdfParagraph) {
         Chunk chunk = new Chunk(textReplace(strong.text), this.pdfStyles.getFont(MSS.MSS_Pages.strong))
-        chunk.background = new PDFColor(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.strong).background)
+        chunk.background = new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.strong).background)
         pdfParagraph.add(chunk)
     }
 
@@ -1113,7 +1145,7 @@ class PDFGenerator implements Generator {
      * @param pdfParagraph The iText paragraph model to add to.
      * @param background The background color to use.
      */
-    private void writeLink(Link link, PDFParagraph pdfParagraph, PDFColor background) {
+    private void writeLink(Link link, PDFParagraph pdfParagraph, PDFColorMSSAdapter background) {
         if (this.options.hideLinks) {
             writePlainText(link, pdfParagraph, this.pdfStyles.getFont(MSS.MSS_Pages.standard), background)
         }
@@ -1132,7 +1164,7 @@ class PDFGenerator implements Generator {
      * @param pdfParagraph The iText paragraph to add to.
      * @param font The font to use.
      */
-    private static void writePlainText(PlainText plainText, PDFParagraph pdfParagraph, Font font, PDFColor background) {
+    private static void writePlainText(PlainText plainText, PDFParagraph pdfParagraph, Font font, PDFColorMSSAdapter background) {
         Chunk chunk = new Chunk(textReplace(plainText.text), font)
         chunk.background = background
         pdfParagraph.add(chunk)
@@ -1144,7 +1176,7 @@ class PDFGenerator implements Generator {
      * @param chunks The chunks to update.
      * @param background The background color to update with.
      */
-    private static void setBackgroundColorOnChunks(JList<Chunk> chunks, PDFColor background) {
+    private static void setBackgroundColorOnChunks(JList<Chunk> chunks, PDFColorMSSAdapter background) {
         chunks.each { Chunk chunk ->
             chunk.background = background
         }
@@ -1163,7 +1195,7 @@ class PDFGenerator implements Generator {
         String resultFile
         boolean updateTOC
         JList<TOC> toc
-        PDFStyles pdfStyles
+        PDFStylesMSSAdapter pdfStyles
         PDFHeaderLevelCache headerLevelCache
 
         @Override
