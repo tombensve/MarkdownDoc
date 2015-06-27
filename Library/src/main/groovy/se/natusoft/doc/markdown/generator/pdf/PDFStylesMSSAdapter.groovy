@@ -1,12 +1,16 @@
 package se.natusoft.doc.markdown.generator.pdf
 
+import com.itextpdf.text.Font
+import com.itextpdf.text.pdf.BaseFont
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
+import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.generator.styles.MSSColorPair
 import se.natusoft.doc.markdown.generator.styles.MSSFont
+import se.natusoft.doc.markdown.generator.styles.MSSTTF
 
 /**
  * Handles the conversion of MSS styles to iText PDF fonts.
@@ -45,21 +49,92 @@ class PDFStylesMSSAdapter {
      *
      * @param div The div to get font for or null if no div applies.
      * @param section The section to get font for.
+     *
+     * @throws GenerateException on problem with font.
      */
-    @NotNull PDFFontMSSAdapter getFont(@Nullable String div, @NotNull MSS.MSS_Pages section) {
+    @NotNull Font getFont(@Nullable String div, @NotNull MSS.MSS_Pages section) throws GenerateException {
         validate()
 
         String key = (div != null ? div : "") + section.name()
-        PDFFontMSSAdapter font = this.documentCache.get(key)
+        Font font = this.documentCache.get(key)
 
         if (font == null) {
             MSSFont mssFont = this.mss.forDocument.getFont(div, section)
             MSSColorPair mssColorPair = this.mss.forDocument.getColorPair(div, section)
-            font = new PDFFontMSSAdapter(mssFont, mssColorPair)
+
+            if (!isStandardFont(mssFont.family.toUpperCase())) {
+                // We don't have a standard font! Lets see if we can find a ttf font!
+                MSSTTF mssTtf = this.mss.getPdfTrueTypeFontPath(mssFont.family)
+                if (mssTtf == null) {
+                    throw new GenerateException(message: "Font '${mssFont.family}' is not a standard font and a ttf font matching " +
+                            "this name was not found either.")
+                }
+
+                byte[] fontBytes = loadFont(mssTtf)
+                String fontName = mssFont.family
+                if (!fontName.contains(".")) { fontName += ".ttf" }
+                BaseFont baseFont
+                try {
+                    baseFont = BaseFont.createFont(fontName, mssTtf.encoding, BaseFont.EMBEDDED, BaseFont.NOT_CACHED, fontBytes, new byte[0])
+                }
+                catch (Exception e) {
+                    fontName = mssFont.family + ".otf"
+                    baseFont = BaseFont.createFont(fontName, mssTtf.encoding, BaseFont.EMBEDDED, BaseFont.NOT_CACHED, fontBytes, new byte[0])
+                }
+                font = new PDFFontMSSAdapter(baseFont, mssFont, mssColorPair)
+            }
+            else {
+                font = new PDFFontMSSAdapter(mssFont, mssColorPair)
+            }
+
             this.documentCache.put(key, font)
         }
 
         return font
+    }
+
+    private static boolean isStandardFont(String font) {
+        try {
+            return Font.FontFamily.valueOf(font) != null
+        }
+        catch (IllegalArgumentException iae) {}
+
+        return false
+    }
+
+    /**
+     * Loads a font file into a byte array.
+     *
+     * @param mssTtf The MSSTTF object containing the path to the font to read.
+     *
+     * @return The loaded bytes.
+     *
+     * @throws GenerateException on failure to load font.
+     */
+    private static byte[] loadFont(MSSTTF mssTtf) throws GenerateException {
+        ByteArrayOutputStream fontBytes = new ByteArrayOutputStream()
+        File fontPath = new File(mssTtf.fontPath)
+        if (fontPath == null || !fontPath.exists()) {
+            throw new GenerateException(message: "Font '${mssTtf.fontPath}' was not found!")
+        }
+
+        BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(fontPath))
+        try {
+            int b = inputStream.read()
+            while (b >= 0) {
+                fontBytes.write(b)
+                b = inputStream.read()
+            }
+        }
+        catch (IOException ioe) {
+            throw new GenerateException(message: "Failed to load font (${mssTtf.fontPath})!", cause: ioe)
+        }
+        finally {
+            fontBytes.close()
+            inputStream.close()
+        }
+
+        return fontBytes.toByteArray()
     }
 
     /**
@@ -67,7 +142,7 @@ class PDFStylesMSSAdapter {
      *
      * @param section The section to get font for.
      */
-    @NotNull PDFFontMSSAdapter getFont(@NotNull MSS.MSS_Pages section) {
+    @NotNull Font getFont(@NotNull MSS.MSS_Pages section) {
         return getFont(DIV_NONE, section)
     }
 

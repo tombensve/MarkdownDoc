@@ -3,8 +3,20 @@
       "ttf": [
          {
              "family": "HELVETICA",
+             "encoding": "ISO-8859-1",
              "path": "/fonts/ttf/hell_vetica.ttf"
+         },
+         {
+            "family": "Raleway-Regular",
+            "encoding": "UTF-8",
+            "path": "Library/src/test/resources/raleway/Raleway-Regular.ttf"
+         },
+         {
+            "family": "Tuffy",
+            "encoding": "UTF-8",
+            "path": "Library/src/test/resources/tuffy/Tuffy.ttf"
          }
+
       ]
    },
 
@@ -42,12 +54,12 @@
              "style": "BOLD"
          },
          "h3": {
-             "family": "HELVETICA",
+             "family": "Raleway-Regular",
              "size": 16,
              "style": "BOLD"
          },
          "h4": {
-             "family": "HELVETICA",
+             "family": "Tuffy",
              "size": 14,
              "style": "BOLD"
          },

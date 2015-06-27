@@ -110,7 +110,8 @@ class MSS {
     static enum MSS_PDF {
         ttf,
         family,
-        path
+        path,
+        encoding
     }
 
     //
@@ -256,8 +257,8 @@ class MSS {
      * @return
      * @throws IOException
      */
-    @NotNull String getPdfTrueTypeFontPath(@NotNull String name) throws MSSException {
-        String result = null
+    @NotNull MSSTTF getPdfTrueTypeFontPath(@NotNull String name) throws MSSException {
+        MSSTTF result = null
 
         JSONObject pdf = (JSONObject) this.mss.getProperty(MSS_Top.pdf.name())
         if (pdf == null) throw new MSSException("No TTF fonts specified under 'pdf' section in MSS file!")
@@ -265,12 +266,17 @@ class MSS {
         JSONArray ttfArray = (JSONArray) pdf.getProperty(MSS_PDF.ttf.name());
         if (ttfArray == null) throw new MSSException("No TTF fonts specified under 'pdf/ttf' seciton in MSS file!")
 
-        ttfArray.asList.each { JSONValue entry -> // Notera att detta är en "closure"!
+        ttfArray.asList.each { JSONValue entry ->
             if (!(entry instanceof JSONObject)) throw new MSSException("Bad MSS: pdf/ttf does not contain a list of objects!")
 
             JSONObject entryObject = entry as JSONObject
             if (getNullSafe(entryObject, MSS_PDF.family.name(), "Error: TTF entry without 'family' field!").toString() == name) {
-                result = getNullSafe(entryObject, MSS_PDF.path.name(), "Error: TTF entry without 'path' field!").toString()
+
+                result = new MSSTTF(
+                    fontPath: getNullSafe(entryObject, MSS_PDF.path.name(), "Error: TTF entry without 'path' field!").toString(),
+                    encoding: getNullSafe(entryObject, MSS_PDF.encoding.name(), "Error TTF entry without 'encoding' field!").toString()
+                )
+
                 return // from closure!
             }
         }
@@ -598,9 +604,7 @@ class MSS {
      *      "pdf": {
      *         "ttf": [
      *            {
-     *                "family_desc": "A name to be used for 'family' property under 'fonts'."
      *                "family": "<name>",
-     *                "path_desc": "A full or relative path to the .ttf file to load and make available."
      *                "path": "<path>/font.ttf"
      *            },
      *            ...
