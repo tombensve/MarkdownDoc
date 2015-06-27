@@ -66,7 +66,7 @@
 
                             <pdfGeneratorOptions>
                                 <resultFile>Docs/MarkdownDoc-User-Guide.pdf</resultFile>
-                                <mss>docs.mss</mss>
+                                <mss>Docs/docs.mss</mss>
                                 <pageSize>A4</pageSize>
                                 <title>MarkdownDoc</title>
                                 <subject>User Guide</subject>
