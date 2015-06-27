@@ -245,7 +245,8 @@ class PDFGenerator implements Generator {
         }
 
         if (this.options.mss != null && !this.options.mss.isEmpty()) {
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(this.options.mss))
+            File mssFile = this.rootDir != null ? new File (this.rootDir, this.options.mss) : new File(this.options.mss)
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(mssFile))
             try {
                 this.pdfStyles.mss = MSS.fromInputStream(bis)
             }
