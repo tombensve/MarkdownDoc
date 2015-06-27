@@ -12,8 +12,12 @@ import se.natusoft.tools.optionsmgr.CommandLineOptionsManager
  * Test for MarkdownParser.
  */
 @CompileStatic
-class PDFGeneratorDevTest2 extends GroovyTestCase {
+class PDFGenerator2DevTest extends GroovyTestCase {
 
+    /*
+     * Note that this test only tests that the parsing and result generation executes
+     * without throwing any exception. The content of the generated result is not verified.
+     */
     public void testParser() throws Exception {
 
         // Handle both IntelliJ and Maven who runs from different roots! (I see this as a bug in IntelliJ)

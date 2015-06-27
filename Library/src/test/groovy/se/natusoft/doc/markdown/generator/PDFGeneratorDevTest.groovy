@@ -14,6 +14,10 @@ import se.natusoft.tools.optionsmgr.CommandLineOptionsManager
 @CompileStatic
 class PDFGeneratorDevTest extends GroovyTestCase {
 
+    /*
+     * Note that this test only tests that the parsing and result generation executes
+     * without throwing any exception. The content of the generated result is not verified.
+     */
     public void testParser() throws Exception {
 
         // Handle both IntelliJ and Maven who runs from different roots! (I see this as a bug in IntelliJ)
