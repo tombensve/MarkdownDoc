@@ -58,6 +58,10 @@ class Line {
     /** The current word index. */
     protected int currentWord = -1
 
+    //
+    // Properties
+    //
+
     /** The line number of this line. */
     int lineNumber = -1
 

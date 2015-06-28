@@ -219,4 +219,34 @@ class MDLine extends Line  {
         return !(isBlockQuote() || isList() || isOrderedList() || isHeader() || isHorizRuler() || isLinkURLSpec(urls) ||
                 isCommentStart() || isCommentEnd())
     }
+
+    /**
+     * @return true if this line is a <div name="..."> line.
+     */
+    public boolean isStartDiv() {
+        startsWithExcludingWhitespace("<div")
+    }
+
+    /**
+     * If isStartDiv() returns true then this returns the name within the "...".
+     */
+    public String getDivName() {
+        String name = null
+        String[] p1 = this.origLine.split(" ")
+        if (p1.length >= 2) {
+            String[] p2 = p1[1].split("\"")
+            if (p2.length >= 2) {
+                name = p2[1]
+            }
+        }
+
+        return name
+    }
+
+    /**
+     * @return true if this line is a </div>.
+     */
+    public boolean isEndDiv() {
+        startsWithExcludingWhitespace("</div>")
+    }
 }

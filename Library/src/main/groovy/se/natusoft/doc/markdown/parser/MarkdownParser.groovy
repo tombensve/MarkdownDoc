@@ -118,6 +118,7 @@ public class MarkdownParser implements Parser {
                 if (!line.empty) {
                     DocItem docItem = null
 
+                    def divStartCase = ...
                     def commentStartCase = { MDLine it -> it.commentStart }
                     def headerCase       = { MDLine it -> it.header }
                     def listCase         = { MDLine it -> it.list && (it.leadingSpaces < 4 || (prevDocItem != null && prevDocItem.isHierarchy)) }
@@ -227,7 +228,7 @@ public class MarkdownParser implements Parser {
         return fileName.endsWith(".md") || fileName.endsWith(".markdown") || fileName.endsWith(".mdpart")
     }
 
-/**
+    /**
      * Parses a html comment
      *
      * @param line The current line.
