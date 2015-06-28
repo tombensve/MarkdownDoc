@@ -1,10 +1,10 @@
 {
    "pdf": {
-      "ttf": [
+      "extFonts": [
          {
-             "family": "HELVETICA",
+             "family": "TestFont",
              "encoding": "ISO-8859-1",
-             "path": "/fonts/ttf/hell_vetica.ttf"
+             "path": "/fonts/ttf/test_font.ttf"
          },
          {
             "family": "Raleway-Regular",

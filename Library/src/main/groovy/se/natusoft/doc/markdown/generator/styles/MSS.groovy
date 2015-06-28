@@ -14,8 +14,6 @@ import se.natusoft.json.JSONObject
 import se.natusoft.json.JSONString
 import se.natusoft.json.JSONValue
 
-import java.lang.annotation.Documented
-
 /**
  * Markdown Style Sheet. This can be used for all non HTML generators to allow users
  * provide style data at generation time.
@@ -108,7 +106,7 @@ class MSS {
      * This represents values for the "pdf" section.
      */
     static enum MSS_PDF {
-        ttf,
+        extFonts,
         family,
         path,
         encoding
@@ -249,39 +247,39 @@ class MSS {
     }
 
     /**
-     * Returns a path to a true type font as specified in the MSS file. Do note that if the specified path
+     * Returns a path to an external font as specified in the MSS file. Do note that if the specified path
      * returned is relative to something, the MSS file for example it is the responsibility of the user of
      * this call to resolve what it is relative to. This method can never provide a full path!
      *
-     * @param name
-     * @return
-     * @throws IOException
+     * @param name The name of the font to find an MSSExtFont entry for.
+     *
+     * @throws MSSException on failure to resolve name.
      */
-    @NotNull MSSTTF getPdfTrueTypeFontPath(@NotNull String name) throws MSSException {
-        MSSTTF result = null
+    @NotNull MSSExtFont getPdfExternalFontPath(@NotNull String name) throws MSSException {
+        MSSExtFont result = null
 
         JSONObject pdf = (JSONObject) this.mss.getProperty(MSS_Top.pdf.name())
         if (pdf == null) throw new MSSException("No TTF fonts specified under 'pdf' section in MSS file!")
 
-        JSONArray ttfArray = (JSONArray) pdf.getProperty(MSS_PDF.ttf.name());
-        if (ttfArray == null) throw new MSSException("No TTF fonts specified under 'pdf/ttf' seciton in MSS file!")
+        JSONArray extFontsArray = (JSONArray) pdf.getProperty(MSS_PDF.extFonts.name());
+        if (extFontsArray == null) throw new MSSException("No external fonts specified under 'pdf/extFonts' seciton in MSS file!")
 
-        ttfArray.asList.each { JSONValue entry ->
-            if (!(entry instanceof JSONObject)) throw new MSSException("Bad MSS: pdf/ttf does not contain a list of objects!")
+        extFontsArray.asList.each { JSONValue entry ->
+            if (!(entry instanceof JSONObject)) throw new MSSException("Bad MSS: pdf/extFonts does not contain a list of objects!")
 
             JSONObject entryObject = entry as JSONObject
-            if (getNullSafe(entryObject, MSS_PDF.family.name(), "Error: TTF entry without 'family' field!").toString() == name) {
+            if (getNullSafe(entryObject, MSS_PDF.family.name(), "Error: extFonts entry without 'family' field!").toString() == name) {
 
-                result = new MSSTTF(
-                    fontPath: getNullSafe(entryObject, MSS_PDF.path.name(), "Error: TTF entry without 'path' field!").toString(),
-                    encoding: getNullSafe(entryObject, MSS_PDF.encoding.name(), "Error TTF entry without 'encoding' field!").toString()
+                result = new MSSExtFont(
+                    fontPath: getNullSafe(entryObject, MSS_PDF.path.name(), "Error: extFonts entry without 'path' field!").toString(),
+                    encoding: getNullSafe(entryObject, MSS_PDF.encoding.name(), "Error ectFonts entry without 'encoding' field!").toString()
                 )
 
                 return // from closure!
             }
         }
 
-        if (result == null) throw new MSSException("Error: Asked for TTF font '${name}' was not defined in MSS!")
+        if (result == null) throw new MSSException("Error: Asked for extFonts font '${name}' was not defined in MSS!")
 
         return result
     }
@@ -434,11 +432,6 @@ class MSS {
         return ensureFont(font)
     }
 
-    boolean isHr(MSS_Pages section) {
-        JSONString hr = this.pages.getProperty(section.name()) as JSONString
-        return hr != null && hr.toString().toLowerCase().equals("hr")
-    }
-
     class ForDocument {
         @NotNull MSSColorPair getColorPair(@Nullable String divName, @NotNull MSS_Pages section) {
             return getColorPairForDocument(divName, section)
@@ -446,10 +439,6 @@ class MSS {
 
         @NotNull MSSFont getFont(@Nullable String divName, @NotNull MSS_Pages section) {
             return getFontForDocument(divName, section)
-        }
-
-        boolean isHr(MSS_Pages section) {
-            return MSS.this.isHr(section)
         }
     }
 
@@ -602,9 +591,10 @@ class MSS {
      * <pre>
      *   {
      *      "pdf": {
-     *         "ttf": [
+     *         "extFonts": [
      *            {
      *                "family": "<name>",
+     *                "encoding": "<encoding>",
      *                "path": "<path>/font.ttf"
      *            },
      *            ...
@@ -888,7 +878,7 @@ class MSS {
         try {
             return enumCheck.call()
         }
-        catch (IllegalArgumentException iae) {}
+        catch (IllegalArgumentException ignored) { }
 
         return false
     }

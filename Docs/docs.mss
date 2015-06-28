@@ -1,6 +1,6 @@
 {
   "pdf": {
-    "ttf": [
+    "extFonts": [
       {
         "family": "Dwerneck",
         "encoding": "UTF-8",

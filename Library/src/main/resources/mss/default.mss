@@ -1,8 +1,9 @@
 {
   "pdf": {
-    "ttf": [
+    "extFonts": [
       {
         "family": "MDD-EXAMPLE",
+        "encoding": "UTF-8",
         "path": "/fonts/ttf/some-font.ttf"
       }
     ]

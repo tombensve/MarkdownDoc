@@ -3,7 +3,7 @@ package se.natusoft.doc.markdown.mss
 import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.generator.styles.MSSColor
 import se.natusoft.doc.markdown.generator.styles.MSSFontStyle
-import se.natusoft.doc.markdown.generator.styles.MSSTTF
+import se.natusoft.doc.markdown.generator.styles.MSSExtFont
 
 class MSSTest extends GroovyTestCase {
 
@@ -91,9 +91,9 @@ class MSSTest extends GroovyTestCase {
         // pdf
         //
 
-        MSSTTF mmsTtf = mss.getPdfTrueTypeFontPath("HELVETICA")
-        assert mmsTtf.fontPath == "/fonts/ttf/hell_vetica.ttf"
-        assert mmsTtf.encoding == "ISO-8859-1"
+        MSSExtFont mmsExtFont = mss.getPdfExternalFontPath("TestFont")
+        assert mmsExtFont.fontPath == "/fonts/ttf/test_font.ttf"
+        assert mmsExtFont.encoding == "ISO-8859-1"
     }
 
 }

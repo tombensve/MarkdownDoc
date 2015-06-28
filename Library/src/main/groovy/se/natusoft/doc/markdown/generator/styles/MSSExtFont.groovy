@@ -3,7 +3,7 @@ package se.natusoft.doc.markdown.generator.styles
 /**
  * This represents information about a TTF font.
  */
-class MSSTTF {
+class MSSExtFont {
     //
     // Properties
     //
