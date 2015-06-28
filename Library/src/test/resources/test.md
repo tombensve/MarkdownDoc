@@ -9,9 +9,9 @@ This is the ** headers section of the functional test document.
 
 This is a paragraph in a level 2 section.
 
-### Three WW (for testing Raleway font)
+### In Raleway external ttf font
 
-#### Four
+#### In Tuffy external ttf font
 
 ##### Five
 

@@ -2,8 +2,9 @@
   "pdf": {
     "ttf": [
       {
-        "family": "MDD-EXAMPLE",
-        "path": "/fonts/ttf/some-font.ttf"
+        "family": "Dwerneck",
+        "encoding": "UTF-8",
+        "path": "Docs/dwerneck.ttf"
       }
     ]
   },
@@ -248,20 +249,21 @@
     "family": "HELVETICA",
     "size": 10,
     "style": "NORMAL",
+
     "title": {
-      "family": "COURIER",
+      "family": "Dwerneck",
       "size": 30,
       "style": "UNDERLINE",
       "color": "SaddleBrown"
     },
     "subject": {
-      "family": "HELVETICA",
-      "size": 15,
+      "family": "Dwerneck",
+      "size": 18,
       "style": "NORMAL"
     },
     "version": {
-      "family": "HELVETICA",
-      "size": 12,
+      "family": "Dwerneck",
+      "size": 15,
       "style": "NORMAL",
       "label": "Version:"
     },

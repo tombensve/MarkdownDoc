@@ -163,8 +163,8 @@ class PDFGenerator implements Generator {
     /** This is to exclude the title and tables of content pages from the page numbering. */
     private int pageOffset
 
-    /** A root dir to prefix paths with. */
-    private File rootDir = null
+    /** The generator context to pass along. */
+    private GeneratorContext generatorContext = null
 
     //
     // Methods
@@ -234,18 +234,13 @@ class PDFGenerator implements Generator {
      */
     public void generate(Doc doc, Options opts, File rootDir, OutputStream resultStream) throws IOException, GenerateException {
         this.options = opts as PDFGeneratorOptions
-        this.rootDir = rootDir
 
-        if (this.rootDir == null && this.options.rootDir != null) {
-            this.rootDir = new File(this.options.rootDir)
-        }
+        this.generatorContext = new GeneratorContext(fileResource: new FileResource(rootDir: rootDir, optsRootDir: this.options.rootDir))
 
-        if (this.rootDir != null && !this.rootDir.isDirectory()) {
-            this.rootDir = this.rootDir.getParentFile()
-        }
+        this.pdfStyles.generatorContext = this.generatorContext
 
         if (this.options.mss != null && !this.options.mss.isEmpty()) {
-            File mssFile = this.rootDir != null ? new File (this.rootDir, this.options.mss) : new File(this.options.mss)
+            File mssFile = this.generatorContext.fileResource.getResourceFile(this.options.mss)
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(mssFile))
             try {
                 this.pdfStyles.mss = MSS.fromInputStream(bis)
@@ -255,9 +250,9 @@ class PDFGenerator implements Generator {
             }
         }
         else {
+            println("Using default MSS!")
             this.pdfStyles.mss = MSS.defaultMSS()
         }
-
 
         initRun()
 
@@ -1041,93 +1036,13 @@ class PDFGenerator implements Generator {
     }
 
     /**
-     * - Adds file: if no protocol is specified.
-     * - If file: then resolved to full path if not found with relative path.
-     *
-     * @param url The DocItem item provided url.
-     * @param parseFile The source file of the DocItem item.
-     */
-    private String resolveUrl(String url, File parseFile) {
-        String resolvedUrl = url
-        if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http")) {
-            resolvedUrl = "file:" + resolvedUrl
-        }
-        String fallbackUrl = resolvedUrl
-
-        if (resolvedUrl.startsWith("file:")) {
-            // Try for absolute path or relative to current directory first.
-            String path = resolvedUrl.substring(5)
-            File testFile = new File(path)
-
-            if (!testFile.exists()) {
-                // Then try relative to parseFile.
-                int ix = parseFile.canonicalPath.lastIndexOf(File.separator)
-                if (ix >= 0) {
-                    // Since this is based on parseFile.canonicalPath it will be a full path from the filesystem root.
-                    resolvedUrl = "file:" + ensureSeparatorAtEnd(parseFile.canonicalPath.substring(0, ix + 1))  + path
-                    testFile = new File(ensureSeparatorAtEnd(parseFile.canonicalPath.substring(0, ix + 1))  + path)
-                }
-
-                if (!testFile.exists()) {
-                    // Then try relative to result file.
-                    File resultFile = new File(this.options.resultFile)
-                    ix = resultFile.canonicalPath.lastIndexOf(File.separator)
-                    if (ix >= 0) {
-                        resolvedUrl = "file:" + ensureSeparatorAtEnd(resultFile.canonicalPath.substring(0, ix + 1)) + path
-                        testFile = new File(ensureSeparatorAtEnd(resultFile.canonicalPath.substring(0, ix + 1)) + path)
-
-                        if (!testFile.exists()) {
-                            // Finally try root dir.
-                            if (this.rootDir != null) {
-                                ix = this.rootDir.canonicalPath.lastIndexOf(File.separator)
-                                if (ix > 0) {
-                                    resolvedUrl = "file:" + ensureSeparatorAtEnd(this.rootDir.canonicalPath.substring(0, ix + 1) + path)
-                                    testFile = new File(ensureSeparatorAtEnd(this.rootDir.canonicalPath.substring(0, ix + 1)) + path)
-                                    if (!testFile.exists()) {
-                                        // Give up!
-                                        resolvedUrl = fallbackUrl
-                                    }
-                                }
-                                else {
-                                    // Give up!
-                                    resolvedUrl = fallbackUrl
-                                }
-                            }
-                            else {
-                                // Give up!
-                                resolvedUrl = fallbackUrl
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return resolvedUrl
-    }
-
-    /**
-     * Makes sure the path ends file File.separator.
-     *
-     * @param path The path to ensure.
-     *
-     * @return Possibly updated path.
-     */
-    private static String ensureSeparatorAtEnd(String path) {
-        if (!path.trim().endsWith(File.separator)) {
-            path = path + File.separator
-        }
-
-        return path
-    }
-
-    /**
      * Writes an image within a paragraph.
      *
      * @param image contains url and alt text for the image.
      * @param pdfParagraph The iText paragraph model to add to.
      */
     private void writeImage(Image image, PDFParagraph pdfParagraph) {
-        PDFImage pdfImage = PDFImage.getInstance(new URL(resolveUrl(image.url, image.parseFile)))
+        PDFImage pdfImage = PDFImage.getInstance(new URL(this.generatorContext.fileResource.resolveUrl(image.url, image.parseFile, this.options.resultFile)))
         pdfImage.scalePercent(60.0f)
         if (pdfImage != null) {
             pdfParagraph.add(pdfImage)
