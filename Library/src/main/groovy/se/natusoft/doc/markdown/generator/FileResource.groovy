@@ -1,10 +1,14 @@
 package se.natusoft.doc.markdown.generator
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeChecked
 import org.jetbrains.annotations.Nullable
 
 /**
  * Provides file resources.
  */
+@CompileStatic
+@TypeChecked
 class FileResource {
     //
     // Properties

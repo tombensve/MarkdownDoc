@@ -37,13 +37,14 @@
 package se.natusoft.doc.markdown.io
 
 import groovy.transform.CompileStatic
-import se.natusoft.doc.markdown.annotation.Immutable
+import groovy.transform.TypeChecked
 
 /**
  * This represents a line of text.
  */
 @CompileStatic
-@Immutable
+@TypeChecked
+@SuppressWarnings("GroovyUnusedDeclaration")
 class Line {
     //
     // Private Members

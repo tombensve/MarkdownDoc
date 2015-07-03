@@ -37,6 +37,7 @@
 package se.natusoft.doc.markdown.parser
 
 import groovy.transform.CompileStatic
+import groovy.transform.TypeChecked
 import se.natusoft.doc.markdown.api.Parser
 import se.natusoft.doc.markdown.exception.ParseException
 import se.natusoft.doc.markdown.io.Line
@@ -62,6 +63,7 @@ import se.natusoft.doc.markdown.parser.markdown.model.MDList
  * this tool also can generate PDF such HTML specifics should not be in the parsed text.
  */
 @CompileStatic
+@TypeChecked
 public class MarkdownParser implements Parser {
 
     //

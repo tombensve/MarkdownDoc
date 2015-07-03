@@ -1,11 +1,13 @@
 package se.natusoft.doc.markdown.model
 
 import groovy.transform.CompileStatic
+import groovy.transform.TypeChecked
 
 /**
  * This represents a div.
  */
 @CompileStatic
+@TypeChecked
 class Div extends DocItem {
     //
     // Properties
