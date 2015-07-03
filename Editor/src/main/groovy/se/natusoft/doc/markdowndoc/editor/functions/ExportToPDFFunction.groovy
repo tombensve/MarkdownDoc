@@ -37,6 +37,7 @@
 package se.natusoft.doc.markdowndoc.editor.functions
 
 import groovy.transform.CompileStatic
+import groovy.transform.TypeChecked
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.PDFGenerator
@@ -65,6 +66,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  * Provides a function that exports to PDF.
  */
 @CompileStatic
+@TypeChecked
 public class ExportToPDFFunction extends AbstractExportFunction implements EditorFunction, Configurable {
     //
     // Constants

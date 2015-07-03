@@ -1,50 +1,53 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.3.9
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
  *         2014-02-01: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdowndoc.editor.gui
 
 import groovy.transform.CompileStatic
+import groovy.transform.TypeChecked
 
 import java.awt.*
 import java.util.List
 
 /**
- * A FlowLayout but vertical. Can't believe that there is no such available!!
+ * Creates a flow layout where each content box is the same size, that is the size of the largest
+ * component added.
  */
 @CompileStatic
+@TypeChecked
 public class SmartFlowLayout implements LayoutManager2 {
     //
     // Private Members
@@ -70,13 +73,13 @@ public class SmartFlowLayout implements LayoutManager2 {
     //
 
     /**
-     * Creates a new VerticalFlowLayout.
+     * Creates a new SmartFlowLayout.
      */
     public SmartFlowLayout() {
     }
 
     /**
-     * Creates a new VerticalFlowLayout.
+     * Creates a new SmartFlowLayout.
      *
      * @param hgap The gap between each component. Default 0.
      * @param vgap The gap between each component row. Default 0.
@@ -87,7 +90,7 @@ public class SmartFlowLayout implements LayoutManager2 {
     }
 
     /**
-     * Creates a new VerticalFlowLayout.
+     * Creates a new SmartFlowLayout.
      *
      * @param commonWidth If true then all components will have the same width (the width of the widest component). Default true.
      */
@@ -96,7 +99,7 @@ public class SmartFlowLayout implements LayoutManager2 {
     }
 
     /**
-     * Creates a new VerticalFlowLayout.
+     * Creates a new SmartFlowLayout.
      *
      * @param hgap The gap between each component. Default 0.
      * @param vgap The gap between each component row. Default 0.

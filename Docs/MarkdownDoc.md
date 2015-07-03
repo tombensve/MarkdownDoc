@@ -26,9 +26,7 @@ In short MarkdownDoc provides the following:
 
 ### Binaries
 
-Version 1.2.9 is available in maven central.
-
-Binaries for newer versions will be made available at [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/view) and Bintrays JCenter repository: http://jcenter.bintray.com which should also contain everything in maven central.
+Binaries are made available at [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/view) and Bintrays JCenter repository: http://jcenter.bintray.com which should also contain everything in maven central.
 
 ### Thanks
 

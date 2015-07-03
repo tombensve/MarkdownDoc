@@ -66,7 +66,14 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_T
  * This is an editorPane for editing markdown documents.
  */
 @CompileStatic
+@TypeChecked
 public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configurable, MouseMotionProvider {
+
+    //
+    // Constants
+    //
+
+    private static final String WINDOW_TITLE = "MarkdownDoc Editor 1.4"
 
     //
     // Static members
@@ -388,7 +395,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
 
         this.setLayout(new BorderLayout())
         this.setSize(new Dimension(800, 800))
-        this.setTitle("MarkdownDoc Editor 1.3.9");
+        this.setTitle(WINDOW_TITLE);
 
         // Editor
 
@@ -471,8 +478,8 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
 
         componentLoader.each { EditorComponent component ->
             if (component instanceof Configurable) {
-                ((Configurable)component).registerConfigs(getConfigProvider())
-                this.configurables.add((Configurable)component)
+                (component as Configurable).registerConfigs(getConfigProvider())
+                this.configurables.add(component as Configurable)
             }
 
             component.setEditor(this)
@@ -480,15 +487,15 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
             if (component instanceof EditorFunction) {
                 this.functions.add((EditorFunction) component)
             } else if (component instanceof EditorInputFilter) {
-                this.filters.add((EditorInputFilter) component)
+                this.filters.add(component as EditorInputFilter)
             }
 
             if (component instanceof MouseMotionProvider) {
-                this.mouseMotionProviders.add((MouseMotionProvider)component)
+                this.mouseMotionProviders.add(component as MouseMotionProvider)
             }
 
             if (component instanceof DelayedInitializer) {
-                delayedInitializers.add((DelayedInitializer)component)
+                delayedInitializers.add(component as DelayedInitializer)
             }
 
         }
@@ -998,6 +1005,8 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
         StringBuilder sb = new StringBuilder()
         file.withReader('UTF-8') { BufferedReader reader ->
             reader.eachLine { String line ->
+                // Translate a special italicized quote that some markdown editors like to use into a
+                // standard quote.
                 line = line.replace("‚Äù", "\"")
                 sb.append(line)
                 sb.append("\n")
