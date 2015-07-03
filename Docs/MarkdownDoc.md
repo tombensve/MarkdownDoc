@@ -38,6 +38,12 @@ Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdo
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
 
+#### 1.4
+
+* Added support for what I call _Markdown Style Sheet_ or MSS for short. This is only applicable to PDF generation. For HTML there is CSS, and generating CSS from the MSS is a bad idea. The MSS is relatively simple an JSON based. This now gives the users of MarkdownDoc full control over styling of PDF documents, that is colors and fonts. It also supports ttf, otf, and any other format supported by iText for external fonts.
+
+* Added support for `<div class="..">...</div>`. This tool is mainly for writing documentation and generating PDF, but I wanted to add more flexibility for generating HTML pages also. Even though you probably want to keep a common style throughout a document, I did add div support to MSS. Divs within divs inherit styles upward. This was relatively simple to do.
+
 #### 1.3.9
 
 Only bugfix in editor when generating HTML directly from editor, which caused an NPE.
@@ -147,7 +153,7 @@ This specification however is not extremely exact so there might be some differe
 
 The known (and intentional) differences are:
 
-* No HMTL pass-through! Well, there is a small exception to that. HTML comments are passed along. Mostly because there is no markdown comment format and I wanted to be able to put comments in my documents. "\&\n\b\s\p\;" is also passed through to create indents that are not code blocks. The reason for no HTML pass-through is that MarkdownDoc takes it directly from markdown to PDF without any HTML rendering in between. The main purpose of this tool is to write documentation not generate HTML sites.
+* No HMTL pass-through! Well, there is a small exception to that. HTML comments are passed along. Mostly because there is no markdown comment format and I wanted to be able to put comments in my documents. "\&\n\b\s\p\;" is passed through to create indents that are not code blocks. "<div class=\"...\">...</div>" is also passed through. The start and end div has to be on their own lines! The reason for no general HTML pass-through is that MarkdownDoc takes it directly from markdown to a document model which is then used to generate PDF without any HTML rendering in between. The main purpose of this tool is to write documentation not generate HTML sites (though that has become easier in version 1.4 with the div support).
 
 * Escaping with '\\'. In MarkdownDoc you can escape any character with \\ and it will be passed through as is without being acted on if it has markdown meaning.
 

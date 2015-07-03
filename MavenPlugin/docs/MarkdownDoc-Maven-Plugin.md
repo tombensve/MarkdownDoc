@@ -77,111 +77,128 @@ Following is a complete plugin specification with all options specified:
                     </generatorOptions>
 
                     <pdfGeneratorOptions>
-                    	<!-- 
-                    		The path to the pdf document to produce. Path is relative
-                    		to project root (see comment about root above).
-                    		Required.
-                    	-->
+                        <!--
+                            The path to the pdf document to produce. Path is relative
+                            to project root (see comment about root above).
+                            Required.
+                        -->
                         <resultFile>Docs/MarkdownDoc-User-Guide.pdf</resultFile>
                         
-						<!-- 
-							The page size. For example:A4, LETTER 
-							Optional. Default: A4
-						-->
+                        <!--
+                            The path to an MSS file to use instead of the default one.
+                        -->
+                        <mss>Docs/doc.mss</mss>
+                        
+                        <!-- 
+                            The page size. For example:A4, LETTER 
+                            Optional. Default: A4
+                        -->
                         <pageSize>A4</pageSize>
                         
-						<!-- 
-							This will be put in PDF metadata and also rendered on
-							title page.
-							Required if generateTitlePage is true optional otherwise.
-						-->
+                        <!-- 
+                            This will be put in PDF metadata and also rendered on
+                            title page.
+                            Required if generateTitlePage is true optional otherwise.
+                        -->
                         <title>MarkdownDoc</title>
                         
-						<!-- 
-							This will be put in PDF metadata and also rendered on
-							title page.
-							Optional. 
-						-->
+                        <!-- 
+                            This will be put in PDF metadata and also rendered on
+                            title page.
+                            Optional. 
+                        -->
                         <subject>User Guide</subject>
                         
-						<!-- 
-							This will be put in the PDF metadata. 
-							Optional.
-						-->
+                        <!-- 
+                            This will be put in the PDF metadata. 
+                            Optional.
+                        -->
                         <keywords></keywords>
                         
-						<!-- 
-							The version of the document. This will be rendered on the
-							title page.
-							Optional, but recommended if generateTitlePage is true.
-						-->
+                        <!-- 
+                            The version of the document. This will be rendered on the
+                            title page.
+                            Optional, but recommended if generateTitlePage is true.
+                        -->
                         <version>1.0</version>
                         
-						<!-- 
-						    The author of the document. This will be put in PDF
-						    metadata and also be rendered on title page.
-						    Optional.
-						-->
+                        <!-- 
+                            The author of the document. This will be put in PDF
+                            metadata and also be rendered on title page.
+                            Optional.
+                        -->
                         <author>Tommy Svensson</author>
                         
-						<!-- 
-							This will be rendered on the title page. 
-							Optional
-						-->
+                        <!-- 
+                            This will be rendered on the title page. 
+                            Optional
+                        -->
                         <copyright>Copyright © 2012 Natusoft AB</copyright>
                         
-						<!-- 
-							If true then links will render as plain text and not be
-							clickable.
-							Optional. Default: false
-						-->
+                        <!-- 
+                            If true then links will render as plain text and not be
+                            clickable.
+                            Optional. Default: false
+                        -->
                         <hideLinks>false</hideLinks>
                         
-						<!-- 
-							Specify this if you want to change the bullet for
-							unordered lists.
-							Optional. Default: • (including space after!)
-						-->
+                        <!-- 
+                            Specify this if you want to change the bullet for
+                            unordered lists.
+                            Optional. Default: • (including space after!)
+                        -->
                         <unorderedListItemPrefix>• </unorderedListItemPrefix>
                         
-						<!-- 
-							Specify true here to have the first line of each
-							paragraph indented.
-							Optional. Default: false
-						-->
+                        <!-- 
+                            Specify true here to have the first line of each
+                            paragraph indented.
+                            Optional. Default: false
+                        -->
                         <firstLineParagraphIndent>false</firstLineParagraphIndent>
                         
-						<!--
-							Specify in R:G:B format to change the background color
-							of the document.
-							Optional. Default 255:255:255 (white)
-						-->
+                        <!--
+                            Specify in R:G:B format to change the background color
+                            of the document.
+                            Optional. Default 255:255:255 (white)
+                            
+                            NOTE: This is preferably set in a .mss file specified by the mss option.
+                                  If set both here and in an .mss file then this will win! (for backwards
+                                  compatibility).
+                        -->
                         <backgroundColor>255:255:255</backgroundColor>
                         
-						<!--
-							Specify in R:G:B format to change the text color
-							of block quotes.
-							Optional. Default: 128:128:128 (grey)
-						-->
+                        <!--
+                            Specify in R:G:B format to change the text color
+                            of block quotes.
+                            Optional. Default: 128:128:128 (grey)
+                            
+                            NOTE: This is preferably set in a .mss file specified by the mss option.
+                                  If set both here and in an .mss file then this will win! (for backwards
+                                  compatibility).
+                        -->
                         <blockQuoteColor>128:128:128</blockQuoteColor>
                         
-						<!--
-							Specify in R:G:B format to change the text color
-							of code blocks.
-							Optional. Default: 0:0:0 (black)
-						-->
+                        <!--
+                            Specify in R:G:B format to change the text color
+                            of code blocks.
+                            Optional. Default: 0:0:0 (black)
+                            
+                            NOTE: This is preferably set in a .mss file specified by the mss option.
+                                  If set both here and in an .mss file then this will win! (for backwards
+                                  compatibility).
+                        -->
                         <codeColor>0:0:0</codeColor>
                         
-						<!--
-							Set to true to generate a title page. 
-							Optional. Default: false
-						-->
+                        <!--
+                            Set to true to generate a title page. 
+                            Optional. Default: false
+                        -->
                         <generateTitlePage>true</generateTitlePage>
                         
-						<!-- 
-							Set to true to generate a table of contents.
-							Optional. Default: false
-						-->
+                        <!-- 
+                            Set to true to generate a table of contents.
+                            Optional. Default: false
+                        -->
                         <generateTOC>true</generateTOC>
                     </pdfGeneratorOptions>
 
@@ -215,39 +232,39 @@ Following is a complete plugin specification with all options specified:
                             ...
                         </inputPaths>
                     </generatorOptions>
-					
-					<htmlGeneratorOptions>
-                    	<!-- 
-                    		The path to the html document to produce. Path is relative
-                    		to project root (see comment about root above).
-                    		Required.
-                    	-->
+                    
+                    <htmlGeneratorOptions>
+                        <!-- 
+                            The path to the html document to produce. Path is relative
+                            to project root (see comment about root above).
+                            Required.
+                        -->
                         <resultFile>Docs/MarkdownDoc-User-Guide.html</resultFile>
                         
-						<!--
-							If set to true then the specified css will be inlined
-							in the generated html document. Otherwise the generated
-							html document will reference the specified css.
-							Optional. Default: false
-						-->
-						<inlineCSS>false</inlineCSS>
-						
-						<!--
-							The path to the css file for the generated html file.
-							Required.
-						-->
-						<css>css/my.css</css>
-						
-						<!—
-							This affects links and images. When specified the resulting 
-							file: URLs in the result will be relative to the path specified by
-							”path” if the absulute path of the URL starts with the specified 
-							path. If a plus sign (+) and a prefix path is specified it will be 
-							prefixed to the final URL.  
-						—>
-						 <makeFileLinksRelativeTo>path[+prefix]</makeFileLinksRelativeTo>						 
-						 
-					</htmlGeneratorOptions>
+                        <!--
+                            If set to true then the specified css will be inlined
+                            in the generated html document. Otherwise the generated
+                            html document will reference the specified css.
+                            Optional. Default: false
+                        -->
+                        <inlineCSS>false</inlineCSS>
+                        
+                        <!--
+                            The path to the css file for the generated html file.
+                            Required.
+                        -->
+                        <css>css/my.css</css>
+                        
+                        <!—
+                            This affects links and images. When specified the resulting 
+                            file: URLs in the result will be relative to the path specified by
+                            ”path” if the absulute path of the URL starts with the specified 
+                            path. If a plus sign (+) and a prefix path is specified it will be 
+                            prefixed to the final URL.  
+                        —>
+                         <makeFileLinksRelativeTo>path[+prefix]</makeFileLinksRelativeTo>                         
+                         
+                    </htmlGeneratorOptions>
 
                 </configuration>
             </execution>
@@ -278,25 +295,25 @@ Following is a complete plugin specification with all options specified:
                             ...
                         </inputPaths>
                     </generatorOptions>
-					
-					<htmlGeneratorOptions>
-                    	<!-- 
-                    		The path to the markdown document to produce. Path is relative
-                    		to project root (see comment about root above).
-                    		Required.
-                    	-->
+                    
+                    <htmlGeneratorOptions>
+                        <!-- 
+                            The path to the markdown document to produce. Path is relative
+                            to project root (see comment about root above).
+                            Required.
+                        -->
                         <resultFile>Docs/MarkdownDoc-User-Guide-Complete.md</resultFile>
                         
-						<!—
-							This affects links and images. When specified the resulting 
-							file: URLs in the result will be relative to the path specified by
-							”path” if the absulute path of the URL starts with the specified 
-							path. If a plus sign (+) and a prefix path is specified it will be 
-							prefixed to the final URL.  
-						—>
-						 <makeFileLinksRelativeTo>path[+prefix]</makeFileLinksRelativeTo>						 
-						 
-					</htmlGeneratorOptions>
+                        <!—
+                            This affects links and images. When specified the resulting 
+                            file: URLs in the result will be relative to the path specified by
+                            ”path” if the absulute path of the URL starts with the specified 
+                            path. If a plus sign (+) and a prefix path is specified it will be 
+                            prefixed to the final URL.  
+                        —>
+                         <makeFileLinksRelativeTo>path[+prefix]</makeFileLinksRelativeTo>                         
+                         
+                    </htmlGeneratorOptions>
 
                 </configuration>
             </execution>

@@ -161,74 +161,52 @@
     "size": 10,
     "style": "Normal",
     "pages": {
-      "standard": {
-      },
       "block_quote": {
-        "family": "HELVETICA",
-        "size": 10,
         "style": "Italic",
-        "color": "mddgrey",
-        "background": "white"
+        "color": "mddgrey"
       },
       "h1": {
-        "family": "HELVETICA",
         "size": 20,
         "style": "BOLD"
       },
       "h2": {
-        "family": "HELVETICA",
         "size": 18,
         "style": "BOLD",
         "hr": true
       },
       "h3": {
-        "family": "HELVETICA",
         "size": 16,
         "style": "BOLD"
       },
       "h4": {
-        "family": "HELVETICA",
         "size": 14,
         "style": "BOLD"
       },
       "h5": {
-        "family": "HELVETICA",
         "size": 12,
         "style": "BOLD"
       },
       "h6": {
-        "family": "HELVETICA",
         "size": 10,
         "style": "BOLD"
       },
       "emphasis": {
-        "family": "HELVETICA",
-        "size": 10,
         "style": "ITALIC"
       },
       "strong": {
-        "family": "HELVETICA",
-        "size": 10,
         "style": "BOLD"
       },
       "code": {
         "family": "COURIER",
         "size": 9,
-        "style": "NORMAL",
         "color": "64:64:64"
       },
       "anchor": {
-        "family": "HELVETICA",
-        "size": 10,
-        "style": "NORMAL",
         "color": "128:128:128"
       },
       "list_item": {
-        "family": "HELVETICA",
-        "size": 10
       },
       "footer": {
-        "family": "HELVETICA",
         "size": 8
       }
     },
@@ -251,27 +229,20 @@
     "size": 10,
     "style": "NORMAL",
     "title": {
-      "family": "COURIER",
       "size": 25,
       "style": "UNDERLINE"
     },
     "subject": {
-      "family": "HELVETICA",
-      "size": 15,
-      "style": "NORMAL"
+      "size": 15
     },
     "version": {
-      "family": "HELVETICA",
       "size": 12,
-      "style": "NORMAL",
       "label": "Version:"
     },
     "copyright": {
     },
     "author": {
-      "family": "HELVETICA",
       "size": 12,
-      "style": "NORMAL",
       "label": "Author:"
     }
   },

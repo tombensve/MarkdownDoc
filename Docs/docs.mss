@@ -161,86 +161,58 @@
     "size": 10,
     "style": "Normal",
     "pages": {
-      "standard": {
-      },
       "block_quote": {
-        "family": "HELVETICA",
-        "size": 10,
         "style": "Italic",
         "color": "mddgrey"
       },
       "h1": {
-        "family": "HELVETICA",
         "size": 20,
         "style": "BOLD"
       },
       "h2": {
-        "family": "HELVETICA",
         "size": 18,
         "style": "ITALIC",
         "color": "SaddleBrown",
         "hr": true
       },
       "h3": {
-        "family": "HELVETICA",
         "size": 16,
         "style": "BOLD"
       },
       "h4": {
-        "family": "HELVETICA",
         "size": 14,
         "style": "BOLD"
       },
       "h5": {
-        "family": "HELVETICA",
         "size": 12,
         "style": "BOLD"
       },
       "h6": {
-        "family": "HELVETICA",
         "size": 10,
         "style": "BOLD"
       },
       "emphasis": {
-        "family": "HELVETICA",
-        "size": 10,
         "style": "ITALIC"
       },
       "strong": {
-        "family": "HELVETICA",
-        "size": 10,
         "style": "BOLD"
       },
       "code": {
         "family": "COURIER",
-        "size": 9,
-        "style": "NORMAL",
+        "size": 8,
         "color": "64:64:64"
       },
       "anchor": {
-        "family": "HELVETICA",
-        "size": 10,
-        "style": "NORMAL",
         "color": "128:128:128"
       },
       "list_item": {
-        "family": "HELVETICA",
-        "size": 10
       },
       "footer": {
-        "family": "HELVETICA",
         "size": 8
       }
     },
 
     "divs": {
-      "mdd-example": {
-        "block_quote": {
-          "family": "COURIER",
-          "color": "120:120:120",
-          "background": "10:11:12"
-        }
-      }
     }
   },
 
@@ -258,21 +230,17 @@
     },
     "subject": {
       "family": "Dwerneck",
-      "size": 18,
-      "style": "NORMAL"
+      "size": 18
     },
     "version": {
       "family": "Dwerneck",
       "size": 15,
-      "style": "NORMAL",
       "label": "Version:"
     },
     "copyright": {
     },
     "author": {
-      "family": "HELVETICA",
       "size": 12,
-      "style": "NORMAL",
       "label": "Author:"
     }
   },
