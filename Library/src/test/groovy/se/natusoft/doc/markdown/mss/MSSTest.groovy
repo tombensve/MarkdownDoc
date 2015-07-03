@@ -1,10 +1,12 @@
 package se.natusoft.doc.markdown.mss
 
+import groovy.transform.CompileStatic
 import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.generator.styles.MSSColor
 import se.natusoft.doc.markdown.generator.styles.MSSFontStyle
 import se.natusoft.doc.markdown.generator.styles.MSSExtFont
 
+@CompileStatic
 class MSSTest extends GroovyTestCase {
 
     void testMSSColor() throws Exception {
@@ -37,17 +39,19 @@ class MSSTest extends GroovyTestCase {
         //
 
         MSS.ForDocument forDocument = mss.forDocument
-        assert forDocument.getFont(null, MSS.MSS_Pages.block_quote).family == "HELVETICA"
-        assert forDocument.getFont(null, MSS.MSS_Pages.block_quote).style == MSSFontStyle.ITALIC
-        assert forDocument.getFont(null, MSS.MSS_Pages.block_quote).size == 11
-        assert forDocument.getColorPair(null, MSS.MSS_Pages.block_quote).foreground == MSSColor.GREY
-        assert forDocument.getColorPair(null, MSS.MSS_Pages.block_quote).background == MSSColor.WHITE
+        assert forDocument.getFont(MSS.MSS_Pages.block_quote).family == "HELVETICA"
+        assert forDocument.getFont(MSS.MSS_Pages.block_quote).style == MSSFontStyle.ITALIC
+        assert forDocument.getFont(MSS.MSS_Pages.block_quote).size == 11
+        assert forDocument.getColorPair(MSS.MSS_Pages.block_quote).foreground == MSSColor.GREY
+        assert forDocument.getColorPair(MSS.MSS_Pages.block_quote).background == MSSColor.WHITE
 
-        assert forDocument.getFont("testdiv", MSS.MSS_Pages.block_quote).family == "COURIER"
-        assert forDocument.getFont("testdiv", MSS.MSS_Pages.block_quote).style == MSSFontStyle.ITALIC
-        assert forDocument.getFont("testdiv", MSS.MSS_Pages.block_quote).size == 11
-        assert forDocument.getColorPair("testdiv", MSS.MSS_Pages.block_quote).foreground == new MSSColor(color: "120:120:120")
-        assert forDocument.getColorPair("testdiv", MSS.MSS_Pages.block_quote).background == new MSSColor(color: "10:11:12")
+        LinkedList<String> divs = ["qaz"] as LinkedList<String>
+        mss.currentDivs = divs
+        assert forDocument.getFont(MSS.MSS_Pages.block_quote).family == "COURIER"
+        assert forDocument.getFont(MSS.MSS_Pages.block_quote).style == MSSFontStyle.ITALIC
+        assert forDocument.getFont(MSS.MSS_Pages.block_quote).size == 15 // Inherited!
+        assert forDocument.getColorPair(MSS.MSS_Pages.block_quote).foreground == new MSSColor(color: "120:120:120")
+        assert forDocument.getColorPair(MSS.MSS_Pages.block_quote).background == new MSSColor(color: "10:11:12")
 
         //
         // front_page

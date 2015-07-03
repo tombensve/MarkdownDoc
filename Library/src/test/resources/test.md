@@ -102,9 +102,15 @@ This is a paragraph between 2 horizontal rulers.
 
 This is a simple one line paragraph.
 
+<div class="qaz">
+
 A paragraph is simply one or more consecutive lines of text, separated by one or more blank lines.
 (A blank line is any line that looks like a blank line — a line containing nothing but spaces or
 tabs is considered blank.) Normal paragraphs should not be indented with spaces or tabs.
+
+> A little block quote within div.
+
+</div>
 
 This is a _formatting_ __Paragraph__. Here is [a link](http://to.somewhere.net/). Another [link] to somewhere. This paragraph
 also contains a `simple code block`. And here is an 

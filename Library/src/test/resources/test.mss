@@ -107,7 +107,11 @@
       },
 
       "divs": {
-         "testdiv": {
+         "qaz": {
+           "family": "COURIER",
+           "color": "20:30:40",
+           "background": "110:111:112",
+           "size": 15,
             "block_quote": {
                "family": "COURIER",
                "color": "120:120:120",

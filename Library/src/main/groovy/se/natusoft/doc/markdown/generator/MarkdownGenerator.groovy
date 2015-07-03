@@ -135,32 +135,36 @@ class MarkdownGenerator implements Generator {
             switch (docItem.format) {
                 case DocFormat.Comment:
                     pw.println("<!--")
-                    pw.println("  " + ((Comment)docItem).text)
+                    pw.println("  " + (docItem as Comment).text)
                     pw.println("-->")
                     break
 
                 case DocFormat.Paragraph:
-                    writeParagraph((Paragraph)docItem, pw)
+                    writeParagraph(docItem as Paragraph, pw)
                     break
 
                 case DocFormat.Header:
-                    writeHeader((Header)docItem, pw)
+                    writeHeader(docItem as Header, pw)
                     break
 
                 case DocFormat.BlockQuote:
-                    writeBlockQuote((BlockQuote)docItem, pw)
+                    writeBlockQuote(docItem as BlockQuote, pw)
                     break;
 
                 case DocFormat.CodeBlock:
-                    writeCodeBlock((CodeBlock)docItem, pw)
+                    writeCodeBlock(docItem as CodeBlock, pw)
                     break
 
                 case DocFormat.HorizontalRule:
-                    writeHorizontalRule((HorizontalRule)docItem, pw)
+                    writeHorizontalRule(docItem as HorizontalRule, pw)
                     break
 
                 case DocFormat.List:
-                    writeList((List)docItem, pw)
+                    writeList(docItem as List, pw)
+                    break
+
+                case DocFormat.Div:
+                    writeDiv(docItem as Div, pw)
                     break
 
                 default:
@@ -297,6 +301,17 @@ class MarkdownGenerator implements Generator {
             pw.print(" " + link.title)
         }
         pw.print(")")
+    }
+
+    private void writeDiv(Div div, PrintWriter pw) {
+        if (div.isStart()) {
+            pw.println("<div class=\"${div.name}\">")
+            pw.println()
+        }
+        else {
+            pw.println("</div>")
+            pw.println()
+        }
     }
 
     /**

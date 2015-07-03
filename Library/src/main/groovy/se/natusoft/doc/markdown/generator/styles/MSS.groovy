@@ -113,6 +113,13 @@ class MSS {
     }
 
     //
+    // Properties
+    //
+
+    /** The current divs. */
+    LinkedList<String> currentDivs
+
+    //
     // Private Members
     //
 
@@ -390,16 +397,17 @@ class MSS {
     /**
      * Returns a MSSColorPair containing foreground color and background color to use for the section.
      *
-     * @param divName The name of a div whose setting will override default for section. Optional, can be null.
      * @param section A section type like h1, blockquote, etc.
      */
-    @NotNull MSSColorPair getColorPairForDocument(@Nullable String divName, @NotNull MSS_Pages section) {
+    @NotNull MSSColorPair getColorPairForDocument(@NotNull MSS_Pages section) {
         MSSColorPair colorPair = new MSSColorPair()
 
-        if (divName != null) {
-            JSONObject div = this.divs.getProperty(divName) as JSONObject
-            updateMSSColorPairIfNotSet(colorPair, div?.getProperty(section.name()) as JSONObject)
-            updateMSSColorPairIfNotSet(colorPair, div)
+        if (this.currentDivs != null) {
+            this.currentDivs.each { String divName ->
+                JSONObject div = this.divs.getProperty(divName) as JSONObject
+                updateMSSColorPairIfNotSet(colorPair, div?.getProperty(section.name()) as JSONObject)
+                updateMSSColorPairIfNotSet(colorPair, div)
+            }
         }
 
         updateMSSColorPairIfNotSet(colorPair, this.pages.getProperty(section.name()) as JSONObject)
@@ -412,16 +420,18 @@ class MSS {
 
     /**
      * Returns a MSSFont to use for the specified div and section.
-     * @param divName The name of a div whose setting will override default for section. Optional, can be null.
+     *
      * @param section A section type like h1, blockquote, etc.
      */
-    @NotNull MSSFont getFontForDocument(@Nullable String divName, @NotNull MSS_Pages section) {
+    @NotNull MSSFont getFontForDocument(@NotNull MSS_Pages section) {
         MSSFont font = new MSSFont()
 
-        if (divName != null) {
-            JSONObject div = this.divs.getProperty(divName) as JSONObject
-            updateMSSFontIfNotSet(font, div?.getProperty(section.name()) as JSONObject)
-            updateMSSFontIfNotSet(font, div)
+        if (this.currentDivs != null) {
+            this.currentDivs.each { String divName ->
+                JSONObject div = this.divs.getProperty(divName) as JSONObject
+                updateMSSFontIfNotSet(font, div?.getProperty(section.name()) as JSONObject)
+                updateMSSFontIfNotSet(font, div)
+            }
         }
 
         updateMSSFontIfNotSet(font, this.pages.getProperty(section.name()) as JSONObject)
@@ -433,12 +443,12 @@ class MSS {
     }
 
     class ForDocument {
-        @NotNull MSSColorPair getColorPair(@Nullable String divName, @NotNull MSS_Pages section) {
-            return getColorPairForDocument(divName, section)
+        @NotNull MSSColorPair getColorPair(@NotNull MSS_Pages section) {
+            return getColorPairForDocument(section)
         }
 
-        @NotNull MSSFont getFont(@Nullable String divName, @NotNull MSS_Pages section) {
-            return getFontForDocument(divName, section)
+        @NotNull MSSFont getFont(@NotNull MSS_Pages section) {
+            return getFontForDocument(section)
         }
     }
 

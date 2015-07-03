@@ -52,9 +52,6 @@ public class DocItem {
     // Properties
     //
 
-    /** A possible parent of this. */
-    DocItem parent = null
-
     /** The sub items of this DocItem.  */
     JList<DocItem> items = new JLinkedList<DocItem>()
 
@@ -110,7 +107,6 @@ public class DocItem {
      */
     public void addItem(DocItem docItem) {
         this.items.add(docItem)
-        docItem.parent = this
     }
 
     /**
@@ -183,21 +179,6 @@ public class DocItem {
 ´    */
     public DocFormat getFormat() {
         return null
-    }
-
-    /**
-     * If there is a Div in the parent chain then the name will be returned since Div overrides this getter.
-     * Otherwise null will be returned.
-     */
-    public String getDivName() {
-        return this.parent?.getDivName()
-    }
-
-    /**
-     * Returns true if there is a div available for this item.
-     */
-    public boolean hasDiv() {
-        return getDivName() != null
     }
 
     /**

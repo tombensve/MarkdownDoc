@@ -63,5 +63,6 @@ public enum DocFormat {
     PlainText,
     HorizontalRule,
     Comment,
-    Space
+    Space,
+    Div
 }

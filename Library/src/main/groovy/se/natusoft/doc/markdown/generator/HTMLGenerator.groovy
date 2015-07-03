@@ -162,7 +162,7 @@ class HTMLGenerator implements Generator {
                 String line = reader.readLine()
                 while (line != null) {
                     html.doIndent()
-                    html.println(line) // We want no <>& translations here.
+                    html.outputln(line) // We want no <>& translations here.
                     line = reader.readLine()
                 }
                 reader.close()
@@ -180,11 +180,11 @@ class HTMLGenerator implements Generator {
             switch (docItem.format) {
                 case DocFormat.Comment:
                     html.doIndent()
-                    html.println("<!--")
+                    html.outputln("<!--")
                     html.doIndent()
-                    html.println("  " + ((Comment)docItem).text)
+                    html.outputln("  " + ((Comment)docItem).text)
                     html.doIndent()
-                    html.println("-->")
+                    html.outputln("-->")
                     break
 
                 case DocFormat.Paragraph:
@@ -209,6 +209,10 @@ class HTMLGenerator implements Generator {
 
                 case DocFormat.List:
                     writeList((List)docItem, html)
+                    break
+
+                case DocFormat.Div:
+                    writeDiv((Div)docItem, html)
                     break
 
                 default:
@@ -238,7 +242,7 @@ class HTMLGenerator implements Generator {
         html.tagln("code")
         codeBlock.items.each { DocItem item ->
             html.content(item.toString())
-            html.println("")
+            html.outputln("")
         }
         html.etagln("code")
         html.etagln("pre")
@@ -317,7 +321,7 @@ class HTMLGenerator implements Generator {
                     break
 
                 case DocFormat.Space:
-                    html.print("&nbsp;")
+                    html.output("&nbsp;")
                     break;
 
                 case DocFormat.PlainText:
@@ -351,6 +355,19 @@ class HTMLGenerator implements Generator {
         html.tag("a href='" + link.url + "' title='" + link.title + "'")
         html.content(link.text)
         html.etag("a")
+    }
+
+    private writeDiv(Div div, HTMLOutput html) {
+        if (div.isStart()) {
+            html.doIndent()
+            html.outputln("<div class=\"${div.name}\">")
+            html.incrementIndent()
+        }
+        else {
+            html.decrementIndent()
+            html.doIndent()
+            html.outputln("</div>")
+        }
     }
 
     /**
@@ -463,6 +480,14 @@ class HTMLGenerator implements Generator {
             return content.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
         }
 
+        public void incrementIndent() {
+            this.indent += 2
+        }
+
+        public void decrementIndent() {
+            this.indent -= 2
+        }
+
         /**
          * Output as a start tag.
          *
@@ -500,7 +525,7 @@ class HTMLGenerator implements Generator {
         public void tagln(String tag) {
             doIndent()
             pw.println("<" + tag + ">")
-            indent = indent + 2
+            incrementIndent()
         }
 
         /**
@@ -536,19 +561,29 @@ class HTMLGenerator implements Generator {
 
         /**
          * Outputs a line of text as is.
+         * <p/>
+         * <b>Do note that this method used to be called print()! Due to the Groovy giga-insanity of overriding print() and
+         * println() for *ALL* objects globally, just to make it possible to write println("...") without the System.out in
+         * front of it! Any method in your code called print() or println() will never ever be called! This is totally
+         * insane! I really like Groovy in general, but this ... </b>
          *
          * @param text The text to output.
          */
-        public void print(String text) {
+        public void output(String text) {
             pw.print(text)
         }
 
         /**
          * Outputs a line of text ending with a newline.
+         * <p/>
+         * <b>Do note that this method used to be called println()! Due to the Groovy giga-insanity of overriding print() and
+         * println() for *ALL* objects globally, just to make it possible to write println("...") without the System.out in
+         * front of it! Any method in your code called print() or println() will never ever be called! This is totally
+         * insane! I really like Groovy in general, but this ... </b>
          *
          * @param text The text to output.
          */
-        public void println(String text) {
+        public void outputln(String text) {
             pw.println(text)
         }
 
@@ -567,7 +602,7 @@ class HTMLGenerator implements Generator {
          * @param tag The tag to end.
          */
         public void etagln(String tag) {
-            indent = indent - 2
+            decrementIndent()
             doIndent()
             pw.println("</" + tag + ">")
         }

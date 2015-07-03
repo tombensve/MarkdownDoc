@@ -224,7 +224,7 @@ class MDLine extends Line  {
      * @return true if this line is a <div name="..."> line.
      */
     public boolean isStartDiv() {
-        startsWithExcludingWhitespace("<div")
+        matches("[ \t]*<div.*class=\".*\".*>")
     }
 
     /**

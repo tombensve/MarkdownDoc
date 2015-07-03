@@ -333,6 +333,15 @@ class Line {
     }
 
     /**
+     * Returns true if this line matches the specified regular expression.
+     *
+     * @param regexp The regexp to match.
+     */
+    public boolean matches(String regexp) {
+        return this.origLine.matches(regexp)
+    }
+
+    /**
      * @return true if this line is empty.
      */
     public boolean isEmpty() {

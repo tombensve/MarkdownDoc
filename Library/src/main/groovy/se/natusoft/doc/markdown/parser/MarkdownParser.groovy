@@ -112,13 +112,15 @@ public class MarkdownParser implements Parser {
             DocItem prevDocItem = null
             Stack<DocItem> hierarchyStack = new Stack<DocItem>();
 
+
             while (lineReader.hasLine()) {
                 MDLine line = (MDLine)lineReader.readLine()
 
                 if (!line.empty) {
                     DocItem docItem = null
 
-                    def divStartCase = ...
+                    def divStartCase = { MDLine it -> it.startDiv }
+                    def divEndCase = { MDLine it -> it.endDiv }
                     def commentStartCase = { MDLine it -> it.commentStart }
                     def headerCase       = { MDLine it -> it.header }
                     def listCase         = { MDLine it -> it.list && (it.leadingSpaces < 4 || (prevDocItem != null && prevDocItem.isHierarchy)) }
@@ -135,6 +137,8 @@ public class MarkdownParser implements Parser {
                         case blockQuoteCase   : docItem = parseBlockQuote (line, lineReader); break
                         case horizRulerCase   : docItem = new HorizontalRule();               break
                         case linkUrlCSpecCase : parseLinkUrlSpec(line);                       break
+                        case divStartCase     : docItem = parseStartDiv   (line);             break
+                        case divEndCase       : docItem = endDiv          ();                 break
 
                         // The annoying underline header format.
                         case { lineReader.hasLine() && (lineReader.peekNextLine().contains("----") ||
@@ -255,6 +259,24 @@ public class MarkdownParser implements Parser {
         }
 
         return new Comment(text: sb.toString())
+    }
+
+    /**
+     * Returns a new Div model with a name.
+     *
+     * @param line The line to extract name from.
+     */
+    private DocItem parseStartDiv(Line line) {
+        String[] parts = line.toString().split("\"")
+        if (parts.length != 3) throw new ParseException(message: "Strange div attempt found!", lineNo: line.lineNumber, line: line.toString())
+        return new Div(name: parts[1])
+    }
+
+    /**
+     * Returns a Div without a name which indicates an end div.
+     */
+    private DocItem endDiv() {
+        return new Div()
     }
 
     /**

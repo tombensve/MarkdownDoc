@@ -143,20 +143,19 @@ class PDFStylesMSSAdapter {
     /**
      * Returns a PDFFont for the specified document section and optional div.
      *
-     * @param div The div to get font for or null if no div applies.
      * @param section The section to get font for.
      *
      * @throws GenerateException on problem with font.
      */
-    @NotNull Font getFont(@Nullable String div, @NotNull MSS.MSS_Pages section) throws GenerateException {
+    @NotNull Font getFont(@NotNull MSS.MSS_Pages section) throws GenerateException {
         validate()
 
-        String key = (div != null ? div : "") + section.name()
+        String key = section.name()
         Font font = this.documentCache.get(key)
 
         if (font == null) {
-            MSSFont mssFont = this.mss.forDocument.getFont(div, section)
-            MSSColorPair mssColorPair = this.mss.forDocument.getColorPair(div, section)
+            MSSFont mssFont = this.mss.forDocument.getFont(section)
+            MSSColorPair mssColorPair = this.mss.forDocument.getColorPair(section)
 
             font = resolveFont(mssFont, mssColorPair)
 
@@ -164,15 +163,6 @@ class PDFStylesMSSAdapter {
         }
 
         return font
-    }
-
-    /**
-     * Returns a PDFFont for the specified document section and optional div.
-     *
-     * @param section The section to get font for.
-     */
-    @NotNull Font getFont(@NotNull MSS.MSS_Pages section) {
-        return getFont(DIV_NONE, section)
     }
 
     /**

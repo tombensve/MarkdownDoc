@@ -1,8 +1,11 @@
 package se.natusoft.doc.markdown.model
 
+import groovy.transform.CompileStatic
+
 /**
  * This represents a div.
  */
+@CompileStatic
 class Div extends DocItem {
     //
     // Properties
@@ -14,19 +17,16 @@ class Div extends DocItem {
     // Methods
     //
 
-    /**
-     * This overrides the same method in DocItem and returns the name of this div rather than
-     * passing it upp to the parent. So any children of a div will get the div name on getDivName().
-     * <p/>
-     * If the div have any divs in parent chain they will also be included first with each div separated
-     * by ':'.
-     */
     @Override
-    String getDivName() {
-        String div = ""
-        if (super.divName != null) {
-            div = super.divName + ":"
-        }
-        div + this.name
+    public DocFormat getFormat() {
+        return DocFormat.Div
+    }
+
+    boolean isStart() {
+        return this.name != null && !this.name.empty
+    }
+
+    boolean isEnd() {
+        return !isStart()
     }
 }

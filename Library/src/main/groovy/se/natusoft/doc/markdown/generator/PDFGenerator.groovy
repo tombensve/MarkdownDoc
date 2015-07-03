@@ -73,6 +73,7 @@ import se.natusoft.doc.markdown.model.BlockQuote
 import se.natusoft.doc.markdown.model.Code
 import se.natusoft.doc.markdown.model.CodeBlock
 import se.natusoft.doc.markdown.model.Comment
+import se.natusoft.doc.markdown.model.Div
 import se.natusoft.doc.markdown.model.Doc
 import se.natusoft.doc.markdown.model.DocFormat
 import se.natusoft.doc.markdown.model.DocItem
@@ -250,11 +251,15 @@ class PDFGenerator implements Generator {
             }
         }
         else {
-            println("Using default MSS!")
+            System.out.println("Using default MSS!")
             this.pdfStyles.mss = MSS.defaultMSS()
         }
 
         initRun()
+
+        LinkedList<String> divs = new LinkedList<>()
+
+        this.pdfStyles.mss.currentDivs = divs
 
         doc.items.each { DocItem docItem ->
 
@@ -268,19 +273,19 @@ class PDFGenerator implements Generator {
                     break
 
                 case DocFormat.Paragraph:
-                    writeParagraph((Paragraph)docItem)
+                    writeParagraph(docItem as Paragraph)
                     break
 
                 case DocFormat.Header:
-                    writeHeader((Header)docItem)
+                    writeHeader(docItem as Header)
                     break
 
                 case DocFormat.BlockQuote:
-                    writeBlockQuote((BlockQuote)docItem)
+                    writeBlockQuote(docItem as BlockQuote)
                     break;
 
                 case DocFormat.CodeBlock:
-                    writeCodeBlock((CodeBlock)docItem)
+                    writeCodeBlock(docItem as CodeBlock)
                     break
 
                 case DocFormat.HorizontalRule:
@@ -288,8 +293,18 @@ class PDFGenerator implements Generator {
                     break
 
                 case DocFormat.List:
-                    writeList((List)docItem)
+                    writeList(docItem as List)
                     break
+
+                case DocFormat.Div:
+                    Div div = docItem as Div
+                    if (div.start) {
+                        divs.offerFirst(div.name)
+                    }
+                    else {
+                        divs.removeFirst()
+                    }
+                    break;
 
                 default:
                     throw new GenerateException(message: "Unknown format model in Doc! [" + docItem.class.name + "]")
@@ -307,7 +322,7 @@ class PDFGenerator implements Generator {
             pageSize.backgroundColor = new PDFColorMSSAdapter(new MSSColor(color: this.options.backgroundColor))
         }
         else {
-            pageSize.backgroundColor = new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.standard).background)
+            pageSize.backgroundColor = new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(MSS.MSS_Pages.standard).background)
         }
 
         // Please note that itext is not really compatible with groovys property access!
@@ -736,7 +751,7 @@ class PDFGenerator implements Generator {
         Chunk chunk = new Chunk(textReplace(text), font)
         chunk.setTextRise(2f)
         chunk.setLineHeight((float)(font.size + 2.0f))
-        chunk.background = new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(null, level).background)
+        chunk.background = new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(level).background)
         return chunk
     }
 
@@ -749,7 +764,7 @@ class PDFGenerator implements Generator {
      */
     private void updateHeaderParagraph(PDFParagraph header, String text, MSS.MSS_Pages level) {
         header.add(createHeaderChunk(text, level))
-        if(this.pdfStyles.mss.forDocument.getFont(null, level).hr) {
+        if(this.pdfStyles.mss.forDocument.getFont(level).hr) {
             header.add(Chunk.NEWLINE);
             header.add(HEADING_UNDERLINE)
             header.add(Chunk.NEWLINE)
@@ -784,7 +799,7 @@ class PDFGenerator implements Generator {
         if (this.options.blockQuoteColor != null) {
             bqFont.setColor(new PDFColorMSSAdapter(new MSSColor(color:  this.options.blockQuoteColor)))
         }
-        PDFColorMSSAdapter background = new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.block_quote).background)
+        PDFColorMSSAdapter background = new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(MSS.MSS_Pages.block_quote).background)
         writeParagraph(pdfParagraph, blockQuote, bqFont, background)
         pdfParagraph.add(Chunk.NEWLINE)
         pdfParagraph.add(Chunk.NEWLINE)
@@ -811,7 +826,7 @@ class PDFGenerator implements Generator {
             chunk.setLineHeight((float)(codeFont.size + 1.0))
             chunk.setTextRise(-2)
             chunk.setCharacterSpacing(0.5f)
-            chunk.setBackground(new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.code).background))
+            chunk.setBackground(new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(MSS.MSS_Pages.code).background))
             pdfParagraph.add(chunk)
             pdfParagraph.add(Chunk.NEWLINE)
         }
@@ -889,7 +904,7 @@ class PDFGenerator implements Generator {
                     }
                     first = false
                     writeParagraph(listItem, (Paragraph)pg, this.pdfStyles.getFont(MSS.MSS_Pages.list_item),
-                        new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.list_item).background))
+                        new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(MSS.MSS_Pages.list_item).background))
                 }
                 pdfList.add(listItem)
             }
@@ -934,7 +949,7 @@ class PDFGenerator implements Generator {
      */
     private void writeParagraph(PDFParagraph pdfParagraph, Paragraph paragraph, Font font) throws GenerateException {
         writeParagraph(pdfParagraph, paragraph, font,
-                new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.standard).background))
+                new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(MSS.MSS_Pages.standard).background))
     }
 
     /**
@@ -1019,7 +1034,7 @@ class PDFGenerator implements Generator {
         Chunk chunk = new Chunk(textReplace(emphasis.text), this.pdfStyles.getFont(MSS.MSS_Pages.emphasis))
         // BUG: There seem to be a bug in iText here. For Italics iText seem to always render a white background
         //      no matter what color is in chunk.background. It works fine for Bold below.
-        chunk.background = new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.emphasis).background)
+        chunk.background = new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(MSS.MSS_Pages.emphasis).background)
         pdfParagraph.add(chunk)
     }
 
@@ -1031,7 +1046,7 @@ class PDFGenerator implements Generator {
      */
     private void writeStrong(Strong strong, PDFParagraph pdfParagraph) {
         Chunk chunk = new Chunk(textReplace(strong.text), this.pdfStyles.getFont(MSS.MSS_Pages.strong))
-        chunk.background = new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(null, MSS.MSS_Pages.strong).background)
+        chunk.background = new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(MSS.MSS_Pages.strong).background)
         pdfParagraph.add(chunk)
     }
 

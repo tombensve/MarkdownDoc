@@ -12,7 +12,7 @@ import se.natusoft.tools.optionsmgr.CommandLineOptionsManager
  * Test for MarkdownParser.
  */
 @CompileStatic
-class PDFGeneratorDevTest extends GroovyTestCase {
+class MarkdownGeneratorDevTest extends GroovyTestCase {
 
     /*
      * Note that this test only tests that the parsing and result generation executes
@@ -22,32 +22,20 @@ class PDFGeneratorDevTest extends GroovyTestCase {
 
         // Handle both IntelliJ and Maven who runs from different roots! (I see this as a bug in IntelliJ)
         File testFile = new File("src/test/resources/test.md") // Maven
-        File pdfFile = new File("src/test/resources/test.pdf")
+        File mdFile = new File("src/test/resources/test-generated.md")
         if (!testFile.exists()) {
             testFile = new File("Library/src/test/resources/test.md") // IntelliJ
-            pdfFile = new File("Library/src/test/resources/test.pdf")
+            mdFile = new File("Library/src/test/resources/test-generated.md")
         }
 
         Parser parser = new MarkdownParser()
         Doc doc = new Doc()
         parser.parse(doc, testFile, new Properties())
 
-        Generator generator = new PDFGenerator()
+        Generator generator = new MarkdownGenerator()
 
         CommandLineOptionsManager<Options> optMgr = new CommandLineOptionsManager<Options>(generator.optionsClass)
-        def args = [
-                "--title", "Test of iText PDF generating",
-                "--author", "Tommy Svensson",
-                "--subject", "PDF generation",
-                "--version", "1.0",
-                "--copyright", "Copyright © 2012 Natusoft AB",
-                "--hideLinks", "false",
-                "--unorderedListItemPrefix", "• ",
-                "--firstLineParagraphIndent", "false",
-                "--generateTOC", "true",
-                "--generateTitlePage", "true",
-                "--resultFile", pdfFile.toString()
-        ] as String[]
+        def args =  ["--resultFile", mdFile.toString()] as String[]
         Options options = optMgr.loadOptions("--", args)
 
         generator.generate(doc, options, null)
