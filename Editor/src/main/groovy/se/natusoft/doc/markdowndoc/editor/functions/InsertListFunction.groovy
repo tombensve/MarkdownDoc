@@ -43,7 +43,6 @@ import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
-import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
@@ -60,7 +59,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-public class InsertListFunction implements EditorFunction, Configurable {
+class InsertListFunction implements EditorFunction, Configurable {
     //
     // Private Members
     //
@@ -86,7 +85,7 @@ public class InsertListFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    public void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -96,7 +95,7 @@ public class InsertListFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    public void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -104,12 +103,12 @@ public class InsertListFunction implements EditorFunction, Configurable {
     // Constructors
     //
 
-    public InsertListFunction() {
+    InsertListFunction() {
         Icon listIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddlist.png"))
         this.listButton = new JButton(listIcon)
         listButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+            void actionPerformed(ActionEvent actionEvent) {
                 perform()
             }
         })
@@ -125,35 +124,35 @@ public class InsertListFunction implements EditorFunction, Configurable {
     }
 
     @Override
-    public void setEditor(Editor editor) {
+    void setEditor(Editor editor) {
         this.editor = editor
     }
 
     @Override
-    public String getGroup() {
-        return ToolBarGroups.FORMAT.name()
+    String getGroup() {
+        ToolBarGroups.FORMAT.name()
     }
 
     @Override
-    public String getName() {
-        return "Insert list format"
+    String getName() {
+        "Insert list format"
     }
 
     @Override
-    public JComponent getToolBarButton() {
-        return this.listButton
+    JComponent getToolBarButton() {
+        this.listButton
     }
 
     /**
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    public KeyboardKey getKeyboardShortcut() {
-        return keyboardShortcutConfig.getKeyboardKey()
+    KeyboardKey getKeyboardShortcut() {
+        keyboardShortcutConfig.getKeyboardKey()
     }
 
     @Override
-    public void perform() throws FunctionException {
+    void perform() throws FunctionException {
         this.editor.insertText("* ")
         this.editor.requestEditorFocus()
     }
@@ -161,5 +160,5 @@ public class InsertListFunction implements EditorFunction, Configurable {
     /**
      * Cleanup and unregister any configs.
      */
-    public void close() {}
+    void close() {}
 }

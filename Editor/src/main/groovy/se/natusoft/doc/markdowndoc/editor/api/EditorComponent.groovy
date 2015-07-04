@@ -44,7 +44,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public interface EditorComponent {
+interface EditorComponent {
 
     /**
      * Sets the editorPane for the component to use.

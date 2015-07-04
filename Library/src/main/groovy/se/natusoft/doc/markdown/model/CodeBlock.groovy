@@ -44,7 +44,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public class CodeBlock extends DocItem {
+class CodeBlock extends DocItem {
 
     //
     // Constructors
@@ -53,7 +53,7 @@ public class CodeBlock extends DocItem {
     /**
      * Creates a new CodeBlock.
      */
-    public CodeBlock() {
+    CodeBlock() {
         keepConsecutiveTogether = true
         addBetweenKeepTogether = "    "
     }
@@ -66,8 +66,8 @@ public class CodeBlock extends DocItem {
      * Returns the format this model represents.
      */
     @Override
-    public DocFormat getFormat() {
-        return DocFormat.CodeBlock
+    DocFormat getFormat() {
+        DocFormat.CodeBlock
     }
 
     /**
@@ -76,14 +76,14 @@ public class CodeBlock extends DocItem {
      * @return true if valid.
      */
     @Override
-    public boolean validate() {
-        return super.items.size() > 0
+    boolean validate() {
+        super.items.size() > 0
     }
 
     /**
      * Returns a string representation of this model for debugging purposes.
      */
-    public String toString() {
+    String toString() {
         StringBuilder sb = new StringBuilder()
         sb.append("CodeBlock:\n")
         for (DocItem item : super.items) {
@@ -91,6 +91,6 @@ public class CodeBlock extends DocItem {
             sb.append("\n")
         }
 
-        return sb.toString()
+        sb.toString()
     }
 }

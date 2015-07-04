@@ -45,14 +45,14 @@ import java.util.List
 
 @CompileStatic
 @TypeChecked
-public class ExportData {
+class ExportData {
 
     private DelayedServiceData delayedServicesData
 
     /** After call to loadPDFData(File) this contains all below fields of ExportDataValue type. */
     List<ExportDataValue> exportDataValues = null
 
-    public ExportData(DelayedServiceData localServiceData) {
+    ExportData(DelayedServiceData localServiceData) {
         this.delayedServicesData = localServiceData
     }
 
@@ -60,7 +60,7 @@ public class ExportData {
      * Initializes the exportDataValues list with all the fields
      * for easier dynamic access.
      */
-    public void loadDataValues() {
+    void loadDataValues() {
         exportDataValues = new LinkedList<ExportDataValue>()
 
         this.class.declaredFields.findAll { Field field ->
@@ -81,7 +81,7 @@ public class ExportData {
      *
      * @param file The properties file to load from.
      */
-    public void loadExportData(File file) {
+    void loadExportData(File file) {
         Properties props = this.delayedServicesData.getPersistentProps().load(fileToPropertiesName(file))
         if (props != null) {
             props.stringPropertyNames().each { String propName ->
@@ -99,7 +99,7 @@ public class ExportData {
      *
      * @param file The properties file to save to.
      */
-    public void saveExportData(File file) {
+    void saveExportData(File file) {
         Properties props = new Properties()
         exportDataValues.each { ExportDataValue exportDataValue ->
             props.setProperty(exportDataValue.getKey(), exportDataValue.getValue())
@@ -114,7 +114,7 @@ public class ExportData {
      *
      * @param bgColor The background color to set.
      */
-    public void setBackgroundColor(Color bgColor) {
+    void setBackgroundColor(Color bgColor) {
         this.exportDataValues.each { ExportDataValue edv ->
             edv.setBackgroundColor(bgColor)
         }
@@ -127,7 +127,7 @@ public class ExportData {
      * @param file The file to convert to properties name.
      */
     private static String fileToPropertiesName(File file) {
-        return file.getName().replace(".", "_")
+        file.getName().replace(".", "_")
     }
 
 }

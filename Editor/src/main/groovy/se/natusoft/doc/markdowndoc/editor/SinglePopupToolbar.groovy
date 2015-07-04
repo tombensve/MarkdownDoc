@@ -56,7 +56,7 @@ import java.util.List
  */
 @CompileStatic
 @TypeChecked
-public class SinglePopupToolbar implements ToolBar {
+class SinglePopupToolbar implements ToolBar {
 
     //
     // Private Members
@@ -83,7 +83,7 @@ public class SinglePopupToolbar implements ToolBar {
     /**
      * Creates a new MultiPopupToolbar.
      */
-    public SinglePopupToolbar() {}
+    SinglePopupToolbar() {}
 
     //
     // Methods
@@ -113,15 +113,15 @@ public class SinglePopupToolbar implements ToolBar {
      *
      * @param editor The associated editorPane provided.
      */
-    public void attach(Editor editor) {
+    void attach(Editor editor) {
         this.editor = editor
 
         this.mouseMotionListener = new MouseMotionListener() {
             @Override
-            public void mouseDragged(MouseEvent e) {}
+            void mouseDragged(MouseEvent e) {}
 
             @Override
-            public void mouseMoved(MouseEvent e) {
+            void mouseMoved(MouseEvent e) {
                 mouseMovedHandler(e)
             }
         }
@@ -134,7 +134,7 @@ public class SinglePopupToolbar implements ToolBar {
      * @param editor The editorPane to detach from.
      */
     @Override
-    public void detach(Editor editor) {
+    void detach(Editor editor) {
         close()
         editor.removeMouseMotionListener(this.mouseMotionListener)
         this.editor = null
@@ -146,21 +146,21 @@ public class SinglePopupToolbar implements ToolBar {
      * Convenience method to get information from associated editorPane.
      */
     private JFrame getParentFrame() {
-        return this.editor.getGUI().getWindowFrame()
+        this.editor.getGUI().getWindowFrame()
     }
 
     /**
      * Convenience method to get information from associated editorPane.
      */
     private int getTopMargin() {
-        return this.editor.getTopMargin()
+        this.editor.getTopMargin()
     }
 
     /**
      * Convenience method to get information from associated editorPane.
      */
     private int getEditorWidth() {
-        return this.editor.getWidth()
+        this.editor.getWidth()
     }
 
     /**
@@ -227,14 +227,14 @@ public class SinglePopupToolbar implements ToolBar {
             }
         }
 
-        return width
+        width
     }
 
     /**
      * @return true if toolbar is open.
      */
-    public boolean isOpen() {
-        return this.open
+    boolean isOpen() {
+        this.open
     }
 
     /**
@@ -242,7 +242,7 @@ public class SinglePopupToolbar implements ToolBar {
      *
      * @param function The function to add.
      */
-    public void addFunction(EditorFunction function) {
+    void addFunction(EditorFunction function) {
         if (!this.toolBarGroups.contains(function.getGroup())) {
             this.toolBarGroups.add(function.getGroup())
         }
@@ -261,7 +261,7 @@ public class SinglePopupToolbar implements ToolBar {
      * functions have been provided.
      */
     @Override
-    public void createToolBarContent() {
+    void createToolBarContent() {
         // This is done by open() and thus nothing needs to be done here.
     }
 
@@ -270,7 +270,7 @@ public class SinglePopupToolbar implements ToolBar {
      *
      * @param group The tool bar group to enable.
      */
-    public void disableGroup(String group) {
+    void disableGroup(String group) {
         List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
             functions.each { EditorFunction function ->
@@ -287,7 +287,7 @@ public class SinglePopupToolbar implements ToolBar {
      *
      * @param group The tool bar group to disable.
      */
-    public void enableGroup(String group) {
+    void enableGroup(String group) {
         List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
             functions.each { EditorFunction function ->

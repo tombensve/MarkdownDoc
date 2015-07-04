@@ -46,23 +46,23 @@ import javax.swing.JTextField
  */
 @CompileStatic
 @TypeChecked
-public class ExportDataTextValue extends ExportDataValue {
+class ExportDataTextValue extends ExportDataValue {
 
-    public ExportDataTextValue(String labelText) {
+    ExportDataTextValue(String labelText) {
         super(labelText)
         setValueComp(new JTextField(25))
     }
 
-    public ExportDataTextValue(String labelText, String defaultValue) {
+    ExportDataTextValue(String labelText, String defaultValue) {
         this(labelText)
         setValue(defaultValue)
     }
 
-    public String getValue() {
-        return ((JTextField)ensureValueComp()).getText()
+    String getValue() {
+        ((JTextField)ensureValueComp()).getText()
     }
 
-    public void setValue(String value) {
+    void setValue(String value) {
         ((JTextField)ensureValueComp()).setText(value)
     }
 }

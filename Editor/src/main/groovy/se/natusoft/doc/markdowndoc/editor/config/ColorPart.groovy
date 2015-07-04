@@ -44,7 +44,7 @@ import groovy.transform.TypeChecked;
  */
 @CompileStatic
 @TypeChecked
-public enum ColorPart {
+enum ColorPart {
     RED,
     GREEN,
     BLUE

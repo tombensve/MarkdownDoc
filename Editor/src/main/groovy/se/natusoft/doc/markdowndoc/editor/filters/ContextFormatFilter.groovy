@@ -53,7 +53,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_E
  */
 @CompileStatic
 @TypeChecked
-public class ContextFormatFilter implements EditorInputFilter, Configurable {
+class ContextFormatFilter implements EditorInputFilter, Configurable {
     //
     // Private Members
     //
@@ -84,7 +84,7 @@ public class ContextFormatFilter implements EditorInputFilter, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    public void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(ConfigProvider configProvider) {
         configProvider.registerConfig(doubleSpacedBulletsConfig, doubleSpacedBulletsConfigChanged)
     }
 
@@ -94,7 +94,7 @@ public class ContextFormatFilter implements EditorInputFilter, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    public void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(ConfigProvider configProvider) {
         configProvider.unregisterConfig(doubleSpacedBulletsConfig, doubleSpacedBulletsConfigChanged)
     }
 
@@ -103,24 +103,24 @@ public class ContextFormatFilter implements EditorInputFilter, Configurable {
     //
 
     @Override
-    public void setEditor(Editor editor) {
+    void setEditor(Editor editor) {
         this.editor = editor
     }
 
     private boolean isBulletChar(char bulletChar) {
-        return bulletChar == '+' || bulletChar == '-' || bulletChar == '*'
+        bulletChar == '+' || bulletChar == '-' || bulletChar == '*'
     }
 
     private boolean isBulletChar(String bulletChar) {
-        return bulletChar.length() > 0 && isBulletChar(bulletChar.charAt(0))
+        bulletChar.length() > 0 && isBulletChar(bulletChar.charAt(0))
     }
 
     private boolean isBulletStart(String line) {
-        return line.length() > 1 && isBulletChar(line.charAt(0)) && line.charAt(1) == ' '
+        line.length() > 1 && isBulletChar(line.charAt(0)) && line.charAt(1) == ' '
     }
 
     @Override
-    public void keyPressed(KeyEvent keyEvent) {
+    void keyPressed(KeyEvent keyEvent) {
         try {
             // Catch new lines
             if (keyEvent.getKeyChar() == '\n') {
@@ -242,6 +242,6 @@ public class ContextFormatFilter implements EditorInputFilter, Configurable {
     /**
      * Cleanup and unregister any configs.
      */
-    public void close() {}
+    void close() {}
 
 }

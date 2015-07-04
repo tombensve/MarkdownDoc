@@ -44,9 +44,9 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public class DocException extends Exception {
+class DocException extends RuntimeException { // Changed to RuntimeException in 1.4!
     //
-    // Private Members
+    // Properties
     //
 
     /** The exception message */

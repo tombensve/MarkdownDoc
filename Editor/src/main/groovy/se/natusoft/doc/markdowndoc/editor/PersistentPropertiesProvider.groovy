@@ -45,7 +45,7 @@ import se.natusoft.doc.markdowndoc.editor.api.PersistentProps
  */
 @CompileStatic
 @TypeChecked
-public class PersistentPropertiesProvider implements PersistentProps {
+class PersistentPropertiesProvider implements PersistentProps {
     //
     // Constructors
     //
@@ -53,7 +53,7 @@ public class PersistentPropertiesProvider implements PersistentProps {
     /**
      * Creates a new PersistentPropertiesProvider.
      */
-    public PersistentPropertiesProvider() {}
+    PersistentPropertiesProvider() {}
 
     //
     // Methods
@@ -69,7 +69,8 @@ public class PersistentPropertiesProvider implements PersistentProps {
         if (!propsDir.exists()) {
             propsDir.mkdirs()
         }
-        return propsDir
+
+        propsDir
     }
 
     /**
@@ -80,7 +81,7 @@ public class PersistentPropertiesProvider implements PersistentProps {
      * @return A Properties object or null if not available (or failure to read it!).
      */
     @Override
-    public Properties load(String name) {
+    Properties load(String name) {
         File propsFile = new File(getPropsDir(), name + ".properties")
         Properties props = null
 
@@ -98,7 +99,7 @@ public class PersistentPropertiesProvider implements PersistentProps {
             try {if (propsReader != null) propsReader.close()} catch (IOException cieo) {}
         }
 
-        return props
+        props
     }
 
     /**
@@ -108,7 +109,7 @@ public class PersistentPropertiesProvider implements PersistentProps {
      * @param props The properties to save.
      */
     @Override
-    public void save(String name, Properties props) {
+    void save(String name, Properties props) {
         File propsFile = new File(getPropsDir(), name + ".properties")
 
         FileWriter writer = null

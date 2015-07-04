@@ -50,9 +50,9 @@ import javax.swing.*
  */
 @CompileStatic
 @TypeChecked
-public class CopySelectionFunction implements EditorFunction {
+class CopySelectionFunction implements EditorFunction {
     //
-    // Private Members
+    // Properties
     //
 
     Editor editor
@@ -62,32 +62,32 @@ public class CopySelectionFunction implements EditorFunction {
     //
 
     @Override
-    public String getGroup() {
-        return null
+    String getGroup() {
+        null
     }
 
     @Override
-    public String getName() {
-        return "Copy"
+    String getName() {
+        "Copy"
     }
 
     @Override
-    public JComponent getToolBarButton() {
-        return null
+    JComponent getToolBarButton() {
+        null
     }
 
     @Override
-    public KeyboardKey getKeyboardShortcut() {
-        return new KeyboardKey("Meta+C")
+    KeyboardKey getKeyboardShortcut() {
+        new KeyboardKey("Meta+C")
     }
 
     @Override
-    public void perform() throws FunctionException {
+    void perform() throws FunctionException {
         this.editor.copy()
     }
 
     /**
      * Cleanup and unregister any configs.
      */
-    public void close() {}
+    void close() {}
 }

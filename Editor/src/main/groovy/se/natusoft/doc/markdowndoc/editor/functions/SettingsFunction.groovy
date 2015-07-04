@@ -59,7 +59,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-public class SettingsFunction implements EditorFunction, Configurable, DelayedInitializer {
+class SettingsFunction implements EditorFunction, Configurable, DelayedInitializer {
     //
     // Constants
     //
@@ -94,7 +94,7 @@ public class SettingsFunction implements EditorFunction, Configurable, DelayedIn
      * @param configProvider The config provider to register with.
      */
     @Override
-    public void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -104,7 +104,7 @@ public class SettingsFunction implements EditorFunction, Configurable, DelayedIn
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    public void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -112,12 +112,12 @@ public class SettingsFunction implements EditorFunction, Configurable, DelayedIn
     // Constructors
     //
 
-    public SettingsFunction() {
+    SettingsFunction() {
         Icon settingsIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddsettings.png"))
         this.settingsButton = new JButton(settingsIcon)
         this.settingsButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+            void actionPerformed(ActionEvent actionEvent) {
                 perform()
             }
         })
@@ -133,35 +133,35 @@ public class SettingsFunction implements EditorFunction, Configurable, DelayedIn
     }
 
     @Override
-    public void setEditor(Editor editor) {
+    void setEditor(Editor editor) {
         this.editor = editor
     }
 
     @Override
-    public String getGroup() {
-        return ToolBarGroups.CONFIG.name()
+    String getGroup() {
+        ToolBarGroups.CONFIG.name()
     }
 
     @Override
-    public String getName() {
-        return "Open settings"
+    String getName() {
+        "Open settings"
     }
 
     @Override
-    public JComponent getToolBarButton() {
-        return this.settingsButton
+    JComponent getToolBarButton() {
+        this.settingsButton
     }
 
     /**
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    public KeyboardKey getKeyboardShortcut() {
-        return keyboardShortcutConfig.getKeyboardKey()
+    KeyboardKey getKeyboardShortcut() {
+        keyboardShortcutConfig.getKeyboardKey()
     }
 
     @Override
-    public void perform() throws FunctionException {
+    void perform() throws FunctionException {
         this.settingsWindow = new SettingsWindow() {
 
             @Override
@@ -249,7 +249,7 @@ public class SettingsFunction implements EditorFunction, Configurable, DelayedIn
     /**
      * Cleanup and unregister any configs.
      */
-    public void close() {
+    void close() {
 
     }
 
@@ -257,7 +257,7 @@ public class SettingsFunction implements EditorFunction, Configurable, DelayedIn
      * Initializes the component.
      */
     @Override
-    public void init() {
+    void init() {
         load()
     }
 }

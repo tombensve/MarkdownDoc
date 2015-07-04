@@ -49,7 +49,7 @@ import java.util.List as JList
  */
 @CompileStatic
 @TypeChecked
-public class DocItem {
+class DocItem {
     //
     // Properties
     //
@@ -81,25 +81,25 @@ public class DocItem {
      *
      * @param object The object to left shift in.
      */
-    public DocItem leftShift(Object object) {
+    DocItem leftShift(Object object) {
         addItem(object.toString())
-        return this
+        this
     }
 
     /**
      * Creates a new DocItem instance of the same type as this instance and with the same base DocItem config as this.
      */
-    public DocItem createNewWithSameConfig() {
-        DocItem di = (DocItem)this.class.newInstance()
-        copyConfig(di)
-        return di
+    DocItem createNewWithSameConfig() {
+        copyConfig(this.class.newInstance() as DocItem)
     }
 
-    protected void copyConfig(DocItem docItem) {
+    protected DocItem copyConfig(DocItem docItem) {
         docItem.setKeepConsecutiveTogether(this.keepConsecutiveTogether)
         docItem.setAddBetweenKeepTogether(this.addBetweenKeepTogether)
         docItem.setIsHierarchy(this.isHierarchy)
         docItem.setRenderPrefixedSpace(this.renderPrefixedSpace)
+
+        docItem
     }
 
     /**
@@ -107,7 +107,7 @@ public class DocItem {
      *
      * @param paragraph A Paragraph to add.
      */
-    public void addItem(DocItem docItem) {
+    void addItem(DocItem docItem) {
         this.items.add(docItem)
     }
 
@@ -116,7 +116,7 @@ public class DocItem {
      *
      * @param items the items to add.
      */
-    public void addItems(JList<DocItem> items) {
+    void addItems(JList<DocItem> items) {
         for (DocItem item : items) {
             addItem(item);
         }
@@ -127,7 +127,7 @@ public class DocItem {
      *
      * @param text Text to add.
      */
-    public void addItem(String text) {
+    void addItem(String text) {
         PlainText pt = new PlainText(text: text)
         this.items.add(pt);
     }
@@ -137,14 +137,14 @@ public class DocItem {
      *
      * @param line Text to add.
      */
-    public void addItem(Line line) {
+    void addItem(Line line) {
         addItem(line.toString())
     }
 
     /**
      * Returns true if this DocItem has sub items.
      */
-    public boolean hasSubItems() {
+    boolean hasSubItems() {
         return this.items.size() > 0
     }
 
@@ -153,8 +153,8 @@ public class DocItem {
      *
      * @param prevItem The previous item to compare to.
      */
-    public boolean isHierarchyDown(DocItem prevItem) {
-        return false
+    boolean isHierarchyDown(DocItem prevItem) {
+        false
     }
 
     /**
@@ -162,8 +162,8 @@ public class DocItem {
      *
      * @param prevItem The previous item to compare to.
      */
-    public boolean isHierarchyUp(DocItem prevItem) {
-        return false
+    boolean isHierarchyUp(DocItem prevItem) {
+        false
     }
 
     /**
@@ -171,16 +171,16 @@ public class DocItem {
      *
      * @param docItem The DocItem to test.
      */
-    public boolean isSameType(DocItem docItem) {
-        return this.class == docItem.class
+    boolean isSameType(DocItem docItem) {
+        this.class == docItem.class
     }
 
     /**
      * This returns the format of the sub model of DocFormat or if this method is not overridden null. Only
      * the models representing the formats in DocFormat will override this.
 ´    */
-    public DocFormat getFormat() {
-        return null
+    DocFormat getFormat() {
+        null
     }
 
     /**
@@ -188,7 +188,7 @@ public class DocItem {
      *
      * @return true if valid.
      */
-    public boolean validate() {
+    boolean validate() {
         boolean valid = true
 
         for (DocItem di : this.items) {
@@ -198,13 +198,13 @@ public class DocItem {
             }
         }
 
-        return valid
+        valid
     }
 
     /**
      * Returns a String representation for debugging purposes.
      */
-    public String toString() {
+    String toString() {
         def str = ''
 
         boolean first = true
@@ -214,6 +214,6 @@ public class DocItem {
             str += item.toString()
         }
 
-        return str
+        str
     }
 }

@@ -46,7 +46,7 @@ import javax.swing.*
  */
 @CompileStatic
 @TypeChecked
-public interface GUI {
+interface GUI {
 
     /**
      * Needed for popping upp dialogs.

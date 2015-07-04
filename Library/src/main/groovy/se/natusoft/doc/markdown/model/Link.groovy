@@ -44,7 +44,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public class Link extends PlainText {
+class Link extends PlainText {
     //
     // Private Members
     //
@@ -63,16 +63,16 @@ public class Link extends PlainText {
      * Returns the format this model represents.
      */
     @Override
-    public DocFormat getFormat() {
-        return DocFormat.Link
+    DocFormat getFormat() {
+        DocFormat.Link
     }
 
     @Override
-    public boolean validate() {
-        return this.url != null
+    boolean validate() {
+        this.url != null
     }
 
-    public String toString() {
+    String toString() {
         StringBuilder sb  = new StringBuilder();
 
         sb.append("<a href='" + url + "'")
@@ -82,6 +82,6 @@ public class Link extends PlainText {
 
         sb.append(">" + text + "</a>")
 
-        return sb.toString()
+        sb.toString()
     }
 }

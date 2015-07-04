@@ -46,7 +46,7 @@ import java.lang.String
  */
 @CompileStatic
 @TypeChecked
-public class ValidSelectionConfigEntry extends ConfigEntry {
+class ValidSelectionConfigEntry extends ConfigEntry {
     //
     // Private Members
     //
@@ -65,7 +65,7 @@ public class ValidSelectionConfigEntry extends ConfigEntry {
      * @param validValues The valid values for the config.
      * @param configGroup The config group this config belongs to.
      */
-    public ValidSelectionConfigEntry(String key, String description, ValidValues validValues, String configGroup) {
+    ValidSelectionConfigEntry(String key, String description, ValidValues validValues, String configGroup) {
         super(key, description, configGroup)
         this.validValues = validValues
     }
@@ -79,7 +79,8 @@ public class ValidSelectionConfigEntry extends ConfigEntry {
      * @param validValues The valid values for the config.
      * @param configGroup The config group this config belongs to.
      */
-    public ValidSelectionConfigEntry(String key, String description, String defaultValue, ValidValues validValues, String configGroup) {
+    ValidSelectionConfigEntry(String key, String description, String defaultValue, ValidValues validValues,
+                              String configGroup) {
         super(key, description, defaultValue, configGroup)
         this.validValues = validValues
     }
@@ -87,20 +88,20 @@ public class ValidSelectionConfigEntry extends ConfigEntry {
     /**
      * Returns the valid values.
      */
-    public Value[] getValidValues() {
-        return this.validValues.validValues()
+    Value[] getValidValues() {
+        this.validValues.validValues()
     }
 
     /**
      * Returns a show adapted valueComp for display in settings.
      */
-    public String getShowValue() {
+    String getShowValue() {
         String value = getValue()
         if (value.indexOf('.') > 0) {
             value = value.substring(value.lastIndexOf('.') + 1)
         }
 
-        return value
+        value
     }
 
     //
@@ -112,9 +113,9 @@ public class ValidSelectionConfigEntry extends ConfigEntry {
      *
      * @param strings The String List to convert.
      */
-    public static String[] stringListToArray(List<String> strings) {
+    static String[] stringListToArray(List<String> strings) {
         String[] array = new String[strings.size()]
-        return strings.toArray(array)
+        strings.toArray(array)
     }
 
     /**
@@ -122,13 +123,13 @@ public class ValidSelectionConfigEntry extends ConfigEntry {
      *
      * @param stringValues The string array to convert.
      */
-    public static Value[] convertToValues(String[] stringValues) {
+    static Value[] convertToValues(String[] stringValues) {
         Value[] values = new Value[stringValues.length]
         for (int i = 0; i < stringValues.length; i++) {
             values[i] = new Value(stringValues[i])
         }
 
-        return values
+        values
     }
 
     /**
@@ -138,7 +139,7 @@ public class ValidSelectionConfigEntry extends ConfigEntry {
      * @param stringValues The string array to convert.
      * @param cutAtLast The character to find last of and use text after as show text.
      */
-    public static Value[] convertToValues(String[] stringValues, String cutAtLast) {
+    static Value[] convertToValues(String[] stringValues, String cutAtLast) {
         Value[] values = new Value[stringValues.length]
         for (int i = 0; i < stringValues.length; i++) {
             String use = stringValues[i]
@@ -146,7 +147,7 @@ public class ValidSelectionConfigEntry extends ConfigEntry {
             values[i] = new Value(show, use)
         }
 
-        return values
+        values
     }
 
     //
@@ -159,7 +160,7 @@ public class ValidSelectionConfigEntry extends ConfigEntry {
      * a choice of which to use are all class names with full package path. In this case the show part
      * is passed as everything after the last '.' character. This makes it slightly more user friendly.
      */
-    public static class Value {
+    static class Value {
         private String show
         private String use
 
@@ -169,7 +170,7 @@ public class ValidSelectionConfigEntry extends ConfigEntry {
          * @param show The part of the valueComp to show in the gui.
          * @param use The real/full valueComp to store in config and use.
          */
-        public Value(String show, String use) {
+        Value(String show, String use) {
             this.show = show
             this.use = use
         }
@@ -179,7 +180,7 @@ public class ValidSelectionConfigEntry extends ConfigEntry {
          *
          * @param use The real valueComp to use. This is also set as show valueComp.
          */
-        public Value(String use) {
+        Value(String use) {
             this.show = use
             this.use = use
         }
@@ -187,23 +188,23 @@ public class ValidSelectionConfigEntry extends ConfigEntry {
         /**
          * Returns the show valueComp.
          */
-        public String getShow() {
-            return this.show
+        String getShow() {
+            this.show
         }
 
         /**
          * Returns the use valueComp.
          */
-        public String getUse() {
-            return this.use
+        String getUse() {
+            this.use
         }
 
         /**
          * Returns the show valueComp. This so that a Value array can be passed as values to a JComboBox and it
          * will only display the show valueComp in the gui.
          */
-        public String toString() {
-            return this.show
+        String toString() {
+            this.show
         }
 
         /**
@@ -212,15 +213,15 @@ public class ValidSelectionConfigEntry extends ConfigEntry {
          *
          * @param o The object to compare to.
          */
-        public boolean equals(Object o) {
-            return o instanceof Value && ((Value) o).show.equals(this.show)
+        boolean equals(Object o) {
+            o instanceof Value && ((Value) o).show.equals(this.show)
         }
     }
 
     /**
      * Defines the valid values.
      */
-    public interface ValidValues {
+    interface ValidValues {
         Value[] validValues()
     }
 }

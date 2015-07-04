@@ -46,7 +46,6 @@ import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
-import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
@@ -67,7 +66,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-public class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunction, Configurable {
+class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunction, Configurable {
     //
     // Constants
     //
@@ -108,7 +107,7 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
      * @param configProvider The config provider to register with.
      */
     @Override
-    public void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -118,7 +117,7 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    public void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -144,7 +143,7 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
         )
         private ExportDataValue openResult = new ExportDataSelectValue("Open result:")
 
-        public HTMLData(DelayedServiceData delayedServiceData) {
+        HTMLData(DelayedServiceData delayedServiceData) {
             super(delayedServiceData)
             ((ExportFileValue)css).delayedServiceData = delayedServiceData
             ((ExportFileValue)fileLinks).delayedServiceData = delayedServiceData
@@ -155,7 +154,7 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
     // Constructors
     //
 
-    public ExportToHTMLFunction() {
+    ExportToHTMLFunction() {
         super(GENERATED_HTML_FILE)
         Icon htmlIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddhtml.png"))
         this.htmlButton = new JButton(htmlIcon)
@@ -172,23 +171,23 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
     }
 
     @Override
-    public String getGroup() {
-        return ToolBarGroups.EXPORT.name()
+    String getGroup() {
+        ToolBarGroups.EXPORT.name()
     }
 
     @Override
-    public String getName() {
-        return "Export to HTML"
+    String getName() {
+        "Export to HTML"
     }
 
     @Override
-    public KeyboardKey getKeyboardShortcut() {
-        return keyboardShortcutConfig.getKeyboardKey()
+    KeyboardKey getKeyboardShortcut() {
+        keyboardShortcutConfig.getKeyboardKey()
     }
 
     @Override
-    public JComponent getToolBarButton() {
-        return this.htmlButton
+    JComponent getToolBarButton() {
+        this.htmlButton
     }
 
     /**
@@ -197,7 +196,7 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
      * @throws FunctionException on failure to perform function.
      */
     @Override
-    public void perform() throws FunctionException {
+    void perform() throws FunctionException {
         this.exportFile = getExportOutputFile("HTML", "html", "html", "htm")
 
         if (this.exportFile != null) {
@@ -316,5 +315,5 @@ public class ExportToHTMLFunction extends AbstractExportFunction implements Edit
     /**
      * Cleanup and unregister any configs.
      */
-    public void close() {}
+    void close() {}
 }

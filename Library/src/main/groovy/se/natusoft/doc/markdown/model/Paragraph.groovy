@@ -50,19 +50,19 @@ class Paragraph extends DocItem {
      * Returns the format this model represents.
      */
     @Override
-    public DocFormat getFormat() {
-        return DocFormat.Paragraph
+    DocFormat getFormat() {
+        DocFormat.Paragraph
     }
 
     /**
      * Validates this Paragraph.
      */
     @Override
-    public boolean validate() {
-        return super.items.size() > 0
+    boolean validate() {
+        super.items.size() > 0
     }
 
-    public String toString() {
-        return super.toString() + "\n"
+    String toString() {
+        super.toString() + "\n"
     }
 }

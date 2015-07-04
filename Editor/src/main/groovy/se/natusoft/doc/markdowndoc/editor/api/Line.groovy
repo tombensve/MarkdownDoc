@@ -46,7 +46,7 @@ import javax.swing.text.BadLocationException
  */
 @CompileStatic
 @TypeChecked
-public interface Line {
+interface Line {
 
     /**
      * Returns the text of the line.

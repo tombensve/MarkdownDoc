@@ -62,7 +62,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-public class SaveFunction implements EditorFunction, Configurable {
+class SaveFunction implements EditorFunction, Configurable {
     //
     // Private Members
     //
@@ -88,7 +88,7 @@ public class SaveFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    public void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -98,7 +98,7 @@ public class SaveFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    public void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -106,12 +106,12 @@ public class SaveFunction implements EditorFunction, Configurable {
     // Constructors
     //
 
-    public SaveFunction() {
+    SaveFunction() {
         Icon saveIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddsave.png"))
         this.saveButton = new JButton(saveIcon)
         this.saveButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+            void actionPerformed(ActionEvent actionEvent) {
                 perform()
             }
         })
@@ -132,35 +132,35 @@ public class SaveFunction implements EditorFunction, Configurable {
      * @param editor The editorPane to set.
      */
     @Override
-    public void setEditor(Editor editor) {
+    void setEditor(Editor editor) {
         this.editor = editor
     }
 
     @Override
-    public String getGroup() {
-        return ToolBarGroups.FILE.name()
+    String getGroup() {
+        ToolBarGroups.FILE.name()
     }
 
     @Override
-    public String getName() {
-        return "Save file"
+    String getName() {
+        "Save file"
     }
 
     @Override
-    public JComponent getToolBarButton() {
-        return this.saveButton
+    JComponent getToolBarButton() {
+        this.saveButton
     }
 
     /**
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    public KeyboardKey getKeyboardShortcut() {
-        return keyboardShortcutConfig.getKeyboardKey()
+    KeyboardKey getKeyboardShortcut() {
+        keyboardShortcutConfig.getKeyboardKey()
     }
 
     @Override
-    public void perform() throws FunctionException {
+    void perform() throws FunctionException {
         try {
             if (this.editor.getCurrentFile() != null) {
                 this.editor.saveFileAs(this.editor.getCurrentFile())
@@ -181,7 +181,7 @@ public class SaveFunction implements EditorFunction, Configurable {
     private void showSavedInfo() {
         new Thread() {
             @Override
-            public void run() {
+            void run() {
                 int x = editor.getGUI().getWindowFrame().getX()
                 int y = editor.getGUI().getWindowFrame().getY()
 
@@ -203,5 +203,5 @@ public class SaveFunction implements EditorFunction, Configurable {
     /**
      * Cleanup and unregister any configs.
      */
-    public void close() {}
+    void close() {}
 }

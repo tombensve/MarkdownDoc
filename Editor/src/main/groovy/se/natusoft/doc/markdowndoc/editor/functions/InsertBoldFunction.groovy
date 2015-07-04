@@ -43,7 +43,6 @@ import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
-import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
@@ -60,7 +59,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-public class InsertBoldFunction implements EditorFunction, Configurable {
+class InsertBoldFunction implements EditorFunction, Configurable {
     //
     // Private Members
     //
@@ -86,7 +85,7 @@ public class InsertBoldFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    public void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -96,7 +95,7 @@ public class InsertBoldFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    public void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -104,12 +103,12 @@ public class InsertBoldFunction implements EditorFunction, Configurable {
     // Constructors
     //
 
-    public InsertBoldFunction() {
+    InsertBoldFunction() {
         Icon boldIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddbold.png"))
         this.boldButton = new JButton(boldIcon)
         boldButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+            void actionPerformed(ActionEvent actionEvent) {
                 perform()
             }
         })
@@ -125,35 +124,35 @@ public class InsertBoldFunction implements EditorFunction, Configurable {
     }
 
     @Override
-    public void setEditor(Editor editor) {
+    void setEditor(Editor editor) {
         this.editor = editor
     }
 
     @Override
-    public String getGroup() {
-        return ToolBarGroups.FORMAT.name()
+    String getGroup() {
+        ToolBarGroups.FORMAT.name()
     }
 
     @Override
-    public String getName() {
-        return "Insert bold format"
+    String getName() {
+        "Insert bold format"
     }
 
     @Override
-    public JComponent getToolBarButton() {
-        return this.boldButton
+    JComponent getToolBarButton() {
+        this.boldButton
     }
 
     /**
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    public KeyboardKey getKeyboardShortcut() {
-        return keyboardShortcutConfig.getKeyboardKey()
+    KeyboardKey getKeyboardShortcut() {
+        keyboardShortcutConfig.getKeyboardKey()
     }
 
     @Override
-    public void perform() throws FunctionException {
+    void perform() throws FunctionException {
         if (this.editor.getEditorSelection() != null) {
             this.editor.insertText("**" + this.editor.getEditorSelection() + "**")
         }
@@ -167,5 +166,5 @@ public class InsertBoldFunction implements EditorFunction, Configurable {
     /**
      * Cleanup and unregister any configs.
      */
-    public void close() {}
+    void close() {}
 }

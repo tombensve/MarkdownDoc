@@ -45,10 +45,10 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public interface DelayedInitializer {
+interface DelayedInitializer {
 
     /**
      * Initializes the component.
      */
-    public void init()
+    void init()
 }

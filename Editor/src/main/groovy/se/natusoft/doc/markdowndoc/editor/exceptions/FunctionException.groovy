@@ -44,25 +44,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public class FunctionException extends RuntimeException {
-
-    /**
-     * Creates a new FunctionException.
-     *
-     * @param message The exception message.
-     */
-    public FunctionException(String message) {
-        super(message)
-    }
-
-    /**
-     * Creates a new FunctionException.
-     *
-     * @param message The exception message.
-     * @param cause The cause of the exception.
-     */
-    public FunctionException(String message, Throwable cause) {
-        super(message, cause)
-    }
-
+class FunctionException extends RuntimeException {
+    String message
+    Throwable cause
 }

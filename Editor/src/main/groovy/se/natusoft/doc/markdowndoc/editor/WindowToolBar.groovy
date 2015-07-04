@@ -64,7 +64,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
     // Constructors
     //
 
-    public WindowToolBar() {
+    WindowToolBar() {
         setRollover(true)
         setFocusable(false)
     }
@@ -79,7 +79,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
      * @param function The function to add.
      */
     @Override
-    public void addFunction(EditorFunction function) {
+    void addFunction(EditorFunction function) {
         if (!this.toolBarGroups.contains(function.getGroup())) {
             this.toolBarGroups.add(function.getGroup())
         }
@@ -99,7 +99,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
      */
     @SuppressWarnings("UnnecessaryQualifiedReference")
     @Override
-    public void createToolBarContent() {
+    void createToolBarContent() {
         Iterator<String> groupIterator = this.toolBarGroups.iterator()
         while (groupIterator.hasNext()) {
             String group = groupIterator.next()
@@ -121,7 +121,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
      * @param group The tool bar group to enable.
      */
     @Override
-    public void disableGroup(String group) {
+    void disableGroup(String group) {
         List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
             functions.each { EditorFunction function ->
@@ -139,7 +139,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
      * @param group The tool bar group to disable.
      */
     @Override
-    public void enableGroup(String group) {
+    void enableGroup(String group) {
         List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
             functions.each { EditorFunction function ->
@@ -157,7 +157,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
      * @param editor The associated editorPane provided.
      */
     @Override
-    public void attach(Editor editor) {
+    void attach(Editor editor) {
         editor.getGUI().getEditorPanel().add(this, BorderLayout.NORTH)
     }
 
@@ -167,7 +167,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
      * @param editor The editorPane to detach from.
      */
     @Override
-    public void detach(Editor editor) {
+    void detach(Editor editor) {
         editor.getGUI().getEditorPanel().remove(this)
     }
 

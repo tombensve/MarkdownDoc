@@ -20,14 +20,14 @@ class PDFFontMSSAdapter extends Font {
     // Private Members
     //
 
-    PDFFontMSSAdapter(@NotNull BaseFont baseFont, @NotNull MSSFont mssFont, @Nullable MSSColorPair mssColorPair) {
+    PDFFontMSSAdapter(@NotNull BaseFont baseFont, @NotNull MSSFont mssFont, @NotNull MSSColorPair mssColorPair) {
         super(baseFont)
         setSize(mssFont.size)
         setStyle(toStyle(mssFont.style))
         setColor(new PDFColorMSSAdapter(mssColorPair.foreground))
     }
 
-    PDFFontMSSAdapter(@NotNull MSSFont mssFont, @Nullable MSSColorPair mssColorPair) {
+    PDFFontMSSAdapter(@NotNull MSSFont mssFont, @NotNull MSSColorPair mssColorPair) {
         setFamily(mssFont.family)
         setSize((float)mssFont.size)
         setStyle(toStyle(mssFont.style))

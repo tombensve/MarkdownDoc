@@ -43,7 +43,6 @@ import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
-import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
@@ -63,7 +62,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-public class InsertImageFunction implements EditorFunction, Configurable {
+class InsertImageFunction implements EditorFunction, Configurable {
     //
     // Private Members
     //
@@ -93,7 +92,7 @@ public class InsertImageFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    public void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -103,7 +102,7 @@ public class InsertImageFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    public void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -111,12 +110,12 @@ public class InsertImageFunction implements EditorFunction, Configurable {
     // Constructors
     //
 
-    public InsertImageFunction() {
+    InsertImageFunction() {
         Icon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddimg.png"))
         this.imageButton = new JButton(imageIcon)
         imageButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+            void actionPerformed(ActionEvent actionEvent) {
                 perform()
             }
         })
@@ -137,7 +136,7 @@ public class InsertImageFunction implements EditorFunction, Configurable {
      * @param editor The editorPane to set.
      */
     @Override
-    public void setEditor(Editor editor) {
+    void setEditor(Editor editor) {
         this.editor = editor
     }
 
@@ -146,44 +145,44 @@ public class InsertImageFunction implements EditorFunction, Configurable {
      * A new group will be created if the named group does not exist.
      */
     @Override
-    public String getGroup() {
-        return ToolBarGroups.FORMAT.name()
+    String getGroup() {
+        ToolBarGroups.FORMAT.name()
     }
 
     /**
      * Returns the name of the function.
      */
     @Override
-    public String getName() {
-        return "Insert Image"
+    String getName() {
+        "Insert Image"
     }
 
     /**
      * Returns this functions toolbar button or null if it does not have one.
      */
     @Override
-    public JComponent getToolBarButton() {
-        return this.imageButton
+    JComponent getToolBarButton() {
+        this.imageButton
     }
 
     /**
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    public KeyboardKey getKeyboardShortcut() {
-        return keyboardShortcutConfig.getKeyboardKey()
+    KeyboardKey getKeyboardShortcut() {
+        keyboardShortcutConfig.getKeyboardKey()
     }
 
     private JPanel createLabelPanel(String text) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT))
         panel.add(new JLabel(text))
-        return panel
+        panel
     }
 
     private JPanel createTextFieldPanel(JTextField textField) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT))
         panel.add(textField)
-        return panel
+        panel
     }
 
     /**
@@ -193,7 +192,7 @@ public class InsertImageFunction implements EditorFunction, Configurable {
      *
      */
     @Override
-    public void perform() throws FunctionException {
+    void perform() throws FunctionException {
         Color bgColor = this.editor.getGUI().getWindowFrame().getBackground()
 
         Box vBox = Box.createVerticalBox()
@@ -213,7 +212,7 @@ public class InsertImageFunction implements EditorFunction, Configurable {
         JButton fileSelectButton = new JButton("...")
         fileSelectButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser()
                 fileChooser.setDialogType(JFileChooser.OPEN_DIALOG)
                 int returnVal = fileChooser.showOpenDialog(editor.getGUI().getWindowFrame())
@@ -238,7 +237,7 @@ public class InsertImageFunction implements EditorFunction, Configurable {
         JButton insertButton = new JButton("Insert")
         insertButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            void actionPerformed(ActionEvent e) {
                 inputDialog.setVisible(false)
                 imageButton.setEnabled(true)
                 editor.insertText("![" + imageAltText.getText() + "](" +
@@ -251,7 +250,7 @@ public class InsertImageFunction implements EditorFunction, Configurable {
         JButton cancelButton = new JButton("Cancel")
         cancelButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            void actionPerformed(ActionEvent e) {
                 inputDialog.setVisible(false)
                 imageButton.setEnabled(true)
                 editor.requestEditorFocus()
@@ -276,5 +275,5 @@ public class InsertImageFunction implements EditorFunction, Configurable {
     /**
      * Cleanup and unregister any configs.
      */
-    public void close() {}
+    void close() {}
 }

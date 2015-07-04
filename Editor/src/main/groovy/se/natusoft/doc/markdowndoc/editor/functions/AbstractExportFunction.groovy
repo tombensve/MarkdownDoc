@@ -57,10 +57,10 @@ import javax.swing.filechooser.FileNameExtensionFilter
  */
 @CompileStatic
 @TypeChecked
-public abstract class AbstractExportFunction implements EditorFunction {
+abstract class AbstractExportFunction implements EditorFunction {
 
     //
-    // Bean Members
+    // properties
     //
 
     /** The editorPane instance we provide function for. */
@@ -92,36 +92,36 @@ public abstract class AbstractExportFunction implements EditorFunction {
             /**
              * Returns the default property key.
              */
-            public String getDefaultsPropKey() {
-                return AbstractExportFunction.this.defaultsPropKey
+            String getDefaultsPropKey() {
+                AbstractExportFunction.this.defaultsPropKey
             }
 
             /**
              *  Returns the file to export to.
              */
-            public File getExportFile() {
-                return AbstractExportFunction.this.exportFile
+            File getExportFile() {
+                AbstractExportFunction.this.exportFile
             }
 
             /**
              * Returns the editorPane GUI API.
              */
-            public GUI getGUI() {
-                return AbstractExportFunction.this.editor.getGUI()
+            GUI getGUI() {
+                AbstractExportFunction.this.editor.getGUI()
             }
 
             /**
              * Returns the config API.
              */
-            public ConfigProvider getConfigProvider() {
-                return AbstractExportFunction.this.editor.getConfigProvider()
+            ConfigProvider getConfigProvider() {
+                AbstractExportFunction.this.editor.getConfigProvider()
             }
 
             /**
              * Returns the persistent properties provider.
              */
-            public PersistentProps getPersistentProps() {
-                return AbstractExportFunction.this.editor.getPersistentProps()
+            PersistentProps getPersistentProps() {
+                AbstractExportFunction.this.editor.getPersistentProps()
             }
 
         }
@@ -149,7 +149,7 @@ public abstract class AbstractExportFunction implements EditorFunction {
             selectedFile = fileChooser.getSelectedFile()
         }
 
-        return selectedFile
+        selectedFile
     }
 
     /**
@@ -159,7 +159,7 @@ public abstract class AbstractExportFunction implements EditorFunction {
      * @param file The file to convert to properties name.
      */
     protected String fileToPropertiesName(File file) {
-        return file.getName().replace(".", "_")
+        file.getName().replace(".", "_")
     }
 
     /**
@@ -185,7 +185,7 @@ public abstract class AbstractExportFunction implements EditorFunction {
             try {markDownStream.close()} catch (IOException cioe) {}
         }
 
-        return document
+        document
     }
 
 }

@@ -46,7 +46,7 @@ import groovy.transform.TypeChecked
 @TypeChecked
 class Space extends PlainText {
 
-    public Space() {
+    Space() {
         this.text = " ";
     }
 
@@ -54,12 +54,12 @@ class Space extends PlainText {
      * Returns the format this model represents.
      */
     @Override
-    public DocFormat getFormat() {
-        return DocFormat.Space
+    DocFormat getFormat() {
+        DocFormat.Space
     }
 
-    public String toString() {
-        return " "
+    String toString() {
+        " "
     }
 
 }

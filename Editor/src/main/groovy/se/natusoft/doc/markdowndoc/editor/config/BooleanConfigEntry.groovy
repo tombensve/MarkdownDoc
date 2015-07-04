@@ -44,7 +44,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public class BooleanConfigEntry extends ConfigEntry {
+class BooleanConfigEntry extends ConfigEntry {
 
     //
     // Constructors
@@ -58,7 +58,7 @@ public class BooleanConfigEntry extends ConfigEntry {
      * @param defaultValue The default valueComp of the config.
      * @param configGroup The config group this config belongs to.
      */
-    public BooleanConfigEntry(String key, String description, boolean defaultValue, String configGroup) {
+    BooleanConfigEntry(String key, String description, boolean defaultValue, String configGroup) {
         super(key, description, "" + defaultValue, configGroup)
     }
 
@@ -69,7 +69,7 @@ public class BooleanConfigEntry extends ConfigEntry {
     /**
      * Returns the valueComp as a boolean.
      */
-    public boolean getBooleanValue() {
+    boolean getBooleanValue() {
         return Boolean.valueOf(getValue())
     }
 
@@ -78,7 +78,7 @@ public class BooleanConfigEntry extends ConfigEntry {
      *
      * @param value The valueComp to set.
      */
-    public void setBooleanValue(boolean value) {
+    void setBooleanValue(boolean value) {
         setValue("" + value)
     }
 }

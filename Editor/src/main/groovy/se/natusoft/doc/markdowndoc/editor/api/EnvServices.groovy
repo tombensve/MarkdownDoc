@@ -44,7 +44,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public interface EnvServices {
+interface EnvServices {
 
     /**
      * Returns the editorPane GUI API.

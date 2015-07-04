@@ -47,7 +47,7 @@ import java.awt.*
  */
 @CompileStatic
 @TypeChecked
-public class FileWindowProps {
+class FileWindowProps {
     //
     // Constants
     //
@@ -71,7 +71,7 @@ public class FileWindowProps {
     /**
      * Creates a new FileWindowProps instance.
      */
-    public FileWindowProps() {
+    FileWindowProps() {
         this.props = new Properties()
     }
 
@@ -84,7 +84,7 @@ public class FileWindowProps {
      *
      * @param bounds The bounds to save.
      */
-    public void setBounds(Rectangle bounds) {
+    void setBounds(Rectangle bounds) {
         this.props.setProperty(X, "" + (int)bounds.getX())
         this.props.setProperty(Y, "" + (int)bounds.getY())
         this.props.setProperty(WIDTH, "" + (int)bounds.getWidth())
@@ -94,15 +94,13 @@ public class FileWindowProps {
     /**
      * Returns the bounds in the properties as a Rectangle.
      */
-    public Rectangle getBounds() {
-        Rectangle rectangle = new Rectangle(
+    Rectangle getBounds() {
+        new Rectangle(
             Integer.valueOf(this.props.getProperty(X)),
             Integer.valueOf(this.props.getProperty(Y)),
             Integer.valueOf(this.props.getProperty(WIDTH)),
             Integer.valueOf(this.props.getProperty(HEIGHT))
         )
-
-        return rectangle
     }
 
     /**
@@ -110,7 +108,7 @@ public class FileWindowProps {
      *
      * @param editor The editorPane to save for.
      */
-    public void saveBounds(Editor editor) {
+    void saveBounds(Editor editor) {
         String boundsNamePart = "default"
         if (editor.getCurrentFile() != null) {
             boundsNamePart = editor.getCurrentFile().getName().replace(".", "_")
@@ -124,7 +122,7 @@ public class FileWindowProps {
      *
      * @param editor The editorPane to load for.
      */
-    public void load(Editor editor) {
+    void load(Editor editor) {
         String boundsNamePart = "default"
         if (editor.getCurrentFile() != null) {
             boundsNamePart = editor.getCurrentFile().getName().replace(".", "_")
@@ -138,7 +136,7 @@ public class FileWindowProps {
     /**
      * Returns true if there are properties available.
      */
-    public boolean hasProperties() {
-        return !this.props.isEmpty()
+    boolean hasProperties() {
+        !this.props.isEmpty()
     }
 }

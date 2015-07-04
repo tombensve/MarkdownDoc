@@ -44,11 +44,11 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public class Constants {
+class Constants {
 
-    public static final String CONFIG_GROUP_EDITING = "Editing"
-    public static final String CONFIG_GROUP_TOOL = "Tool"
-    public static final String CONFIG_GROUP_PREVIEW = "Preview"
-    public static final String CONFIG_GROUP_KEYBOARD = "Keyboard"
+    static final String CONFIG_GROUP_EDITING = "Editing"
+    static final String CONFIG_GROUP_TOOL = "Tool"
+    static final String CONFIG_GROUP_PREVIEW = "Preview"
+    static final String CONFIG_GROUP_KEYBOARD = "Keyboard"
 
 }

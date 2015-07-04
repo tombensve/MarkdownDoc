@@ -53,7 +53,7 @@ import java.awt.event.WindowEvent
  */
 @CompileStatic
 @TypeChecked
-public class SettingsWindow extends JFrame {
+class SettingsWindow extends JFrame {
 
     //
     // Private Members
@@ -73,12 +73,12 @@ public class SettingsWindow extends JFrame {
     /**
      * Creates a new SettingsWindow.
      */
-    public SettingsWindow() {
+    SettingsWindow() {
         super("MarkdownDoc Editor Settings")
         setLayout(new BorderLayout())
         addWindowListener(new WindowListenerAdapter() {
             @Override
-            public void windowClosing(WindowEvent e) {
+            void windowClosing(WindowEvent e) {
                 cancelSettings()
             }
         })
@@ -91,7 +91,7 @@ public class SettingsWindow extends JFrame {
         JButton saveButton = new JButton("Save")
         saveButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            void actionPerformed(ActionEvent e) {
                 saveSettings()
                 setWindowVisibility(false)
             }
@@ -101,7 +101,7 @@ public class SettingsWindow extends JFrame {
         JButton cancelButton = new JButton("Cancel")
         cancelButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            void actionPerformed(ActionEvent e) {
                 cancelSettings()
                 setWindowVisibility(false)
             }
@@ -128,7 +128,7 @@ public class SettingsWindow extends JFrame {
      *
      * @param configEntry The config entry to add.
      */
-    public void addConfig(ConfigEntry configEntry) {
+    void addConfig(ConfigEntry configEntry) {
         JPanel groupPanel = this.groupPanels.get(configEntry.getConfigGroup())
         if (groupPanel == null) {
             groupPanel = new JPanel()

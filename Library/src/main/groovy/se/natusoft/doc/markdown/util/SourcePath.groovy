@@ -43,7 +43,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public class SourcePath {
+class SourcePath {
 
     //
     // Private Members
@@ -84,7 +84,7 @@ public class SourcePath {
      *
      * @param pathExpression The path expression as explained above.
      */
-    public SourcePath(String pathExpression) {
+    SourcePath(String pathExpression) {
         this(new File(pathExpression), "")
     }
 
@@ -109,7 +109,7 @@ public class SourcePath {
      * @param projRoot The root dir of the project being built.
      * @param pathExpression The path expression as explained above.
      */
-    public SourcePath(File projRoot, String pathExpression) {
+    SourcePath(File projRoot, String pathExpression) {
         this.origProjRoot = projRoot
         File pathFile = new File(projRoot, pathExpression)
         // We translate '!' to '\' to support regular expression escaping in windows which would treat '\' in the
@@ -132,7 +132,7 @@ public class SourcePath {
      *
      * @param path The path to supply source files for.
      */
-    public SourcePath(File path) {
+    SourcePath(File path) {
         this.path = path
     }
 
@@ -143,7 +143,7 @@ public class SourcePath {
      * @param recursive If true source files will be searched for recursively down the file structure.
      * @param fileRegexpFilter A filter to apply for each file. Example ".*.java". This can be null which means no filter.
      */
-    public SourcePath(File path, boolean recursive, String fileRegexpFilter) {
+    SourcePath(File path, boolean recursive, String fileRegexpFilter) {
         this.path = path
         this.recursive = recursive
         this.fileRegexpFilter = fileRegexpFilter
@@ -166,7 +166,7 @@ public class SourcePath {
             result = true
         }
 
-        return result
+        result
     }
 
     /**
@@ -174,7 +174,7 @@ public class SourcePath {
      *
      * @param recursive If true source files will be searched for recursively down the file structure.
      */
-    public void setRecursive(boolean recursive) {
+    void setRecursive(boolean recursive) {
         this.recursive = recursive
     }
 
@@ -183,19 +183,19 @@ public class SourcePath {
      *
      * @param fileRegexpFilter A filter to apply for each file. Example ".*.java". This can be null which means no filter.
      */
-    public void setFileRegexpFilter(String fileRegexpFilter) {
+    void setFileRegexpFilter(String fileRegexpFilter) {
         this.fileRegexpFilter = fileRegexpFilter
     }
 
     /**
      * @return Returns all the source files matching the path criteria.
      */
-    public List<File> getSourceFiles() {
+    List<File> getSourceFiles() {
         List<File> sourceFiles = new ArrayList<File>()
 
         findSourceFiles(this.path, sourceFiles)
 
-        return sourceFiles
+        sourceFiles
     }
 
     /**
@@ -283,14 +283,14 @@ public class SourcePath {
             System.err.println("Failed to load file-set file: " + ioe.getMessage())
         }
 
-        return fsSetFiles
+        fsSetFiles
     }
 
     /**
      * @return A String representation of the path.
      */
     @Override
-    public String toString() {
+    String toString() {
         StringBuilder sb = new StringBuilder()
         sb.append(this.path)
         if (this.recursive) {
@@ -300,6 +300,6 @@ public class SourcePath {
             sb.append("/")
             sb.append(this.fileRegexpFilter);
         }
-        return sb.toString()
+        sb.toString()
     }
 }

@@ -55,7 +55,22 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_E
  */
 @CompileStatic
 @TypeChecked
-public class MarkdownStyler implements Configurable, JTextComponentStyler {
+class MarkdownStyler implements Configurable, JTextComponentStyler {
+
+    //
+    // Constants
+    //
+
+    private static char HASH = '#' as char
+    private static char NL = '\n' as char
+    private static char CR = '\r' as char
+    private static char SPACE = ' ' as char
+    private static char TAB = '\t' as char
+    private static char MINUS = '-' as char
+    private static char PLUS = '+' as char
+    private static char ASTERISK = '*' as char
+    private static char UNDERSCORE = '_' as char
+    private static char BACKSLASH = '\\' as char
 
     //
     // Private Members
@@ -81,7 +96,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
             new ValidSelectionConfigEntry("editorPane.pane.monospaced.font", "The monospaced font to use.", "Monospaced",
                     new ValidSelectionConfigEntry.ValidValues() {
                         @Override
-                        public ValidSelectionConfigEntry.Value[] validValues() {
+                        ValidSelectionConfigEntry.Value[] validValues() {
                             GraphicsEnvironment gEnv = GraphicsEnvironment
                                     .getLocalGraphicsEnvironment()
                             return ValidSelectionConfigEntry.convertToValues(gEnv.getAvailableFontFamilyNames())
@@ -193,7 +208,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
     /**
      * Creates a new MarkdownStyler instance.
      */
-    public MarkdownStyler() {}
+    MarkdownStyler() {}
 
     //
     // Methods
@@ -205,16 +220,16 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
      * @param textComponentToStyle The component to style.
      */
     @Override
-    public void init(JTextPane textComponentToStyle) {
+    void init(JTextPane textComponentToStyle) {
         this.textComponentToStyle = textComponentToStyle
 
         StyledDocument doc = new DefaultStyledDocument() {
-            public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
+            void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
                 super.insertString(offset, str, a)
                 if (/*MarkdownStyler.this.*/enabled) styleCurrentParagraph()
             }
 
-            public void remove(int offs, int len) throws BadLocationException {
+            void remove(int offs, int len) throws BadLocationException {
                 super.remove(offs, len)
                 if (/*MarkdownStyler.this.*/enabled) styleCurrentParagraph()
             }
@@ -271,7 +286,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
      *
      * @param configProvider The config provider to register with.
      */
-    public void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(ConfigProvider configProvider) {
         configProvider.registerConfig(monospacedFontConfig, this.monospacedFontConfigChanged)
         configProvider.registerConfig(monospacedFontSizeConfig, this.monospacedFontSizeConfigChanged)
         configProvider.registerConfig(markdownFormatWhileEditingConfig, this.markdownFormatWhileEditingConfigChanged)
@@ -283,7 +298,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
      *
      * @param configProvider The config provider to unregister with.
      */
-    public void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(ConfigProvider configProvider) {
         configProvider.unregisterConfig(monospacedFontConfig, this.monospacedFontConfigChanged)
         configProvider.unregisterConfig(monospacedFontSizeConfig, this.monospacedFontSizeConfigChanged)
         configProvider.unregisterConfig(markdownFormatWhileEditingConfig, this.markdownFormatWhileEditingConfigChanged)
@@ -294,7 +309,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
      * Enables styling (on by default)
      */
     @Override
-    public void enable() {
+    void enable() {
         this.enabled = true
     }
 
@@ -302,7 +317,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
      * Disables styling (should be done while loading document!)
      */
     @Override
-    public void disable() {
+    void disable() {
         this.enabled = false
     }
 
@@ -310,15 +325,15 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
      * Returns true if styling is enabled.
      */
     @Override
-    public boolean isEnabled() {
-        return this.enabled
+    boolean isEnabled() {
+        this.enabled
     }
 
     /**
      * Styles the whole document.
      */
     @Override
-    public void styleDocument() {
+    void styleDocument() {
         if (isEnabled()) {
             try {
                 StyledDocument doc = (StyledDocument) this.textComponentToStyle.getDocument()
@@ -339,7 +354,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
      * Styles the current paragraph.
      */
     @Override
-    public void styleCurrentParagraph() {
+    void styleCurrentParagraph() {
         if (isEnabled()) {
             try {
                 StyledDocument doc = (StyledDocument) this.textComponentToStyle.getDocument()
@@ -370,7 +385,6 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                 getDefaultStyleContext().
                 getStyle(StyleContext.DEFAULT_STYLE)
 
-//        System.out.println("Start styling")
         try {
             if (text == null) {
                 text = doc.getText(0, doc.getLength())
@@ -382,13 +396,12 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                         char c = text.charAt(pos)
                         char p = pos == 0 ? text.charAt(pos) : text.charAt(pos - 1)
                         char pp = pos <= 1 ? text.charAt(pos) : text.charAt(pos - 2)
-                        //System.out.print(c);
 
                         // -- Header --------
-                        if (c == '#' && p != '\\') {
+                        if (c == HASH && p != '\\') {
                             int cnt = 0
                             int spos = pos
-                            while (pos < text.length() && text.charAt(pos) == '#') {
+                            while (pos < text.length() && text.charAt(pos) == HASH) {
                                 ++cnt
                                 ++pos
                             }
@@ -397,7 +410,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
 
                             // Only style if it starts at the beginning of a "paragraph".
                             int hsize = 0
-                            if (pos <= 5 || text.charAt(pos - cnt - 1) == '\n' || text.charAt(pos - cnt - 1) == '\r') {
+                            if (pos <= 5 || text.charAt(pos - cnt - 1) == NL || text.charAt(pos - cnt - 1) == CR) {
                                 switch(cnt) {
                                     case 1:
                                         header = this.h1Style
@@ -425,7 +438,6 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                                 }
                             }
                             if (header != null) {
-//                                System.out.println("\nHeader identified!")
                                 if (this.makeStylingCharsTiny) {
                                     doc.setCharacterAttributes(spos + hsize, epos - (spos + hsize), header, true)
                                     doc.setCharacterAttributes(spos, hsize, this.tinyStyle, true)
@@ -438,42 +450,39 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                         }
 
                         // -- Monospaced --------
-                        else if ((pos >= 4 && c == ' ' && text.charAt(pos + 1) == ' ' &&
-                                text.charAt(pos + 2) == ' ' && text.charAt(pos + 3) == ' ') ||
-                                (pos >= 2 && c == '\t')) {
+                        else if ((pos >= 4 && c == SPACE && text.charAt(pos + 1) == SPACE &&
+                                text.charAt(pos + 2) == SPACE && text.charAt(pos + 3) == SPACE) ||
+                                (pos >= 2 && c == TAB)) {
 
                             boolean isList = true
                             if (pos >= 5) {
                                 int checkPos = pos + 4
-                                while (text.charAt(checkPos) == ' ') {
+                                while (text.charAt(checkPos) == SPACE) {
                                     ++checkPos
                                 }
                                 char p4 = text.charAt(checkPos)
-                                if (p4 != '-' && p4 != '+' && p4 != '*') {
+                                if (p4 != MINUS && p4 != PLUS && p4 != ASTERISK) {
                                     isList = false
                                 }
                             }
 
                             if (!isList) {
-//                                System.out.println("\nMonospaced identified!")
                                 int epos = getEndOfParagraph(text, pos)
                                 doc.setCharacterAttributes(pos, (epos - pos), this.codeStyle, true)
                                 pos = epos
                             }
-//                            else {
-//                                System.out.println("\nList bullet identified!")
-//                            }
                         }
 
                         // -- Bold italic (when not escaped, but when double escaped) --------
-                        else if ((c == '_' || c == '*') && (p != '\\' || pp == '\\')) {
+                        else if ((c == UNDERSCORE || c == ASTERISK) && (p != BACKSLASH || pp == BACKSLASH)) {
                             boolean bold = false
                             int spos = pos
                             if ((pos + 1) < text.length() && text.charAt(pos + 1) == c) {
                                 bold = true
                                 ++pos
                             }
-                            else if (c == '*' && (pos + 1) < text.length() && text.charAt(pos + 1) == ' ') {
+                            else if (c == ASTERISK && (pos + 1) < text.length() &&
+                                    text.charAt(pos + 1) == SPACE) {
                                 continue // Skip if there is a spaced after *. This means it is a list entry.
                             }
 
@@ -483,7 +492,6 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                             int epos = getPosOfNext(text, pos + 1, endChar)
 
                             if (bold) {
-//                                System.out.println("\nBold identified!")
                                 doc.setCharacterAttributes(spos + 2, epos - spos - 2, this.boldStyle, true)
                                 if (this.makeStylingCharsTiny) {
                                     doc.setCharacterAttributes(spos, 2, this.tinyStyle, true)
@@ -491,7 +499,6 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                                 }
                             }
                             else {
-//                                System.out.println("\nEmphasis identified!")
                                 doc.setCharacterAttributes(spos + 1, epos - spos - 1, this.emphasisStyle, true)
                                 if (this.makeStylingCharsTiny) {
                                     doc.setCharacterAttributes(spos, 1, this.tinyStyle, true)
@@ -501,14 +508,13 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
                             pos = epos + 1
                         }
                     }
-                    catch (IndexOutOfBoundsException ignore) {/* we hide these intentionally! */}
+                    catch (IndexOutOfBoundsException ignore) {/* hide these intentionally! */}
                 }
             }
         }
         catch (BadLocationException ble) {
             ble.printStackTrace(System.err)
         }
-//        System.out.println("Done styling.")
 
         this.textComponentToStyle.setEnabled(true)
     }
@@ -526,7 +532,8 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
         try {
             char prev = ' '
             char prevprev = ' '
-            while (npos < text.length() && !(prev == '\n' && prevprev == '\n') && text.charAt(npos) != n) {
+            while (npos < text.length() && !(prev == NL && prevprev == NL) &&
+                    text.charAt(npos) != n) {
                 prevprev = prev
                 prev = text.charAt(npos)
                 ++npos
@@ -534,7 +541,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
         }
         catch (IndexOutOfBoundsException ignore) {/*OK*/}
 
-        return npos
+        npos
     }
 
     /**
@@ -552,8 +559,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
             //    ++npos
             //}
             while (npos < text.length()) {
-//                System.out.print(text.charAt(npos))
-                if (safeGetChar(text, npos) == '\n' && safeGetChar(text, npos + 1) == '\n') {
+                if (safeGetChar(text, npos) == NL && safeGetChar(text, npos + 1) == NL) {
                     break
                 }
                 ++npos;
@@ -565,7 +571,7 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
             npos = text.length() - 1
         }
 
-        return npos
+        npos
     }
 
     /**
@@ -578,10 +584,10 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
      */
     private static char safeGetChar(String text, int position) {
         try {
-            return text.charAt(position)
+            text.charAt(position)
         }
         catch (StringIndexOutOfBoundsException ignore) {
-            return ' ' as char
+            SPACE
         }
     }
 
@@ -592,12 +598,12 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
      * @param position The position of the character to check.
      */
     private static boolean checkPgBound(String text, int position) {
-        return _intCheckPgBound(text, position) && _intCheckPgBound(text, position + 1)
+        _intCheckPgBound(text, position) && _intCheckPgBound(text, position + 1)
     }
 
     private static boolean _intCheckPgBound(String text, int position) {
-        //System.out.println("\"\\n\\r\".indexOf(safeGetChar(text, " + position + ")) = '"+ safeGetChar(text, position) + "'")
-        return position < text.length() && position >= 0 && ( text[position] == '\n' || text[position] == '\r' )
+        // Note that Groovy String[ix] returns another String, not a char!!
+        position < text.length() && position >= 0 && ( text[position] == '\n' || text[position] == '\r' )
     }
 
     /**
@@ -607,26 +613,25 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
      * @param text The text to scan.
      */
     private static ParagraphBounds findParagraphBounds(int currentPos, String text) {
-        //System.out.println("CurrentPos: " + currentPos)
-        if (currentPos < 0) currentPos = 0
+        if (currentPos < 0) { currentPos = 0 }
         ParagraphBounds bounds = new ParagraphBounds()
 
         // Find beginning
         while (currentPos > 0 && !checkPgBound(text, currentPos)) {
             --currentPos
         }
-        bounds.start = text.length() > currentPos ? (text.charAt(currentPos) == ' ' ? currentPos + 1 : currentPos) : currentPos
+        bounds.start = text.length() > currentPos ? (text.charAt(currentPos) == SPACE ?
+                currentPos + 1 : currentPos) : currentPos
 
         // Find end
         currentPos = bounds.start + 1
         while (currentPos < text.length() && !checkPgBound(text, currentPos)) {
             ++currentPos
         }
-        bounds.end = text.length() > currentPos ? (text.charAt(currentPos) == ' ' ? currentPos - 1 : currentPos) : currentPos
+        bounds.end = text.length() > currentPos ? (text.charAt(currentPos) == SPACE ?
+                currentPos - 1 : currentPos) : currentPos
 
-        //System.out.println("" + bounds)
-
-        return bounds
+        bounds
     }
 
     /**
@@ -640,6 +645,6 @@ public class MarkdownStyler implements Configurable, JTextComponentStyler {
         if (bounds.start == 0) { // Possibly the whole document!
             bounds = findParagraphBounds(currentPos, text)
         }
-        return text.substring(bounds.start, bounds.start + 60)
+        text.substring(bounds.start, bounds.start + 60)
     }
 }

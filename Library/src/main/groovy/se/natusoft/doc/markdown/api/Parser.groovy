@@ -46,7 +46,7 @@ import se.natusoft.doc.markdown.model.Doc
  */
 @CompileStatic
 @TypeChecked
-public interface Parser {
+interface Parser {
 
     /**
      * Parses a file and adds its document structure to the passed Doc.
@@ -58,7 +58,7 @@ public interface Parser {
      * @throws IOException on failure.
      * @throws ParseException on parse failures.
      */
-    public void parse(Doc document, File parseFile, Properties parserOptions) throws IOException, ParseException
+    void parse(Doc document, File parseFile, Properties parserOptions) throws IOException, ParseException
 
     /**
      * Parses a file and adds its document structure to the passed Doc.
@@ -70,7 +70,7 @@ public interface Parser {
      * @throws IOException on failure.
      * @throws ParseException on parse failures.
      */
-    public void parse(Doc document, InputStream parseStream, Properties parserOptions) throws IOException, ParseException
+    void parse(Doc document, InputStream parseStream, Properties parserOptions) throws IOException, ParseException
 
     /**
      * Returns true if extension of the passed fileName is valid for this parser.
@@ -79,6 +79,6 @@ public interface Parser {
      *
      * @return true or false.
      */
-    public boolean validFileExtension(String fileName)
+    boolean validFileExtension(String fileName)
 
 }

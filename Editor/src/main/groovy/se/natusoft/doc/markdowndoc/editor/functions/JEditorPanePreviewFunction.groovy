@@ -58,7 +58,6 @@ import javax.swing.text.html.HTMLEditorKit
 import java.awt.*
 import java.awt.event.*
 
-import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_EDITING
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_PREVIEW
 
@@ -67,7 +66,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_P
  */
 @CompileStatic
 @TypeChecked
-public class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMotionProvider, Configurable {
+class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMotionProvider, Configurable {
 
     //
     // Private Members
@@ -90,7 +89,7 @@ public class JEditorPanePreviewFunction implements EditorFunction, KeyListener, 
             new ValidSelectionConfigEntry("preview.pane.font", "The preview font to use.", "Helvetica",
                     new ValidSelectionConfigEntry.ValidValues() {
                         @Override
-                        public ValidSelectionConfigEntry.Value[] validValues() {
+                        ValidSelectionConfigEntry.Value[] validValues() {
                             GraphicsEnvironment gEnv = GraphicsEnvironment
                                     .getLocalGraphicsEnvironment()
                             return ValidSelectionConfigEntry.convertToValues(gEnv.getAvailableFontFamilyNames())
@@ -160,7 +159,7 @@ public class JEditorPanePreviewFunction implements EditorFunction, KeyListener, 
      * @param configProvider The config provider to register with.
      */
     @Override
-    public void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, this.keyboardShortcutConfigChanged)
         configProvider.registerConfig(fontConfig, this.fontConfigChanged)
         configProvider.registerConfig(fontSizeConfig, this.fontSizeConfigChanged)
@@ -176,7 +175,7 @@ public class JEditorPanePreviewFunction implements EditorFunction, KeyListener, 
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    public void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, this.keyboardShortcutConfigChanged)
         configProvider.unregisterConfig(fontConfig, this.fontConfigChanged)
         configProvider.unregisterConfig(fontSizeConfig, this.fontSizeConfigChanged)
@@ -190,12 +189,12 @@ public class JEditorPanePreviewFunction implements EditorFunction, KeyListener, 
     // Constructors
     //
 
-    public JEditorPanePreviewFunction() {
+    JEditorPanePreviewFunction() {
         Icon previewIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddpreview.png"))
         this.previewButton = new JToggleButton(previewIcon)
         this.previewButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+            void actionPerformed(ActionEvent actionEvent) {
                 /*JEditorPanePreviewFunction.this.*/enabled = !/*JEditorPanePreviewFunction.this.*/previewButton.isSelected()
                 perform()
             }
@@ -215,7 +214,7 @@ public class JEditorPanePreviewFunction implements EditorFunction, KeyListener, 
         this.preview.addKeyListener(this)
 
         new FileDrop(this.preview, new FileDrop.Listener() {
-            public void filesDropped(java.io.File[] files) {
+            void filesDropped(File[] files) {
                 if (files.length >= 1) {
                     showFile(files[0])
                 }
@@ -271,39 +270,39 @@ public class JEditorPanePreviewFunction implements EditorFunction, KeyListener, 
     }
 
     @Override
-    public void setEditor(Editor editor) {
+    void setEditor(Editor editor) {
         this.editor = editor
     }
 
     @Override
-    public void close() {
+    void close() {
     }
 
     @Override
-    public String getGroup() {
-        return ToolBarGroups.PREVIEW.name()
+    String getGroup() {
+        ToolBarGroups.PREVIEW.name()
     }
 
     @Override
-    public String getName() {
-        return "Preview"
+    String getName() {
+        "Preview"
     }
 
     @Override
-    public JComponent getToolBarButton() {
-        return this.previewButton
+    JComponent getToolBarButton() {
+        this.previewButton
     }
 
     /**
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    public KeyboardKey getKeyboardShortcut() {
-        return keyboardShortcutConfig.getKeyboardKey()
+    KeyboardKey getKeyboardShortcut() {
+        keyboardShortcutConfig.getKeyboardKey()
     }
 
     @Override
-    public void perform() throws FunctionException {
+    void perform() throws FunctionException {
         if (!this.enabled) {
             this.enabled = true
             this.previewButton.setSelected(this.enabled)
@@ -375,17 +374,17 @@ public class JEditorPanePreviewFunction implements EditorFunction, KeyListener, 
     // KeyListener methods
 
     @Override
-    public void keyTyped(KeyEvent e) {
+    void keyTyped(KeyEvent e) {
         ((KeyListener)this.editor).keyTyped(e)
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    void keyPressed(KeyEvent e) {
         ((KeyListener)this.editor).keyPressed(e)
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
+    void keyReleased(KeyEvent e) {
         ((KeyListener)this.editor).keyReleased(e)
     }
 
@@ -395,7 +394,7 @@ public class JEditorPanePreviewFunction implements EditorFunction, KeyListener, 
      * @param listener The listener to add.
      */
     @Override
-    public void addMouseMotionListener(MouseMotionListener listener) {
+    void addMouseMotionListener(MouseMotionListener listener) {
         this.preview.addMouseMotionListener(listener)
     }
 
@@ -405,7 +404,7 @@ public class JEditorPanePreviewFunction implements EditorFunction, KeyListener, 
      * @param listener The listener to remove.
      */
     @Override
-    public void removeMouseMotionListener(MouseMotionListener listener) {
+    void removeMouseMotionListener(MouseMotionListener listener) {
         this.preview.removeMouseMotionListener(listener)
     }
 }

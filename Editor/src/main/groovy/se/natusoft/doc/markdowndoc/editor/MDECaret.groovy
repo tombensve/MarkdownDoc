@@ -48,7 +48,7 @@ import java.awt.*
  */
 @CompileStatic
 @TypeChecked
-public class MDECaret extends DefaultCaret {
+class MDECaret extends DefaultCaret {
 
     @Override
     protected void adjustVisibility(Rectangle nloc) {

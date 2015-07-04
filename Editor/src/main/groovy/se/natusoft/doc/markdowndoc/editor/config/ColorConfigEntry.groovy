@@ -47,7 +47,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public class ColorConfigEntry extends ConfigEntry {
+class ColorConfigEntry extends ConfigEntry {
     //
     // Constructors
     //
@@ -62,7 +62,7 @@ public class ColorConfigEntry extends ConfigEntry {
      * @param defaultBlue The default blue color part.
      * @param configGroup The config group this config belongs to.
      */
-    public ColorConfigEntry(String key, String description, int defaultRed, int defaultGreen, int defaultBlue, String configGroup) {
+    ColorConfigEntry(String key, String description, int defaultRed, int defaultGreen, int defaultBlue, String configGroup) {
         super(key, description, toValue(defaultRed, defaultGreen, defaultBlue), configGroup)
     }
 
@@ -78,7 +78,7 @@ public class ColorConfigEntry extends ConfigEntry {
      * @param blue The blue color part.
      */
     private static String toValue(int red, int green, int blue) {
-        return "" + red + ":" + green + ":" + blue
+        "" + red + ":" + green + ":" + blue
     }
 
     /**
@@ -87,28 +87,28 @@ public class ColorConfigEntry extends ConfigEntry {
      * @param colorPart The color part to get.
      */
     private int valueToColor(ColorPart colorPart) {
-        return Integer.valueOf(getValue().split(":")[colorPart.ordinal()])
+        Integer.valueOf(getValue().split(":")[colorPart.ordinal()])
     }
 
     /**
      * Returns the _red color part.
      */
-    public int getRed() {
-        return valueToColor(ColorPart.RED)
+    int getRed() {
+        valueToColor(ColorPart.RED)
     }
 
     /**
      * Returns the green color part.
      */
-    public int getGreen() {
-        return valueToColor(ColorPart.GREEN)
+    int getGreen() {
+        valueToColor(ColorPart.GREEN)
     }
 
     /**
      * Returns the blue color part.
      */
-    public int getBlue() {
-        return valueToColor(ColorPart.BLUE)
+    int getBlue() {
+        valueToColor(ColorPart.BLUE)
     }
 
     /**
@@ -116,7 +116,7 @@ public class ColorConfigEntry extends ConfigEntry {
      *
      * @param red The _red valueComp to set.
      */
-    public void setRed(int red) {
+    void setRed(int red) {
         setValue(toValue(red, getGreen(), getBlue()))
     }
 
@@ -124,7 +124,7 @@ public class ColorConfigEntry extends ConfigEntry {
      * Sets the green color part.
      * @param green The green valueComp to set.
      */
-    public void setGreen(int green) {
+    void setGreen(int green) {
         setValue(toValue(getRed(), green, getBlue()))
     }
 
@@ -133,7 +133,7 @@ public class ColorConfigEntry extends ConfigEntry {
      *
      * @param blue The blur valueComp to set.
      */
-    public void setBlue(int blue) {
+    void setBlue(int blue) {
         setValue(toValue(getRed(), getGreen(), blue))
     }
 }

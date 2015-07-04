@@ -37,6 +37,8 @@
 package se.natusoft.doc.markdown.generator.styles
 
 import groovy.transform.CompileStatic
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
 import groovy.transform.TypeChecked
 
 /**
@@ -44,6 +46,8 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
+@EqualsAndHashCode
+@ToString
 class MSSColor {
     //
     // Constants
@@ -70,37 +74,37 @@ class MSSColor {
     // Static Methods
     //
 
-    public static final int getRed(String color) {
+    static final int getRed(String color) {
         if (color.contains(':')) {
             String[] rgb = color.split(":")
-            return Integer.valueOf(handleHex(rgb[0]))
+            Integer.valueOf(handleHex(rgb[0]))
         }
         else {
-            return Integer.valueOf(handleHex(color[0..1]))
+            Integer.valueOf(handleHex(color[0..1]))
         }
     }
 
-    public static final int getGreen(String color) {
+    static final int getGreen(String color) {
         if (color.contains(':')) {
             String[] rgb = color.split(":")
-            return Integer.valueOf(handleHex(rgb[1]))
+            Integer.valueOf(handleHex(rgb[1]))
         }
         else {
-            return Integer.valueOf(handleHex(color[2..3]))
+            Integer.valueOf(handleHex(color[2..3]))
         }
     }
 
-    public static final int getBlue(String color) {
+    static final int getBlue(String color) {
         if (color.contains(':')) {
             String[] rgb = color.split(":")
-            return Integer.valueOf(handleHex(rgb[2]))
+            Integer.valueOf(handleHex(rgb[2]))
         }
         else {
-            return Integer.valueOf(handleHex(color[4..5]))
+            Integer.valueOf(handleHex(color[4..5]))
         }
     }
 
-    private static String handleHex(String color) {
+    static String handleHex(String color) {
         color = color.trim().toLowerCase()
         if (color.length() == 2 && color.matches("[a-f,0-9][a-f,0-9]")) {
             char d1 = color.charAt(0)
@@ -109,7 +113,7 @@ class MSSColor {
             color = "" + value
         }
 
-        return color
+        color
     }
 
     private static int hexValue(char c) {
@@ -164,23 +168,6 @@ class MSSColor {
                 value = 15
         }
 
-        return value
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof MSSColor)) return false
-        MSSColor other = obj as MSSColor
-        return this.red == other.red && this.blue == other.blue && this.green == other.green
-    }
-
-    @Override
-    public int hashCode() {
-        Objects.hash(this.red, this.green, this.blue)
-    }
-
-    @Override
-    public String toString() {
-        return "${this.red}:${this.green}:${this.blue}"
+        value
     }
 }

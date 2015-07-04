@@ -47,5 +47,4 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-class Doc extends DocItem{
-}
+class Doc extends DocItem{}

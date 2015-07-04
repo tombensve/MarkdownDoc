@@ -48,7 +48,7 @@ import java.awt.*
  */
 @CompileStatic
 @TypeChecked
-public interface Editor extends EnvServices, MouseMotionProvider {
+interface Editor extends EnvServices, MouseMotionProvider {
 
     /**
      * Returns the top margin.

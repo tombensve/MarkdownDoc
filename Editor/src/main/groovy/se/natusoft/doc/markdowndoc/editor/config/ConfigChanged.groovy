@@ -44,7 +44,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public interface ConfigChanged {
+interface ConfigChanged {
     /**
      * This delivers the changed config entry.
      */

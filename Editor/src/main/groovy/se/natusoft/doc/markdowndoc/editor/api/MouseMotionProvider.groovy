@@ -46,7 +46,7 @@ import java.awt.event.MouseMotionListener
  */
 @CompileStatic
 @TypeChecked
-public interface MouseMotionProvider {
+interface MouseMotionProvider {
 
     /**
      * Adds a mouse motion listener to receive mouse motion events.

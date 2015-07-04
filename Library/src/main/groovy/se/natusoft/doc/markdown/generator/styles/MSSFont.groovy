@@ -1,6 +1,8 @@
 package se.natusoft.doc.markdown.generator.styles
 
 import groovy.transform.CompileStatic
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.Nullable
 
@@ -9,6 +11,8 @@ import org.jetbrains.annotations.Nullable
  */
 @CompileStatic
 @TypeChecked
+@EqualsAndHashCode
+@ToString
 class MSSFont {
 
     //
@@ -18,9 +22,9 @@ class MSSFont {
     String family = null
     int size = -1
     MSSFontStyle style = null
-    Boolean hr = null
 
-    Boolean getHr() {
+    Boolean hr = null
+    Boolean getHr() { // hr must be able to be null internally, but externally return false instead of null.
         return this.hr != null ? this.hr : Boolean.FALSE
     }
 
@@ -49,28 +53,7 @@ class MSSFont {
     //
 
     static MSSFont createDefaultFont() {
-        return new MSSFont(family: "HELVETICA", size: 10, style: MSSFontStyle.NORMAL)
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof MSSFont)) return false
-        MSSFont other = obj as MSSFont
-        return this.family == other.family && this.size == other.size && this.style == other.style
-    }
-
-    @Override
-    public int hashCode() {
-        Objects.hash(this.family, this.size, this.style)
-    }
-
-    @Override
-    public String toString() {
-        return "{\n" +
-                "family: \"${this.family}\",\n" +
-                "size: ${this.size},\n" +
-                "style: \"${this.style.name()}\"\n" +
-                "}"
+        new MSSFont(family: "HELVETICA", size: 10, style: MSSFontStyle.NORMAL)
     }
 
 }

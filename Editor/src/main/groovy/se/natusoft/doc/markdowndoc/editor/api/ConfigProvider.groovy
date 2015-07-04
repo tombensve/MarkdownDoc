@@ -45,7 +45,7 @@ import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
  */
 @CompileStatic
 @TypeChecked
-public interface ConfigProvider {
+interface ConfigProvider {
 
     /**
      * This will populate the registered config entry with a user selected valueComp.

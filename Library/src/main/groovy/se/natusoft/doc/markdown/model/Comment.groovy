@@ -51,7 +51,7 @@ class Comment extends PlainText {
      */
     @Override
     public DocFormat getFormat() {
-        return DocFormat.Comment
+        DocFormat.Comment
     }
 
 }

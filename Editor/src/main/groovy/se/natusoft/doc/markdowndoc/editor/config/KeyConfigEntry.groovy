@@ -44,7 +44,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public class KeyConfigEntry extends ConfigEntry {
+class KeyConfigEntry extends ConfigEntry {
 
     //
     // Constructors
@@ -58,7 +58,7 @@ public class KeyConfigEntry extends ConfigEntry {
      * @param defaultValue The default valueComp.
      * @param configGroup The config group this config belongs to.
      */
-    public KeyConfigEntry(String key, String description, KeyboardKey defaultValue, String configGroup) {
+    KeyConfigEntry(String key, String description, KeyboardKey defaultValue, String configGroup) {
         super(key, description, defaultValue.toString(), configGroup)
     }
 
@@ -70,8 +70,8 @@ public class KeyConfigEntry extends ConfigEntry {
     /**
      * Returns the keyboard key.
      */
-    public KeyboardKey getKeyboardKey() {
-        return new KeyboardKey(getValue())
+    KeyboardKey getKeyboardKey() {
+        new KeyboardKey(getValue())
     }
 
     /**
@@ -79,7 +79,7 @@ public class KeyConfigEntry extends ConfigEntry {
      *
      * @param keyboardKey The keyboard key to set.
      */
-    public void setKeyboardKey(KeyboardKey keyboardKey) {
+    void setKeyboardKey(KeyboardKey keyboardKey) {
         setValue(keyboardKey.toString())
     }
 }

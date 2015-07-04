@@ -44,7 +44,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public interface ToolBar {
+interface ToolBar {
     /**
      * Adds a function to the toolbar.
      *

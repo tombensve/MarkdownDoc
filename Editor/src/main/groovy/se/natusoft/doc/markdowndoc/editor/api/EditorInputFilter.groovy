@@ -47,7 +47,7 @@ import java.awt.event.KeyEvent
  */
 @CompileStatic
 @TypeChecked
-public interface EditorInputFilter extends EditorComponent {
+interface EditorInputFilter extends EditorComponent {
 
     /**
      * Receives a key event.

@@ -46,7 +46,7 @@ import java.awt.*
  */
 @CompileStatic
 @TypeChecked
-public class ConfigColor extends Color {
+class ConfigColor extends Color {
     //
     // Constructors
     //
@@ -57,7 +57,7 @@ public class ConfigColor extends Color {
      * @param configEntry The config entry containing the color specification. Its valueComp
      *                    must be in the format "r:g:b".
      */
-    public ConfigColor(ConfigEntry configEntry) {
+    ConfigColor(ConfigEntry configEntry) {
         super(getRed(configEntry.getValue()), getGreen(configEntry.getValue()), getBlue(configEntry.getValue()))
     }
 
@@ -71,7 +71,7 @@ public class ConfigColor extends Color {
      * @param colorPart The color part to get.
      */
     private static int toColor(String colorStr, ColorPart colorPart) {
-        return Integer.valueOf(colorStr.split(":")[colorPart.ordinal()])
+        Integer.valueOf(colorStr.split(":")[colorPart.ordinal()])
     }
 
     /**
@@ -80,7 +80,7 @@ public class ConfigColor extends Color {
      * @param colorStr The complete config color spec.
      */
     private static final int getRed(String colorStr) {
-        return toColor(colorStr, ColorPart.RED)
+        toColor(colorStr, ColorPart.RED)
     }
 
     /**
@@ -89,7 +89,7 @@ public class ConfigColor extends Color {
      * @param colorStr The complete config color spec.
      */
     private static final int getGreen(String colorStr) {
-        return toColor(colorStr, ColorPart.GREEN)
+        toColor(colorStr, ColorPart.GREEN)
     }
 
     /**
@@ -98,6 +98,6 @@ public class ConfigColor extends Color {
      * @param colorStr The complete config color spec.
      */
     private static final int getBlue(String colorStr) {
-        return toColor(colorStr, ColorPart.BLUE)
+        toColor(colorStr, ColorPart.BLUE)
     }
 }

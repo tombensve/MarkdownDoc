@@ -47,7 +47,7 @@ import java.util.List
  */
 @CompileStatic
 @TypeChecked
-public class VerticalFlowLayout implements LayoutManager2 {
+class VerticalFlowLayout implements LayoutManager2 {
     //
     // Private Members
     //
@@ -71,7 +71,7 @@ public class VerticalFlowLayout implements LayoutManager2 {
     /**
      * Creates a new VerticalFlowLayout.
      */
-    public VerticalFlowLayout() {
+    VerticalFlowLayout() {
     }
 
     /**
@@ -79,7 +79,7 @@ public class VerticalFlowLayout implements LayoutManager2 {
      *
      * @param vgap The gap between each component. Default 0.
      */
-    public VerticalFlowLayout(int vgap) {
+    VerticalFlowLayout(int vgap) {
         this.vgap = vgap
     }
 
@@ -88,7 +88,7 @@ public class VerticalFlowLayout implements LayoutManager2 {
      *
      * @param commonWidth If true then all components will have the same width (the width of the widest component). Default true.
      */
-    public VerticalFlowLayout(boolean commonWidth) {
+    VerticalFlowLayout(boolean commonWidth) {
         this.commonWidth = commonWidth
     }
 
@@ -98,7 +98,7 @@ public class VerticalFlowLayout implements LayoutManager2 {
      * @param vgap The gap between each component. Default 0.
      * @param commonWidth If true then all components will have the same width (the width of the widest component). Default true.
      */
-    public VerticalFlowLayout(int vgap, boolean commonWidth) {
+    VerticalFlowLayout(int vgap, boolean commonWidth) {
         this.vgap = vgap
         this.commonWidth = commonWidth
     }
@@ -117,7 +117,7 @@ public class VerticalFlowLayout implements LayoutManager2 {
      * @param comp the component to be added
      */
     @Override
-    public void addLayoutComponent(String name, Component comp) {
+    void addLayoutComponent(String name, Component comp) {
         this.components.add(comp)
     }
 
@@ -127,7 +127,7 @@ public class VerticalFlowLayout implements LayoutManager2 {
      * @param comp the component to be removed
      */
     @Override
-    public void removeLayoutComponent(Component comp) {
+    void removeLayoutComponent(Component comp) {
         this.components.remove(comp)
     }
 
@@ -139,8 +139,8 @@ public class VerticalFlowLayout implements LayoutManager2 {
      * @see #minimumLayoutSize
      */
     @Override
-    public Dimension preferredLayoutSize(Container parent) {
-        return minimumLayoutSize(parent)
+    Dimension preferredLayoutSize(Container parent) {
+        minimumLayoutSize(parent)
     }
 
     /**
@@ -151,11 +151,11 @@ public class VerticalFlowLayout implements LayoutManager2 {
      * @see #preferredLayoutSize
      */
     @Override
-    public Dimension minimumLayoutSize(Container parent) {
+    Dimension minimumLayoutSize(Container parent) {
         synchronized (parent.getTreeLock()) {
             doLayout(parent, false)
         }
-        return this.minimumSize
+        this.minimumSize
     }
 
     /**
@@ -164,7 +164,7 @@ public class VerticalFlowLayout implements LayoutManager2 {
      * @param parent the container to be laid out
      */
     @Override
-    public void layoutContainer(Container parent) {
+    void layoutContainer(Container parent) {
         synchronized (parent.getTreeLock()) {
             doLayout(parent, true)
         }
@@ -215,7 +215,7 @@ public class VerticalFlowLayout implements LayoutManager2 {
      * @param constraints where/how the component is added to the layout.
      */
     @Override
-    public void addLayoutComponent(Component comp, Object constraints) {
+    void addLayoutComponent(Component comp, Object constraints) {
         addLayoutComponent("", comp)
     }
 
@@ -228,8 +228,8 @@ public class VerticalFlowLayout implements LayoutManager2 {
      * @see java.awt.LayoutManager
      */
     @Override
-    public Dimension maximumLayoutSize(Container target) {
-        return preferredLayoutSize(target)
+    Dimension maximumLayoutSize(Container target) {
+        preferredLayoutSize(target)
     }
 
     /**
@@ -242,8 +242,8 @@ public class VerticalFlowLayout implements LayoutManager2 {
      * @param target The target container we are doing layout for.
      */
     @Override
-    public float getLayoutAlignmentX(Container target) {
-        return 0
+    float getLayoutAlignmentX(Container target) {
+        0.0f
     }
 
     /**
@@ -256,8 +256,8 @@ public class VerticalFlowLayout implements LayoutManager2 {
      * @param target The target container we are doing layout for.
      */
     @Override
-    public float getLayoutAlignmentY(Container target) {
-        return 0
+    float getLayoutAlignmentY(Container target) {
+        0.0f
     }
 
     /**
@@ -267,7 +267,7 @@ public class VerticalFlowLayout implements LayoutManager2 {
      * @param target The target container we are doing layout for.
      */
     @Override
-    public void invalidateLayout(Container target) {
+    void invalidateLayout(Container target) {
         // Nothing to invalidate.
     }
 }

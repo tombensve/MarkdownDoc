@@ -44,7 +44,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public class DoubleConfigEntry extends ConfigEntry {
+class DoubleConfigEntry extends ConfigEntry {
     //
     // Private Members
     //
@@ -66,7 +66,7 @@ public class DoubleConfigEntry extends ConfigEntry {
      * @param max The maximum valueComp.
      * @param configGroup The config group this config belongs to.
      */
-    public DoubleConfigEntry(String key, String description, double defaultValue, double min, double max, String configGroup) {
+    DoubleConfigEntry(String key, String description, double defaultValue, double min, double max, String configGroup) {
         super(key, description, "" + defaultValue, configGroup)
         this.min = min
         this.max = max
@@ -79,8 +79,8 @@ public class DoubleConfigEntry extends ConfigEntry {
     /**
      * Returns the valueComp as a double.
      */
-    public double getDoubleValue() {
-        return Double.valueOf(getValue())
+    double getDoubleValue() {
+        Double.valueOf(getValue())
     }
 
     /**
@@ -88,21 +88,21 @@ public class DoubleConfigEntry extends ConfigEntry {
      *
      * @param value The double valueComp to set.
      */
-    public void setDoubleValue(double value) {
+    void setDoubleValue(double value) {
         setValue("" + value)
     }
 
     /**
      * Returns the minimum valueComp.
      */
-    public double getMinValue() {
-        return this.min
+    double getMinValue() {
+        this.min
     }
 
     /**
      * Returns the maximum valueComp.
      */
-    public double getMaxValue() {
-        return this.max
+    double getMaxValue() {
+        this.max
     }
 }

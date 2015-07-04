@@ -10,11 +10,13 @@ import groovy.transform.TypeChecked
 @TypeChecked
 class MSSException extends RuntimeException {
 
-    MSSException(String message) {
-        super(message)
-    }
+    //
+    // Properties
+    //
 
-    MSSException(String message, Throwable cause) {
-        super(message, cause)
-    }
+    /** The exception message */
+    String message
+
+    /** The exception cause. */
+    Throwable cause
 }

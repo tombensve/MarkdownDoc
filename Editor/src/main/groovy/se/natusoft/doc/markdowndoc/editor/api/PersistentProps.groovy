@@ -44,7 +44,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public interface PersistentProps {
+interface PersistentProps {
 
     /**
      * Loads the named properties.

@@ -46,7 +46,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public class ServiceDefLoader {
+class ServiceDefLoader {
 
     //
     // Private Members
@@ -101,8 +101,8 @@ public class ServiceDefLoader {
      *
      * @param serviceAPI The service API to load services definitions for.
      */
-    public static Iterator<Class> load(Class serviceAPI) {
-        return new ServiceDefLoader(serviceAPI).services.iterator()
+    static Iterator<Class> load(Class serviceAPI) {
+        new ServiceDefLoader(serviceAPI).services.iterator()
     }
 
     /**
@@ -113,7 +113,7 @@ public class ServiceDefLoader {
      *
      * @return The instantiated instance or null on failure.
      */
-    public static <T> T instantiate(Class<T> svcClass) {
+    static <T> T instantiate(Class<T> svcClass) {
         T instance = null
         try {
             instance = (T)svcClass.newInstance()
@@ -121,6 +121,6 @@ public class ServiceDefLoader {
         catch (IllegalAccessException | InstantiationException e) {
             e.printStackTrace(System.err)
         }
-        return instance
+        instance
     }
 }

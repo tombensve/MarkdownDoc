@@ -46,7 +46,7 @@ import java.awt.event.KeyEvent
  */
 @CompileStatic
 @TypeChecked
-public class KeyboardKey {
+class KeyboardKey {
 
     //
     // Private Members
@@ -64,7 +64,7 @@ public class KeyboardKey {
      *
      * @param keyEvent The key event to get key from.
      */
-    public KeyboardKey(KeyEvent keyEvent) {
+    KeyboardKey(KeyEvent keyEvent) {
         if (keyEvent != null) { // For Linux/Ubutnu!
             this.key = KeyEvent.getKeyModifiersText(keyEvent.getModifiers()) + "+" + KeyEvent.getKeyText(keyEvent.getKeyCode())
         }
@@ -75,7 +75,7 @@ public class KeyboardKey {
      *
      * @param key The key in "internal" key format.
      */
-    public KeyboardKey(String key) {
+    KeyboardKey(String key) {
         this.key = key
     }
 
@@ -88,14 +88,14 @@ public class KeyboardKey {
      *
      * @param key The object to compare to.
      */
-    public boolean equals(Object key) {
-        return key instanceof KeyboardKey && ((KeyboardKey) key).key.equals(this.key)
+    boolean equals(Object key) {
+        key instanceof KeyboardKey && ((KeyboardKey) key).key.equals(this.key)
     }
 
     /**
      * Return as string.
      */
-    public String toString() {
-        return key
+    String toString() {
+        this.key
     }
 }

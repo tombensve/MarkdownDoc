@@ -55,7 +55,7 @@ import java.awt.event.KeyListener
  */
 @CompileStatic
 @TypeChecked
-public class ConfigEditPanel extends JPanel implements ActionListener {
+class ConfigEditPanel extends JPanel implements ActionListener {
     //
     // Private Members
     //
@@ -73,7 +73,7 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
     // Constructors
     //
 
-    public ConfigEditPanel(ConfigEntry configEntry, JFrame parent) {
+    ConfigEditPanel(ConfigEntry configEntry, JFrame parent) {
         this.configEntry = configEntry
         this.parent = parent
 
@@ -113,7 +113,7 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
     //
 
 
-    public void refresh() {
+    void refresh() {
         if (this.configEntry instanceof BooleanConfigEntry) {
             refreshBooleanConfigEntry((BooleanConfigEntry) configEntry)
         }
@@ -138,7 +138,7 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
     }
 
     @Override
-    public Dimension getPreferredSize() {
+    Dimension getPreferredSize() {
         Dimension preferredSize = super.getPreferredSize()
         if (preferredSize.width < this.minWidth) {
             preferredSize.size = new Dimension(minWidth, (int)preferredSize.height)
@@ -148,8 +148,8 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
     }
 
     @Override
-    public Dimension getMinimumSize() {
-        return getPreferredSize()
+    Dimension getMinimumSize() {
+        getPreferredSize()
     }
 
     // ------ Boolean ConfigProvider Entry ------
@@ -201,7 +201,7 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
         colorPanel.add(this.redSpinner)
         this.redSpinner.addChangeListener(new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent e) {
+            void stateChanged(ChangeEvent e) {
                 JSpinner redSpinner = (JSpinner)e.getSource()
                 colorConfigEntry.setRed((Integer)redSpinner.getValue())
             }
@@ -211,7 +211,7 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
         colorPanel.add(this.greenSpinner)
         this.greenSpinner.addChangeListener(new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent e) {
+            void stateChanged(ChangeEvent e) {
                 JSpinner greenSpinner = (JSpinner)e.getSource()
                 colorConfigEntry.setGreen((Integer) greenSpinner.getValue())
             }
@@ -221,7 +221,7 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
         colorPanel.add(this.blueSpinner)
         this.blueSpinner.addChangeListener(new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent e) {
+            void stateChanged(ChangeEvent e) {
                 JSpinner blueSpinner = (JSpinner)e.getSource()
                 colorConfigEntry.setBlue((Integer) blueSpinner.getValue())
             }
@@ -231,7 +231,7 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
         colorPanel.add(colorChooserButton)
         colorChooserButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            void actionPerformed(ActionEvent e) {
                 Color selectedColor =
                         JColorChooser.showDialog(/*ConfigEditPanel.this.*/parent,
                                 "", new ConfigColor(colorConfigEntry))
@@ -266,7 +266,7 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
         add(panel)
         this.doubleSpinner.addChangeListener(new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent e) {
+            void stateChanged(ChangeEvent e) {
                 JSpinner doubleSpinner = (JSpinner)e.getSource()
                 configEntry.setDoubleValue((Double) doubleSpinner.getValue())
             }
@@ -290,7 +290,7 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
         add(panel)
         this.intSpinner.addChangeListener(new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent e) {
+            void stateChanged(ChangeEvent e) {
                 JSpinner intSpinner = (JSpinner) e.getSource()
                 configEntry.setIntValue((Integer) intSpinner.getValue())
             }
@@ -314,16 +314,16 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
         add(panel)
         this.keyboardKeyField.addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {
+            void keyTyped(KeyEvent e) {
             }
 
             @Override
-            public void keyPressed(KeyEvent e) {
+            void keyPressed(KeyEvent e) {
                 keyPressedEvent = e
             }
 
             @Override
-            public void keyReleased(KeyEvent e) {
+            void keyReleased(KeyEvent e) {
                 KeyboardKey keyboardKey = new KeyboardKey(keyPressedEvent)
                 keyboardKeyField.setText(keyboardKey.toString())
                 configEntry.setKeyboardKey(keyboardKey)
@@ -357,7 +357,7 @@ public class ConfigEditPanel extends JPanel implements ActionListener {
      * Invoked when an action occurs.
      */
     @Override
-    public void actionPerformed(ActionEvent e) {
+    void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof JComboBox) {
             JComboBox comboBox = (JComboBox)e.getSource()
             if (comboBox.getSelectedItem() instanceof ValidSelectionConfigEntry.Value) {

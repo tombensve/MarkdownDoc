@@ -64,7 +64,7 @@ class MDImage extends Image {
      *
      * @param object The object to left shift in.
      */
-    public DocItem leftShift(Object object) {
+    DocItem leftShift(Object object) {
         char c = (char)object
 
         if (part == 0 && c == '(') {
@@ -85,6 +85,6 @@ class MDImage extends Image {
             }
         }
 
-        return this
+        this
     }
 }

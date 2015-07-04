@@ -123,7 +123,10 @@ class MSS {
     // Private Members
     //
 
-    /** We hold the whole MSS files as a top level JSONObject in general. Some values are cached in other form when fetched. */
+    /**
+     * We hold the whole MSS files as a top level JSONObject in general. Some values are cached in other form when
+     * fetched.
+     */
     private final JSONObject mss
 
     /** A cached instance of the "document" section of the MSS. */
@@ -172,7 +175,7 @@ class MSS {
             }
         }
 
-        return this._document
+        this._document
     }
 
     /**
@@ -186,7 +189,7 @@ class MSS {
             }
         }
 
-        return this._pages
+        this._pages
     }
 
     /**
@@ -200,7 +203,7 @@ class MSS {
             }
         }
 
-        return this._divs
+        this._divs
     }
 
     /**
@@ -214,7 +217,7 @@ class MSS {
             }
         }
 
-        return this._frontPage
+        this._frontPage
     }
 
     /**
@@ -228,7 +231,7 @@ class MSS {
             }
         }
 
-        return this._toc
+        this._toc
     }
 
     /**
@@ -246,11 +249,13 @@ class MSS {
      *
      * @throws IOException on null result.
      */
-    private static JSONValue getNullSafe(@NotNull final JSONObject object, @NotNull final String field, @NotNull final String errorMessage)
+    private static JSONValue getJSONValue(@NotNull final JSONObject object, @NotNull final String field,
+                                         @NotNull final String errorMessage)
             throws MSSException {
         JSONValue result = object.getProperty(field)
-        if (result == null) throw new MSSException(errorMessage)
-        return result
+        if (result == null) throw new MSSException(message: errorMessage)
+
+        result
     }
 
     /**
@@ -266,29 +271,49 @@ class MSS {
         MSSExtFont result = null
 
         JSONObject pdf = (JSONObject) this.mss.getProperty(MSS_Top.pdf.name())
-        if (pdf == null) throw new MSSException("No TTF fonts specified under 'pdf' section in MSS file!")
+        if (pdf == null) {
+            throw new MSSException(message: "No TTF fonts specified under 'pdf' section in MSS file!")
+        }
 
         JSONArray extFontsArray = (JSONArray) pdf.getProperty(MSS_PDF.extFonts.name());
-        if (extFontsArray == null) throw new MSSException("No external fonts specified under 'pdf/extFonts' seciton in MSS file!")
+        if (extFontsArray == null) {
+            throw new MSSException(message: "No external fonts specified under 'pdf/extFonts' seciton in MSS file!")
+        }
 
         extFontsArray.asList.each { JSONValue entry ->
-            if (!(entry instanceof JSONObject)) throw new MSSException("Bad MSS: pdf/extFonts does not contain a list of objects!")
+            if (!(entry instanceof JSONObject)) {
+                throw new MSSException(message: "Bad MSS: pdf/extFonts does not contain a list of objects!")
+            }
 
-            JSONObject entryObject = entry as JSONObject
-            if (getNullSafe(entryObject, MSS_PDF.family.name(), "Error: extFonts entry without 'family' field!").toString() == name) {
+            if (getJSONValue(
+                    entry as JSONObject,
+                    MSS_PDF.family.name(),
+                    "Error: extFonts entry without 'family' field!"
+               ).toString() == name
+            ) {
 
                 result = new MSSExtFont(
-                    fontPath: getNullSafe(entryObject, MSS_PDF.path.name(), "Error: extFonts entry without 'path' field!").toString(),
-                    encoding: getNullSafe(entryObject, MSS_PDF.encoding.name(), "Error ectFonts entry without 'encoding' field!").toString()
+                    fontPath: getJSONValue(
+                            entry as JSONObject,
+                            MSS_PDF.path.name(),
+                            "Error: extFonts entry without 'path' field!"
+                    ).toString(),
+                    encoding: getJSONValue(
+                            entry as JSONObject,
+                            MSS_PDF.encoding.name(),
+                            "Error ectFonts entry without 'encoding' field!"
+                    ).toString()
                 )
 
-                return // from closure!
+                return // from each closure!
             }
         }
 
-        if (result == null) throw new MSSException("Error: Asked for extFonts font '${name}' was not defined in MSS!")
+        if (result == null) {
+            throw new MSSException(message: "Error: Asked for extFonts font '${name}' was not defined in MSS!")
+        }
 
-        return result
+        result
     }
 
     /**
@@ -300,7 +325,7 @@ class MSS {
      *
      * @throws MSSException On reference to non defined color.
      */
-    @NotNull private MSSColor lookupColor(@NotNull String name) throws MSSException {
+    private @NotNull MSSColor lookupColor(@NotNull String name) throws MSSException {
         MSSColor color = this.colorMap.get(name)
 
         if (color == null) {
@@ -309,22 +334,20 @@ class MSS {
             } else {
                 JSONObject jssColors = this.mss.getProperty(MSS_Top.colors.name()) as JSONObject
                 if (jssColors == null) {
-                    throw new MSSException("No color names have been defined in the \"colors\" section of the MSS file! " +
+                    throw new MSSException(message: "No color names have been defined in the \"colors\" section of the MSS file! " +
                             "'${name}' was asked for!")
                 } else {
                     String colorValue = jssColors.getProperty(name)?.toString()
-                    if (colorValue == null) throw new MSSException("The color '${name}' has not been defined in the \"colors\" section " +
+                    if (colorValue == null) throw new MSSException(message: "The color '${name}' has not been defined in the \"colors\" section " +
                             "of the MSS file!")
                     color = new MSSColor(color: colorValue)
                 }
             }
 
-            if (color != null) {
-                this.colorMap.put(name, color)
-            }
+            this.colorMap.put(name, color)
         }
 
-        return color
+        color
     }
 
     /**
@@ -361,7 +384,7 @@ class MSS {
         JSONString style = section?.getProperty(MSS_Font.style.name()) as JSONString
         if (style != null) {
             MSSFontStyle mssFontStyle = MSSFontStyle.valueOf(style.toString().toUpperCase())
-            if (mssFontStyle == null) { throw new MSSException("'${style}' is not a valid font style!") }
+            if (mssFontStyle == null) { throw new MSSException(message: "'${style}' is not a valid font style!") }
             font.updateStyleIfNotSet(mssFontStyle)
         }
 
@@ -379,7 +402,8 @@ class MSS {
     private static @NotNull MSSColorPair ensureColorPair(@NotNull MSSColorPair colorPair) {
         colorPair.updateForegroundIfNotSet(MSSColor.BLACK)
         colorPair.updateBackgroundIfNotSet(MSSColor.WHITE)
-        return colorPair
+
+        colorPair
     }
 
     /**
@@ -391,7 +415,8 @@ class MSS {
         font.updateFamilyIfNotSet("HELVETICA")
         font.updateSizeIfNotSet(10)
         font.updateStyleIfNotSet(MSSFontStyle.NORMAL)
-        return font
+
+        font
     }
 
     /**
@@ -415,7 +440,7 @@ class MSS {
 
         updateMSSColorPairIfNotSet(colorPair, this.document)
 
-        return ensureColorPair(colorPair)
+        ensureColorPair(colorPair)
     }
 
     /**
@@ -439,22 +464,22 @@ class MSS {
 
         updateMSSFontIfNotSet(font, this.document)
 
-        return ensureFont(font)
+        ensureFont(font)
     }
 
     class ForDocument {
         @NotNull MSSColorPair getColorPair(@NotNull MSS_Pages section) {
-            return getColorPairForDocument(section)
+            getColorPairForDocument(section)
         }
 
         @NotNull MSSFont getFont(@NotNull MSS_Pages section) {
-            return getFontForDocument(section)
+            getFontForDocument(section)
         }
     }
 
     private ForDocument forDocument = new ForDocument()
 
-    ForDocument getForDocument() {return this.forDocument}
+    ForDocument getForDocument() { this.forDocument }
 
     /**
      * Returns a MSSColorPair containing foreground and background color to use for the section.
@@ -467,7 +492,7 @@ class MSS {
         updateMSSColorPairIfNotSet(colorPair, this.frontPage.getProperty(section.name()) as JSONObject)
         updateMSSColorPairIfNotSet(colorPair, this.frontPage)
 
-        return ensureColorPair(colorPair)
+        ensureColorPair(colorPair)
     }
 
     /**
@@ -481,7 +506,7 @@ class MSS {
         updateMSSFontIfNotSet(font, this.frontPage.getProperty(section.name()) as JSONObject)
         updateMSSFontIfNotSet(font, this.frontPage)
 
-        return ensureFont(font)
+        ensureFont(font)
     }
 
     /**
@@ -499,7 +524,7 @@ class MSS {
             }
         }
 
-        return verLabel
+        verLabel
     }
 
     /**
@@ -517,30 +542,30 @@ class MSS {
             }
         }
 
-        return verLabel
+        verLabel
     }
 
     class ForFrontPage {
         @NotNull MSSColorPair getColorPair(@NotNull MSS_Front_Page section) {
-            return getColorPairForFrontPage(section)
+            getColorPairForFrontPage(section)
         }
 
         @NotNull MSSFont getFont(@NotNull MSS_Front_Page section) {
-            return getFontForFrontPage(section)
+            getFontForFrontPage(section)
         }
 
         @NotNull String getVersionLabel(@NotNull String _default) {
-            return getVersionLabelForFrontPage(_default)
+            getVersionLabelForFrontPage(_default)
         }
 
         @NotNull String getAuthorLabel(@NotNull String _default) {
-            return getAuthorLabelForFrontPage(_default)
+            getAuthorLabelForFrontPage(_default)
         }
     }
 
     private ForFrontPage forFrontPage = new ForFrontPage()
 
-    ForFrontPage getForFrontPage() {return this.forFrontPage}
+    ForFrontPage getForFrontPage() { this.forFrontPage }
 
 
     /**
@@ -554,7 +579,7 @@ class MSS {
         updateMSSColorPairIfNotSet(colorPair, this.TOC.getProperty(section.name()) as JSONObject)
         updateMSSColorPairIfNotSet(colorPair, this.TOC)
 
-        return ensureColorPair(colorPair)
+        ensureColorPair(colorPair)
     }
 
     /**
@@ -568,28 +593,23 @@ class MSS {
         updateMSSFontIfNotSet(font, this.TOC.getProperty(section.name()) as JSONObject)
         updateMSSFontIfNotSet(font, this.TOC)
 
-        return ensureFont(font)
+        ensureFont(font)
     }
 
     class ForTOC {
         @NotNull MSSColorPair getColorPair(@NotNull MSS_TOC section) {
-            return getColorPairForTOC(section)
+            getColorPairForTOC(section)
         }
 
         @NotNull MSSFont getFont(@NotNull MSS_TOC section) {
-            return getFontForTOC(section)
+            getFontForTOC(section)
         }
     }
 
     private ForTOC forTOC = new ForTOC()
 
-    ForTOC getForTOC() {return this.forTOC}
+    ForTOC getForTOC() { this.forTOC }
 
-
-
-    //
-    // Util
-    //
 
     //
     // Static Methods
@@ -818,7 +838,7 @@ class MSS {
     static @NotNull MSS defaultMSS() throws IOException {
         InputStream mssStream = TestSafeResource.getResource("mss/default.mss")
         try {
-            return fromInputStream(mssStream)
+            fromInputStream(mssStream)
         }
         finally {
             mssStream.close()
@@ -881,7 +901,7 @@ class MSS {
             ok = safe( { MSS_PDF.valueOf(name) != null } )
         }
 
-        return ok
+        ok
     }
 
     private static boolean safe(Closure<Boolean> enumCheck) {
@@ -890,6 +910,6 @@ class MSS {
         }
         catch (IllegalArgumentException ignored) { }
 
-        return false
+        false
     }
 }

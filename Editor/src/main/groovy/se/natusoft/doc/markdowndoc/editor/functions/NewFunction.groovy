@@ -60,7 +60,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-public class NewFunction implements EditorFunction, Configurable {
+class NewFunction implements EditorFunction, Configurable {
     //
     // Private Members
     //
@@ -86,7 +86,7 @@ public class NewFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    public void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -96,7 +96,7 @@ public class NewFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    public void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -104,12 +104,12 @@ public class NewFunction implements EditorFunction, Configurable {
     // Constructors
     //
 
-    public NewFunction() {
+    NewFunction() {
         Icon newIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddnew.png"))
         this.newButton = new JButton(newIcon)
         newButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+            void actionPerformed(ActionEvent actionEvent) {
                 perform()
             }
         })
@@ -125,38 +125,38 @@ public class NewFunction implements EditorFunction, Configurable {
     }
 
     @Override
-    public void setEditor(Editor editor) {
+    void setEditor(Editor editor) {
         this.editor = editor
     }
 
     @Override
-    public String getGroup() {
-        return ToolBarGroups.FILE.name()
+    String getGroup() {
+        ToolBarGroups.FILE.name()
     }
 
     @Override
-    public String getName() {
-        return "New editorPane window"
+    String getName() {
+        "New editorPane window"
     }
 
     @Override
-    public JComponent getToolBarButton() {
-        return this.newButton
+    JComponent getToolBarButton() {
+        this.newButton
     }
 
     /**
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    public KeyboardKey getKeyboardShortcut() {
-        return keyboardShortcutConfig.getKeyboardKey()
+    KeyboardKey getKeyboardShortcut() {
+        keyboardShortcutConfig.getKeyboardKey()
     }
 
     @Override
-    public void perform() throws FunctionException {
+    void perform() throws FunctionException {
         Thread openThread = new Thread(new Runnable() {
             @Override
-            public void run() {
+            void run() {
                 /*NewFunction.this.*/editor.openNewEditorWindow()
             }
         })
@@ -166,5 +166,5 @@ public class NewFunction implements EditorFunction, Configurable {
     /**
      * Cleanup and unregister any configs.
      */
-    public void close() {}
+    void close() {}
 }

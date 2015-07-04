@@ -76,7 +76,7 @@ class Line {
      * @param line The content of the line.
      * @param lineNumber The line number of the line.
      */
-    public Line(String line, int lineNumber) {
+    Line(String line, int lineNumber) {
         this.origLine = line
         this.words = line.split("\\s+")
         this.lineNumber = lineNumber
@@ -91,14 +91,15 @@ class Line {
      *
      * @param beg The string to remove.
      */
-    public Line removeBeg(String beg) {
+    Line removeBeg(String beg) {
+        Line line = this
         if (this.origLine.trim().startsWith(beg)) {
             int ix = this.origLine.indexOf(beg);
             String nwLine = this.origLine.substring(ix + 1);
-            return newLine(nwLine)
+            line = newLine(nwLine)
         }
 
-        return this
+        line
     }
 
     /**
@@ -117,7 +118,7 @@ class Line {
      *
      * @return A new Line instance.
      */
-    public Line removeAll(String text) {
+    Line removeAll(String text) {
         newLine(this.origLine.replaceAll(text, ""))
     }
 
@@ -127,15 +128,15 @@ class Line {
      * @param regex what to replace.
      * @param with What to replace with.
      */
-    public Line replaceAll(String regex, String with) {
+    Line replaceAll(String regex, String with) {
         newLine(this.origLine.replaceAll(regex, with))
     }
 
     /**
      * Returns true if there are more words in this line.
      */
-    public boolean hasMoreWords() {
-        return (this.currentWord + 1) < this.words.size()
+    boolean hasMoreWords() {
+        (this.currentWord + 1) < this.words.size()
     }
 
     /**
@@ -151,36 +152,36 @@ class Line {
      * </pre>
      * If you however do line.currentWord before this method then this will return the second word.
      */
-    public String getNextWord() {
+    String getNextWord() {
         String str = ""
 
         if (hasMoreWords()) {
             str = this.words[++this.currentWord]
         }
 
-        return str
+        str
     }
 
     /**
      * Returns the previous word or "" if already at first word.
      */
-    public String getPrevWord() {
+    String getPrevWord() {
         String str = ""
 
         if (this.currentWord > 0) {
             str = this.words[--this.currentWord]
         }
 
-        return str
+        str
     }
 
     /**
      * Returns the current word in the line. If this is called directly after the Line has
      * been constructed it will return the first word.
      */
-    public String getCurrentWord() {
-        if (this.currentWord < 0) this.currentWord = 0
-        return this.words[this.currentWord]
+    String getCurrentWord() {
+        if (this.currentWord < 0) { this.currentWord = 0 }
+        this.words[this.currentWord]
     }
 
     /**
@@ -190,31 +191,31 @@ class Line {
      * and is thus not the same state as when the Line instance have been constructed! To
      * achieve that call resetLine() instead.
      */
-    public String getFirstWord() {
+    String getFirstWord() {
         this.currentWord = 0
-        return this.words[this.currentWord]
+        this.words[this.currentWord]
     }
 
     /**
      * Moves to the last word.
      */
-    public String getLastWord() {
+    String getLastWord() {
         this.currentWord = words.size() - 1
-        return this.words[this.currentWord]
+        this.words[this.currentWord]
     }
 
     /**
      * Reset the word position state to the same as after construction.
      */
-    public void resetLine() {
+    void resetLine() {
         this.currentWord = -1
     }
 
     /**
      * Returns the number of words in the line.
      */
-    public int getNumberOfWords() {
-        return this.words.size()
+    int getNumberOfWords() {
+        this.words.size()
     }
 
     /**
@@ -222,15 +223,15 @@ class Line {
      *
      * @param word The position of the word to get.
      */
-    public String getWord(int word) {
-        return this.words[word];
+    String getWord(int word) {
+        this.words[word];
     }
 
     /**
      * Returns the poition of the current word.
      */
-    public int getCurrentWordPosition() {
-        return this.currentWord
+    int getCurrentWordPosition() {
+        this.currentWord
     }
 
     /**
@@ -238,14 +239,14 @@ class Line {
      *
      * @param position The position to set.
      */
-    public void setCurrentWordPosition(int position) {
+    void setCurrentWordPosition(int position) {
         this.currentWord = position
     }
 
     /**
      * Returns the number of leading spaces.
      */
-    public int getLeadingSpaces() {
+    int getLeadingSpaces() {
         int leading = 0
         int lpos = 0
 
@@ -262,13 +263,13 @@ class Line {
             }
         }
 
-        return leading
+        leading
     }
 
     /**
      * Removes any leading spaces.
      */
-    public Line removeLeadingSpaces() {
+    Line removeLeadingSpaces() {
         Line nl = this
 
         int ls = getLeadingSpaces()
@@ -276,7 +277,7 @@ class Line {
             nl = newLine(this.origLine.substring(ls))
         }
 
-        return nl
+        nl
     }
 
     /**
@@ -284,7 +285,7 @@ class Line {
      *
      * @param wordClosure The closure to call.
      */
-    public void eachWord(Closure wordClosure) {
+    void eachWord(Closure wordClosure) {
         this.words.each wordClosure
     }
 
@@ -293,8 +294,8 @@ class Line {
      *
      * @param startsWith The text to check for.
      */
-    public boolean startsWith(String startsWith) {
-        return this.origLine.startsWith(startsWith)
+    boolean startsWith(String startsWith) {
+        this.origLine.startsWith(startsWith)
     }
 
     /**
@@ -302,8 +303,8 @@ class Line {
      *
      * @param startsWith The text to check for.
      */
-    public boolean startsWithExcludingWhitespace(String startsWith) {
-        return this.origLine.trim().startsWith(startsWith)
+    boolean startsWithExcludingWhitespace(String startsWith) {
+        this.origLine.trim().startsWith(startsWith)
     }
 
     /**
@@ -311,8 +312,8 @@ class Line {
      *
      * @param endsWith The text to check for.
      */
-    public boolean endsWith(String endsWith) {
-        return this.origLine.endsWith(endsWith)
+    boolean endsWith(String endsWith) {
+        this.origLine.endsWith(endsWith)
     }
 
     /**
@@ -320,8 +321,8 @@ class Line {
      *
      * @param endsWith The text to check for.
      */
-    public boolean endsWithExcludingWhitespace(String endsWith) {
-        return this.origLine.trim().endsWith(endsWith)
+    boolean endsWithExcludingWhitespace(String endsWith) {
+        this.origLine.trim().endsWith(endsWith)
     }
 
     /**
@@ -329,8 +330,8 @@ class Line {
      *
      * @param contains The text to check for.
      */
-    public boolean contains(String contains) {
-        return this.origLine.indexOf(contains) >= 0
+    boolean contains(String contains) {
+        this.origLine.indexOf(contains) >= 0
     }
 
     /**
@@ -338,21 +339,21 @@ class Line {
      *
      * @param regexp The regexp to match.
      */
-    public boolean matches(String regexp) {
-        return this.origLine.matches(regexp)
+    boolean matches(String regexp) {
+        this.origLine.matches(regexp)
     }
 
     /**
      * @return true if this line is empty.
      */
-    public boolean isEmpty() {
-        return this.origLine.trim().length() == 0
+    boolean isEmpty() {
+        this.origLine.trim().length() == 0
     }
 
     /**
      * Returns a new Line having everything but the first word.
      */
-    public Line removeFirstWord() {
+    Line removeFirstWord() {
         String space = ""
         boolean first = true
         String text = ""
@@ -364,7 +365,7 @@ class Line {
             first = false
         }
 
-        return newLine(text)
+        newLine(text)
     }
 
     /**
@@ -372,15 +373,15 @@ class Line {
      *
      * @param index The index of the char to get.
      */
-    public char charAt(int index) {
-        return this.origLine.charAt(index)
+    char charAt(int index) {
+        this.origLine.charAt(index)
     }
 
     /**
      * Returns this Line as a String (as originally read from file!)
      */
     @Override
-    public String toString() {
-        return this.origLine
+    String toString() {
+        this.origLine
     }
 }

@@ -46,22 +46,22 @@ import javax.swing.JCheckBox
  */
 @CompileStatic
 @TypeChecked
-public class ExportDataSelectValue extends ExportDataValue {
-    public ExportDataSelectValue(String labelText) {
+class ExportDataSelectValue extends ExportDataValue {
+    ExportDataSelectValue(String labelText) {
         super(labelText)
         super.valueComp = new JCheckBox()
     }
 
-    public ExportDataSelectValue(String labelText, boolean defaultValue) {
+    ExportDataSelectValue(String labelText, boolean defaultValue) {
         this(labelText)
         ((JCheckBox)ensureValueComp()).setSelected(defaultValue)
     }
 
-    public String getValue() {
-        return "" + ((JCheckBox)super.valueComp).isSelected()
+    String getValue() {
+        "" + ((JCheckBox)super.valueComp).isSelected()
     }
 
-    public void setValue(String value) {
+    void setValue(String value) {
         boolean selected = Boolean.valueOf(value)
         ((JCheckBox)ensureValueComp()).setSelected(selected)
     }

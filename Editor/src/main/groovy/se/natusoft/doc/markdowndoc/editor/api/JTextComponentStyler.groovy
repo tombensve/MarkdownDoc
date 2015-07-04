@@ -46,7 +46,7 @@ import javax.swing.*
  */
 @CompileStatic
 @TypeChecked
-public interface JTextComponentStyler {
+interface JTextComponentStyler {
     /**
      * Initializes the Styler with a component to style.
      *
@@ -82,9 +82,9 @@ public interface JTextComponentStyler {
     /**
      * Provides the bounds withing the document model for the paragraph to style.
      */
-    public static class ParagraphBounds {
-        public int start = 0
-        public int end = 0
+    static class ParagraphBounds {
+        int start = 0
+        int end = 0
 
         public String toString() {
             return "Bounds: " + start + ":" + end

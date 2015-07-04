@@ -48,13 +48,17 @@ import javax.swing.text.JTextComponent
  */
 @CompileStatic
 @TypeChecked
-public class JELine implements Line {
+class JELine implements Line {
     //
     // Private Members
     //
 
     /** The JEditorPane we represent a line in. */
     private JTextComponent editor
+
+    //
+    // Properties
+    //
 
     /** The starting position of the line */
     int startPos
@@ -72,7 +76,7 @@ public class JELine implements Line {
      * @param editor The editorPane we wrap.
      * @param startPos The starting position of the line.
      */
-    public JELine(JTextComponent editor, int startPos) {
+    JELine(JTextComponent editor, int startPos) {
         this.editor = editor
         this.startPos = startPos
 
@@ -97,14 +101,14 @@ public class JELine implements Line {
     //
 
     private boolean isEmpty() {
-        return this.startPos == this.endPos
+        this.startPos == this.endPos
     }
 
     /**
      * Returns the text of the line.
      */
-    public String getText() throws BadLocationException {
-        return this.editor.getText(this.startPos, this.endPos - this.startPos)
+    String getText() throws BadLocationException {
+        this.editor.getText(this.startPos, this.endPos - this.startPos)
     }
 
     /**
@@ -112,7 +116,7 @@ public class JELine implements Line {
      *
      * @param text The text to set.
      */
-    public void setText(String text) {
+    void setText(String text) {
         int currSelStart = this.editor.getSelectionStart()
         int currSelEnd = this.editor.getSelectionEnd()
         this.editor.select(this.startPos, this.endPos)
@@ -123,20 +127,20 @@ public class JELine implements Line {
     /**
      * Returns the next line or null if this is the last line.
      */
-    public Line getNextLine() {
+    Line getNextLine() {
         try {
             this.editor.getText(this.endPos + 1, 1) // Verify!
-            return new JELine(this.editor, this.endPos + 1)
+            new JELine(this.editor, this.endPos + 1)
         }
-        catch (BadLocationException ble) {
-            return null
+        catch (BadLocationException ignore) {
+            null
         }
     }
 
     /**
      * Returns the previous line or null if this is the first line.
      */
-    public Line getPreviousLine() {
+    Line getPreviousLine() {
         try {
             this.editor.getText(this.startPos - 2, 1)
         }
@@ -158,58 +162,60 @@ public class JELine implements Line {
             sp = 0
         }
 
-        return new JELine(this.editor, sp)
+        new JELine(this.editor, sp)
     }
 
     /**
      * Return true if the line is the first line.
      */
-    public boolean isFirstLine() {
-        return this.startPos == 0
+    boolean isFirstLine() {
+        this.startPos == 0
     }
 
     /**
      * Returns true if this line is the last line.
      */
-    public boolean isLastLine() {
+    boolean isLastLine() {
+        boolean _lastLine = true
         try {
             int pos = this.startPos
             while (true) {
                 String check = this.editor.getText(pos, 1)
                 if (check.equals("\n")) {
-                    return false
+                    _lastLine = false
+                    break
                 }
                 ++pos
             }
         }
-        catch (BadLocationException ble) {
-            return true
-        }
+        catch (BadLocationException ignore) {}
+
+        _lastLine
     }
 
     /**
      * Returns the position of the beginning of the line.
      */
-    public int getLineStartPost() {
-        return this.startPos
+    int getLineStartPost() {
+        this.startPos
     }
 
     /**
      * Returns the position of the end of the line.
      */
-    public int getLineEndPos() {
-        return this.endPos
+    int getLineEndPos() {
+        this.endPos
     }
 
     /**
      * Same as getText().
      */
-    public String toString() {
+    String toString() {
         try {
-            return getText()
+            getText()
         }
-        catch (BadLocationException ble) {
-            return "<Bad line!>"
+        catch (BadLocationException ignore) {
+            "<Bad line!>"
         }
     }
 }

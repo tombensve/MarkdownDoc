@@ -199,7 +199,7 @@
       },
       "code": {
         "family": "COURIER",
-        "size": 8,
+        "size": 7,
         "color": "64:64:64"
       },
       "anchor": {

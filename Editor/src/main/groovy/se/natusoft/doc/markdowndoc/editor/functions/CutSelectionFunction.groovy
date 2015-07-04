@@ -50,9 +50,9 @@ import javax.swing.*
  */
 @CompileStatic
 @TypeChecked
-public class CutSelectionFunction implements EditorFunction {
+class CutSelectionFunction implements EditorFunction {
     //
-    // Private Members
+    // Properties
     //
 
     Editor editor
@@ -62,32 +62,32 @@ public class CutSelectionFunction implements EditorFunction {
     //
 
     @Override
-    public String getGroup() {
-        return null
+    String getGroup() {
+        null
     }
 
     @Override
-    public String getName() {
-        return "Cut"
+    String getName() {
+        "Cut"
     }
 
     @Override
-    public JComponent getToolBarButton() {
-        return null
+    JComponent getToolBarButton() {
+        null
     }
 
     @Override
-    public KeyboardKey getKeyboardShortcut() {
-        return new KeyboardKey("Meta+X")
+    KeyboardKey getKeyboardShortcut() {
+        new KeyboardKey("Meta+X")
     }
 
     @Override
-    public void perform() throws FunctionException {
+    void perform() throws FunctionException {
         this.editor.cut()
     }
 
     /**
      * Cleanup and unregister any configs.
      */
-    public void close() {}
+    void close() {}
 }

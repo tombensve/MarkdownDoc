@@ -43,7 +43,6 @@ import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
-import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
@@ -60,7 +59,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-public class InsertHeadingFunction implements EditorFunction, Configurable {
+class InsertHeadingFunction implements EditorFunction, Configurable {
     //
     // Private Members
     //
@@ -86,7 +85,7 @@ public class InsertHeadingFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    public void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -96,7 +95,7 @@ public class InsertHeadingFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    public void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -104,12 +103,12 @@ public class InsertHeadingFunction implements EditorFunction, Configurable {
     // Constructors
     //
 
-    public InsertHeadingFunction() {
+    InsertHeadingFunction() {
         Icon headingIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddheading.png"))
         this.headerButton = new JButton(headingIcon)
         headerButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+            void actionPerformed(ActionEvent actionEvent) {
                 perform()
             }
         })
@@ -125,35 +124,35 @@ public class InsertHeadingFunction implements EditorFunction, Configurable {
     }
 
     @Override
-    public void setEditor(Editor editor) {
+    void setEditor(Editor editor) {
         this.editor = editor
     }
 
     @Override
-    public String getGroup() {
-        return ToolBarGroups.FORMAT.name()
+    String getGroup() {
+        ToolBarGroups.FORMAT.name()
     }
 
     @Override
-    public String getName() {
-        return "Insert heading format"
+    String getName() {
+        "Insert heading format"
     }
 
     @Override
-    public JComponent getToolBarButton() {
-        return this.headerButton
+    JComponent getToolBarButton() {
+        this.headerButton
     }
 
     /**
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    public KeyboardKey getKeyboardShortcut() {
-        return keyboardShortcutConfig.getKeyboardKey()
+    KeyboardKey getKeyboardShortcut() {
+        keyboardShortcutConfig.getKeyboardKey()
     }
 
     @Override
-    public void perform() throws FunctionException {
+    void perform() throws FunctionException {
         this.editor.insertText("#")
         this.editor.requestEditorFocus()
     }
@@ -162,5 +161,5 @@ public class InsertHeadingFunction implements EditorFunction, Configurable {
      * Cleanup and unregister any configs.
      */
     @Override
-    public void close() {}
+    void close() {}
 }

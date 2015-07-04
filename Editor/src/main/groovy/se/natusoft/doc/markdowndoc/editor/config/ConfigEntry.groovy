@@ -45,7 +45,7 @@ import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
  */
 @CompileStatic
 @TypeChecked
-public class ConfigEntry {
+class ConfigEntry {
     //
     // Private Members
     //
@@ -69,7 +69,7 @@ public class ConfigEntry {
     /**
      * Default constructor.
      */
-    public ConfigEntry() {}
+    ConfigEntry() {}
 
     /**
      * Creates a new ConfigEntry.
@@ -78,7 +78,7 @@ public class ConfigEntry {
      * @param description The description of the config.
      * @param configGroup The configuration group this config belongs to.
      */
-    public ConfigEntry(String key, String description, String configGroup) {
+    ConfigEntry(String key, String description, String configGroup) {
         this.key = key
         this.description = description
         this.configGroup = configGroup
@@ -92,7 +92,7 @@ public class ConfigEntry {
      * @param defaultValue The default valueComp of the config.
      * @param configGroup The configuration group this config belongs to.
      */
-    public ConfigEntry(String key, String description, String defaultValue, String configGroup) {
+    ConfigEntry(String key, String description, String defaultValue, String configGroup) {
         this(key, description, configGroup)
         this.value = defaultValue
     }
@@ -104,8 +104,8 @@ public class ConfigEntry {
     /**
      * Returns the valueComp of the config as a boolean.
      */
-    public boolean getBoolValue() {
-        return Boolean.valueOf(this.value)
+    boolean getBoolValue() {
+        Boolean.valueOf(this.value)
     }
 
     /**
@@ -113,7 +113,7 @@ public class ConfigEntry {
      *
      * @param value The valueComp to set.
      */
-    public void setValue(String value) {
+    void setValue(String value) {
         this.value = value
         this.configProvider.lookupConfigChanged(this).each { Closure configChanged ->
             configChanged(this)

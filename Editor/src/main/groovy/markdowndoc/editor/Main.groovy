@@ -47,7 +47,7 @@ import se.natusoft.doc.markdowndoc.editor.MarkdownEditor;
 @TypeChecked
 public class Main {
 
-    public static void main(String... args) {
+    static void main(String... args) {
         MarkdownEditor.main(args)
     }
 }

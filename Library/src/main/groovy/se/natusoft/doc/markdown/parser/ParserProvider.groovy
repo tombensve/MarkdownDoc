@@ -54,8 +54,8 @@ class ParserProvider {
      *
      * @return A parser or null.
      */
-    public static Parser getParserForFile(File file) {
-        return getParserForFile(file.getName())
+    static Parser getParserForFile(File file) {
+        getParserForFile(file.getName())
     }
 
     /**
@@ -65,7 +65,7 @@ class ParserProvider {
      *
      * @return A parser or null.
      */
-    public static Parser getParserForFile(String file) {
+    static Parser getParserForFile(String file) {
         Parser parser = null
 
         ServiceLoader parserLoader = ServiceLoader.load(Parser.class);
@@ -76,7 +76,7 @@ class ParserProvider {
             }
         }
 
-        return parser;
+        parser;
     }
 
 }

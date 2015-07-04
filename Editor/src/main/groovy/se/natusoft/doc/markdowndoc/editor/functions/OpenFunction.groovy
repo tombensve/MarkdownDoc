@@ -61,7 +61,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-public class OpenFunction implements EditorFunction, Configurable {
+class OpenFunction implements EditorFunction, Configurable {
     //
     // Private Members
     //
@@ -87,7 +87,7 @@ public class OpenFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    public void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -97,7 +97,7 @@ public class OpenFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    public void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -105,12 +105,12 @@ public class OpenFunction implements EditorFunction, Configurable {
     // Constructors
     //
 
-    public OpenFunction() {
+    OpenFunction() {
         Icon openIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddopen.png"))
         this.openButton = new JButton(openIcon)
         this.openButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+            void actionPerformed(ActionEvent actionEvent) {
                 perform()
             }
         })
@@ -131,37 +131,37 @@ public class OpenFunction implements EditorFunction, Configurable {
      * @param editor The editorPane to set.
      */
     @Override
-    public void setEditor(Editor editor) {
+    void setEditor(Editor editor) {
         this.editor = editor
     }
 
     @Override
-    public String getGroup() {
-        return ToolBarGroups.FILE.name()
+    String getGroup() {
+        ToolBarGroups.FILE.name()
     }
 
     @Override
-    public String getName() {
-        return "Open file"
+    String getName() {
+        "Open file"
     }
 
     @Override
-    public JComponent getToolBarButton() {
-        return this.openButton
+    JComponent getToolBarButton() {
+        this.openButton
     }
 
     @Override
-    public KeyboardKey getKeyboardShortcut() {
-        return keyboardShortcutConfig.getKeyboardKey()
+    KeyboardKey getKeyboardShortcut() {
+        keyboardShortcutConfig.getKeyboardKey()
     }
 
     @Override
-    public void perform() throws FunctionException {
+    void perform() throws FunctionException {
         try {
             open()
         }
         catch (IOException ioe) {
-            throw new FunctionException(ioe.getMessage(), ioe)
+            throw new FunctionException(message: ioe.getMessage(), cause: ioe)
         }
     }
 
@@ -184,6 +184,6 @@ public class OpenFunction implements EditorFunction, Configurable {
     /**
      * Cleanup and unregister any configs.
      */
-    public void close() {}
+    void close() {}
 
 }

@@ -46,7 +46,6 @@ import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
-import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
@@ -67,7 +66,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-public class ExportToPDFFunction extends AbstractExportFunction implements EditorFunction, Configurable {
+class ExportToPDFFunction extends AbstractExportFunction implements EditorFunction, Configurable {
     //
     // Constants
     //
@@ -108,7 +107,7 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
      * @param configProvider The config provider to register with.
      */
     @Override
-    public void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -118,7 +117,7 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    public void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -141,7 +140,7 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
         private ExportDataValue generateTOC = new ExportDataSelectValue("Generate TOC:")
         private ExportDataValue openResult = new ExportDataSelectValue("Open result:")
 
-        public PDFData(DelayedServiceData delayedServiceData) {
+        PDFData(DelayedServiceData delayedServiceData) {
             super(delayedServiceData)
         }
     }
@@ -153,7 +152,7 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
     /**
      * Creates a new ExportToPDFFunction instance.
      */
-    public ExportToPDFFunction() {
+    ExportToPDFFunction() {
         super(GENERATED_PDF_FILE)
         Icon pdfIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddpdf.png"))
         this.pdfToolbarButton = new JButton(pdfIcon)
@@ -173,32 +172,32 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
      * Returns the group name the function belongs to.
      */
     @Override
-    public String getGroup() {
-        return ToolBarGroups.EXPORT.name()
+    String getGroup() {
+        ToolBarGroups.EXPORT.name()
     }
 
     /**
      * Returns the name of the function.
      */
     @Override
-    public String getName() {
-        return "Export to PDF"
+    String getName() {
+        "Export to PDF"
     }
 
     /**
      * Returns the function toolbar button.
      */
     @Override
-    public JComponent getToolBarButton() {
-        return this.pdfToolbarButton
+    JComponent getToolBarButton() {
+        this.pdfToolbarButton
     }
 
     /**
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    public KeyboardKey getKeyboardShortcut() {
-        return keyboardShortcutConfig.getKeyboardKey()
+    KeyboardKey getKeyboardShortcut() {
+        keyboardShortcutConfig.getKeyboardKey()
     }
 
     /**
@@ -207,7 +206,7 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
      * @throws FunctionException on failure to perform function.
      */
     @Override
-    public void perform() throws FunctionException {
+    void perform() throws FunctionException {
         this.exportFile = getExportOutputFile("PDF", "pdf", "pdf")
 
         if (this.exportFile != null) {
@@ -331,5 +330,5 @@ public class ExportToPDFFunction extends AbstractExportFunction implements Edito
     /**
      * Cleanup and unregister any configs.
      */
-    public void close() {}
+    void close() {}
 }

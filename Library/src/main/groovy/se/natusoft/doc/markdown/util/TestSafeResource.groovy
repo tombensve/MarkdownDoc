@@ -28,6 +28,6 @@ class TestSafeResource {
             is = TestSafeResource.class.getClassLoader().getResourceAsStream("Library/src/main/resources/" + path)
         }
 
-        return is
+        is
     }
 }

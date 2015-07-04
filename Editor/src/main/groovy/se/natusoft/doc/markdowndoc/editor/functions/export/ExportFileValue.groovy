@@ -43,14 +43,14 @@ import javax.swing.JComponent
 
 @CompileStatic
 @TypeChecked
-public class ExportFileValue extends ExportDataValue {
+class ExportFileValue extends ExportDataValue {
 
     private String whatFile
 
     // This is provided later in constructor of subclass since it is provided to the constructor.
     DelayedServiceData delayedServiceData
 
-    public ExportFileValue(String labelText, String whatFile) {
+    ExportFileValue(String labelText, String whatFile) {
         super(labelText)
         this.whatFile = whatFile
     }
@@ -61,18 +61,18 @@ public class ExportFileValue extends ExportDataValue {
             super.valueComp = new FileSelector(this.whatFile, delayedServiceData)
         }
 
-        return super.valueComp
+        super.valueComp
     }
 
-    public String getValue() {
+    String getValue() {
         if (whatFile == null || delayedServiceData == null) {
             throw new IllegalStateException("'whatFile' and 'gui' properties must have been provided before this call" +
                     " can be made!")
         }
-        return ((FileSelector)ensureValueComp()).getFile()
+        ((FileSelector)ensureValueComp()).getFile()
     }
 
-    public void setValue(String value) {
+    void setValue(String value) {
         ((FileSelector)ensureValueComp()).setFile(value)
     }
 }

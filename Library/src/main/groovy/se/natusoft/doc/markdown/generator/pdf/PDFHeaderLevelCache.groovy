@@ -42,7 +42,7 @@ class PDFHeaderLevelCache {
             text.matches("[0-9,.]*" + key.replace("*", "\\*").replace("\\", "\\\\").replace(".", "\\."))
         })
 
-        return level != null ? level : MSS.MSS_TOC.h1
+        level != null ? level : MSS.MSS_TOC.h1
     }
 
 }

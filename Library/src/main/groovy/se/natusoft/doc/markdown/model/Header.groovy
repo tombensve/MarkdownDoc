@@ -44,7 +44,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public class Header extends PlainText {
+class Header extends PlainText {
     //
     // Private Members
     //
@@ -59,7 +59,7 @@ public class Header extends PlainText {
     /**
      * Creates a new Header.
      */
-    public Header() {}
+    Header() {}
 
     //
     // Methods
@@ -70,7 +70,7 @@ public class Header extends PlainText {
      *
      * @param text The text to set.
      */
-    public void setText(String text) {
+    void setText(String text) {
         addItem(text)
     }
 
@@ -78,17 +78,17 @@ public class Header extends PlainText {
      * Returns the format this model represents.
      */
     @Override
-    public DocFormat getFormat() {
-        return DocFormat.Header
+    DocFormat getFormat() {
+        DocFormat.Header
     }
 
-    public String toString() {
+    String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(this.level.name())
         sb.append(": ")
         sb.append(text)
 
-        return sb.toString()
+        sb.toString()
     }
 
     //
@@ -98,7 +98,7 @@ public class Header extends PlainText {
     /**
      * The possible levels.
      */
-    public static enum Level {
+    static enum Level {
         //
         // Enum Constants
         //
@@ -121,7 +121,7 @@ public class Header extends PlainText {
          *
          * @param level The indentLevel of this indentLevel.
          */
-        public Level(int level) {
+        Level(int level) {
             this.level = level
         }
 
@@ -134,8 +134,8 @@ public class Header extends PlainText {
          *
          * @param level The indentLevel integer to get indentLevel enum by.
          */
-        public Level getByLevel(int level) {
-            return Level.valueOf(Level.class, "H" + level)
+        Level getByLevel(int level) {
+            valueOf(Level.class, "H" + level)
         }
     }
 }

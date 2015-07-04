@@ -67,7 +67,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_T
  */
 @CompileStatic
 @TypeChecked
-public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configurable, MouseMotionProvider {
+class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configurable, MouseMotionProvider {
 
     //
     // Constants
@@ -153,7 +153,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
             new ValidSelectionConfigEntry("editor.pane.font", "The font to use.", "Helvetica",
                     new ValidSelectionConfigEntry.ValidValues() {
                         @Override
-                        public ValidSelectionConfigEntry.Value[] validValues() {
+                        ValidSelectionConfigEntry.Value[] validValues() {
                             GraphicsEnvironment gEnv = GraphicsEnvironment
                                     .getLocalGraphicsEnvironment()
                             return ValidSelectionConfigEntry.convertToValues(gEnv.getAvailableFontFamilyNames())
@@ -179,7 +179,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
                     UIManager.getSystemLookAndFeelClassName(),
                     new ValidSelectionConfigEntry.ValidValues() {
                         @Override
-                        public ValidSelectionConfigEntry.Value[] validValues() {
+                        ValidSelectionConfigEntry.Value[] validValues() {
                             ValidSelectionConfigEntry.Value[] vv =
                                     new ValidSelectionConfigEntry.Value[0]
                             UIManager.getInstalledLookAndFeels().each { UIManager.LookAndFeelInfo lfi ->
@@ -198,7 +198,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
                     MultiPopupToolbar.class.getName(),
                     new ValidSelectionConfigEntry.ValidValues() {
                         @Override
-                        public ValidSelectionConfigEntry.Value[] validValues() {
+                        ValidSelectionConfigEntry.Value[] validValues() {
                             List<String> toolbarProviders = new LinkedList<>()
                             ServiceDefLoader.load(ToolBar.class).each { Class toolbarClass ->
                                 toolbarProviders.add(toolbarClass.getName())
@@ -314,7 +314,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @param configProvider The config provider to register with.
      */
     @Override
-    public void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(ConfigProvider configProvider) {
         configProvider.registerConfig(fontConfig, this.fontConfigChanged)
         configProvider.registerConfig(fontSizeConfig, this.fontSizeConfigChanged)
         configProvider.registerConfig(backgroundColorConfig, this.backgroundColorConfigChanged)
@@ -334,7 +334,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    public void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(ConfigProvider configProvider) {
         configProvider.unregisterConfig(fontConfig, this.fontConfigChanged)
         configProvider.unregisterConfig(fontSizeConfig, this.fontSizeConfigChanged)
         configProvider.unregisterConfig(backgroundColorConfig, this.backgroundColorConfigChanged)
@@ -355,7 +355,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
     /**
      * Creates a new MarkdownEditor instance.
      */
-    public MarkdownEditor() {}
+    MarkdownEditor() {}
 
     protected void closeWindow() {
         ConfigProvider cp = getConfigProvider()
@@ -369,10 +369,10 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
     /**
      * Sets up the gui, etc.
      */
-    public void initGUI() {
+    void initGUI() {
         addWindowListener(new WindowListenerAdapter() {
             @Override
-            public void windowClosing(WindowEvent e) {
+            void windowClosing(WindowEvent e) {
                 closeWindow()
             }
         })
@@ -406,14 +406,14 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
 
         this.editorPane = new JTextPane() {
             @Override
-            public Dimension getPreferredSize() {
+            Dimension getPreferredSize() {
                 Dimension dim = super.getPreferredSize()
                 dim.setSize(getWidth(), dim.getHeight())
 
                 return dim
             }
             @Override
-            public Dimension getMinimumSize() {
+            Dimension getMinimumSize() {
                 return getPreferredSize()
             }
 
@@ -421,12 +421,12 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
 
         this.mouseMotionProviders.add(new MouseMotionProvider() {
             @Override
-            public void addMouseMotionListener(MouseMotionListener listener) {
+            void addMouseMotionListener(MouseMotionListener listener) {
                 editorPane.addMouseMotionListener(listener)
             }
 
             @Override
-            public void removeMouseMotionListener(MouseMotionListener listener) {
+            void removeMouseMotionListener(MouseMotionListener listener) {
                 editorPane.removeMouseMotionListener(listener)
             }
 
@@ -446,14 +446,14 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
 
         this.editorPane.addCaretListener(new CaretListener() {
             @Override
-            public void caretUpdate(CaretEvent caretEvent) {
+            void caretUpdate(CaretEvent caretEvent) {
                 updateScrollbar()
             }
         })
 
         //noinspection GroovyResultOfObjectAllocationIgnored,UnnecessaryQualifiedReference
         new FileDrop(this.editorPane, new FileDrop.Listener() {
-            public void filesDropped(java.io.File[] files) {
+            void filesDropped(java.io.File[] files) {
                 if (files.length >= 1) {
                     dropFile(files[0])
                 }
@@ -529,16 +529,16 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * Returns the editorPane GUI API.
      */
     @Override
-    public GUI getGUI() {
-        return this
+    GUI getGUI() {
+        this
     }
 
     /**
      * Returns the top margin.
      */
     @Override
-    public int getTopMargin() {
-        return topMargin.getIntValue()
+    int getTopMargin() {
+        topMargin.getIntValue()
     }
 
     /**
@@ -547,7 +547,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @param listener The listener to add.
      */
     @Override
-    public synchronized void addMouseMotionListener(MouseMotionListener listener) {
+    synchronized void addMouseMotionListener(MouseMotionListener listener) {
         this.mouseMotionProviders.each { MouseMotionProvider mmp -> mmp.addMouseMotionListener(listener) }
     }
 
@@ -557,7 +557,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @param listener The listener to remove.
      */
     @Override
-    public synchronized void removeMouseMotionListener(MouseMotionListener listener) {
+    synchronized void removeMouseMotionListener(MouseMotionListener listener) {
         this.mouseMotionProviders.each { MouseMotionProvider mmp -> mmp.removeMouseMotionListener(listener) }
     }
 
@@ -565,80 +565,80 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * Returns the persistent properties provider.
      */
     @Override
-    public PersistentProps getPersistentProps() {
-        return persistentPropertiesProvider
+    PersistentProps getPersistentProps() {
+        persistentPropertiesProvider
     }
 
     /**
      * Returns the panel above the editorPane and toolbar.
      */
     @Override
-    public JPanel getTopPanel() {
+    JPanel getTopPanel() {
         if (this.editorTopPanel == null) {
             this.editorTopPanel = new JPanel()
             this.editorPanel.add(this.editorTopPanel, BorderLayout.NORTH)
         }
-        return this.editorTopPanel
+        this.editorTopPanel
     }
 
     /**
      * Returns the panel below the editorPane and toolbar.
      */
     @Override
-    public JPanel getBottomPanel() {
+    JPanel getBottomPanel() {
         if (this.editorBottomPanel == null) {
             this.editorBottomPanel = new JPanel()
             this.editorPanel.add(this.editorBottomPanel, BorderLayout.SOUTH)
         }
-        return this.editorBottomPanel
+        this.editorBottomPanel
     }
 
     /**
      * Returns the panel to the left of the editorPane and toolbar.
      */
     @Override
-    public JPanel getLeftPanel() {
+    JPanel getLeftPanel() {
         if (this.editorLeftPanel == null) {
             this.editorLeftPanel = new JPanel()
             this.editorPanel.add(this.editorLeftPanel, BorderLayout.WEST)
         }
-        return this.editorLeftPanel
+        this.editorLeftPanel
     }
 
     /**
      * Returns the panel to the right of the editorPane and toolbar.
      */
     @Override
-    public JPanel getRightPanel() {
+    JPanel getRightPanel() {
         if (this.editorRightPanel == null) {
             this.editorRightPanel = new JPanel()
             this.editorPanel.add(this.editorRightPanel, BorderLayout.EAST)
         }
-        return this.editorRightPanel
+        this.editorRightPanel
     }
 
     /**
      * Returns the editorPane panel. A toolbar can for example be added here!
      */
     @Override
-    public JPanel getEditorPanel() {
-        return this.editorPanel
+    JPanel getEditorPanel() {
+        this.editorPanel
     }
 
     /**
      * Returns the y coordinate of the top of the scrollable editorPane view.
      */
     @Override
-    public int getEditorVisibleY() {
-        return this.scrollPane.getViewport().getViewRect().y
+    int getEditorVisibleY() {
+        this.scrollPane.getViewport().getViewRect().y
     }
 
     /**
      * Returns the styler for the editorPane.
      */
     @Override
-    public JTextComponentStyler getStyler() {
-        return this.editorStyler
+    JTextComponentStyler getStyler() {
+        this.editorStyler
     }
 
     /**
@@ -646,8 +646,8 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      */
     @SuppressWarnings("UnnecessaryQualifiedReference")
     @Override
-    public ConfigProvider getConfigProvider() {
-        return MarkdownEditor.configs
+    ConfigProvider getConfigProvider() {
+        MarkdownEditor.configs
     }
 
     // KeyListener Implementation.
@@ -658,7 +658,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * a key typed event.
      */
     @Override
-    public void keyTyped(KeyEvent e) {}
+    void keyTyped(KeyEvent e) {}
 
     /**
      * Invoked when a key has been pressed.
@@ -666,7 +666,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * a key pressed event.
      */
     @Override
-    public void keyPressed(KeyEvent e) {
+    void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode()
         if (
                 keyCode != KeyEvent.VK_META &&
@@ -715,7 +715,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * a key released event.
      */
     @Override
-    public void keyReleased(KeyEvent e) {
+    void keyReleased(KeyEvent e) {
         int keyCode = e.getKeyCode()
         if (
                 keyCode != KeyEvent.VK_META &&
@@ -736,15 +736,15 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * handle more more actions like exiting the JVM for example.
      */
     @Override
-    public void editorClosed() {
+    void editorClosed() {
     }
 
     /**
      * Returns the current file or null if none.
      */
     @Override
-    public File getCurrentFile() {
-        return this.currentFile
+    File getCurrentFile() {
+        this.currentFile
     }
 
     /**
@@ -753,7 +753,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @param file The file to set.
      */
     @Override
-    public void setCurrentFile(File file) {
+    void setCurrentFile(File file) {
         this.currentFile = file
     }
 
@@ -761,23 +761,23 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * Returns the contents of the editorPane.
      */
     @Override
-    public String getEditorContent() {
-        return this.editorPane.getText()
+    String getEditorContent() {
+        this.editorPane.getText()
     }
 
     /**
      * Returns the current selection or null if none.
      */
     @Override
-    public String getEditorSelection() {
-        return this.editorPane.getSelectedText()
+    String getEditorSelection() {
+        this.editorPane.getSelectedText()
     }
 
     /**
      * Returns the current line.
      */
     @Override
-    public Line getCurrentLine() {
+    Line getCurrentLine() {
         int i = keyPressedCaretPos - 1
         try {
             while (i >= 0) {
@@ -797,7 +797,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
             i = 0
         }
 
-        return new JELine(this.editorPane, i)
+        new JELine(this.editorPane, i)
     }
 
     /**
@@ -806,7 +806,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @param content The new content to set.
      */
     @Override
-    public void setEditorContent(String content) {
+    void setEditorContent(String content) {
         this.editorPane.setText(content)
     }
 
@@ -816,7 +816,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @param text The text to insert.
      */
     @Override
-    public void insertText(String text) {
+    void insertText(String text) {
         this.editorStyler.disable()
         this.editorPane.replaceSelection(text)
         this.editorStyler.enable()
@@ -826,7 +826,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
     /**
      * Adds a blank line.
      */
-    public void addBlankLine() {
+    void addBlankLine() {
         this.editorPane.replaceSelection("\n")
     }
 
@@ -836,7 +836,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @param noChars The number of characters to move caret.
      */
     @Override
-    public void moveCaretBack(int noChars) {
+    void moveCaretBack(int noChars) {
         Caret caret = this.editorPane.getCaret()
         caret.setDot(caret.getDot() - noChars)
     }
@@ -847,7 +847,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @param noChars The number of characters to move caret.
      */
     @Override
-    public void moveCaretForward(int noChars) {
+    void moveCaretForward(int noChars) {
         Caret caret = this.editorPane.getCaret()
         caret.setDot(caret.getDot() + noChars)
     }
@@ -856,8 +856,8 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * Returns the current caret location.
      */
     @Override
-    public Point getCaretLocation() {
-        return this.editorPane.getLocation(new Point())
+    Point getCaretLocation() {
+        this.editorPane.getLocation(new Point())
     }
 
     /**
@@ -866,7 +866,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @param location The new location.
      */
     @Override
-    public void setCaretLocation(Point location) {
+    void setCaretLocation(Point location) {
         this.editorPane.setLocation(location)
     }
 
@@ -874,8 +874,8 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * Returns the caret dot location.
      */
     @Override
-    public int getCaretDot() {
-        return this.editorPane.getCaret().getDot()
+    int getCaretDot() {
+        this.editorPane.getCaret().getDot()
     }
 
     /**
@@ -884,7 +884,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @param dot The new dot location to set.
      */
     @Override
-    public void setCaretDot(int dot) {
+    void setCaretDot(int dot) {
         this.editorPane.getCaret().setDot(dot)
     }
 
@@ -893,7 +893,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * Requests focus for the editorPane.
      */
     @Override
-    public void requestEditorFocus() {
+    void requestEditorFocus() {
         this.editorPane.requestFocusInWindow()
     }
 
@@ -901,15 +901,15 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * Needed for popping upp dialogs.
      */
     @Override
-    public JFrame getWindowFrame() {
-        return this
+    JFrame getWindowFrame() {
+        this
     }
 
     /**
      * Opens a new editorPane window.
      */
     @Override
-    public void openNewEditorWindow() {
+    void openNewEditorWindow() {
         try {
             openEditor(null)
         } catch (IOException ioe) {
@@ -922,7 +922,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * Copies the currently selected text.
      */
     @Override
-    public void copy() {
+    void copy() {
         this.editorPane.copy()
     }
 
@@ -930,7 +930,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * Cuts the currently selected text.
      */
     @Override
-    public void cut() {
+    void cut() {
         this.editorPane.cut()
     }
 
@@ -938,7 +938,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * Pastes the currently copied/cut text.
      */
     @Override
-    public void paste() {
+    void paste() {
         this.editorPane.paste()
     }
 
@@ -946,7 +946,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * Makes the editorPane view visible in the main scrollable view.
      */
     @Override
-    public void showEditorComponent() {
+    void showEditorComponent() {
         this.scrollPane.setViewportView(this.editorPane)
     }
 
@@ -954,7 +954,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * Makes the specified component visible in the main scrollable view.
      */
     @Override
-    public void showOtherComponent(JComponent component) {
+    void showOtherComponent(JComponent component) {
         this.scrollPane.setViewportView(component)
     }
 
@@ -964,7 +964,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @param groupName The name of the tool bar group to enable.
      */
     @Override
-    public void enableToolBarGroup(String groupName) {
+    void enableToolBarGroup(String groupName) {
         this.toolBar.enableGroup(groupName)
     }
 
@@ -974,7 +974,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @param groupName The name of the tool bar group to disable.
      */
     @Override
-    public void disableToolBarGroup(String groupName) {
+    void disableToolBarGroup(String groupName) {
         this.toolBar.disableGroup(groupName)
     }
 
@@ -982,7 +982,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * Refreshes styling and formatting of the document.
      */
     @Override
-    public void refreshStyling() {
+    void refreshStyling() {
         String text = getEditorContent()
         int caretDot = getCaretDot()
         getGUI().getStyler().disable()
@@ -999,7 +999,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @throws java.io.IOException
      */
     @Override
-    public void loadFile(File file) throws IOException {
+    void loadFile(File file) throws IOException {
         setCurrentFile(file)
 
         StringBuilder sb = new StringBuilder()
@@ -1037,7 +1037,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @throws IOException
      */
     @Override
-    public void saveFileAs(File file) throws IOException {
+    void saveFileAs(File file) throws IOException {
         file.withWriter('UTF-8') { BufferedWriter writer ->
             writer.write(getEditorContent())
         }
@@ -1052,7 +1052,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @throws IOException
      */
     @Override
-    public void save() throws IOException {
+    void save() throws IOException {
         JFileChooser fileChooser = new JFileChooser()
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG)
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -1105,7 +1105,7 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @param window The window to enable full screen for.
      */
     @SuppressWarnings(["unchecked", "rawtypes", "unused"])
-    public static void enableOSXFullscreenIfOnOSX(Window window) {
+    static void enableOSXFullscreenIfOnOSX(Window window) {
         if (window == null) return
 
         try {
@@ -1139,12 +1139,12 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      * @throws IOException
      */
     @SuppressWarnings("UnnecessaryQualifiedReference")
-    public static void openEditor(final File file) throws IOException {
+    static void openEditor(final File file) throws IOException {
         ++MarkdownEditor.instanceCount
 
         MarkdownEditor me = new MarkdownEditor() {
             @Override
-            public void editorClosed() {
+            void editorClosed() {
                 setVisible(false)
                 --MarkdownEditor.instanceCount
                 if (MarkdownEditor.instanceCount == 0) {
@@ -1192,11 +1192,11 @@ public class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, 
      *
      * @param args The arguments to the invocation.
      */
-    public static void main(final String... args) {
+    static void main(final String... args) {
         SwingUtilities.invokeLater(
             new Runnable() {
                 @Override
-                public void run()
+                void run()
                 {
                     startup(args)
                 }

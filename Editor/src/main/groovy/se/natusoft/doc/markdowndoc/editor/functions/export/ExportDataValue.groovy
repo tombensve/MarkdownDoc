@@ -48,19 +48,19 @@ import java.awt.Color
  */
 @CompileStatic
 @TypeChecked
-public abstract class ExportDataValue {
+abstract class ExportDataValue {
     JLabel labelComp
     JComponent valueComp
 
-    public ExportDataValue(String labelText) {
+    ExportDataValue(String labelText) {
         this.labelComp = new JLabel("    " + labelText + " ")
     }
 
-    public String getKey() {
-        return this.labelComp.getText().trim().toLowerCase().replaceAll(" ", "-").replaceAll(":", "")
+    String getKey() {
+        this.labelComp.getText().trim().toLowerCase().replaceAll(" ", "-").replaceAll(":", "")
     }
 
-    public void setBackgroundColor(Color bgColor) {
+    void setBackgroundColor(Color bgColor) {
         ensureValueComp().setBackground(bgColor)
     }
 
@@ -68,9 +68,9 @@ public abstract class ExportDataValue {
      * This must be overridden by subclasses that wants to delay the creation of the valueComp.
      */
     protected JComponent ensureValueComp() {
-        return this.valueComp
+        this.valueComp
     }
 
-    public abstract String getValue()
-    public abstract void setValue(String value)
+    abstract String getValue()
+    abstract void setValue(String value)
 }

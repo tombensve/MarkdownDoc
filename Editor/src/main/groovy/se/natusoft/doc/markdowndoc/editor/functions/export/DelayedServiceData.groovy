@@ -45,7 +45,7 @@ import se.natusoft.doc.markdowndoc.editor.api.EnvServices
  */
 @CompileStatic
 @TypeChecked
-public interface DelayedServiceData extends EnvServices{
+interface DelayedServiceData extends EnvServices{
 
     /**
      * Returns the default property key.

@@ -48,7 +48,7 @@ import javax.swing.*
  */
 @CompileStatic
 @TypeChecked
-public interface EditorFunction extends EditorComponent {
+interface EditorFunction extends EditorComponent {
 
     /**
      * Returns the group in the tool bar this functions should be placed in.

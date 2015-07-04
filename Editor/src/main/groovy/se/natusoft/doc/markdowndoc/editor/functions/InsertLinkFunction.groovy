@@ -43,7 +43,6 @@ import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
-import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
@@ -63,7 +62,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-public class InsertLinkFunction implements EditorFunction, Configurable {
+class InsertLinkFunction implements EditorFunction, Configurable {
     //
     // Private Members
     //
@@ -75,7 +74,6 @@ public class InsertLinkFunction implements EditorFunction, Configurable {
     private JButton linkButton
 
     // Popup GUI
-    private JPanel inputPanel
     private JTextField linkText
     private JTextField linkURL
     private JTextField linkTitle
@@ -99,7 +97,7 @@ public class InsertLinkFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    public void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -109,7 +107,7 @@ public class InsertLinkFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    public void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -117,12 +115,12 @@ public class InsertLinkFunction implements EditorFunction, Configurable {
     // Constructors
     //
 
-    public InsertLinkFunction() {
+    InsertLinkFunction() {
         Icon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddlink.png"))
         this.linkButton = new JButton(imageIcon)
         linkButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+            void actionPerformed(ActionEvent actionEvent) {
                 perform()
             }
         })
@@ -133,7 +131,7 @@ public class InsertLinkFunction implements EditorFunction, Configurable {
     // Methods
     //
 
-    public void updateTooltipText() {
+    void updateTooltipText() {
         linkButton.setToolTipText("Link (" + keyboardShortcutConfig.getKeyboardKey() + ")")
     }
 
@@ -143,7 +141,7 @@ public class InsertLinkFunction implements EditorFunction, Configurable {
      * @param editor The editorPane to set.
      */
     @Override
-    public void setEditor(Editor editor) {
+    void setEditor(Editor editor) {
         this.editor = editor
     }
 
@@ -152,24 +150,24 @@ public class InsertLinkFunction implements EditorFunction, Configurable {
      * A new group will be created if the named group does not exist.
      */
     @Override
-    public String getGroup() {
-        return ToolBarGroups.FORMAT.name()
+    String getGroup() {
+        ToolBarGroups.FORMAT.name()
     }
 
     /**
      * Returns the name of the function.
      */
     @Override
-    public String getName() {
-        return "Insert Link"
+    String getName() {
+        "Insert Link"
     }
 
     /**
      * Returns this functions toolbar button or null if it does not have one.
      */
     @Override
-    public JComponent getToolBarButton() {
-        return this.linkButton
+    JComponent getToolBarButton() {
+        this.linkButton
     }
 
     /**
@@ -179,20 +177,8 @@ public class InsertLinkFunction implements EditorFunction, Configurable {
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    public KeyboardKey getKeyboardShortcut() {
-        return keyboardShortcutConfig.getKeyboardKey()
-    }
-
-    private JPanel createLabelPanel(String text) {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT))
-        panel.add(new JLabel(text))
-        return panel
-    }
-
-    private JPanel createTextFieldPanel(JTextField textField) {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT))
-        panel.add(textField)
-        return panel
+    KeyboardKey getKeyboardShortcut() {
+        keyboardShortcutConfig.getKeyboardKey()
     }
 
     /**
@@ -202,7 +188,7 @@ public class InsertLinkFunction implements EditorFunction, Configurable {
      *
      */
     @Override
-    public void perform() throws FunctionException {
+    void perform() throws FunctionException {
         Color bgColor = this.editor.getGUI().getWindowFrame().getBackground()
 
         Box vBox = Box.createVerticalBox()
@@ -232,7 +218,7 @@ public class InsertLinkFunction implements EditorFunction, Configurable {
         JButton insertButton = new JButton("Insert")
         insertButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            void actionPerformed(ActionEvent e) {
                 inputDialog.setVisible(false)
                 linkButton.setEnabled(true)
 
@@ -251,7 +237,7 @@ public class InsertLinkFunction implements EditorFunction, Configurable {
         JButton cancelButton = new JButton("Cancel")
         cancelButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            void actionPerformed(ActionEvent e) {
                 inputDialog.setVisible(false)
                 linkButton.setEnabled(true)
                 editor.requestEditorFocus()
@@ -277,5 +263,5 @@ public class InsertLinkFunction implements EditorFunction, Configurable {
     /**
      * Cleanup and unregister any configs.
      */
-    public void close() {}
+    void close() {}
 }

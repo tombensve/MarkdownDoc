@@ -44,7 +44,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public enum ToolBarGroups {
+enum ToolBarGroups {
 
     /** functions like open, save, etc. */
     FILE,

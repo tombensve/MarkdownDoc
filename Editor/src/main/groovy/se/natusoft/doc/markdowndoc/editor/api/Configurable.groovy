@@ -44,20 +44,20 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public interface Configurable {
+interface Configurable {
 
     /**
      * Register configurations.
      *
      * @param configProvider The config provider to register with.
      */
-    public void registerConfigs(ConfigProvider configProvider);
+    void registerConfigs(ConfigProvider configProvider);
 
     /**
      * Unregister configurations.
      *
      * @param configProvider The config provider to unregister with.
      */
-    public void unregisterConfigs(ConfigProvider configProvider);
+    void unregisterConfigs(ConfigProvider configProvider);
 
 }

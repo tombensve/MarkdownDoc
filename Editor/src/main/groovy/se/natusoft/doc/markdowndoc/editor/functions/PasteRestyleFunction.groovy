@@ -57,7 +57,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-public class PasteRestyleFunction implements EditorFunction, Configurable {
+class PasteRestyleFunction implements EditorFunction, Configurable {
     //
     // Private Members
     //
@@ -82,7 +82,7 @@ public class PasteRestyleFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    public void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -92,7 +92,7 @@ public class PasteRestyleFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    public void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -101,35 +101,35 @@ public class PasteRestyleFunction implements EditorFunction, Configurable {
     //
 
     @Override
-    public void setEditor(Editor editor) {
+    void setEditor(Editor editor) {
         this.editor = editor
     }
 
     @Override
-    public String getGroup() {
-        return null
+    String getGroup() {
+        null
     }
 
     @Override
-    public String getName() {
-        return "Paste"
+    String getName() {
+        "Paste"
     }
 
     @Override
-    public JComponent getToolBarButton() {
-        return null
+    JComponent getToolBarButton() {
+        null
     }
 
     /**
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    public KeyboardKey getKeyboardShortcut() {
-        return keyboardShortcutConfig.getKeyboardKey()
+    KeyboardKey getKeyboardShortcut() {
+        keyboardShortcutConfig.getKeyboardKey()
     }
 
     @Override
-    public void perform() throws FunctionException {
+    void perform() throws FunctionException {
 
         try {
             this.editor.refreshStyling()
@@ -142,5 +142,5 @@ public class PasteRestyleFunction implements EditorFunction, Configurable {
     /**
      * Cleanup and unregister any configs.
      */
-    public void close() {}
+    void close() {}
 }

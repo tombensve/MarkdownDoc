@@ -47,13 +47,13 @@ import java.awt.event.ActionListener
 
 @CompileStatic
 @TypeChecked
-public class FileSelector extends JPanel implements ActionListener {
+class FileSelector extends JPanel implements ActionListener {
     private JTextField fileName = new JTextField(30)
     private JButton selectButton = new JButton("Select")
     private String what
     private DelayedServiceData dsd
 
-    public FileSelector(String what, DelayedServiceData dsd) {
+    FileSelector(String what, DelayedServiceData dsd) {
         this.what = what
         this.dsd = dsd
         setLayout(new BorderLayout())
@@ -63,7 +63,7 @@ public class FileSelector extends JPanel implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent actionEvent) {
+    void actionPerformed(ActionEvent actionEvent) {
         JFileChooser fileChooser = new JFileChooser()
         fileChooser.setDialogTitle("Specify " + what + " file")
         fileChooser.setDialogType(JFileChooser.OPEN_DIALOG)
@@ -77,16 +77,16 @@ public class FileSelector extends JPanel implements ActionListener {
         }
     }
 
-    public void setFile(String file) {
+    void setFile(String file) {
         this.fileName.setText(file)
     }
 
-    public String getFile() {
-        return this.fileName.getText()
+    String getFile() {
+        this.fileName.getText()
     }
 
     @Override
-    public void setBackground(Color bgColor) {
+    void setBackground(Color bgColor) {
         super.setBackground(bgColor)
         if (this.fileName != null) {
             this.fileName.setBackground(bgColor)
