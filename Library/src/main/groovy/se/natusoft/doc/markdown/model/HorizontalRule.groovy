@@ -44,12 +44,12 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public class HorizontalRule extends DocItem {
+class HorizontalRule extends DocItem {
 
     /**
      * Creates a new Horizontal rule.
      */
-    public HorizontalRule() {
+    HorizontalRule() {
         super.items.add(new PlainText(text: "_______________________________________________________________"))
     }
 
@@ -57,7 +57,7 @@ public class HorizontalRule extends DocItem {
      * Returns the format this model represents.
      */
     @Override
-    public DocFormat getFormat() {
-        return DocFormat.HorizontalRule
+    DocFormat getFormat() {
+        DocFormat.HorizontalRule
     }
 }

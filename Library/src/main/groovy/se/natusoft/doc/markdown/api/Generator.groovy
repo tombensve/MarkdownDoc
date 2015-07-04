@@ -46,12 +46,12 @@ import se.natusoft.doc.markdown.model.Doc
  */
 @CompileStatic
 @TypeChecked
-public interface Generator {
+interface Generator {
 
     /**
      * Returns the class containing OptionsManager annotated options for the generator.
      */
-    public Class getOptionsClass()
+    Class getOptionsClass()
 
     /**
      * Generates output from DocItem model.
@@ -63,7 +63,7 @@ public interface Generator {
      * @throws IOException on I/O failures.
      * @throws GenerateException on other failures to generate target.
      */
-    public void generate(Doc document, Options options, File rootDir) throws IOException, GenerateException
+    void generate(Doc document, Options options, File rootDir) throws IOException, GenerateException
 
     /**
      * Generates output from DocItem model.
@@ -76,10 +76,10 @@ public interface Generator {
      * @throws IOException on I/O failures.
      * @throws GenerateException on other failures to generate target.
      */
-    public void generate(Doc document, Options options, File rootDir, OutputStream resultStream) throws IOException, GenerateException
+    void generate(Doc document, Options options, File rootDir, OutputStream resultStream) throws IOException, GenerateException
 
     /**
      * @return The name of the generator. This is the name to use to specify the specific generator.
      */
-    public String getName()
+    String getName()
 }

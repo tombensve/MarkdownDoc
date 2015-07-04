@@ -49,19 +49,20 @@ public class BlockQuote extends Paragraph {
     /**
      * Returns a String representation of this for debugging purposes.
      */
-    public String toString() {
+    String toString() {
         StringBuilder sb = new StringBuilder()
         sb.append("BlockQuote: ");
         sb.append(super.toString())
-        return sb.toString()
+
+        sb.toString()
     }
 
     /**
      * Returns the format this model represents.
      */
     @Override
-    public DocFormat getFormat() {
-        return DocFormat.BlockQuote
+    DocFormat getFormat() {
+        DocFormat.BlockQuote
     }
 
 }

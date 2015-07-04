@@ -50,17 +50,17 @@ class Emphasis extends PlainText {
      * Returns the format this model represents.
      */
     @Override
-    public DocFormat getFormat() {
-        return DocFormat.Emphasis
+    DocFormat getFormat() {
+        DocFormat.Emphasis
     }
 
-    public String toString() {
+    String toString() {
         StringBuilder sb = new StringBuilder()
 
         sb.append("<em>")
         sb.append(super.toString())
         sb.append("</em>")
 
-        return sb.toString()
+        sb.toString()
     }
 }

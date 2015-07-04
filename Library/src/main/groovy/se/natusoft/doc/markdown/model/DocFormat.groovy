@@ -49,7 +49,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public enum DocFormat {
+enum DocFormat {
 
     Header,
     AutoLink,

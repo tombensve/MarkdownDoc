@@ -44,14 +44,14 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public class ListItem extends DocItem {
+class ListItem extends DocItem {
 
     /**
      * Handle bad usage.
      *
      * @param item
      */
-    public void addItem(DocItem item) {
+    void addItem(DocItem item) {
         throw new IllegalArgumentException("A ListItem can only take Paragraph objects!")
     }
 
@@ -60,7 +60,7 @@ public class ListItem extends DocItem {
      *
      * @param paragraph The paragraph to add.
      */
-    public void addItem(Paragraph paragraph) {
+    void addItem(Paragraph paragraph) {
         super.addItem(paragraph)
     }
 
@@ -68,8 +68,8 @@ public class ListItem extends DocItem {
      * Validates this ListItem.
      */
     @Override
-    public boolean validate() {
-        return super.items.size() > 0
+    boolean validate() {
+        super.items.size() > 0
     }
 
     /**
@@ -77,7 +77,7 @@ public class ListItem extends DocItem {
      *
      * @param indentLevel The indentation size.
      */
-    public String toString(int indentLevel) {
+    String toString(int indentLevel) {
         StringBuilder sb = new StringBuilder()
 
         for (DocItem paraItem : super.items) {

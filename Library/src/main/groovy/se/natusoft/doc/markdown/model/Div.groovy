@@ -20,15 +20,15 @@ class Div extends DocItem {
     //
 
     @Override
-    public DocFormat getFormat() {
-        return DocFormat.Div
+    DocFormat getFormat() {
+        DocFormat.Div
     }
 
     boolean isStart() {
-        return this.name != null && !this.name.empty
+        this.name != null && !this.name.empty
     }
 
     boolean isEnd() {
-        return !isStart()
+        !isStart()
     }
 }

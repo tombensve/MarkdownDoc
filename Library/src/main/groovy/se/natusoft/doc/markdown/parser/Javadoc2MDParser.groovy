@@ -122,7 +122,7 @@ class Javadoc2MDParser implements Parser {
      * @throws ParseException on parse failures.
      */
     @Override
-    public void parse(Doc document, InputStream parseStream, Properties parserOptions) throws IOException, ParseException {
+    void parse(Doc document, InputStream parseStream, Properties parserOptions) throws IOException, ParseException {
         throw new ParseException(message: "Parsing from an InputStream is not supported by this parser!")
     }
 
@@ -136,7 +136,7 @@ class Javadoc2MDParser implements Parser {
      * @throws ParseException on parse failures.
      */
     @Override
-    public void parse(Doc document, File parseFile, Properties parserOptions) throws IOException, ParseException {
+    void parse(Doc document, File parseFile, Properties parserOptions) throws IOException, ParseException {
         this.inJavadocBlock = false
         this.inDeclarationBlock = false
         this.pkg = ""
@@ -206,19 +206,19 @@ class Javadoc2MDParser implements Parser {
     }
 
     private static boolean isFieldOrConst(String line) {
-        return line.trim().endsWith(";")
+        line.trim().endsWith(";")
     }
 
     private static boolean isInterfaceMethod(String line) {
-        return (line.contains("(") || line.contains(")")) && line.trim().endsWith(";")
+        (line.contains("(") || line.contains(")")) && line.trim().endsWith(";")
     }
 
     private static boolean isMethod(String line) {
-        return line.trim().endsWith("{") || line.trim().endsWith("{}") || line.trim().endsWith("{ }")
+        line.trim().endsWith("{") || line.trim().endsWith("{}") || line.trim().endsWith("{ }")
     }
 
     private static boolean isEnumConst(String line) {
-        return line.replace(',', ' ').trim().split(" ").length == 1 && !line.contains("@")
+        line.replace(',', ' ').trim().split(" ").length == 1 && !line.contains("@")
     }
 
     /**
@@ -354,7 +354,7 @@ class Javadoc2MDParser implements Parser {
      * @return The update line without annotations.
      */
     private static String removeAnnotations(String line) {
-        return line.replaceAll("(@[A-Z,a-z]+){1} ", "")
+        line.replaceAll("(@[A-Z,a-z]+){1} ", "")
     }
 
     /**
@@ -531,8 +531,8 @@ class Javadoc2MDParser implements Parser {
      * @param fileName The file to check extension of.
      */
     @Override
-    public boolean validFileExtension(String fileName) {
-        return fileName.endsWith(".java")
+    boolean validFileExtension(String fileName) {
+        fileName.endsWith(".java")
     }
 
     /**
@@ -543,7 +543,7 @@ class Javadoc2MDParser implements Parser {
 
         private String visibility
 
-        public VisibilityUtil(String declaration) {
+        VisibilityUtil(String declaration) {
             if (declaration.trim().length() > 0) {
                 this.visibility = declaration.split(" ")[0]
             }
@@ -552,32 +552,32 @@ class Javadoc2MDParser implements Parser {
             }
         }
 
-        public boolean isPublic() {
-            return this.visibility.equals("public")
+        boolean isPublic() {
+            this.visibility.equals("public")
         }
 
-        public static boolean isPublic(String word) {
-            return word.equals("public")
+        static boolean isPublic(String word) {
+            word.equals("public")
         }
 
-        public boolean isProtected() {
-            return this.visibility.equals("protected")
+        boolean isProtected() {
+            this.visibility.equals("protected")
         }
 
-        public static boolean isProtected(String word) {
-            return word.equals("protected")
+        static boolean isProtected(String word) {
+            word.equals("protected")
         }
 
-        public boolean isPrivate() {
-            return this.visibility.equals("private")
+        boolean isPrivate() {
+            this.visibility.equals("private")
         }
 
-        public static isPrivate(String word) {
-            return word.equals("private")
+        static isPrivate(String word) {
+            word.equals("private")
         }
 
-        public boolean isPackage() {
-            return !(isPublic() || isProtected() || isPrivate())
+        boolean isPackage() {
+            !(isPublic() || isProtected() || isPrivate())
         }
     }
 
@@ -594,19 +594,19 @@ class Javadoc2MDParser implements Parser {
         }
 
         public boolean isClass() {
-            return this.declaration.contains("class ")
+            this.declaration.contains("class ")
         }
 
         public boolean isInterface() {
-            return this.declaration.contains("interface ")
+            this.declaration.contains("interface ")
         }
 
         public boolean isEnum() {
-            return this.declaration.contains("enum ")
+            this.declaration.contains("enum ")
         }
 
         public static boolean isDeclarationType(String word) {
-            return word.equals("class") || word.equals("interface") || word.equals("enum")
+            word.equals("class") || word.equals("interface") || word.equals("enum")
         }
     }
 
@@ -617,7 +617,7 @@ class Javadoc2MDParser implements Parser {
     private static class ModifierUtil {
 
         public static boolean isModifier(String word) {
-            return word.equals("final") || word.equals("abstract") || word.equals("static")
+            word.equals("final") || word.equals("abstract") || word.equals("static")
         }
     }
 }

@@ -50,11 +50,11 @@ class Code extends PlainText {
      * Returns the format this model represents.
      */
     @Override
-    public DocFormat getFormat() {
-        return DocFormat.Code
+    DocFormat getFormat() {
+        DocFormat.Code
     }
 
-    public String toString() {
-        return "<code>" + super.toString() + "</code>"
+    String toString() {
+        "<code>" + super.toString() + "</code>"
     }
 }

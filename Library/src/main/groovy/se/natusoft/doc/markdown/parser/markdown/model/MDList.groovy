@@ -64,7 +64,7 @@ class MDList extends List {
      *
      * @param prevItem The previous item to compare to.
      */
-    public boolean isHierarchyDown(DocItem prevItem) {
+    boolean isHierarchyDown(DocItem prevItem) {
         (prevItem instanceof  MDList) && this.indentLevel > ((MDList)prevItem).indentLevel
     }
 
@@ -73,12 +73,12 @@ class MDList extends List {
      *
      * @param prevItem The previous item to compare to.
      */
-    public boolean isHierarchyUp(DocItem prevItem) {
+    boolean isHierarchyUp(DocItem prevItem) {
         (prevItem instanceof MDList) && this.indentLevel < ((MDList)prevItem).indentLevel
     }
 
     @Override
-    public String toString() {
+    String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("List: ordered:${ordered}\n")
         sb.append(toString(this.indentLevel))
@@ -86,7 +86,7 @@ class MDList extends List {
         sb.toString()
     }
 
-    public String toString(int indentLevel) {
+    String toString(int indentLevel) {
         StringBuilder sb = new StringBuilder()
 
         super.items.each {

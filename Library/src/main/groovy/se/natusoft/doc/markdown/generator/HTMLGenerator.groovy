@@ -67,8 +67,8 @@ class HTMLGenerator implements Generator {
      * Returns the options class required for this generator.
      */
     @Override
-    public Class getOptionsClass() {
-        return HTMLGeneratorOptions.class
+    Class getOptionsClass() {
+        HTMLGeneratorOptions.class
     }
 
     /**
@@ -76,7 +76,7 @@ class HTMLGenerator implements Generator {
      */
     @Override
     String getName() {
-        return "html"
+        "html"
     }
 
     /**
@@ -87,7 +87,7 @@ class HTMLGenerator implements Generator {
      * @param rootDir The optional root to prefix configured path with.
      */
     @Override
-    public void generate(Doc document, Options opts, File rootDir) throws IOException, GenerateException {
+    void generate(Doc document, Options opts, File rootDir) throws IOException, GenerateException {
         this.options = (HTMLGeneratorOptions)opts
         this.rootDir = rootDir
 
@@ -118,7 +118,7 @@ class HTMLGenerator implements Generator {
      * @throws GenerateException on other failures to generate target.
      */
     @Override
-    public void generate(Doc document, Options opts, File rootDir, OutputStream resultStream) throws IOException, GenerateException {
+    void generate(Doc document, Options opts, File rootDir, OutputStream resultStream) throws IOException, GenerateException {
         this.options = (HTMLGeneratorOptions)opts
         this.rootDir = rootDir
         OutputStreamWriter resultWriter = new OutputStreamWriter(resultStream)
@@ -152,7 +152,7 @@ class HTMLGenerator implements Generator {
         if (options.css != null && options.css.trim().length() > 0) {
             if (options.inlineCSS) {
                 html.tagln("style type=\"text/css\"")
-                BufferedReader reader = null;
+                BufferedReader reader
                 if (options.css.startsWith("classpath:")) {
                     String css = options.css.substring(10)
                     InputStream inStream = ClassLoader.getSystemResourceAsStream(css)
@@ -226,7 +226,7 @@ class HTMLGenerator implements Generator {
         html.etagln("html")
     }
 
-    private void writeHeader(Header header, HTMLOutput html) {
+    private static void writeHeader(Header header, HTMLOutput html) {
         html.tagln(header.level.name(), header.text)
     }
 
@@ -239,7 +239,7 @@ class HTMLGenerator implements Generator {
         html.etagln("blockquote")
     }
 
-    private void writeCodeBlock(CodeBlock codeBlock, HTMLOutput html) {
+    private static void writeCodeBlock(CodeBlock codeBlock, HTMLOutput html) {
         html.tagln("pre")
         html.tagln("code")
         codeBlock.items.each { DocItem item ->
@@ -250,7 +250,7 @@ class HTMLGenerator implements Generator {
         html.etagln("pre")
     }
 
-    private void writeHorizontalRule(HTMLOutput html) {
+    private static void writeHorizontalRule(HTMLOutput html) {
         html.tage("hr")
     }
 
@@ -337,15 +337,15 @@ class HTMLGenerator implements Generator {
         html.contentln("")
     }
 
-    private void writeCode(Code code, HTMLOutput html) {
+    private static void writeCode(Code code, HTMLOutput html) {
         html.tag("code", code.text)
     }
 
-    private void writeEmphasis(Emphasis emphasis, HTMLOutput html) {
+    private static void writeEmphasis(Emphasis emphasis, HTMLOutput html) {
         html.tag("em", emphasis.text)
     }
 
-    private void writeStrong(Strong strong, HTMLOutput html) {
+    private static void writeStrong(Strong strong, HTMLOutput html) {
         html.tag("strong", strong.text)
     }
 
@@ -353,13 +353,13 @@ class HTMLGenerator implements Generator {
         html.tage("img src='" + resolveUrl(image.url, image.parseFile) + "' title='" + image.title + "' alt='" + image.text + "'")
     }
 
-    private void writeLink(Link link, HTMLOutput html) {
+    private static void writeLink(Link link, HTMLOutput html) {
         html.tag("a href='" + link.url + "' title='" + link.title + "'")
         html.content(link.text)
         html.etag("a")
     }
 
-    private writeDiv(Div div, HTMLOutput html) {
+    private static writeDiv(Div div, HTMLOutput html) {
         if (div.isStart()) {
             html.doIndent()
             html.outputln("<div class=\"${div.name}\">")
@@ -420,7 +420,7 @@ class HTMLGenerator implements Generator {
             }
         }
 
-        return resolvedUrl
+        resolvedUrl
     }
 
     /**
@@ -446,7 +446,7 @@ class HTMLGenerator implements Generator {
             }
         }
 
-        return resultPath
+        resultPath
     }
 
     //
@@ -482,11 +482,11 @@ class HTMLGenerator implements Generator {
             return content.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
         }
 
-        public void incrementIndent() {
+        void incrementIndent() {
             this.indent += 2
         }
 
-        public void decrementIndent() {
+        void decrementIndent() {
             this.indent -= 2
         }
 
@@ -495,7 +495,7 @@ class HTMLGenerator implements Generator {
          *
          * @param tag The name of the tag to output.
          */
-        public void tag(String tag) {
+        void tag(String tag) {
             pw.print("<" + tag + ">")
         }
 
@@ -505,7 +505,7 @@ class HTMLGenerator implements Generator {
          * @param tag The name of the tag to output.
          * @param content The content of the tag.
          */
-        public void tag(String tag, String content) {
+        void tag(String tag, String content) {
             pw.print("<" + tag + ">" + replace(content) + "</" + tag + ">")
         }
 
@@ -514,7 +514,7 @@ class HTMLGenerator implements Generator {
          *
          * @param tag The tag to output.
          */
-        public void tage(String tag) {
+        void tage(String tag) {
             doIndent()
             pw.print("<" + tag + "/>")
         }
@@ -524,7 +524,7 @@ class HTMLGenerator implements Generator {
          *
          * @param tag The tag to output.
          */
-        public void tagln(String tag) {
+        void tagln(String tag) {
             doIndent()
             pw.println("<" + tag + ">")
             incrementIndent()
@@ -536,7 +536,7 @@ class HTMLGenerator implements Generator {
          * @param tag The tag to output.
          * @param content The content of the tag.
          */
-        public void tagln(String tag, String content) {
+        void tagln(String tag, String content) {
             doIndent()
             pw.println("<" + tag + ">" + replace(content) + "</" + tag + ">")
         }
@@ -546,7 +546,7 @@ class HTMLGenerator implements Generator {
          *
          * @param content The content to output.
          */
-        public void content(String content) {
+        void content(String content) {
             pw.print(replace(content))
         }
 
@@ -555,7 +555,7 @@ class HTMLGenerator implements Generator {
          *
          * @param cont The content to output.
          */
-        public void contentln(String cont) {
+        void contentln(String cont) {
             doIndent()
             content(cont)
             pw.println()
@@ -571,7 +571,7 @@ class HTMLGenerator implements Generator {
          *
          * @param text The text to output.
          */
-        public void output(String text) {
+        void output(String text) {
             pw.print(text)
         }
 
@@ -585,7 +585,7 @@ class HTMLGenerator implements Generator {
          *
          * @param text The text to output.
          */
-        public void outputln(String text) {
+        void outputln(String text) {
             pw.println(text)
         }
 
@@ -594,7 +594,7 @@ class HTMLGenerator implements Generator {
          *
          * @param tag The tag to end.
          */
-        public void etag(String tag) {
+        void etag(String tag) {
             pw.print("</" + tag + ">")
         }
 
@@ -603,7 +603,7 @@ class HTMLGenerator implements Generator {
          *
          * @param tag The tag to end.
          */
-        public void etagln(String tag) {
+        void etagln(String tag) {
             decrementIndent()
             doIndent()
             pw.println("</" + tag + ">")
@@ -612,14 +612,14 @@ class HTMLGenerator implements Generator {
         /**
          * Outputs a newline.
          */
-        public void ln() {
+        void ln() {
             pw.println()
         }
 
         /**
          * Outputs indentation at current indent level.
          */
-        public void doIndent() {
+        void doIndent() {
             this.indent.times {
                 pw.print(" ")
             }

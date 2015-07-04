@@ -56,7 +56,7 @@ class MDLine extends Line  {
      *
      * @param line The content of the line.
      */
-    public MDLine(String line, int lineNumber) {
+    MDLine(String line, int lineNumber) {
         super(line, lineNumber)
     }
 
@@ -70,7 +70,7 @@ class MDLine extends Line  {
      * @param text The text of the line.
      */
     protected Line newLine(String text) {
-        return new MDLine(text, super.lineNumber)
+        new MDLine(text, super.lineNumber)
     }
 
     /**
@@ -79,31 +79,32 @@ class MDLine extends Line  {
      *
      * @param startsWith The text to check for.
      */
-    public boolean startsWith(String startsWith) {
-        return super.startsWith(startsWith) || this.origLine.startsWith(" " + startsWith) ||
+    boolean startsWith(String startsWith) {
+        super.startsWith(startsWith) || this.origLine.startsWith(" " + startsWith) ||
                 this.origLine.startsWith("  " + startsWith)
     }
 
     /**
      * Returns true if this is part of a code block.
      */
-    public boolean isCodeBlock() {
-        return super.origLine.length() > 0 && (
-            super.origLine.charAt(0) == '\t' || (super.origLine.length() >= 4 && super.origLine.substring(0,4).isAllWhitespace())
+    boolean isCodeBlock() {
+        super.origLine.length() > 0 && (
+            super.origLine.charAt(0) == '\t' ||
+                    (super.origLine.length() >= 4 && super.origLine.substring(0,4).isAllWhitespace())
         )
     }
 
     /**
      * Returns true if this is part of a block quote.
      */
-    public boolean isBlockQuote() {
-        return super.words.size() >= 1 && super.words[0] == ">"
+    boolean isBlockQuote() {
+        super.words.size() >= 1 && super.words[0] == ">"
     }
 
     /**
      * Returns true if this starts a list item.
      */
-    public boolean isList() {
+    boolean isList() {
         boolean list = false;
 
         if (super.origLine != null && super.origLine.trim().length() >= 1) {
@@ -131,32 +132,33 @@ class MDLine extends Line  {
                 list = (c == '*' || c == '+' || c == '-') && (n != '*' && n != '+' && n != '-' && !n.isDigit())
             }
         }
-        return list
+
+        list
     }
 
     /**
      * Returns true if this starts an ordered list item.
      */
-    public boolean isOrderedList() {
+    boolean isOrderedList() {
         if (super.origLine != null && super.origLine.trim().length() >= 1) {
             char c = this.origLine.trim().charAt(0)
             return c.isDigit()
         }
-        return false
+        false
     }
 
     /**
      * Returns true if this line represents a header.
      */
-    public boolean isHeader() {
-        return super.origLine.startsWith("#")
+    boolean isHeader() {
+        super.origLine.startsWith("#")
     }
 
     /**
      * Returns true if this line represents a horizontal ruler.
      */
-    public boolean isHorizRuler() {
-        return this.origLine.startsWith("* * *") || this.origLine.startsWith("***") || this.origLine.startsWith("- - -") ||
+    boolean isHorizRuler() {
+        this.origLine.startsWith("* * *") || this.origLine.startsWith("***") || this.origLine.startsWith("- - -") ||
                 this.origLine.startsWith("---")
     }
 
@@ -165,7 +167,7 @@ class MDLine extends Line  {
      *
      * @param urls The current known urls.
      */
-    public boolean isLinkURLSpec(Map urls) {
+    boolean isLinkURLSpec(Map urls) {
         boolean found = false;
 
         for (String urlText : urls.keySet()) {
@@ -175,21 +177,21 @@ class MDLine extends Line  {
             }
         }
 
-        return found
+        found
     }
 
     /**
      * Returns true if this line represents a comment start.
      */
-    public boolean isCommentStart() {
-        return this.origLine.startsWith("<!--") || this.origLine.startsWith(" <!--") || this.origLine.startsWith("  <!--")
+    boolean isCommentStart() {
+        this.origLine.startsWith("<!--") || this.origLine.startsWith(" <!--") || this.origLine.startsWith("  <!--")
     }
 
     /**
      * Returns true if this line represents a comment end.
      */
-    public boolean isCommentEnd() {
-        return this.origLine.trim().endsWith("-->")
+    boolean isCommentEnd() {
+        this.origLine.trim().endsWith("-->")
     }
 
     // Both of the following are a bit messy. There is no distinct identifier for a paragraph.
@@ -201,9 +203,9 @@ class MDLine extends Line  {
      *
      * @return true if all other return false.
      */
-    public boolean isPartOfParagraph(Map urls) {
+    boolean isPartOfParagraph(Map urls) {
         // Note the distinction: A List contains one or more Paragraph:s. A BlockQuote *is* a Paragraph!
-        return !(isList() || isOrderedList() || isHeader() || isHorizRuler() || isLinkURLSpec(urls) ||
+        !(isList() || isOrderedList() || isHeader() || isHorizRuler() || isLinkURLSpec(urls) ||
                 isCommentStart() || isCommentEnd()) || isBlockQuote()
     }
 
@@ -215,24 +217,24 @@ class MDLine extends Line  {
      *
      * @return true if all other return false.
      */
-    public boolean isPartOfListParagraph(Map urls) {
+    boolean isPartOfListParagraph(Map urls) {
         // Again, note: isList() does not mean a list paragraph, but a new list (or list item). Each list item contains
         // a paragraph. It is such a paragraph we are trying to identify here (by the exclusion of other).
-        return !(isBlockQuote() || isList() || isOrderedList() || isHeader() || isHorizRuler() || isLinkURLSpec(urls) ||
+        !(isBlockQuote() || isList() || isOrderedList() || isHeader() || isHorizRuler() || isLinkURLSpec(urls) ||
                 isCommentStart() || isCommentEnd())
     }
 
     /**
      * @return true if this line is a <div name="..."> line.
      */
-    public boolean isStartDiv() {
+    boolean isStartDiv() {
         matches("[ \t]*<div.*class=\".*\".*>")
     }
 
     /**
      * If isStartDiv() returns true then this returns the name within the "...".
      */
-    public String getDivName() {
+    String getDivName() {
         String name = null
         String[] p1 = this.origLine.split(" ")
         if (p1.length >= 2) {
@@ -242,13 +244,13 @@ class MDLine extends Line  {
             }
         }
 
-        return name
+        name
     }
 
     /**
      * @return true if this line is a </div>.
      */
-    public boolean isEndDiv() {
+    boolean isEndDiv() {
         startsWithExcludingWhitespace("</div>")
     }
 }

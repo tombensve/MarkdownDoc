@@ -1,6 +1,8 @@
 package se.natusoft.doc.markdown.generator.styles
 
 import groovy.transform.CompileStatic
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.Nullable
 
@@ -9,6 +11,8 @@ import org.jetbrains.annotations.Nullable
  */
 @CompileStatic
 @TypeChecked
+@EqualsAndHashCode
+@ToString
 class MSSColorPair {
     //
     // Properties
@@ -22,28 +26,10 @@ class MSSColorPair {
     //
 
     void updateForegroundIfNotSet(@Nullable MSSColor foreground) {
-        if (this.foreground == null) this.foreground = foreground
+        if (this.foreground == null) { this.foreground = foreground }
     }
 
     void updateBackgroundIfNotSet(@Nullable MSSColor background) {
-        if (this.background == null) this.background = background
+        if (this.background == null) { this.background = background }
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof MSSColorPair)) return false
-        MSSColorPair other = obj as MSSColorPair
-        return this.foreground == other.foreground && this.background == other.background
-    }
-
-    @Override
-    public int hashCode() {
-        Objects.hash(this.foreground, this.background)
-    }
-
-    @Override
-    public String toString() {
-        return "{\nforeground: \"${this.foreground}\",\nbackground: \"${this.background}\"\n}"
-    }
-
 }

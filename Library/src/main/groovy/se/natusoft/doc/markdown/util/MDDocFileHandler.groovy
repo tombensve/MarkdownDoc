@@ -68,7 +68,7 @@ class MDDocFileHandler {
      *
      * @throws ParseException
      */
-    public static execute(String path, boolean verbose) throws ParseException {
+    static execute(String path, boolean verbose) throws ParseException {
         Properties mdDocFile = new Properties()
         FileInputStream mdDocFileStream = null
         BufferedInputStream bufferedInputStream = null

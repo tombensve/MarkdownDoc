@@ -52,7 +52,7 @@ class MDLink extends Link {
     // Private Members
     //
 
-    /** Keeps track of wich part of the link is being received. */
+    /** Keeps track of which part of the link is being received. */
     private int part = 0
 
     //
@@ -65,13 +65,13 @@ class MDLink extends Link {
      * @param object The object to left shift in.
      */
     @Override
-    public DocItem leftShift(Object object) {
+    DocItem leftShift(Object object) {
         char c = (char)object
 
-        if (part == 0 && c == '(') {
+        if (part == 0 && c == '(' as char) {
             part = 1
         }
-        else if (part == 1 && c == ' ') {
+        else if (part == 1 && c == ' ' as char) {
             part = 2
         }
         else {
@@ -88,6 +88,6 @@ class MDLink extends Link {
             }
         }
 
-        return this
+        this
     }
 }

@@ -52,18 +52,18 @@ class AutoLink extends Link {
      * @param object The object to left shift in.
      */
     @Override
-    public DocItem leftShift(Object object) {
+    DocItem leftShift(Object object) {
         addItem(object.toString())
         this.url = this.url + object.toString()
 
-        return this
+        this
     }
 
     /**
      * Returns the format this model represents.
      */
     @Override
-    public DocFormat getFormat() {
-        return DocFormat.AutoLink
+    DocFormat getFormat() {
+        DocFormat.AutoLink
     }
 }

@@ -67,7 +67,7 @@ class MarkdownGenerator implements Generator {
      */
     @Override
     public Class getOptionsClass() {
-        return MarkdownGeneratorOptions.class
+        MarkdownGeneratorOptions.class
     }
 
     /**
@@ -75,7 +75,7 @@ class MarkdownGenerator implements Generator {
      */
     @Override
     String getName() {
-        return "md"
+        "md"
     }
 
     /**
@@ -86,7 +86,7 @@ class MarkdownGenerator implements Generator {
      * @param rootDir The optional root to prefix condfigured path with.
      */
     @Override
-    public void generate(Doc document, Options opts, File rootDir) throws IOException, GenerateException {
+    void generate(Doc document, Options opts, File rootDir) throws IOException, GenerateException {
         this.options = (MarkdownGeneratorOptions)opts
         this.rootDir = rootDir
 
@@ -117,7 +117,7 @@ class MarkdownGenerator implements Generator {
      * @throws GenerateException on other failures to generate target.
      */
     @Override
-    public void generate(Doc document, Options opts, File rootDir, OutputStream resultStream) throws IOException, GenerateException {
+    void generate(Doc document, Options opts, File rootDir, OutputStream resultStream) throws IOException, GenerateException {
         this.options = (MarkdownGeneratorOptions)opts
         this.rootDir = rootDir
         OutputStreamWriter resultWriter = new OutputStreamWriter(resultStream)
@@ -175,7 +175,7 @@ class MarkdownGenerator implements Generator {
         }
     }
 
-    private void writeHeader(Header header, PrintWriter pw) {
+    private static void writeHeader(Header header, PrintWriter pw) {
         for (int i = 0; i < header.level.level; i++) {
             pw.print("#")
         }
@@ -189,7 +189,7 @@ class MarkdownGenerator implements Generator {
         writeParagraph(blockQuote, pw)
     }
 
-    private void writeCodeBlock(CodeBlock codeBlock, PrintWriter pw) {
+    private static void writeCodeBlock(CodeBlock codeBlock, PrintWriter pw) {
         codeBlock.items.each { DocItem item ->
             pw.print("    " + item.toString())
             pw.println()
@@ -197,7 +197,8 @@ class MarkdownGenerator implements Generator {
         pw.println()
     }
 
-    private void writeHorizontalRule(HorizontalRule horizontalRule, PrintWriter pw) {
+    @SuppressWarnings("GroovyUnusedDeclaration")
+    private static void writeHorizontalRule(HorizontalRule horizontalRule, PrintWriter pw) {
         pw.println("----")
         pw.println()
     }
@@ -277,15 +278,15 @@ class MarkdownGenerator implements Generator {
         pw.println()
     }
 
-    private void writeCode(Code code, PrintWriter pw) {
+    private static void writeCode(Code code, PrintWriter pw) {
         pw.print("`" + code.text.trim() + "`")
     }
 
-    private void writeEmphasis(Emphasis emphasis, PrintWriter pw) {
+    private static void writeEmphasis(Emphasis emphasis, PrintWriter pw) {
         pw.print("_" + emphasis.text.trim() + "_")
     }
 
-    private void writeStrong(Strong strong, PrintWriter pw) {
+    private static void writeStrong(Strong strong, PrintWriter pw) {
         pw.print("__" + strong.text.trim() + "__")
     }
 
@@ -297,7 +298,7 @@ class MarkdownGenerator implements Generator {
         pw.print(")")
     }
 
-    private void writeLink(Link link, PrintWriter pw) {
+    private static void writeLink(Link link, PrintWriter pw) {
         pw.print("[" + link.text + "](" + link.url)
         if (link.title != null && link.title.trim().length() > 0) {
             pw.print(" " + link.title)
@@ -305,7 +306,7 @@ class MarkdownGenerator implements Generator {
         pw.print(")")
     }
 
-    private void writeDiv(Div div, PrintWriter pw) {
+    private static void writeDiv(Div div, PrintWriter pw) {
         if (div.isStart()) {
             pw.println("<div class=\"${div.name}\">")
             pw.println()
@@ -364,7 +365,7 @@ class MarkdownGenerator implements Generator {
             }
         }
 
-        return resolvedUrl
+        resolvedUrl
     }
 
     /**
@@ -390,7 +391,7 @@ class MarkdownGenerator implements Generator {
             }
         }
 
-        return resultPath
+        resultPath
     }
 
 }

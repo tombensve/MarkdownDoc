@@ -44,7 +44,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public class PlainText extends DocItem {
+class PlainText extends DocItem {
     //
     // Private Members
     //
@@ -62,7 +62,7 @@ public class PlainText extends DocItem {
      * @param text The text to add.
      */
     @Override
-    public void addItem(String text) {
+    void addItem(String text) {
         if (text != null) {
             this.text = this.text + text
         }
@@ -73,7 +73,7 @@ public class PlainText extends DocItem {
      *
      * @param text The text to set.
      */
-    public void setText(String text) {
+    void setText(String text) {
         this.text = text
     }
 
@@ -81,18 +81,18 @@ public class PlainText extends DocItem {
      * Returns the format this model represents.
      */
     @Override
-    public DocFormat getFormat() {
-        return DocFormat.PlainText
+    DocFormat getFormat() {
+        DocFormat.PlainText
     }
 
     @Override
-    public boolean validate() {
-        return this.text != null && this.text.length() > 0;
+    boolean validate() {
+        this.text != null && this.text.length() > 0;
     }
 
     @Override
-    public String toString() {
-        return this.text
+    String toString() {
+        this.text
     }
 }
 

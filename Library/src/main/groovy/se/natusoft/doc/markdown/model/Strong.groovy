@@ -50,17 +50,17 @@ class Strong extends PlainText {
      * Returns the format this model represents.
      */
     @Override
-    public DocFormat getFormat() {
-        return DocFormat.Strong
+    DocFormat getFormat() {
+        DocFormat.Strong
     }
 
-    public String toString() {
+    String toString() {
         StringBuilder sb = new StringBuilder()
 
         sb.append("<strong>")
         sb.append(super.toString())
         sb.append("</strong>")
 
-        return sb.toString()
+        sb.toString()
     }
 }

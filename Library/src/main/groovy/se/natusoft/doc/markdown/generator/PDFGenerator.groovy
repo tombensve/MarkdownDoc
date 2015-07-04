@@ -175,8 +175,8 @@ class PDFGenerator implements Generator {
      * Returns the class that handles options for this generator.
      */
     @Override
-    public Class getOptionsClass() {
-        return PDFGeneratorOptions.class
+    Class getOptionsClass() {
+        PDFGeneratorOptions.class
     }
 
     /**
@@ -184,7 +184,7 @@ class PDFGenerator implements Generator {
      */
     @Override
     String getName() {
-        return "pdf"
+        "pdf"
     }
 
     /**
@@ -211,7 +211,7 @@ class PDFGenerator implements Generator {
      * @param rootDir An optional root directory to prefix output paths with. This overrides the rootDir in options!
      */
     @Override
-    public void generate(Doc doc, Options opts, File rootDir) throws IOException, GenerateException {
+    void generate(Doc doc, Options opts, File rootDir) throws IOException, GenerateException {
         File resultFile = rootDir != null ? new File(rootDir, opts.resultFile) : new File(opts.resultFile)
         FileOutputStream resultStream = new FileOutputStream(resultFile)
         try {
@@ -233,7 +233,7 @@ class PDFGenerator implements Generator {
      * @throws IOException on I/O failures.
      * @throws GenerateException on other failures to generate target.
      */
-    public void generate(Doc doc, Options opts, File rootDir, OutputStream resultStream) throws IOException, GenerateException {
+    void generate(Doc doc, Options opts, File rootDir, OutputStream resultStream) throws IOException, GenerateException {
         this.options = opts as PDFGeneratorOptions
 
         this.generatorContext = new GeneratorContext(fileResource: new FileResource(rootDir: rootDir, optsRootDir: this.options.rootDir))
@@ -749,10 +749,11 @@ class PDFGenerator implements Generator {
     private Chunk createHeaderChunk(String text, MSS.MSS_Pages level) {
         Font font = this.pdfStyles.getFont(level)
         Chunk chunk = new Chunk(textReplace(text), font)
-        chunk.setTextRise(2f)
-        chunk.setLineHeight((float)(font.size + 2.0f))
+        chunk.textRise = 2.0f
+        chunk.lineHeight = (font.size + 2.0f) as float
         chunk.background = new PDFColorMSSAdapter(this.pdfStyles.mss.forDocument.getColorPair(level).background)
-        return chunk
+
+        chunk
     }
 
     /**
@@ -782,7 +783,8 @@ class PDFGenerator implements Generator {
             this.currentChapter = new Chapter(0)
             this.currentSection = this.currentChapter
         }
-        return this.currentSection
+
+        this.currentSection
     }
 
     /**
@@ -862,7 +864,8 @@ class PDFGenerator implements Generator {
             pdfList.setListSymbol(options.unorderedListItemPrefix)
         }
         pdfList.setAutoindent(true)
-        return pdfList
+
+        pdfList
     }
 
     /**
@@ -1122,6 +1125,10 @@ class PDFGenerator implements Generator {
      */
     private static class PageEventHandler extends PdfPageEventHelper {
 
+        //
+        // Properties
+        //
+
         Closure<Integer> pageOffset
         String resultFile
         boolean updateTOC
@@ -1130,7 +1137,7 @@ class PDFGenerator implements Generator {
         PDFHeaderLevelCache headerLevelCache
 
         @Override
-        public void onEndPage(PdfWriter writer, PDFDocument document) {
+        void onEndPage(PdfWriter writer, PDFDocument document) {
             if (document.pageNumber > (int)this.pageOffset.call()) {
                 PdfContentByte cb = writer.getDirectContent()
 
@@ -1169,7 +1176,7 @@ class PDFGenerator implements Generator {
         }
 
         @Override
-        public void onChapter(PdfWriter writer, PDFDocument document, float paragraphPosition, PDFParagraph title) {
+        void onChapter(PdfWriter writer, PDFDocument document, float paragraphPosition, PDFParagraph title) {
             if (this.updateTOC && title != null) {
                 String content = title.getContent()
                 this.toc.add(new TOC(sectionTitle: title.getContent().split("\n")[0], pageNumber: document.getPageNumber(),
@@ -1178,7 +1185,7 @@ class PDFGenerator implements Generator {
         }
 
         @Override
-        public void onSection(PdfWriter writer, PDFDocument document, float paragraphPosition, int depth, PDFParagraph title) {
+        void onSection(PdfWriter writer, PDFDocument document, float paragraphPosition, int depth, PDFParagraph title) {
             if (this.updateTOC && title != null) {
                 this.toc.add(new TOC(sectionTitle: title.getContent().split("\n")[0], pageNumber: document.getPageNumber(),
                         level: this.headerLevelCache.getLevel(title.getContent())))
@@ -1190,7 +1197,9 @@ class PDFGenerator implements Generator {
      * Stores a table of content entry.
      */
     private static class TOC {
+        //
         // Properties
+        //
         String sectionTitle
         int pageNumber
         MSS.MSS_TOC level = MSS.MSS_TOC.h1

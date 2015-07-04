@@ -46,7 +46,7 @@ import se.natusoft.doc.markdown.io.LineReader
  */
 @CompileStatic
 @TypeChecked
-public class MDLineReader extends LineReader {
+class MDLineReader extends LineReader {
 
     //
     // Constructors
@@ -57,7 +57,7 @@ public class MDLineReader extends LineReader {
      *
      * @param reader The reader to read from.
      */
-    public MDLineReader(Reader reader) {
+    MDLineReader(Reader reader) {
         super(reader)
     }
 
@@ -70,8 +70,8 @@ public class MDLineReader extends LineReader {
      *
      * @param text The text to wrap in a Line.
      */
-    protected Line createLine(String text) {
-        return new MDLine(text, super.lineNo)
+    Line createLine(String text) {
+        new MDLine(text, super.lineNo)
     }
 }
 

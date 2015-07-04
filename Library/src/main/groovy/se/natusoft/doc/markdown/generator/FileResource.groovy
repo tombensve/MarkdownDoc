@@ -51,7 +51,7 @@ class FileResource {
             if (resourceFile == null) { throw new FileNotFoundException("Invalid resource path: ${path} !") }
         }
 
-        return resourceFile
+        resourceFile
     }
 
     /**
@@ -65,7 +65,8 @@ class FileResource {
         File file = new File(root, path)
         if (file.exists()) { return file }
         if (root.parentFile == null) { return null }
-        return resolveFile(root.parentFile, path)
+
+        resolveFile(root.parentFile, path)
     }
 
     /**
@@ -76,7 +77,7 @@ class FileResource {
      * @throws IOException if file reference in path cannot be found.
      */
     InputStream getResource(String path) throws IOException {
-        return new FileInputStream(getResourceFile(path))
+        new FileInputStream(getResourceFile(path))
     }
 
     /**
@@ -142,7 +143,8 @@ class FileResource {
                 }
             }
         }
-        return resolvedUrl
+
+        resolvedUrl
     }
 
     /**
@@ -157,6 +159,6 @@ class FileResource {
             path = path + File.separator
         }
 
-        return path
+        path
     }
 }

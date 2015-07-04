@@ -44,9 +44,9 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public interface Options {
+interface Options {
 
-    public boolean isHelp()
+    boolean isHelp()
 
-    public String getResultFile();
+    String getResultFile();
 }

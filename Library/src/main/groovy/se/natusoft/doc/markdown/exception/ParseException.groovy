@@ -65,7 +65,7 @@ class ParseException extends DocException {
     /**
      * @return The exception message.
      */
-    public String getMessage() {
+    String getMessage() {
         StringBuilder sb = new StringBuilder()
         sb.append(super.message)
         if (line != null) {

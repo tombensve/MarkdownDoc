@@ -50,11 +50,11 @@ class Image extends Link {
      * Returns the format this model represents.
      */
     @Override
-    public DocFormat getFormat() {
-        return DocFormat.Image
+    DocFormat getFormat() {
+        DocFormat.Image
     }
 
-    public String toString() {
+    String toString() {
         StringBuilder sb  = new StringBuilder();
 
         sb.append("<img src='" + url + "'")
@@ -64,7 +64,7 @@ class Image extends Link {
 
         sb.append(" alt='" + text +  "'/>")
 
-        return sb.toString()
+        sb.toString()
     }
 
 }

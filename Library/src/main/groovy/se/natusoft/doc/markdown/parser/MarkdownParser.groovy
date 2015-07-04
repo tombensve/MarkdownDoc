@@ -90,7 +90,7 @@ public class MarkdownParser implements Parser {
      * @throws ParseException on parse failures.
      */
     @Override
-    public void parse(Doc doc, File parseFile, Properties parserOptions) throws IOException, ParseException {
+    void parse(Doc doc, File parseFile, Properties parserOptions) throws IOException, ParseException {
         this.file = parseFile
 
         parse(doc, new FileInputStream(parseFile), parserOptions);
@@ -106,7 +106,7 @@ public class MarkdownParser implements Parser {
      * @throws ParseException on parse failures.
      */
     @Override
-    public void parse(Doc doc, InputStream parseStream, Properties parserOptions) throws IOException, ParseException {
+    void parse(Doc doc, InputStream parseStream, Properties parserOptions) throws IOException, ParseException {
         LineReader lineReader = null
         try {
             lineReader = new MDLineReader(new InputStreamReader(parseStream))
@@ -231,7 +231,7 @@ public class MarkdownParser implements Parser {
      */
     @Override
     boolean validFileExtension(String fileName) {
-        return fileName.endsWith(".md") || fileName.endsWith(".markdown") || fileName.endsWith(".mdpart")
+        fileName.endsWith(".md") || fileName.endsWith(".markdown") || fileName.endsWith(".mdpart")
     }
 
     /**
@@ -242,7 +242,7 @@ public class MarkdownParser implements Parser {
      *
      * @return A Comment.
      */
-    private DocItem parseComment(Line line, LineReader lineReader) {
+    private static DocItem parseComment(Line line, LineReader lineReader) {
         MDLine mdline = (MDLine)line
 
         StringBuilder sb = new StringBuilder()
@@ -260,7 +260,7 @@ public class MarkdownParser implements Parser {
             sb.append(cmLine)
         }
 
-        return new Comment(text: sb.toString())
+        new Comment(text: sb.toString())
     }
 
     /**
@@ -268,17 +268,17 @@ public class MarkdownParser implements Parser {
      *
      * @param line The line to extract name from.
      */
-    private DocItem parseStartDiv(Line line) {
+    private static DocItem parseStartDiv(Line line) {
         String[] parts = line.toString().split("\"")
         if (parts.length != 3) throw new ParseException(message: "Strange div attempt found!", lineNo: line.lineNumber, line: line.toString())
-        return new Div(name: parts[1])
+        new Div(name: parts[1])
     }
 
     /**
      * Returns a Div without a name which indicates an end div.
      */
-    private DocItem endDiv() {
-        return new Div()
+    private static DocItem endDiv() {
+        new Div()
     }
 
     /**
@@ -290,7 +290,7 @@ public class MarkdownParser implements Parser {
      * @return A Header.
      *
      * @throws IOException on failure to read input.
-     * @throws ParseException On bad format being parsed.
+     * @throws ParseException On incorrect format being parsed.
      */
     private DocItem parseHeader(Line line, LineReader lineReader) throws IOException, ParseException {
 
@@ -323,14 +323,7 @@ public class MarkdownParser implements Parser {
 
         header.addItem(line.removeAll("#").removeLeadingSpaces())
 
-        // I comment this part out for now since other MD tools seems only allow one line for heading.
-        //while (lineReader.hasLine() && !lineReader.peekNextLine().empty) {
-        //    line = lineReader.readLine()
-        //    header.addItem(" ")
-        //    header.addItem(line.removeAll("#").removeLeadingSpaces().toString())
-        //}
-
-        return header
+        header
     }
 
     /**
@@ -343,7 +336,7 @@ public class MarkdownParser implements Parser {
      *
      * @throws IOException on input failure.
      */
-    private DocItem parseCodeBlock(Line line, LineReader lineReader) throws IOException {
+    private static DocItem parseCodeBlock(Line line, LineReader lineReader) throws IOException {
         CodeBlock codeBlock = new CodeBlock()
         codeBlock.addItem(line)
 
@@ -353,7 +346,7 @@ public class MarkdownParser implements Parser {
             codeBlock.addItem(line)
         }
 
-        return codeBlock
+        codeBlock
     }
 
     /**
@@ -370,7 +363,7 @@ public class MarkdownParser implements Parser {
         BlockQuote blockQuote = new BlockQuote()
         parseParagraph(blockQuote, line.removeFirstWord(), lineReader, ">")
 
-        return blockQuote
+        blockQuote
     }
 
     /**
@@ -414,7 +407,7 @@ public class MarkdownParser implements Parser {
 
         list.addItem(listItem)
 
-        return list
+        list
     }
 
     /**
@@ -459,6 +452,7 @@ public class MarkdownParser implements Parser {
     private void parseParagraph(Paragraph paragraph, Line line, LineReader lineReader) throws IOException, ParseException {
         parseParagraph(paragraph, line, lineReader, (String)null)
     }
+
     /**
      * Parses a paragraph of text.
      *
@@ -534,7 +528,7 @@ public class MarkdownParser implements Parser {
             int j = (i + 1) < sb.length() ? i + 1 : -1
 
             char c = sb.charAt(i);
-            char n = j > 0 ? sb.charAt(j) : (char)0 // Even if IDEA red marks this, the compile actually needs the char cast!!
+            char n = j > 0 ? sb.charAt(j) : (char)0
 
             if (escapeChar) {
                 current << c

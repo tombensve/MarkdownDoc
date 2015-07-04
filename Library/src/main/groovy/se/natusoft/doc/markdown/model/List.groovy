@@ -44,7 +44,7 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-public class List extends DocItem {
+class List extends DocItem {
     //
     // Private Members
     //
@@ -61,7 +61,7 @@ public class List extends DocItem {
      *
      * @param ordered true for an ordered list, false for an unordered.
      */
-    public List() {
+    List() {
         keepConsecutiveTogether = true
         isHierarchy = true
     }
@@ -71,7 +71,7 @@ public class List extends DocItem {
     //
 
     @Override
-    public boolean validate() {
+    boolean validate() {
         super.items.size() > 0
     }
 
@@ -80,7 +80,7 @@ public class List extends DocItem {
      *
      * @param docItem The DocItem to test.
      */
-    public boolean isSameType(DocItem docItem) {
+    boolean isSameType(DocItem docItem) {
         super.isSameType(docItem) && ((List)docItem).ordered == this.ordered
     }
 
@@ -88,12 +88,12 @@ public class List extends DocItem {
      * Returns the format this model represents.
      */
     @Override
-    public DocFormat getFormat() {
-        return DocFormat.List
+    DocFormat getFormat() {
+        DocFormat.List
     }
 
     @Override
-    public String toString() {
+    String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("List: ordered:${ordered}\n")
         sb.append(toString(0))
@@ -101,7 +101,7 @@ public class List extends DocItem {
         sb.toString()
     }
 
-    public String toString(int indentLevel) {
+    String toString(int indentLevel) {
         StringBuilder sb = new StringBuilder()
 
         super.items.each {

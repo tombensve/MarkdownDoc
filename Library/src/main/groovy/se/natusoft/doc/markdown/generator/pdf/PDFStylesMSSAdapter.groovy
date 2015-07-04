@@ -5,7 +5,6 @@ import com.itextpdf.text.pdf.BaseFont
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
-import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.GeneratorContext
 import se.natusoft.doc.markdown.generator.styles.MSS
@@ -19,8 +18,6 @@ import se.natusoft.doc.markdown.generator.styles.MSSExtFont
 @CompileStatic
 @TypeChecked
 class PDFStylesMSSAdapter {
-
-    public static final String DIV_NONE = null
 
     //
     // Private Members
@@ -53,17 +50,18 @@ class PDFStylesMSSAdapter {
      *
      * @param font The name of the font to check.
      */
-    private static boolean isStandardFont(String font) {
+    private static boolean isStandardFont(@NotNull String font) {
         try {
             return Font.FontFamily.valueOf(font) != null
         }
-        catch (IllegalArgumentException iae) {}
+        catch (IllegalArgumentException ignore) {}
 
-        return false
+        false
     }
 
     /**
      * Best effort to resolve font. If not a standard font then an external font is expected under PDF/TTF.
+     *
      * @param mssFont The font reference to resolve.
      * @param mssColorPair The color of the font.
      *
@@ -71,8 +69,7 @@ class PDFStylesMSSAdapter {
      *
      * @throws GenerateException If not font is found.
      */
-    private Font resolveFont(MSSFont mssFont, MSSColorPair mssColorPair) throws GenerateException {
-        Font resolved
+    private @NotNull Font resolveFont(@NotNull MSSFont mssFont, @NotNull MSSColorPair mssColorPair) throws GenerateException {
 
         if (!isStandardFont(mssFont.family.toUpperCase())) {
             // We don't have a standard font! Lets see if we can find a ttf font!
@@ -89,17 +86,15 @@ class PDFStylesMSSAdapter {
             try {
                 baseFont = BaseFont.createFont(fontName, mssExtFont.encoding, BaseFont.EMBEDDED, BaseFont.NOT_CACHED, fontBytes, new byte[0])
             }
-            catch (Exception e) {
+            catch (Exception ignore) {
                 fontName = mssFont.family + ".otf"
                 baseFont = BaseFont.createFont(fontName, mssExtFont.encoding, BaseFont.EMBEDDED, BaseFont.NOT_CACHED, fontBytes, new byte[0])
             }
-            resolved = new PDFFontMSSAdapter(baseFont, mssFont, mssColorPair)
+            new PDFFontMSSAdapter(baseFont, mssFont, mssColorPair)
         }
         else {
-            resolved = new PDFFontMSSAdapter(mssFont, mssColorPair)
+            new PDFFontMSSAdapter(mssFont, mssColorPair)
         }
-
-        return resolved
     }
 
     /**
@@ -111,7 +106,7 @@ class PDFStylesMSSAdapter {
      *
      * @throws GenerateException on failure to load font.
      */
-    private byte[] loadFont(MSSExtFont mssExtFont) throws GenerateException {
+    private @NotNull byte[] loadFont(@NotNull MSSExtFont mssExtFont) throws GenerateException {
         ByteArrayOutputStream fontBytes = new ByteArrayOutputStream()
         File fontPath
         try {
@@ -137,7 +132,7 @@ class PDFStylesMSSAdapter {
             inputStream.close()
         }
 
-        return fontBytes.toByteArray()
+        fontBytes.toByteArray()
     }
 
     /**
@@ -162,7 +157,7 @@ class PDFStylesMSSAdapter {
             this.documentCache.put(key, font)
         }
 
-        return font
+        font
     }
 
     /**
@@ -183,7 +178,7 @@ class PDFStylesMSSAdapter {
             this.tocCache.put(section.name(), font)
         }
 
-        return font
+        font
     }
 
     /**
@@ -205,6 +200,6 @@ class PDFStylesMSSAdapter {
             this.frontPageCache.put(section.name(), font)
         }
 
-        return font
+        font
     }
 }

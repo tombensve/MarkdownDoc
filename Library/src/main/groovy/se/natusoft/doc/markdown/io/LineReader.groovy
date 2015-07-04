@@ -69,7 +69,7 @@ public class LineReader {
      *
      * @param reader The reader to wrap.
      */
-    public LineReader(Reader reader) {
+    LineReader(Reader reader) {
         this.reader = new BufferedReader(reader)
     }
 
@@ -83,7 +83,7 @@ public class LineReader {
      * @param text The text to wrap in a Line.
      */
     protected Line createLine(String text) {
-        return new Line(text, this.lineNo)
+        new Line(text, this.lineNo)
     }
 
     /**
@@ -93,7 +93,7 @@ public class LineReader {
      *
      * @throws IOException on any I/O failure.
      */
-    public Line readLine() throws IOException {
+    Line readLine() throws IOException {
         Line line = null
 
         if (!this.readAhead.isEmpty()) {
@@ -109,7 +109,8 @@ public class LineReader {
         ++this.lineNo
 
         this.lastReadLine = line
-        return line
+
+        line
     }
 
     /**
@@ -117,7 +118,7 @@ public class LineReader {
      *
      * @param line The line to push back.
      */
-    public void pushBackLine(Line line) {
+    void pushBackLine(Line line) {
         this.readAhead.offerLast(line)
         --this.lineNo
     }
@@ -129,21 +130,22 @@ public class LineReader {
      *
      * @throws IOException on any I/O failure.
      */
-    public Line peekNextLine() throws IOException {
+    Line peekNextLine() throws IOException {
         Line saveLastReadLine = this.lastReadLine
         Line line = readLine()
         if (line != null) {
             pushBackLine(line)
         }
         this.lastReadLine = saveLastReadLine
-        return line
+
+        line
     }
 
     /**
      * Returns true if this reader has any line to read. When this returns false end-of-file has been reached.
      */
-    public boolean hasLine() {
-        return peekNextLine() != null
+    boolean hasLine() {
+        peekNextLine() != null
     }
 
     // Wanted to test this, and it works fine, but is not optimal for parsing ...
@@ -152,7 +154,7 @@ public class LineReader {
      *
      * @param lineClosure The closure to call.
      */
-    public void each(Closure lineClosure) {
+    void each(Closure lineClosure) {
         while (hasLine()) {
             lineClosure.call(readLine(), peekNextLine())
         }
@@ -161,15 +163,15 @@ public class LineReader {
     /**
      * Returns the line number of the current line starting count at 0.
      */
-    public int getLineNo() {
-        return this.lineNo
+    int getLineNo() {
+        this.lineNo
     }
 
     /**
      * Returns the last read line.
      */
-    public Line getLastReadLine() {
-        return this.lastReadLine
+    Line getLastReadLine() {
+        this.lastReadLine
     }
 
     /**
@@ -177,7 +179,7 @@ public class LineReader {
      *
      * @throws IOException on any I/O failure.
      */
-    public void close() throws IOException {
+    void close() throws IOException {
         this.readAhead.clear()
         this.reader.close();
     }
