@@ -38,6 +38,7 @@ package se.natusoft.doc.markdown.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This represents an image.
@@ -50,11 +51,11 @@ class Image extends Link {
      * Returns the format this model represents.
      */
     @Override
-    DocFormat getFormat() {
+    @NotNull DocFormat getFormat() {
         DocFormat.Image
     }
 
-    String toString() {
+    @NotNull String toString() {
         StringBuilder sb  = new StringBuilder();
 
         sb.append("<img src='" + url + "'")

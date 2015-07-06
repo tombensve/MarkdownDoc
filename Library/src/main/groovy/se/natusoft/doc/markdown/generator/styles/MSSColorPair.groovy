@@ -25,11 +25,11 @@ class MSSColorPair {
     // Methods
     //
 
-    void updateForegroundIfNotSet(@Nullable MSSColor foreground) {
+    void updateForegroundIfNotSet(@Nullable final MSSColor foreground) {
         if (this.foreground == null) { this.foreground = foreground }
     }
 
-    void updateBackgroundIfNotSet(@Nullable MSSColor background) {
+    void updateBackgroundIfNotSet(@Nullable final MSSColor background) {
         if (this.background == null) { this.background = background }
     }
 }

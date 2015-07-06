@@ -38,6 +38,7 @@ package se.natusoft.doc.markdown.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This represents a list of text items.
@@ -51,7 +52,7 @@ class ListItem extends DocItem {
      *
      * @param item
      */
-    void addItem(DocItem item) {
+    void addItem(@NotNull("Intentionally not null in general!") DocItem item) {
         throw new IllegalArgumentException("A ListItem can only take Paragraph objects!")
     }
 
@@ -60,7 +61,7 @@ class ListItem extends DocItem {
      *
      * @param paragraph The paragraph to add.
      */
-    void addItem(Paragraph paragraph) {
+    void addItem(@NotNull Paragraph paragraph) {
         super.addItem(paragraph)
     }
 
@@ -77,7 +78,7 @@ class ListItem extends DocItem {
      *
      * @param indentLevel The indentation size.
      */
-    String toString(int indentLevel) {
+    @NotNull String toString(int indentLevel) {
         StringBuilder sb = new StringBuilder()
 
         for (DocItem paraItem : super.items) {

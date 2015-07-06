@@ -38,6 +38,8 @@ package se.natusoft.doc.markdown.api
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.exception.ParseException
 import se.natusoft.doc.markdown.model.Doc
 
@@ -58,7 +60,8 @@ interface Parser {
      * @throws IOException on failure.
      * @throws ParseException on parse failures.
      */
-    void parse(Doc document, File parseFile, Properties parserOptions) throws IOException, ParseException
+    void parse(@NotNull Doc document, @NotNull final File parseFile,
+               @Nullable final Properties parserOptions) throws IOException, ParseException
 
     /**
      * Parses a file and adds its document structure to the passed Doc.
@@ -70,7 +73,8 @@ interface Parser {
      * @throws IOException on failure.
      * @throws ParseException on parse failures.
      */
-    void parse(Doc document, InputStream parseStream, Properties parserOptions) throws IOException, ParseException
+    void parse(@NotNull Doc document, @NotNull InputStream parseStream,
+               @Nullable final Properties parserOptions) throws IOException, ParseException
 
     /**
      * Returns true if extension of the passed fileName is valid for this parser.
@@ -79,6 +83,6 @@ interface Parser {
      *
      * @return true or false.
      */
-    boolean validFileExtension(String fileName)
+    boolean validFileExtension(@NotNull String fileName)
 
 }

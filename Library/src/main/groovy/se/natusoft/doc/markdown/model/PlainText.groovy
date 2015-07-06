@@ -38,19 +38,21 @@ package se.natusoft.doc.markdown.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import se.natusoft.doc.markdown.exception.GenerateException
 
 /**
  * This represents plain text.
  */
 @CompileStatic
 @TypeChecked
-class PlainText extends DocItem {
+class PlainText extends DocFormatItem {
     //
     // Private Members
     //
 
     /** The text of this item. */
-    String text = ""
+    @NotNull String text = ""
 
     //
     // Methods
@@ -62,10 +64,19 @@ class PlainText extends DocItem {
      * @param text The text to add.
      */
     @Override
-    void addItem(String text) {
+    void addItem(@NotNull String text) {
         if (text != null) {
             this.text = this.text + text
         }
+    }
+
+    /**
+     * Structural behavior validation.
+     *
+     * @param docItem
+     */
+    void addItem(@NotNull DocItem docItem) {
+        throw new GenerateException(message: "PlainText only takes strings!")
     }
 
     /**
@@ -73,7 +84,7 @@ class PlainText extends DocItem {
      *
      * @param text The text to set.
      */
-    void setText(String text) {
+    void setText(@NotNull String text) {
         this.text = text
     }
 
@@ -81,7 +92,7 @@ class PlainText extends DocItem {
      * Returns the format this model represents.
      */
     @Override
-    DocFormat getFormat() {
+    @NotNull DocFormat getFormat() {
         DocFormat.PlainText
     }
 
@@ -91,7 +102,7 @@ class PlainText extends DocItem {
     }
 
     @Override
-    String toString() {
+    @NotNull String toString() {
         this.text
     }
 }

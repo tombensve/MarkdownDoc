@@ -145,7 +145,7 @@ class MSS {
     private JSONObject _toc = null
 
     /** Holds a cache of resolved color values. */
-    private Map<String, MSSColor> colorMap = new HashMap<>()
+    private final Map<String, MSSColor> colorMap = new HashMap<>()
 
     //
     // Constructors
@@ -156,7 +156,7 @@ class MSS {
      *
      * @param mss The top level MSS JSON object.
      */
-    private MSS(@NotNull JSONObject mss) {
+    private MSS(@NotNull final JSONObject mss) {
         this.mss = mss
     }
 
@@ -165,7 +165,7 @@ class MSS {
     //
 
     /**
-     * A null safe way to get the caches "document" section of the MSS.
+     * A null safe way to get the cached "document" section of the MSS.
      */
     @NotNull private JSONObject getDocument() {
         if (this._document == null) {
@@ -356,7 +356,7 @@ class MSS {
      * @param colorPair The color pair to update.
      * @param section The section to update from.
      */
-    private void updateMSSColorPairIfNotSet(@NotNull MSSColorPair colorPair, @Nullable final JSONObject section) {
+    private void updateMSSColorPairIfNotSet(@NotNull final MSSColorPair colorPair, @Nullable final JSONObject section) {
         // If a null section is passed this code will not break, it will just not do anything at all in that case.
         JSONString color = section?.getProperty(MSS_Colors.color.name()) as JSONString
         if (color != null) {
@@ -374,7 +374,7 @@ class MSS {
      * @param font The font to update.
      * @param section The section to update from.
      */
-    private static void updateMSSFontIfNotSet(@NotNull MSSFont font, @Nullable final JSONObject section) {
+    private static void updateMSSFontIfNotSet(@NotNull final MSSFont font, @Nullable final JSONObject section) {
         JSONString family = section?.getProperty(MSS_Font.family.name()) as JSONString
         font.updateFamilyIfNotSet(family?.toString())
 
@@ -399,7 +399,7 @@ class MSS {
      *
      * @param colorPair The color pair to ensure.
      */
-    private static @NotNull MSSColorPair ensureColorPair(@NotNull MSSColorPair colorPair) {
+    private static @NotNull MSSColorPair ensureColorPair(@NotNull final MSSColorPair colorPair) {
         colorPair.updateForegroundIfNotSet(MSSColor.BLACK)
         colorPair.updateBackgroundIfNotSet(MSSColor.WHITE)
 
@@ -411,7 +411,7 @@ class MSS {
      *
      * @param font The font to ensure.
      */
-    private static @NotNull MSSFont ensureFont(@NotNull MSSFont font) {
+    private static @NotNull MSSFont ensureFont(@NotNull final MSSFont font) {
         font.updateFamilyIfNotSet("HELVETICA")
         font.updateSizeIfNotSet(10)
         font.updateStyleIfNotSet(MSSFontStyle.NORMAL)
@@ -424,7 +424,7 @@ class MSS {
      *
      * @param section A section type like h1, blockquote, etc.
      */
-    @NotNull MSSColorPair getColorPairForDocument(@NotNull MSS_Pages section) {
+    @NotNull MSSColorPair getColorPairForDocument(@NotNull final MSS_Pages section) {
         MSSColorPair colorPair = new MSSColorPair()
 
         if (this.currentDivs != null) {
@@ -448,7 +448,7 @@ class MSS {
      *
      * @param section A section type like h1, blockquote, etc.
      */
-    @NotNull MSSFont getFontForDocument(@NotNull MSS_Pages section) {
+    @NotNull MSSFont getFontForDocument(@NotNull final MSS_Pages section) {
         MSSFont font = new MSSFont()
 
         if (this.currentDivs != null) {
@@ -468,11 +468,11 @@ class MSS {
     }
 
     class ForDocument {
-        @NotNull MSSColorPair getColorPair(@NotNull MSS_Pages section) {
+        @NotNull MSSColorPair getColorPair(@NotNull final MSS_Pages section) {
             getColorPairForDocument(section)
         }
 
-        @NotNull MSSFont getFont(@NotNull MSS_Pages section) {
+        @NotNull MSSFont getFont(@NotNull final MSS_Pages section) {
             getFontForDocument(section)
         }
     }
@@ -486,7 +486,7 @@ class MSS {
      *
      * @param section The front page section to get color pair for.
      */
-    @NotNull MSSColorPair getColorPairForFrontPage(@NotNull MSS_Front_Page section) {
+    @NotNull MSSColorPair getColorPairForFrontPage(@NotNull final MSS_Front_Page section) {
         MSSColorPair colorPair = new MSSColorPair()
 
         updateMSSColorPairIfNotSet(colorPair, this.frontPage.getProperty(section.name()) as JSONObject)
@@ -500,7 +500,7 @@ class MSS {
      *
      * @param section The front page section to get font for.
      */
-    @NotNull MSSFont getFontForFrontPage(@NotNull MSS_Front_Page section) {
+    @NotNull MSSFont getFontForFrontPage(@NotNull final MSS_Front_Page section) {
         MSSFont font = new MSSFont()
 
         updateMSSFontIfNotSet(font, this.frontPage.getProperty(section.name()) as JSONObject)
@@ -546,11 +546,11 @@ class MSS {
     }
 
     class ForFrontPage {
-        @NotNull MSSColorPair getColorPair(@NotNull MSS_Front_Page section) {
+        @NotNull MSSColorPair getColorPair(@NotNull final MSS_Front_Page section) {
             getColorPairForFrontPage(section)
         }
 
-        @NotNull MSSFont getFont(@NotNull MSS_Front_Page section) {
+        @NotNull MSSFont getFont(@NotNull final MSS_Front_Page section) {
             getFontForFrontPage(section)
         }
 
@@ -573,7 +573,7 @@ class MSS {
      *
      * @param section The TOC section to use the color pair for.
      */
-    @NotNull MSSColorPair getColorPairForTOC(@NotNull MSS_TOC section) {
+    @NotNull MSSColorPair getColorPairForTOC(@NotNull final MSS_TOC section) {
         MSSColorPair colorPair = new MSSColorPair()
 
         updateMSSColorPairIfNotSet(colorPair, this.TOC.getProperty(section.name()) as JSONObject)
@@ -587,7 +587,7 @@ class MSS {
      *
      * @param section The TOC section to use the font for.
      */
-    @NotNull MSSFont getFontForTOC(@NotNull MSS_TOC section) {
+    @NotNull MSSFont getFontForTOC(@NotNull final MSS_TOC section) {
         MSSFont font = new MSSFont()
 
         updateMSSFontIfNotSet(font, this.TOC.getProperty(section.name()) as JSONObject)
@@ -597,11 +597,11 @@ class MSS {
     }
 
     class ForTOC {
-        @NotNull MSSColorPair getColorPair(@NotNull MSS_TOC section) {
+        @NotNull MSSColorPair getColorPair(@NotNull final MSS_TOC section) {
             getColorPairForTOC(section)
         }
 
-        @NotNull MSSFont getFont(@NotNull MSS_TOC section) {
+        @NotNull MSSFont getFont(@NotNull final MSS_TOC section) {
             getFontForTOC(section)
         }
     }
@@ -812,15 +812,15 @@ class MSS {
      * @return
      * @throws IOException
      */
-    static @NotNull MSS fromInputStream(@NotNull final InputStream styleStream) throws IOException {
+    static @NotNull MSS fromInputStream(@NotNull InputStream styleStream) throws IOException {
         JSONObject mss = (JSONObject) JSON.read(styleStream, new JSONErrorHandler() {
             @Override
-            void warning(String message) {
+            void warning(@NotNull String message) {
                 System.err.println(message);
             }
 
             @Override
-            void fail(String message, Throwable cause) throws RuntimeException {
+            void fail(@NotNull String message, @Nullable Throwable cause) throws RuntimeException {
                 throw new RuntimeException(message, cause)
             }
         });
@@ -904,7 +904,7 @@ class MSS {
         ok
     }
 
-    private static boolean safe(Closure<Boolean> enumCheck) {
+    private static boolean safe(@NotNull Closure<Boolean> enumCheck) {
         try {
             return enumCheck.call()
         }

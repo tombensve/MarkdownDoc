@@ -38,6 +38,8 @@ package se.natusoft.doc.markdown.generator
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.exception.GenerateException
@@ -51,13 +53,11 @@ import se.natusoft.doc.markdown.model.*
 @TypeChecked
 class HTMLGenerator implements Generator {
 
-    //
-    // Private Members
-    //
+    private static class HTMLGeneratorContext extends GeneratorContext {
 
-    private HTMLGeneratorOptions options
-
-    private File rootDir
+        /** The HTML generator options. */
+        HTMLGeneratorOptions options
+    }
 
     //
     // Methods
@@ -67,7 +67,7 @@ class HTMLGenerator implements Generator {
      * Returns the options class required for this generator.
      */
     @Override
-    Class getOptionsClass() {
+    @NotNull Class getOptionsClass() {
         HTMLGeneratorOptions.class
     }
 
@@ -75,7 +75,7 @@ class HTMLGenerator implements Generator {
      * @return The name of this generator.
      */
     @Override
-    String getName() {
+    @NotNull String getName() {
         "html"
     }
 
@@ -87,19 +87,22 @@ class HTMLGenerator implements Generator {
      * @param rootDir The optional root to prefix configured path with.
      */
     @Override
-    void generate(Doc document, Options opts, File rootDir) throws IOException, GenerateException {
-        this.options = (HTMLGeneratorOptions)opts
-        this.rootDir = rootDir
+    void generate(@NotNull final Doc document, @NotNull final Options opts, @Nullable final File rootDir)
+            throws IOException, GenerateException {
+        HTMLGeneratorContext context = new HTMLGeneratorContext(
+                options: opts as HTMLGeneratorOptions,
+                rootDir: rootDir
+        )
 
         def writer //= new FileWriter(rootDir != null ? (rootDir.getPath() + File.separator + options.resultFile) : options.resultFile)
         if (rootDir != null) {
-            writer = new FileWriter(rootDir.path + File.separator + this.options.resultFile)
+            writer = new FileWriter(rootDir.path + File.separator + context.options.resultFile)
         }
         else {
-            writer = new FileWriter(this.options.resultFile)
+            writer = new FileWriter(context.options.resultFile)
         }
         try {
-            doGenerate(document, this.options, writer)
+            doGenerate(document, context.options, writer, context)
         }
         finally {
             writer.close()
@@ -113,16 +116,22 @@ class HTMLGenerator implements Generator {
      * @param options The generator options.
      * @param rootDir The optional root directory to prefix configured output with. Can be null.
      * @param resultStream The stream to write the result to.
+     * @param context The HTML genrator context.
      *
      * @throws IOException on I/O failures.
      * @throws GenerateException on other failures to generate target.
      */
     @Override
-    void generate(Doc document, Options opts, File rootDir, OutputStream resultStream) throws IOException, GenerateException {
-        this.options = (HTMLGeneratorOptions)opts
-        this.rootDir = rootDir
+    void generate(@NotNull final Doc document, @NotNull final Options opts, @Nullable final File rootDir,
+                  @NotNull OutputStream resultStream)
+            throws IOException, GenerateException {
+        HTMLGeneratorContext context = new HTMLGeneratorContext(
+                options: opts as HTMLGeneratorOptions,
+                rootDir: rootDir
+        )
+
         OutputStreamWriter resultWriter = new OutputStreamWriter(resultStream)
-        doGenerate(document, this.options, resultWriter)
+        doGenerate(document, context.options, resultWriter, context)
         resultWriter.close()
     }
 
@@ -133,7 +142,9 @@ class HTMLGenerator implements Generator {
      * @param document The document model to generate from.
      * @param options The options.
      */
-    private void doGenerate(Doc document, HTMLGeneratorOptions options, Writer writer) throws IOException, GenerateException {
+    private static void doGenerate(@NotNull final Doc document, @NotNull final HTMLGeneratorOptions options,
+                            @NotNull Writer writer, @NotNull HTMLGeneratorContext context)
+            throws IOException, GenerateException {
 
         PrintWriter printWriter = new PrintWriter(writer)
         def html = new HTMLOutput(pw: printWriter)
@@ -190,7 +201,7 @@ class HTMLGenerator implements Generator {
                     break
 
                 case DocFormat.Paragraph:
-                    writeParagraph((Paragraph)docItem, html)
+                    writeParagraph((Paragraph)docItem, html, context)
                     break
 
                 case DocFormat.Header:
@@ -198,7 +209,7 @@ class HTMLGenerator implements Generator {
                     break
 
                 case DocFormat.BlockQuote:
-                    writeBlockQuote((BlockQuote)docItem, html)
+                    writeBlockQuote((BlockQuote)docItem, html, context)
                     break;
 
                 case DocFormat.CodeBlock:
@@ -210,7 +221,7 @@ class HTMLGenerator implements Generator {
                     break
 
                 case DocFormat.List:
-                    writeList((List)docItem, html)
+                    writeList((List)docItem, html, context)
                     break
 
                 case DocFormat.Div:
@@ -226,20 +237,21 @@ class HTMLGenerator implements Generator {
         html.etagln("html")
     }
 
-    private static void writeHeader(Header header, HTMLOutput html) {
+    private static void writeHeader(@NotNull final Header header, @NotNull final HTMLOutput html) {
         html.tagln(header.level.name(), header.text)
     }
 
-    private void writeBlockQuote(BlockQuote blockQuote, HTMLOutput html) {
+    private static void writeBlockQuote(@NotNull final BlockQuote blockQuote, @NotNull final HTMLOutput html,
+                                 @NotNull HTMLGeneratorContext context) {
         html.tagln("blockquote")
         html.tagln("p")
         html.doIndent()
-        writeParagraphContent(blockQuote, html)
+        writeParagraphContent(blockQuote, html, context)
         html.etagln("p")
         html.etagln("blockquote")
     }
 
-    private static void writeCodeBlock(CodeBlock codeBlock, HTMLOutput html) {
+    private static void writeCodeBlock(@NotNull final CodeBlock codeBlock, @NotNull final HTMLOutput html) {
         html.tagln("pre")
         html.tagln("code")
         codeBlock.items.each { DocItem item ->
@@ -250,11 +262,12 @@ class HTMLGenerator implements Generator {
         html.etagln("pre")
     }
 
-    private static void writeHorizontalRule(HTMLOutput html) {
+    private static void writeHorizontalRule(@NotNull final HTMLOutput html) {
         html.tage("hr")
     }
 
-    private void writeList(List list, HTMLOutput html) {
+    private static void writeList(@NotNull final List list, @NotNull final HTMLOutput html,
+                           @NotNull HTMLGeneratorContext context) {
         if (list.ordered) {
             html.tagln("ol")
         }
@@ -263,13 +276,12 @@ class HTMLGenerator implements Generator {
         }
         list.items.each { DocItem li ->
             if (li instanceof List) {
-                writeList((List)li, html)
+                writeList((List)li, html, context)
             }
             else {
                 html.tagln("li")
-//                html.doIndent()
                 li.items.each { pg ->
-                    writeParagraph((Paragraph)pg, html)
+                    writeParagraph((Paragraph)pg, html, context)
                 }
                 html.etagln("li")
             }
@@ -282,14 +294,18 @@ class HTMLGenerator implements Generator {
         }
     }
 
-    private void writeParagraph(Paragraph paragraph, HTMLOutput html) throws GenerateException {
+    private static void writeParagraph(@NotNull final Paragraph paragraph, @NotNull  final HTMLOutput html,
+                                @NotNull HTMLGeneratorContext context)
+            throws GenerateException {
         html.tagln("p")
         html.doIndent()
-        writeParagraphContent(paragraph, html)
+        writeParagraphContent(paragraph, html, context)
         html.etagln("p")
     }
 
-    private void writeParagraphContent(Paragraph paragraph, HTMLOutput html) throws GenerateException {
+    private static void writeParagraphContent(@NotNull final Paragraph paragraph, @NotNull final HTMLOutput html,
+                                       @NotNull HTMLGeneratorContext context)
+            throws GenerateException {
         boolean first = true
         paragraph.items.each { DocItem docItem ->
             if (docItem.renderPrefixedSpace && !first) {
@@ -312,7 +328,7 @@ class HTMLGenerator implements Generator {
                     break
 
                 case DocFormat.Image:
-                    writeImage((Image)docItem, html)
+                    writeImage((Image)docItem, html, context)
                     break
 
                 case DocFormat.Link:
@@ -337,29 +353,31 @@ class HTMLGenerator implements Generator {
         html.contentln("")
     }
 
-    private static void writeCode(Code code, HTMLOutput html) {
+    private static void writeCode(@NotNull final Code code, @NotNull final HTMLOutput html) {
         html.tag("code", code.text)
     }
 
-    private static void writeEmphasis(Emphasis emphasis, HTMLOutput html) {
+    private static void writeEmphasis(@NotNull  final Emphasis emphasis, @NotNull final HTMLOutput html) {
         html.tag("em", emphasis.text)
     }
 
-    private static void writeStrong(Strong strong, HTMLOutput html) {
+    private static void writeStrong(@NotNull final Strong strong, @NotNull final HTMLOutput html) {
         html.tag("strong", strong.text)
     }
 
-    private void writeImage(Image image, HTMLOutput html) {
-        html.tage("img src='" + resolveUrl(image.url, image.parseFile) + "' title='" + image.title + "' alt='" + image.text + "'")
+    private static void writeImage(@NotNull final Image image, @NotNull  final HTMLOutput html,
+                            @NotNull HTMLGeneratorContext context) {
+        html.tage("img src='" + resolveUrl(image.url, image.parseFile, context) + "' title='" + image.title +
+                "' alt='" + image.text + "'")
     }
 
-    private static void writeLink(Link link, HTMLOutput html) {
+    private static void writeLink(@NotNull final Link link, @NotNull final HTMLOutput html) {
         html.tag("a href='" + link.url + "' title='" + link.title + "'")
         html.content(link.text)
         html.etag("a")
     }
 
-    private static writeDiv(Div div, HTMLOutput html) {
+    private static writeDiv(@NotNull final Div div, @NotNull final HTMLOutput html) {
         if (div.isStart()) {
             html.doIndent()
             html.outputln("<div class=\"${div.name}\">")
@@ -379,7 +397,8 @@ class HTMLGenerator implements Generator {
      * @param url The DocItem item provided url.
      * @param parseFile The source file of the DocItem item.
      */
-    private String resolveUrl(String url, File parseFile) {
+    private static @NotNull String resolveUrl(@NotNull String url, @NotNull File parseFile,
+                                       @NotNull HTMLGeneratorContext context) {
         String resolvedUrl = url
         if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http:")) {
             resolvedUrl = "file:" + resolvedUrl
@@ -393,27 +412,29 @@ class HTMLGenerator implements Generator {
                 int ix = parseFile != null ? parseFile.canonicalPath.lastIndexOf(File.separator) : -1
                 if (ix >= 0) {
                     String path1 = parseFile.canonicalPath.substring(0, ix + 1) + path
-                    if (this.rootDir != null) {
+                    if (context.rootDir != null) {
                         // The result file is relative to the root dir!
-                        resolvedUrl = "file:" + possiblyMakeRelative(this.rootDir.canonicalPath + File.separator + path1)
-                        testFile = new File(this.rootDir.canonicalPath + File.separator + path1)
+                        resolvedUrl = "file:" + possiblyMakeRelative(context.rootDir.canonicalPath +
+                                File.separator + path1, context)
+                        testFile = new File(context.rootDir.canonicalPath + File.separator + path1)
                     }
                     else {
-                        resolvedUrl = "file:" + possiblyMakeRelative(path1)
+                        resolvedUrl = "file:" + possiblyMakeRelative(path1, context)
                         testFile = new File(path1)
                     }
                 }
                 if (!testFile.exists()) {
                     // Try relative to result file.
-                    ix = this.options.resultFile != null ? this.options.resultFile.lastIndexOf(File.separator) : -1
+                    ix = context.options.resultFile != null ? context.options.resultFile.lastIndexOf(File.separator) : -1
                     if (ix >= 0) {
-                        String path2 = this.options.resultFile.substring(0, ix + 1) + path
-                        if (this.rootDir != null) {
+                        String path2 = context.options.resultFile.substring(0, ix + 1) + path
+                        if (context.rootDir != null) {
                             // The result file is relative to the root dir!
-                            resolvedUrl = "file:" + possiblyMakeRelative(this.rootDir.canonicalPath + File.separator + path2)
+                            resolvedUrl = "file:" + possiblyMakeRelative(context.rootDir.canonicalPath +
+                                    File.separator + path2, context)
                         }
                         else {
-                            resolvedUrl = "file:" + possiblyMakeRelative(path2)
+                            resolvedUrl = "file:" + possiblyMakeRelative(path2, context)
                         }
                     }
                 }
@@ -431,11 +452,11 @@ class HTMLGenerator implements Generator {
      *
      * @return A possibly relative path.
      */
-    private String possiblyMakeRelative(String path) {
+    private static @NotNull String possiblyMakeRelative(@NotNull String path, @NotNull HTMLGeneratorContext context) {
         String resultPath = path
 
-        if (this.options.makeFileLinksRelativeTo != null && this.options.makeFileLinksRelativeTo.trim().length() > 0) {
-            String[] relativeToParts = this.options.makeFileLinksRelativeTo.split("\\+")
+        if (context.options.makeFileLinksRelativeTo != null && context.options.makeFileLinksRelativeTo.trim().length() > 0) {
+            String[] relativeToParts = context.options.makeFileLinksRelativeTo.split("\\+")
             File relFilePath = new File(relativeToParts[0])
             String expandedRelativePath = relFilePath.canonicalPath
             if (resultPath.startsWith(expandedRelativePath)) {
@@ -478,7 +499,7 @@ class HTMLGenerator implements Generator {
          *
          * @return A new string with replacements.
          */
-        private static String replace(String content) {
+        private static @NotNull String replace(@NotNull String content) {
             return content.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
         }
 
@@ -495,7 +516,7 @@ class HTMLGenerator implements Generator {
          *
          * @param tag The name of the tag to output.
          */
-        void tag(String tag) {
+        void tag(@NotNull String tag) {
             pw.print("<" + tag + ">")
         }
 
@@ -505,7 +526,7 @@ class HTMLGenerator implements Generator {
          * @param tag The name of the tag to output.
          * @param content The content of the tag.
          */
-        void tag(String tag, String content) {
+        void tag(@NotNull String tag, @NotNull String content) {
             pw.print("<" + tag + ">" + replace(content) + "</" + tag + ">")
         }
 
@@ -514,7 +535,7 @@ class HTMLGenerator implements Generator {
          *
          * @param tag The tag to output.
          */
-        void tage(String tag) {
+        void tage(@NotNull String tag) {
             doIndent()
             pw.print("<" + tag + "/>")
         }
@@ -524,7 +545,7 @@ class HTMLGenerator implements Generator {
          *
          * @param tag The tag to output.
          */
-        void tagln(String tag) {
+        void tagln(@NotNull String tag) {
             doIndent()
             pw.println("<" + tag + ">")
             incrementIndent()
@@ -536,7 +557,7 @@ class HTMLGenerator implements Generator {
          * @param tag The tag to output.
          * @param content The content of the tag.
          */
-        void tagln(String tag, String content) {
+        void tagln(@NotNull String tag, @NotNull String content) {
             doIndent()
             pw.println("<" + tag + ">" + replace(content) + "</" + tag + ">")
         }
@@ -546,7 +567,7 @@ class HTMLGenerator implements Generator {
          *
          * @param content The content to output.
          */
-        void content(String content) {
+        void content(@NotNull String content) {
             pw.print(replace(content))
         }
 
@@ -555,7 +576,7 @@ class HTMLGenerator implements Generator {
          *
          * @param cont The content to output.
          */
-        void contentln(String cont) {
+        void contentln(@NotNull String cont) {
             doIndent()
             content(cont)
             pw.println()
@@ -571,7 +592,7 @@ class HTMLGenerator implements Generator {
          *
          * @param text The text to output.
          */
-        void output(String text) {
+        void output(@NotNull String text) {
             pw.print(text)
         }
 
@@ -585,7 +606,7 @@ class HTMLGenerator implements Generator {
          *
          * @param text The text to output.
          */
-        void outputln(String text) {
+        void outputln(@NotNull String text) {
             pw.println(text)
         }
 
@@ -594,7 +615,7 @@ class HTMLGenerator implements Generator {
          *
          * @param tag The tag to end.
          */
-        void etag(String tag) {
+        void etag(@NotNull String tag) {
             pw.print("</" + tag + ">")
         }
 
@@ -603,7 +624,7 @@ class HTMLGenerator implements Generator {
          *
          * @param tag The tag to end.
          */
-        void etagln(String tag) {
+        void etagln(@NotNull String tag) {
             decrementIndent()
             doIndent()
             pw.println("</" + tag + ">")

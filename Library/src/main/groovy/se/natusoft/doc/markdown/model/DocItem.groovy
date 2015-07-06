@@ -39,6 +39,8 @@ package se.natusoft.doc.markdown.model
 import groovy.transform.CompileStatic
 import groovy.transform.PackageScope
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.io.Line
 
 import java.util.LinkedList as JLinkedList
@@ -49,19 +51,19 @@ import java.util.List as JList
  */
 @CompileStatic
 @TypeChecked
-class DocItem {
+abstract class DocItem {
     //
     // Properties
     //
 
     /** The sub items of this DocItem.  */
-    JList<DocItem> items = new JLinkedList<DocItem>()
+    @NotNull JList<DocItem> items = new JLinkedList<DocItem>()
 
     /** If true the consecutive instances are merged. */
     boolean keepConsecutiveTogether = false
 
-    /** If non null a new item with this content will be added between kept together blocks merged. */
-    String addBetweenKeepTogether = null
+    /** If non null a new item with this content will be added between kept together blocks. */
+    @Nullable String addBetweenKeepTogether = null
 
     /** If true the this belongs in an hierarchy of items. */
     boolean isHierarchy = false;
@@ -70,6 +72,7 @@ class DocItem {
     boolean renderPrefixedSpace = true
 
     /** The input file this item comes from. */
+    @NotNull("Must be set by parsers.")
     File parseFile = null;
 
     //
@@ -81,7 +84,7 @@ class DocItem {
      *
      * @param object The object to left shift in.
      */
-    DocItem leftShift(Object object) {
+    @NotNull DocItem leftShift(@NotNull final Object object) {
         addItem(object.toString())
         this
     }
@@ -89,11 +92,11 @@ class DocItem {
     /**
      * Creates a new DocItem instance of the same type as this instance and with the same base DocItem config as this.
      */
-    DocItem createNewWithSameConfig() {
+    @NotNull DocItem createNewWithSameConfig() {
         copyConfig(this.class.newInstance() as DocItem)
     }
 
-    protected DocItem copyConfig(DocItem docItem) {
+    @NotNull protected DocItem copyConfig(DocItem docItem) {
         docItem.setKeepConsecutiveTogether(this.keepConsecutiveTogether)
         docItem.setAddBetweenKeepTogether(this.addBetweenKeepTogether)
         docItem.setIsHierarchy(this.isHierarchy)
@@ -107,7 +110,7 @@ class DocItem {
      *
      * @param paragraph A Paragraph to add.
      */
-    void addItem(DocItem docItem) {
+    void addItem(@NotNull DocItem docItem) {
         this.items.add(docItem)
     }
 
@@ -116,7 +119,7 @@ class DocItem {
      *
      * @param items the items to add.
      */
-    void addItems(JList<DocItem> items) {
+    void addItems(@NotNull JList<DocItem> items) {
         for (DocItem item : items) {
             addItem(item);
         }
@@ -127,7 +130,7 @@ class DocItem {
      *
      * @param text Text to add.
      */
-    void addItem(String text) {
+    void addItem(@NotNull String text) {
         PlainText pt = new PlainText(text: text)
         this.items.add(pt);
     }
@@ -137,7 +140,7 @@ class DocItem {
      *
      * @param line Text to add.
      */
-    void addItem(Line line) {
+    void addItem(@NotNull final Line line) {
         addItem(line.toString())
     }
 
@@ -153,7 +156,7 @@ class DocItem {
      *
      * @param prevItem The previous item to compare to.
      */
-    boolean isHierarchyDown(DocItem prevItem) {
+    boolean isHierarchyDown(@Nullable("For this specific implementation.") DocItem prevItem) {
         false
     }
 
@@ -162,7 +165,7 @@ class DocItem {
      *
      * @param prevItem The previous item to compare to.
      */
-    boolean isHierarchyUp(DocItem prevItem) {
+    boolean isHierarchyUp(@Nullable("For this specific implementation.") DocItem prevItem) {
         false
     }
 
@@ -171,7 +174,7 @@ class DocItem {
      *
      * @param docItem The DocItem to test.
      */
-    boolean isSameType(DocItem docItem) {
+    boolean isSameType(@NotNull DocItem docItem) {
         this.class == docItem.class
     }
 
@@ -179,6 +182,8 @@ class DocItem {
      * This returns the format of the sub model of DocFormat or if this method is not overridden null. Only
      * the models representing the formats in DocFormat will override this.
 ´    */
+    @Nullable("For non format representing subclasses and this specific implementation.")
+    @NotNull("For format representing subclasses.")
     DocFormat getFormat() {
         null
     }
@@ -204,8 +209,8 @@ class DocItem {
     /**
      * Returns a String representation for debugging purposes.
      */
-    String toString() {
-        def str = ''
+    @NotNull String toString() {
+        def str = ""
 
         boolean first = true
         for (DocItem item : this.items) {

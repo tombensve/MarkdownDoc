@@ -2,6 +2,8 @@ package se.natusoft.doc.markdown.util
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 
 /**
  * Provide resources that works:
@@ -18,7 +20,7 @@ import groovy.transform.TypeChecked
 @TypeChecked
 class TestSafeResource {
 
-    static InputStream getResource(String path) {
+    static @Nullable InputStream getResource(@NotNull String path) {
 
         InputStream is = TestSafeResource.class.getClassLoader().getResourceAsStream(path)
         if (is == null) {

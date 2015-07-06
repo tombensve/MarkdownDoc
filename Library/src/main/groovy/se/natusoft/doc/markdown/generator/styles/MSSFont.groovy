@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 
 /**
@@ -40,7 +41,7 @@ class MSSFont {
         if (this.size == -1) this.size = size
     }
 
-    void updateStyleIfNotSet(@Nullable MSSFontStyle style) {
+    void updateStyleIfNotSet(@Nullable final MSSFontStyle style) {
         if (this.style == null) this.style = style
     }
 
@@ -52,7 +53,7 @@ class MSSFont {
     // Static methods
     //
 
-    static MSSFont createDefaultFont() {
+    static @NotNull MSSFont createDefaultFont() {
         new MSSFont(family: "HELVETICA", size: 10, style: MSSFontStyle.NORMAL)
     }
 

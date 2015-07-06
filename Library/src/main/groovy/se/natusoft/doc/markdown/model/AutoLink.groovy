@@ -38,6 +38,7 @@ package se.natusoft.doc.markdown.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This represents an automatic link where link text and url are the same.
@@ -52,7 +53,7 @@ class AutoLink extends Link {
      * @param object The object to left shift in.
      */
     @Override
-    DocItem leftShift(Object object) {
+    @NotNull DocItem leftShift(@NotNull final Object object) {
         addItem(object.toString())
         this.url = this.url + object.toString()
 
@@ -63,7 +64,7 @@ class AutoLink extends Link {
      * Returns the format this model represents.
      */
     @Override
-    DocFormat getFormat() {
+    @NotNull DocFormat getFormat() {
         DocFormat.AutoLink
     }
 }

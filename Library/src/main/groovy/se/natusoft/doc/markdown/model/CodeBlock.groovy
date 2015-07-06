@@ -38,13 +38,14 @@ package se.natusoft.doc.markdown.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This represents a block of code that is pre-formatted.
  */
 @CompileStatic
 @TypeChecked
-class CodeBlock extends DocItem {
+class CodeBlock extends DocFormatItem {
 
     //
     // Constructors
@@ -66,7 +67,7 @@ class CodeBlock extends DocItem {
      * Returns the format this model represents.
      */
     @Override
-    DocFormat getFormat() {
+    @NotNull DocFormat getFormat() {
         DocFormat.CodeBlock
     }
 
@@ -83,7 +84,7 @@ class CodeBlock extends DocItem {
     /**
      * Returns a string representation of this model for debugging purposes.
      */
-    String toString() {
+    @NotNull String toString() {
         StringBuilder sb = new StringBuilder()
         sb.append("CodeBlock:\n")
         for (DocItem item : super.items) {

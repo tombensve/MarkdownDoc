@@ -38,6 +38,8 @@ package se.natusoft.doc.markdown.exception
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 
 /**
  * This exception represents parsing failures.
@@ -49,14 +51,14 @@ class ParseException extends DocException {
     // Private Members
     //
 
-    /** The url being parsed in which the exception occured. */
-    String file = "[File not specified!]"
+    /** The file being parsed in which the exception occurred. */
+    @NotNull String file = "[File not specified!]"
 
     /** The line of the fault. */
     int lineNo = 0
 
     /** The line that failed. */
-    String line = null
+    @Nullable String line = null
 
     //
     // Methods
@@ -65,7 +67,7 @@ class ParseException extends DocException {
     /**
      * @return The exception message.
      */
-    String getMessage() {
+    @NotNull String getMessage() {
         StringBuilder sb = new StringBuilder()
         sb.append(super.message)
         if (line != null) {

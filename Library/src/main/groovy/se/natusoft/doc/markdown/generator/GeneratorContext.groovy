@@ -16,4 +16,7 @@ class GeneratorContext {
 
     /** Used to resolve file paths. */
     FileResource fileResource
+
+    /** Used to resolve relative paths. */
+    File rootDir
 }

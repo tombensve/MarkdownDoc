@@ -38,6 +38,8 @@ package se.natusoft.doc.markdown.parser
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.api.Parser
 import se.natusoft.doc.markdown.exception.ParseException
 import se.natusoft.doc.markdown.model.*
@@ -68,7 +70,7 @@ import java.util.List
  * </pre>
  * The "Returns", "Parameters", "Throws", and "See" parts are only included if there are any entries for them.
  * <p/>
- * Please note that this parser does not try to parse java code more than trying to identify the beginning of a class and method.
+ * _Please note that this parser does not try to parse java code more than trying to identify the beginning of a class and method.
  * All other information comes from the javadoc comment block. If there is no javadoc the resulting information will be quite poor.
  */
 @CompileStatic
@@ -117,6 +119,7 @@ class Javadoc2MDParser implements Parser {
      *
      * @param doc The parsed result is added to this.
      * @param parseFile The file whose content to parse.
+     * @param parserOptions The options for this parser.
      *
      * @throws IOException on failure.
      * @throws ParseException on parse failures.
@@ -131,12 +134,13 @@ class Javadoc2MDParser implements Parser {
      *
      * @param doc The parsed result is added to this.
      * @param parseFile The file whose content to parse.
+     * @param parserOptions The options for this parser.
      *
      * @throws IOException on failure.
      * @throws ParseException on parse failures.
      */
     @Override
-    void parse(Doc document, File parseFile, Properties parserOptions) throws IOException, ParseException {
+    void parse(@NotNull Doc document, @NotNull File parseFile, @Nullable final Properties parserOptions) throws IOException, ParseException {
         this.inJavadocBlock = false
         this.inDeclarationBlock = false
         this.pkg = ""
@@ -196,7 +200,7 @@ class Javadoc2MDParser implements Parser {
      * @param docItems
      * @param parseFile
      */
-    private void setParseFileOnDocItems(DocItem docItem, File parseFile) {
+    private void setParseFileOnDocItems(@NotNull DocItem docItem, @NotNull File parseFile) {
         docItem.parseFile = parseFile
         if (docItem.hasSubItems()) {
             for (DocItem subDocItem : docItem.items) {
@@ -205,19 +209,19 @@ class Javadoc2MDParser implements Parser {
         }
     }
 
-    private static boolean isFieldOrConst(String line) {
+    private static boolean isFieldOrConst(@NotNull String line) {
         line.trim().endsWith(";")
     }
 
-    private static boolean isInterfaceMethod(String line) {
+    private static boolean isInterfaceMethod(@NotNull String line) {
         (line.contains("(") || line.contains(")")) && line.trim().endsWith(";")
     }
 
-    private static boolean isMethod(String line) {
+    private static boolean isMethod(@NotNull String line) {
         line.trim().endsWith("{") || line.trim().endsWith("{}") || line.trim().endsWith("{ }")
     }
 
-    private static boolean isEnumConst(String line) {
+    private static boolean isEnumConst(@NotNull String line) {
         line.replace(',', ' ').trim().split(" ").length == 1 && !line.contains("@")
     }
 
@@ -226,7 +230,7 @@ class Javadoc2MDParser implements Parser {
      *
      * @param line The javadoc line to save for later.
      */
-    private void saveJavadocLine(String line) {
+    private void saveJavadocLine(@NotNull String line) {
         String sline = line.trim()
         if (sline.startsWith("/**")) {
             sline = sline.substring(3)
@@ -260,7 +264,7 @@ class Javadoc2MDParser implements Parser {
      * @param line The current declaration line. A declaration might occupy more than one line so until we see the end of
      *             it, we just save the line text possibly adding it to previous text.
      */
-    private void parseDeclarationLine(Doc document, String line) {
+    private void parseDeclarationLine(@NotNull Doc document, @NotNull String line) {
         if (this.declaration == null) {
             this.declaration = line.trim()
         }
@@ -299,7 +303,7 @@ class Javadoc2MDParser implements Parser {
                             handledName = true
                         }
                         else {
-                            // Please note that we remove any  '{' at the end since we will add it ourself later
+                            // Note that we remove any  '{' at the end since we will add it ourself later
                             // after the [package] specification.
                             PlainText pt = new PlainText(text:  word.replace('{', ' ').trim() + " ")
                             p.addItem(pt)
@@ -353,7 +357,7 @@ class Javadoc2MDParser implements Parser {
      *
      * @return The update line without annotations.
      */
-    private static String removeAnnotations(String line) {
+    private static String removeAnnotations(@NotNull String line) {
         line.replaceAll("(@[A-Z,a-z]+){1} ", "")
     }
 
@@ -363,7 +367,7 @@ class Javadoc2MDParser implements Parser {
      * @param document The document model to add javadoc information to.
      * @param classOrInterface true if this javadoc is for a class or interface.
      */
-    private void parseJavadoc(Doc document, boolean classOrInterface) {
+    private void parseJavadoc(@NotNull Doc document, boolean classOrInterface) {
         List<String> text = new LinkedList<>()
         List<String> params = new LinkedList<>()
         List<String> exceptions = new LinkedList<>()
@@ -403,7 +407,7 @@ class Javadoc2MDParser implements Parser {
         }
 
         DocItem p
-        if (this.parserOptions.getProperty(MARKDOWN_JAVADOC) != null) {
+        if (this.parserOptions != null && this.parserOptions.getProperty(MARKDOWN_JAVADOC) != null) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream()
             PrintStream ps = new PrintStream(baos)
             text.each { line ->
@@ -531,7 +535,7 @@ class Javadoc2MDParser implements Parser {
      * @param fileName The file to check extension of.
      */
     @Override
-    boolean validFileExtension(String fileName) {
+    boolean validFileExtension(@NotNull String fileName) {
         fileName.endsWith(".java")
     }
 
@@ -543,7 +547,7 @@ class Javadoc2MDParser implements Parser {
 
         private String visibility
 
-        VisibilityUtil(String declaration) {
+        VisibilityUtil(@NotNull String declaration) {
             if (declaration.trim().length() > 0) {
                 this.visibility = declaration.split(" ")[0]
             }
@@ -556,7 +560,7 @@ class Javadoc2MDParser implements Parser {
             this.visibility.equals("public")
         }
 
-        static boolean isPublic(String word) {
+        static boolean isPublic(@NotNull String word) {
             word.equals("public")
         }
 
@@ -564,7 +568,7 @@ class Javadoc2MDParser implements Parser {
             this.visibility.equals("protected")
         }
 
-        static boolean isProtected(String word) {
+        static boolean isProtected(@NotNull String word) {
             word.equals("protected")
         }
 
@@ -572,7 +576,7 @@ class Javadoc2MDParser implements Parser {
             this.visibility.equals("private")
         }
 
-        static isPrivate(String word) {
+        static isPrivate(@NotNull String word) {
             word.equals("private")
         }
 
@@ -605,7 +609,7 @@ class Javadoc2MDParser implements Parser {
             this.declaration.contains("enum ")
         }
 
-        public static boolean isDeclarationType(String word) {
+        public static boolean isDeclarationType(@NotNull String word) {
             word.equals("class") || word.equals("interface") || word.equals("enum")
         }
     }
@@ -616,7 +620,7 @@ class Javadoc2MDParser implements Parser {
     @CompileStatic
     private static class ModifierUtil {
 
-        public static boolean isModifier(String word) {
+        public static boolean isModifier(@NotNull String word) {
             word.equals("final") || word.equals("abstract") || word.equals("static")
         }
     }

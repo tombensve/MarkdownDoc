@@ -17,25 +17,30 @@ import se.natusoft.doc.markdown.generator.styles.MSSFontStyle
 @TypeChecked
 class PDFFontMSSAdapter extends Font {
     //
-    // Private Members
+    // Constructors
     //
 
-    PDFFontMSSAdapter(@NotNull BaseFont baseFont, @NotNull MSSFont mssFont, @NotNull MSSColorPair mssColorPair) {
+    PDFFontMSSAdapter(@NotNull final BaseFont baseFont, @NotNull final MSSFont mssFont,
+                      @NotNull final MSSColorPair mssColorPair) {
         super(baseFont)
         setSize(mssFont.size)
         setStyle(toStyle(mssFont.style))
         setColor(new PDFColorMSSAdapter(mssColorPair.foreground))
     }
 
-    PDFFontMSSAdapter(@NotNull MSSFont mssFont, @NotNull MSSColorPair mssColorPair) {
+    PDFFontMSSAdapter(@NotNull final MSSFont mssFont, @NotNull final MSSColorPair mssColorPair) {
         setFamily(mssFont.family)
         setSize((float)mssFont.size)
         setStyle(toStyle(mssFont.style))
         setColor(new PDFColorMSSAdapter(mssColorPair.foreground))
     }
 
-    private static final int toStyle(MSSFontStyle fontStyle) {
-        int result = NORMAL
+    //
+    // Methods
+    //
+
+    private static final int toStyle(@NotNull final MSSFontStyle fontStyle) {
+        int result
         switch (fontStyle) {
             case MSSFontStyle.NORMAL:
                 result = NORMAL

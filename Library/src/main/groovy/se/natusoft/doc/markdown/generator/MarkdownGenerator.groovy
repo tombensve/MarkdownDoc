@@ -38,6 +38,8 @@ package se.natusoft.doc.markdown.generator
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.exception.GenerateException
@@ -50,13 +52,15 @@ import se.natusoft.doc.markdown.model.*
 @CompileStatic
 @TypeChecked
 class MarkdownGenerator implements Generator {
-    //
-    // Private Members
-    //
 
-    private MarkdownGeneratorOptions options
+    /**
+     * Extend standard context with generator specific options.
+     */
+    private static class MarkdownGeneratorContext extends GeneratorContext {
 
-    private File rootDir
+        /** The generator options */
+        MarkdownGeneratorOptions options
+    }
 
     //
     // Methods
@@ -66,7 +70,7 @@ class MarkdownGenerator implements Generator {
      * Returns the options class required for this generator.
      */
     @Override
-    public Class getOptionsClass() {
+    @NotNull public Class getOptionsClass() {
         MarkdownGeneratorOptions.class
     }
 
@@ -74,7 +78,7 @@ class MarkdownGenerator implements Generator {
      * @return The name of this generator.
      */
     @Override
-    String getName() {
+    @NotNull String getName() {
         "md"
     }
 
@@ -83,22 +87,25 @@ class MarkdownGenerator implements Generator {
      *
      * @param document The document model to generate from.
      * @param opts The options.
-     * @param rootDir The optional root to prefix condfigured path with.
+     * @param rootDir The optional root to prefix configured path with.
      */
     @Override
-    void generate(Doc document, Options opts, File rootDir) throws IOException, GenerateException {
-        this.options = (MarkdownGeneratorOptions)opts
-        this.rootDir = rootDir
+    void generate(@NotNull final Doc document, @NotNull final Options opts, @Nullable final File rootDir)
+            throws IOException, GenerateException {
+        MarkdownGeneratorContext context = new MarkdownGeneratorContext(
+                options: opts as MarkdownGeneratorOptions,
+                rootDir: rootDir
+        )
 
         def writer
         if (rootDir != null) {
-            writer = new FileWriter(rootDir.path + File.separator + this.options.resultFile)
+            writer = new FileWriter(rootDir.path + File.separator + context.options.resultFile)
         }
         else {
-            writer = new FileWriter(this.options.resultFile)
+            writer = new FileWriter(context.options.resultFile)
         }
         try {
-            doGenerate(document, writer)
+            doGenerate(document, writer, context)
         }
         finally {
             writer.close()
@@ -117,19 +124,27 @@ class MarkdownGenerator implements Generator {
      * @throws GenerateException on other failures to generate target.
      */
     @Override
-    void generate(Doc document, Options opts, File rootDir, OutputStream resultStream) throws IOException, GenerateException {
-        this.options = (MarkdownGeneratorOptions)opts
-        this.rootDir = rootDir
+    void generate(@NotNull final Doc document, @NotNull final Options opts, @Nullable final File rootDir,
+                  @NotNull OutputStream resultStream) throws IOException, GenerateException {
+        MarkdownGeneratorContext context = new MarkdownGeneratorContext(
+                options: opts as MarkdownGeneratorOptions,
+                rootDir: rootDir
+        )
+
         OutputStreamWriter resultWriter = new OutputStreamWriter(resultStream)
-        doGenerate(document, resultWriter)
+        doGenerate(document, resultWriter, context)
     }
-/**
+
+    /**
      * The main API for the generator. This does the job!
      *
      * @param document The document model to generate from.
-     * @param options The options.
+     * @param writer The Writer to write to write to.
+     * @param context The generator context.
      */
-    private void doGenerate(Doc document, Writer writer) throws IOException, GenerateException {
+    private static void doGenerate(@NotNull final Doc document, @NotNull final Writer writer,
+                                   @NotNull final MarkdownGeneratorContext context)
+            throws IOException, GenerateException {
 
         PrintWriter pw = new PrintWriter(writer)
 
@@ -142,7 +157,7 @@ class MarkdownGenerator implements Generator {
                     break
 
                 case DocFormat.Paragraph:
-                    writeParagraph(docItem as Paragraph, pw)
+                    writeParagraph(docItem as Paragraph, pw, context)
                     break
 
                 case DocFormat.Header:
@@ -150,7 +165,7 @@ class MarkdownGenerator implements Generator {
                     break
 
                 case DocFormat.BlockQuote:
-                    writeBlockQuote(docItem as BlockQuote, pw)
+                    writeBlockQuote(docItem as BlockQuote, pw, context)
                     break;
 
                 case DocFormat.CodeBlock:
@@ -158,11 +173,11 @@ class MarkdownGenerator implements Generator {
                     break
 
                 case DocFormat.HorizontalRule:
-                    writeHorizontalRule(docItem as HorizontalRule, pw)
+                    writeHorizontalRule(pw)
                     break
 
                 case DocFormat.List:
-                    writeList(docItem as List, pw)
+                    writeList(docItem as List, pw, context)
                     break
 
                 case DocFormat.Div:
@@ -170,12 +185,13 @@ class MarkdownGenerator implements Generator {
                     break
 
                 default:
-                    throw new GenerateException(message: "Unknown format model in Doc! [" + docItem.getClass().getName() + "]")
+                    throw new GenerateException(message: "Unknown format model in Doc! [" +
+                            docItem.getClass().getName() + "]")
             }
         }
     }
 
-    private static void writeHeader(Header header, PrintWriter pw) {
+    private static void writeHeader(@NotNull final Header header, @NotNull final PrintWriter pw) {
         for (int i = 0; i < header.level.level; i++) {
             pw.print("#")
         }
@@ -184,12 +200,13 @@ class MarkdownGenerator implements Generator {
         pw.println()
     }
 
-    private void writeBlockQuote(BlockQuote blockQuote, PrintWriter pw) {
+    private static void writeBlockQuote(@NotNull final BlockQuote blockQuote, @NotNull final PrintWriter pw,
+                                        @NotNull final MarkdownGeneratorContext context) {
         pw.print("> ")
-        writeParagraph(blockQuote, pw)
+        writeParagraph(blockQuote, pw, context)
     }
 
-    private static void writeCodeBlock(CodeBlock codeBlock, PrintWriter pw) {
+    private static void writeCodeBlock(@NotNull final CodeBlock codeBlock, @NotNull final PrintWriter pw) {
         codeBlock.items.each { DocItem item ->
             pw.print("    " + item.toString())
             pw.println()
@@ -197,22 +214,23 @@ class MarkdownGenerator implements Generator {
         pw.println()
     }
 
-    @SuppressWarnings("GroovyUnusedDeclaration")
-    private static void writeHorizontalRule(HorizontalRule horizontalRule, PrintWriter pw) {
+    private static void writeHorizontalRule(@NotNull final PrintWriter pw) {
         pw.println("----")
         pw.println()
     }
 
-    private void writeList(List list, PrintWriter pw) {
-        writeList(list, pw, "")
+    private static void writeList(@NotNull final List list, @NotNull final PrintWriter pw,
+                                  @NotNull MarkdownGeneratorContext context) {
+        writeList(list, pw, "", context)
     }
 
-    private void writeList(List list, PrintWriter pw, String indent) {
+    private static void writeList(@NotNull final List list, @NotNull final PrintWriter pw, @NotNull String indent,
+                                  @NotNull final MarkdownGeneratorContext context) {
         int itemNo = 1;
 
         list.items.each { DocItem li ->
             if (li instanceof List) {
-                writeList((List)li, pw, indent + "   ")
+                writeList((List)li, pw, indent + "   ", context)
             }
             else {
                 if (list.ordered) {
@@ -223,13 +241,15 @@ class MarkdownGenerator implements Generator {
                     pw.print(indent + "* ")
                 }
                 li.items.each { pg ->
-                    writeParagraph((Paragraph)pg, pw)
+                    writeParagraph((Paragraph)pg, pw, context)
                 }
             }
         }
     }
 
-    private void writeParagraph(Paragraph paragraph, PrintWriter pw) throws GenerateException {
+    private static void writeParagraph(@NotNull final Paragraph paragraph, @NotNull final PrintWriter pw,
+                                       @NotNull final MarkdownGeneratorContext context)
+            throws GenerateException {
         boolean first = true
         paragraph.items.each { DocItem docItem ->
             if (docItem.renderPrefixedSpace && !first) {
@@ -252,7 +272,7 @@ class MarkdownGenerator implements Generator {
                     break
 
                 case DocFormat.Image:
-                    writeImage((Image)docItem, pw)
+                    writeImage((Image)docItem, pw, context)
                     break
 
                 case DocFormat.Link:
@@ -271,34 +291,36 @@ class MarkdownGenerator implements Generator {
                     break
 
                 default:
-                    throw new GenerateException(message: "Unknown format model in Doc! [" + docItem.getClass().getName() + "]")
+                    throw new GenerateException(message: "Unknown format model in Doc! [" +
+                            docItem.getClass().getName() + "]")
             }
         }
         pw.println()
         pw.println()
     }
 
-    private static void writeCode(Code code, PrintWriter pw) {
+    private static void writeCode(@NotNull final Code code, @NotNull final PrintWriter pw) {
         pw.print("`" + code.text.trim() + "`")
     }
 
-    private static void writeEmphasis(Emphasis emphasis, PrintWriter pw) {
+    private static void writeEmphasis(@NotNull final Emphasis emphasis, @NotNull final PrintWriter pw) {
         pw.print("_" + emphasis.text.trim() + "_")
     }
 
-    private static void writeStrong(Strong strong, PrintWriter pw) {
+    private static void writeStrong(@NotNull final Strong strong, @NotNull final PrintWriter pw) {
         pw.print("__" + strong.text.trim() + "__")
     }
 
-    private void writeImage(Image image, PrintWriter pw) {
-        pw.print("![" + image.text + "](" + resolveUrl(image.url, image.parseFile))
+    private static void writeImage(@NotNull final Image image, @NotNull final PrintWriter pw,
+                                   @NotNull MarkdownGeneratorContext context) {
+        pw.print("![" + image.text + "](" + resolveUrl(image.url, image.parseFile, context))
         if (image.title != null && image.title.trim().length() > 0) {
             pw.print(" " + image.title)
         }
         pw.print(")")
     }
 
-    private static void writeLink(Link link, PrintWriter pw) {
+    private static void writeLink(@NotNull final Link link, @NotNull final PrintWriter pw) {
         pw.print("[" + link.text + "](" + link.url)
         if (link.title != null && link.title.trim().length() > 0) {
             pw.print(" " + link.title)
@@ -306,7 +328,7 @@ class MarkdownGenerator implements Generator {
         pw.print(")")
     }
 
-    private static void writeDiv(Div div, PrintWriter pw) {
+    private static void writeDiv(@NotNull final Div div, @NotNull final PrintWriter pw) {
         if (div.isStart()) {
             pw.println("<div class=\"${div.name}\">")
             pw.println()
@@ -323,8 +345,10 @@ class MarkdownGenerator implements Generator {
      *
      * @param url The DocItem item provided url.
      * @param parseFile The source file of the DocItem item.
+     * @param context The generator run context.
      */
-    private String resolveUrl(String url, File parseFile) {
+    private static String resolveUrl(@NotNull String url, @NotNull File parseFile,
+                                     @NotNull final MarkdownGeneratorContext context) {
         String resolvedUrl = url
         if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http:")) {
             resolvedUrl = "file:" + resolvedUrl
@@ -338,27 +362,29 @@ class MarkdownGenerator implements Generator {
                 int ix = parseFile.canonicalPath.lastIndexOf(File.separator)
                 if (ix >= 0) {
                     String path1 = parseFile.canonicalPath.substring(0, ix + 1) + path
-                    if (this.rootDir != null) {
+                    if (context.rootDir != null) {
                         // The result file is relative to the root dir!
-                        resolvedUrl = "file:" + possiblyMakeRelative(this.rootDir.canonicalPath + File.separator + path1)
-                        testFile = new File(this.rootDir.canonicalPath + File.separator + path1)
+                        resolvedUrl = "file:" + possiblyMakeRelative(context.rootDir.canonicalPath + File.separator +
+                                path1, context)
+                        testFile = new File(context.rootDir.canonicalPath + File.separator + path1)
                     }
                     else {
-                        resolvedUrl = "file:" + possiblyMakeRelative(path1)
+                        resolvedUrl = "file:" + possiblyMakeRelative(path1, context)
                         testFile = new File(path1)
                     }
                 }
                 if (!testFile.exists()) {
                     // Try relative to result file.
-                    ix = this.options.resultFile.lastIndexOf(File.separator)
+                    ix = context.options.resultFile.lastIndexOf(File.separator)
                     if (ix >= 0) {
-                        String path2 = this.options.resultFile.substring(0, ix + 1) + path
-                        if (this.rootDir != null) {
+                        String path2 = context.options.resultFile.substring(0, ix + 1) + path
+                        if (context.rootDir != null) {
                             // The result file is relative to the root dir!
-                            resolvedUrl = "file:" + possiblyMakeRelative(this.rootDir.canonicalPath + File.separator + path2)
+                            resolvedUrl = "file:" + possiblyMakeRelative(context.rootDir.canonicalPath +
+                                    File.separator + path2, context)
                         }
                         else {
-                            resolvedUrl = "file:" + possiblyMakeRelative(path2)
+                            resolvedUrl = "file:" + possiblyMakeRelative(path2, context)
                         }
                     }
                 }
@@ -373,14 +399,17 @@ class MarkdownGenerator implements Generator {
      * relative path. If so it is made relative.
      *
      * @param path The original path to check and convert.
+     * @param context The Markdown generator context.
      *
      * @return A possibly relative path.
      */
-    private String possiblyMakeRelative(String path) {
+    private static @NotNull String possiblyMakeRelative(@NotNull String path,
+                                                        @NotNull final MarkdownGeneratorContext context) {
         String resultPath = path
 
-        if (this.options.makeFileLinksRelativeTo != null && this.options.makeFileLinksRelativeTo.trim().length() > 0) {
-            String[] relativeToParts = this.options.makeFileLinksRelativeTo.split("\\+")
+        if (context.options.makeFileLinksRelativeTo != null &&
+                context.options.makeFileLinksRelativeTo.trim().length() > 0) {
+            String[] relativeToParts = context.options.makeFileLinksRelativeTo.split("\\+")
             File relFilePath = new File(relativeToParts[0])
             String expandedRelativePath = relFilePath.canonicalPath
             if (resultPath.startsWith(expandedRelativePath)) {

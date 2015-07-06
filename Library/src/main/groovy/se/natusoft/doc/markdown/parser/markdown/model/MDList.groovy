@@ -38,6 +38,7 @@ package se.natusoft.doc.markdown.parser.markdown.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.model.DocItem
 import se.natusoft.doc.markdown.model.List
 
@@ -49,7 +50,7 @@ import se.natusoft.doc.markdown.model.List
 class MDList extends List {
 
     //
-    // Private Members
+    // Properties
     //
 
     /** The indent level which determines hierarchy position. */
@@ -64,7 +65,7 @@ class MDList extends List {
      *
      * @param prevItem The previous item to compare to.
      */
-    boolean isHierarchyDown(DocItem prevItem) {
+    boolean isHierarchyDown(@NotNull DocItem prevItem) {
         (prevItem instanceof  MDList) && this.indentLevel > ((MDList)prevItem).indentLevel
     }
 
@@ -73,12 +74,12 @@ class MDList extends List {
      *
      * @param prevItem The previous item to compare to.
      */
-    boolean isHierarchyUp(DocItem prevItem) {
+    boolean isHierarchyUp(@NotNull DocItem prevItem) {
         (prevItem instanceof MDList) && this.indentLevel < ((MDList)prevItem).indentLevel
     }
 
     @Override
-    String toString() {
+    @NotNull String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("List: ordered:${ordered}\n")
         sb.append(toString(this.indentLevel))
@@ -86,7 +87,7 @@ class MDList extends List {
         sb.toString()
     }
 
-    String toString(int indentLevel) {
+    @NotNull String toString(int indentLevel) {
         StringBuilder sb = new StringBuilder()
 
         super.items.each {

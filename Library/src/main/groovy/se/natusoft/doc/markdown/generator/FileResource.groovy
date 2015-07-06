@@ -2,6 +2,7 @@ package se.natusoft.doc.markdown.generator
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 
 /**
@@ -31,7 +32,7 @@ class FileResource {
      *
      * @throws IOException If resource file cannot be found.
      */
-    File getResourceFile(String path) throws IOException {
+    File getResourceFile(@NotNull String path) throws IOException {
         File resourceFile
 
         if (this.rootDir == null && this.optsRootDir != null && !this.optsRootDir.isEmpty()) {
@@ -60,7 +61,7 @@ class FileResource {
      * @param root The root to start at. Should probably be new File("").
      * @param path The relative path to find.
      */
-    private File resolveFile(File root, String path) {
+    private @Nullable File resolveFile(@NotNull File root, @NotNull String path) {
         root = root.absoluteFile
         File file = new File(root, path)
         if (file.exists()) { return file }
@@ -76,7 +77,7 @@ class FileResource {
      *
      * @throws IOException if file reference in path cannot be found.
      */
-    InputStream getResource(String path) throws IOException {
+    @NotNull InputStream getResource(@NotNull String path) throws IOException {
         new FileInputStream(getResourceFile(path))
     }
 
@@ -88,7 +89,7 @@ class FileResource {
      * @param parseFile The source file of the DocItem item.
      * @param optsResultFile The result file specified in generator options.
      */
-    String resolveUrl(String url, File parseFile, String optsResultFile) {
+    @NotNull String resolveUrl(@NotNull String url, @NotNull File parseFile, @NotNull String optsResultFile) {
         String resolvedUrl = url
         if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http")) {
             resolvedUrl = "file:" + resolvedUrl
@@ -154,7 +155,7 @@ class FileResource {
      *
      * @return Possibly updated path.
      */
-    private static String ensureSeparatorAtEnd(String path) {
+    private static @NotNull String ensureSeparatorAtEnd(@NotNull String path) {
         if (!path.trim().endsWith(File.separator)) {
             path = path + File.separator
         }

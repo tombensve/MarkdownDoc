@@ -38,6 +38,8 @@ package se.natusoft.doc.markdown.io
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 
 /**
  * A utility for reading text files, line by line and allows for look ahead and push back.
@@ -69,7 +71,7 @@ public class LineReader {
      *
      * @param reader The reader to wrap.
      */
-    LineReader(Reader reader) {
+    LineReader(@NotNull Reader reader) {
         this.reader = new BufferedReader(reader)
     }
 
@@ -82,7 +84,7 @@ public class LineReader {
      *
      * @param text The text to wrap in a Line.
      */
-    protected Line createLine(String text) {
+    protected @NotNull Line createLine(@NotNull String text) {
         new Line(text, this.lineNo)
     }
 
@@ -93,7 +95,7 @@ public class LineReader {
      *
      * @throws IOException on any I/O failure.
      */
-    Line readLine() throws IOException {
+    @Nullable Line readLine() throws IOException {
         Line line = null
 
         if (!this.readAhead.isEmpty()) {
@@ -118,7 +120,7 @@ public class LineReader {
      *
      * @param line The line to push back.
      */
-    void pushBackLine(Line line) {
+    void pushBackLine(@NotNull Line line) {
         this.readAhead.offerLast(line)
         --this.lineNo
     }
@@ -130,7 +132,7 @@ public class LineReader {
      *
      * @throws IOException on any I/O failure.
      */
-    Line peekNextLine() throws IOException {
+    @Nullable Line peekNextLine() throws IOException {
         Line saveLastReadLine = this.lastReadLine
         Line line = readLine()
         if (line != null) {
@@ -154,7 +156,7 @@ public class LineReader {
      *
      * @param lineClosure The closure to call.
      */
-    void each(Closure lineClosure) {
+    void each(@NotNull Closure lineClosure) {
         while (hasLine()) {
             lineClosure.call(readLine(), peekNextLine())
         }
@@ -168,9 +170,9 @@ public class LineReader {
     }
 
     /**
-     * Returns the last read line.
+     * Returns the last read line. Can be null if no line has been read!
      */
-    Line getLastReadLine() {
+    @Nullable Line getLastReadLine() {
         this.lastReadLine
     }
 

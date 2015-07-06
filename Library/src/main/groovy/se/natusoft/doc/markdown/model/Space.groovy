@@ -38,6 +38,7 @@ package se.natusoft.doc.markdown.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This represents a single space. <code>&nbsp;</code> results in this.
@@ -54,11 +55,11 @@ class Space extends PlainText {
      * Returns the format this model represents.
      */
     @Override
-    DocFormat getFormat() {
+    @NotNull DocFormat getFormat() {
         DocFormat.Space
     }
 
-    String toString() {
+    @NotNull String toString() {
         " "
     }
 

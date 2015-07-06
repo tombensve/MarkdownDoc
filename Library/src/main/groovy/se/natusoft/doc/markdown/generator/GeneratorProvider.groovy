@@ -38,6 +38,8 @@ package se.natusoft.doc.markdown.generator
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.api.Generator
 
 /**
@@ -54,7 +56,7 @@ class GeneratorProvider {
      *
      * @return A Generator or null if not found.
      */
-    static Generator getGeneratorByName(String name) {
+    static @Nullable Generator getGeneratorByName(@NotNull String name) {
         ServiceLoader.load(Generator.class).find {
             Generator generator -> generator.getName().equals(name)
         } as Generator

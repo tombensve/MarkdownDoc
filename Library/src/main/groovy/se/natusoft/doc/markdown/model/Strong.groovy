@@ -38,6 +38,7 @@ package se.natusoft.doc.markdown.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This represents strong text.
@@ -50,11 +51,11 @@ class Strong extends PlainText {
      * Returns the format this model represents.
      */
     @Override
-    DocFormat getFormat() {
+    @NotNull DocFormat getFormat() {
         DocFormat.Strong
     }
 
-    String toString() {
+    @NotNull String toString() {
         StringBuilder sb = new StringBuilder()
 
         sb.append("<strong>")

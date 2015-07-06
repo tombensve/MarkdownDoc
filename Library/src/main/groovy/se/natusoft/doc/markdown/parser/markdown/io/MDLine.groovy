@@ -38,6 +38,7 @@ package se.natusoft.doc.markdown.parser.markdown.io
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.io.Line
 
 /**
@@ -56,8 +57,17 @@ class MDLine extends Line  {
      *
      * @param line The content of the line.
      */
-    MDLine(String line, int lineNumber) {
+    MDLine(@NotNull String line, int lineNumber) {
         super(line, lineNumber)
+    }
+
+    /**
+     * Creates a new MDLine from a Line.
+     *
+     * @param line The original Line to turn into an MDLine.
+     */
+    MDLine(@NotNull Line line) {
+        super(line.toString(), line.lineNumber)
     }
 
     //
@@ -69,7 +79,7 @@ class MDLine extends Line  {
      *
      * @param text The text of the line.
      */
-    protected Line newLine(String text) {
+    protected Line newLine(@NotNull String text) {
         new MDLine(text, super.lineNumber)
     }
 
@@ -79,7 +89,7 @@ class MDLine extends Line  {
      *
      * @param startsWith The text to check for.
      */
-    boolean startsWith(String startsWith) {
+    boolean startsWith(@NotNull String startsWith) {
         super.startsWith(startsWith) || this.origLine.startsWith(" " + startsWith) ||
                 this.origLine.startsWith("  " + startsWith)
     }
@@ -89,7 +99,7 @@ class MDLine extends Line  {
      */
     boolean isCodeBlock() {
         super.origLine.length() > 0 && (
-            super.origLine.charAt(0) == '\t' ||
+            super.origLine.charAt(0) == ('\t' as char) ||
                     (super.origLine.length() >= 4 && super.origLine.substring(0,4).isAllWhitespace())
         )
     }
@@ -128,8 +138,9 @@ class MDLine extends Line  {
             else {
                 char c = this.origLine.trim().charAt(0)
                 char n = 0
-                try { n = this.origLine.trim().charAt(1)} catch (IndexOutOfBoundsException iobe) {}
-                list = (c == '*' || c == '+' || c == '-') && (n != '*' && n != '+' && n != '-' && !n.isDigit())
+                try { n = this.origLine.trim().charAt(1)} catch (IndexOutOfBoundsException ignore) {}
+                list = (c == '*' as char || c == '+' as char || c == '-' as char) &&
+                        (n != '*' as char && n != '+' as char && n != '-' as char && !n.isDigit())
             }
         }
 
@@ -167,7 +178,7 @@ class MDLine extends Line  {
      *
      * @param urls The current known urls.
      */
-    boolean isLinkURLSpec(Map urls) {
+    boolean isLinkURLSpec(@NotNull Map urls) {
         boolean found = false;
 
         for (String urlText : urls.keySet()) {
@@ -184,7 +195,10 @@ class MDLine extends Line  {
      * Returns true if this line represents a comment start.
      */
     boolean isCommentStart() {
-        this.origLine.startsWith("<!--") || this.origLine.startsWith(" <!--") || this.origLine.startsWith("  <!--")
+        // Accept up to 3 spaces in front of comment to distinguish it from a code line. This is also
+        // the reason for not doing: this.origLine.trim().startsWith("<!--").
+        this.origLine.startsWith("<!--") || this.origLine.startsWith(" <!--") || this.origLine.startsWith("  <!--") ||
+                this.origLine.startsWith("   <!--")
     }
 
     /**
@@ -203,7 +217,7 @@ class MDLine extends Line  {
      *
      * @return true if all other return false.
      */
-    boolean isPartOfParagraph(Map urls) {
+    boolean isPartOfParagraph(@NotNull Map urls) {
         // Note the distinction: A List contains one or more Paragraph:s. A BlockQuote *is* a Paragraph!
         !(isList() || isOrderedList() || isHeader() || isHorizRuler() || isLinkURLSpec(urls) ||
                 isCommentStart() || isCommentEnd()) || isBlockQuote()
@@ -228,23 +242,12 @@ class MDLine extends Line  {
      * @return true if this line is a <div name="..."> line.
      */
     boolean isStartDiv() {
-        matches("[ \t]*<div.*class=\".*\".*>")
-    }
+        // We allow 0 to 3 spaces in front, 4 would make it a code line, and so would a tab! The div also has
+        // to be the only thing on the line!
+        matches('[ ]?[ ]?[ ]?<div.*class=".*".*>\\s*')
 
-    /**
-     * If isStartDiv() returns true then this returns the name within the "...".
-     */
-    String getDivName() {
-        String name = null
-        String[] p1 = this.origLine.split(" ")
-        if (p1.length >= 2) {
-            String[] p2 = p1[1].split("\"")
-            if (p2.length >= 2) {
-                name = p2[1]
-            }
-        }
-
-        name
+        // I wondered why the heck the groovy guys decided to make both "..." and '...' into strings, but
+        // I'm however starting to see the point :-). The question is: which is worse: \" or 'x' as char ?
     }
 
     /**

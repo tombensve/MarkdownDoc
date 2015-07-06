@@ -38,6 +38,7 @@ package se.natusoft.doc.markdown.io
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This represents a line of text.
@@ -76,7 +77,7 @@ class Line {
      * @param line The content of the line.
      * @param lineNumber The line number of the line.
      */
-    Line(String line, int lineNumber) {
+    Line(@NotNull String line, int lineNumber) {
         this.origLine = line
         this.words = line.split("\\s+")
         this.lineNumber = lineNumber
@@ -91,7 +92,7 @@ class Line {
      *
      * @param beg The string to remove.
      */
-    Line removeBeg(String beg) {
+    @NotNull Line removeBeg(@NotNull String beg) {
         Line line = this
         if (this.origLine.trim().startsWith(beg)) {
             int ix = this.origLine.indexOf(beg);
@@ -107,7 +108,7 @@ class Line {
      *
      * @param text The text of the line.
      */
-    protected Line newLine(String text) {
+    protected @NotNull Line newLine(@NotNull String text) {
         new Line(text, this.lineNumber)
     }
 
@@ -118,7 +119,7 @@ class Line {
      *
      * @return A new Line instance.
      */
-    Line removeAll(String text) {
+    @NotNull Line removeAll(@NotNull String text) {
         newLine(this.origLine.replaceAll(text, ""))
     }
 
@@ -128,7 +129,7 @@ class Line {
      * @param regex what to replace.
      * @param with What to replace with.
      */
-    Line replaceAll(String regex, String with) {
+    @NotNull Line replaceAll(@NotNull String regex, @NotNull String with) {
         newLine(this.origLine.replaceAll(regex, with))
     }
 
@@ -152,7 +153,7 @@ class Line {
      * </pre>
      * If you however do line.currentWord before this method then this will return the second word.
      */
-    String getNextWord() {
+    @NotNull String getNextWord() {
         String str = ""
 
         if (hasMoreWords()) {
@@ -165,7 +166,7 @@ class Line {
     /**
      * Returns the previous word or "" if already at first word.
      */
-    String getPrevWord() {
+    @NotNull String getPrevWord() {
         String str = ""
 
         if (this.currentWord > 0) {
@@ -179,7 +180,7 @@ class Line {
      * Returns the current word in the line. If this is called directly after the Line has
      * been constructed it will return the first word.
      */
-    String getCurrentWord() {
+    @NotNull String getCurrentWord() {
         if (this.currentWord < 0) { this.currentWord = 0 }
         this.words[this.currentWord]
     }
@@ -187,11 +188,11 @@ class Line {
     /**
      * Moves to the first word.
      * <p/>
-     * Please note that after this call a call to getNextWord() will return the second word
+     * _Please note that after this call a call to getNextWord() will return the second word
      * and is thus not the same state as when the Line instance have been constructed! To
      * achieve that call resetLine() instead.
      */
-    String getFirstWord() {
+    @NotNull String getFirstWord() {
         this.currentWord = 0
         this.words[this.currentWord]
     }
@@ -199,7 +200,7 @@ class Line {
     /**
      * Moves to the last word.
      */
-    String getLastWord() {
+    @NotNull String getLastWord() {
         this.currentWord = words.size() - 1
         this.words[this.currentWord]
     }
@@ -223,7 +224,7 @@ class Line {
      *
      * @param word The position of the word to get.
      */
-    String getWord(int word) {
+    @NotNull String getWord(int word) {
         this.words[word];
     }
 
@@ -269,7 +270,7 @@ class Line {
     /**
      * Removes any leading spaces.
      */
-    Line removeLeadingSpaces() {
+    @NotNull Line removeLeadingSpaces() {
         Line nl = this
 
         int ls = getLeadingSpaces()
@@ -285,7 +286,7 @@ class Line {
      *
      * @param wordClosure The closure to call.
      */
-    void eachWord(Closure wordClosure) {
+    void eachWord(@NotNull Closure wordClosure) {
         this.words.each wordClosure
     }
 
@@ -294,7 +295,7 @@ class Line {
      *
      * @param startsWith The text to check for.
      */
-    boolean startsWith(String startsWith) {
+    boolean startsWith(@NotNull String startsWith) {
         this.origLine.startsWith(startsWith)
     }
 
@@ -303,7 +304,7 @@ class Line {
      *
      * @param startsWith The text to check for.
      */
-    boolean startsWithExcludingWhitespace(String startsWith) {
+    boolean startsWithExcludingWhitespace(@NotNull String startsWith) {
         this.origLine.trim().startsWith(startsWith)
     }
 
@@ -312,7 +313,7 @@ class Line {
      *
      * @param endsWith The text to check for.
      */
-    boolean endsWith(String endsWith) {
+    boolean endsWith(@NotNull String endsWith) {
         this.origLine.endsWith(endsWith)
     }
 
@@ -321,7 +322,7 @@ class Line {
      *
      * @param endsWith The text to check for.
      */
-    boolean endsWithExcludingWhitespace(String endsWith) {
+    boolean endsWithExcludingWhitespace(@NotNull String endsWith) {
         this.origLine.trim().endsWith(endsWith)
     }
 
@@ -330,7 +331,7 @@ class Line {
      *
      * @param contains The text to check for.
      */
-    boolean contains(String contains) {
+    boolean contains(@NotNull String contains) {
         this.origLine.indexOf(contains) >= 0
     }
 
@@ -339,7 +340,7 @@ class Line {
      *
      * @param regexp The regexp to match.
      */
-    boolean matches(String regexp) {
+    boolean matches(@NotNull String regexp) {
         this.origLine.matches(regexp)
     }
 
@@ -353,7 +354,7 @@ class Line {
     /**
      * Returns a new Line having everything but the first word.
      */
-    Line removeFirstWord() {
+    @NotNull Line removeFirstWord() {
         String space = ""
         boolean first = true
         String text = ""
@@ -381,7 +382,7 @@ class Line {
      * Returns this Line as a String (as originally read from file!)
      */
     @Override
-    String toString() {
+    @NotNull String toString() {
         this.origLine
     }
 }

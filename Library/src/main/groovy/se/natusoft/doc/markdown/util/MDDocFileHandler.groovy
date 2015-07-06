@@ -38,6 +38,7 @@ package se.natusoft.doc.markdown.util
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.api.Parser
 import se.natusoft.doc.markdown.exception.ParseException
@@ -68,7 +69,7 @@ class MDDocFileHandler {
      *
      * @throws ParseException
      */
-    static execute(String path, boolean verbose) throws ParseException {
+    static execute(@NotNull String path, boolean verbose) throws ParseException {
         Properties mdDocFile = new Properties()
         FileInputStream mdDocFileStream = null
         BufferedInputStream bufferedInputStream = null

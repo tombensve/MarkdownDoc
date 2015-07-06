@@ -32,10 +32,10 @@ class PDFStylesMSSAdapter {
     //
 
     /** The MSS to use. */
-    MSS mss
+    @NotNull MSS mss
 
     /** The generator context. */
-    GeneratorContext generatorContext
+    @NotNull GeneratorContext generatorContext
 
     //
     // Methods
@@ -69,14 +69,15 @@ class PDFStylesMSSAdapter {
      *
      * @throws GenerateException If not font is found.
      */
-    private @NotNull Font resolveFont(@NotNull MSSFont mssFont, @NotNull MSSColorPair mssColorPair) throws GenerateException {
+    private @NotNull Font resolveFont(@NotNull final MSSFont mssFont, @NotNull final MSSColorPair mssColorPair)
+            throws GenerateException {
 
         if (!isStandardFont(mssFont.family.toUpperCase())) {
             // We don't have a standard font! Lets see if we can find a ttf font!
             MSSExtFont mssExtFont = this.mss.getPdfExternalFontPath(mssFont.family)
             if (mssExtFont == null) {
-                throw new GenerateException(message: "Font '${mssFont.family}' is not a standard font and an external font matching " +
-                        "this name was not found either.")
+                throw new GenerateException(message: "Font '${mssFont.family}' is not a standard font and an " +
+                        "external font matching this name was not found either.")
             }
 
             byte[] fontBytes = loadFont(mssExtFont)
@@ -106,7 +107,7 @@ class PDFStylesMSSAdapter {
      *
      * @throws GenerateException on failure to load font.
      */
-    private @NotNull byte[] loadFont(@NotNull MSSExtFont mssExtFont) throws GenerateException {
+    private @NotNull byte[] loadFont(@NotNull final MSSExtFont mssExtFont) throws GenerateException {
         ByteArrayOutputStream fontBytes = new ByteArrayOutputStream()
         File fontPath
         try {
@@ -142,7 +143,7 @@ class PDFStylesMSSAdapter {
      *
      * @throws GenerateException on problem with font.
      */
-    @NotNull Font getFont(@NotNull MSS.MSS_Pages section) throws GenerateException {
+    @NotNull Font getFont(@NotNull final MSS.MSS_Pages section) throws GenerateException {
         validate()
 
         String key = section.name()
@@ -165,7 +166,7 @@ class PDFStylesMSSAdapter {
      *
      * @param section The TOC section to get font for.
      */
-    @NotNull Font getFont(@NotNull MSS.MSS_TOC section) {
+    @NotNull Font getFont(@NotNull final MSS.MSS_TOC section) {
         validate()
         Font font = this.tocCache.get(section.name())
 
@@ -186,7 +187,7 @@ class PDFStylesMSSAdapter {
      *
      * @param section The front page section to get font for.
      */
-    @NotNull Font getFont(@NotNull MSS.MSS_Front_Page section) {
+    @NotNull Font getFont(@NotNull final MSS.MSS_Front_Page section) {
         validate()
 
         Font font = this.frontPageCache.get(section.name())

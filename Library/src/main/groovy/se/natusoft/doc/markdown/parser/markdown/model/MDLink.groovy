@@ -38,6 +38,7 @@ package se.natusoft.doc.markdown.parser.markdown.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.model.DocItem
 import se.natusoft.doc.markdown.model.Link
 
@@ -65,7 +66,7 @@ class MDLink extends Link {
      * @param object The object to left shift in.
      */
     @Override
-    DocItem leftShift(Object object) {
+    @NotNull DocItem leftShift(@NotNull Object object) {
         char c = (char)object
 
         if (part == 0 && c == '(' as char) {

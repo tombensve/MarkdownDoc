@@ -38,6 +38,8 @@ package se.natusoft.doc.markdown.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 
 /**
  * This represents a link.
@@ -50,10 +52,10 @@ class Link extends PlainText {
     //
 
     /** The URL part of the link. */
-    String url = ""
+    @NotNull String url = ""
 
     /** The link title */
-    String title = ""
+    @Nullable String title = ""
 
     //
     // Methods
@@ -63,7 +65,7 @@ class Link extends PlainText {
      * Returns the format this model represents.
      */
     @Override
-    DocFormat getFormat() {
+    @NotNull DocFormat getFormat() {
         DocFormat.Link
     }
 
@@ -72,7 +74,7 @@ class Link extends PlainText {
         this.url != null
     }
 
-    String toString() {
+    @NotNull String toString() {
         StringBuilder sb  = new StringBuilder();
 
         sb.append("<a href='" + url + "'")

@@ -40,6 +40,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This parses configured colors.
@@ -63,7 +64,7 @@ class MSSColor {
 
     int red, green, blue
 
-    void setColor(String color) {
+    void setColor(@NotNull String color) {
         if (color[0] == "#") color = color[1..6]
         this.red = getRed(color)
         this.green = getGreen(color)
@@ -74,7 +75,7 @@ class MSSColor {
     // Static Methods
     //
 
-    static final int getRed(String color) {
+    static final int getRed(@NotNull String color) {
         if (color.contains(':')) {
             String[] rgb = color.split(":")
             Integer.valueOf(handleHex(rgb[0]))
@@ -84,7 +85,7 @@ class MSSColor {
         }
     }
 
-    static final int getGreen(String color) {
+    static final int getGreen(@NotNull String color) {
         if (color.contains(':')) {
             String[] rgb = color.split(":")
             Integer.valueOf(handleHex(rgb[1]))
@@ -94,7 +95,7 @@ class MSSColor {
         }
     }
 
-    static final int getBlue(String color) {
+    static final int getBlue(@NotNull String color) {
         if (color.contains(':')) {
             String[] rgb = color.split(":")
             Integer.valueOf(handleHex(rgb[2]))
@@ -104,7 +105,7 @@ class MSSColor {
         }
     }
 
-    static String handleHex(String color) {
+    static @NotNull String handleHex(@NotNull String color) {
         color = color.trim().toLowerCase()
         if (color.length() == 2 && color.matches("[a-f,0-9][a-f,0-9]")) {
             char d1 = color.charAt(0)
@@ -117,57 +118,8 @@ class MSSColor {
     }
 
     private static int hexValue(char c) {
-        int value = 0
-        switch (c) {
-            case '0':
-                value = 0
-                break
-            case '1':
-                value = 1
-                break
-            case '2':
-                value = 2
-                break
-            case '3':
-                value = 3
-                break
-            case '4':
-                value = 4
-                break
-            case '5':
-                value = 5
-                break
-            case '6':
-                value = 6
-                break
-            case '7':
-                value = 7
-                break
-            case '8':
-                value = 8
-                break
-            case '9':
-                value = 9
-                break
-            case 'a':
-                value = 10
-                break
-            case 'b':
-                value = 11
-                break
-            case 'c':
-                value = 12
-                break
-            case 'd':
-                value = 13
-                break
-            case 'e':
-                value = 14
-                break
-            case 'f':
-                value = 15
-        }
-
-        value
+        int hval = "0123456789abcdef".indexOf(c.toLowerCase() as int)
+        if (hval < 0) throw new MSSException(message: "Bad character in hex value: '${c}'!")
+        hval
     }
 }

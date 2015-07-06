@@ -38,6 +38,7 @@ package se.natusoft.doc.markdown.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This represents block quoted text.
@@ -49,7 +50,7 @@ public class BlockQuote extends Paragraph {
     /**
      * Returns a String representation of this for debugging purposes.
      */
-    String toString() {
+    @NotNull String toString() {
         StringBuilder sb = new StringBuilder()
         sb.append("BlockQuote: ");
         sb.append(super.toString())
@@ -61,7 +62,7 @@ public class BlockQuote extends Paragraph {
      * Returns the format this model represents.
      */
     @Override
-    DocFormat getFormat() {
+    @NotNull DocFormat getFormat() {
         DocFormat.BlockQuote
     }
 

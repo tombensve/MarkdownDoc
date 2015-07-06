@@ -38,13 +38,14 @@ package se.natusoft.doc.markdown.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This represents a list of text items.
  */
 @CompileStatic
 @TypeChecked
-class List extends DocItem {
+class List extends DocFormatItem {
     //
     // Private Members
     //
@@ -88,12 +89,12 @@ class List extends DocItem {
      * Returns the format this model represents.
      */
     @Override
-    DocFormat getFormat() {
+    @NotNull DocFormat getFormat() {
         DocFormat.List
     }
 
     @Override
-    String toString() {
+    @NotNull String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("List: ordered:${ordered}\n")
         sb.append(toString(0))
@@ -101,7 +102,7 @@ class List extends DocItem {
         sb.toString()
     }
 
-    String toString(int indentLevel) {
+    @NotNull String toString(int indentLevel) {
         StringBuilder sb = new StringBuilder()
 
         super.items.each {

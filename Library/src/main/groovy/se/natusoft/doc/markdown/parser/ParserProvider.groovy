@@ -38,6 +38,7 @@ package se.natusoft.doc.markdown.parser
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.api.Parser
 
 /**
@@ -54,7 +55,7 @@ class ParserProvider {
      *
      * @return A parser or null.
      */
-    static Parser getParserForFile(File file) {
+    static Parser getParserForFile(@NotNull File file) {
         getParserForFile(file.getName())
     }
 
@@ -65,7 +66,7 @@ class ParserProvider {
      *
      * @return A parser or null.
      */
-    static Parser getParserForFile(String file) {
+    static Parser getParserForFile(@NotNull String file) {
         Parser parser = null
 
         ServiceLoader parserLoader = ServiceLoader.load(Parser.class);

@@ -38,6 +38,8 @@ package se.natusoft.doc.markdown.api
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.model.Doc
 
@@ -63,7 +65,8 @@ interface Generator {
      * @throws IOException on I/O failures.
      * @throws GenerateException on other failures to generate target.
      */
-    void generate(Doc document, Options options, File rootDir) throws IOException, GenerateException
+    void generate(@NotNull Doc document, @NotNull final Options options, @Nullable final File rootDir)
+            throws IOException, GenerateException
 
     /**
      * Generates output from DocItem model.
@@ -76,10 +79,11 @@ interface Generator {
      * @throws IOException on I/O failures.
      * @throws GenerateException on other failures to generate target.
      */
-    void generate(Doc document, Options options, File rootDir, OutputStream resultStream) throws IOException, GenerateException
+    void generate(@NotNull Doc document, @NotNull final Options options, @Nullable final File rootDir,
+                  @NotNull final OutputStream resultStream) throws IOException, GenerateException
 
     /**
      * @return The name of the generator. This is the name to use to specify the specific generator.
      */
-    String getName()
+    @NotNull String getName()
 }

@@ -38,6 +38,7 @@ package se.natusoft.doc.markdown.parser.markdown.io
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.io.Line
 import se.natusoft.doc.markdown.io.LineReader
 
@@ -57,7 +58,7 @@ class MDLineReader extends LineReader {
      *
      * @param reader The reader to read from.
      */
-    MDLineReader(Reader reader) {
+    MDLineReader(@NotNull Reader reader) {
         super(reader)
     }
 
@@ -70,7 +71,7 @@ class MDLineReader extends LineReader {
      *
      * @param text The text to wrap in a Line.
      */
-    Line createLine(String text) {
+    @NotNull Line createLine(@NotNull String text) {
         new MDLine(text, super.lineNo)
     }
 }

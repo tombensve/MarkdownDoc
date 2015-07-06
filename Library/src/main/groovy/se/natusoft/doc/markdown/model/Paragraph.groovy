@@ -38,19 +38,20 @@ package se.natusoft.doc.markdown.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This represents a paragraph.
  */
 @CompileStatic
 @TypeChecked
-class Paragraph extends DocItem {
+class Paragraph extends DocFormatItem {
 
     /**
      * Returns the format this model represents.
      */
     @Override
-    DocFormat getFormat() {
+    @NotNull DocFormat getFormat() {
         DocFormat.Paragraph
     }
 
@@ -62,7 +63,7 @@ class Paragraph extends DocItem {
         super.items.size() > 0
     }
 
-    String toString() {
+    @NotNull String toString() {
         super.toString() + "\n"
     }
 }

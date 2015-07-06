@@ -38,6 +38,7 @@ package se.natusoft.doc.markdown.parser.markdown.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.model.DocItem
 import se.natusoft.doc.markdown.model.Image
 
@@ -52,7 +53,7 @@ class MDImage extends Image {
     // Private Members
     //
 
-    /** Keeps track of wich part of the link is being received. */
+    /** Keeps track of which part of the link is being received. */
     private int part = 0
 
     //
@@ -64,13 +65,13 @@ class MDImage extends Image {
      *
      * @param object The object to left shift in.
      */
-    DocItem leftShift(Object object) {
+    @NotNull DocItem leftShift(@NotNull Object object) {
         char c = (char)object
 
-        if (part == 0 && c == '(') {
+        if (part == 0 && c == '(' as char) {
             part = 1
         }
-        else if (part == 1 && c == ' ') {
+        else if (part == 1 && c == ' ' as char) {
             part = 2
         }
         else {

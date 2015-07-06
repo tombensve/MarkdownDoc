@@ -38,6 +38,8 @@ package se.natusoft.doc.markdown.util
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 
 /**
  */
@@ -84,7 +86,7 @@ class SourcePath {
      *
      * @param pathExpression The path expression as explained above.
      */
-    SourcePath(String pathExpression) {
+    SourcePath(@NotNull String pathExpression) {
         this(new File(pathExpression), "")
     }
 
@@ -109,7 +111,7 @@ class SourcePath {
      * @param projRoot The root dir of the project being built.
      * @param pathExpression The path expression as explained above.
      */
-    SourcePath(File projRoot, String pathExpression) {
+    SourcePath(@NotNull File projRoot, @NotNull String pathExpression) {
         this.origProjRoot = projRoot
         File pathFile = new File(projRoot, pathExpression)
         // We translate '!' to '\' to support regular expression escaping in windows which would treat '\' in the
@@ -132,7 +134,7 @@ class SourcePath {
      *
      * @param path The path to supply source files for.
      */
-    SourcePath(File path) {
+    SourcePath(@NotNull File path) {
         this.path = path
     }
 
@@ -143,7 +145,7 @@ class SourcePath {
      * @param recursive If true source files will be searched for recursively down the file structure.
      * @param fileRegexpFilter A filter to apply for each file. Example ".*.java". This can be null which means no filter.
      */
-    SourcePath(File path, boolean recursive, String fileRegexpFilter) {
+    SourcePath(@NotNull File path, boolean recursive, @Nullable String fileRegexpFilter) {
         this.path = path
         this.recursive = recursive
         this.fileRegexpFilter = fileRegexpFilter
@@ -158,7 +160,7 @@ class SourcePath {
      *
      * @param name The name to check.
      */
-    private final boolean isRegularExpression(String name) {
+    private final boolean isRegularExpression(@NotNull String name) {
         boolean result =  name.contains("*")  || name.contains("[") || name.contains("?") || name.contains("(")
         int dot = name.indexOf(".")
         int bs = name.indexOf("\\")
@@ -183,14 +185,14 @@ class SourcePath {
      *
      * @param fileRegexpFilter A filter to apply for each file. Example ".*.java". This can be null which means no filter.
      */
-    void setFileRegexpFilter(String fileRegexpFilter) {
+    void setFileRegexpFilter(@Nullable String fileRegexpFilter) {
         this.fileRegexpFilter = fileRegexpFilter
     }
 
     /**
      * @return Returns all the source files matching the path criteria.
      */
-    List<File> getSourceFiles() {
+    @NotNull List<File> getSourceFiles() {
         List<File> sourceFiles = new ArrayList<File>()
 
         findSourceFiles(this.path, sourceFiles)
@@ -204,7 +206,7 @@ class SourcePath {
      * @param currentPath The path to start finding files in.
      * @param sourceFiles Found files are added to this list.
      */
-    private void findSourceFiles(File currentPath, List<File> sourceFiles) {
+    private void findSourceFiles(@NotNull File currentPath, @NotNull List<File> sourceFiles) {
         if (currentPath != null) {
             if (currentPath.exists()) {
                 for (File file : currentPath.listFiles()) {
@@ -233,7 +235,7 @@ class SourcePath {
      * @param sourceFiles The list of files to add to.
      * @param file The file to add as is or the files it lists.
      */
-    private void provideFile(List<File> sourceFiles, File file) {
+    private void provideFile(@NotNull List<File> sourceFiles, @NotNull File file) {
         if (file.getName().endsWith(".fs")) {
             String fileSet = loadFileSetFile(file)
             if (fileSet != null) {
@@ -261,7 +263,7 @@ class SourcePath {
      *
      * @return A string with its content or null on failure to load.
      */
-    private String loadFileSetFile(File fsFile) {
+    private @Nullable String loadFileSetFile(@NotNull File fsFile) {
         String fsSetFiles = null
 
         try {
@@ -290,7 +292,7 @@ class SourcePath {
      * @return A String representation of the path.
      */
     @Override
-    String toString() {
+    @NotNull String toString() {
         StringBuilder sb = new StringBuilder()
         sb.append(this.path)
         if (this.recursive) {

@@ -38,19 +38,20 @@ package se.natusoft.doc.markdown.util;
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This handles a comma separated set of SourcePaths.
  */
 @CompileStatic
 @TypeChecked
-public class SourcePaths {
+class SourcePaths {
     //
-    // Private Members
+    // Properties
     //
 
     /** All the source paths. */
-    List<SourcePath> sourcePaths = new LinkedList<SourcePath>()
+    @NotNull List<SourcePath> sourcePaths = new LinkedList<SourcePath>()
 
     //
     // Constructors
@@ -61,7 +62,7 @@ public class SourcePaths {
      *
      * @param sourcePaths The comma separated path specifications to parse.
      */
-    public SourcePaths(String sourcePaths) {
+    SourcePaths(@NotNull String sourcePaths) {
         StringTokenizer pathTokenizer = new StringTokenizer(sourcePaths, ",")
         while (pathTokenizer.hasMoreTokens()) {
             this.sourcePaths.add(new SourcePath(pathTokenizer.nextToken().trim()))
@@ -74,7 +75,7 @@ public class SourcePaths {
      * @param projRoot The root dir that all source paths are relative to.
      * @param sourcePaths The comma separated path specifications to parse.
      */
-    public SourcePaths(File projRoot, String sourcePaths) {
+    SourcePaths(@NotNull File projRoot, @NotNull String sourcePaths) {
         StringTokenizer pathTokenizer = new StringTokenizer(sourcePaths, ",")
         while (pathTokenizer.hasMoreTokens()) {
             String path = pathTokenizer.nextToken().trim()
@@ -91,16 +92,9 @@ public class SourcePaths {
     //
 
     /**
-     * Returns all specified source paths.
-     */
-    public List<SourcePath> getSourcePaths() {
-        return this.sourcePaths;
-    }
-
-    /**
      * Returns all files from all source paths (in the order they were specified).
      */
-    public List<File> getSourceFiles() {
+    @NotNull List<File> getSourceFiles() {
         List<File> all = new LinkedList<File>()
         for (SourcePath sourcePath : this.sourcePaths) {
             for (File file : sourcePath.getSourceFiles()) {
@@ -114,7 +108,7 @@ public class SourcePaths {
     /**
      * @return true if there are source files.
      */
-    public boolean hasSourceFiles() {
+    boolean hasSourceFiles() {
         return !getSourceFiles().isEmpty()
     }
 }

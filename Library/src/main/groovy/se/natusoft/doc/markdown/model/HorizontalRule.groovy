@@ -38,18 +38,22 @@ package se.natusoft.doc.markdown.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This represents a horizontal rule.
  */
 @CompileStatic
 @TypeChecked
-class HorizontalRule extends DocItem {
+class HorizontalRule extends DocFormatItem {
 
     /**
      * Creates a new Horizontal rule.
      */
     HorizontalRule() {
+        // DO note that the content of this model is only a visual help when dumping the model for debugging
+        // purposes. When generating the contents are not used for this specific model. An hr does not have
+        // content :-).
         super.items.add(new PlainText(text: "_______________________________________________________________"))
     }
 
@@ -57,7 +61,7 @@ class HorizontalRule extends DocItem {
      * Returns the format this model represents.
      */
     @Override
-    DocFormat getFormat() {
+    @NotNull DocFormat getFormat() {
         DocFormat.HorizontalRule
     }
 }
