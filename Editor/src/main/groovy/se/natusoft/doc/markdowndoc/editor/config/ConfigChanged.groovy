@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.config
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This is called when a config valueComp is changed.
@@ -48,5 +49,5 @@ interface ConfigChanged {
     /**
      * This delivers the changed config entry.
      */
-    void configChanged(ConfigEntry ce)
+    void configChanged(@NotNull ConfigEntry ce)
 }

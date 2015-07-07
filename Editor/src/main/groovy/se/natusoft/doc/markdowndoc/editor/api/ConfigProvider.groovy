@@ -38,6 +38,8 @@ package se.natusoft.doc.markdowndoc.editor.api
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 
 /**
@@ -53,7 +55,7 @@ interface ConfigProvider {
      * @param configEntry The config entry to make available and get populated.
      * @param configChanged A ConfigChanged callback to add to the list of callbacks for the config.
      */
-    void registerConfig(ConfigEntry configEntry, Closure configChanged)
+    void registerConfig(@NotNull ConfigEntry configEntry, @NotNull Closure configChanged)
 
     /**
      * Unregisters a configuration.
@@ -61,26 +63,26 @@ interface ConfigProvider {
      * @param configEntry The config entry to unregister a ConfigChanged callback for.
      * @param configChanged The ConfigChanged callback to unregister.
      */
-    void unregisterConfig(ConfigEntry configEntry, Closure configChanged)
+    void unregisterConfig(@NotNull ConfigEntry configEntry, @NotNull Closure configChanged)
 
     /**
      * Returns a list of all registered configs.
      */
-    List<ConfigEntry> getConfigs()
+    @NotNull List<ConfigEntry> getConfigs()
 
     /**
      * Looks up a config entry by its key.
      *
      * @param key The key of the config entry to get.
      */
-    ConfigEntry lookupConfig(String key)
+    @Nullable ConfigEntry lookupConfig(@NotNull String key)
 
     /**
      * Looks up all ConfigChanged callbacks for the config entry.
      *
      * @param configEntry The config entry to lookup ConfigChanged callbacks for.
      */
-    List<Closure> lookupConfigChanged(ConfigEntry configEntry)
+    @Nullable List<Closure> lookupConfigChanged(@NotNull ConfigEntry configEntry)
 
     /**
      * Refreshes all configs by triggering callbacks.

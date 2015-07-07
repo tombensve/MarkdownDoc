@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.config
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This ConfigEntry represents a keyboard key to activate a function.
@@ -58,7 +59,12 @@ class KeyConfigEntry extends ConfigEntry {
      * @param defaultValue The default valueComp.
      * @param configGroup The config group this config belongs to.
      */
-    KeyConfigEntry(String key, String description, KeyboardKey defaultValue, String configGroup) {
+    KeyConfigEntry(
+            @NotNull String key,
+            @NotNull String description,
+            @NotNull KeyboardKey defaultValue,
+            @NotNull String configGroup
+    ) {
         super(key, description, defaultValue.toString(), configGroup)
     }
 
@@ -70,7 +76,7 @@ class KeyConfigEntry extends ConfigEntry {
     /**
      * Returns the keyboard key.
      */
-    KeyboardKey getKeyboardKey() {
+    @NotNull KeyboardKey getKeyboardKey() {
         new KeyboardKey(getValue())
     }
 
@@ -79,7 +85,7 @@ class KeyConfigEntry extends ConfigEntry {
      *
      * @param keyboardKey The keyboard key to set.
      */
-    void setKeyboardKey(KeyboardKey keyboardKey) {
+    void setKeyboardKey(@NotNull KeyboardKey keyboardKey) {
         setValue(keyboardKey.toString())
     }
 }

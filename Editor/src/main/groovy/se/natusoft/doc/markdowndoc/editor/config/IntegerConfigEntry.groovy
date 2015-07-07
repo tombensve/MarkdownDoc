@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.config
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This is a integer config entry.
@@ -66,7 +67,14 @@ class IntegerConfigEntry extends ConfigEntry {
      * @param max The maximum valueComp.
      * @param configGroup The config group this config belongs to.
      */
-    IntegerConfigEntry(String key, String description, int defaultValue, int min, int max, String configGroup) {
+    IntegerConfigEntry(
+            @NotNull String key,
+            @NotNull String description,
+            int defaultValue,
+            int min,
+            int max,
+            @NotNull String configGroup
+    ) {
         super(key, description, "" + defaultValue, configGroup)
         this.min = min
         this.max = max

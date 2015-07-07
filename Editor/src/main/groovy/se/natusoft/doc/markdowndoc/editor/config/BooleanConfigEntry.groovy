@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.config
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This represents a boolean config valueComp.
@@ -58,7 +59,9 @@ class BooleanConfigEntry extends ConfigEntry {
      * @param defaultValue The default valueComp of the config.
      * @param configGroup The config group this config belongs to.
      */
-    BooleanConfigEntry(String key, String description, boolean defaultValue, String configGroup) {
+    BooleanConfigEntry(@NotNull String key, @NotNull String description, boolean defaultValue,
+                       @NotNull String configGroup) {
+
         super(key, description, "" + defaultValue, configGroup)
     }
 

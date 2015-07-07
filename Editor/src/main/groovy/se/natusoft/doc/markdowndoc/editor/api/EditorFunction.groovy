@@ -38,6 +38,8 @@ package se.natusoft.doc.markdowndoc.editor.api
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey;
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException;
 
@@ -54,22 +56,22 @@ interface EditorFunction extends EditorComponent {
      * Returns the group in the tool bar this functions should be placed in.
      * A new group will be created if the named group does not exist.
      */
-    String getGroup()
+    @NotNull String getGroup()
 
     /**
      * Returns the name of the function.
      */
-    String getName()
+    @NotNull String getName()
 
     /**
      * Returns this functions toolbar button or null if it does not have one.
      */
-    JComponent getToolBarButton()
+    @Nullable JComponent getToolBarButton()
 
     /**
      * Returns the keyboard shortcut for triggering the function via keyboard.
      */
-    KeyboardKey getKeyboardShortcut()
+    @NotNull KeyboardKey getKeyboardShortcut()
 
     /**
      * Performs the function.

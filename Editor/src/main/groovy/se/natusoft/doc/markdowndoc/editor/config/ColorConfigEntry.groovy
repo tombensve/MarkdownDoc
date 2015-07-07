@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.config
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This is a config entry holding a color valueComp making it available as
@@ -62,7 +63,14 @@ class ColorConfigEntry extends ConfigEntry {
      * @param defaultBlue The default blue color part.
      * @param configGroup The config group this config belongs to.
      */
-    ColorConfigEntry(String key, String description, int defaultRed, int defaultGreen, int defaultBlue, String configGroup) {
+    ColorConfigEntry(
+            @NotNull String key,
+            @NotNull String description,
+            int defaultRed,
+            int defaultGreen,
+            int defaultBlue,
+            @NotNull String configGroup
+    ) {
         super(key, description, toValue(defaultRed, defaultGreen, defaultBlue), configGroup)
     }
 
@@ -78,7 +86,7 @@ class ColorConfigEntry extends ConfigEntry {
      * @param blue The blue color part.
      */
     private static String toValue(int red, int green, int blue) {
-        "" + red + ":" + green + ":" + blue
+        "${red}:${green}:${blue}"
     }
 
     /**

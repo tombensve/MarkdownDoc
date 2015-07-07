@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.api
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 import javax.swing.*
 
@@ -51,32 +52,32 @@ interface GUI {
     /**
      * Needed for popping upp dialogs.
      */
-    JFrame getWindowFrame()
+    @NotNull JFrame getWindowFrame()
 
     /**
      * Returns the panel above the editorPane and toolbar.
      */
-    JPanel getTopPanel()
+    @NotNull JPanel getTopPanel()
 
     /**
      * Returns the panel below the editorPane and toolbar.
      */
-    JPanel getBottomPanel()
+    @NotNull JPanel getBottomPanel()
 
     /**
      * Returns the panel to the left of the editorPane and toolbar.
      */
-    JPanel getLeftPanel()
+    @NotNull JPanel getLeftPanel()
 
     /**
      * Returns the panel to the right of the editorPane and toolbar.
      */
-    JPanel getRightPanel()
+    @NotNull JPanel getRightPanel()
 
     /**
      * Returns the editorPane panel. A toolbar can for example be added here!
      */
-    JPanel getEditorPanel()
+    @NotNull JPanel getEditorPanel()
 
     /**
      * Returns the y coordinate of the top of the scrollable editorPane view.
@@ -86,5 +87,5 @@ interface GUI {
     /**
      * Returns the styler for the editorPane.
      */
-    JTextComponentStyler getStyler()
+    @NotNull JTextComponentStyler getStyler()
 }

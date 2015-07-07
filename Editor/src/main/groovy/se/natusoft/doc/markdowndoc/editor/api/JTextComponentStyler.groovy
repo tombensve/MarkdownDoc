@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.api
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 import javax.swing.*
 
@@ -47,12 +48,13 @@ import javax.swing.*
 @CompileStatic
 @TypeChecked
 interface JTextComponentStyler {
+
     /**
      * Initializes the Styler with a component to style.
      *
      * @param textComponentToStyle The component to style.
      */
-    void init(JTextPane textComponentToStyle)
+    void init(@NotNull JTextPane textComponentToStyle)
 
     /**
      * Enables styling (on by default)
@@ -86,7 +88,7 @@ interface JTextComponentStyler {
         int start = 0
         int end = 0
 
-        public String toString() {
+        @NotNull String toString() {
             return "Bounds: " + start + ":" + end
         }
     }

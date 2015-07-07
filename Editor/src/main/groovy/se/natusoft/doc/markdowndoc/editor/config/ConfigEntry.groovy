@@ -38,6 +38,8 @@ package se.natusoft.doc.markdowndoc.editor.config
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 
 /**
@@ -51,16 +53,19 @@ class ConfigEntry {
     //
 
     /** The config key. */
-    String key
+    @NotNull String key
+
     /** Description of the config. */
-    String description
+    @NotNull String description
+
     /** The config valueComp. */
-    String value = ""
-    /** The config froup this config belongs to. */
-    String configGroup = "Editor"
+    @NotNull  String value = ""
+
+    /** The config group this config belongs to. */
+    @NotNull String configGroup = "Editor"
 
     /** The configuration provider. */
-    ConfigProvider configProvider
+    @NotNull ConfigProvider configProvider
 
     //
     // Constructors
@@ -78,7 +83,7 @@ class ConfigEntry {
      * @param description The description of the config.
      * @param configGroup The configuration group this config belongs to.
      */
-    ConfigEntry(String key, String description, String configGroup) {
+    ConfigEntry(@NotNull String key, @NotNull String description, @NotNull String configGroup) {
         this.key = key
         this.description = description
         this.configGroup = configGroup
@@ -92,7 +97,7 @@ class ConfigEntry {
      * @param defaultValue The default valueComp of the config.
      * @param configGroup The configuration group this config belongs to.
      */
-    ConfigEntry(String key, String description, String defaultValue, String configGroup) {
+    ConfigEntry(@NotNull String key, @NotNull String description, @NotNull  String defaultValue, @NotNull String configGroup) {
         this(key, description, configGroup)
         this.value = defaultValue
     }
@@ -113,7 +118,7 @@ class ConfigEntry {
      *
      * @param value The valueComp to set.
      */
-    void setValue(String value) {
+    void setValue(@NotNull String value) {
         this.value = value
         this.configProvider.lookupConfigChanged(this).each { Closure configChanged ->
             configChanged(this)

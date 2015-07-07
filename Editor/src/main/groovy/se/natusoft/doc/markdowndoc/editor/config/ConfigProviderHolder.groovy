@@ -38,6 +38,8 @@ package se.natusoft.doc.markdowndoc.editor.config
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 
 /**
@@ -45,7 +47,7 @@ import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
  */
 @CompileStatic
 @TypeChecked
-public class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntry> {
+class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntry> {
     //
     // Private Members
     //
@@ -66,7 +68,7 @@ public class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntr
     /**
      * Creates a new ConfigProviderHolder.
      */
-    public ConfigProviderHolder() {}
+    ConfigProviderHolder() {}
 
     //
     // Methods
@@ -78,7 +80,7 @@ public class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntr
      * @return an Iterator.
      */
     @Override
-    public Iterator<ConfigEntry> iterator() {
+    @NotNull Iterator<ConfigEntry> iterator() {
         return this.configList.iterator()
     }
 
@@ -89,7 +91,7 @@ public class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntr
      * @param configChanged A ConfigChanged callback to add to the list of callbacks for the config.
      */
     @Override
-    public void registerConfig(ConfigEntry configEntry, Closure configChanged) {
+    void registerConfig(@NotNull ConfigEntry configEntry, @NotNull Closure configChanged) {
         if (!this.configMap.containsKey(configEntry.getKey())) {
             configEntry.setConfigProvider(this)
             this.configMap.put(configEntry.getKey(), configEntry)
@@ -112,7 +114,7 @@ public class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntr
      * @param configChanged The ConfigChanged callback to unregister.
      */
     @Override
-    public void unregisterConfig(ConfigEntry configEntry, Closure configChanged) {
+    void unregisterConfig(@NotNull ConfigEntry configEntry, @NotNull Closure configChanged) {
         List<Closure> configChangedEntries = this.configChangedCallbacks.get(configEntry)
         if (configChangedEntries != null && configChanged != null) {
             configChangedEntries.remove(configChanged)
@@ -123,7 +125,7 @@ public class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntr
      * Returns a list of all registered configs.
      */
     @Override
-    public List<ConfigEntry> getConfigs() {
+    @NotNull List<ConfigEntry> getConfigs() {
         return this.configList
     }
 
@@ -133,7 +135,7 @@ public class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntr
      * @param key The key of the config entry to get.
      */
     @Override
-    public ConfigEntry lookupConfig(String key) {
+    @Nullable ConfigEntry lookupConfig(@NotNull String key) {
         return this.configMap.get(key)
     }
 
@@ -143,14 +145,14 @@ public class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntr
      * @param configEntry The config entry to lookup ConfigChanged callbacks for.
      */
     @Override
-    public List<Closure> lookupConfigChanged(ConfigEntry configEntry) {
+    @Nullable List<Closure> lookupConfigChanged(@NotNull ConfigEntry configEntry) {
         return this.configChangedCallbacks.get(configEntry)
     }
 
     /**
      * Refreshes all configs by triggering callbacks.
      */
-    public void refreshConfigs() {
+    void refreshConfigs() {
         getConfigs().each { ConfigEntry ce ->
             ce.setValue(ce.getValue())
         }

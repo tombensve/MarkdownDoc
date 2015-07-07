@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.api
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * Defines a basic editorPane component.
@@ -51,7 +52,7 @@ interface EditorComponent {
      *
      * @param editor The editorPane to set.
      */
-    void setEditor(Editor editor)
+    void setEditor(@NotNull Editor editor)
 
     /**
      * Called when instance is no longer needed.

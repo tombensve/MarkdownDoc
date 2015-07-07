@@ -38,6 +38,8 @@ package se.natusoft.doc.markdowndoc.editor.api
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 
 import javax.swing.text.BadLocationException
 
@@ -51,24 +53,24 @@ interface Line {
     /**
      * Returns the text of the line.
      */
-    String getText() throws BadLocationException
+    @NotNull String getText() throws BadLocationException
 
     /**
      * Sets the text of the line, replacing any previous text.
      *
      * @param text The text to set.
      */
-    void setText(String text)
+    void setText(@NotNull String text)
 
     /**
      * Returns the next line or null if this is the last line.
      */
-    Line getNextLine()
+    @Nullable Line getNextLine()
 
     /**
      * Returns the previous line or null if this is the first line.
      */
-    Line getPreviousLine()
+    @Nullable Line getPreviousLine()
 
     /**
      * Return true if the line is the first line.
@@ -93,5 +95,5 @@ interface Line {
     /**
      * Same as getText().
      */
-    String toString()
+    @NotNull String toString()
 }

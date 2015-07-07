@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.api
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * Environment Services.
@@ -49,16 +50,16 @@ interface EnvServices {
     /**
      * Returns the editorPane GUI API.
      */
-    GUI getGUI()
+    @NotNull GUI getGUI()
 
     /**
      * Returns the config API.
      */
-    ConfigProvider getConfigProvider()
+    @NotNull ConfigProvider getConfigProvider()
 
     /**
      * Returns the persistent properties provider.
      */
-    PersistentProps getPersistentProps()
+    @NotNull PersistentProps getPersistentProps()
 
 }

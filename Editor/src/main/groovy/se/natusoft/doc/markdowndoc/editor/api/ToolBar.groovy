@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.api
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * Defines a toolbar API.
@@ -50,7 +51,7 @@ interface ToolBar {
      *
      * @param function The function to add.
      */
-    void addFunction(EditorFunction function)
+    void addFunction(@NotNull EditorFunction function)
 
     /**
      * Creates the content of the toolbar. This cannot be done until all
@@ -63,26 +64,26 @@ interface ToolBar {
      *
      * @param group The tool bar group to enable.
      */
-    void disableGroup(String group)
+    void disableGroup(@NotNull String group)
 
     /**
      * Disables all buttons in the specified tool bar group.
      *
      * @param group The tool bar group to disable.
      */
-    void enableGroup(String group)
+    void enableGroup(@NotNull String group)
 
     /**
      * Provides the toolbar with the editorPane it is associated.
      *
      * @param editor The associated editorPane provided.
      */
-    void attach(Editor editor)
+    void attach(@NotNull Editor editor)
 
     /**
      * Removes the association with the editorPane.
      *
      * @param editor The editorPane to detach from.
      */
-    void detach(Editor editor)
+    void detach(@NotNull Editor editor)
 }

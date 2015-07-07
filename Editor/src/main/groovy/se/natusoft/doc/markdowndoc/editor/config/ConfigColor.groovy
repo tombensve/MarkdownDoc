@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.config
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 import java.awt.*
 
@@ -57,7 +58,7 @@ class ConfigColor extends Color {
      * @param configEntry The config entry containing the color specification. Its valueComp
      *                    must be in the format "r:g:b".
      */
-    ConfigColor(ConfigEntry configEntry) {
+    ConfigColor(@NotNull ConfigEntry configEntry) {
         super(getRed(configEntry.getValue()), getGreen(configEntry.getValue()), getBlue(configEntry.getValue()))
     }
 
@@ -70,7 +71,7 @@ class ConfigColor extends Color {
      *
      * @param colorPart The color part to get.
      */
-    private static int toColor(String colorStr, ColorPart colorPart) {
+    private static int toColor(@NotNull String colorStr, @NotNull ColorPart colorPart) {
         Integer.valueOf(colorStr.split(":")[colorPart.ordinal()])
     }
 
@@ -79,7 +80,7 @@ class ConfigColor extends Color {
      *
      * @param colorStr The complete config color spec.
      */
-    private static final int getRed(String colorStr) {
+    private static final int getRed(@NotNull String colorStr) {
         toColor(colorStr, ColorPart.RED)
     }
 
@@ -88,7 +89,7 @@ class ConfigColor extends Color {
      *
      * @param colorStr The complete config color spec.
      */
-    private static final int getGreen(String colorStr) {
+    private static final int getGreen(@NotNull String colorStr) {
         toColor(colorStr, ColorPart.GREEN)
     }
 
@@ -97,7 +98,7 @@ class ConfigColor extends Color {
      *
      * @param colorStr The complete config color spec.
      */
-    private static final int getBlue(String colorStr) {
+    private static final int getBlue(@NotNull String colorStr) {
         toColor(colorStr, ColorPart.BLUE)
     }
 }

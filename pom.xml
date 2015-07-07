@@ -50,6 +50,7 @@
         <itext.ver>5.5.1</itext.ver>
         <groovy.ver>2.4.3</groovy.ver> <groovy.artifact>groovy-all</groovy.artifact>
         <gmaven-plus.ver>1.5</gmaven-plus.ver>
+        <jb.annotations.ver>13.0</jb.annotations.ver>
 
     </properties>
     <licenses>
@@ -84,6 +85,13 @@
         </dependency>
 
         <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
@@ -102,6 +110,13 @@
                 <groupId>se.natusoft.tools.optionsmgr</groupId>
                 <artifactId>OptionsManager</artifactId>
                 <version>${optmgr.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jetbrains</groupId>
+                <artifactId>annotations</artifactId>
+                <version>${jb.annotations.ver}</version>
+                <scope>provided</scope>
             </dependency>
 
             <dependency>

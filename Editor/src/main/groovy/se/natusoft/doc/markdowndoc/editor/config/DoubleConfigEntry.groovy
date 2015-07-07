@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.config
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This is a double config entry.
@@ -66,7 +67,14 @@ class DoubleConfigEntry extends ConfigEntry {
      * @param max The maximum valueComp.
      * @param configGroup The config group this config belongs to.
      */
-    DoubleConfigEntry(String key, String description, double defaultValue, double min, double max, String configGroup) {
+    DoubleConfigEntry(
+            @NotNull String key,
+            @NotNull String description,
+            double defaultValue,
+            double min,
+            double max,
+            @NotNull String configGroup
+    ) {
         super(key, description, "" + defaultValue, configGroup)
         this.min = min
         this.max = max

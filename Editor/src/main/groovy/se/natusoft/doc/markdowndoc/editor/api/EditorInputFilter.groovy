@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.api
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 import java.awt.event.KeyEvent
 
@@ -54,5 +55,5 @@ interface EditorInputFilter extends EditorComponent {
      *
      * @param keyEvent The key event.
      */
-    void keyPressed(KeyEvent keyEvent)
+    void keyPressed(@NotNull KeyEvent keyEvent)
 }

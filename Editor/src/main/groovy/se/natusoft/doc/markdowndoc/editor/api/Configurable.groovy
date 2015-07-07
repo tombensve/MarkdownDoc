@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.api
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * Implemented by objects that are configurable.
@@ -51,13 +52,13 @@ interface Configurable {
      *
      * @param configProvider The config provider to register with.
      */
-    void registerConfigs(ConfigProvider configProvider);
+    void registerConfigs(@NotNull ConfigProvider configProvider);
 
     /**
      * Unregister configurations.
      *
      * @param configProvider The config provider to unregister with.
      */
-    void unregisterConfigs(ConfigProvider configProvider);
+    void unregisterConfigs(@NotNull ConfigProvider configProvider);
 
 }

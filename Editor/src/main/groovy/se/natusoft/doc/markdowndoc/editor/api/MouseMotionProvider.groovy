@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.api
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 import java.awt.event.MouseMotionListener
 
@@ -53,12 +54,12 @@ interface MouseMotionProvider {
      *
      * @param listener The listener to add.
      */
-    void addMouseMotionListener(MouseMotionListener listener)
+    void addMouseMotionListener(@NotNull MouseMotionListener listener)
 
     /**
      * Removes a mouse motion listener.
      *
      * @param listener The listener to remove.
      */
-    void removeMouseMotionListener(MouseMotionListener listener)
+    void removeMouseMotionListener(@NotNull MouseMotionListener listener)
 }

@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.config
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 import java.awt.event.KeyEvent
 
@@ -64,7 +65,7 @@ class KeyboardKey {
      *
      * @param keyEvent The key event to get key from.
      */
-    KeyboardKey(KeyEvent keyEvent) {
+    KeyboardKey(@NotNull KeyEvent keyEvent) {
         if (keyEvent != null) { // For Linux/Ubutnu!
             this.key = KeyEvent.getKeyModifiersText(keyEvent.getModifiers()) + "+" + KeyEvent.getKeyText(keyEvent.getKeyCode())
         }
@@ -75,7 +76,7 @@ class KeyboardKey {
      *
      * @param key The key in "internal" key format.
      */
-    KeyboardKey(String key) {
+    KeyboardKey(@NotNull String key) {
         this.key = key
     }
 
@@ -88,14 +89,14 @@ class KeyboardKey {
      *
      * @param key The object to compare to.
      */
-    boolean equals(Object key) {
+    boolean equals(@NotNull Object key) {
         key instanceof KeyboardKey && ((KeyboardKey) key).key.equals(this.key)
     }
 
     /**
      * Return as string.
      */
-    String toString() {
+    @NotNull String toString() {
         this.key
     }
 }

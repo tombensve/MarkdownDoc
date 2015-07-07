@@ -38,6 +38,8 @@ package se.natusoft.doc.markdowndoc.editor.api
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 
 import javax.swing.*
 import javax.swing.text.BadLocationException
@@ -63,48 +65,48 @@ interface Editor extends EnvServices, MouseMotionProvider {
     /**
      * Returns the current file or null if none.
      */
-    File getCurrentFile()
+    @Nullable File getCurrentFile()
 
     /**
      * Sets the current file.
      *
      * @param file The file to set.
      */
-    void setCurrentFile(File file)
+    void setCurrentFile(@NotNull File file)
 
     /**
      * Returns the contents of the editorPane.
      */
-    String getEditorContent()
+    @NotNull String getEditorContent()
 
     /**
      * Returns the current selection or null if none.
      */
-    String getEditorSelection()
+    @Nullable String getEditorSelection()
 
     /**
      * Returns the current line.
      */
-    Line getCurrentLine() throws BadLocationException
+    @NotNull Line getCurrentLine() throws BadLocationException
 
     /**
      * Set/replace the entire content of the editorPane.
      *
      * @param content The new content to set.
      */
-    void setEditorContent(String content)
+    void setEditorContent(@NotNull String content)
 
     /**
      * Returns the current caret location.
      */
-    Point getCaretLocation()
+    @NotNull Point getCaretLocation()
 
     /**
      * Moves the current caret location.
      *
      * @param location The new location.
      */
-    void setCaretLocation(Point location)
+    void setCaretLocation(@NotNull Point location)
 
     /**
      * Returns the caret dot location.
@@ -126,14 +128,14 @@ interface Editor extends EnvServices, MouseMotionProvider {
     /**
      * Makes the specified component visible in the main scrollable view.
      */
-    void showOtherComponent(JComponent component)
+    void showOtherComponent(@NotNull JComponent component)
 
     /**
      * Inserts new text into the editorPane or replaces current selection.
      *
      * @param text The text to insert.
      */
-    void insertText(String text)
+    void insertText(@NotNull String text)
 
     /**
      * Adds a blank line.
@@ -184,14 +186,14 @@ interface Editor extends EnvServices, MouseMotionProvider {
      *
      * @param groupName The name of the tool bar group to enable.
      */
-    void enableToolBarGroup(String groupName)
+    void enableToolBarGroup(@NotNull String groupName)
 
     /**
      * Disables all button in the specified tool bar group.
      *
      * @param groupName The name of the tool bar group to disable.
      */
-    void disableToolBarGroup(String groupName)
+    void disableToolBarGroup(@NotNull String groupName)
 
     /**
      * Refreshes styling and formatting of the document.
@@ -205,7 +207,7 @@ interface Editor extends EnvServices, MouseMotionProvider {
      *
      * @throws java.io.IOException
      */
-    void loadFile(File file) throws IOException
+    void loadFile(@NotNull File file) throws IOException
 
     /**
      * Saves the currently edited file with the specified path.
@@ -214,7 +216,7 @@ interface Editor extends EnvServices, MouseMotionProvider {
      *
      * @throws IOException
      */
-    void saveFileAs(File file) throws IOException
+    void saveFileAs(@NotNull File file) throws IOException
 
     /**
      * Opens a file chooser for specifying file to save to.
@@ -226,7 +228,7 @@ interface Editor extends EnvServices, MouseMotionProvider {
     /**
      * Returns the styler for the editorPane.
      */
-    JTextComponentStyler getStyler()
+    @NotNull JTextComponentStyler getStyler()
 
     /**
      * This gets called when the window is closed. This can be overriden to

@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.api
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This api allows for getting and saving properties.
@@ -51,7 +52,7 @@ interface PersistentProps {
      *
      * @param name The name of the properties to load. Please note that this is only a name, not a path!
      */
-    Properties load(String name)
+    @NotNull Properties load(@NotNull String name)
 
     /**
      * Saves the given properties with the given name.
@@ -59,5 +60,5 @@ interface PersistentProps {
      * @param name The name of the properties to save.
      * @param props The properties to save.
      */
-    void save(String name, Properties props)
+    void save(@NotNull String name, @NotNull Properties props)
 }

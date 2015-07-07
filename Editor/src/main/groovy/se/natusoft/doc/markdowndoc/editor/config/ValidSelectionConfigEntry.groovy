@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.config
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 import java.lang.String
 
@@ -65,7 +66,12 @@ class ValidSelectionConfigEntry extends ConfigEntry {
      * @param validValues The valid values for the config.
      * @param configGroup The config group this config belongs to.
      */
-    ValidSelectionConfigEntry(String key, String description, ValidValues validValues, String configGroup) {
+    ValidSelectionConfigEntry(
+            @NotNull String key,
+            @NotNull String description,
+            @NotNull ValidValues validValues,
+            @NotNull String configGroup
+    ) {
         super(key, description, configGroup)
         this.validValues = validValues
     }
@@ -79,8 +85,13 @@ class ValidSelectionConfigEntry extends ConfigEntry {
      * @param validValues The valid values for the config.
      * @param configGroup The config group this config belongs to.
      */
-    ValidSelectionConfigEntry(String key, String description, String defaultValue, ValidValues validValues,
-                              String configGroup) {
+    ValidSelectionConfigEntry(
+            @NotNull String key,
+            @NotNull String description,
+            @NotNull String defaultValue,
+            @NotNull ValidValues validValues,
+            @NotNull String configGroup
+    ) {
         super(key, description, defaultValue, configGroup)
         this.validValues = validValues
     }
@@ -88,14 +99,14 @@ class ValidSelectionConfigEntry extends ConfigEntry {
     /**
      * Returns the valid values.
      */
-    Value[] getValidValues() {
+    @NotNull Value[] getValidValues() {
         this.validValues.validValues()
     }
 
     /**
      * Returns a show adapted valueComp for display in settings.
      */
-    String getShowValue() {
+    @NotNull String getShowValue() {
         String value = getValue()
         if (value.indexOf('.') > 0) {
             value = value.substring(value.lastIndexOf('.') + 1)
@@ -113,7 +124,7 @@ class ValidSelectionConfigEntry extends ConfigEntry {
      *
      * @param strings The String List to convert.
      */
-    static String[] stringListToArray(List<String> strings) {
+    static @NotNull String[] stringListToArray(@NotNull List<String> strings) {
         String[] array = new String[strings.size()]
         strings.toArray(array)
     }
@@ -123,7 +134,7 @@ class ValidSelectionConfigEntry extends ConfigEntry {
      *
      * @param stringValues The string array to convert.
      */
-    static Value[] convertToValues(String[] stringValues) {
+    static @NotNull Value[] convertToValues(@NotNull String[] stringValues) {
         Value[] values = new Value[stringValues.length]
         for (int i = 0; i < stringValues.length; i++) {
             values[i] = new Value(stringValues[i])
@@ -139,7 +150,7 @@ class ValidSelectionConfigEntry extends ConfigEntry {
      * @param stringValues The string array to convert.
      * @param cutAtLast The character to find last of and use text after as show text.
      */
-    static Value[] convertToValues(String[] stringValues, String cutAtLast) {
+    static @NotNull Value[] convertToValues(@NotNull String[] stringValues, @NotNull String cutAtLast) {
         Value[] values = new Value[stringValues.length]
         for (int i = 0; i < stringValues.length; i++) {
             String use = stringValues[i]
@@ -170,7 +181,7 @@ class ValidSelectionConfigEntry extends ConfigEntry {
          * @param show The part of the valueComp to show in the gui.
          * @param use The real/full valueComp to store in config and use.
          */
-        Value(String show, String use) {
+        Value(@NotNull String show, @NotNull String use) {
             this.show = show
             this.use = use
         }
@@ -180,7 +191,7 @@ class ValidSelectionConfigEntry extends ConfigEntry {
          *
          * @param use The real valueComp to use. This is also set as show valueComp.
          */
-        Value(String use) {
+        Value(@NotNull String use) {
             this.show = use
             this.use = use
         }
@@ -188,14 +199,14 @@ class ValidSelectionConfigEntry extends ConfigEntry {
         /**
          * Returns the show valueComp.
          */
-        String getShow() {
+        @NotNull String getShow() {
             this.show
         }
 
         /**
          * Returns the use valueComp.
          */
-        String getUse() {
+        @NotNull String getUse() {
             this.use
         }
 
@@ -203,7 +214,7 @@ class ValidSelectionConfigEntry extends ConfigEntry {
          * Returns the show valueComp. This so that a Value array can be passed as values to a JComboBox and it
          * will only display the show valueComp in the gui.
          */
-        String toString() {
+        @NotNull String toString() {
             this.show
         }
 
@@ -213,7 +224,7 @@ class ValidSelectionConfigEntry extends ConfigEntry {
          *
          * @param o The object to compare to.
          */
-        boolean equals(Object o) {
+        boolean equals(@NotNull Object o) {
             o instanceof Value && ((Value) o).show.equals(this.show)
         }
     }
@@ -222,6 +233,6 @@ class ValidSelectionConfigEntry extends ConfigEntry {
      * Defines the valid values.
      */
     interface ValidValues {
-        Value[] validValues()
+        @NotNull Value[] validValues()
     }
 }
