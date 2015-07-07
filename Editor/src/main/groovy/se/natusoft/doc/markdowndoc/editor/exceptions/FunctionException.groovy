@@ -38,13 +38,11 @@ package se.natusoft.doc.markdowndoc.editor.exceptions
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import se.natusoft.doc.markdown.exception.DocException
 
 /**
  * This is thrown by functions on perform.
  */
 @CompileStatic
 @TypeChecked
-class FunctionException extends RuntimeException {
-    String message
-    Throwable cause
-}
+class FunctionException extends DocException {}

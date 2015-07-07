@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.functions.export
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 import javax.swing.JCheckBox
 
@@ -47,20 +48,48 @@ import javax.swing.JCheckBox
 @CompileStatic
 @TypeChecked
 class ExportDataSelectValue extends ExportDataValue {
+
+    //
+    // Constructors
+    //
+
+    /**
+     * Creates a new ExportDataSelectValue.
+     *
+     * @param labelText The text in the label.
+     */
     ExportDataSelectValue(String labelText) {
         super(labelText)
         super.valueComp = new JCheckBox()
     }
 
-    ExportDataSelectValue(String labelText, boolean defaultValue) {
+    /**
+     * Creates a new ExportDataSelectValue.
+     *
+     * @param labelText The text in the label.
+     * @param defaultValue The default value.
+     */
+    ExportDataSelectValue(@NotNull String labelText, boolean defaultValue) {
         this(labelText)
         ((JCheckBox)ensureValueComp()).setSelected(defaultValue)
     }
 
+    //
+    // Methods
+    //
+
+    /**
+     * Returns the current value.
+     */
     String getValue() {
         "" + ((JCheckBox)super.valueComp).isSelected()
     }
 
+    /**
+     * Sets the current value.
+     *
+     * @param value The value to set.
+     */
     void setValue(String value) {
         boolean selected = Boolean.valueOf(value)
         ((JCheckBox)ensureValueComp()).setSelected(selected)

@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.filters
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.api.*
 import se.natusoft.doc.markdowndoc.editor.config.BooleanConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged
@@ -49,16 +50,17 @@ import java.awt.event.KeyEvent
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_EDITING
 
 /**
- * This filter provides context help in the editorPane.
+ * This filter provides context formatting in the editorPane.
  */
 @CompileStatic
 @TypeChecked
 class ContextFormatFilter implements EditorInputFilter, Configurable {
+
     //
-    // Private Members
+    // Properties
     //
 
-    private Editor editor
+    Editor editor
 
     //
     // Config
@@ -84,7 +86,7 @@ class ContextFormatFilter implements EditorInputFilter, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.registerConfig(doubleSpacedBulletsConfig, doubleSpacedBulletsConfigChanged)
     }
 
@@ -94,7 +96,7 @@ class ContextFormatFilter implements EditorInputFilter, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.unregisterConfig(doubleSpacedBulletsConfig, doubleSpacedBulletsConfigChanged)
     }
 
@@ -102,38 +104,33 @@ class ContextFormatFilter implements EditorInputFilter, Configurable {
     // Methods
     //
 
-    @Override
-    void setEditor(Editor editor) {
-        this.editor = editor
+    private static boolean isBulletChar(char bulletChar) {
+        bulletChar == '+' as char || bulletChar == '-' as char || bulletChar == '*' as char
     }
 
-    private boolean isBulletChar(char bulletChar) {
-        bulletChar == '+' || bulletChar == '-' || bulletChar == '*'
-    }
-
-    private boolean isBulletChar(String bulletChar) {
+    private static boolean isBulletChar(String bulletChar) {
         bulletChar.length() > 0 && isBulletChar(bulletChar.charAt(0))
     }
 
-    private boolean isBulletStart(String line) {
-        line.length() > 1 && isBulletChar(line.charAt(0)) && line.charAt(1) == ' '
+    private static boolean isBulletStart(String line) {
+        line.length() > 1 && isBulletChar(line.charAt(0)) && line.charAt(1) == ' ' as char
     }
 
     @Override
-    void keyPressed(KeyEvent keyEvent) {
+    void keyPressed(@NotNull KeyEvent keyEvent) {
         try {
             // Catch new lines
-            if (keyEvent.getKeyChar() == '\n') {
+            if (keyEvent.getKeyChar() == '\n' as char) {
                 Line currentLine = this.editor.getCurrentLine()
 
                 if (currentLine != null) {
                     String trimmedLine = currentLine.getText().trim()
 
-                    // -- Handle preformatted --
+                    // -- Handle pre-formatted --
 
-                    if ((currentLine.getText().length() > 0 && currentLine.getText().charAt(0) == '\t') ||
+                    if ((currentLine.getText().length() > 0 && currentLine.getText().charAt(0) == '\t' as char) ||
                             currentLine.getText().startsWith("    ")) {
-                        if (currentLine.getText().charAt(0) == '\t') {
+                        if (currentLine.getText().charAt(0) == '\t' as char) {
                             currentLine.getNextLine().setText("\t")
                             this.editor.moveCaretForward(1)
                         }
@@ -156,7 +153,7 @@ class ContextFormatFilter implements EditorInputFilter, Configurable {
                         // will be empty (with the exception of possible whitespace). In this case we
                         // add a new bullet. If it is not empty we don't to anything.
                         if (currentLine.getNextLine().getText().trim().length() == 0) {
-                            int indentPos = currentLine.getText().indexOf('*')
+                            int indentPos = currentLine.getText().indexOf("*")
                             if (this.doubleSpacedBullets) {
                                 this.editor.addBlankLine()
                                 currentLine = currentLine.getNextLine()
@@ -198,7 +195,7 @@ class ContextFormatFilter implements EditorInputFilter, Configurable {
                     }
                 }
             }
-            else if (keyEvent.getKeyChar() == '\t') {
+            else if (keyEvent.getKeyChar() == '\t' as char) {
                 Line line = this.editor.getCurrentLine()
                 boolean isLastLine = line.isLastLine()
                 if (keyEvent.isShiftDown()) {

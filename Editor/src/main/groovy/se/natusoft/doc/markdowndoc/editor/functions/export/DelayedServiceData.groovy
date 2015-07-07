@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.functions.export
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.api.EnvServices
 
 /**
@@ -45,16 +46,16 @@ import se.natusoft.doc.markdowndoc.editor.api.EnvServices
  */
 @CompileStatic
 @TypeChecked
-interface DelayedServiceData extends EnvServices{
+interface DelayedServiceData extends EnvServices {
 
     /**
      * Returns the default property key.
      */
-    String getDefaultsPropKey()
+    @NotNull String getDefaultsPropKey()
 
     /**
      *  Returns the file to export to.
      */
-    File getExportFile()
+    @NotNull File getExportFile()
 
 }

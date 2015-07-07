@@ -48,20 +48,47 @@ import javax.swing.JTextField
 @TypeChecked
 class ExportDataTextValue extends ExportDataValue {
 
+    //
+    // Constructors
+    //
+
+    /**
+     * Creates a new ExportDataTextValue.
+     *
+     * @param labelText The label for the value.
+     */
     ExportDataTextValue(String labelText) {
         super(labelText)
         setValueComp(new JTextField(25))
     }
 
+    /**
+     * Creates a new ExportDataTextValue.
+     *
+     * @param labelText The label for the value.
+     * @param defaultValue The default text.
+     */
     ExportDataTextValue(String labelText, String defaultValue) {
         this(labelText)
         setValue(defaultValue)
     }
 
+    //
+    // Methods
+    //
+
+    /**
+     * Returns the current text.
+     */
     String getValue() {
         ((JTextField)ensureValueComp()).getText()
     }
 
+    /**
+     * Sets the current text.
+     *
+     * @param value The new text to set.
+     */
     void setValue(String value) {
         ((JTextField)ensureValueComp()).setText(value)
     }

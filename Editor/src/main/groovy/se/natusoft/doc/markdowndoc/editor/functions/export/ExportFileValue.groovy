@@ -38,25 +38,51 @@ package se.natusoft.doc.markdowndoc.editor.functions.export
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 import javax.swing.JComponent
 
 @CompileStatic
 @TypeChecked
+/**
+ * Manages a FileSelector and the path for loading and saving.
+ */
 class ExportFileValue extends ExportDataValue {
 
+    //
+    // Private Members
+    //
+
+    /** The name of the file to handle. */
     private String whatFile
 
-    // This is provided later in constructor of subclass since it is provided to the constructor.
-    DelayedServiceData delayedServiceData
+    //
+    // Properties
+    //
 
+    /** Information needed to read and write files among other things. */
+    @NotNull DelayedServiceData delayedServiceData
+
+    //
+    // Constructors
+    //
+
+    /**
+     * Creates a new ExportFileValue instance.
+     *
+     * @param labelText The label to show for this.
+     * @param whatFile A file path.
+     */
     ExportFileValue(String labelText, String whatFile) {
         super(labelText)
         this.whatFile = whatFile
     }
 
+    /**
+     * Provides a FileSelector instance.
+     */
     @Override
-    protected JComponent ensureValueComp() {
+    protected @NotNull JComponent ensureValueComp() {
         if (super.valueComp == null) {
             super.valueComp = new FileSelector(this.whatFile, delayedServiceData)
         }
@@ -64,7 +90,10 @@ class ExportFileValue extends ExportDataValue {
         super.valueComp
     }
 
-    String getValue() {
+    /**
+     * Returns the FileSelector file.
+     */
+    @NotNull String getValue() {
         if (whatFile == null || delayedServiceData == null) {
             throw new IllegalStateException("'whatFile' and 'gui' properties must have been provided before this call" +
                     " can be made!")
@@ -72,7 +101,12 @@ class ExportFileValue extends ExportDataValue {
         ((FileSelector)ensureValueComp()).getFile()
     }
 
-    void setValue(String value) {
+    /**
+     * Sets the FileSelector file.
+     *
+     * @param value The file path to set.
+     */
+    void setValue(@NotNull String value) {
         ((FileSelector)ensureValueComp()).setFile(value)
     }
 }

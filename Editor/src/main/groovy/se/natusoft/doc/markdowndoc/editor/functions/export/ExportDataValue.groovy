@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.functions.export
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 import javax.swing.JComponent
 import javax.swing.JLabel
@@ -49,28 +50,66 @@ import java.awt.Color
 @CompileStatic
 @TypeChecked
 abstract class ExportDataValue {
-    JLabel labelComp
-    JComponent valueComp
 
-    ExportDataValue(String labelText) {
+    //
+    // Properties
+    //
+
+    /** The label for the value. */
+    @NotNull JLabel labelComp
+
+    /** The component for editing the value. */
+    @NotNull JComponent valueComp
+
+    //
+    // Constructors
+    //
+
+    /**
+     * Creates a new ExportDataValue.
+     *
+     * @param labelText The label text for this value.
+     */
+    ExportDataValue(@NotNull String labelText) {
         this.labelComp = new JLabel("    " + labelText + " ")
     }
 
-    String getKey() {
+    //
+    // Methods
+    //
+
+    /**
+     * Returns a unique key for storing this value.
+     */
+    @NotNull String getKey() {
         this.labelComp.getText().trim().toLowerCase().replaceAll(" ", "-").replaceAll(":", "")
     }
 
-    void setBackgroundColor(Color bgColor) {
+    /**
+     * Sets the background color of the value edit component.
+     *
+     * @param bgColor The color to set.
+     */
+    void setBackgroundColor(@NotNull Color bgColor) {
         ensureValueComp().setBackground(bgColor)
     }
 
     /**
      * This must be overridden by subclasses that wants to delay the creation of the valueComp.
      */
-    protected JComponent ensureValueComp() {
+    protected @NotNull JComponent ensureValueComp() {
         this.valueComp
     }
 
+    /**
+     * Returns the value of this export data value.
+     */
     abstract String getValue()
+
+    /**
+     * Sets the value of this export data value.
+     *
+     * @param value The value to set.
+     */
     abstract void setValue(String value)
 }

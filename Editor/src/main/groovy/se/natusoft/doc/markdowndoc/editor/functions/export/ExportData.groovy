@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.functions.export
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 import java.awt.*
 import java.lang.reflect.Field
@@ -45,16 +46,41 @@ import java.util.List
 
 @CompileStatic
 @TypeChecked
+/**
+ * Base class for exportable data.
+ */
 class ExportData {
 
+    //
+    // Private Members
+    //
+
+    /** Environment services. */
     private DelayedServiceData delayedServicesData
+
+    //
+    // Properties
+    //
 
     /** After call to loadPDFData(File) this contains all below fields of ExportDataValue type. */
     List<ExportDataValue> exportDataValues = null
 
-    ExportData(DelayedServiceData localServiceData) {
+    //
+    // Constructors
+    //
+
+    /**
+     * Creates a new ExportData instance.
+     *
+     * @param localServiceData provides data like export file and other things.
+     */
+    ExportData(@NotNull final DelayedServiceData localServiceData) {
         this.delayedServicesData = localServiceData
     }
+
+    //
+    // Methods
+    //
 
     /**
      * Initializes the exportDataValues list with all the fields
@@ -81,7 +107,7 @@ class ExportData {
      *
      * @param file The properties file to load from.
      */
-    void loadExportData(File file) {
+    void loadExportData(@NotNull File file) {
         Properties props = this.delayedServicesData.getPersistentProps().load(fileToPropertiesName(file))
         if (props != null) {
             props.stringPropertyNames().each { String propName ->
@@ -99,7 +125,7 @@ class ExportData {
      *
      * @param file The properties file to save to.
      */
-    void saveExportData(File file) {
+    void saveExportData(@NotNull File file) {
         Properties props = new Properties()
         exportDataValues.each { ExportDataValue exportDataValue ->
             props.setProperty(exportDataValue.getKey(), exportDataValue.getValue())
@@ -114,7 +140,7 @@ class ExportData {
      *
      * @param bgColor The background color to set.
      */
-    void setBackgroundColor(Color bgColor) {
+    void setBackgroundColor(@NotNull Color bgColor) {
         this.exportDataValues.each { ExportDataValue edv ->
             edv.setBackgroundColor(bgColor)
         }
@@ -126,7 +152,7 @@ class ExportData {
      *
      * @param file The file to convert to properties name.
      */
-    private static String fileToPropertiesName(File file) {
+    private static @NotNull String fileToPropertiesName(@NotNull File file) {
         file.getName().replace(".", "_")
     }
 
