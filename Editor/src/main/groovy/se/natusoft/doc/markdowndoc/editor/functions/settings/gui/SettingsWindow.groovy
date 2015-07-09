@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.functions.settings.gui
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.adapters.WindowListenerAdapter
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.gui.SmartFlowLayout
@@ -78,7 +79,7 @@ class SettingsWindow extends JFrame {
         setLayout(new BorderLayout())
         addWindowListener(new WindowListenerAdapter() {
             @Override
-            void windowClosing(WindowEvent e) {
+            void windowClosing(WindowEvent ignored) {
                 cancelSettings()
             }
         })
@@ -91,7 +92,7 @@ class SettingsWindow extends JFrame {
         JButton saveButton = new JButton("Save")
         saveButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent e) {
+            void actionPerformed(ActionEvent ignored) {
                 saveSettings()
                 setWindowVisibility(false)
             }
@@ -101,7 +102,7 @@ class SettingsWindow extends JFrame {
         JButton cancelButton = new JButton("Cancel")
         cancelButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent e) {
+            void actionPerformed(ActionEvent ignored) {
                 cancelSettings()
                 setWindowVisibility(false)
             }
@@ -128,7 +129,7 @@ class SettingsWindow extends JFrame {
      *
      * @param configEntry The config entry to add.
      */
-    void addConfig(ConfigEntry configEntry) {
+    void addConfig(@NotNull ConfigEntry configEntry) {
         JPanel groupPanel = this.groupPanels.get(configEntry.getConfigGroup())
         if (groupPanel == null) {
             groupPanel = new JPanel()

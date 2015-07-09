@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.functions
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
@@ -67,9 +68,6 @@ class InsertLinkFunction implements EditorFunction, Configurable {
     // Private Members
     //
 
-    // The editorPane we supply function for. Received in attach(Editor).
-    private Editor editor
-
     // The toolbar button.
     private JButton linkButton
 
@@ -78,6 +76,13 @@ class InsertLinkFunction implements EditorFunction, Configurable {
     private JTextField linkURL
     private JTextField linkTitle
     private JWindow inputDialog
+
+    //
+    // Properties
+    //
+
+    // The editor we supply function for.
+    Editor editor
 
     //
     // Config
@@ -97,7 +102,7 @@ class InsertLinkFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -107,7 +112,7 @@ class InsertLinkFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -136,21 +141,11 @@ class InsertLinkFunction implements EditorFunction, Configurable {
     }
 
     /**
-     * Sets the editorPane for the component to use.
-     *
-     * @param editor The editorPane to set.
-     */
-    @Override
-    void setEditor(Editor editor) {
-        this.editor = editor
-    }
-
-    /**
      * Returns the group in the tool bar this functions should be placed in.
      * A new group will be created if the named group does not exist.
      */
     @Override
-    String getGroup() {
+    @NotNull String getGroup() {
         ToolBarGroups.FORMAT.name()
     }
 
@@ -158,7 +153,7 @@ class InsertLinkFunction implements EditorFunction, Configurable {
      * Returns the name of the function.
      */
     @Override
-    String getName() {
+    @NotNull String getName() {
         "Insert Link"
     }
 
@@ -166,7 +161,7 @@ class InsertLinkFunction implements EditorFunction, Configurable {
      * Returns this functions toolbar button or null if it does not have one.
      */
     @Override
-    JComponent getToolBarButton() {
+    @NotNull JComponent getToolBarButton() {
         this.linkButton
     }
 
@@ -177,7 +172,7 @@ class InsertLinkFunction implements EditorFunction, Configurable {
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    KeyboardKey getKeyboardShortcut() {
+    @NotNull KeyboardKey getKeyboardShortcut() {
         keyboardShortcutConfig.getKeyboardKey()
     }
 
@@ -218,7 +213,7 @@ class InsertLinkFunction implements EditorFunction, Configurable {
         JButton insertButton = new JButton("Insert")
         insertButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent e) {
+            void actionPerformed(ActionEvent ignored) {
                 inputDialog.setVisible(false)
                 linkButton.setEnabled(true)
 
@@ -237,7 +232,7 @@ class InsertLinkFunction implements EditorFunction, Configurable {
         JButton cancelButton = new JButton("Cancel")
         cancelButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent e) {
+            void actionPerformed(ActionEvent ignored) {
                 inputDialog.setVisible(false)
                 linkButton.setEnabled(true)
                 editor.requestEditorFocus()

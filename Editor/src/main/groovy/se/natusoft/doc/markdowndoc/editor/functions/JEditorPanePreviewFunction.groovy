@@ -39,6 +39,7 @@ package se.natusoft.doc.markdowndoc.editor.functions
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import net.iharder.dnd.FileDrop
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Parser
 import se.natusoft.doc.markdown.exception.GenerateException
@@ -72,10 +73,16 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
     // Private Members
     //
 
-    private Editor editor
     private JToggleButton previewButton
     private JEditorPane preview
     private boolean enabled = false
+
+    //
+    // Properties
+    //
+
+    /** The editor this function is bound to. */
+    Editor editor
 
     //
     // Config
@@ -159,7 +166,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, this.keyboardShortcutConfigChanged)
         configProvider.registerConfig(fontConfig, this.fontConfigChanged)
         configProvider.registerConfig(fontSizeConfig, this.fontSizeConfigChanged)
@@ -175,7 +182,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, this.keyboardShortcutConfigChanged)
         configProvider.unregisterConfig(fontConfig, this.fontConfigChanged)
         configProvider.unregisterConfig(fontSizeConfig, this.fontSizeConfigChanged)
@@ -194,8 +201,8 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
         this.previewButton = new JToggleButton(previewIcon)
         this.previewButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent actionEvent) {
-                /*JEditorPanePreviewFunction.this.*/enabled = !/*JEditorPanePreviewFunction.this.*/previewButton.isSelected()
+            void actionPerformed(ActionEvent ignored) {
+                JEditorPanePreviewFunction.this.enabled = !JEditorPanePreviewFunction.this.previewButton.isSelected()
                 perform()
             }
         })
@@ -213,6 +220,11 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
 
         this.preview.addKeyListener(this)
 
+        // We don't need to save the FileDrop instance since it installs itself into the first argument.
+        // Do also note that FileDrop is an external library residing in the Editor/lib catalog since
+        // it is not available on maven central.
+
+        //noinspection GroovyResultOfObjectAllocationIgnored
         new FileDrop(this.preview, new FileDrop.Listener() {
             void filesDropped(File[] files) {
                 if (files.length >= 1) {
@@ -240,7 +252,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
      *
      * @param file
      */
-    private void showFile(File file) {
+    private void showFile(@NotNull File file) {
         if (file.getName().endsWith("md") || file.getName().endsWith("markdown")) {
             try {
                 StringBuilder markdownText = new StringBuilder()
@@ -270,26 +282,20 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
     }
 
     @Override
-    void setEditor(Editor editor) {
-        this.editor = editor
-    }
+    void close() {}
 
     @Override
-    void close() {
-    }
-
-    @Override
-    String getGroup() {
+    @NotNull String getGroup() {
         ToolBarGroups.PREVIEW.name()
     }
 
     @Override
-    String getName() {
+    @NotNull String getName() {
         "Preview"
     }
 
     @Override
-    JComponent getToolBarButton() {
+    @NotNull JComponent getToolBarButton() {
         this.previewButton
     }
 
@@ -297,7 +303,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    KeyboardKey getKeyboardShortcut() {
+    @NotNull KeyboardKey getKeyboardShortcut() {
         keyboardShortcutConfig.getKeyboardKey()
     }
 
@@ -315,12 +321,19 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
         }
     }
 
+    /**
+     * Restores the edit view.
+     */
     private void previewOff() {
         this.editor.showEditorComponent()
 
         this.editor.enableToolBarGroup(ToolBarGroups.FORMAT.name())
     }
 
+    /**
+     * Replaces the editor component with a JEditorPane in HTML mode holding a HTML formatted
+     * version of the markdown in the standard edit JEditorPane.
+     */
     private void previewOn() {
         try {
             String html = markdownToHTML(this.editor.getEditorContent())
@@ -341,7 +354,20 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
         }
     }
 
-    private String markdownToHTML(String markdownText) throws IOException, ParseException, GenerateException {
+    /**
+     * Takes a string of markdown and returns a string for formatted HTML.
+     *
+     * @param markdownText The markdown to convert to HTML.
+     *
+     * @return The HTML converted markdown.
+     *
+     * @throws IOException
+     * @throws ParseException
+     * @throws GenerateException
+     */
+    private static @NotNull String markdownToHTML(@NotNull String markdownText)
+            throws IOException, ParseException, GenerateException {
+
         ByteArrayInputStream markDownStream = new ByteArrayInputStream(markdownText.getBytes())
 
         Parser parser = new MarkdownParser()
@@ -394,7 +420,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
      * @param listener The listener to add.
      */
     @Override
-    void addMouseMotionListener(MouseMotionListener listener) {
+    void addMouseMotionListener(@NotNull MouseMotionListener listener) {
         this.preview.addMouseMotionListener(listener)
     }
 
@@ -404,7 +430,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
      * @param listener The listener to remove.
      */
     @Override
-    void removeMouseMotionListener(MouseMotionListener listener) {
+    void removeMouseMotionListener(@NotNull MouseMotionListener listener) {
         this.preview.removeMouseMotionListener(listener)
     }
 }

@@ -29,9 +29,8 @@
             and updated the code using the latest real java annotations. That didn't help, still got
             an IndexOutOfBoundsException.
 
-            I really, really hate JIRA which is a truly crappy piece of software made by people
-            who find it difficult to add one and one getting two. Usability is a concept they never
-            heard of. I'm forced to torture myself with JIRA professionally, but I refuse to do
+            I really, really hate JIRA which is a truly crappy piece of software. Usability is a concept
+            they never heard of. I'm forced to torture myself with JIRA professionally, but I refuse to do
             so on my personal time. I'm thereby not going to file an issue on this. I'll just stick
             to trusty 3.0.5 which does everything I need it to do.
 

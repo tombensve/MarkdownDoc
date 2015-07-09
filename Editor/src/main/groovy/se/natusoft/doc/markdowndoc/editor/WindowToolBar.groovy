@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
 import se.natusoft.doc.markdowndoc.editor.api.ToolBar
@@ -49,6 +50,7 @@ import java.util.List
 /**
  * This is the editorPane toolbar.
  */
+@SuppressWarnings("GroovyUnusedDeclaration")
 @CompileStatic
 @TypeChecked
 class WindowToolBar extends JToolBar implements ToolBar {
@@ -79,7 +81,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
      * @param function The function to add.
      */
     @Override
-    void addFunction(EditorFunction function) {
+    void addFunction(@NotNull EditorFunction function) {
         if (!this.toolBarGroups.contains(function.getGroup())) {
             this.toolBarGroups.add(function.getGroup())
         }
@@ -121,7 +123,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
      * @param group The tool bar group to enable.
      */
     @Override
-    void disableGroup(String group) {
+    void disableGroup(@NotNull String group) {
         List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
             functions.each { EditorFunction function ->
@@ -139,7 +141,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
      * @param group The tool bar group to disable.
      */
     @Override
-    void enableGroup(String group) {
+    void enableGroup(@NotNull String group) {
         List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
             functions.each { EditorFunction function ->
@@ -157,7 +159,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
      * @param editor The associated editorPane provided.
      */
     @Override
-    void attach(Editor editor) {
+    void attach(@NotNull Editor editor) {
         editor.getGUI().getEditorPanel().add(this, BorderLayout.NORTH)
     }
 
@@ -167,7 +169,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
      * @param editor The editorPane to detach from.
      */
     @Override
-    void detach(Editor editor) {
+    void detach(@NotNull Editor editor) {
         editor.getGUI().getEditorPanel().remove(this)
     }
 

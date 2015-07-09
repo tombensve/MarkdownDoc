@@ -38,12 +38,13 @@ package se.natusoft.doc.markdowndoc.editor.functions.utils
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 
 import java.awt.*
 
 /**
- * Wraps properties for editorPane window position and size.
+ * Wraps properties for editorPane window position and size. Also saves and loads these properties.
  */
 @CompileStatic
 @TypeChecked
@@ -84,7 +85,7 @@ class FileWindowProps {
      *
      * @param bounds The bounds to save.
      */
-    void setBounds(Rectangle bounds) {
+    void setBounds(@NotNull Rectangle bounds) {
         this.props.setProperty(X, "" + (int)bounds.getX())
         this.props.setProperty(Y, "" + (int)bounds.getY())
         this.props.setProperty(WIDTH, "" + (int)bounds.getWidth())
@@ -94,7 +95,7 @@ class FileWindowProps {
     /**
      * Returns the bounds in the properties as a Rectangle.
      */
-    Rectangle getBounds() {
+    @NotNull Rectangle getBounds() {
         new Rectangle(
             Integer.valueOf(this.props.getProperty(X)),
             Integer.valueOf(this.props.getProperty(Y)),
@@ -108,7 +109,7 @@ class FileWindowProps {
      *
      * @param editor The editorPane to save for.
      */
-    void saveBounds(Editor editor) {
+    void saveBounds(@NotNull Editor editor) {
         String boundsNamePart = "default"
         if (editor.getCurrentFile() != null) {
             boundsNamePart = editor.getCurrentFile().getName().replace(".", "_")
@@ -122,7 +123,7 @@ class FileWindowProps {
      *
      * @param editor The editorPane to load for.
      */
-    void load(Editor editor) {
+    void load(@NotNull Editor editor) {
         String boundsNamePart = "default"
         if (editor.getCurrentFile() != null) {
             boundsNamePart = editor.getCurrentFile().getName().replace(".", "_")

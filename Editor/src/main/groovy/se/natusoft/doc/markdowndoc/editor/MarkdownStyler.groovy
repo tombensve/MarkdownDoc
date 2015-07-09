@@ -38,6 +38,8 @@ package se.natusoft.doc.markdowndoc.editor
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.JTextComponentStyler
@@ -61,16 +63,16 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
     // Constants
     //
 
-    private static char HASH = '#' as char
-    private static char NL = '\n' as char
-    private static char CR = '\r' as char
-    private static char SPACE = ' ' as char
-    private static char TAB = '\t' as char
-    private static char MINUS = '-' as char
-    private static char PLUS = '+' as char
-    private static char ASTERISK = '*' as char
-    private static char UNDERSCORE = '_' as char
-    private static char BACKSLASH = '\\' as char
+    private static final char HASH = '#' as char
+    private static final char NL = '\n' as char
+    private static final char CR = '\r' as char
+    private static final char SPACE = ' ' as char
+    private static final char TAB = '\t' as char
+    private static final char MINUS = '-' as char
+    private static final char PLUS = '+' as char
+    private static final char ASTERISK = '*' as char
+    private static final char UNDERSCORE = '_' as char
+    private static final char BACKSLASH = '\\' as char
 
     //
     // Private Members
@@ -108,7 +110,7 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
     /**
      * Configuration callback for monospaced font.
      */
-    private Closure monospacedFontConfigChanged = { ConfigEntry ce ->
+    private Closure monospacedFontConfigChanged = { @NotNull ConfigEntry ce ->
         this.monospacedFontFamily = Font.decode(ce.getValue()).getFamily()
 
         StyledDocument doc = (StyledDocument)this.textComponentToStyle.getDocument()
@@ -134,7 +136,7 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
     /**
      * Configuration callback for monospaced font size.
      */
-    private Closure monospacedFontSizeConfigChanged = { ConfigEntry ce ->
+    private Closure monospacedFontSizeConfigChanged = { @NotNull ConfigEntry ce ->
         this.monospacedFontSize = Integer.valueOf(ce.getValue())
 
         StyledDocument doc = (StyledDocument)this.textComponentToStyle.getDocument()
@@ -160,7 +162,7 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
     /**
      * Configuration callback for markdown formatting while editing.
      */
-    private Closure markdownFormatWhileEditingConfigChanged = { ConfigEntry ce ->
+    private Closure markdownFormatWhileEditingConfigChanged = { @NotNull ConfigEntry ce ->
         this.markdownFormatWhileEditing = Boolean.valueOf(ce.getValue())
 
         styleDocument()
@@ -178,7 +180,7 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
     /**
      * Configuration callback.
      */
-    private Closure makeStylingCharsTinyConfigChanged = { ConfigEntry ce ->
+    private Closure makeStylingCharsTinyConfigChanged = { @NotNull ConfigEntry ce ->
         this.makeStylingCharsTiny = ce.getBoolValue()
 
         styleDocument()
@@ -188,7 +190,6 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
     // Styles
     //
 
-    @SuppressWarnings("FieldCanBeLocal")
     private Style baseStyle
     private Style emphasisStyle
     private Style boldStyle
@@ -220,18 +221,18 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
      * @param textComponentToStyle The component to style.
      */
     @Override
-    void init(JTextPane textComponentToStyle) {
+    void init(@NotNull JTextPane textComponentToStyle) {
         this.textComponentToStyle = textComponentToStyle
 
         StyledDocument doc = new DefaultStyledDocument() {
             void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
                 super.insertString(offset, str, a)
-                if (/*MarkdownStyler.this.*/enabled) styleCurrentParagraph()
+                if (MarkdownStyler.this.enabled) styleCurrentParagraph()
             }
 
             void remove(int offs, int len) throws BadLocationException {
                 super.remove(offs, len)
-                if (/*MarkdownStyler.this.*/enabled) styleCurrentParagraph()
+                if (MarkdownStyler.this.enabled) styleCurrentParagraph()
             }
         }
 
@@ -286,7 +287,7 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
      *
      * @param configProvider The config provider to register with.
      */
-    void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.registerConfig(monospacedFontConfig, this.monospacedFontConfigChanged)
         configProvider.registerConfig(monospacedFontSizeConfig, this.monospacedFontSizeConfigChanged)
         configProvider.registerConfig(markdownFormatWhileEditingConfig, this.markdownFormatWhileEditingConfigChanged)
@@ -298,7 +299,7 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
      *
      * @param configProvider The config provider to unregister with.
      */
-    void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.unregisterConfig(monospacedFontConfig, this.monospacedFontConfigChanged)
         configProvider.unregisterConfig(monospacedFontSizeConfig, this.monospacedFontSizeConfigChanged)
         configProvider.unregisterConfig(markdownFormatWhileEditingConfig, this.markdownFormatWhileEditingConfigChanged)
@@ -376,7 +377,7 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
      * @param bounds The bounds for styling.
      * @param text The text of the document to style.
      */
-    private void intStyleDocument(ParagraphBounds bounds, String text) {
+    private void intStyleDocument(@NotNull ParagraphBounds bounds, @Nullable String text) {
         // Speedup by disabling component while styling.
         this.textComponentToStyle.setEnabled(false)
 
@@ -527,7 +528,7 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
      * @param start The position to start at.
      * @param n The character to find.
      */
-    private static int getPosOfNext(String text, int start, char n) {
+    private static int getPosOfNext(@NotNull String text, int start, char n) {
         int npos = start
         try {
             char prev = ' '
@@ -550,7 +551,7 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
      * @param text The text to search.
      * @param start The position to start searching at.
      */
-    private static int getEndOfParagraph(String text, int start) {
+    private static int getEndOfParagraph(@NotNull String text, int start) {
         int npos = start
 
         try {
@@ -582,7 +583,7 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
      * @param text The text to get the character from.
      * @param position The position in the text of the character to get.
      */
-    private static char safeGetChar(String text, int position) {
+    private static char safeGetChar(@NotNull String text, int position) {
         try {
             text.charAt(position)
         }
@@ -597,7 +598,7 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
      * @param text The text to the character from.
      * @param position The position of the character to check.
      */
-    private static boolean checkPgBound(String text, int position) {
+    private static boolean checkPgBound(@NotNull String text, int position) {
         _intCheckPgBound(text, position) && _intCheckPgBound(text, position + 1)
     }
 
@@ -612,7 +613,7 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
      * @param currentPos The current position in the text to scan.
      * @param text The text to scan.
      */
-    private static ParagraphBounds findParagraphBounds(int currentPos, String text) {
+    private static ParagraphBounds findParagraphBounds(int currentPos, @NotNull String text) {
         if (currentPos < 0) { currentPos = 0 }
         ParagraphBounds bounds = new ParagraphBounds()
 
@@ -634,17 +635,4 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
         bounds
     }
 
-    /**
-     * Returns the first 10 characters of the paragraph as a String.
-     *
-     * @param currentPos The current position.
-     * @param bounds The paragraph bounds.
-     * @param text The whole document text.
-     */
-    private static String getStartOfParagraphText(int currentPos, ParagraphBounds bounds, String text) {
-        if (bounds.start == 0) { // Possibly the whole document!
-            bounds = findParagraphBounds(currentPos, text)
-        }
-        text.substring(bounds.start, bounds.start + 60)
-    }
 }

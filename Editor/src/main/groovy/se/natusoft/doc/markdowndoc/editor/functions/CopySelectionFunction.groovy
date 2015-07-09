@@ -38,6 +38,8 @@ package se.natusoft.doc.markdowndoc.editor.functions
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
@@ -55,29 +57,30 @@ class CopySelectionFunction implements EditorFunction {
     // Properties
     //
 
-    Editor editor
+    /** The editor the function is attached to. */
+    @NotNull Editor editor
 
     //
     // Methods
     //
 
     @Override
-    String getGroup() {
+    @Nullable String getGroup() {
         null
     }
 
     @Override
-    String getName() {
+    @NotNull String getName() {
         "Copy"
     }
 
     @Override
-    JComponent getToolBarButton() {
+    @Nullable JComponent getToolBarButton() {
         null
     }
 
     @Override
-    KeyboardKey getKeyboardShortcut() {
+    @NotNull KeyboardKey getKeyboardShortcut() {
         new KeyboardKey("Meta+C")
     }
 

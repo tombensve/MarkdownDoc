@@ -38,6 +38,8 @@ package se.natusoft.doc.markdowndoc.editor.functions
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.api.Parser
 import se.natusoft.doc.markdown.exception.ParseException
 import se.natusoft.doc.markdown.model.Doc
@@ -63,20 +65,20 @@ abstract class AbstractExportFunction implements EditorFunction {
     // properties
     //
 
-    /** The editorPane instance we provide function for. */
-    Editor editor
+    /** The editor instance we provide function for. */
+    @NotNull Editor editor
 
     /** The property key for saving and loading defaults. */
-    String defaultsPropKey
+    @NotNull String defaultsPropKey
 
     /** The currently generated file. */
-    File exportFile = null
+    @Nullable File exportFile = null
 
     //
     // Constructor
     //
 
-    AbstractExportFunction(String defaultsPropKey) {
+    AbstractExportFunction(@NotNull String defaultsPropKey) {
         this.defaultsPropKey = defaultsPropKey
     }
 
@@ -87,40 +89,40 @@ abstract class AbstractExportFunction implements EditorFunction {
     /**
      * Returns a local implementation of LocalServiceData.
      */
-    protected DelayedServiceData getLocalServiceData() {
+    protected @NotNull DelayedServiceData getLocalServiceData() {
         new DelayedServiceData() {
             /**
              * Returns the default property key.
              */
-            String getDefaultsPropKey() {
+            @NotNull String getDefaultsPropKey() {
                 AbstractExportFunction.this.defaultsPropKey
             }
 
             /**
              *  Returns the file to export to.
              */
-            File getExportFile() {
+            @Nullable File getExportFile() {
                 AbstractExportFunction.this.exportFile
             }
 
             /**
              * Returns the editorPane GUI API.
              */
-            GUI getGUI() {
+            @NotNull GUI getGUI() {
                 AbstractExportFunction.this.editor.getGUI()
             }
 
             /**
              * Returns the config API.
              */
-            ConfigProvider getConfigProvider() {
+            @NotNull ConfigProvider getConfigProvider() {
                 AbstractExportFunction.this.editor.getConfigProvider()
             }
 
             /**
              * Returns the persistent properties provider.
              */
-            PersistentProps getPersistentProps() {
+            @NotNull PersistentProps getPersistentProps() {
                 AbstractExportFunction.this.editor.getPersistentProps()
             }
 
@@ -130,8 +132,13 @@ abstract class AbstractExportFunction implements EditorFunction {
     /**
      * Opens i file chooser dialog for specifying the PDF generation target file, and
      * returns the selected file.
+     *
+     * @param type The type of the file. Example: "HTML" or "PDF".
+     * @param definition Passed to swings FileNameExtensionFilter and is a description of the type of file
+     *                   being filtered. For example "pdf".
+     * @param extFilter The actual extensions of files to make selectable in file chooser. For example "html", "htm".
      */
-    protected File getExportOutputFile(String type, String definition, String... extFilter) {
+    protected File getExportOutputFile(@NotNull String type, @NotNull String definition, @NotNull String... extFilter) {
         File selectedFile = null
         JFileChooser fileChooser = new JFileChooser()
         fileChooser.setDialogTitle("Specify file to save " + type + " to")
@@ -158,14 +165,14 @@ abstract class AbstractExportFunction implements EditorFunction {
      *
      * @param file The file to convert to properties name.
      */
-    protected String fileToPropertiesName(File file) {
+    protected String fileToPropertiesName(@NotNull File file) {
         file.getName().replace(".", "_")
     }
 
     /**
      * Extracts the markdown text in the editorPane and returns a parsed Doc document model of it.
      */
-    protected Doc getMarkdownDocument() {
+    protected @NotNull Doc getMarkdownDocument() {
         String markdownText = this.editor.getEditorContent()
         ByteArrayInputStream markDownStream = new ByteArrayInputStream(markdownText.getBytes())
 

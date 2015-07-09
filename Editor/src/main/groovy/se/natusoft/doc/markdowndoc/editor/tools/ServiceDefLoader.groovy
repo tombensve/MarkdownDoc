@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.tools
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 
 /**
  * This will load the same file as ServiceLoader but return Class object instead of instances.
@@ -63,7 +64,7 @@ class ServiceDefLoader {
      *
      * @param serviceAPI The service API to load.
      */
-    private ServiceDefLoader(Class serviceAPI) {
+    private ServiceDefLoader(@NotNull Class serviceAPI) {
         BufferedReader svcReader = new BufferedReader(
                 new InputStreamReader(
                     Thread.currentThread().getContextClassLoader().getResourceAsStream("META-INF/services/" + serviceAPI.getName())
@@ -101,7 +102,7 @@ class ServiceDefLoader {
      *
      * @param serviceAPI The service API to load services definitions for.
      */
-    static Iterator<Class> load(Class serviceAPI) {
+    static Iterator<Class> load(@NotNull Class serviceAPI) {
         new ServiceDefLoader(serviceAPI).services.iterator()
     }
 
@@ -113,7 +114,7 @@ class ServiceDefLoader {
      *
      * @return The instantiated instance or null on failure.
      */
-    static <T> T instantiate(Class<T> svcClass) {
+    static <T> T instantiate(@NotNull Class<T> svcClass) {
         T instance = null
         try {
             instance = (T)svcClass.newInstance()

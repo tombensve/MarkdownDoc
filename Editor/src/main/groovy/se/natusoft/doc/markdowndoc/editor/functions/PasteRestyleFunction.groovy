@@ -38,15 +38,17 @@ package se.natusoft.doc.markdowndoc.editor.functions
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
-import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
+import static se.natusoft.doc.markdowndoc.editor.api.Constants.*
 
 import javax.swing.*
 
@@ -59,10 +61,11 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
 @TypeChecked
 class PasteRestyleFunction implements EditorFunction, Configurable {
     //
-    // Private Members
+    // Properties
     //
 
-    private Editor editor
+    /** The editor this function is bound to. */
+    Editor editor
 
     //
     // Config
@@ -82,7 +85,7 @@ class PasteRestyleFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -92,7 +95,7 @@ class PasteRestyleFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -101,23 +104,18 @@ class PasteRestyleFunction implements EditorFunction, Configurable {
     //
 
     @Override
-    void setEditor(Editor editor) {
-        this.editor = editor
+    @Nullable String getGroup() {
+        NOT_SUPPORTED as String
     }
 
     @Override
-    String getGroup() {
-        null
-    }
-
-    @Override
-    String getName() {
+    @NotNull String getName() {
         "Paste"
     }
 
     @Override
-    JComponent getToolBarButton() {
-        null
+    @Nullable JComponent getToolBarButton() {
+        NOT_SUPPORTED as JComponent
     }
 
     /**

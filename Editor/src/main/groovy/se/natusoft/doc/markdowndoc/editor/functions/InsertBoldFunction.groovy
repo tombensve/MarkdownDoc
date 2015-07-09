@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.functions
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
@@ -64,8 +65,14 @@ class InsertBoldFunction implements EditorFunction, Configurable {
     // Private Members
     //
 
-    private Editor editor
     private JButton boldButton
+
+    //
+    // Properties
+    //
+
+    /** The editor this function is bound to. */
+    Editor editor
 
     //
     // Config
@@ -85,7 +92,7 @@ class InsertBoldFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -95,7 +102,7 @@ class InsertBoldFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -124,22 +131,17 @@ class InsertBoldFunction implements EditorFunction, Configurable {
     }
 
     @Override
-    void setEditor(Editor editor) {
-        this.editor = editor
-    }
-
-    @Override
-    String getGroup() {
+    @NotNull String getGroup() {
         ToolBarGroups.FORMAT.name()
     }
 
     @Override
-    String getName() {
+    @NotNull String getName() {
         "Insert bold format"
     }
 
     @Override
-    JComponent getToolBarButton() {
+    @NotNull JComponent getToolBarButton() {
         this.boldButton
     }
 
@@ -147,7 +149,7 @@ class InsertBoldFunction implements EditorFunction, Configurable {
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    KeyboardKey getKeyboardShortcut() {
+    @NotNull KeyboardKey getKeyboardShortcut() {
         keyboardShortcutConfig.getKeyboardKey()
     }
 

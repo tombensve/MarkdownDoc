@@ -38,12 +38,12 @@ package se.natusoft.doc.markdowndoc.editor.functions
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
-import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
@@ -67,8 +67,14 @@ class SaveFunction implements EditorFunction, Configurable {
     // Private Members
     //
 
-    private Editor editor
     private JButton saveButton
+
+    //
+    // Properties
+    //
+
+    /** The editor this function is bound to. */
+    Editor editor
 
     //
     // Config
@@ -88,7 +94,7 @@ class SaveFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -98,7 +104,7 @@ class SaveFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -111,7 +117,7 @@ class SaveFunction implements EditorFunction, Configurable {
         this.saveButton = new JButton(saveIcon)
         this.saveButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent actionEvent) {
+            void actionPerformed(ActionEvent ignored) {
                 perform()
             }
         })
@@ -126,28 +132,18 @@ class SaveFunction implements EditorFunction, Configurable {
         this.saveButton.setToolTipText("Save (" + keyboardShortcutConfig.getKeyboardKey() + ")")
     }
 
-    /**
-     * Sets the editorPane for the function to use.
-     *
-     * @param editor The editorPane to set.
-     */
     @Override
-    void setEditor(Editor editor) {
-        this.editor = editor
-    }
-
-    @Override
-    String getGroup() {
+    @NotNull String getGroup() {
         ToolBarGroups.FILE.name()
     }
 
     @Override
-    String getName() {
+    @NotNull String getName() {
         "Save file"
     }
 
     @Override
-    JComponent getToolBarButton() {
+    @NotNull JComponent getToolBarButton() {
         this.saveButton
     }
 
@@ -155,7 +151,7 @@ class SaveFunction implements EditorFunction, Configurable {
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    KeyboardKey getKeyboardShortcut() {
+    @NotNull KeyboardKey getKeyboardShortcut() {
         keyboardShortcutConfig.getKeyboardKey()
     }
 
@@ -178,8 +174,12 @@ class SaveFunction implements EditorFunction, Configurable {
         }
     }
 
+    /**
+     * Shows "Saved!" for 2,5 seconds up in the left cornet of the edit window.
+     */
     private void showSavedInfo() {
         new Thread() {
+            @SuppressWarnings("UnnecessaryQualifiedReference")
             @Override
             void run() {
                 int x = editor.getGUI().getWindowFrame().getX()
@@ -194,7 +194,7 @@ class SaveFunction implements EditorFunction, Configurable {
                 window.setLocation(x + 10, y + 30)
                 window.setVisible(true)
                 window.setSize(window.getPreferredSize())
-                try {Thread.sleep(2500)} catch (Exception e) {}
+                try { Thread.sleep(2500) } catch (Exception ignored) {}
                 window.setVisible(false)
             }
         }.start()

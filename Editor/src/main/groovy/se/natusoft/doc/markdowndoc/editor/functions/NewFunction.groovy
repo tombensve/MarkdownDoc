@@ -38,12 +38,12 @@ package se.natusoft.doc.markdowndoc.editor.functions
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
-import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
@@ -65,8 +65,14 @@ class NewFunction implements EditorFunction, Configurable {
     // Private Members
     //
 
-    private Editor editor
     private JButton newButton
+
+    //
+    // Properties
+    //
+
+    /** The editor this function is bound to. */
+    Editor editor
 
     //
     // Config
@@ -86,7 +92,7 @@ class NewFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -96,7 +102,7 @@ class NewFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -109,7 +115,7 @@ class NewFunction implements EditorFunction, Configurable {
         this.newButton = new JButton(newIcon)
         newButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent actionEvent) {
+            void actionPerformed(ActionEvent ignored) {
                 perform()
             }
         })
@@ -125,22 +131,17 @@ class NewFunction implements EditorFunction, Configurable {
     }
 
     @Override
-    void setEditor(Editor editor) {
-        this.editor = editor
-    }
-
-    @Override
-    String getGroup() {
+    @NotNull String getGroup() {
         ToolBarGroups.FILE.name()
     }
 
     @Override
-    String getName() {
+    @NotNull String getName() {
         "New editorPane window"
     }
 
     @Override
-    JComponent getToolBarButton() {
+    @NotNull JComponent getToolBarButton() {
         this.newButton
     }
 
@@ -148,7 +149,7 @@ class NewFunction implements EditorFunction, Configurable {
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    KeyboardKey getKeyboardShortcut() {
+    @NotNull KeyboardKey getKeyboardShortcut() {
         keyboardShortcutConfig.getKeyboardKey()
     }
 
@@ -157,7 +158,7 @@ class NewFunction implements EditorFunction, Configurable {
         Thread openThread = new Thread(new Runnable() {
             @Override
             void run() {
-                /*NewFunction.this.*/editor.openNewEditorWindow()
+                NewFunction.this.editor.openNewEditorWindow()
             }
         })
         openThread.start()

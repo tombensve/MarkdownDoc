@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.functions
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.PDFGenerator
@@ -107,7 +108,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -117,7 +118,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -140,7 +141,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
         private ExportDataValue generateTOC = new ExportDataSelectValue("Generate TOC:")
         private ExportDataValue openResult = new ExportDataSelectValue("Open result:")
 
-        PDFData(DelayedServiceData delayedServiceData) {
+        PDFData(@NotNull DelayedServiceData delayedServiceData) {
             super(delayedServiceData)
         }
     }
@@ -172,7 +173,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
      * Returns the group name the function belongs to.
      */
     @Override
-    String getGroup() {
+    @NotNull String getGroup() {
         ToolBarGroups.EXPORT.name()
     }
 
@@ -180,7 +181,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
      * Returns the name of the function.
      */
     @Override
-    String getName() {
+    @NotNull String getName() {
         "Export to PDF"
     }
 
@@ -188,7 +189,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
      * Returns the function toolbar button.
      */
     @Override
-    JComponent getToolBarButton() {
+    @NotNull JComponent getToolBarButton() {
         this.pdfToolbarButton
     }
 
@@ -196,7 +197,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    KeyboardKey getKeyboardShortcut() {
+    @NotNull KeyboardKey getKeyboardShortcut() {
         keyboardShortcutConfig.getKeyboardKey()
     }
 
@@ -307,7 +308,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
             throw new RuntimeException(ge.getMessage(), ge)
         }
         finally {
-            try {if (pdfStream!= null) pdfStream.close()} catch (IOException cioe) {}
+            try {if (pdfStream!= null) pdfStream.close()} catch (IOException ignored) {}
         }
 
         if (this.editor.getCurrentFile() != null) {

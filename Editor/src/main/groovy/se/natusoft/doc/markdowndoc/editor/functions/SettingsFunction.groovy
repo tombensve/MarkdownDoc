@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.functions
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.*
 import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged
@@ -70,11 +71,17 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
     // Private Members
     //
 
-    private Editor editor = null
     private JButton settingsButton = null
     private SettingsWindow settingsWindow = null
 
     private Map<String, String> cancelValues = null
+
+    //
+    // Properties
+    //
+
+    /** The editor this function is bound to. */
+    Editor editor = null
 
     //
     // Config
@@ -94,7 +101,7 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -104,7 +111,7 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -117,7 +124,7 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
         this.settingsButton = new JButton(settingsIcon)
         this.settingsButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent actionEvent) {
+            void actionPerformed(ActionEvent ignored) {
                 perform()
             }
         })
@@ -133,22 +140,17 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
     }
 
     @Override
-    void setEditor(Editor editor) {
-        this.editor = editor
-    }
-
-    @Override
-    String getGroup() {
+    @NotNull String getGroup() {
         ToolBarGroups.CONFIG.name()
     }
 
     @Override
-    String getName() {
+    @NotNull String getName() {
         "Open settings"
     }
 
     @Override
-    JComponent getToolBarButton() {
+    @NotNull JComponent getToolBarButton() {
         this.settingsButton
     }
 
@@ -156,7 +158,7 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    KeyboardKey getKeyboardShortcut() {
+    @NotNull KeyboardKey getKeyboardShortcut() {
         keyboardShortcutConfig.getKeyboardKey()
     }
 
@@ -184,8 +186,13 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
         this.settingsWindow.setVisible(true)
     }
 
-    private void withAllConfigEntriesDo(Closure ceClosure) {
-        this.editor.getConfigProvider().getConfigs().each ceClosure
+    /**
+     * Execute specified closure on all configs.
+     *
+     * @param closure The closure to run.
+     */
+    private void withAllConfigEntriesDo(@NotNull Closure closure) {
+        this.editor.getConfigProvider().getConfigs().each closure
     }
 
     /**
@@ -210,6 +217,7 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
 
         this.editor.getPersistentProps().save(SETTINGS_PROP_NAME, props)
 
+        // When we save, also remember the position and size of the editor window.
         FileWindowProps fileWindowProps = new FileWindowProps()
         fileWindowProps.setBounds(this.editor.getGUI().getWindowFrame().getBounds())
         fileWindowProps.saveBounds(this.editor)
@@ -225,7 +233,6 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
                 String propValue = props.getProperty(propName)
                 ConfigEntry configEntry = this.editor.getConfigProvider().lookupConfig(propName)
                 if (configEntry != null) {
-                    //System.out.println("configEntry {" + configEntry.getKey() + ", " + configEntry.getValue() + ", " + propValue + "}")
                     configEntry.setValue(propValue)
                 }
             }
@@ -238,6 +245,7 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
 
         SwingUtilities.updateComponentTreeUI(this.editor.getGUI().getWindowFrame())
 
+        // Restore window position and size to last saved.
         FileWindowProps fileWindowProps = new FileWindowProps()
         fileWindowProps.load(this.editor)
         if (fileWindowProps.hasProperties()) {
@@ -249,9 +257,7 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
     /**
      * Cleanup and unregister any configs.
      */
-    void close() {
-
-    }
+    void close() {}
 
     /**
      * Initializes the component.

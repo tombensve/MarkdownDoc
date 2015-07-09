@@ -38,6 +38,8 @@ package se.natusoft.doc.markdowndoc.editor.gui
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 
 import java.awt.*
 import java.util.List
@@ -59,14 +61,18 @@ class SmartFlowLayout implements LayoutManager2 {
     /** The calculated minimum size. */
     private Dimension minimumSize = new Dimension(0,0)
 
+    //
+    // Properties
+    //
+
     /** The gap to put between each component row. */
-    private int vgap = 0
+    int vgap = 0
 
     /** The gap to put between each component. */
-    private int hgap = 0
+    int hgap = 0
 
     /** If true then all components will have the same width (as the widest component). */
-    private boolean commonWidth = true
+    boolean commonWidth = true
 
     //
     // Constructors
@@ -75,40 +81,7 @@ class SmartFlowLayout implements LayoutManager2 {
     /**
      * Creates a new SmartFlowLayout.
      */
-    SmartFlowLayout() {
-    }
-
-    /**
-     * Creates a new SmartFlowLayout.
-     *
-     * @param hgap The gap between each component. Default 0.
-     * @param vgap The gap between each component row. Default 0.
-     */
-    SmartFlowLayout(int hgap, int vgap) {
-        this.hgap = hgap
-        this.vgap = vgap
-    }
-
-    /**
-     * Creates a new SmartFlowLayout.
-     *
-     * @param commonWidth If true then all components will have the same width (the width of the widest component). Default true.
-     */
-    SmartFlowLayout(boolean commonWidth) {
-        this.commonWidth = commonWidth
-    }
-
-    /**
-     * Creates a new SmartFlowLayout.
-     *
-     * @param hgap The gap between each component. Default 0.
-     * @param vgap The gap between each component row. Default 0.
-     * @param commonWidth If true then all components will have the same width (the width of the widest component). Default true.
-     */
-    SmartFlowLayout(int hgap,int vgap, boolean commonWidth) {
-        this.vgap = vgap
-        this.commonWidth = commonWidth
-    }
+    SmartFlowLayout() {}
 
     //
     // Methods
@@ -124,7 +97,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @param comp the component to be added
      */
     @Override
-    void addLayoutComponent(String name, Component comp) {
+    void addLayoutComponent(@Nullable("Not used") String name, @NotNull Component comp) {
         this.components.add(comp)
     }
 
@@ -134,7 +107,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @param comp the component to be removed
      */
     @Override
-    void removeLayoutComponent(Component comp) {
+    void removeLayoutComponent(@NotNull Component comp) {
         this.components.remove(comp)
     }
 
@@ -146,7 +119,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @see #minimumLayoutSize
      */
     @Override
-    Dimension preferredLayoutSize(Container parent) {
+    @NotNull Dimension preferredLayoutSize(Container parent) {
         minimumLayoutSize(parent)
     }
 
@@ -158,7 +131,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @see #preferredLayoutSize
      */
     @Override
-    Dimension minimumLayoutSize(Container parent) {
+    @NotNull Dimension minimumLayoutSize(Container parent) {
         synchronized (parent.getTreeLock()) {
             doLayout(parent, false)
         }
@@ -171,7 +144,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @param parent the container to be laid out
      */
     @Override
-    void layoutContainer(Container parent) {
+    void layoutContainer(@NotNull Container parent) {
         synchronized (parent.getTreeLock()) {
             doLayout(parent, true)
         }
@@ -183,7 +156,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @param parent The parent container we are doing layout for.
      * @param update If true actual layout will be done. If false only minimum size will be calculated.
      */
-    private void doLayout(Container parent, boolean update) {
+    private void doLayout(@NotNull Container parent, boolean update) {
         Insets insets = parent.getInsets()
         int x = insets.left
         int y = insets.top
@@ -249,7 +222,8 @@ class SmartFlowLayout implements LayoutManager2 {
      * @param constraints where/how the component is added to the layout.
      */
     @Override
-    void addLayoutComponent(Component comp, Object constraints) {
+    void addLayoutComponent(@NotNull Component comp, @Nullable("Not used") Object constraints) {
+
         addLayoutComponent("", comp)
     }
 
@@ -262,7 +236,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @see java.awt.LayoutManager
      */
     @Override
-    Dimension maximumLayoutSize(Container target) {
+    Dimension maximumLayoutSize(@NotNull Container target) {
         preferredLayoutSize(target)
     }
 
@@ -276,7 +250,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @param target The target container we are doing layout for.
      */
     @Override
-    float getLayoutAlignmentX(Container target) {
+    float getLayoutAlignmentX(@Nullable("Not used") Container target) {
         0.0f
     }
 
@@ -290,7 +264,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @param target The target container we are doing layout for.
      */
     @Override
-    float getLayoutAlignmentY(Container target) {
+    float getLayoutAlignmentY(@Nullable("Not used") Container target) {
         0.0f
     }
 
@@ -301,7 +275,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @param target The target container we are doing layout for.
      */
     @Override
-    void invalidateLayout(Container target) {
+    void invalidateLayout(@Nullable("Not used") Container target) {
         // Nothing to invalidate.
     }
 }

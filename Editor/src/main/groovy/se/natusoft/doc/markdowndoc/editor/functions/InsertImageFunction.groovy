@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.functions
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
@@ -67,12 +68,18 @@ class InsertImageFunction implements EditorFunction, Configurable {
     // Private Members
     //
 
-    private Editor editor
     private JButton imageButton
     private JTextField imageAltText
     private JTextField imageURL
     private JTextField imageTitle
     private JWindow inputDialog
+
+    //
+    // Properties
+    //
+
+    /** The editor to which this function is bound. */
+    Editor editor
 
     //
     // Config
@@ -92,7 +99,7 @@ class InsertImageFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -102,7 +109,7 @@ class InsertImageFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -115,7 +122,7 @@ class InsertImageFunction implements EditorFunction, Configurable {
         this.imageButton = new JButton(imageIcon)
         imageButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent actionEvent) {
+            void actionPerformed(ActionEvent ignored) {
                 perform()
             }
         })
@@ -131,21 +138,11 @@ class InsertImageFunction implements EditorFunction, Configurable {
     }
 
     /**
-     * Sets the editorPane for the component to use.
-     *
-     * @param editor The editorPane to set.
-     */
-    @Override
-    void setEditor(Editor editor) {
-        this.editor = editor
-    }
-
-    /**
      * Returns the group in the tool bar this functions should be placed in.
      * A new group will be created if the named group does not exist.
      */
     @Override
-    String getGroup() {
+    @NotNull String getGroup() {
         ToolBarGroups.FORMAT.name()
     }
 
@@ -153,7 +150,7 @@ class InsertImageFunction implements EditorFunction, Configurable {
      * Returns the name of the function.
      */
     @Override
-    String getName() {
+    @NotNull String getName() {
         "Insert Image"
     }
 
@@ -161,7 +158,7 @@ class InsertImageFunction implements EditorFunction, Configurable {
      * Returns this functions toolbar button or null if it does not have one.
      */
     @Override
-    JComponent getToolBarButton() {
+    @NotNull JComponent getToolBarButton() {
         this.imageButton
     }
 
@@ -169,17 +166,17 @@ class InsertImageFunction implements EditorFunction, Configurable {
      * Returns the keyboard shortcut for the function.
      */
     @Override
-    KeyboardKey getKeyboardShortcut() {
+    @NotNull KeyboardKey getKeyboardShortcut() {
         keyboardShortcutConfig.getKeyboardKey()
     }
 
-    private JPanel createLabelPanel(String text) {
+    private static JPanel createLabelPanel(String text) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT))
         panel.add(new JLabel(text))
         panel
     }
 
-    private JPanel createTextFieldPanel(JTextField textField) {
+    private static JPanel createTextFieldPanel(JTextField textField) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT))
         panel.add(textField)
         panel
@@ -212,7 +209,7 @@ class InsertImageFunction implements EditorFunction, Configurable {
         JButton fileSelectButton = new JButton("...")
         fileSelectButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent e) {
+            void actionPerformed(ActionEvent ignored) {
                 JFileChooser fileChooser = new JFileChooser()
                 fileChooser.setDialogType(JFileChooser.OPEN_DIALOG)
                 int returnVal = fileChooser.showOpenDialog(editor.getGUI().getWindowFrame())
@@ -237,7 +234,7 @@ class InsertImageFunction implements EditorFunction, Configurable {
         JButton insertButton = new JButton("Insert")
         insertButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent e) {
+            void actionPerformed(ActionEvent ignored) {
                 inputDialog.setVisible(false)
                 imageButton.setEnabled(true)
                 editor.insertText("![" + imageAltText.getText() + "](" +
@@ -250,7 +247,7 @@ class InsertImageFunction implements EditorFunction, Configurable {
         JButton cancelButton = new JButton("Cancel")
         cancelButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent e) {
+            void actionPerformed(ActionEvent ignored) {
                 inputDialog.setVisible(false)
                 imageButton.setEnabled(true)
                 editor.requestEditorFocus()

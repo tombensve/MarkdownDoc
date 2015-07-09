@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.functions.settings.gui
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.config.*
 
 import javax.swing.*
@@ -51,7 +52,7 @@ import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 
 /**
- * Manages and edits one ConfigEntry.
+ * GUI component that manages and edits one ConfigEntry.
  */
 @CompileStatic
 @TypeChecked
@@ -73,7 +74,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
     // Constructors
     //
 
-    ConfigEditPanel(ConfigEntry configEntry, JFrame parent) {
+    ConfigEditPanel(@NotNull ConfigEntry configEntry, @NotNull JFrame parent) {
         this.configEntry = configEntry
         this.parent = parent
 
@@ -138,7 +139,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
     }
 
     @Override
-    Dimension getPreferredSize() {
+    @NotNull Dimension getPreferredSize() {
         Dimension preferredSize = super.getPreferredSize()
         if (preferredSize.width < this.minWidth) {
             preferredSize.size = new Dimension(minWidth, (int)preferredSize.height)
@@ -148,7 +149,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
     }
 
     @Override
-    Dimension getMinimumSize() {
+    @NotNull Dimension getMinimumSize() {
         getPreferredSize()
     }
 
@@ -159,22 +160,22 @@ class ConfigEditPanel extends JPanel implements ActionListener {
 
     private JCheckBox checkBox
 
-    private void setupBooleanConfigEntry(BooleanConfigEntry configEntry) {
+    private void setupBooleanConfigEntry(@NotNull BooleanConfigEntry configEntry) {
         this.checkBox = new JCheckBox()
         add(this.checkBox)
         this.checkBox.addActionListener(this)
         refreshBooleanConfigEntry(configEntry)
     }
 
-    private void refreshBooleanConfigEntry(BooleanConfigEntry configEntry) {
+    private void refreshBooleanConfigEntry(@NotNull BooleanConfigEntry configEntry) {
         this.checkBox.setSelected(configEntry.getBoolValue())
     }
 
     // ------ Valid Selection ConfigProvider Entry ------
 
-    JComboBox<ValidSelectionConfigEntry.Value> comboBox
+    private JComboBox<ValidSelectionConfigEntry.Value> comboBox
 
-    private void setupValidSelectionConfigEntry(ValidSelectionConfigEntry configEntry) {
+    private void setupValidSelectionConfigEntry(@NotNull ValidSelectionConfigEntry configEntry) {
         this.comboBox = new JComboBox<>(configEntry.getValidValues())
         //this.comboBox.setToolTipText(configEntry.getDescription())
         add(this.comboBox)
@@ -182,7 +183,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
         refreshValidSelectionConfigEntry(configEntry)
     }
 
-    private void refreshValidSelectionConfigEntry(ValidSelectionConfigEntry configEntry) {
+    private void refreshValidSelectionConfigEntry(@NotNull ValidSelectionConfigEntry configEntry) {
         this.comboBox.setSelectedItem(new ValidSelectionConfigEntry.Value(configEntry.getShowValue()))
     }
 
@@ -192,7 +193,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
     private JSpinner greenSpinner
     private JSpinner blueSpinner
 
-    private void setupColorConfigEntry(final ColorConfigEntry colorConfigEntry) {
+    private void setupColorConfigEntry(@NotNull ColorConfigEntry colorConfigEntry) {
         JPanel colorPanel = new JPanel()
         colorPanel.setLayout(new FlowLayout())
         add(colorPanel)
@@ -201,7 +202,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
         colorPanel.add(this.redSpinner)
         this.redSpinner.addChangeListener(new ChangeListener() {
             @Override
-            void stateChanged(ChangeEvent e) {
+            void stateChanged(@NotNull ChangeEvent e) {
                 JSpinner redSpinner = (JSpinner)e.getSource()
                 colorConfigEntry.setRed((Integer)redSpinner.getValue())
             }
@@ -211,7 +212,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
         colorPanel.add(this.greenSpinner)
         this.greenSpinner.addChangeListener(new ChangeListener() {
             @Override
-            void stateChanged(ChangeEvent e) {
+            void stateChanged(@NotNull ChangeEvent e) {
                 JSpinner greenSpinner = (JSpinner)e.getSource()
                 colorConfigEntry.setGreen((Integer) greenSpinner.getValue())
             }
@@ -221,7 +222,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
         colorPanel.add(this.blueSpinner)
         this.blueSpinner.addChangeListener(new ChangeListener() {
             @Override
-            void stateChanged(ChangeEvent e) {
+            void stateChanged(@NotNull ChangeEvent e) {
                 JSpinner blueSpinner = (JSpinner)e.getSource()
                 colorConfigEntry.setBlue((Integer) blueSpinner.getValue())
             }
@@ -231,7 +232,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
         colorPanel.add(colorChooserButton)
         colorChooserButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent e) {
+            void actionPerformed(@NotNull ActionEvent e) {
                 Color selectedColor =
                         JColorChooser.showDialog(/*ConfigEditPanel.this.*/parent,
                                 "", new ConfigColor(colorConfigEntry))
@@ -247,7 +248,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
         })
     }
 
-    private void refreshColorConfigEntry(ColorConfigEntry configEntry) {
+    private void refreshColorConfigEntry(@NotNull ColorConfigEntry configEntry) {
         this.redSpinner.setValue(configEntry.getRed())
         this.greenSpinner.setValue(configEntry.getGreen())
         this.blueSpinner.setValue(configEntry.getBlue())
@@ -257,7 +258,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
 
     private JSpinner doubleSpinner
 
-    private void setupDoubleConfigEntry(final DoubleConfigEntry configEntry) {
+    private void setupDoubleConfigEntry(@NotNull DoubleConfigEntry configEntry) {
         SpinnerNumberModel snm = new SpinnerNumberModel(configEntry.getDoubleValue(),
                 configEntry.getMinValue(), configEntry.getMaxValue(), 1.0)
         this.doubleSpinner = new JSpinner(snm)
@@ -273,7 +274,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
         })
     }
 
-    private void refreshDoubleConfigEntry(DoubleConfigEntry configEntry) {
+    private void refreshDoubleConfigEntry(@NotNull DoubleConfigEntry configEntry) {
         this.doubleSpinner.setValue(configEntry.getDoubleValue())
     }
 
@@ -281,7 +282,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
 
     private JSpinner intSpinner
 
-    private void setupIntegerConfigEntry(final IntegerConfigEntry configEntry) {
+    private void setupIntegerConfigEntry(@NotNull IntegerConfigEntry configEntry) {
         SpinnerNumberModel snm = new SpinnerNumberModel(configEntry.getIntValue(),
                 configEntry.getMinValue(), configEntry.getMaxValue(), 1)
         this.intSpinner = new JSpinner(snm)
@@ -297,7 +298,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
         })
     }
 
-    private void refreshIntegerConfigEntry(IntegerConfigEntry configEntry) {
+    private void refreshIntegerConfigEntry(@NotNull IntegerConfigEntry configEntry) {
         this.intSpinner.setValue(configEntry.getIntValue())
     }
 
@@ -306,7 +307,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
     private JTextField keyboardKeyField
     private KeyEvent keyPressedEvent
 
-    private void setupKeyboardKeyConfigEntry(final KeyConfigEntry configEntry) {
+    private void setupKeyboardKeyConfigEntry(@NotNull KeyConfigEntry configEntry) {
         this.keyboardKeyField = new JTextField()
         //this.keyboardKeyField.setEditable(false)
         JPanel panel = new JPanel(new GridLayout(1,1))
@@ -332,7 +333,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
         refreshKeyboardKeyConfigEntry(configEntry)
     }
 
-    private void refreshKeyboardKeyConfigEntry(ConfigEntry configEntry) {
+    private void refreshKeyboardKeyConfigEntry(@NotNull ConfigEntry configEntry) {
         this.keyboardKeyField.setText(configEntry.getValue())
     }
 
@@ -340,7 +341,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
 
     private JTextField textField
 
-    private void setupDefaultConfigEntry(ConfigEntry configEntry) {
+    private void setupDefaultConfigEntry(@NotNull ConfigEntry configEntry) {
         this.textField = new JTextField()
         JPanel panel = new JPanel(new FlowLayout())
         panel.add(this.textField)
@@ -349,7 +350,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
         refreshDefaultConfigEntry(configEntry)
     }
 
-    private void refreshDefaultConfigEntry(ConfigEntry configEntry) {
+    private void refreshDefaultConfigEntry(@NotNull ConfigEntry configEntry) {
         this.textField.setText(configEntry.getValue())
     }
 
@@ -357,7 +358,7 @@ class ConfigEditPanel extends JPanel implements ActionListener {
      * Invoked when an action occurs.
      */
     @Override
-    void actionPerformed(ActionEvent e) {
+    void actionPerformed(@NotNull ActionEvent e) {
         if (e.getSource() instanceof JComboBox) {
             JComboBox comboBox = (JComboBox)e.getSource()
             if (comboBox.getSelectedItem() instanceof ValidSelectionConfigEntry.Value) {

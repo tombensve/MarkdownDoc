@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
 import se.natusoft.doc.markdowndoc.editor.api.ToolBar
@@ -89,7 +90,7 @@ class SinglePopupToolbar implements ToolBar {
     // Methods
     //
 
-    protected void mouseMovedHandler(MouseEvent e) {
+    protected void mouseMovedHandler(@NotNull MouseEvent e) {
         int y = e.getY() - this.editor.getGUI().getEditorVisibleY()
         if (y <= getTopMargin() && e.getX() >= 0 && e.getX() <= getEditorWidth()) {
             if (!isOpen()) {
@@ -113,7 +114,7 @@ class SinglePopupToolbar implements ToolBar {
      *
      * @param editor The associated editorPane provided.
      */
-    void attach(Editor editor) {
+    void attach(@NotNull Editor editor) {
         this.editor = editor
 
         this.mouseMotionListener = new MouseMotionListener() {
@@ -134,7 +135,7 @@ class SinglePopupToolbar implements ToolBar {
      * @param editor The editorPane to detach from.
      */
     @Override
-    void detach(Editor editor) {
+    void detach(@NotNull Editor editor) {
         close()
         editor.removeMouseMotionListener(this.mouseMotionListener)
         this.editor = null
@@ -145,7 +146,7 @@ class SinglePopupToolbar implements ToolBar {
     /**
      * Convenience method to get information from associated editorPane.
      */
-    private JFrame getParentFrame() {
+    private @NotNull JFrame getParentFrame() {
         this.editor.getGUI().getWindowFrame()
     }
 
@@ -170,7 +171,7 @@ class SinglePopupToolbar implements ToolBar {
      * @param x The X coordinate to open at.
      * @param y The Y coordinate to open at.
      */
-    private void open(JFrame parent, int x, int y) {
+    private void open(@NotNull JFrame parent, int x, int y) {
 
         boolean create = (this.toolBarWindow == null)
 
@@ -242,7 +243,7 @@ class SinglePopupToolbar implements ToolBar {
      *
      * @param function The function to add.
      */
-    void addFunction(EditorFunction function) {
+    void addFunction(@NotNull EditorFunction function) {
         if (!this.toolBarGroups.contains(function.getGroup())) {
             this.toolBarGroups.add(function.getGroup())
         }
@@ -270,7 +271,7 @@ class SinglePopupToolbar implements ToolBar {
      *
      * @param group The tool bar group to enable.
      */
-    void disableGroup(String group) {
+    void disableGroup(@NotNull String group) {
         List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
             functions.each { EditorFunction function ->
@@ -287,7 +288,7 @@ class SinglePopupToolbar implements ToolBar {
      *
      * @param group The tool bar group to disable.
      */
-    void enableGroup(String group) {
+    void enableGroup(@NotNull String group) {
         List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
             functions.each { EditorFunction function ->

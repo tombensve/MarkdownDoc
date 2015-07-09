@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.functions
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
@@ -66,8 +67,14 @@ class OpenFunction implements EditorFunction, Configurable {
     // Private Members
     //
 
-    private Editor editor
     private JButton openButton
+
+    //
+    // Properties
+    //
+
+    /** The editor this function is bound to. */
+    Editor editor
 
     //
     // Config
@@ -87,7 +94,7 @@ class OpenFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -97,7 +104,7 @@ class OpenFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -125,33 +132,23 @@ class OpenFunction implements EditorFunction, Configurable {
         this.openButton.setToolTipText("Open ("+ keyboardShortcutConfig.getKeyboardKey() + ")")
     }
 
-    /**
-     * Sets the editorPane for the function to use.
-     *
-     * @param editor The editorPane to set.
-     */
     @Override
-    void setEditor(Editor editor) {
-        this.editor = editor
-    }
-
-    @Override
-    String getGroup() {
+    @NotNull String getGroup() {
         ToolBarGroups.FILE.name()
     }
 
     @Override
-    String getName() {
+    @NotNull String getName() {
         "Open file"
     }
 
     @Override
-    JComponent getToolBarButton() {
+    @NotNull JComponent getToolBarButton() {
         this.openButton
     }
 
     @Override
-    KeyboardKey getKeyboardShortcut() {
+    @NotNull KeyboardKey getKeyboardShortcut() {
         keyboardShortcutConfig.getKeyboardKey()
     }
 

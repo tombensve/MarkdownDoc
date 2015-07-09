@@ -38,6 +38,8 @@ package se.natusoft.doc.markdowndoc.editor.gui
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 
 import java.awt.*
 import java.util.List
@@ -58,11 +60,15 @@ class VerticalFlowLayout implements LayoutManager2 {
     /** The calculated minimum size. */
     private Dimension minimumSize = new Dimension(0,0)
 
+    //
+    // Properties
+    //
+
     /** The gap to put between each component. */
-    private int vgap = 0
+    int vgap = 0
 
     /** If true then all components will have the same width (as the widest component). */
-    private boolean commonWidth = true
+    boolean commonWidth = true
 
     //
     // Constructors
@@ -71,37 +77,7 @@ class VerticalFlowLayout implements LayoutManager2 {
     /**
      * Creates a new VerticalFlowLayout.
      */
-    VerticalFlowLayout() {
-    }
-
-    /**
-     * Creates a new VerticalFlowLayout.
-     *
-     * @param vgap The gap between each component. Default 0.
-     */
-    VerticalFlowLayout(int vgap) {
-        this.vgap = vgap
-    }
-
-    /**
-     * Creates a new VerticalFlowLayout.
-     *
-     * @param commonWidth If true then all components will have the same width (the width of the widest component). Default true.
-     */
-    VerticalFlowLayout(boolean commonWidth) {
-        this.commonWidth = commonWidth
-    }
-
-    /**
-     * Creates a new VerticalFlowLayout.
-     *
-     * @param vgap The gap between each component. Default 0.
-     * @param commonWidth If true then all components will have the same width (the width of the widest component). Default true.
-     */
-    VerticalFlowLayout(int vgap, boolean commonWidth) {
-        this.vgap = vgap
-        this.commonWidth = commonWidth
-    }
+    VerticalFlowLayout() {}
 
     //
     // Methods
@@ -117,7 +93,7 @@ class VerticalFlowLayout implements LayoutManager2 {
      * @param comp the component to be added
      */
     @Override
-    void addLayoutComponent(String name, Component comp) {
+    void addLayoutComponent(@Nullable("Not used") String name, @NotNull Component comp) {
         this.components.add(comp)
     }
 
@@ -127,7 +103,7 @@ class VerticalFlowLayout implements LayoutManager2 {
      * @param comp the component to be removed
      */
     @Override
-    void removeLayoutComponent(Component comp) {
+    void removeLayoutComponent(@NotNull Component comp) {
         this.components.remove(comp)
     }
 
@@ -139,7 +115,7 @@ class VerticalFlowLayout implements LayoutManager2 {
      * @see #minimumLayoutSize
      */
     @Override
-    Dimension preferredLayoutSize(Container parent) {
+    @NotNull Dimension preferredLayoutSize(@NotNull Container parent) {
         minimumLayoutSize(parent)
     }
 
@@ -151,7 +127,7 @@ class VerticalFlowLayout implements LayoutManager2 {
      * @see #preferredLayoutSize
      */
     @Override
-    Dimension minimumLayoutSize(Container parent) {
+    @NotNull Dimension minimumLayoutSize(@NotNull Container parent) {
         synchronized (parent.getTreeLock()) {
             doLayout(parent, false)
         }
@@ -176,9 +152,8 @@ class VerticalFlowLayout implements LayoutManager2 {
      * @param parent The parent container we are doing layout for.
      * @param update If true actual layout will be done. If false only minimum size will be calculated.
      */
-    private void doLayout(Container parent, boolean update) {
+    private void doLayout(@NotNull Container parent, boolean update) {
         int minWidth = 0
-        int minHeight = 0
         Insets insets = parent.getInsets()
         int x = insets.left
         int y = insets.top
@@ -202,7 +177,7 @@ class VerticalFlowLayout implements LayoutManager2 {
             }
         }
 
-        minHeight = y + insets.bottom
+        int minHeight = y + insets.bottom
         minWidth = minWidth + insets.left + insets.right
         this.minimumSize.setSize(minWidth, minHeight)
     }
@@ -215,7 +190,7 @@ class VerticalFlowLayout implements LayoutManager2 {
      * @param constraints where/how the component is added to the layout.
      */
     @Override
-    void addLayoutComponent(Component comp, Object constraints) {
+    void addLayoutComponent(@NotNull Component comp, @Nullable("Not used") Object constraints) {
         addLayoutComponent("", comp)
     }
 
@@ -228,7 +203,7 @@ class VerticalFlowLayout implements LayoutManager2 {
      * @see java.awt.LayoutManager
      */
     @Override
-    Dimension maximumLayoutSize(Container target) {
+    Dimension maximumLayoutSize(@NotNull Container target) {
         preferredLayoutSize(target)
     }
 
@@ -242,7 +217,7 @@ class VerticalFlowLayout implements LayoutManager2 {
      * @param target The target container we are doing layout for.
      */
     @Override
-    float getLayoutAlignmentX(Container target) {
+    float getLayoutAlignmentX(@Nullable("Not used") Container target) {
         0.0f
     }
 
@@ -256,7 +231,7 @@ class VerticalFlowLayout implements LayoutManager2 {
      * @param target The target container we are doing layout for.
      */
     @Override
-    float getLayoutAlignmentY(Container target) {
+    float getLayoutAlignmentY(@Nullable("Not used") Container target) {
         0.0f
     }
 
@@ -267,7 +242,7 @@ class VerticalFlowLayout implements LayoutManager2 {
      * @param target The target container we are doing layout for.
      */
     @Override
-    void invalidateLayout(Container target) {
+    void invalidateLayout(@Nullable("Not used") Container target) {
         // Nothing to invalidate.
     }
 }

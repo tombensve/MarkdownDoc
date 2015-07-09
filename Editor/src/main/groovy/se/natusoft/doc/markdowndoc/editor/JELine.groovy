@@ -38,6 +38,8 @@ package se.natusoft.doc.markdowndoc.editor
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.api.Line
 
 import javax.swing.text.BadLocationException
@@ -76,7 +78,7 @@ class JELine implements Line {
      * @param editor The editorPane we wrap.
      * @param startPos The starting position of the line.
      */
-    JELine(JTextComponent editor, int startPos) {
+    JELine(@NotNull JTextComponent editor, int startPos) {
         this.editor = editor
         this.startPos = startPos
 
@@ -88,7 +90,7 @@ class JELine implements Line {
                 check = this.editor.getText(this.endPos, 1)
             }
         }
-        catch (BadLocationException ble) {
+        catch (BadLocationException ignored) {
             //--this.endPos
             if (this.endPos < this.startPos) {
                 this.endPos = this.startPos
@@ -107,7 +109,7 @@ class JELine implements Line {
     /**
      * Returns the text of the line.
      */
-    String getText() throws BadLocationException {
+    @NotNull String getText() throws BadLocationException {
         this.editor.getText(this.startPos, this.endPos - this.startPos)
     }
 
@@ -116,7 +118,7 @@ class JELine implements Line {
      *
      * @param text The text to set.
      */
-    void setText(String text) {
+    void setText(@NotNull String text) {
         int currSelStart = this.editor.getSelectionStart()
         int currSelEnd = this.editor.getSelectionEnd()
         this.editor.select(this.startPos, this.endPos)
@@ -127,7 +129,7 @@ class JELine implements Line {
     /**
      * Returns the next line or null if this is the last line.
      */
-    Line getNextLine() {
+    @Nullable Line getNextLine() {
         try {
             this.editor.getText(this.endPos + 1, 1) // Verify!
             new JELine(this.editor, this.endPos + 1)
@@ -140,11 +142,11 @@ class JELine implements Line {
     /**
      * Returns the previous line or null if this is the first line.
      */
-    Line getPreviousLine() {
+    @Nullable Line getPreviousLine() {
         try {
             this.editor.getText(this.startPos - 2, 1)
         }
-        catch (BadLocationException ble) {
+        catch (BadLocationException ignore) {
             return null
         }
 
@@ -158,7 +160,7 @@ class JELine implements Line {
             }
             ++sp
         }
-        catch (BadLocationException ble) {
+        catch (BadLocationException ignore) {
             sp = 0
         }
 
@@ -210,7 +212,7 @@ class JELine implements Line {
     /**
      * Same as getText().
      */
-    String toString() {
+    @NotNull String toString() {
         try {
             getText()
         }

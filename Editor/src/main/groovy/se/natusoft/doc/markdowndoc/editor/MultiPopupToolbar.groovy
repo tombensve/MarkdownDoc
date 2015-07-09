@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
 import se.natusoft.doc.markdowndoc.editor.api.ToolBar
@@ -88,7 +89,7 @@ class MultiPopupToolbar implements ToolBar {
     // Methods
     //
 
-    protected mouseMovedHandler(MouseEvent e) {
+    protected mouseMovedHandler(@NotNull MouseEvent e) {
         int y = e.getY() - this.editor.getGUI().getEditorVisibleY()
         if (y <= getTopMargin() && e.getX() >= 0 && e.getX() <= getEditorWidth()) {
             if (!isOpen()) {
@@ -112,12 +113,12 @@ class MultiPopupToolbar implements ToolBar {
      *
      * @param editor The associated editorPane provided.
      */
-    void attach(Editor editor) {
+    void attach(@NotNull Editor editor) {
         this.editor = editor
 
         this.mouseMotionListener = new MouseMotionListener() {
             @Override
-            void mouseDragged(MouseEvent e) {}
+            void mouseDragged(MouseEvent ignore) {}
 
             @Override
             void mouseMoved(MouseEvent e) {
@@ -133,7 +134,7 @@ class MultiPopupToolbar implements ToolBar {
      * @param editor The editorPane to detach from.
      */
     @Override
-    void detach(Editor editor) {
+    void detach(@NotNull Editor editor) {
         close()
         editor.removeMouseMotionListener(this.mouseMotionListener)
         this.editor = null
@@ -144,7 +145,7 @@ class MultiPopupToolbar implements ToolBar {
     /**
      * Convenience method to get information from associated editorPane.
      */
-    private JFrame getParentFrame() {
+    private @NotNull JFrame getParentFrame() {
         this.editor.getGUI().getWindowFrame()
     }
 
@@ -169,7 +170,7 @@ class MultiPopupToolbar implements ToolBar {
      * @param x The X coordinate to open at.
      * @param y The Y coordinate to open at.
      */
-    private void open(JFrame parent, int x, int y) {
+    private void open(@NotNull JFrame parent, int x, int y) {
 
         boolean create = this.buttonWindows.isEmpty()
 
@@ -245,7 +246,7 @@ class MultiPopupToolbar implements ToolBar {
      *
      * @param function The function to add.
      */
-    void addFunction(EditorFunction function) {
+    void addFunction(@NotNull EditorFunction function) {
         if (!this.toolBarGroups.contains(function.getGroup())) {
             this.toolBarGroups.add(function.getGroup())
         }
@@ -273,7 +274,7 @@ class MultiPopupToolbar implements ToolBar {
      *
      * @param group The tool bar group to enable.
      */
-    void disableGroup(String group) {
+    void disableGroup(@NotNull String group) {
         List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
             functions.each { EditorFunction function ->
@@ -290,7 +291,7 @@ class MultiPopupToolbar implements ToolBar {
      *
      * @param group The tool bar group to disable.
      */
-    void enableGroup(String group) {
+    void enableGroup(@NotNull String group) {
         List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
             functions.each { EditorFunction function ->

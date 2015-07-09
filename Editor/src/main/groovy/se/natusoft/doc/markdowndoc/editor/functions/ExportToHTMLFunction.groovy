@@ -38,6 +38,7 @@ package se.natusoft.doc.markdowndoc.editor.functions
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.HTMLGenerator
@@ -87,7 +88,7 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
     // The following are referenced from GUI callbacks and thus must be part of the instance.
 
     /** The PDF meta data / options dialog. */
-    private JWindow htmlMetaDataDialog = null
+    private JWindow htmlMetaDataDialog
 
     //
     // Config
@@ -107,7 +108,7 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(ConfigProvider configProvider) {
+    void registerConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -117,7 +118,7 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -143,7 +144,7 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
         )
         private ExportDataValue openResult = new ExportDataSelectValue("Open result:")
 
-        HTMLData(DelayedServiceData delayedServiceData) {
+        HTMLData(@NotNull DelayedServiceData delayedServiceData) {
             super(delayedServiceData)
             ((ExportFileValue)css).delayedServiceData = delayedServiceData
             ((ExportFileValue)fileLinks).delayedServiceData = delayedServiceData
@@ -171,22 +172,22 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
     }
 
     @Override
-    String getGroup() {
+    @NotNull String getGroup() {
         ToolBarGroups.EXPORT.name()
     }
 
     @Override
-    String getName() {
+    @NotNull String getName() {
         "Export to HTML"
     }
 
     @Override
-    KeyboardKey getKeyboardShortcut() {
+    @NotNull KeyboardKey getKeyboardShortcut() {
         keyboardShortcutConfig.getKeyboardKey()
     }
 
     @Override
-    JComponent getToolBarButton() {
+    @NotNull JComponent getToolBarButton() {
         this.htmlButton
     }
 
@@ -264,7 +265,8 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
         catch (RuntimeException re) {
             re.printStackTrace(System.err)
             JOptionPane.showMessageDialog(
-                    this.editor.getGUI().getWindowFrame(), re.getMessage(), "Failed to save HTML!", JOptionPane.ERROR_MESSAGE)
+                    this.editor.getGUI().getWindowFrame(), re.getMessage(), "Failed to save HTML!",
+                    JOptionPane.ERROR_MESSAGE)
         }
     }
 
@@ -293,7 +295,7 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
             throw new RuntimeException(ge.getMessage(), ge)
         }
         finally {
-            try {if (htmlStream!= null) htmlStream.close()} catch (IOException cioe) {}
+            try {if (htmlStream!= null) htmlStream.close()} catch (IOException ignored) {}
         }
 
         if (this.editor.getCurrentFile() != null) {
@@ -307,7 +309,8 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
             }
             catch (IOException ioe) {
                 JOptionPane.showMessageDialog(
-                        this.editor.getGUI().getWindowFrame(), ioe.getMessage(), "Failed to open PDF!", JOptionPane.ERROR_MESSAGE)
+                        this.editor.getGUI().getWindowFrame(), ioe.getMessage(), "Failed to open PDF!",
+                        JOptionPane.ERROR_MESSAGE)
             }
         }
     }
