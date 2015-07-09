@@ -66,6 +66,7 @@ import java.util.Properties;
  *
  * @phase generate-sources
  */
+@SuppressWarnings({"unused", "JavaDoc"})
 public class MarkdownDocMavenPlugin extends AbstractMojo {
 
     /**
@@ -144,17 +145,13 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
         if (selParser.equals("markdown")) {
             parser = new MarkdownParser();
         }
-        else if (selParser.startsWith("byext")) {
-            // leave parser null!
-        }
-        else {
+        else if (!selParser.startsWith("byext")) {
             throw new MojoExecutionException("Unknown parser specified: '" + selParser + "'!");
         }
 
-        Generator generator = null;
         Options options = null;
         String selGenerator = generatorOptions.getGenerator().toLowerCase();
-        generator = GeneratorProvider.getGeneratorByName(selGenerator);
+        Generator generator = GeneratorProvider.getGeneratorByName(selGenerator);
         if (generator == null) {
             throw new MojoExecutionException("Unknown generator: '" + selGenerator + "'!");
         }
