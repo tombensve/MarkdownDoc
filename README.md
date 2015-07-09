@@ -1,4 +1,4 @@
-![](https://github.com/tombensve/MarkdownDoc/blob/master/MarkdownDoc.png)
+![](https://raw.githubusercontent.com/tombensve/MDD-Dev/master/MarkdownDoc.png)
 
 Copyright (C) 2012 Natusoft AB
 
