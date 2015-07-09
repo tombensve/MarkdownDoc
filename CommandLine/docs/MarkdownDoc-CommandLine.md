@@ -16,7 +16,7 @@ The last usage example requires an _.mddoc_ file. See _â€™The _mddoc_ file typeâ
 
 What the generator options are depends on the specified generator.
 
-The markdowndoc-cmd-line-n.n[.n]-exec.jar is a jar generated to contain all dependencies in the same jar, making it easy to execute with java -jar.
+The markdowndoc-cmd-line-n.n\[.n\]-exec.jar is a jar generated to contain all dependencies in the same jar, making it easy to execute with java -jar.
 
 __generator__
 

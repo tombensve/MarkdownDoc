@@ -151,7 +151,7 @@ This specification however is not extremely exact so there might be some differe
 
 The known (and intentional) differences are:
 
-* No HMTL pass-through! Well, there is a small exception to that. HTML comments are passed along. Mostly because there is no markdown comment format and I wanted to be able to put comments in my documents. "\&\n\b\s\p\;" is passed through to create indents that are not code blocks. "<div class=\"...\">...</div>" is also passed through. The start and end div has to be on their own lines! The reason for no general HTML pass-through is that MarkdownDoc takes it directly from markdown to a document model which is then used to generate PDF without any HTML rendering in between. The main purpose of this tool is to write documentation not generate HTML sites (though that has become easier in version 1.4 with the div support).
+* No HMTL pass-through! Well, there is a small exception to that. HTML comments are passed along. Mostly because there is no markdown comment format and I wanted to be able to put comments in my documents. "\&\n\b\s\p\;" is passed through to create indents that are not code blocks. `"<div class=\"...\">...</div>"` is also passed through. The start and end div has to be on their own lines! The reason for no general HTML pass-through is that MarkdownDoc takes it directly from markdown to a document model which is then used to generate PDF without any HTML rendering in between. The main purpose of this tool is to write documentation not generate HTML sites (though that has become easier in version 1.4 with the div support).
 
 * Escaping with '\\'. In MarkdownDoc you can escape any character with \\ and it will be passed through as is without being acted on if it has markdown meaning.
 

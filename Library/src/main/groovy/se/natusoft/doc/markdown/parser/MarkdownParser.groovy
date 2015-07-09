@@ -120,7 +120,7 @@ class MarkdownParser implements Parser {
             lineReader = new MDLineReader(new InputStreamReader(parseStream))
 
             DocItem prevDocItem = null
-            Stack<DocItem> hierarchyStack = new Stack<DocItem>();
+            Stack<DocItem> hierarchyStack = new Stack<DocItem>()
 
 
             while (lineReader.hasLine()) {
@@ -685,7 +685,7 @@ class MarkdownParser implements Parser {
                         }
                         break
 
-                    case { it == '[' && p != '!' && !(current instanceof Link)}:
+                    case { it == '[' && p != '!' && !(current instanceof Link) && !(current instanceof Code)}:
                         paragraph.addItem(current)
                         itemStack.push((DocItem)current)
                         current = new MDLink(renderPrefixedSpace: false)
