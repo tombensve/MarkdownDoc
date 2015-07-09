@@ -1,4 +1,4 @@
-# MarkdownDoc
+![](https://github.com/tombensve/MarkdownDoc/blob/master/MarkdownDoc.png)
 
 Copyright (C) 2012 Natusoft AB
 
@@ -24,6 +24,18 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 [Licenses](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/licenses.md)
 
 [PDF Version](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.pdf)
+
+----
+
+__New Features__:
+
+* Now supports MSS, a JSON based markdown style sheet for PDF generator where you can steer fonts, sizes and colors. 
+
+* Also supports external .ttf, .otf, ... (whatever iText supports) fonts via MSS.
+
+* Bug fixes:
+
+  * No longer tries to format text withing `...` parts of a paragraph.
 
 ----
 
