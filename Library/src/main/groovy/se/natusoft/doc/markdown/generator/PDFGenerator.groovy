@@ -874,10 +874,10 @@ class PDFGenerator implements Generator {
      * @param context The PDF generator context.
      */
     private static void writeCodeBlock(@NotNull final CodeBlock codeBlock, @NotNull PDFGeneratorContext context) {
-        PDFParagraph pdfParagraph = new PDFParagraph()
-        pdfParagraph.setKeepTogether(true)
-
         Font codeFont = new Font(context.pdfStyles.getFont(MSS.MSS_Pages.code))
+
+        PDFParagraph pdfParagraph = new PDFParagraph(codeFont.size + 2)
+
         if (context.options.codeColor != null) {
             codeFont.setColor(
                     new PDFColorMSSAdapter(
@@ -886,10 +886,9 @@ class PDFGenerator implements Generator {
             )
         }
 
-//        paragraph.add(Chunk.NEWLINE)
         for (DocItem item : codeBlock.items) {
             Chunk chunk = new Chunk(item.toString(), codeFont)
-            chunk.setLineHeight((float)(codeFont.size + 1.0))
+            chunk.setLineHeight((float)(codeFont.size))
             chunk.setTextRise(-2)
             chunk.setCharacterSpacing(0.5f)
             chunk.setBackground(
