@@ -36,11 +36,6 @@ class PDFGeneratorWithMSSDevTest extends GroovyTestCase {
 
         CommandLineOptionsManager<Options> optMgr = new CommandLineOptionsManager<Options>(generator.optionsClass)
         def args = [
-                "--title", "Test of iText PDF generating",
-                "--author", "Tommy Svensson",
-                "--subject", "PDF generation",
-                "--version", "1.0",
-                "--copyright", "Copyright © 2012 Natusoft AB",
                 "--hideLinks", "false",
                 "--unorderedListItemPrefix", "• ",
                 "--firstLineParagraphIndent", "false",

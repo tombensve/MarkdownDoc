@@ -37,6 +37,7 @@
 package se.natusoft.doc.markdown.generator.options
 
 import groovy.transform.CompileStatic
+import groovy.transform.ToString
 import groovy.transform.TypeChecked
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.tools.optionsmgr.annotations.*
@@ -47,6 +48,7 @@ import se.natusoft.tools.optionsmgr.annotations.*
 @CompileStatic
 @TypeChecked
 @OptionsModel
+@ToString(includeNames = true)
 class PDFGeneratorOptions implements Options {
 
     @Option

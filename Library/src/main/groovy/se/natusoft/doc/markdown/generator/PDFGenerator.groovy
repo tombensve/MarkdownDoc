@@ -291,9 +291,7 @@ class PDFGenerator implements Generator {
                     // and also act on @PDFTitle, @PDFSubject, @PDFKeywords, @PDFAuthor, @PDFVersion, and @PDFCopyright
                     // for overriding those settings in the options. This allows the document rather than the generate
                     // config to provide this information.
-                    else {
-                        extractTitlePageData(comment, context)
-                    }
+                    extractTitlePageData(comment, context)
                     break
 
                 case DocFormat.Paragraph:
@@ -448,14 +446,62 @@ class PDFGenerator implements Generator {
      *
      * @param comment The comment to extract from.
      * @param context The context whose options to update.
+     *
+     * @return true if anything was updated, false otherwise.
      */
-    private static void extractTitlePageData(@NotNull Comment comment, @NotNull PDFGeneratorContext context) {
-        updateOptsFromAnnotation("@PDFTitle",     comment) { String text -> context.options.title     = text }
-        updateOptsFromAnnotation("@PDFSubject",   comment) { String text -> context.options.subject   = text }
-        updateOptsFromAnnotation("@PDFKeywords",  comment) { String text -> context.options.keywords  = text }
-        updateOptsFromAnnotation("@PDFAuthor",    comment) { String text -> context.options.author    = text }
-        updateOptsFromAnnotation("@PDFVersion",   comment) { String text -> context.options.version   = text }
-        updateOptsFromAnnotation("@PDFCopyright", comment) { String text -> context.options.copyright = text }
+    private static boolean  extractTitlePageData(@NotNull Comment comment, @NotNull PDFGeneratorContext context) {
+        boolean updated = false
+
+        updated |= updateOptsFromAnnotation("@PDFTitle", comment) { String text ->
+            context.options.title = text
+        }
+        updated |= updateOptsFromAnnotation("@PDFSubject", comment) { String text ->
+            context.options.subject = text
+        }
+        updated |= updateOptsFromAnnotation("@PDFKeywords", comment) { String text ->
+            context.options.keywords = text
+        }
+        updated |= updateOptsFromAnnotation("@PDFAuthor", comment) { String text ->
+            context.options.author = text
+        }
+        updated |= updateOptsFromAnnotation("@PDFVersion", comment) { String text ->
+            context.options.version = text
+        }
+        updated |= updateOptsFromAnnotation("@PDFCopyright", comment) { String text ->
+            context.options.copyright = text
+        }
+        updated |= updateOptsFromAnnotation("@PDFAuthorLabel", comment) { String text ->
+            context.options.authorLabel = text
+        }
+        updated |= updateOptsFromAnnotation("@PDFVersionLabel", comment) { String text ->
+            context.options.versionLabel = text
+        }
+        updated |= updateOptsFromAnnotation("@PDFPageLabel", comment) { String text ->
+            context.options.pageLabel = text
+        }
+        updated |= updateOptsFromAnnotation("@PDFPageSize", comment) { String text ->
+            context.options.pageSize = text
+        }
+        updated |= updateOptsFromAnnotation("@PDFHideLinks", comment) { String text ->
+            context.options.hideLinks = Boolean.valueOf(text)
+        }
+        updated |= updateOptsFromAnnotation("@PDFUnorderedListItemPrefix", comment) { String text ->
+            context.options.unorderedListItemPrefix = text
+        }
+        updated |= updateOptsFromAnnotation("@PDFFirstLineParagraphIndent", comment) { String text ->
+            context.options.firstLineParagraphIndent = Boolean.valueOf(text)
+        }
+        updated |= updateOptsFromAnnotation("@PDFGenerateSectionNumbers", comment) { String text ->
+            context.options.generateSectionNumbers = Boolean.valueOf(text)
+        }
+        updated |= updateOptsFromAnnotation("@PDFGenerateTOC", comment) { String text ->
+            context.options.generateTOC = Boolean.valueOf(text)
+        }
+        updated |= updateOptsFromAnnotation("@PDFGenerateTitlePage", comment) { String text ->
+            context.options.generateTitlePage = Boolean.valueOf(text)
+        }
+
+        updated
     }
 
     /**
@@ -465,13 +511,19 @@ class PDFGenerator implements Generator {
      * @param ann The annotation to extract.
      * @param comment The comment to extract from.
      * @param update The closure to call on annotation value.
+     *
+     * @return true if and update was made, false otherwise.
      */
-    private static void updateOptsFromAnnotation(@NotNull String ann, @NotNull Comment comment,
-                                                 @NotNull Closure<String> update) {
+    private static boolean updateOptsFromAnnotation(@NotNull String ann, @NotNull Comment comment,
+                                                 @NotNull Closure<Object> update) {
+        boolean updated = false
         String text = extractCommentAnnotation(ann, comment)
         if (text != null) {
             update.call(text)
+            updated = true
         }
+
+        updated
     }
 
     /**
@@ -490,7 +542,7 @@ class PDFGenerator implements Generator {
         int ix = search.indexOf(name)
         if (ix >= 0) {
             ix = search.indexOf("(", ix)
-            int endIx = search.lastIndexOf(")", ix)
+            int endIx = getEndParenthesis(search, ix + 1)
             result = search.substring(ix + 1, endIx).trim()
             if (result.startsWith("\"") || result.startsWith("'")) {
                 result = result.substring(1)
@@ -501,6 +553,47 @@ class PDFGenerator implements Generator {
         }
 
         result
+    }
+
+    /**
+     * Resolves the location of the annotation end parenthesis, ignoring any such within "..." or '...'.
+     *
+     * @param text The text to search in.
+     * @param startIx The starting index.
+     *
+     * @return The end index.
+     */
+    private static int getEndParenthesis(@NotNull String text, int startIx) {
+        boolean ignore = false
+        int ix = startIx
+        boolean done = false
+        int length = text.length()
+        while (!done) {
+            if (ix < length) {
+                if (text.charAt(ix) != '\n' as char && text.charAt(ix) != '\r' as char) {
+                    if (text.charAt(ix) == '"' as char || text.charAt(ix) == '\'' as char) {
+                        ignore = !ignore
+
+                    }
+
+                    if (text.charAt(ix) == ')' as char && !ignore) {
+                        done = true
+                    } else {
+                        ++ix
+                    }
+                }
+                else {
+                    throw new GenerateException(message:  "ERROR: A comment annotation (@Ann(...)) was not " +
+                            "terminated! Could be a missing ['],[\"], or [)].")
+                }
+            }
+            else {
+                throw new GenerateException(message:  "ERROR: A comment annotation (@Ann(...)) was not " +
+                        "terminated! Could be a missing ['],[\"], or [)].")
+            }
+        }
+
+        ix
     }
 
     /**

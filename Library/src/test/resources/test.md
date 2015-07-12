@@ -1,5 +1,13 @@
 <!--
     This is a comment!
+    
+    @PDFTitle("Test of iText PDF generating")
+    @PDFSubject("PDF generation")
+    @PDFKeywords("Test inline")
+    @PDFVersion(1.0)
+    @PDFAuthor("Tommy Bengt Svensson")
+    @PDFCopyright("Copyright (C) 2012 Natusoft AB")
+    
 -->
 # Headers
 

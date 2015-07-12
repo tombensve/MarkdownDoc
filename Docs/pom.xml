@@ -67,6 +67,9 @@
                             <pdfGeneratorOptions>
                                 <resultFile>Docs/MarkdownDoc-User-Guide.pdf</resultFile>
                                 <mss>Docs/docs.mss</mss>
+                                <!--
+                                These are now specified as annotations in MarkdownDoc.md!
+
                                 <pageSize>A4</pageSize>
                                 <title>MarkdownDoc</title>
                                 <subject>User Guide</subject>
@@ -76,6 +79,7 @@
                                 <generateTitlePage>true</generateTitlePage>
                                 <generateTOC>true</generateTOC>
                                 <generateSectionNumbers>false</generateSectionNumbers>
+                                -->
                             </pdfGeneratorOptions>
 
                         </configuration>

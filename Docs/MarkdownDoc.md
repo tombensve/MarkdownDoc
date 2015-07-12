@@ -1,3 +1,22 @@
+<!--
+
+    As of version 1.4 it is possible to specify a lot of the PDFGenerator options as annotations
+    within a comment block. This should be at the top of the document or it can have side effects.
+
+    @PDFTitle("MarkdownDoc")
+    @PDFSubject("User Guide")
+    @PDFKeywords("markdown MarkdownDoc mdd_version_1.4")
+    @PDFVersion(1 . 4) Due to the font used I put a space between to make the dot more visible.
+    @PDFAuthor("Tommy Svensson")
+    @PDFCopyright("Copyright (C) 2012 Natusoft AB")
+    
+    @PDFPageSize("A4")
+    @PDFGenerateTitlePage(true)
+    @PDFGenerateTOC(true)
+    @PDFGenerateSectionNumbers(false)
+
+-->
+
 ## Introduction
 
 MarkdownDoc is a tool that basically does what the name sounds like. My intention with this tool was to be able to document my java opensource tools in markdown and be able to generate both html and PDF from it using a maven plugin.
