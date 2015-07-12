@@ -88,6 +88,7 @@ import se.natusoft.doc.markdown.model.ListItem
 import se.natusoft.doc.markdown.model.Paragraph
 import se.natusoft.doc.markdown.model.PlainText
 import se.natusoft.doc.markdown.model.Strong
+import sun.reflect.generics.tree.VoidDescriptor
 
 import java.util.ArrayList as JArrayList
 import java.util.LinkedList as JLinkedList
@@ -137,7 +138,10 @@ class PDFGenerator implements Generator {
         /** This is needed for generating TOC with correct styles. */
         PDFHeaderLevelCache headerLevelCache = new PDFHeaderLevelCache()
 
-        /** This will actually be added to the real Document later on, twice: once for the fake TOC resolve render and once for the real. */
+        /**
+         * This will actually be added to the real Document later on, twice: once for the fake TOC resolve render
+         *  and once for the real.
+         */
         JList<Section> documentItems = null
 
         /** Current part tracker. */
@@ -236,7 +240,8 @@ class PDFGenerator implements Generator {
      *
      * @param document The model to generate from.
      * @param options The generator options.
-     * @param rootDir The optional root directory to prefix configured output with. Can be null. This overrides the rootDir in options!
+     * @param rootDir The optional root directory to prefix configured output with. Can be null. This overrides the
+     *                rootDir in options!
      * @param resultStream The stream to write the result to.
      *
      * @throws IOException on I/O failures.
@@ -278,10 +283,16 @@ class PDFGenerator implements Generator {
 
             switch (docItem.format) {
                 case DocFormat.Comment:
-                    // We skip comments, but act on "@PB" within the comment for doing a page break.
+                    // We skip comments in general, but act on "@PB" within the comment for doing a page break.
                     Comment comment = (Comment)docItem;
                     if (comment.text.indexOf("@PB") >= 0) {
                         context.documentItems.add(new NewPage())
+                    }
+                    // and also act on @PDFTitle, @PDFSubject, @PDFKeywords, @PDFAuthor, @PDFVersion, and @PDFCopyright
+                    // for overriding those settings in the options. This allows the document rather than the generate
+                    // config to provide this information.
+                    else {
+                        extractTitlePageData(comment, context)
                     }
                     break
 
@@ -359,13 +370,15 @@ class PDFGenerator implements Generator {
                             updateTOC: true,
                             toc: context.toc,
                             pdfStyles: context.pdfStyles,
-                            headerLevelCache: context.headerLevelCache
+                            headerLevelCache: context.headerLevelCache,
+                            context: context
                     )
             )
 
             document.open()
 
-            // Since this.documentItems is just an ArrayList of Sections we have to add them to the real documentItems now.
+            // Since this.documentItems is just an ArrayList of Sections we have to add them to the real
+            // documentItems now.
             context.documentItems.each {Section section ->
                 if (section instanceof NewPage) {
                     document.newPage()
@@ -388,18 +401,20 @@ class PDFGenerator implements Generator {
         pdfWriter.setPageEvent(
                 new PageEventHandler(
                         resultFile: context.options.resultFile,
-                        pageOffset: { context.pageOffset }, // Since this is in the form of a closure, it will always be up to date!
+                        pageOffset: { context.pageOffset }, // Since this is in the form of a closure, it will always
+                                                            // be up to date!
                         updateTOC: false,
                         toc: context.toc,
                         pdfStyles: context.pdfStyles,
-                        headerLevelCache: context.headerLevelCache
+                        headerLevelCache: context.headerLevelCache,
+                        context: context
                 )
         )
 
-        if (context.options.title != null)      { document.addTitle(context.options.title)       }
-        if (context.options.subject != null)    { document.addSubject(context.options.subject)   }
-        if (context.options.keywords != null)   { document.addKeywords(context.options.keywords) }
-        if (context.options.author != null)     { document.addAuthor(context.options.author)     }
+        if (context.options.title    != null)  { document.addTitle(context.options.title)       }
+        if (context.options.subject  != null)  { document.addSubject(context.options.subject)   }
+        if (context.options.keywords != null)  { document.addKeywords(context.options.keywords) }
+        if (context.options.author   != null)  { document.addAuthor(context.options.author)     }
 
         document.addCreationDate()
         document.addCreator("MarkdownDoc (https://github.com/tombensve/MarkdownDoc)")
@@ -428,13 +443,74 @@ class PDFGenerator implements Generator {
     }
 
     /**
+     * Extracts a set of annotations from a comment and possibly updates context options depending on
+     * found annotations.
+     *
+     * @param comment The comment to extract from.
+     * @param context The context whose options to update.
+     */
+    private static void extractTitlePageData(@NotNull Comment comment, @NotNull PDFGeneratorContext context) {
+        updateOptsFromAnnotation("@PDFTitle",     comment) { String text -> context.options.title     = text }
+        updateOptsFromAnnotation("@PDFSubject",   comment) { String text -> context.options.subject   = text }
+        updateOptsFromAnnotation("@PDFKeywords",  comment) { String text -> context.options.keywords  = text }
+        updateOptsFromAnnotation("@PDFAuthor",    comment) { String text -> context.options.author    = text }
+        updateOptsFromAnnotation("@PDFVersion",   comment) { String text -> context.options.version   = text }
+        updateOptsFromAnnotation("@PDFCopyright", comment) { String text -> context.options.copyright = text }
+    }
+
+    /**
+     * Calls the extractCommentAnnotation() and if result is non null passes the result on to the update
+     * annotation.
+     *
+     * @param ann The annotation to extract.
+     * @param comment The comment to extract from.
+     * @param update The closure to call on annotation value.
+     */
+    private static void updateOptsFromAnnotation(@NotNull String ann, @NotNull Comment comment,
+                                                 @NotNull Closure<String> update) {
+        String text = extractCommentAnnotation(ann, comment)
+        if (text != null) {
+            update.call(text)
+        }
+    }
+
+    /**
+     * Extracts an annotation in the format of @Ann(text), @Ann("text"), or @Ann('text') from a
+     * comment text.
+     *
+     * @param name The name of the annotation to extract. Should always start with "@".
+     * @param comment The comment to extract from.
+     *
+     * @return The extracted annotation text or null if not found.
+     */
+    private static @Nullable String extractCommentAnnotation(@NotNull String name, @NotNull Comment comment) {
+        String result = null
+
+        String search = comment.text
+        int ix = search.indexOf(name)
+        if (ix >= 0) {
+            ix = search.indexOf("(", ix)
+            int endIx = search.lastIndexOf(")", ix)
+            result = search.substring(ix + 1, endIx).trim()
+            if (result.startsWith("\"") || result.startsWith("'")) {
+                result = result.substring(1)
+            }
+            if (result.endsWith("\"") || result.endsWith("'")) {
+                result = result.substring(0, result.length() - 1)
+            }
+        }
+
+        result
+    }
+
+    /**
      * Does some text replacements.
      *
      * @param text The original text.
      *
      * @return The possibly replaced text.
      */
-    private static String textReplace(@NotNull String text) {
+    private static @NotNull String textReplace(@NotNull String text) {
 
         text.replace("(C)", "©")
     }
@@ -577,7 +653,7 @@ class PDFGenerator implements Generator {
 
         if (version != null) {
             Font font = context.pdfStyles.getFont(MSS.MSS_Front_Page.version)
-            Chunk chunk = new Chunk("${context.pdfStyles.mss.forFrontPage.getVersionLabel("Version:")} " + version, font)
+            Chunk chunk = new Chunk("${context.options.versionLabel} " + version, font)
             Phrase phrase = new Phrase(chunk)
             ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, phrase, x, yTop, 0.0f)
         }
@@ -594,7 +670,7 @@ class PDFGenerator implements Generator {
 
         if (author != null) {
             Font font = context.pdfStyles.getFont(MSS.MSS_Front_Page.author)
-            Chunk chunk = new Chunk("${context.pdfStyles.mss.forFrontPage.getAuthorLabel("Author:")} " + author, font)
+            Chunk chunk = new Chunk("${context.options.authorLabel} " + author, font)
             Phrase phrase = new Phrase(chunk)
             ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, phrase, x, yBottom, 0.0f)
         }
@@ -945,7 +1021,9 @@ class PDFGenerator implements Generator {
      *
      * @throws GenerateException on failure to write this list.
      */
-    private static void writeList(@NotNull final List list, @NotNull PDFGeneratorContext context) throws GenerateException {
+    private static void writeList(@NotNull final List list, @NotNull PDFGeneratorContext context)
+            throws GenerateException {
+
         PDFList pdfList = listToPDFList(list, context.options)
         writeList(pdfList, list, 0f, context)
         getOrCreateCurrentSection(context).add(pdfList)
@@ -973,8 +1051,8 @@ class PDFGenerator implements Generator {
                 item.items.each { pg ->
                     if (!first) {
                         // We have to fake a paragraph here since adding a (PDF)Paragraph to a (PDF)ListItem which
-                        // is a (PDF)Paragraph screws it up making the list dots or numbers disappear. This unfortunately
-                        // makes a little more space between paragraphs than for true paragraphs.
+                        // is a (PDF)Paragraph screws it up making the list dots or numbers disappear. This
+                        // unfortunately makes a little more space between paragraphs than for true paragraphs.
                         listItem.add(LIST_NEWLINE)
                         listItem.add(LIST_NEWLINE)
                     }
@@ -1271,6 +1349,7 @@ class PDFGenerator implements Generator {
         JList<TOC> toc
         PDFStylesMSSAdapter pdfStyles
         PDFHeaderLevelCache headerLevelCache
+        PDFGeneratorContext context
 
         @Override
         void onEndPage(@NotNull final PdfWriter writer, @NotNull final PDFDocument document) {
@@ -1297,7 +1376,8 @@ class PDFGenerator implements Generator {
                 )
 
                 // Write the page number to the right as a page footer.
-                Chunk pageChunk = new Chunk("Page " + (document.getPageNumber() - (int)this.pageOffset.call()),
+                Chunk pageChunk = new Chunk("${context.options.pageLabel} " +
+                        (document.getPageNumber() - (int)this.pageOffset.call()),
                         this.pdfStyles.getFont(MSS.MSS_Pages.footer))
                 Phrase pageNo = new Phrase(pageChunk)
                 ColumnText.showTextAligned(
@@ -1356,7 +1436,8 @@ class PDFGenerator implements Generator {
     }
 
     /**
-     * A rather dummy class to indicate that a new page should be generated rather than adding this section to the document.
+     * A rather dummy class to indicate that a new page should be generated rather than adding this section to the
+     * document.
      */
     private static class NewPage extends Section {}
 }

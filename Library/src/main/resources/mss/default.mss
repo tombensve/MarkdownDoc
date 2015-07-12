@@ -236,14 +236,12 @@
       "size": 15
     },
     "version": {
-      "size": 12,
-      "label": "Version:"
+      "size": 12
     },
     "copyright": {
     },
     "author": {
-      "size": 12,
-      "label": "Author:"
+      "size": 12
     }
   },
 

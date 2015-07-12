@@ -67,8 +67,7 @@ class MSS {
         subject,
         version,
         copyright,
-        author,
-        label
+        author
     }
 
     /**
@@ -509,42 +508,6 @@ class MSS {
         ensureFont(font)
     }
 
-    /**
-     * Returns the version label to use on the front page.
-     *
-     * @param _default The default label to use if none have been specified in the MSS.
-     */
-    @NotNull String getVersionLabelForFrontPage(@NotNull String _default) {
-        String verLabel = _default
-        JSONObject version = this.frontPage.getProperty(MSS_Front_Page.version.name()) as JSONObject
-        if (version != null) {
-            JSONString verLabelStr = version.getProperty(MSS_Front_Page.label.name()) as JSONString
-            if (verLabelStr != null) {
-                verLabel = verLabelStr.toString()
-            }
-        }
-
-        verLabel
-    }
-
-    /**
-     * Returns the author label to use on the front page.
-     *
-     * @param _default The default label to use if none have been specified in the MSS.
-     */
-    @NotNull String getAuthorLabelForFrontPage(@NotNull String _default) {
-        String verLabel = _default
-        JSONObject version = this.frontPage.getProperty(MSS_Front_Page.author.name()) as JSONObject
-        if (version != null) {
-            JSONString verLabelStr = version.getProperty(MSS_Front_Page.label.name()) as JSONString
-            if (verLabelStr != null) {
-                verLabel = verLabelStr.toString()
-            }
-        }
-
-        verLabel
-    }
-
     class ForFrontPage {
         @NotNull MSSColorPair getColorPair(@NotNull final MSS_Front_Page section) {
             getColorPairForFrontPage(section)
@@ -552,14 +515,6 @@ class MSS {
 
         @NotNull MSSFont getFont(@NotNull final MSS_Front_Page section) {
             getFontForFrontPage(section)
-        }
-
-        @NotNull String getVersionLabel(@NotNull String _default) {
-            getVersionLabelForFrontPage(_default)
-        }
-
-        @NotNull String getAuthorLabel(@NotNull String _default) {
-            getAuthorLabelForFrontPage(_default)
         }
     }
 
@@ -751,7 +706,6 @@ class MSS {
      *             "family": "HELVETICA",
      *             "size": 12,
      *             "style": "NORMAL",
-     *             "label": "Version: "
      *         },
      *         "copyright": {
      *             "family": "HELVETICA",
@@ -762,7 +716,6 @@ class MSS {
      *             "family": "HELVETICA",
      *             "size": 12,
      *             "style": "NORMAL",
-     *             "label": "Author: "
      *         }
      *      },
      *

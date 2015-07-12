@@ -71,9 +71,6 @@ class MSSTest extends GroovyTestCase {
         assert forFrontPage.getColorPair(MSS.MSS_Front_Page.title).foreground == MSSColor.BLACK
         assert forFrontPage.getColorPair(MSS.MSS_Front_Page.title).background == MSSColor.WHITE
 
-        assert forFrontPage.getAuthorLabel("not this!") == "Author:"
-        assert forFrontPage.getVersionLabel("not this!") == "Version:"
-
         //
         // toc
         //

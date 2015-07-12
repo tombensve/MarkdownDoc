@@ -234,14 +234,12 @@
     },
     "version": {
       "family": "Dwerneck",
-      "size": 15,
-      "label": "Version:"
+      "size": 15
     },
     "copyright": {
     },
     "author": {
-      "size": 12,
-      "label": "Author:"
+      "size": 12
     }
   },
 

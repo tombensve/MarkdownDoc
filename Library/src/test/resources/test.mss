@@ -141,16 +141,14 @@
       "version": {
           "family": "HELVETICA",
           "size": 12,
-          "style": "NORMAL",
-          "label": "Version:"
+          "style": "NORMAL"
       },
       "copyright": {
       },
       "author": {
           "family": "HELVETICA",
           "size": 12,
-          "style": "NORMAL",
-          "label": "Author:"
+          "style": "NORMAL"
       }
    },
 

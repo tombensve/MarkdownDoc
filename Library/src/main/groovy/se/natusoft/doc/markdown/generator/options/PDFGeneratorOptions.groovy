@@ -104,6 +104,24 @@ class PDFGeneratorOptions implements Options {
     String copyright
 
     @Option
+    @Name("authorLabel")
+    @Description("The label text for 'Author:'. ")
+    @Optional
+    String authorLabel = "Author:"
+
+    @Option
+    @Name("versionLabel")
+    @Description("The label text for 'Version:'.")
+    @Optional
+    String versionLabel = "Version:"
+
+    @Option
+    @Name("pageLabel")
+    @Description("The label text for 'Page'.")
+    @Optional
+    String pageLabel = "Page"
+
+    @Option
     @Name("hideLinks")
     @Description("If true then links are not rendered as link the link text will be rendered as plain text.")
     @Optional
