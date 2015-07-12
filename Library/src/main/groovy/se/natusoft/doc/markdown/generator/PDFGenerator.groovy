@@ -480,6 +480,9 @@ class PDFGenerator implements Generator {
         updated |= updateOptsFromAnnotation("@PDFPageLabel", comment) { String text ->
             context.options.pageLabel = text
         }
+        updated |= updateOptsFromAnnotation("@PDFTableOfContentsLabel", comment) { String text ->
+            context.options.tableOfContentsLabel = text
+        }
         updated |= updateOptsFromAnnotation("@PDFPageSize", comment) { String text ->
             context.options.pageSize = text
         }
@@ -630,7 +633,7 @@ class PDFGenerator implements Generator {
         writeText(
                 cb,
                 Element.ALIGN_CENTER,
-                "Table of Contents",
+                context.options.tableOfContentsLabel,
                 (float)(((document.right() - document.left()) / 2) + document.leftMargin()),
                 (float)y,
                 context.pdfStyles.getFont(MSS.MSS_TOC.toc)

@@ -124,6 +124,12 @@ class PDFGeneratorOptions implements Options {
     String pageLabel = "Page"
 
     @Option
+    @Name("tableOfContentsLabel")
+    @Description("The text for 'Table of Contents'.")
+    @Optional
+    String tableOfContentsLabel = "Table of Contents"
+
+    @Option
     @Name("hideLinks")
     @Description("If true then links are not rendered as link the link text will be rendered as plain text.")
     @Optional
