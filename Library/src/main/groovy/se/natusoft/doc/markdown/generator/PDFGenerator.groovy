@@ -69,6 +69,7 @@ import se.natusoft.doc.markdown.generator.pdf.PDFHeaderLevelCache
 import se.natusoft.doc.markdown.generator.pdf.PDFStylesMSSAdapter
 import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.generator.styles.MSSColor
+import se.natusoft.doc.markdown.generator.styles.MSSImage
 import se.natusoft.doc.markdown.io.NullOutputStream
 import se.natusoft.doc.markdown.model.AutoLink
 import se.natusoft.doc.markdown.model.BlockQuote
@@ -1360,8 +1361,26 @@ class PDFGenerator implements Generator {
                 )
         )
 
-        pdfImage.scalePercent(60.0f)
         if (pdfImage != null) {
+            MSSImage imageInfo = context.pdfStyles.mss.forDocument.imageStyle
+
+            if (imageInfo.scalePercent != null) pdfImage.scalePercent(imageInfo.scalePercent)
+            if (imageInfo.align != null) {
+                switch (imageInfo.align) {
+                    case MSSImage.Align.LEFT:
+                        pdfImage.setAlignment(PDFImage.LEFT)
+                        break
+
+                    case MSSImage.Align.MIDDLE:
+                        pdfImage.setAlignment(PDFImage.MIDDLE)
+                        break
+
+                    case MSSImage.Align.RIGHT:
+                        pdfImage.setAlignment(PDFImage.RIGHT)
+                }
+            }
+            if (imageInfo.rotateDegrees != null) pdfImage.setRotationDegrees(imageInfo.rotateDegrees)
+
             pdfParagraph.add(pdfImage)
 
             // This sometimes helps in keeping text on the correct side of the image, but not always.

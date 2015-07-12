@@ -56,6 +56,7 @@ class MSS {
         code,
         anchor,
         list_item,
+        image,
         footer
     }
 
@@ -109,6 +110,12 @@ class MSS {
         family,
         path,
         encoding
+    }
+
+    static enum MSS_IMAGE {
+        imgScalePercent,
+        imgAlign,
+        imgRotateDegrees
     }
 
     //
@@ -355,7 +362,7 @@ class MSS {
      * @param colorPair The color pair to update.
      * @param section The section to update from.
      */
-    private void updateMSSColorPairIfNotSet(@NotNull final MSSColorPair colorPair, @Nullable final JSONObject section) {
+    private void updateMSSColorPairIfNotSet(@NotNull MSSColorPair colorPair, @Nullable final JSONObject section) {
         // If a null section is passed this code will not break, it will just not do anything at all in that case.
         JSONString color = section?.getProperty(MSS_Colors.color.name()) as JSONString
         if (color != null) {
@@ -373,7 +380,7 @@ class MSS {
      * @param font The font to update.
      * @param section The section to update from.
      */
-    private static void updateMSSFontIfNotSet(@NotNull final MSSFont font, @Nullable final JSONObject section) {
+    private static void updateMSSFontIfNotSet(@NotNull MSSFont font, @Nullable final JSONObject section) {
         JSONString family = section?.getProperty(MSS_Font.family.name()) as JSONString
         font.updateFamilyIfNotSet(family?.toString())
 
@@ -391,6 +398,24 @@ class MSS {
         if (hr != null) {
             font.updateHrIfNotSet(hr.asBoolean)
         }
+    }
+
+    /**
+     * Updates image properties from data in the specified MSS section.
+     *
+     * @param image The image properties to update.
+     * @param section The section to update from.
+     */
+    private static void updateMSSImageIfNotSet(@NotNull MSSImage image, @Nullable final JSONObject section) {
+        JSONNumber scale = section?.getProperty(MSS_IMAGE.imgScalePercent.name()) as JSONNumber
+        image.updateScaleIfNotSet(scale)
+
+        JSONString align = section?.getProperty(MSS_IMAGE.imgAlign.name()) as JSONString
+        image.updateAlignIfNotSet(align)
+
+        JSONNumber rotate = section?.getProperty(MSS_IMAGE.imgRotateDegrees.name()) as JSONNumber
+        image.updateRotateIfNotSet(rotate)
+
     }
 
     /**
@@ -466,6 +491,40 @@ class MSS {
         ensureFont(font)
     }
 
+    /**
+     * Returns a MSSImage containing image format information.
+     */
+    @NotNull MSSImage getImageStyleForDocument() {
+        MSSImage image = new MSSImage()
+
+        if (this.currentDivs != null) {
+            this.currentDivs.each { String divName ->
+                JSONObject div = this.divs.getProperty(divName) as JSONObject
+
+                JSONObject standard = div?.getProperty(MSS_Pages.standard.name()) as JSONObject
+                if (standard != null) {
+                    updateMSSImageIfNotSet(image, standard.getProperty(MSS_Pages.image.name()) as JSONObject)
+                }
+                updateMSSImageIfNotSet(image, standard)
+                updateMSSImageIfNotSet(image, div?.getProperty(MSS_Pages.image.name()) as JSONObject)
+                updateMSSImageIfNotSet(image, div)
+            }
+        }
+
+
+        JSONObject standard = this.pages.getProperty(MSS_Pages.standard.name()) as JSONObject
+        if (standard != null) {
+            updateMSSImageIfNotSet(image, standard.getProperty(MSS_Pages.image.name()) as JSONObject)
+        }
+        updateMSSImageIfNotSet(image, standard)
+        updateMSSImageIfNotSet(image, this.pages?.getProperty(MSS_Pages.image.name()) as JSONObject)
+        updateMSSImageIfNotSet(image, this.pages)
+        updateMSSImageIfNotSet(image, this.document?.getProperty(MSS_Pages.image.name()) as JSONObject)
+        updateMSSImageIfNotSet(image, this.document)
+
+        image
+    }
+
     class ForDocument {
         @NotNull MSSColorPair getColorPair(@NotNull final MSS_Pages section) {
             getColorPairForDocument(section)
@@ -473,6 +532,10 @@ class MSS {
 
         @NotNull MSSFont getFont(@NotNull final MSS_Pages section) {
             getFontForDocument(section)
+        }
+
+        @NotNull MSSImage getImageStyle() {
+            getImageStyleForDocument()
         }
     }
 
@@ -672,6 +735,11 @@ class MSS {
      *                "family": "HELVETICA",
      *                "size": 8
      *            },
+     *            "image": {
+     *                "scalePercent": 60.0,
+     *                "align": "LEFT/MIDDLE/RIGHT",
+     *                "rotateDegrees": 45.0
+     *            }
      *         },
      *
      *         "divs": {
@@ -830,28 +898,31 @@ class MSS {
         boolean ok = false
 
         if (!ok) {
-            ok = safe( { MSS_Top.valueOf(name) != null } )
+            ok = safe { MSS_Top.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe( { MSS_Document.valueOf(name) != null } )
+            ok = safe { MSS_Document.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe( { MSS_Pages.valueOf(name) != null } )
+            ok = safe { MSS_Pages.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe( { MSS_Front_Page.valueOf(name) != null } )
+            ok = safe { MSS_Front_Page.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe( { MSS_TOC.valueOf(name) != null } )
+            ok = safe { MSS_TOC.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe( { MSS_Font.valueOf(name) != null } )
+            ok = safe { MSS_Font.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe( { MSS_Colors.valueOf(name) != null } )
+            ok = safe { MSS_Colors.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe( { MSS_PDF.valueOf(name) != null } )
+            ok = safe { MSS_PDF.valueOf(name) != null }
+        }
+        if (!ok) {
+            ok = safe { MSS_IMAGE.valueOf(name) != null }
         }
 
         ok

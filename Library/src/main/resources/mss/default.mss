@@ -160,6 +160,11 @@
     "family": "HELVETICA",
     "size": 10,
     "style": "Normal",
+
+    "imgScalePercent": 60.0,
+    "imgAlign": "LEFT",
+    "imgRotateDegrees": 0.0,
+
     "pages": {
       "block_quote": {
         "style": "Italic",
