@@ -2,7 +2,9 @@
 
 This is an editor for editing markdown documents. 
 
+<div class="editorImage">
 ![](images/MarkdownDocEditor.png) 
+</div>
 
 ## Features
 

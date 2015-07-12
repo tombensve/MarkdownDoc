@@ -164,7 +164,7 @@
     "image": {
       "imgScalePercent": 60.0,
       "imgAlign": "MIDDLE",
-      "imgRotateDegrees": 5.0
+      "imgRotateDegrees": 0.0
     },
 
     "pages": {
@@ -220,6 +220,11 @@
     },
 
     "divs": {
+      "editorImage": {
+        "imgScalePercent": 60.0,
+        "imgAlign": "MIDDLE",
+        "imgRotateDegrees": 5.0
+      }
     }
   },
 
