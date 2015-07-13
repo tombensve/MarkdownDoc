@@ -131,6 +131,10 @@
       "size": 10,
       "style": "NORMAL",
 
+      "image": {
+          "imgScalePercent": 60.0
+      },
+
       "title": {
           "family": "COURIER",
           "size": 25,

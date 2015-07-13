@@ -7,6 +7,7 @@
     @PDFVersion(1.0)
     @PDFAuthor("Tommy Bengt Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
+    @PDFTitlePageImage("/tommy.jpg:260.0:400.0")
     
 -->
 # Headers

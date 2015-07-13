@@ -68,7 +68,8 @@ class MSS {
         subject,
         version,
         copyright,
-        author
+        author,
+        image
     }
 
     /**
@@ -415,7 +416,6 @@ class MSS {
 
         JSONNumber rotate = section?.getProperty(MSS_IMAGE.imgRotateDegrees.name()) as JSONNumber
         image.updateRotateIfNotSet(rotate)
-
     }
 
     /**
@@ -423,7 +423,7 @@ class MSS {
      *
      * @param colorPair The color pair to ensure.
      */
-    private static @NotNull MSSColorPair ensureColorPair(@NotNull final MSSColorPair colorPair) {
+    private static @NotNull MSSColorPair ensureColorPair(@NotNull MSSColorPair colorPair) {
         colorPair.updateForegroundIfNotSet(MSSColor.BLACK)
         colorPair.updateBackgroundIfNotSet(MSSColor.WHITE)
 
@@ -435,12 +435,25 @@ class MSS {
      *
      * @param font The font to ensure.
      */
-    private static @NotNull MSSFont ensureFont(@NotNull final MSSFont font) {
+    private static @NotNull MSSFont ensureFont(@NotNull MSSFont font) {
         font.updateFamilyIfNotSet("HELVETICA")
         font.updateSizeIfNotSet(10)
         font.updateStyleIfNotSet(MSSFontStyle.NORMAL)
 
         font
+    }
+
+    /**
+     * Ensures that the specified image data at lest have default values set.
+     *
+     * @param image The image data to ensure.
+     */
+    private static @NotNull MSSImage ensureImage(@NotNull MSSImage image) {
+        image.updateScaleIfNotSet(new JSONNumber(60.0f))
+        image.updateAlignIfNotSet(new JSONString("LEFT"))
+        image.updateRotateIfNotSet(new JSONNumber(0.0f))
+
+        image
     }
 
     /**
@@ -522,7 +535,7 @@ class MSS {
         updateMSSImageIfNotSet(image, this.document?.getProperty(MSS_Pages.image.name()) as JSONObject)
         updateMSSImageIfNotSet(image, this.document)
 
-        image
+        ensureImage(image)
     }
 
     class ForDocument {
@@ -571,6 +584,18 @@ class MSS {
         ensureFont(font)
     }
 
+    /**
+     * Returns an MSSImage with image info.
+     */
+    @NotNull MSSImage getImageDataForFrontPage() {
+        MSSImage image = new MSSImage()
+
+        updateMSSImageIfNotSet(image, this.frontPage.getProperty(MSS_Front_Page.image.name()) as JSONObject)
+        updateMSSImageIfNotSet(image, this.frontPage)
+
+        ensureImage(image)
+    }
+
     class ForFrontPage {
         @NotNull MSSColorPair getColorPair(@NotNull final MSS_Front_Page section) {
             getColorPairForFrontPage(section)
@@ -578,6 +603,10 @@ class MSS {
 
         @NotNull MSSFont getFont(@NotNull final MSS_Front_Page section) {
             getFontForFrontPage(section)
+        }
+
+        @NotNull MSSImage getImageData() {
+            getImageDataForFrontPage()
         }
     }
 

@@ -82,6 +82,12 @@ class PDFGeneratorOptions implements Options {
     String subject = null
 
     @Option
+    @Name("titlePageImage")
+    @Description("Put an image on the title page. Format: <path/URL>:x:y")
+    @Optional
+    String titlePageImage
+
+    @Option
     @Name("keywords")
     @Description("Meta keywords")
     @Optional

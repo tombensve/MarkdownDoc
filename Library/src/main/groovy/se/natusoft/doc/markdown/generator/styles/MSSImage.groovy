@@ -53,4 +53,5 @@ class MSSImage {
             this.rotateDegrees = degrees?.toFloat()
         }
     }
+
 }

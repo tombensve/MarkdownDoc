@@ -41,6 +41,7 @@ import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Chapter
 import com.itextpdf.text.Chunk
 import com.itextpdf.text.Document as PDFDocument
+import com.itextpdf.text.DocumentException
 import com.itextpdf.text.Element
 import com.itextpdf.text.Font
 import com.itextpdf.text.Image as PDFImage
@@ -89,7 +90,6 @@ import se.natusoft.doc.markdown.model.ListItem
 import se.natusoft.doc.markdown.model.Paragraph
 import se.natusoft.doc.markdown.model.PlainText
 import se.natusoft.doc.markdown.model.Strong
-import sun.reflect.generics.tree.VoidDescriptor
 
 import java.util.ArrayList as JArrayList
 import java.util.LinkedList as JLinkedList
@@ -292,7 +292,7 @@ class PDFGenerator implements Generator {
                     // and also act on @PDFTitle, @PDFSubject, @PDFKeywords, @PDFAuthor, @PDFVersion, and @PDFCopyright
                     // for overriding those settings in the options. This allows the document rather than the generate
                     // config to provide this information.
-                    extractTitlePageData(comment, context)
+                    extractCommentOptionsAnnotations(comment, context)
                     break
 
                 case DocFormat.Paragraph:
@@ -450,7 +450,8 @@ class PDFGenerator implements Generator {
      *
      * @return true if anything was updated, false otherwise.
      */
-    private static boolean  extractTitlePageData(@NotNull Comment comment, @NotNull PDFGeneratorContext context) {
+    private static boolean extractCommentOptionsAnnotations(@NotNull Comment comment,
+                                                            @NotNull PDFGeneratorContext context) {
         boolean updated = false
 
         updated |= updateOptsFromAnnotation("@PDFTitle", comment) { String text ->
@@ -503,6 +504,9 @@ class PDFGenerator implements Generator {
         }
         updated |= updateOptsFromAnnotation("@PDFGenerateTitlePage", comment) { String text ->
             context.options.generateTitlePage = Boolean.valueOf(text)
+        }
+        updated |= updateOptsFromAnnotation("@PDFTitlePageImage", comment) { String text ->
+            context.options.titlePageImage = text
         }
 
         updated
@@ -770,6 +774,46 @@ class PDFGenerator implements Generator {
             Chunk chunk = new Chunk("${context.options.authorLabel} " + author, font)
             Phrase phrase = new Phrase(chunk)
             ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, phrase, x, yBottom, 0.0f)
+        }
+
+        if (context.options.titlePageImage != null && context.options.titlePageImage.trim().length() != 0) {
+            MSSImage mssImage = context.pdfStyles.mss.forFrontPage.getImageData()
+            PDFImage image
+
+            String[] parts = context.options.titlePageImage.split(":")
+            if (parts.length != 3) {
+                throw new GenerateException(message: "Bad image specification! Should be <path/URL>:x:y!")
+            }
+            String imagePath = parts[0]
+            float imgX = Float.valueOf(parts[1])
+            float imgY = Float.valueOf(parts[2])
+
+            try {
+                if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+                    image = PDFImage.getInstance(new URL(imagePath))
+                } else {
+                    String resourcePath = imagePath
+                    if (!resourcePath.startsWith("/")) {
+                        resourcePath = "/" + resourcePath
+                    }
+                    URL resourceURL = System.getResource(resourcePath)
+                    if (resourceURL != null) {
+                        image = PDFImage.getInstance(resourceURL)
+                    }
+                    else {
+                        String localPath = context.fileResource.getResourceFile(imagePath)
+                        image = PDFImage.getInstance(localPath)
+                    }
+                }
+            }
+            catch (DocumentException | IOException e) {
+                throw new GenerateException(message: "Failed to load front page image! [${e.message}]", cause: e)
+            }
+
+            image.scalePercent(mssImage.scalePercent)
+            image.rotationDegrees = mssImage.rotateDegrees
+            image.setAbsolutePosition(imgX, imgY)
+            canvas.addImage(image)
         }
 
         document.newPage()

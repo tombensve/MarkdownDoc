@@ -161,9 +161,11 @@
     "size": 10,
     "style": "Normal",
 
-    "imgScalePercent": 60.0,
-    "imgAlign": "LEFT",
-    "imgRotateDegrees": 0.0,
+    "image": {
+      "imgScalePercent": 60.0,
+      "imgAlign": "LEFT",
+      "imgRotateDegrees": 0.0
+    },
 
     "pages": {
       "block_quote": {
@@ -233,6 +235,12 @@
     "family": "HELVETICA",
     "size": 10,
     "style": "NORMAL",
+
+    "image": {
+        "imgScalePercent": 60.0,
+        "imgRotateDegrees": 0.0
+    },
+
     "title": {
       "size": 25,
       "style": "UNDERLINE"
