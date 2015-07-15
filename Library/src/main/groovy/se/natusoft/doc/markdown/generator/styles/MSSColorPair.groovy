@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable
 @CompileStatic
 @TypeChecked
 @EqualsAndHashCode
-@ToString
+@ToString(includeNames = true)
 class MSSColorPair {
     //
     // Properties

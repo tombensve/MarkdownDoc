@@ -221,9 +221,16 @@
 
     "divs": {
       "editorImage": {
-        "imgScalePercent": 60.0,
+        "imgScalePercent": 50.0,
         "imgAlign": "MIDDLE",
-        "imgRotateDegrees": 5.0
+        "imgRotateDegrees": -4.0
+      },
+
+      "options": {
+        "h3": {
+          "color": "#7A4727",
+          "size": 12
+        }
       }
     }
   },
@@ -233,6 +240,10 @@
     "family": "HELVETICA",
     "size": 10,
     "style": "NORMAL",
+
+    "image": {
+        "imgScalePercent": 10.0
+    },
 
     "title": {
       "family": "Dwerneck",
@@ -271,12 +282,16 @@
       "color": "SaddleBrown"
     },
     "h3": {
+      "style": "NORMAL"
     },
     "h4": {
+      "style": "NORMAL"
     },
     "h5": {
+      "style": "NORMAL"
     },
     "h6": {
+      "style": "NORMAL"
     }
   }
 }

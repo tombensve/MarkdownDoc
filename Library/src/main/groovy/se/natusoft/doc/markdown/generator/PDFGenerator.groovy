@@ -54,6 +54,7 @@ import com.itextpdf.text.Rectangle
 import com.itextpdf.text.Section
 import com.itextpdf.text.pdf.ColumnText
 import com.itextpdf.text.pdf.PdfContentByte
+import com.itextpdf.text.pdf.PdfName
 import com.itextpdf.text.pdf.PdfPageEventHelper
 import com.itextpdf.text.pdf.PdfWriter
 import com.itextpdf.text.pdf.draw.LineSeparator
@@ -66,7 +67,6 @@ import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions
 import se.natusoft.doc.markdown.generator.pdf.PDFColorMSSAdapter
-import se.natusoft.doc.markdown.generator.pdf.PDFHeaderLevelCache
 import se.natusoft.doc.markdown.generator.pdf.PDFStylesMSSAdapter
 import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.generator.styles.MSSColor
@@ -135,9 +135,6 @@ class PDFGenerator implements Generator {
 
         /** Adapter between MSS and iText fonts. */
         PDFStylesMSSAdapter pdfStyles = new PDFStylesMSSAdapter()
-
-        /** This is needed for generating TOC with correct styles. */
-        PDFHeaderLevelCache headerLevelCache = new PDFHeaderLevelCache()
 
         /**
          * This will actually be added to the real Document later on, twice: once for the fake TOC resolve render
@@ -369,7 +366,6 @@ class PDFGenerator implements Generator {
                             updateTOC: true,
                             toc: context.toc,
                             pdfStyles: context.pdfStyles,
-                            headerLevelCache: context.headerLevelCache,
                             context: context
                     )
             )
@@ -405,7 +401,6 @@ class PDFGenerator implements Generator {
                         updateTOC: false,
                         toc: context.toc,
                         pdfStyles: context.pdfStyles,
-                        headerLevelCache: context.headerLevelCache,
                         context: context
                 )
         )
@@ -648,7 +643,7 @@ class PDFGenerator implements Generator {
             writeText(
                     cb,
                     Element.ALIGN_LEFT,
-                    tocEntry.sectionTitle,
+                    context.options.generateSectionNumbers ? tocEntry.sectionTitle : indentTocEntry(tocEntry) ,
                     (float)(document.left() + document.leftMargin()),
                     (float)y,
                     context.pdfStyles.getFont(tocEntry.level)
@@ -669,6 +664,15 @@ class PDFGenerator implements Generator {
                 ++context.pageOffset
             }
         }
+    }
+
+    private static String indentTocEntry(TOC toc) {
+        StringBuilder sb = new StringBuilder()
+        // We subtract 1 because the enum starts with "toc" and "h1" to "h6" is at ordinal 1 to 6.
+        (toc.level.ordinal() - 1).times { sb.append("  ") }
+        sb.append(toc.sectionTitle)
+
+        sb.toString()
     }
 
     /**
@@ -843,7 +847,6 @@ class PDFGenerator implements Generator {
 
         switch (header.level) {
             case { it == Header.Level.H1 } :
-                context.headerLevelCache.put(header.text, MSS.MSS_TOC.h1)
                 // It feels like iText doesn't like it when you add a parent to its parent before
                 // it has all its children ...
                 if (context.currentChapter != null) {
@@ -852,7 +855,7 @@ class PDFGenerator implements Generator {
                 PDFParagraph title = new PDFParagraph()
                 updateHeaderParagraph(title, header.text, MSS.MSS_Pages.h1, context)
 
-                Chapter chapter = new Chapter(title, context.chapterNumber ++)
+                Chapter chapter = new Chapter(title, context.chapterNumber++)
 
                 handleSectionOpts(chapter, context)
 
@@ -867,7 +870,6 @@ class PDFGenerator implements Generator {
                 break
 
             case { it == Header.Level.H2 } :
-                context.headerLevelCache.put(header.text, MSS.MSS_TOC.h2)
                 PDFParagraph title = new PDFParagraph()
                 updateHeaderParagraph(title, header.text, MSS.MSS_Pages.h2, context)
 
@@ -895,7 +897,6 @@ class PDFGenerator implements Generator {
                 break
 
             case { it == Header.Level.H3 } :
-                context.headerLevelCache.put(header.text, MSS.MSS_TOC.h3)
                 PDFParagraph title = new PDFParagraph()
                 updateHeaderParagraph(title, header.text, MSS.MSS_Pages.h3, context)
 
@@ -921,7 +922,6 @@ class PDFGenerator implements Generator {
                 break
 
             case { it == Header.Level.H4 } :
-                context.headerLevelCache.put(header.text, MSS.MSS_TOC.h4)
                 PDFParagraph title = new PDFParagraph()
                 updateHeaderParagraph(title, header.text, MSS.MSS_Pages.h4, context)
 
@@ -946,7 +946,6 @@ class PDFGenerator implements Generator {
                 break
 
             case { it == Header.Level.H5 } :
-                context.headerLevelCache.put(header.text, MSS.MSS_TOC.h5)
                 PDFParagraph title = new PDFParagraph()
                 updateHeaderParagraph(title, header.text, MSS.MSS_Pages.h5, context)
 
@@ -970,7 +969,6 @@ class PDFGenerator implements Generator {
                 break
 
             case { it == Header.Level.H6 } :
-                context.headerLevelCache.put(header.text, MSS.MSS_TOC.h6)
                 PDFParagraph title = new PDFParagraph()
                 updateHeaderParagraph(title, header.text, MSS.MSS_Pages.h6, context)
 
@@ -1507,7 +1505,6 @@ class PDFGenerator implements Generator {
         boolean updateTOC
         JList<TOC> toc
         PDFStylesMSSAdapter pdfStyles
-        PDFHeaderLevelCache headerLevelCache
         PDFGeneratorContext context
 
         @Override
@@ -1555,12 +1552,13 @@ class PDFGenerator implements Generator {
                        @NotNull final PDFParagraph title) {
 
             if (this.updateTOC && title != null) {
-                String content = title.getContent()
+                MSS.MSS_TOC tocLevel =
+                        MSS.MSS_TOC.valueOf(PdfName.decodeName(new String(title.getRole().bytes)).toLowerCase())
                 this.toc.add(
                         new TOC(
                                 sectionTitle: title.getContent().split("\n")[0],
                                 pageNumber: document.getPageNumber(),
-                                level: this.headerLevelCache.getLevel(content)
+                                level: tocLevel
                         )
                 )
             }
@@ -1571,11 +1569,13 @@ class PDFGenerator implements Generator {
                        int depth, @NotNull final PDFParagraph title) {
 
             if (this.updateTOC && title != null) {
+                MSS.MSS_TOC tocLevel =
+                        MSS.MSS_TOC.valueOf(PdfName.decodeName(new String(title.getRole().bytes)).toLowerCase())
                 this.toc.add(
                         new TOC(
                                 sectionTitle: title.getContent().split("\n")[0],
                                 pageNumber: document.getPageNumber(),
-                                level: this.headerLevelCache.getLevel(title.getContent())
+                                level: tocLevel
                         )
                 )
             }

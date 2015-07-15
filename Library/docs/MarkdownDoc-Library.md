@@ -2,7 +2,7 @@
 
 The library is made up of a document model representing all formats of markdown, parsers and generators. The parsers produce a document model and the generators generate from that model. The document model represents the markdown formats. Thereby there are no HTML pass-through from a markdown document! This tool only deals with markdown, not HTML.
 
-The API docs for the library can be found [here](http://apidoc.natusoft.se/MarkdownDoc).
+The API docs for the library can be found [here](http://apidoc.natusoft.se/MarkdownDoc1_4).
 
 ## Usage
 
@@ -35,7 +35,7 @@ the result in whatever _rootDir_ relative path is specified in the _options_.
 
 #### se.natusoft.doc.markdown.parser.MarkdownParser
 
-This parser parses markdown and only markdown! It ignores HTML with the exception of comments. 
+This parser parses markdown and only markdown! It ignores HTML with the exception of comments, \&nbsp; and divs.
 
 Example usage:
 
@@ -43,11 +43,11 @@ Example usage:
     Doc document = new Doc();
     Properties parserOptions = new Properties();
     parser.parse(document, parseFile, parserOptions);
-	
+
 #### se.natusoft.doc.markdown.parser.JavadocParser
 
-This parser parses java source files and extracts class and method declarations and javadoc comment blocks.
-it produces a document model looking like this (in markdown format):
+This parser parses java source files (should also handle groovy source files) and extracts class and method declarations and javadoc comment blocks.
+It produces a document model looking like this (in markdown format):
 
     public _class/interface_ __class-name__ extends something [package] {
     > class javadoc
@@ -85,7 +85,8 @@ Example usage:
     Parser parser = ParserProvider.getParserForFile(parseFile);
     Doc document = new Doc();
     Properties parserOptions = new Properties();
-    parser.parse(document, parseFie, parserOptions);
+    parserOptions.setProperty("...", "...");
+    parser.parse(document, parseFile, parserOptions);
 
 ### Generators
 
@@ -119,7 +120,7 @@ tool also by me. Available at [github.com/tombensve/OptionsManager](https://gith
 
 #### se.natusoft.doc.markdown.generator.PDFGenerator
 
-This generator produces a PDF document.
+This generator produces a PDF document. 
 
 #### se.natusoft.doc.markdown.generator.HTMLGenerator
 
@@ -127,7 +128,7 @@ This generator produces an HTML document.
 
 #### se.natusoft.doc.markdown.generator.MarkdownGenerator
 
-This generator produces a Markdown document. So why would we want to generate markdown ? Well, it became needed after I added the JavadocParser. Now I can have both markdown and java files as input and the PDF and HTML files contained the whole result including the javadoc information. The original markdown document however does not have the javadoc parts, and this markdown document is read as is on github and will then not be complete. Therefore I added this generator and moved my real source document into docs/src and also generate a markdown version into docs that will be as complete as the pdf and html version.
+This generator produces a Markdown document. So why would we want to generate markdown ? Well, it became needed after I added the JavadocParser. Now I can have both markdown and java files as input and the PDF and HTML files contains the whole result including the javadoc information. The original markdown document however does not have the javadoc parts, and this markdown document is read as is on github and will then not be complete. Therefore I added this generator and moved my real source document into docs/src and also generate a markdown version into docs that will be as complete as the pdf and html version.
 
 #### se.natusoft.doc.markdown.util.MDDocFileHandler
 
@@ -136,7 +137,7 @@ This is a class with one static method that completely handles the _.mddoc_ form
 Usage:
 
 	MDDocFileHandler.execute("<path to .mddoc file>");
-	
+
 This will generate all output formats as specified in the .mddoc file.
 
-
+See the "The mddoc file type" section for more information on the .mdddoc format.

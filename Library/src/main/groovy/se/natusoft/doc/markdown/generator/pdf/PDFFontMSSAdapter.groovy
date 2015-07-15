@@ -23,16 +23,18 @@ class PDFFontMSSAdapter extends Font {
     PDFFontMSSAdapter(@NotNull final BaseFont baseFont, @NotNull final MSSFont mssFont,
                       @NotNull final MSSColorPair mssColorPair) {
         super(baseFont)
-        setSize(mssFont.size)
-        setStyle(toStyle(mssFont.style))
-        setColor(new PDFColorMSSAdapter(mssColorPair.foreground))
+
+        size = mssFont.size
+        style = toStyle(mssFont.style)
+        color = new PDFColorMSSAdapter(mssColorPair.foreground)
     }
 
     PDFFontMSSAdapter(@NotNull final MSSFont mssFont, @NotNull final MSSColorPair mssColorPair) {
-        setFamily(mssFont.family)
-        setSize((float)mssFont.size)
-        setStyle(toStyle(mssFont.style))
-        setColor(new PDFColorMSSAdapter(mssColorPair.foreground))
+
+        family = mssFont.family
+        size = (float)mssFont.size
+        style = toStyle(mssFont.style)
+        color = new PDFColorMSSAdapter(mssColorPair.foreground)
     }
 
     //

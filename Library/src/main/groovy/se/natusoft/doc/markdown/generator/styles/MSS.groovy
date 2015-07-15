@@ -336,7 +336,7 @@ class MSS {
         MSSColor color = this.colorMap.get(name)
 
         if (color == null) {
-            if (name.contains(":")) {
+            if (name.contains(":") || name.startsWith("#")) {
                 color = new MSSColor(color: name)
             } else {
                 JSONObject jssColors = this.mss.getProperty(MSS_Top.colors.name()) as JSONObject

@@ -49,13 +49,13 @@
                             <generatorOptions>
                                 <generator>pdf</generator>
                                 <inputPaths>
-                                    Docs/parts/H1UserGuide.mdpart,
-                                    Docs/MarkdownDoc.md,
+                                    Docs/MarkdownDocUserGuideStart.md,
                                     CommandLine/docs/.*.md,
                                     MavenPlugin/docs/.*.md,
                                     Library/docs/.*.md,
                                     Editor/docs/.*.md,
                                     Docs/mddoc.md,
+                                    Docs/VersionHistory.md,
                                     Docs/MarkdownReference.md,
                                     Docs/parts/H1Licenses.mdpart,
                                     Docs/licenses.md,
@@ -68,7 +68,7 @@
                                 <resultFile>Docs/MarkdownDoc-User-Guide.pdf</resultFile>
                                 <mss>Docs/docs.mss</mss>
                                 <!--
-                                These are now specified as annotations in MarkdownDoc.md!
+                                These are now specified as annotations in MarkdownDocUserGuideStart.md!
 
                                 <pageSize>A4</pageSize>
                                 <title>MarkdownDoc</title>

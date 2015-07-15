@@ -1,8 +1,8 @@
-## MSS (Markdown Style Sheet)
+# MSS (Markdown Style Sheet)
 
 The MSS format is a JSON document describing the styles (colors and fonts) to use for different sections of a markdown document (standard text, heading, bold, code, etc). It contains 3 main sections: front page, TOC, pages. There is a _default.mss_ embedded in the jar that is used if no external mss files is provided. The default MSS should be compatible with styles used in previous versions. 
 
-Currently the MSS file is only usewd by the PDF generator. But it could also be relevant for other formats, like word if I ever add such a generator. I gladly take a pull request if anybody wants to do that :-). 
+Currently the MSS file is only used by the PDF generator. But it could also be relevant for other formats, like word if I ever add such a generator. I gladly take a pull request if anybody wants to do that :-). 
 
 The best way to describe the MSS file is to show the _default.mss_ file:
 
@@ -22,7 +22,7 @@ A best effort is used to resolve the font in "path":. If the specified path does
         ]
       },
 
-The "colors" section just provide names for colors. This list was taken from the default color names for CSS colors, with the exception of the first 3. Any color specification in secitons below that does not contain any ":" character will be taken as a name and looked up here.
+The "colors" section just provide names for colors. This list was taken from the default color names for CSS colors, with the exception of the first 3. Any color specification in sections below that does not contain any ":" character will be taken as a name and looked up here.
 
       "colors": {
         "white": "255:255:255",
@@ -171,7 +171,7 @@ The "colors" section just provide names for colors. This list was taken from the
         "YellowGreen": "9ACD32"
       },
 
-This section deals with document styles. It has 3 sections: "pages", "front\_page", and "toc". If a style is not set in a specific section it will fall back to what is specified in a more general section.
+This section deals with document styles. It has 3 sections: "pages", "front\_page", and "toc". If a style is not set in a specific section it will fall back to what is specified in a more general section. For example, if a subsection of "document" does not specify "color" then it will fall back to the "color": "black" directly under "document". 
 
       "document": {
         "color": "black",
@@ -179,6 +179,13 @@ This section deals with document styles. It has 3 sections: "pages", "front\_pag
         "family": "HELVETICA",
         "size": 10,
         "style": "Normal",
+    
+        "image": {
+           "imgScalePercent": 60.0,
+           "imgAlign": "LEFT",
+           "imgRotateDegrees": 0.0
+        },
+    
         "pages": {
           "block_quote": {
             "style": "Italic",
@@ -242,15 +249,19 @@ This section deals with document styles. It has 3 sections: "pages", "front\_pag
           }
         }
       },
-
-Note the "label": in "version" and "author"! This is what is used for these 2 texts. So it can be translated to another language if wanted.
-
+    
       "front_page": {
         "color": "0:0:0",
         "background": "255:255:255",
         "family": "HELVETICA",
         "size": 10,
         "style": "NORMAL",
+    
+        "image": {
+           "imgScalePercent": 60.0,
+           "imgRotateDegrees": 0.0
+        },
+    
         "title": {
           "size": 25,
           "style": "UNDERLINE"
@@ -260,13 +271,11 @@ Note the "label": in "version" and "author"! This is what is used for these 2 te
         },
         "version": {
           "size": 12,
-          "label": "Version:"
         },
         "copyright": {
         },
         "author": {
           "size": 12,
-          "label": "Author:"
         }
       },
     

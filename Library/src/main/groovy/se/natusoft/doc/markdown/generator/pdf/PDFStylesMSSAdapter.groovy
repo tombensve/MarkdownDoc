@@ -20,14 +20,6 @@ import se.natusoft.doc.markdown.generator.styles.MSSExtFont
 class PDFStylesMSSAdapter {
 
     //
-    // Private Members
-    //
-
-    private Map<String, Font> documentCache = new HashMap<>()
-    private Map<String, Font> frontPageCache = new HashMap<>()
-    private Map<String, Font> tocCache = new HashMap<>()
-
-    //
     // Properties
     //
 
@@ -85,11 +77,13 @@ class PDFStylesMSSAdapter {
             if (!fontName.contains(".")) { fontName += ".ttf" }
             BaseFont baseFont
             try {
-                baseFont = BaseFont.createFont(fontName, mssExtFont.encoding, BaseFont.EMBEDDED, BaseFont.NOT_CACHED, fontBytes, new byte[0])
+                baseFont = BaseFont.createFont(fontName, mssExtFont.encoding, BaseFont.EMBEDDED, BaseFont.NOT_CACHED,
+                        fontBytes, new byte[0])
             }
             catch (Exception ignore) {
                 fontName = mssFont.family + ".otf"
-                baseFont = BaseFont.createFont(fontName, mssExtFont.encoding, BaseFont.EMBEDDED, BaseFont.NOT_CACHED, fontBytes, new byte[0])
+                baseFont = BaseFont.createFont(fontName, mssExtFont.encoding, BaseFont.EMBEDDED, BaseFont.NOT_CACHED,
+                        fontBytes, new byte[0])
             }
             new PDFFontMSSAdapter(baseFont, mssFont, mssColorPair)
         }
@@ -146,19 +140,10 @@ class PDFStylesMSSAdapter {
     @NotNull Font getFont(@NotNull final MSS.MSS_Pages section) throws GenerateException {
         validate()
 
-        String key = section.name()
-        Font font = this.documentCache.get(key)
+        MSSFont mssFont = this.mss.forDocument.getFont(section)
+        MSSColorPair mssColorPair = this.mss.forDocument.getColorPair(section)
 
-        if (font == null) {
-            MSSFont mssFont = this.mss.forDocument.getFont(section)
-            MSSColorPair mssColorPair = this.mss.forDocument.getColorPair(section)
-
-            font = resolveFont(mssFont, mssColorPair)
-
-            this.documentCache.put(key, font)
-        }
-
-        font
+        resolveFont(mssFont, mssColorPair)
     }
 
     /**
@@ -168,18 +153,11 @@ class PDFStylesMSSAdapter {
      */
     @NotNull Font getFont(@NotNull final MSS.MSS_TOC section) {
         validate()
-        Font font = this.tocCache.get(section.name())
 
-        if (font == null) {
-            MSSFont mssFont = this.mss.forTOC.getFont(section)
-            MSSColorPair mssColorPair = this.mss.forTOC.getColorPair(section)
+        MSSFont mssFont = this.mss.forTOC.getFont(section)
+        MSSColorPair mssColorPair = this.mss.forTOC.getColorPair(section)
 
-            font = resolveFont(mssFont, mssColorPair)
-
-            this.tocCache.put(section.name(), font)
-        }
-
-        font
+        resolveFont(mssFont, mssColorPair)
     }
 
     /**
@@ -190,17 +168,9 @@ class PDFStylesMSSAdapter {
     @NotNull Font getFont(@NotNull final MSS.MSS_Front_Page section) {
         validate()
 
-        Font font = this.frontPageCache.get(section.name())
+        MSSFont mssFont = this.mss.forFrontPage.getFont(section)
+        MSSColorPair mssColorPair = this.mss.forFrontPage.getColorPair(section)
 
-        if (font == null) {
-            MSSFont mssFont = this.mss.forFrontPage.getFont(section)
-            MSSColorPair mssColorPair = this.mss.forFrontPage.getColorPair(section)
-
-            font = resolveFont(mssFont, mssColorPair)
-
-            this.frontPageCache.put(section.name(), font)
-        }
-
-        font
+        resolveFont(mssFont, mssColorPair)
     }
 }

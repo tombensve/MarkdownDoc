@@ -156,14 +156,14 @@ class PDFGeneratorOptions implements Options {
     @Deprecated
     @Option
     @Name("backgroundColor")
-    @Description("DEPRECATED! Use an .mss file instead! [ The background color of the document in \"R:G:B\" format where each R, G, and B are a number 0 - 255.]")
+    @Description("DEPRECATED! Use an .mss file instead! The background color of the document in \"R:G:B\" format where each R, G, and B are a number 0 - 255.")
     @Optional
     String backgroundColor = null
 
     @Deprecated
     @Option
     @Name("blockQuoteColor")
-    @Description("DEPRECATED! Use an .mss file instead! [The blockquote color to use in this document in \"R:G:B\" format where each R, G, and B are a number 0 - 255.]")
+    @Description("DEPRECATED! Use an .mss file instead! The blockquote color to use in this document in \"R:G:B\" format where each R, G, and B are a number 0 - 255.")
     @Optional
     String blockQuoteColor = null
 
@@ -176,7 +176,7 @@ class PDFGeneratorOptions implements Options {
 
     @Option
     @Name("mss")
-    @Description("This specifies the path to an .mss file to use for setting fonts and colors of the generated document.")
+    @Description("This specifies the path to an .mss file to use for setting fonts and colors and image styling of the generated document.")
     @Optional
     String mss
 
