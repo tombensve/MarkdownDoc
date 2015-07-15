@@ -69,7 +69,7 @@ The known (and intentional) differences are:
 
 * No multiple block quote levels (as of now). I've never personally missed having multiple quote levels, which is why I haven't done something about that yet.  
 
-* Does not support any other formatting within strong (\_\_...\_\_), emphasized (\_...\_), or header (# ...). I personally don't see enough of a problem with this, that I'll prioritize it. 
+* Does not support any other formatting within strong, emphasized, or header. I personally don't see enough of a problem with this, that I'll prioritize it. 
 
 If you find any of the missing features a problem, I'll happily accept pull requests. :-)
 

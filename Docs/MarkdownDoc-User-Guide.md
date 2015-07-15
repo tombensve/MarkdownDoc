@@ -76,7 +76,7 @@ The known (and intentional) differences are:
 
 * No multiple block quote levels (as of now). I've never personally missed having multiple quote levels, which is why I haven't done something about that yet.
 
-* Does not support any other formatting within strong (__...__), emphasized (_..._), or header (# ...). I personally don't see enough of a problem with this, that I'll prioritize it.
+* Does not support any other formatting within strong, emphasized, or header. I personally don't see enough of a problem with this, that I'll prioritize it.
 
 If you find any of the missing features a problem, I'll happily accept pull requests. :-)
 
@@ -2645,7 +2645,11 @@ The known (and intentional) differences are:
 
 * No entity encoding of email addresses.
 
-* No multiple block quote levels (as of now). I've never personally missed having multiple quote levels, which is why I haven't done something about that yet. If you feel this is essential then file an issue about this or just mail me and I'll try to give that a bit more prio.
+* No multiple block quote levels (as of now). I've never personally missed having multiple quote levels, which is why I haven't done something about that yet.
+
+* Does not support any other formatting within strong (__...__), emphasized (_..._), or header (# ...). I personally don't see enough of a problem with this, that I'll prioritize it.
+
+If you find any of the missing features a problem, I'll happily accept pull requests. :-)
 
 ## File specifications
 
@@ -3418,7 +3422,7 @@ This is an editor for editing markdown documents.
 
 <div class="editorImage">
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/docs/images/MarkdownDoc-Editor-2.png)
+![](file:Editor/docs/images/MarkdownDoc-Editor-2.png)
 
 </div>
 
@@ -12420,7 +12424,7 @@ This is an editor for editing markdown documents.
 
 <div class="editorImage">
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/docs/images/MarkdownDoc-Editor-2.png)
+![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/docs/images/MarkdownDoc-Editor-2.png)
 
 </div>
 
@@ -13710,7 +13714,7 @@ This is an editor for editing markdown documents.
 
 <div class="editorImage">
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/docs/images/MarkdownDoc-Editor-2.png)
+![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/docs/images/MarkdownDoc-Editor-2.png)
 
 </div>
 
@@ -14843,11 +14847,11 @@ Files will be parsed in the order they are specified. When regular expressions a
 
 This is a comma separated list of `name=value`.
 
-#### JavaDoc2MDParser
+#### JavaDoc2MDParser options
 
 Just setting __markdownJavadoc__ to any value will make it take the javadoc text as markdown and parse that also.
 
-#### MarkdownParser
+#### MarkdownParser options
 
 This parser currently has no options.
 
@@ -14953,7 +14957,7 @@ This will generate one first page with a title, version, author, and copyright. 
 
 Shows help.
 
-## HTMLGeneratorOptions
+## HTMLGenerator options
 
 ### resultFile : String (R)
 
@@ -14979,7 +14983,7 @@ The path file links should be relative to.
 
 Shows help.
 
-## MarkdownGeneratorOptions
+## MarkdownGenerator options
 
 ### resultFile : String (R)
 
@@ -16293,7 +16297,7 @@ This is an editor for editing markdown documents.
 
 <div class="editorImage">
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/docs/images/MarkdownDoc-Editor-2.png)
+![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/docs/images/MarkdownDoc-Editor-2.png)
 
 </div>
 
@@ -16749,7 +16753,7 @@ The character can be used to escape characters that have markdown meaning. will 
     @PDFVersion(1 . 4) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
-    @PDFTitlePageImage("Docs/MDD_Laptop_2_Fotor.png:200:320")
+    @PDFTitlePageImage("Docs/src/MDD_Laptop_2_Fotor.png:200:320")
     
     @PDFPageSize("A4")
     @PDFGenerateTitlePage(true)
@@ -17586,7 +17590,7 @@ This is an editor for editing markdown documents.
 
 <div class="editorImage">
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs/images/MarkdownDoc-Editor-2.png)
+![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/docs/images/MarkdownDoc-Editor-2.png)
 
 </div>
 
@@ -18015,7 +18019,1302 @@ The character can be used to escape characters that have markdown meaning. will 
 
 # Licenses
 
+# License Texts
+
 <!--
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+    As of version 1.4 it is possible to specify a lot of the PDFGenerator options as annotations
+    within a comment block. This should be at the top of the document or it can have side effects.
+
+    @PDFTitle("MarkdownDoc")
+    @PDFSubject("User Guide")
+    @PDFKeywords("markdown MarkdownDoc mdd_version_1.4")
+    @PDFVersion(1 . 4) Due to the font used I put a space between to make the dot more visible.
+    @PDFAuthor("Tommy Svensson")
+    @PDFCopyright("Copyright (C) 2012 Natusoft AB")
+    @PDFTitlePageImage("Docs/MDD_Laptop_2_Fotor.png:200:320")
+    
+    @PDFPageSize("A4")
+    @PDFGenerateTitlePage(true)
+    @PDFGenerateTOC(true)
+    @PDFGenerateSectionNumbers(false)
+
+-->
+# MarkdownDoc User Guide
+
+## Introduction
+
+MarkdownDoc is a tool that basically does what the name sounds like. My intention with this tool was to be able to document my java opensource tools in markdown and be able to generate both html and PDF from it using a maven plugin.
+
+So why not use mavens site plugin which does support markdown ? These days generating a whole site for your project seems a bit much. Both Bitbucket and GitHub supports markdown documentation right off in a nice and easy way. I want to choose where to put my documentation (ok, most locations in maven can be configured) and I also had the following requirements:
+
+* Be able to generate one PDF document from a whole collection of separate markdown documents so that I can spread them out in different subproject for multi maven project projects. If you are reading this in PDF format this PDF have been put together from multiple sources.
+
+* Be able to generate a table of contents and a title page.
+
+* I just wanted to do it my way OK! :-)
+
+It does also provide a java -jar executable variant. The main functionality is available as a library.
+
+In short MarkdownDoc provides the following:
+
+* Markdown document model.
+
+* Markdown parser.
+
+* Javadoc comment parser.
+
+* PDF generator.
+
+* HTML generator.
+
+* Markdown generator.
+
+* java -jar commandline executable.
+
+* Markdown editor that formats Markdown while writing with preview and PDF + HTML generation. Can be run with java -jar.
+
+* Maven plugin.
+
+### Binaries
+
+Binaries are made available at [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/view) and Bintrays JCenter repository: [http://jcenter.bintray.com](http://jcenter.bintray.com) which should also contain everything in maven central.
+
+### Thanks
+
+Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdown](http://daringfireball.net/projects/markdown) document format, and to [iText Software Corp.](http://itextpdf.com) for making an excellent easy to use PDF library and making it available as open source.
+
+### How markdown is MarkdownDoc ?
+
+Well, it implements the "specification" as documented on [daringfireball.net](http://daringfireball.net/projects/markdown/syntax). This specification however is not extremely exact so there might be some differences.
+
+The known (and intentional) differences are:
+
+* No HMTL pass-through! Well, there is a small exception to that. HTML comments are passed along. Mostly because there is no markdown comment format and I wanted to be able to put comments in my documents. &nbsp;  "" is passed through to create indents that are not code blocks. `"<div class="...">...</div>"` is also passed through. The reason for no general HTML pass-through is that MarkdownDoc takes it directly from markdown to a document model which is then used to generate PDF without any HTML rendering in between. The main purpose of this tool is to write documentation not generate HTML sites (though that has become easier in version 1.4 with the div support).
+
+* Escaping with ''. In MarkdownDoc you can escape any character with and it will be passed through as is without being acted on if it has markdown meaning.
+
+* No entity encoding of email addresses.
+
+* No multiple block quote levels (as of now). I've never personally missed having multiple quote levels, which is why I haven't done something about that yet. If you feel this is essential then file an issue about this or just mail me and I'll try to give that a bit more prio.
+
+## File specifications
+
+With both the maven plugin and the command line execution jar file you can specify a set of files to use as input. These are basically a comma separated list of files, but with the following additions:
+
+/my/path
+
+> All files in the directory pointed to by the path.
+
+/my/path/**
+
+> All files in the directory pointed to by the path and sub directories.
+
+/my/path/**/_regexp pattern_
+
+> All files matching the pattern in the directory pointed to by the path and sub directories.
+
+/my/path/_regexp pattern_
+
+> All files matching the pattern in the directory pointed to by the path.
+
+/my/path/fileset.fs
+
+> The above rules are applied to all file specifications in files having the .fs extension. # are comment lines within .fs files.
+
+# Command Line
+
+## General
+
+MarkdownDoc can be run using `java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar`. If you just run it without any arguments you get the following:
+
+                                                                Usage: java -jar markdowndoc-cmd-line-n.n[.n].exec.jar <generator> --help
+                                                                       or
+                                                                       java -jar markdowndoc-cmd-line-n.n[.n].exec.jar <generator> <fileSpec> --<generator option> ...
+                                                                       or
+                                                                       java -jar markdowndoc-cmd-line-n.n[.n].exec.jar <generator> <fileSpec> parserOptions:<parserOptions> —<generator option> ...
+                                                                       or
+                                                                       java -jar markdowndoc-cmd-line-n.n[.n].exec.jar <path to a .mddoc file>
+
+The last usage example requires an _.mddoc_ file. See _’The_mddoc_file type’_ (section 5) for more information on this file type.
+
+What the generator options are depends on the specified generator.
+
+The markdowndoc-cmd-line-n.n[.n]()-exec.jar is a jar generated to contain all dependencies in the same jar, making it easy to execute with java -jar.
+
+The _<generator>_ part should be either _pdf_, _html_, or _md_.
+
+The _<filespec/>_ part is a comma separated list of paths relative to the current directory. The filename part of the path can contain regular expressions and the directory part of the path can specify `.../**/...` to mean any levels of subdirectories.
+
+Example: `root/`__/docs/.___.md_
+
+See "Settings / Options" elsewhere in this document for all the options to the different generators and parsers.
+
+# Maven Plugin
+
+The maven plugin is rather straight forward. It has 3 sets of configuration structures, one common and one for each generator.
+
+## generatorOptions
+
+There is a config section that is common to all generators and specifys which generator to run and what input files to include. The following example is from the generation of this manual:
+
+                                                                <generatorOptions>
+                                                                    <generator>pdf</generator>
+                                                                    <inputPaths>
+                                                                        Docs/parts/H1UserGuide.mdpart,
+                                                                        Docs/MarkdownDoc.md,
+                                                                        MavenPlugin/docs/.*.md,
+                                                                        CommandLine/docs/.*.md,
+                                                                        Library/docs/.*.md,
+                                                                        Docs/parts/H1Licenses.mdpart,
+                                                                        Docs/licenses.md,
+                                                                        Docs/parts/H1LicenseTexts.mdpart,
+                                                                        Docs/.*-.*.md
+                                                                    </inputPaths>
+                                                                    <parserOptions>option=value,....</parserOptions>
+                                                                </generatorOptions>
+
+If the `<inputPaths>...</inputPaths>` section only contain one file of type _.mddoc_ then no other parameters need to be specified, not even `<generator>...</generator>`! In this case all information needed to generate final documents resides in the _.mddoc_ file. See _’The_mddoc_file type’_ elsewhere in this document for more information on this file type.
+
+The current valid argument for `<generator>...</generator>` are _pdf_, _html_, and _md_.
+
+The input paths are comma separated and are always relative to the root of the maven project. To clarify that, for a multi module maven build it is always the top root with the top pom that is the root even if you start the build at a lower level. This root is resolved by starting at _${basedir}_ and going up until the parent directory does not have a pom. I have found no way to let maven tell me this path.
+
+The paths can have wildcards in form of regular expressions for the file names. There is also a special directory name ** that means any level of subdirectories.
+
+All the input paths are parsed into the same document model that then gets passed to the generator. They are parsed in the order they are specified. When it comes to wildcards it is hard to say which order they will be in. It might differ on different platforms.
+
+## Example
+
+Following is a complete plugin specification with all options specified:
+
+                                                                <plugin>
+                                                                    <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
+                                                                    <artifactId>markdowndoc-maven-plugin</artifactId>
+                                                                    <version>n.n[.n]</version>
+                                                                
+                                                                    <executions>
+                                                                        <execution>
+                                                                            <id>generate-docs</id>
+                                                                            <goals>
+                                                                                <goal>doc</goal>
+                                                                            </goals>
+                                                                            <phase>install</phase>
+                                                                            <configuration>
+                                                                
+                                                                                <generatorOptions>
+                                                                                    <generator>pdf|html|md</generator>
+                                                                                    <inputPaths>
+                                                                                        ...
+                                                                                    </inputPaths>
+                                                                                </generatorOptions>
+                                                                                
+                                                                                <pdf|html|mdGeneratorOptions>
+                                                                                    ...
+                                                                                </pdf|html|mdGeneratorOptions>
+                                                                
+                                                                            </configuration>
+                                                                        </execution>
+                                                                    </executions>
+                                                                </plugin>
+
+See the "Options / Settings" part elsewhere in this document for all the specific options.
+
+# Library
+
+The library is made up of a document model representing all formats of markdown, parsers and generators. The parsers produce a document model and the generators generate from that model. The document model represents the markdown formats. Thereby there are no HTML pass-through from a markdown document! This tool only deals with markdown, not HTML.
+
+The API docs for the library can be found [here](http://apidoc.natusoft.se/MarkdownDoc1_4).
+
+## Usage
+
+In package se.natusoft.doc.markdown.api there are 3 API classes:
+
+__Options__ - This represents options for a generator. It should be seen as a narrow variant of Object representing only generator options, but any such. It has one method common to all `public boolean isHelp()`. Implementations should have a default constructor.
+
+__Parser__ - This represents a parser.
+
+                                                                public interface Parser {
+                                                                    public void parse(Doc document, File parseFile, Properties parserOptions) throws IOException, ParseException;
+                                                                }
+
+The parser gets passed an already created Doc model allowing the document to be built from multiple source files by parsing into the same document.
+
+__Generator__ - This represents a generator.
+
+                                                                public interface Generator {
+                                                                    public Class getOptionsClass();
+                                                                    public void generate(Doc document, Options options, File rootDir) throws IOException, GenerateException;
+                                                                }
+
+_getOptionsClass()_ returns the class implementing Options and holding all the options for the generator.
+
+_generate(...)_ generates the document provided by _document_ using the specified _options_ and producing the result in whatever _rootDir_ relative path is specified in the _options_.
+
+### Parsers
+
+#### se.natusoft.doc.markdown.parser.MarkdownParser
+
+This parser parses markdown and only markdown! It ignores HTML with the exception of comments, &nbsp;  and divs.
+
+Example usage:
+
+                                                                Parser parser = new MarkdownParser();
+                                                                Doc document = new Doc();
+                                                                Properties parserOptions = new Properties();
+                                                                parser.parse(document, parseFile, parserOptions);
+
+#### se.natusoft.doc.markdown.parser.JavadocParser
+
+This parser parses java source files (should also handle groovy source files) and extracts class and method declarations and javadoc comment blocks. It produces a document model looking like this (in markdown format):
+
+                                                                public _class/interface_ __class-name__ extends something [package] {
+                                                                > class javadoc
+                                                                
+                                                                __full method declaration__
+                                                                > method javadoc
+                                                                _Returns_
+                                                                > description
+                                                                _Parameters_
+                                                                > _param_ - description
+                                                                _Throws_
+                                                                > _exception_ - description
+                                                                _See_
+                                                                > description
+                                                                
+                                                                ...
+                                                                }
+
+This allows you to include API documentation in your documentation without having to duplicate it. Please note that if `markdownJavadoc=true` parser option have been specified then _class javadoc_ and _method javadoc_ will not be formatted but passed to the MarkdownParser instead.
+
+Example usage:
+
+                                                                Parser parser = new JavadocParser();
+                                                                Doc document = new Doc();
+                                                                Properties parserOptions = new Properties();
+                                                                parser.parse(document, parseFile, parserOptions);
+
+#### se.natusoft.doc.markdown.parser.ParserProvider
+
+This is a utility to get a parser based on file extension. ".md", ".markdown", ".mdpart", and ".java" are valid extensions that will return a parser. If the passed file does not have a valid extension null will be returned.
+
+Example usage:
+
+                                                                Parser parser = ParserProvider.getParserForFile(parseFile);
+                                                                Doc document = new Doc();
+                                                                Properties parserOptions = new Properties();
+                                                                parserOptions.setProperty("...", "...");
+                                                                parser.parse(document, parseFile, parserOptions);
+
+### Generators
+
+Example usage:
+
+                                                                public static void main(String[] args) {
+                                                                    Doc document = new Doc();
+                                                                
+                                                                    ... parsing of document.
+                                                                
+                                                                     Generator generator = new [PDF|HTML|Markdown]Generator();
+                                                                
+                                                                     // I'm using OptionsManager to load the options in this example.
+                                                                     // If you use maven or ant then those tools will have loaded
+                                                                     // the options for you and getOptionsClass() is not relevant
+                                                                     // in that case.
+                                                                    CommandLineOptionsManager<Options> optMgr =
+                                                                        new CommandLineOptionsManager<Options>(generator.getOptionsClass());
+                                                                    Options options = optMgr.loadOptions("--", args);
+                                                                    if (options.isHelp()) {
+                                                                        optMgr.printHelpText("--","", System.out);
+                                                                    }
+                                                                    else {
+                                                                        File rootDir = new File();
+                                                                        generator.generate(document, options, rootDir);
+                                                                    }
+                                                                }
+
+Please note that the CommandLineOptionsMangager used in the example is part of the OptionsManager tool also by me. Available at [github.com/tombensve/OptionsManager](https://github.com/tombensve/OptionsManager).
+
+#### se.natusoft.doc.markdown.generator.PDFGenerator
+
+This generator produces a PDF document.
+
+#### se.natusoft.doc.markdown.generator.HTMLGenerator
+
+This generator produces an HTML document.
+
+#### se.natusoft.doc.markdown.generator.MarkdownGenerator
+
+This generator produces a Markdown document. So why would we want to generate markdown ? Well, it became needed after I added the JavadocParser. Now I can have both markdown and java files as input and the PDF and HTML files contains the whole result including the javadoc information. The original markdown document however does not have the javadoc parts, and this markdown document is read as is on github and will then not be complete. Therefore I added this generator and moved my real source document into docs/src and also generate a markdown version into docs that will be as complete as the pdf and html version.
+
+#### se.natusoft.doc.markdown.util.MDDocFileHandler
+
+This is a class with one static method that completely handles the _.mddoc_ format.
+
+Usage:
+
+                                                                MDDocFileHandler.execute("<path to .mddoc file>");
+
+This will generate all output formats as specified in the .mddoc file.
+
+See the "The mddoc file type" section for more information on the .mdddoc format.
+
+# MSS (Markdown Style Sheet)
+
+The MSS format is a JSON document describing the styles (colors and fonts) to use for different sections of a markdown document (standard text, heading, bold, code, etc). It contains 3 main sections: front page, TOC, pages. There is a _default.mss_ embedded in the jar that is used if no external mss files is provided. The default MSS should be compatible with styles used in previous versions.
+
+Currently the MSS file is only used by the PDF generator. But it could also be relevant for other formats, like word if I ever add such a generator. I gladly take a pull request if anybody wants to do that :-).
+
+The best way to describe the MSS file is to show the _default.mss_ file:
+
+                                                                {
+
+This section is specific to PDF files, and specifies ttf, otf, and other font types supported by iText. For the _internal_ fonts "HELVETICA" or "COURIER" is specified as "family", but to use a font specified here, just use the name set as "family" here. If you are using an exernal Helvetica font specified here, dont call it just "HELVETICA" since there will be confusion!
+
+A best effort is used to resolve the font in "path":. If the specified path does not match relative to current directory then it will try the parent directory and so on all the way upp to the filesytem root.
+
+                                                                  "pdf": {
+                                                                    "extFonts": [
+                                                                      {
+                                                                        "family": "MDD-EXAMPLE",
+                                                                        "encoding": "UTF-8",
+                                                                        "path": "/fonts/ttf/some-font.ttf"
+                                                                      }
+                                                                    ]
+                                                                  },
+
+The "colors" section just provide names for colors. This list was taken from the default color names for CSS colors, with the exception of the first 3. Any color specification in sections below that does not contain any ":" character will be taken as a name and looked up here.
+
+                                                                  "colors": {
+                                                                    "white": "255:255:255",
+                                                                    "black": "0:0:0",
+                                                                    "mddgrey": "128:128:128",
+                                                                    "AliceBlue": "F0F8FF",
+                                                                    "AntiqueWhite": "FAEBD7",
+                                                                    "Aqua": "00FFFF",
+                                                                    "Aquamarine": "7FFFD4",
+                                                                    "Azure": "F0FFFF",
+                                                                    "Beige": "F5F5DC",
+                                                                    "Bisque": "FFE4C4",
+                                                                    "Black": "000000",
+                                                                    "BlanchedAlmond": "FFEBCD",
+                                                                    "Blue": "0000FF",
+                                                                    "BlueViolet": "8A2BE2",
+                                                                    "Brown": "A52A2A",
+                                                                    "BurlyWood": "DEB887",
+                                                                    "CadetBlue": "5F9EA0",
+                                                                    "Chartreuse": "7FFF00",
+                                                                    "Chocolate": "D2691E",
+                                                                    "Coral": "FF7F50",
+                                                                    "CornflowerBlue": "6495ED",
+                                                                    "Cornsilk": "FFF8DC",
+                                                                    "Crimson": "DC143C",
+                                                                    "Cyan": "00FFFF",
+                                                                    "DarkBlue": "00008B",
+                                                                    "DarkCyan": "008B8B",
+                                                                    "DarkGoldenRod": "B8860B",
+                                                                    "DarkGray": "A9A9A9",
+                                                                    "DarkGreen": "006400",
+                                                                    "DarkKhaki": "BDB76B",
+                                                                    "DarkMagenta": "8B008B",
+                                                                    "DarkOliveGreen": "556B2F",
+                                                                    "DarkOrange": "FF8C00",
+                                                                    "DarkOrchid": "9932CC",
+                                                                    "DarkRed": "8B0000",
+                                                                    "DarkSalmon": "E9967A",
+                                                                    "DarkSeaGreen": "8FBC8F",
+                                                                    "DarkSlateBlue": "483D8B",
+                                                                    "DarkSlateGray": "2F4F4F",
+                                                                    "DarkTurquoise": "00CED1",
+                                                                    "DarkViolet": "9400D3",
+                                                                    "DeepPink": "FF1493",
+                                                                    "DeepSkyBlue": "00BFFF",
+                                                                    "DimGray": "696969",
+                                                                    "DodgerBlue": "1E90FF",
+                                                                    "FireBrick": "B22222",
+                                                                    "FloralWhite": "FFFAF0",
+                                                                    "ForestGreen": "228B22",
+                                                                    "Fuchsia": "FF00FF",
+                                                                    "Gainsboro": "DCDCDC",
+                                                                    "GhostWhite": "F8F8FF",
+                                                                    "Gold": "FFD700",
+                                                                    "GoldenRod": "DAA520",
+                                                                    "Gray": "808080",
+                                                                    "Green": "008000",
+                                                                    "GreenYellow": "ADFF2F",
+                                                                    "HoneyDew": "F0FFF0",
+                                                                    "HotPink": "FF69B4",
+                                                                    "IndianRed": "CD5C5C",
+                                                                    "Indigo": "4B0082",
+                                                                    "Ivory": "FFFFF0",
+                                                                    "Khaki": "F0E68C",
+                                                                    "Lavender": "E6E6FA",
+                                                                    "LavenderBlush": "FFF0F5",
+                                                                    "LawnGreen": "7CFC00",
+                                                                    "LemonChiffon": "FFFACD",
+                                                                    "LightBlue": "ADD8E6",
+                                                                    "LightCoral": "F08080",
+                                                                    "LightCyan": "E0FFFF",
+                                                                    "LightGoldenRodYellow": "FAFAD2",
+                                                                    "LightGray": "D3D3D3",
+                                                                    "LightGreen": "90EE90",
+                                                                    "LightPink": "FFB6C1",
+                                                                    "LightSalmon": "FFA07A",
+                                                                    "LightSeaGreen": "20B2AA",
+                                                                    "LightSkyBlue": "87CEFA",
+                                                                    "LightSlateGray": "778899",
+                                                                    "LightSteelBlue": "B0C4DE",
+                                                                    "LightYellow": "FFFFE0",
+                                                                    "Lime": "00FF00",
+                                                                    "LimeGreen": "32CD32",
+                                                                    "Linen": "FAF0E6",
+                                                                    "Magenta": "FF00FF",
+                                                                    "Maroon": "800000",
+                                                                    "MediumAquaMarine": "66CDAA",
+                                                                    "MediumBlue": "0000CD",
+                                                                    "MediumOrchid": "BA55D3",
+                                                                    "MediumPurple": "9370DB",
+                                                                    "MediumSeaGreen": "3CB371",
+                                                                    "MediumSlateBlue": "7B68EE",
+                                                                    "MediumSpringGreen": "00FA9A",
+                                                                    "MediumTurquoise": "48D1CC",
+                                                                    "MediumVioletRed": "C71585",
+                                                                    "MidnightBlue": "191970",
+                                                                    "MintCream": "F5FFFA",
+                                                                    "MistyRose": "FFE4E1",
+                                                                    "Moccasin": "FFE4B5",
+                                                                    "NavajoWhite": "FFDEAD",
+                                                                    "Navy": "000080",
+                                                                    "OldLace": "FDF5E6",
+                                                                    "Olive": "808000",
+                                                                    "OliveDrab": "6B8E23",
+                                                                    "Orange": "FFA500",
+                                                                    "OrangeRed": "FF4500",
+                                                                    "Orchid": "DA70D6",
+                                                                    "PaleGoldenRod": "EEE8AA",
+                                                                    "PaleGreen": "98FB98",
+                                                                    "PaleTurquoise": "AFEEEE",
+                                                                    "PaleVioletRed": "DB7093",
+                                                                    "PapayaWhip": "FFEFD5",
+                                                                    "PeachPuff": "FFDAB9",
+                                                                    "Peru": "CD853F",
+                                                                    "Pink": "FFC0CB",
+                                                                    "Plum": "DDA0DD",
+                                                                    "PowderBlue": "B0E0E6",
+                                                                    "Purple": "800080",
+                                                                    "RebeccaPurple": "663399",
+                                                                    "Red": "FF0000",
+                                                                    "RosyBrown": "BC8F8F",
+                                                                    "RoyalBlue": "4169E1",
+                                                                    "SaddleBrown": "8B4513",
+                                                                    "Salmon": "FA8072",
+                                                                    "SandyBrown": "F4A460",
+                                                                    "SeaGreen": "2E8B57",
+                                                                    "SeaShell": "FFF5EE",
+                                                                    "Sienna": "A0522D",
+                                                                    "Silver": "C0C0C0",
+                                                                    "SkyBlue": "87CEEB",
+                                                                    "SlateBlue": "6A5ACD",
+                                                                    "SlateGray": "708090",
+                                                                    "Snow": "FFFAFA",
+                                                                    "SpringGreen": "00FF7F",
+                                                                    "SteelBlue": "4682B4",
+                                                                    "Tan": "D2B48C",
+                                                                    "Teal": "008080",
+                                                                    "Thistle": "D8BFD8",
+                                                                    "Tomato": "FF6347",
+                                                                    "Turquoise": "40E0D0",
+                                                                    "Violet": "EE82EE",
+                                                                    "Wheat": "F5DEB3",
+                                                                    "White": "FFFFFF",
+                                                                    "WhiteSmoke": "F5F5F5",
+                                                                    "Yellow": "FFFF00",
+                                                                    "YellowGreen": "9ACD32"
+                                                                  },
+
+This section deals with document styles. It has 3 sections: "pages", "front_page", and "toc". If a style is not set in a specific section it will fall back to what is specified in a more general section. For example, if a subsection of "document" does not specify "color" then it will fall back to the "color": "black" directly under "document".
+
+                                                                  "document": {
+                                                                    "color": "black",
+                                                                    "background": "white",
+                                                                    "family": "HELVETICA",
+                                                                    "size": 10,
+                                                                    "style": "Normal",
+                                                                
+                                                                    "image": {
+                                                                       "imgScalePercent": 60.0,
+                                                                       "imgAlign": "LEFT",
+                                                                       "imgRotateDegrees": 0.0
+                                                                    },
+                                                                
+                                                                    "pages": {
+                                                                      "block_quote": {
+                                                                        "style": "Italic",
+                                                                        "color": "mddgrey"
+                                                                      },
+                                                                      "h1": {
+                                                                        "size": 20,
+                                                                        "style": "BOLD"
+                                                                      },
+                                                                      "h2": {
+                                                                        "size": 18,
+                                                                        "style": "BOLD",
+                                                                        "hr": true
+                                                                      },
+                                                                      "h3": {
+                                                                        "size": 16,
+                                                                        "style": "BOLD"
+                                                                      },
+                                                                      "h4": {
+                                                                        "size": 14,
+                                                                        "style": "BOLD"
+                                                                      },
+                                                                      "h5": {
+                                                                        "size": 12,
+                                                                        "style": "BOLD"
+                                                                      },
+                                                                      "h6": {
+                                                                        "size": 10,
+                                                                        "style": "BOLD"
+                                                                      },
+                                                                      "emphasis": {
+                                                                        "style": "ITALIC"
+                                                                      },
+                                                                      "strong": {
+                                                                        "style": "BOLD"
+                                                                      },
+                                                                      "code": {
+                                                                        "family": "COURIER",
+                                                                        "size": 9,
+                                                                        "color": "64:64:64"
+                                                                      },
+                                                                      "anchor": {
+                                                                        "color": "128:128:128"
+                                                                      },
+                                                                      "list_item": {
+                                                                      },
+                                                                      "footer": {
+                                                                        "size": 8
+                                                                      }
+                                                                    },
+                                                                
+                                                                    "divs": {
+                                                                      "mdd-example": {
+                                                                        "color": "white",
+                                                                        "background": "black",
+                                                                        "block_quote": {
+                                                                          "family": "COURIER",
+                                                                          "color": "120:120:120",
+                                                                          "background": "10:11:12"
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                
+                                                                  "front_page": {
+                                                                    "color": "0:0:0",
+                                                                    "background": "255:255:255",
+                                                                    "family": "HELVETICA",
+                                                                    "size": 10,
+                                                                    "style": "NORMAL",
+                                                                
+                                                                    "image": {
+                                                                       "imgScalePercent": 60.0,
+                                                                       "imgRotateDegrees": 0.0
+                                                                    },
+                                                                
+                                                                    "title": {
+                                                                      "size": 25,
+                                                                      "style": "UNDERLINE"
+                                                                    },
+                                                                    "subject": {
+                                                                      "size": 15
+                                                                    },
+                                                                    "version": {
+                                                                      "size": 12,
+                                                                    },
+                                                                    "copyright": {
+                                                                    },
+                                                                    "author": {
+                                                                      "size": 12,
+                                                                    }
+                                                                  },
+                                                                
+                                                                  "toc": {
+                                                                    "color": "0:0:0",
+                                                                    "background": "255:255:255",
+                                                                    "family": "HELVETICA",
+                                                                    "size": 9,
+                                                                    "style": "NORMAL",
+                                                                    "toc": {
+                                                                    },
+                                                                    "h1": {
+                                                                      "style": "BOLD"
+                                                                    },
+                                                                    "h2": {
+                                                                    },
+                                                                    "h3": {
+                                                                    },
+                                                                    "h4": {
+                                                                    },
+                                                                    "h5": {
+                                                                    },
+                                                                    "h6": {
+                                                                    }
+                                                                  }
+                                                                }
+                                                                
+
+# Settings / Options
+
+The options for each generator are represented by a JavaBean model using [OptionsManager](http://github.com/tombensve/OptionsManager) annotations. Independent of how you run a generator it is the same options model that is used the only difference is in how it is populated. If it is from code you just user setter methods to set values. If it is from the command line jar then each option name is prefixed with -- and passed as command line argument. In this case it is OptionsManager that will populate the model from arguments. If it is from the maven plugin then each option is set in the pom with xml tags of the same name as the options. In this case it is maven that populates the options.
+
+The options will be described here in general, not centric to any way of running.
+
+__(R)__ after an option means it is required.
+
+__(O)__ after an option means it is optional.
+
+Note that values of __Boolean__ type should have a value of either "true" or "false". They do need a value when specified from command line! Just a _--firstLineParagraphIndent_ will not work!
+
+## Common options
+
+<div class="options">
+
+### generator (R)
+
+Specifies the generator to run. Current valid values are:
+
+* pdf
+
+* html
+
+* markdown
+
+### parser (O)
+
+Selects the parser to run. Valid values are:
+
+* markdown
+
+* byext[ension]() _This is the defalt value!_
+
+The latter selects parser based on extension of file being parsed. This is in general a good idea to use since there are currently both a markdown parser and a javadoc parser. By using _byext_ it ispossible to pass both .md and .java (and .groovy) files. Each parser is registered as a standard Java service and loaded with ServiceLoader. Each parser also provides which file extensions it recognizes. This is how a parser is resolved.
+
+### inputPaths (R)
+
+A comma separated list of files and paths. A path can look like this: `MavenPlugin/docs/.*.md`. A path supports [regular expressions](https://en.wikipedia.org/wiki/Regular_expression).
+
+Files will be parsed in the order they are specified. When regular expressions are used to include multiple files the order is unspecified.
+
+### parserOptions (O)
+
+This is a comma separated list of `name=value`.
+
+#### JavaDoc2MDParser
+
+Just setting __markdownJavadoc__ to any value will make it take the javadoc text as markdown and parse that also.
+
+#### MarkdownParser
+
+This parser currently has no options.
+
+## PDFGenerator options
+
+### resultFile : String (R)
+
+The path to the PDF file to write.
+
+### rootDir : String (O)
+
+A root dir to make image paths relative to.
+
+### pageSize : String (O)
+
+The pagesize name like LETTER or A4. Default is A4.
+
+### title : String (O)
+
+The title of the document. This is used if __generateTitlePage__ is set to true.
+
+### subject : String (O)
+
+The subject of the document.
+
+### titlePageImage : String (O)
+
+Put an image on the title page. Format: [path/URL](path/URL):x:y
+
+### keywords : String (O)
+
+Meta keywords
+
+### author : String (O)
+
+The author of the document.
+
+### version : String (O)
+
+The version to put on the title page. Must be specified to be rendered!
+
+### copyright : String (O)
+
+The copyright message to put on the title page. Must be specified to be rendered!
+
+### authorLabel : String (O)
+
+The label text for 'Author:'.
+
+### versionLabel : String (O)
+
+The label text for 'Version:'.
+
+### pageLabel : String (O)
+
+The label text for 'Page'.
+
+### tableOfContentsLabel : String (O)
+
+The text for 'Table of Contents'.
+
+### hideLinks : Boolean (O)
+
+If true then links are not rendered as link the link text will be rendered as plain text.
+
+### unorderedListItemPrefix : String (O)
+
+What item marking to use for unordered lists. Default is '- '.
+
+### firstLineParagraphIndent : Boolean (O)
+
+If true then the first line of each paragraph is indented. Default is false.
+
+### backgroundColor : String (O)
+
+__DEPRECATED__! Use an .mss file instead! The background color of the document in "R:G:B" format where each R, G, and B are a number 0 - 255.
+
+### blockQuoteColor : String (O)
+
+__DEPRECATED__! Use an .mss file instead! The blockquote color to use in this document in "R:G:B" format where each R, G, and B are a number 0 - 255.
+
+### codeColor : String (O)
+
+__DEPRECATED__! Use and .mss file instead! The code color to use in this document in "R:G:B" format where each R, G, and B are a number 0 - 255.
+
+### mss : String (O)
+
+This specifies the path to an .mss file to use for setting fonts and colors and image styling of the generated document.
+
+### generateSectionNumbers : Boolean (O)
+
+If true all chapters and sections will be numbered. This was the only option before version 1.4.
+
+### generateTOC : Boolean (O)
+
+This generates a table of contents. Default is false!
+
+### generateTitlePage : Boolean (O)
+
+This will generate one first page with a title, version, author, and copyright. Default is false.
+
+### help (Only from command line!)
+
+Shows help.
+
+## HTMLGeneratorOptions
+
+### resultFile : String (R)
+
+Where to write the result.
+
+### inlineCSS : Boolean (O)
+
+If true then the css will be included in the generated HTML.
+
+### css : String (O)
+
+The path to a CSS file.
+
+### primitiveHTML : Boolean (O)
+
+When true very primitive HMTL will be generated. This will work for rendering with JEditorPane.
+
+### makeFileLinksRelativeTo : String (O)
+
+The path file links should be relative to.
+
+### help (Only from command line!) 
+
+Shows help.
+
+## MarkdownGeneratorOptions
+
+### resultFile : String (R)
+
+Where to write the result.
+
+### makeFileLinksRelativeTo : String (O)
+
+The path file links should be relative to.
+
+### help (Only from command line!)
+
+Shows help.
+
+</div>
+
+# MarkdownDoc Editor
+
+This is an editor for editing markdown documents.
+
+<div class="editorImage">
+
+![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs//Users/tommy/Development/projects/Tools/MDD-Dev/Docs/images/MarkdownDoc-Editor-2.png)
+
+</div>
+
+## Features
+
+### Styling as you type
+
+Can markdown style as you write. Headings, bold, italics, and monospaced are styled. This can be turned on/off in settings. Styles the whole document on load, and after that restyles only the currently edited paragraph due to performance reasons. There is a function (default Ctrl+R) that restyles the whole document. This is also done on paste if you have mapped the correct paste key in Settings/Keyboard.
+
+### HTML Preview
+
+Can preview in HTML format (toggles between preview and edit mode). This is activated by a toolbar button (the eye) and a keyboard shortcut.
+
+### Editing effects
+
+Can make formatting characters to be made very tiny while editing, by enabling a settings option. Try it to see the effect!
+
+### Generate PDF & HTML
+
+Can generate both PDF and HTML from the editor window. Use toolbar button or keyboard shortcut.
+
+### Configurable
+
+The settings dialog allows you to configure almost anything/everything:
+
+* All keyboard shortcuts.
+
+   * Don't write the keyboard shortcut in text, just press the keyboard shortcut you want to set.
+
+   * Configured keyboard values are stored in their string representation and matched as strings.
+
+      * This means that the code does not have to do a humongous if statement set for each possible alternative.
+
+      * This also means that due to differences in java implementations and versions the string representation might be Ctrl+K or ^+K. So if you change java version you might also have to update keyboard mappings in settings.
+
+* Margins.
+
+* Editor font.
+
+* Monospaced font.
+
+* Preview font.
+
+* Font sizes.
+
+* Background color.
+
+* Text color.
+
+* Toolbar variant to use.
+
+### Load file by drag & drop
+
+Instead of using the GUI open dialog you can just drag and drop a file in the editor to edit it.
+
+### Special preview drag & drop feature
+
+While in preview mode, drag and drop a markdown file on the preview window to have it formatted and displayed. This does not affect the edit buffer in any way. Exiting preview mode will bring you back to whatever you have in the editor, and previewing again will preview the editor content.
+
+But by just opening an empty editor and entering a blank preview you can quickly read multiple markdown documents formatted by just dropping them on the window.
+
+### Mac OS X Fullscreen support
+
+When you run this editor on a Mac with Lion+ you will get a litte double arrow in the right corner of the window titlebar, which will bring upp the editor window in fullscreen.
+
+## Running
+
+Can be run with java -jar or double clicked on. If you are using Windows 7 or 8 take a look at this page: [http://johann.loefflmann.net/en/software/jarfix/index.html]() (http://johann.loefflmann.net/en/software/jarfix/index.html).
+
+The executable jar have the following name: MarkdownDocEditor-n.n.n-App.jar
+
+One or more files can be specified as arguments.
+
+## Requirements
+
+This requires Java 7+!
+
+## Functions
+
+Do note that since all keyboard actions can be configured in settings this documents the default keyboard settings. Also note that the defaults are adapted for Windows and Linux. On a mac you might want to change Ctrl to the Cmd key instead.
+
+                                                                                Keyboard default    Available in toolbar
+                                                                ________________________________________________________
+                                                                Save file             Ctrl+S               Yes
+                                                                Open file             Ctrl+O               Yes
+                                                                Open new window       Ctrl+N               Yes
+                                                                Insert heading        Ctrl+T               Yes
+                                                                Insert bold           Ctrl+B               Yes
+                                                                Insert italics        Ctrl+I               Yes
+                                                                Insert list           Ctrl+L               Yes
+                                                                Insert quote          Ctrl+Q               Yes
+                                                                Insert image          Ctrl+M               Yes
+                                                                Insert link           Ctrl+N               Yes
+                                                                Preview               Ctrl+F               Yes
+                                                                Generate PDF          Ctrl+P               Yes
+                                                                Generate HTML         Ctrl+H               Yes
+                                                                Settings              Ctrl+E               Yes
+                                                                Restyle document      Ctrl+R               No
+                                                                Restyle on paste (*)  Ctrl+V               No
+
+(*) This can be disabled by setting the key to anything other than the paste key.
+
+## If you're on a Mac
+
+If you are on a Mac you might want to change the keyboard mappings to use Cmd rather than Ctrl. Do note however that Cmd+H and Cmd+Q are really nasty on Mac OS X! Since these keys immedialtely kills the app these keys are impossible to set in the first place, but you will loose other unsaved settings when you try.
+
+## Currently Missing
+
+Fancy functions like search and replace.
+
+Undo capability.
+
+## Bugs
+
+### By me
+
+Only images with absolute path (even http: urls) are rendered in preview. Not sure I can fix this since the preview is generated in memory. I don't really know what the JTextPane sees links relative to then. Possibly if I can resolve the full path to a relative image using the same scheme as used in the PDFGenerator.
+
+### By Oracle
+
+* This editor uses the standard Swing component JTextPane. This is unfortunately not an optimal component. Specially for styling it gets slow for large documents. In earlier versions of Java 7 this component had a word wrap problem when deleting text either using backspace or cutting text. In that case it rerendered the text screwing up the format until new text was entered again. _As of Java 8 this bug is fixed_, but other new bugs have been added. They are however smaller and don't occur so often.
+
+* Sometimes when the JTextPane is opened the pane will not render at all! Just increase the width of the window util text appears. Then save so that the window size for that file will be remembered. I have one and only one document for which this happens and I cannot tell what it is that causes the problem. This could be a mac only problem.
+
+# The mddoc file type
+
+There is a special file type that describes a complete document in any or all of the 3 output formats. It has the extension of _.mddoc_. It is really a properties file with _key: value_ entries.
+
+A path to an _.mddoc_ file can be specified as only argument to command line variant, or as only file in `<inputPaths>...</inputPaths>` section in maven plugin (no other options/parameters are needed then) to produce output documents as described by the _.mddoc_ file.
+
+## .mddoc format (myfile.mddoc)
+
+                                                                # --- Generators to run ---
+                                                                generate.pdf: true
+                                                                generate.html: true
+                                                                generate.markdown: true
+                                                                
+                                                                # A comma separated list of paths to sources. A .fs file can also be
+                                                                # specified as an input file in which case it is read for a further
+                                                                # set of files to parse. The order of the specified files are important.
+                                                                inputPaths: docs/intro.md,docs/install.md,docs/usage.md,docs/appendix.md
+                                                                
+                                                                # --- PDF ---
+                                                                
+                                                                # The name of the file to produce.
+                                                                pdf.resultFile: MyDoc.pdf
+                                                                
+                                                                # The page size. For example:A4, LETTER Optional. Default: A4
+                                                                pdf.pageSize: A4
+                                                                
+                                                                ...
+                                                                
+                                                                # --- HTML ---
+                                                                
+                                                                # The name of the file to produce.
+                                                                html.resultFile: MyDoc.html
+                                                                
+                                                                # The path to the css file for the generated html file. Required.
+                                                                html.css: css/my.css
+                                                                
+                                                                ...    
+                                                                
+                                                                # --- Markdown ---
+                                                                
+                                                                # The name of the file to produce.
+                                                                markdown.resultFile: MyDoc.md
+                                                                
+                                                                # This affects links and images. When specified the resulting file: URLs in the
+                                                                # result will be relative to the path specified by "path" if the absolute path
+                                                                # of the URL starts with the specified path. If a plus sign (+) and a prefix
+                                                                # path is specified it will be prefixed to the final URL. Optional.
+                                                                markdown.makeFileLinksRelativeTo: path[+prefix]
+
+As you can see pdf options are prefixed with "pdf.", html options are prefixed with "html.", and markdown options are prefixed with "markdown.". After the prefix are the same options as documented under the "Options / Settings" section.
+
+# Version history
+
+About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
+
+## 1.4
+
+* Added support for what I call _Markdown Style Sheet_ or MSS for short. This is only applicable to PDF generation. For HTML there is CSS, and generating CSS from the MSS is a bad idea. The MSS is relatively simple and JSON based.
+
+   * It supports ttf, otf, and any other format supported by iText for external fonts.
+
+   * It allows for image configuration like scaling, rotating, and alignment. Before all images were alinged to the left. Now they can be alingned to the left, middle, or right. In previous versions all images was scaled to 60 percent due to iText rendering images very much bigger than any other image viewer (that I have at least). This scaling can now be set with MSS.
+
+* Added support for `<div class="..">...</div>`. This tool is mainly for writing documentation and generating PDF, but I wanted to add more flexibility for generating HTML pages also. Even though you probably want to keep a common style throughout a document, I did add div support to MSS. Divs within divs inherit styles upward. This was relatively simple to do. Note that the "Options / Settings" section uses a div with slightly different formatting than the rest of the document. Each option is a level 3 heading (H3) which is why it is part of the TOC, but styled with a smaller font with a different color.
+
+* Added possibility to also have an image on the title page.
+
+* Added annotations within a comment block. Most of the options for the PDF generator can now be specified with annotations in the document. For example `@PDFPageSize("A4")`. This means for example that the title page can be part of the document. This comment with annotations should preferrably be the first thing in the document.
+
+* Added labels in options for all previously hardcoded text strings in PDFGenerator. It should now be possible to completely generate a document in a different language than English. These can also be set with comment annotations as mentioned above.
+
+The addition of MSS made huge changes to the code. To be as backwards compatible as possible the defaults for the MSS settings are as things looked before. There is also a _default.mss_ file that gets used if you don't supply your own. This has settings that mimics the previous styles.
+
+Also note that the PDF UserGuide now shows off the new features, mostly for that purpose :-).
+
+## 1.3.9
+
+Only bugfix in editor when generating HTML directly from editor, which caused an NPE.
+
+## 1.3.8
+
+Bad internal version dependencies in well ... probably from version 1.3.4 up to 1.3.7. The markdowndoc-maven-plugin were using a too old (hardcoded!!) version of markdown-doc-lib, which is the core of MarkdownDoc! It was pointing to version 1.3.3. This means that fixes in 1.3.4 and 1.3.5 were not available when maven plugin was used! It now uses ${project.version}. The command line jar and the editor have had the correct version dependency.
+
+Very sorry for this!
+
+## 1.3.7
+
+* Bugfixes in the maven plugin.
+
+* The maven plugin also no longer has any runtime dependency on CodeLicenseManager which is a build only plugin, something maven does not really distinguish.
+
+* Includes a pull request submitted by both komarevsky and iorixxx that fixes an XML error in an example in the user guide. Thanks for seeing that and submitting pull requests!
+
+## 1.3.6
+
+Bug fixes in MarkdownDocEditor:
+
+* Preformatted styling should now behave correctly.
+
+* Preformatted font (monospace) settings now work. Also defaulted font size of monospace to 14 rather than 16.
+
+## 1.3.5
+
+What I did not mention in the information for version 1.3.4 is that the editor was converted from Java to Groovy. Here I apparently ran into a Groovy gotcha: What looked to be a member reference were actually a property reference to the same method that tried to reference member. In this case it was an anonymously implemented interface with a getter whose implementation tried to reference the outer class member of same name as getter property, and got the property rather than the member causing a never ending loop resulting in java.lang.StackOverflowError.
+
+This affected only generating of PDF and HTML. The error occured after writing generated output, but before opening the generated output (when told to do so by checkbox setting). This problem is now fixed by this version and is the only thing that differs from previous version.
+
+## 1.3.4
+
+Fixed a bug with relative path for images using _PDFGenerator_ reported by Maher Gamal. There are now 5 ways to specifiy paths to images for PDF:
+
+1. Absolute path
+
+2. Relative to current directory.
+
+3. Relative to markdown document.
+
+4. Relative to resulting PDF document.
+
+5. Relative to a supplied root dir. This can now be specified in the PDF generator options. If using the library, passing rootDir will override the options rootDir.
+
+These paths will be automatically resolved.
+
+## 1.3.3
+
+Ironed out all _known_ bugs in editor.
+
+## 1.3.2
+
+Added markdown formatting as you write.
+
+## 1.3.1
+
+Bug fixes. Monospaced font now rendering correctly.
+
+Deleting text with backspace have strange effects on text layout. That is, the place where a senetence is broken to the right and moved down to the next line keeps moving around while deleting text, in some completely different paragraph! This is entirely handled by JTextPane. I have tried to find a way to intercept the delete key and handle delete myself, but I have not been successful in finding a way to do that if it is even possible. Continuing writing new text after deleting text seems to restore the layout. This oddity has no effect on the final text, it is just the layout while editing that is affacted. You will also only see this if you write paragraphs as one block of text that wraps around into multiple lines without pressing return until the end of the paragraph.
+
+## 1.3
+
+Made big changes to the editor, finally making it into what I want, with some markdown formatting as you write, and far more configuration in settings dialog, which have also been redone.
+
+Bug fixes.
+
+## 1.2.10
+
+Added support for [, ](,), and &.
+
+## 1.2.9
+
+Added markdown file reading feature by allowing markdown files to be dropped on the editor in preview mode, in wihch case the dropped file will be formatted and displayed without changeing the content of the editor. Exiting preview and doing a preview again will again preview the editor content.
+
+## 1.2.8
+
+Headings can now __not__ be more than one line (not include LF/CRLF). Before they were treated like paragraphs. This to be more compatible with other Markdown tools and Markdown documents.
+
+## 1.2.7
+
+Added settings for specifying top, bottom, left, and right margins in editor. Please note that I've been a bit lazy here. The sizes are in pixels, not characters/lines!
+
+## 1.2.6
+
+Added the new _.mddoc_ format, which makes command line usage easier, but it is also supported by the maven plugin and the library has a utility that completely handles this format.
+
+Added a Java Swing based editor for editing markdown with support.
+
+## 1.2.5
+
+Added _parserOptions_ now used by JavadocParser to markdown parse javadoc comments if markdownJavadoc=true is provided. The Parser API is thus also updated to take a Properties object for the parser options.
+
+## 1.2.4
+
+Added _makeFileLinksRelativeTo_ option for HTMLGenerator and MarkdownGenerator mostly to be able to manipulate _file:_ references to images in the generated result so that the image paths still work in source when editing with a markdown tool and is still correct when generated to a different path.
+
+## 1.2.3
+
+If image paths are not absolute and not http referenced then they are now looked for relative to the source markdown file first, and then the are looked for relative to the result file as before. This makes it easier to generate a big document for a whole project containing several subproject with local makdown documents and referenced images. The image reference can still be relative to the subproject local markdown file.
+
+## 1.2.2
+
+&nbsp;Added support for _to be able to indent text_._This is one more exception to no html passtrhough._
+
+# Simple Markdown Reference
+
+## Headings
+
+                                                                # Heading level 1
+                                                                ## Heading level 2
+                                                                ...
+                                                                ###### Heading level 6
+
+## Paragraphs
+
+An empty line marks the end of a paragraph.
+
+                                                                Paragraph 1 ...
+                                                                More text in paragraph 1.
+                                                                
+                                                                Paragraph 2 ...
+
+Paragraph 1 ... More text in paragraph 1.
+
+Paragraph 2 ...
+
+## Italics
+
+                                                                _This is in italics_
+                                                                
+                                                                This *is also italics* but can't start a line with * since it will be treated as list.
+
+_This is in italics_
+
+This _is also italics_ but can't start a line with * since it will be treated as list.
+
+## Bold
+
+                                                                __This text is bold.__
+                                                                
+                                                                **This text is also bold.**
+
+__This text is bold.__
+
+__This text is also bold.__
+
+## Blockquote
+
+                                                                > This line is block quoted.
+
+> This line is block quoted.
+
+## Lists
+
+### Unordered lists (* or -)
+
+                                                                * item 1
+                                                                  Also part of item 1.
+                                                                
+                                                                - item 2
+                                                                    * item 2.1 (this is indented 4 spaces!)
+
+* item 1 Also part of item 1.
+
+* item 2
+
+   * item 2.1 (this is indented 4 spaces!)
+
+### Ordered list (n.)
+
+                                                                1. item 1.
+                                                                2. item 2.
+                                                                    1. item 2.1
+
+1. item 1.
+
+2. item 2.
+
+   1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. item 2.1
+
+Please note that the actual numbers does not matter! They could all be "1."! The items will be enumerated automatically in order no matter what numbers you enter in the source.
+
+## Code block (pre formatted with a fixed width font)
+
+Each line starting with a tab or 4 spaces are considered belonging to a pre formatted block.
+
+                                                                This
+                                                                    is
+                                                                        a
+                                                                            preformatted
+                                                                                block!
+
+## Horizontal rule
+
+Any of:
+
+                                                                * * *
+                                                                ***
+                                                                ********...***
+                                                                - - -
+                                                                ----
+                                                                ---------...---
+
+## Links
+
+                                                                [This is a link to markdown syntax on daringfireball.net](http://daringfireball.net/projects/markdown/syntax)
+
+[This is a link to markdown syntax on daringfireball.net](http://daringfireball.net/projects/markdown/syntax)
+
+Short "autolink" version:
+
+                                                                <http://www.daringfireball.net>
+
+[http://www.daringfireball.net](http://www.daringfireball.net)
+
+## Images
+
+                                                                ![Alt text](/path/to/img.png)
+                                                                
+                                                                ![Alt text](/path/to/img.png "title")
+
+## backslash (\)
+
+The character can be used to escape characters that have markdown meaning. will for example produce . _will produce_.
+
+# Licenses
+
+<!--
+  
   
   
   
@@ -18059,6 +19358,7 @@ The following third party products are using this license:
   
   
   
+  
   CLM
 -->
 # License Texts
@@ -18078,71 +19378,72 @@ The following third party products are using this license:
   
   
   
+  
   This was created by CodeLicenseManager
 -->
 ## Apache version 2.0
 
-                                                                  Toggle navigation
-                                                                  
-                                                                  
-                                                                  
-                                                                
-                                                                
-                                                              
-                                                              
-                                                                Home&nbsp;&raquo&nbsp;Licenses
-                                                                
-                                                                  
-                                                                      About 
+                                                                      Toggle navigation
                                                                       
-                                                                              Overview
-                                                                              Members
-                                                                              Process
-                                                                              Sponsorship
-                                                                              Glossary
-                                                                              FAQ
-                                                                              Contact                      
                                                                       
+                                                                      
+                                                                    
+                                                                    
                                                                   
-                                                                    Projects
+                                                                  
+                                                                    Home&nbsp;&raquo&nbsp;Licenses
+                                                                    
+                                                                      
+                                                                          About 
                                                                           
-                                                                        People 
-                                                                        
                                                                                   Overview
-                                                                                  Committers
-                                                                                  Meritocracy
-                                                                                  Roles
-                                                                                  Planet Apache
-                                                                        
-                                                                    
-                                                                  
-                                                                    Get Involved 
-                                                                    
-                                                                      Overview
-                                                                              Community Development
-                                                                              ApacheCon
-                                                                    
+                                                                                  Members
+                                                                                  Process
+                                                                                  Sponsorship
+                                                                                  Glossary
+                                                                                  FAQ
+                                                                                  Contact                      
                                                                           
-                                                                  Download
-                                                                  
-                                                                      Support Apache 
                                                                       
-                                                                              Sponsorship
-                                                                              Donations
-                                                                              Buy Stuff
-                                                                              Thanks
+                                                                        Projects
+                                                                              
+                                                                            People 
+                                                                            
+                                                                                      Overview
+                                                                                      Committers
+                                                                                      Meritocracy
+                                                                                      Roles
+                                                                                      Planet Apache
+                                                                            
+                                                                        
                                                                       
+                                                                        Get Involved 
+                                                                        
+                                                                          Overview
+                                                                                  Community Development
+                                                                                  ApacheCon
+                                                                        
+                                                                              
+                                                                      Download
+                                                                      
+                                                                          Support Apache 
+                                                                          
+                                                                                  Sponsorship
+                                                                                  Donations
+                                                                                  Buy Stuff
+                                                                                  Thanks
+                                                                          
+                                                                      
+                                                                    
                                                                   
                                                                 
-                                                              
-                                                            
 
  (function() { var cx = '005703438322411770421:5mgshgrgx2u'; var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = true; gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//cse.google.com/cse.js?cx=' + cx; var s = document.getElementsByTagName('script')[0](); s.parentNode.insertBefore(gcse, s); })();
 
-                                                                    The Apache Way
-                                                                    Contribute
-                                                                    ASF Sponsors
-                                                            
+                                                                        The Apache Way
+                                                                        Contribute
+                                                                        ASF Sponsors
+                                                                
 
 /_The following code is added by mdx_elementid.py It was originally lifted from http://subversion.apache.org/style/site.css _/ /_
 
@@ -18182,76 +19483,77 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
-                                                            http://www.apache.org/licenses/LICENSE-2.0
+                                                                http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-                                                                            Community
+                                                                                Community
+                                                                                
+                                                                                    Overview
+                                                                                    Conferences
+                                                                                    Summer of Code
+                                                                                    Getting Started
+                                                                                    The Apache Way
+                                                                                    Travel Assistance
+                                                                                    Get Involved
+                                                                                    Community FAQ
+                                                                                
                                                                             
-                                                                                Overview
-                                                                                Conferences
-                                                                                Summer of Code
-                                                                                Getting Started
-                                                                                The Apache Way
-                                                                                Travel Assistance
-                                                                                Get Involved
-                                                                                Community FAQ
                                                                             
-                                                                        
-                                                                        
-                                                                        
-                                                                            Innovation
                                                                             
-                                                                                Incubator
-                                                                                Labs
-                                                                                Licensing
-                                                                                Licensing FAQ
-                                                                                Trademark Policy
-                                                                                Contacts
+                                                                                Innovation
+                                                                                
+                                                                                    Incubator
+                                                                                    Labs
+                                                                                    Licensing
+                                                                                    Licensing FAQ
+                                                                                    Trademark Policy
+                                                                                    Contacts
+                                                                                
                                                                             
-                                                                        
-                                                            
-                                                                            Tech Operations
-                                                                        
-                                                                                  Developer Information
-                                                                                  Infrastructure
-                                                                                  Security
-                                                                                  Status
-                                                                                  Contacts
-                                                                        
-                                                                        
-                                                            
-                                                                            Press
-                                                                    
-                                                                                Overview
-                                                                                ASF News
-                                                                                Announcements
-                                                                                Twitter Feed
-                                                                                Contacts
-                                                                    
-                                                                        
-                                                                        
-                                                                        
-                                                                            Legal
-                                                                    
-                                                                                Legal Affairs
-                                                                                Licenses
-                                                                                Trademark Policy
-                                                                                Public Records
-                                                                    Privacy Policy
-                                                                                Export Information
-                                                                                License/Distribution FAQ
-                                                                                Contacts
-                                                                    
-                                                                        
-                                                            
-                                                                            Copyright &#169; 2015 The Apache Software Foundation, Licensed under the Apache License, Version 2.0.
-                                                                            Apache and the Apache feather logo are trademarks of The Apache Software Foundation.
-                                                                        
-                                                                    
                                                                 
+                                                                                Tech Operations
+                                                                            
+                                                                                      Developer Information
+                                                                                      Infrastructure
+                                                                                      Security
+                                                                                      Status
+                                                                                      Contacts
+                                                                            
+                                                                            
+                                                                
+                                                                                Press
+                                                                        
+                                                                                    Overview
+                                                                                    ASF News
+                                                                                    Announcements
+                                                                                    Twitter Feed
+                                                                                    Contacts
+                                                                        
+                                                                            
+                                                                            
+                                                                            
+                                                                                Legal
+                                                                        
+                                                                                    Legal Affairs
+                                                                                    Licenses
+                                                                                    Trademark Policy
+                                                                                    Public Records
+                                                                        Privacy Policy
+                                                                                    Export Information
+                                                                                    License/Distribution FAQ
+                                                                                    Contacts
+                                                                        
+                                                                            
+                                                                
+                                                                                Copyright &#169; 2015 The Apache Software Foundation, Licensed under the Apache License, Version 2.0.
+                                                                                Apache and the Apache feather logo are trademarks of The Apache Software Foundation.
+                                                                            
+                                                                        
+                                                                    
 
 <!--
+  
   
   
   
@@ -18378,8 +19680,8 @@ a) The work must carry prominent notices stating that you modified it, and givin
 
 b) The work must carry prominent notices stating that it is released under this License and any conditions added under section
 
-                                                            7.  This requirement modifies the requirement in section 4 to
-                                                            "keep intact all notices".
+                                                                7.  This requirement modifies the requirement in section 4 to
+                                                                "keep intact all notices".
 
 c) You must license the entire work, as a whole, under this License to anyone who comes into possession of a copy. This License will therefore apply, along with any applicable section 7 additional terms, to the whole of the work, and all its parts, regardless of how they are packaged. This License gives no permission to license the work in any other way, but it does not invalidate such permission if you have separately received it.
 
@@ -18519,21 +19821,21 @@ If you develop a new program, and you want it to be of the greatest possible use
 
 To do so, attach the following notices to the program. It is safest to attach them to the start of each source file to most effectively state the exclusion of warranty; and each file should have at least the "copyright" line and a pointer to where the full notice is found.
 
-                                                            <one line to give the program's name and a brief idea of what it does.>
-                                                            Copyright (C) <year>  <name of author>
-                                                            
-                                                            This program is free software: you can redistribute it and/or modify
-                                                            it under the terms of the GNU Affero General Public License as
-                                                            published by the Free Software Foundation, either version 3 of the
-                                                            License, or (at your option) any later version.
-                                                            
-                                                            This program is distributed in the hope that it will be useful,
-                                                            but WITHOUT ANY WARRANTY; without even the implied warranty of
-                                                            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-                                                            GNU Affero General Public License for more details.
-                                                            
-                                                            You should have received a copy of the GNU Affero General Public License
-                                                            along with this program.  If not, see <http://www.gnu.org/licenses/>.
+                                                                <one line to give the program's name and a brief idea of what it does.>
+                                                                Copyright (C) <year>  <name of author>
+                                                                
+                                                                This program is free software: you can redistribute it and/or modify
+                                                                it under the terms of the GNU Affero General Public License as
+                                                                published by the Free Software Foundation, either version 3 of the
+                                                                License, or (at your option) any later version.
+                                                                
+                                                                This program is distributed in the hope that it will be useful,
+                                                                but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                                                MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                                                GNU Affero General Public License for more details.
+                                                                
+                                                                You should have received a copy of the GNU Affero General Public License
+                                                                along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Also add information on how to contact you by electronic and paper mail.
 
@@ -18551,11 +19853,11 @@ back to top
 
 Please send general FSF & GNU inquiries to [gnu@gnu.org](gnu@gnu.org). There are also other ways to contact the FSF. Broken links and other corrections or suggestions can be sent to [webmasters@gnu.org](webmasters@gnu.org).
 
-                                                                <web-translators@gnu.org>.
-                                                            
-                                                                For information on coordinating and submitting translations of
-                                                                our web pages, see Translations
-                                                                README. -->
+                                                                    <web-translators@gnu.org>.
+                                                                
+                                                                    For information on coordinating and submitting translations of
+                                                                    our web pages, see Translations
+                                                                    README. -->
 
 Please see the Translations README for information on coordinating and submitting translations of this article.
 
