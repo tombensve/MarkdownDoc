@@ -4,7 +4,7 @@ This is an editor for editing markdown documents.
 
 <div class="editorImage">
 
-![](images/MarkdownDoc-Editor-2.png) 
+![](Editor/docs/images/MarkdownDoc-Editor-2.png) 
 
 </div>
 

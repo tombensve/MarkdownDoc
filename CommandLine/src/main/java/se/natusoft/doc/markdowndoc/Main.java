@@ -5,10 +5,10 @@
  *         MarkdownDoc Command Line
  *     
  *     Code Version
- *         1.3.9
+ *         1.4
  *     
  *     Description
- *         Parses markdown and generates HTML and PDF.
+ *         Parses markdown and generates HTML, PDF, and markdown.
  *         
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.

@@ -9,7 +9,7 @@
     @PDFVersion(1 . 4) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
-    @PDFTitlePageImage("Docs/MDD_Laptop_2_Fotor.png:200:320")
+    @PDFTitlePageImage("Docs/src/MDD_Laptop_2_Fotor.png:200:320")
     
     @PDFPageSize("A4")
     @PDFGenerateTitlePage(true)
@@ -67,7 +67,11 @@ The known (and intentional) differences are:
 
 * No entity encoding of email addresses.
 
-* No multiple block quote levels (as of now). I've never personally missed having multiple quote levels, which is why I haven't done something about that yet. If you feel this is essential then file an issue about this or just mail me and I'll try to give that a bit more prio. 
+* No multiple block quote levels (as of now). I've never personally missed having multiple quote levels, which is why I haven't done something about that yet.  
+
+* Does not support any other formatting within strong (\_\_...\_\_), emphasized (\_...\_), or header (# ...). I personally don't see enough of a problem with this, that I'll prioritize it. 
+
+If you find any of the missing features a problem, I'll happily accept pull requests. :-)
 
 ## File specifications
 

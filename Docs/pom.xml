@@ -39,7 +39,7 @@
 
                 <executions>
                     <execution>
-                        <id>generate-docs</id>
+                        <id>generate-docs-pdf</id>
                         <goals>
                             <goal>doc</goal>
                         </goals>
@@ -49,18 +49,18 @@
                             <generatorOptions>
                                 <generator>pdf</generator>
                                 <inputPaths>
-                                    Docs/MarkdownDocUserGuideStart.md,
+                                    Docs/src/MarkdownDocUserGuideStart.md,
                                     CommandLine/docs/.*.md,
                                     MavenPlugin/docs/.*.md,
                                     Library/docs/.*.md,
                                     Editor/docs/.*.md,
-                                    Docs/mddoc.md,
-                                    Docs/VersionHistory.md,
-                                    Docs/MarkdownReference.md,
-                                    Docs/parts/H1Licenses.mdpart,
-                                    Docs/licenses.md,
-                                    Docs/parts/H1LicenseTexts.mdpart,
-                                    Docs/.*-.*.md
+                                    Docs/src/mddoc.md,
+                                    Docs/src/VersionHistory.md,
+                                    Docs/src/MarkdownReference.md,
+                                    Docs/src/H1Licenses.md,
+                                    Docs/lics/licenses.md,
+                                    Docs/src/H1LicenseTexts.md,
+                                    Docs/lics/.*-.*.md
                                 </inputPaths>
                             </generatorOptions>
 
@@ -81,6 +81,63 @@
                                 <generateSectionNumbers>false</generateSectionNumbers>
                                 -->
                             </pdfGeneratorOptions>
+
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-docs-md</id>
+                        <goals>
+                            <goal>doc</goal>
+                        </goals>
+                        <phase>install</phase>
+                        <configuration>
+
+                            <generatorOptions>
+                                <generator>md</generator>
+                                <inputPaths>
+                                    Docs/src/MarkdownDocUserGuideStart.md,
+                                    CommandLine/docs/.*.md,
+                                    MavenPlugin/docs/.*.md,
+                                    Library/docs/.*.md,
+                                    Editor/docs/.*.md,
+                                    Docs/src/mddoc.md,
+                                    Docs/src/VersionHistory.md,
+                                    Docs/src/MarkdownReference.md,
+                                    Docs/src/H1Licenses.md,
+                                    Docs/licenses.md,
+                                    Docs/src/H1LicenseTexts.md,
+                                    Docs/.*-.*.md
+                                </inputPaths>
+                            </generatorOptions>
+
+                            <mdGeneratorOptions>
+                                <resultFile>Docs/MarkdownDoc-User-Guide.md</resultFile>
+                            </mdGeneratorOptions>
+
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-readme-md</id>
+                        <goals>
+                            <goal>doc</goal>
+                        </goals>
+                        <phase>install</phase>
+                        <configuration>
+
+                            <generatorOptions>
+                                <generator>md</generator>
+                                <inputPaths>
+                                    Docs/readme/README.md,
+                                    Docs/lics/licenses.md,
+                                    Docs/src/VersionHistory.md
+                                </inputPaths>
+                            </generatorOptions>
+
+                            <mdGeneratorOptions>
+                                <resultFile>README.md</resultFile>
+                            </mdGeneratorOptions>
 
                         </configuration>
                     </execution>

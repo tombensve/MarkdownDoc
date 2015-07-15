@@ -1,3 +1,39 @@
+/* 
+ * 
+ * PROJECT
+ *     Name
+ *         MarkdownDoc Library
+ *     
+ *     Code Version
+ *         1.4
+ *     
+ *     Description
+ *         Parses markdown and generates HTML and PDF.
+ *         
+ * COPYRIGHTS
+ *     Copyright (C) 2012 by Natusoft AB All rights reserved.
+ *     
+ * LICENSE
+ *     Apache 2.0 (Open Source)
+ *     
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *     
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *     
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ *     
+ * AUTHORS
+ *     tommy ()
+ *         Changes:
+ *         2015-07-15: Created!
+ *         
+ */
 package se.natusoft.doc.markdown.generator
 
 import groovy.transform.CompileStatic
@@ -82,70 +118,41 @@ class FileResource {
     }
 
     /**
-     * - Adds file: if no protocol is specified.
-     * - If file: then resolved to full path if not found with relative path.
+     * Adds file: if no protocol is specified.
+     *
+     * In the case of a file: path it resolved starting at current directory and then going up to root,
+     * trying the path in the passed url. This means that you should always make file references from
+     * the top root of your project, since even if a build is built at lower levels it will resolve
+     * the path.
+     * <p/>
+     * The only real difference between this method and getResourceFile is that it handles and URL, which
+     * among other things iText needs for loading images. So if an external URL reference is passed then
+     * it will just be returned as passed. But when a file: reference is passed then we try to resolve
+     * the file.
      *
      * @param url The DocItem item provided url.
-     * @param parseFile The source file of the DocItem item.
-     * @param optsResultFile The result file specified in generator options.
      */
-    @NotNull String resolveUrl(@NotNull String url, @NotNull File parseFile, @NotNull String optsResultFile) {
-        String resolvedUrl = url
-        if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http")) {
-            resolvedUrl = "file:" + resolvedUrl
+    @NotNull String resolveUrl(@NotNull final String url) {
+        String resolvedUrl = url.trim()
+
+        if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http") && !resolvedUrl.startsWith("jar:")) {
+            resolvedUrl = "file:${resolvedUrl}"
         }
-        String fallbackUrl = resolvedUrl
 
         if (resolvedUrl.startsWith("file:")) {
-            // Try for absolute path or relative to current directory first.
-            String path = resolvedUrl.substring(5)
-            File testFile = new File(path)
+            String resPath = resolvedUrl
 
-            if (!testFile.exists()) {
-                // Then try relative to parseFile.
-                int ix = parseFile.canonicalPath.lastIndexOf(File.separator)
-                if (ix >= 0) {
-                    // Since this is based on parseFile.canonicalPath it will be a full path from the filesystem root.
-                    resolvedUrl = "file:" + ensureSeparatorAtEnd(parseFile.canonicalPath.substring(0, ix + 1))  + path
-                    testFile = new File(ensureSeparatorAtEnd(parseFile.canonicalPath.substring(0, ix + 1))  + path)
-                }
-
-                if (!testFile.exists()) {
-                    // Then try relative to result file.
-                    File resultFile = new File(optsResultFile)
-                    ix = resultFile.canonicalPath.lastIndexOf(File.separator)
-                    if (ix >= 0) {
-                        resolvedUrl = "file:" + ensureSeparatorAtEnd(resultFile.canonicalPath.substring(0, ix + 1)) + path
-                        testFile = new File(ensureSeparatorAtEnd(resultFile.canonicalPath.substring(0, ix + 1)) + path)
-
-                        if (!testFile.exists()) {
-                            // Finally try root dir.
-                            if (this.rootDir != null) {
-                                ix = this.rootDir.canonicalPath.lastIndexOf(File.separator)
-                                if (ix > 0) {
-                                    resolvedUrl = "file:" + ensureSeparatorAtEnd(this.rootDir.canonicalPath.substring(0, ix + 1) + path)
-                                    testFile = new File(ensureSeparatorAtEnd(this.rootDir.canonicalPath.substring(0, ix + 1)) + path)
-                                    if (!testFile.exists()) {
-                                        // Give up!
-                                        resolvedUrl = fallbackUrl
-                                    }
-                                }
-                                else {
-                                    // Give up!
-                                    resolvedUrl = fallbackUrl
-                                }
-                            }
-                            else {
-                                // Give up!
-                                resolvedUrl = fallbackUrl
-                            }
-                        }
-                    }
-                }
+            if (resPath.startsWith("file:")) {
+                resPath = resPath.substring(5)
             }
+
+            File testFile = getResourceFile(resPath)
+
+            resolvedUrl = "file:" + testFile.absolutePath
+
         }
 
-        resolvedUrl
+        return resolvedUrl
     }
 
     /**

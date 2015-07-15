@@ -41,11 +41,11 @@ Files will be parsed in the order they are specified. When regular expressions a
 
 This is a comma separated list of `name=value`. 
 
-#### JavaDoc2MDParser
+#### JavaDoc2MDParser options
 
 Just setting __markdownJavadoc__ to any value will make it take the javadoc text as markdown and parse that also.
 
-#### MarkdownParser
+#### MarkdownParser options
 
 This parser currently has no options.
 
@@ -152,7 +152,7 @@ This will generate one first page with a title, version, author, and copyright. 
 Shows help.
 
 
-## HTMLGeneratorOptions
+## HTMLGenerator options
 
 ### resultFile : String (R)
 
@@ -179,7 +179,7 @@ The path file links should be relative to.
 Shows help.
 
 
-## MarkdownGeneratorOptions
+## MarkdownGenerator options
 
 ### resultFile : String (R)
 

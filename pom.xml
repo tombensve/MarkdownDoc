@@ -292,8 +292,8 @@
                                     </installOptions>
 
                                     <createLicensesMarkdown>true</createLicensesMarkdown>
-                                    <markdownTargetSubdir>Docs</markdownTargetSubdir>
-                                    <markdownLinkPrefix>https://github.com/tombensve/MarkdownDoc/blob/master/Docs/</markdownLinkPrefix>
+                                    <markdownTargetSubdir>Docs/lics</markdownTargetSubdir>
+                                    <markdownLinkPrefix>https://github.com/tombensve/MarkdownDoc/blob/master/Docs/lics</markdownLinkPrefix>
                                 </configuration>
                             </execution>
                         </executions>
