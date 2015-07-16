@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -48,10 +48,17 @@ import se.natusoft.doc.markdowndoc.editor.functions.utils.FileWindowProps
 import se.natusoft.doc.markdowndoc.editor.tools.ServiceDefLoader
 
 import javax.swing.*
+import javax.swing.event.UndoableEditEvent
+import javax.swing.event.UndoableEditListener
 import javax.swing.filechooser.FileNameExtensionFilter
 import javax.swing.text.BadLocationException
 import javax.swing.text.Caret
+import javax.swing.text.Document
+import javax.swing.undo.CannotRedoException
+import javax.swing.undo.CannotUndoException
+import javax.swing.undo.UndoManager
 import java.awt.*
+import java.awt.event.ActionEvent
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import java.awt.event.MouseMotionListener
@@ -108,6 +115,9 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
 
     // The actual editorPane component.
     protected JTextPane editorPane
+
+    /** The undo manager to use. */
+    private UndoManager undoManager
 
     // Styles an JTextPane.
     private JTextComponentStyler editorStyler
@@ -448,6 +458,56 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
             ((Configurable)this.editorStyler).registerConfigs(getConfigProvider())
             this.configurables.add((Configurable)this.editorStyler)
         }
+
+        // Attach undo manager to document.
+        Document doc = this.editorPane.getDocument()
+
+        String undoKey = "control Z"
+        String redoKey = "control Y"
+
+        String osName = System.getProperty("os.name").toUpperCase()
+        if (osName.contains("MAC")) {
+            undoKey = "meta Z"
+            redoKey = "shift meta Z"
+        }
+
+        this.undoManager = new UndoManager()
+
+        doc.addUndoableEditListener(new UndoableEditListener() {
+            public void undoableEditHappened(UndoableEditEvent evt) {
+                MarkdownEditor.this.undoManager.addEdit(evt.edit);
+            }
+        })
+
+        this.editorPane.getActionMap().put("Undo", new AbstractAction("Undo") {
+            public void actionPerformed(ActionEvent evt) {
+                try
+                {
+                    if (MarkdownEditor.this.undoManager.canUndo()) {
+                        MarkdownEditor.this.undoManager.undo()
+                    }
+                }
+                catch (CannotUndoException cue) {
+                    System.err.println("Undo problem: ${cue.message}")
+                }
+            }
+        })
+        this.editorPane.getInputMap().put(KeyStroke.getKeyStroke(undoKey), "Undo")
+
+        this.editorPane.getActionMap().put("Redo", new AbstractAction("Redo") {
+            public void actionPerformed(ActionEvent evt) {
+                try {
+                    if (MarkdownEditor.this.undoManager.canRedo()) {
+                        MarkdownEditor.this.undoManager.redo()
+                    }
+                }
+                catch (CannotRedoException cre) {
+                    System.err.println("Redo problem: ${cre.message}")
+                }
+            }
+        })
+        this.editorPane.getInputMap().put(KeyStroke.getKeyStroke(redoKey), "Redo")
+
 
         // This will center the cursor vertically in the window. I found that it got confusing
         // so I decided to leave this out, but keep it commented out for a while. Maybe I enable

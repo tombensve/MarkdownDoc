@@ -22,6 +22,12 @@ Can preview in HTML format (toggles between preview and edit mode). This is acti
 
 Can make formatting characters to be made very tiny while editing, by enabling a settings option. Try it to see the effect!
 
+### Undo / Redo (as of 1.4)
+
+Attaches an UndoManager to the document model. Ctrl-Z does an undo, and Ctrl-Y does a redo for all platforms except Mac, which uses Meta-Z for undo, and Shift-Meta-Z for redo.
+
+Do note however that if you enable styling as you type in settings, then the styling actions also gets recorded by the UndoManager! So a the first Ctrl-Z might just undo the styling, and the next Ctrl-Z does what you expected it to do. I have currently not found a way around this.
+
 ### Generate PDF & HTML
 
 Can generate both PDF and HTML from the editor window. Use toolbar button or keyboard shortcut.

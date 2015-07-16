@@ -18,6 +18,8 @@ About versions, they are hell! After personal experience of having different ver
 
 * Added labels in options for all previously hardcoded text strings in PDFGenerator. It should now be possible to completely generate a document in a different language than English. These can also be set with comment annotations as mentioned above.
 
+* Added Undo / Redo to editor.
+
 The addition of MSS made huge changes to the code. To be as backwards compatible as possible the defaults for the MSS settings are as things looked before. There is also a _default.mss_ file that gets used if you don't supply your own. This has settings that mimics the previous styles. 
 
 Also note that the PDF UserGuide now shows off the new features, mostly for that purpose :-).
