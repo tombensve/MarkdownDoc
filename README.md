@@ -12,7 +12,16 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 [User Guide](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/Markdown-User-Guide.md)
 
-[User Guide PDF](https://raw.githubusercontent.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.pdf)
+<!--
+  
+I tried to make PDF link raw directly, by using the link I get from github when I finally click on raw:
+
+  [User Guide PDF](https://raw.githubusercontent.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.pdf)
+
+This however does not work. With this URL You get an emtpy file downloaded. Github really wants to make
+PDF viewing difficult!
+-->
+[User Guide PDF](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.pdf)
 
 # Binaries
 
@@ -182,5 +191,5 @@ If image paths are not absolute and not http referenced then they are now looked
 
 ## 1.2.2
 
-Added support for _&nbsp_ to be able to indent text. This is one more exception to no html passtrhough.
+Added support for non breaking space (nbsp) to be able to indent text. This is one more exception to no html pass through.
 

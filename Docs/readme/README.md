@@ -12,7 +12,16 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 [User Guide](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/Markdown-User-Guide.md)
 
-[User Guide PDF](https://raw.githubusercontent.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.pdf)
+<!--
+I tried to make PDF link raw directly, by using the link I get from github when I finally click on raw:
+
+  [User Guide PDF](https://raw.githubusercontent.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.pdf)
+
+This however does not work. With this URL You get an emtpy file downloaded. Github really wants to make
+PDF viewing difficult!
+-->
+
+[User Guide PDF](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.pdf)
 
 # Binaries
 

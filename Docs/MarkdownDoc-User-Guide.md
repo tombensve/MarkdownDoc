@@ -1228,7 +1228,7 @@ If image paths are not absolute and not http referenced then they are now looked
 
 ## 1.2.2
 
-Added support for _&nbsp_ to be able to indent text. This is one more exception to no html passtrhough.
+Added support for non breaking space (nbsp) to be able to indent text. This is one more exception to no html pass through.
 
 # Simple Markdown Reference
 
