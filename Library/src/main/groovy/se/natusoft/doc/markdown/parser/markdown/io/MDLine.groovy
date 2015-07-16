@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -239,21 +239,27 @@ class MDLine extends Line  {
     }
 
     /**
-     * @return true if this line is a <div name="..."> line.
+     * @return true if this line is a <div name="..."> or <!-- @Div(class) --> line.
      */
     boolean isStartDiv() {
         // We allow 0 to 3 spaces in front, 4 would make it a code line, and so would a tab! The div also has
         // to be the only thing on the line!
-        matches('[ ]?[ ]?[ ]?<div.*class=".*".*>\\s*')
+        matches('[ ]?[ ]?[ ]?<div.*class=".*".*>\\s*') || matches('[ ]?[ ]?[ ]?<!--[ ]*@Div\\(".*"\\)[ ]*-->\\s*')
+        // Note that when the class name is extracted it is the text between the first and the second " character
+        // that is used, and exactly 2 " characters are expected! Therefore the " character is important in the
+        // comment version also. The reason for the comment version is only to support making the markdown file
+        // readable also on github who does not like to find <div class="...">...</div> in markdown files. It will
+        // not markdown format anything between the div tags. So the comment version allows for a readable markdown
+        // file on github, but still give extra features to an HTML or PDF version.
 
         // I wondered why the heck the groovy guys decided to make both "..." and '...' into strings, but
         // I'm however starting to see the point :-). The question is: which is worse: \" or 'x' as char ?
     }
 
     /**
-     * @return true if this line is a </div>.
+     * @return true if this line is a </div> or a <!-- @EndDiv -->.
      */
     boolean isEndDiv() {
-        startsWithExcludingWhitespace("</div>")
+        startsWithExcludingWhitespace("</div>") || matches("[ ]?[ ]?[ ]?<!--[ ]*@EndDiv[ ]*-->\\s*")
     }
 }

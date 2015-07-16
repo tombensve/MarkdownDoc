@@ -151,6 +151,43 @@ This will generate one first page with a title, version, author, and copyright. 
 
 Shows help.
 
+</div>
+
+### Comment block annotation setting of options
+
+The PDF generator have a spedial feature to be able to set options via an annotation in a comment block. The annotations look like this:
+
+    <!--
+    
+        @PDF<option name>(<option value>)
+        @PDF<option name>("<option value>")
+    
+    -->
+
+The following annotations options are available:
+
+- @PDFTitle(title)
+- @PDFSubject(subject)
+- @PDFKeywords(keywords)
+- @PDFAuthor(author)
+- @PDFVersion(version)
+- @PDFCopyright(copyright line)
+- @PDFAuthorLabel(label)
+- @PDFVersionLabel(label)
+- @PDFPageLabel(label)
+- @PDFTableOfContentsLabel(label)
+- @PDFPageSize(size)
+- @PDFHideLinks(true/false)
+- @PDFUnorderedListItemPrefix(prefix)
+- @PDFFirstLineParagraphIndent(true/false)
+- @PDFGenerateSectionNumbers(true/false)
+- @PDFGenerateTOC(true/false)
+- @PDFGenerateTitlePage(true/false)
+- @PDFTitlePageImage(imageref)
+
+Put this comment block at the top of the document! The optoins provided this way will not have an effect until the comment block have been processed by the generator, and the annotations found. Thereby it is also theoretically possible to change options further down the document. This should be seen as a side effect rather than a feature!!
+
+<div class="options">
 
 ## HTMLGenerator options
 

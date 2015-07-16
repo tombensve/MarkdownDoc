@@ -93,9 +93,9 @@ Example usage:
 Example usage:
 
     public static void main(String[] args) {
-    	Doc document = new Doc();
+        Doc document = new Doc();
 
-    	... parsing of document.
+        ... parsing of document.
 
          Generator generator = new [PDF|HTML|Markdown]Generator();
 
@@ -103,16 +103,16 @@ Example usage:
          // If you use maven or ant then those tools will have loaded
          // the options for you and getOptionsClass() is not relevant
          // in that case.
-    	CommandLineOptionsManager<Options> optMgr =
-        	new CommandLineOptionsManager<Options>(generator.getOptionsClass());
-    	Options options = optMgr.loadOptions("--", args);
-    	if (options.isHelp()) {
-    		optMgr.printHelpText("--","", System.out);
-    	}
-    	else {
-        	File rootDir = new File();
-    		generator.generate(document, options, rootDir);
-    	}
+        CommandLineOptionsManager<Options> optMgr =
+            new CommandLineOptionsManager<Options>(generator.getOptionsClass());
+        Options options = optMgr.loadOptions("--", args);
+        if (options.isHelp()) {
+            optMgr.printHelpText("--","", System.out);
+        }
+        else {
+            File rootDir = new File();
+            generator.generate(document, options, rootDir);
+        }
     }
 
 Please note that the CommandLineOptionsMangager used in the example is part of the OptionsManager
@@ -136,7 +136,7 @@ This is a class with one static method that completely handles the _.mddoc_ form
 
 Usage:
 
-	MDDocFileHandler.execute("<path to .mddoc file>");
+    MDDocFileHandler.execute("<path to .mddoc file>");
 
 This will generate all output formats as specified in the .mddoc file.
 
