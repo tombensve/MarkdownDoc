@@ -12,7 +12,7 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 [User Guide](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/Markdown-User-Guide.md)
 
-[User Guide PDF](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.pdf)
+[User Guide PDF](https://raw.githubusercontent.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.pdf)
 
 # Binaries
 
