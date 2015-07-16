@@ -9,7 +9,7 @@
     @PDFVersion(1 . 4) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
-    @PDFTitlePageImage("Docs/src/MDD_Laptop_2_Fotor.png:200:320")
+    @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
     
     @PDFPageSize("A4")
     @PDFGenerateTitlePage(true)

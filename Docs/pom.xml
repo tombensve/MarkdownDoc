@@ -105,9 +105,9 @@
                                     Docs/src/VersionHistory.md,
                                     Docs/src/MarkdownReference.md,
                                     Docs/src/H1Licenses.md,
-                                    Docs/licenses.md,
+                                    Docs/lics/licenses.md,
                                     Docs/src/H1LicenseTexts.md,
-                                    Docs/.*-.*.md
+                                    Docs/lics/.*-.*.md
                                 </inputPaths>
                             </generatorOptions>
 

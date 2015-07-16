@@ -4,7 +4,7 @@ This is an editor for editing markdown documents.
 
 <div class="editorImage">
 
-![](Editor/docs/images/MarkdownDoc-Editor-2.png) 
+![](http://download.natusoft.se/Images/MarkdownDoc/MarkdownDoc-Editor-2.png) 
 
 </div>
 

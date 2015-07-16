@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -784,16 +784,20 @@ class PDFGenerator implements Generator {
             MSSImage mssImage = context.pdfStyles.mss.forFrontPage.getImageData()
             PDFImage image
 
-            String[] parts = context.options.titlePageImage.split(":")
+            // Note that http:// does contain a ':'!
+            String imageRef = context.options.titlePageImage.replace("http:", "http§").replace("https:", "https§").
+                    replace("ftp:", "ftp§")
+            String[] parts = imageRef.split(":")
             if (parts.length != 3) {
                 throw new GenerateException(message: "Bad image specification! Should be <path/URL>:x:y!")
             }
-            String imagePath = parts[0]
+            String imagePath = parts[0].replace('§', ':')
             float imgX = Float.valueOf(parts[1])
             float imgY = Float.valueOf(parts[2])
 
             try {
-                if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+                if (imagePath.startsWith("http://") || imagePath.startsWith("https://") ||
+                        imagePath.startsWith("ftp://")) {
                     image = PDFImage.getInstance(new URL(imagePath))
                 } else {
                     String resourcePath = imagePath
