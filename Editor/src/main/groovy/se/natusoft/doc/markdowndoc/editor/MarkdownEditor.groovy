@@ -44,6 +44,7 @@ import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.adapters.WindowListenerAdapter
 import se.natusoft.doc.markdowndoc.editor.api.*
 import se.natusoft.doc.markdowndoc.editor.config.*
+import se.natusoft.doc.markdowndoc.editor.file.Editables
 import se.natusoft.doc.markdowndoc.editor.functions.utils.FileWindowProps
 import se.natusoft.doc.markdowndoc.editor.tools.ServiceDefLoader
 
@@ -113,8 +114,10 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
     // This sits around the editorPane.
     private JScrollPane scrollPane
 
-    // The actual editorPane component.
-    protected JTextPane editorPane
+    /** Holds all the editables. */
+    private Editables editables = new Editables()
+
+    private Editable currentEditable
 
     /** The undo manager to use. */
     private UndoManager undoManager
@@ -237,24 +240,24 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
     //
 
     private Closure fontConfigChanged = { @NotNull ConfigEntry ce ->
-        editorPane.setFont(Font.decode(ce.getValue()).
+        this.currentEditable?.editorPane?.setFont(Font.decode(ce.getValue()).
                 deriveFont(Float.valueOf(fontSizeConfig.getValue())))
     }
 
     private Closure fontSizeConfigChanged = { @NotNull ConfigEntry ce ->
-        editorPane.setFont(Font.decode(fontConfig.getValue()).deriveFont(Float.valueOf(ce.getValue())))
+        this.currentEditable?.editorPane?.setFont(Font.decode(fontConfig.getValue()).deriveFont(Float.valueOf(ce.getValue())))
     }
 
     private Closure backgroundColorConfigChanged = { @NotNull ConfigEntry ce ->
-        editorPane.setBackground(new ConfigColor(ce))
+        this.currentEditable?.editorPane?.setBackground(new ConfigColor(ce))
     }
 
     private Closure foregroundColorConfigChanged = { @NotNull ConfigEntry ce ->
-        editorPane.setForeground(new ConfigColor(ce))
+        this.currentEditable?.editorPane?.setForeground(new ConfigColor(ce))
     }
 
     private Closure caretColorConfigChanged = { @NotNull ConfigEntry ce ->
-        editorPane.setCaretColor(new ConfigColor(ce))
+        this.currentEditable?.editorPane?.setCaretColor(new ConfigColor(ce))
     }
 
     private Closure lookAndFeelConfigChanged = { @NotNull ConfigEntry ce ->
@@ -291,31 +294,31 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
     }
 
     private Closure topMarginConfigChanged = { @NotNull ConfigEntry ce ->
-        Insets margins = this.editorPane.getMargin()
+        Insets margins = this.currentEditable?.editorPane?.getMargin()
         margins.top = ((IntegerConfigEntry)ce).getIntValue()
-        this.editorPane.setMargin(margins)
-        this.editorPane.revalidate()
+        this.currentEditable?.editorPane?.setMargin(margins)
+        this.currentEditable?.editorPane?.revalidate()
     }
 
     private Closure bottomMarginConfigChanged = { @NotNull ConfigEntry ce ->
-        Insets margins = this.editorPane.margin
+        Insets margins = this.currentEditable?.editorPane?.margin
         margins.bottom = ((IntegerConfigEntry)ce).intValue
-        this.editorPane.setMargin(margins)
-        this.editorPane.revalidate()
+        this.currentEditable?.editorPane?.setMargin(margins)
+        this.currentEditable?.editorPane?.revalidate()
     }
 
     private Closure leftMarginConfigChanged = { @NotNull ConfigEntry ce ->
-        Insets margins = this.editorPane.getMargin()
+        Insets margins = this.currentEditable?.editorPane?.getMargin()
         margins.left = ((IntegerConfigEntry)ce).getIntValue()
-        this.editorPane.setMargin(margins)
-        this.editorPane.revalidate()
+        this.currentEditable?.editorPane?.setMargin(margins)
+        this.currentEditable?.editorPane?.revalidate()
     }
 
     private Closure rightMarginConfigChanged = { @NotNull ConfigEntry ce ->
-        Insets margins = this.editorPane.getMargin()
+        Insets margins = this.currentEditable?.editorPane?.getMargin()
         margins.right = ((IntegerConfigEntry)ce).getIntValue()
-        this.editorPane.setMargin(margins)
-        this.editorPane.revalidate()
+        this.currentEditable?.editorPane?.setMargin(margins)
+        this.currentEditable?.editorPane?.revalidate()
     }
 
     /**
@@ -418,34 +421,7 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
         this.editorPanel.setLayout(new BorderLayout())
         this.editorPanel.setAutoscrolls(true)
 
-
-        this.editorPane = new JTextPane() {
-            @Override
-            Dimension getPreferredSize() {
-                Dimension dim = super.getPreferredSize()
-                dim.setSize(getWidth(), dim.getHeight())
-
-                return dim
-            }
-            @Override
-            Dimension getMinimumSize() {
-                return getPreferredSize()
-            }
-
-        }
-
-        this.mouseMotionProviders.add(new MouseMotionProvider() {
-            @Override
-            void addMouseMotionListener(MouseMotionListener listener) {
-                editorPane.addMouseMotionListener(listener)
-            }
-
-            @Override
-            void removeMouseMotionListener(MouseMotionListener listener) {
-                editorPane.removeMouseMotionListener(listener)
-            }
-
-        })
+        this.mouseMotionProviders.add(this.currentEditable)
 
         this.editorStyler = this.stylerLoader.iterator().next()
         if (this.editorStyler == null) {
@@ -453,61 +429,11 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
                     "JTextComponentStyler file pointing out an implementation to use have been provided!")
         }
 
-        this.editorStyler.init(this.editorPane)
+        //this.editorStyler.init(this.editorPane)
         if (this.editorStyler instanceof Configurable) {
             ((Configurable)this.editorStyler).registerConfigs(getConfigProvider())
             this.configurables.add((Configurable)this.editorStyler)
         }
-
-        // Attach undo manager to document.
-        Document doc = this.editorPane.getDocument()
-
-        String undoKey = "control Z"
-        String redoKey = "control Y"
-
-        String osName = System.getProperty("os.name").toUpperCase()
-        if (osName.contains("MAC")) {
-            undoKey = "meta Z"
-            redoKey = "shift meta Z"
-        }
-
-        this.undoManager = new UndoManager()
-
-        doc.addUndoableEditListener(new UndoableEditListener() {
-            public void undoableEditHappened(UndoableEditEvent evt) {
-                MarkdownEditor.this.undoManager.addEdit(evt.edit);
-            }
-        })
-
-        this.editorPane.getActionMap().put("Undo", new AbstractAction("Undo") {
-            public void actionPerformed(ActionEvent evt) {
-                try
-                {
-                    if (MarkdownEditor.this.undoManager.canUndo()) {
-                        MarkdownEditor.this.undoManager.undo()
-                    }
-                }
-                catch (CannotUndoException cue) {
-                    System.err.println("Undo problem: ${cue.message}")
-                }
-            }
-        })
-        this.editorPane.getInputMap().put(KeyStroke.getKeyStroke(undoKey), "Undo")
-
-        this.editorPane.getActionMap().put("Redo", new AbstractAction("Redo") {
-            public void actionPerformed(ActionEvent evt) {
-                try {
-                    if (MarkdownEditor.this.undoManager.canRedo()) {
-                        MarkdownEditor.this.undoManager.redo()
-                    }
-                }
-                catch (CannotRedoException cre) {
-                    System.err.println("Redo problem: ${cre.message}")
-                }
-            }
-        })
-        this.editorPane.getInputMap().put(KeyStroke.getKeyStroke(redoKey), "Redo")
-
 
         // This will center the cursor vertically in the window. I found that it got confusing
         // so I decided to leave this out, but keep it commented out for a while. Maybe I enable
@@ -607,6 +533,25 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
     @Override
     int getTopMargin() {
         topMargin.getIntValue()
+    }
+
+    /**
+     * Selects the file to edit in the editor view.
+     *
+     * @param file The file to edit.
+     */
+    @Override
+    void selectFileForEditing(File file) {
+        if (this.currentEditable != null) {
+            this.mouseMotionProviders.remove(this.currentEditable)
+        }
+
+        this.currentEditable = this.editables.getEditable(file)
+        this.scrollPane.setViewportView(this.currentEditable.editorPane)
+
+        if (this.currentEditable != null) {
+            this.mouseMotionProviders.add(this.currentEditable)
+        }
     }
 
     /**
@@ -1014,7 +959,7 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
      */
     @Override
     void showEditorComponent() {
-        this.scrollPane.setViewportView(this.editorPane)
+        this.scrollPane.setViewportView(this.currentEditable?.editorPane)
     }
 
     /**
