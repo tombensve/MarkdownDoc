@@ -124,41 +124,6 @@ class EditableProvider implements Editable {
         this.editorPane.getInputMap().put(KeyStroke.getKeyStroke(redoKey), "Redo")
     }
 
-    private void setupFileDrop() {
-        //noinspection GroovyResultOfObjectAllocationIgnored
-        new FileDrop(this.editorPane, new FileDrop.Listener() {
-            void filesDropped(File[] files) {
-                if (files.length >= 1) {
-                    dropFile(files[0])
-                }
-            }
-        })
-
-    }
-
-    /**
-     * Handles files being dropped on the editorPane.
-     *
-     * @param file The file dropped.
-     */
-    private void dropFile(@NotNull File file)  {
-        try {
-            if (this.currentFile != null) {
-                saveFileAs(this.currentFile)
-            }
-            else {
-                if (this.editorPane.getText().trim().length() > 0) {
-                    save()
-                }
-            }
-            loadFile(file)
-        }
-        catch (IOException ioe) {
-            JOptionPane.showMessageDialog(
-                    this, ioe.getMessage(),
-                    "Failed to open dropped file!", JOptionPane.ERROR_MESSAGE)
-        }
-    }
 
     /**
      * Loads a file and creates an editor pane. After this call getEditorPane() should be non null.

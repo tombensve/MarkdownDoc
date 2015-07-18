@@ -119,9 +119,6 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
 
     private Editable currentEditable
 
-    /** The undo manager to use. */
-    private UndoManager undoManager
-
     // Styles an JTextPane.
     private JTextComponentStyler editorStyler
 
@@ -445,18 +442,9 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
 //            }
 //        })
 
-        //noinspection GroovyResultOfObjectAllocationIgnored
-        new FileDrop(this.editorPane, new FileDrop.Listener() {
-            void filesDropped(File[] files) {
-                if (files.length >= 1) {
-                    dropFile(files[0])
-                }
-            }
-        })
-
         // Setup active view
 
-        this.scrollPane = new JScrollPane(this.editorPane)
+        this.scrollPane = new JScrollPane()
         //scrollPane.setAutoscrolls(true)
         this.scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER)
 
@@ -498,16 +486,7 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
 
         // Additional setup now that a component have possibly loaded config.
 
-        Insets margins = new Insets(
-                topMargin.getIntValue(),
-                leftMargin.getIntValue(),
-                bottomMargin.getIntValue(),
-                rightMargin.getIntValue()
-        )
-        this.editorPane.setMargin(margins)
-        this.editorPane.addKeyListener(this)
-
-        this.editorPane.setRequestFocusEnabled(true)
+        selectFileForEditing(this.editables.someEditable)
 
         // Toolbar
 
@@ -543,6 +522,8 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
     @Override
     void selectFileForEditing(File file) {
         if (this.currentEditable != null) {
+            FileDrop.remove(this.currentEditable.editorPane)
+            this.currentEditable.editorPane.removeKeyListener(this)
             this.mouseMotionProviders.remove(this.currentEditable)
         }
 
@@ -550,7 +531,28 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
         this.scrollPane.setViewportView(this.currentEditable.editorPane)
 
         if (this.currentEditable != null) {
+            this.currentEditable.editorPane.addKeyListener(this)
+
+            Insets margins = new Insets(
+                    topMargin.getIntValue(),
+                    leftMargin.getIntValue(),
+                    bottomMargin.getIntValue(),
+                    rightMargin.getIntValue()
+            )
+            this.currentEditable.editorPane.setMargin(margins)
+
+            //noinspection GroovyResultOfObjectAllocationIgnored
+            new FileDrop(this.currentEditable.editorPane, new  FileDrop.Listener() {
+                void filesDropped(File[] files) {
+                    if (files.length >= 1) {
+                        dropFile(files[0])
+                    }
+                }
+            })
+
             this.mouseMotionProviders.add(this.currentEditable)
+
+            this.currentEditable.editorPane.setRequestFocusEnabled(true)
         }
     }
 
@@ -687,7 +689,7 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
                 keyCode != KeyEvent.VK_CONTROL &&
                 keyCode != KeyEvent.VK_SHIFT
         ) {
-            this.keyPressedCaretPos = this.editorPane.getCaretPosition()
+            this.keyPressedCaretPos = this.currentEditable?.editorPane?.getCaretPosition()
 
             KeyboardKey keyboardKey = new KeyboardKey(e)
 
@@ -742,6 +744,35 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
         }
     }
 
+    /**
+     * Handles files being dropped on the editorPane.
+     *
+     * @param file The file dropped.
+     */
+    private void dropFile(@NotNull File file)  {
+        try {
+            if (!this.currentEditable?.saved) {
+                if (this.currentEditable.file == null) {
+                    save()
+                }
+                else {
+                    this.currentEditable.save()
+                }
+            }
+            else {
+                if (this.currentEditable?.editorPane?.getText()?.trim()?.length() > 0) {
+                    save()
+                }
+            }
+            loadFile(file)
+        }
+        catch (IOException ioe) {
+            JOptionPane.showMessageDialog(
+                    this, ioe.getMessage(),
+                    "Failed to open dropped file!", JOptionPane.ERROR_MESSAGE)
+        }
+    }
+
     // --- Editor implementation.
 
     /**
@@ -773,8 +804,8 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
      * Returns the contents of the editorPane.
      */
     @Override
-    @NotNull String getEditorContent() {
-        this.editorPane.getText()
+    @Nullable String getEditorContent() {
+        this.currentEditable?.editorPane?.text
     }
 
     /**
@@ -782,7 +813,7 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
      */
     @Override
     @Nullable String getEditorSelection() {
-        this.editorPane.getSelectedText()
+        this.currentEditable?.editorPane?.selectedText
     }
 
     /**
@@ -1042,23 +1073,6 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
     }
 
     /**
-     * Saves the currently edited file with the specified path.
-     *
-     * @param file The file path to save to.
-     *
-     * @throws IOException
-     */
-    @Override
-    void saveFileAs(@NotNull File file) throws IOException {
-        file.withWriter('UTF-8') { BufferedWriter writer ->
-            writer.write(getEditorContent())
-        }
-        FileWindowProps fileWindowProps = new FileWindowProps()
-        fileWindowProps.setBounds(getGUI().getWindowFrame().getBounds())
-        fileWindowProps.saveBounds(this)
-    }
-
-    /**
      * Opens a file chooser for specifying file to save to.
      *
      * @throws IOException
@@ -1072,31 +1086,8 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
         fileChooser.setFileFilter(filter)
         int returnVal = fileChooser.showSaveDialog(getGUI().getWindowFrame())
         if(returnVal == JFileChooser.APPROVE_OPTION) {
-            saveFileAs(fileChooser.getSelectedFile())
-        }
-    }
-
-    /**
-     * Handles files being dropped on the editorPane.
-     *
-     * @param file The file dropped.
-     */
-    private void dropFile(@NotNull File file)  {
-        try {
-            if (this.currentFile != null) {
-                saveFileAs(this.currentFile)
-            }
-            else {
-                if (this.editorPane.getText().trim().length() > 0) {
-                    save()
-                }
-            }
-            loadFile(file)
-        }
-        catch (IOException ioe) {
-            JOptionPane.showMessageDialog(
-                    this, ioe.getMessage(),
-                    "Failed to open dropped file!", JOptionPane.ERROR_MESSAGE)
+            this.currentEditable.file = fileChooser.getSelectedFile()
+            this.currentEditable.save()
         }
     }
 

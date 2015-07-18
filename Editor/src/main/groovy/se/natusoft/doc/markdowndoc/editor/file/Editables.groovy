@@ -27,7 +27,7 @@ class Editables {
     //
 
     /** The styler instance. */
-    @NotNull JTextComponentStyler styler
+    @NotNull /* userOf */ JTextComponentStyler styler
 
     //
     // Methods
@@ -40,7 +40,7 @@ class Editables {
      *
      * @throws IOException on any IO failure.
      */
-    void load(File file) throws IOException {
+    void load(@NotNull File file) throws IOException {
         if (!this.editables.containsKey(file)) {
             Editable editable = new EditableProvider(file: file, editorStyler: this.styler)
             this.editables.put(file, editable)
@@ -90,6 +90,13 @@ class Editables {
      * @param file The File to get Editable for.
      */
     @Nullable Editable getEditable(File file) {
-        return this.editables.get(file)
+        this.editables.get(file)
+    }
+
+    @Nullable File getSomeEditable() {
+        if (this.editables.isEmpty()) {
+            return null
+        }
+        this.editables.keySet().first()
     }
 }

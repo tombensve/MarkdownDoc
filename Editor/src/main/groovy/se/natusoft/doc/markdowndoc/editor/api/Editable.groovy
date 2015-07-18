@@ -35,17 +35,22 @@ interface Editable extends MouseMotionProvider {
     /**
      * Loads a file and creates an editor pane. After this call getEditorPane() should be non null.
      * @param file
-     * @param extraTasks A closure with extra tasks to do after the loaded text have been set in editor but before
-     *                   styling has been enabled again.
      *
      * @throws IOException
      */
-    void load(@NotNull File file, Closure<Void> extraTasks) throws IOException
+    void load(@NotNull File file) throws IOException
 
     /**
      * Returns the loaded file or null if no file have been loaded.
      */
     @Nullable File getFile()
+
+    /**
+     * Sets the file for this Editable.
+     *
+     * @param file The file to set.
+     */
+    void setFile(@NotNull File file)
 
     /**
      * Saves the file.
