@@ -62,7 +62,7 @@ class EditableProvider implements Editable {
     }
 
     /** The saved state of this editable. */
-    boolean saved
+    boolean saved = false
 
     //
     // Methods

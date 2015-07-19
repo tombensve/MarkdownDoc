@@ -44,22 +44,16 @@ import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.adapters.WindowListenerAdapter
 import se.natusoft.doc.markdowndoc.editor.api.*
 import se.natusoft.doc.markdowndoc.editor.config.*
+import se.natusoft.doc.markdowndoc.editor.file.EditableProvider
 import se.natusoft.doc.markdowndoc.editor.file.Editables
 import se.natusoft.doc.markdowndoc.editor.functions.utils.FileWindowProps
 import se.natusoft.doc.markdowndoc.editor.tools.ServiceDefLoader
 
 import javax.swing.*
-import javax.swing.event.UndoableEditEvent
-import javax.swing.event.UndoableEditListener
 import javax.swing.filechooser.FileNameExtensionFilter
 import javax.swing.text.BadLocationException
 import javax.swing.text.Caret
-import javax.swing.text.Document
-import javax.swing.undo.CannotRedoException
-import javax.swing.undo.CannotUndoException
-import javax.swing.undo.UndoManager
 import java.awt.*
-import java.awt.event.ActionEvent
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import java.awt.event.MouseMotionListener
@@ -121,11 +115,6 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
 
     // Styles an JTextPane.
     private JTextComponentStyler editorStyler
-
-    // When a file has been opened, or saved this will point to that file.
-    // On save a file chooser will be opened if this is null otherwise this
-    // file will be used for saving to.
-    private File currentFile
 
     // Saved on key "pressed" and used later to get the current caret position.
     private int keyPressedCaretPos = 0
@@ -486,7 +475,7 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
 
         // Additional setup now that a component have possibly loaded config.
 
-        selectFileForEditing(this.editables.someEditable)
+        setEditedFile(this.editables.someEditable)
 
         // Toolbar
 
@@ -520,7 +509,7 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
      * @param file The file to edit.
      */
     @Override
-    void selectFileForEditing(File file) {
+    void setEditedFile(File file) {
         if (this.currentEditable != null) {
             FileDrop.remove(this.currentEditable.editorPane)
             this.currentEditable.editorPane.removeKeyListener(this)
@@ -528,6 +517,10 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
         }
 
         this.currentEditable = this.editables.getEditable(file)
+        if (this.currentEditable == null) {
+            this.currentEditable = new EditableProvider(file: file, editorStyler: this.styler)
+            this.editables.addEditable(this.currentEditable)
+        }
         this.scrollPane.setViewportView(this.currentEditable.editorPane)
 
         if (this.currentEditable != null) {
@@ -554,6 +547,21 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
 
             this.currentEditable.editorPane.setRequestFocusEnabled(true)
         }
+    }
+
+    /**
+     * Returns the currently edited file.
+     */
+    @Override
+    File getEditedFile() {
+        this.currentEditable.file
+    }
+
+    /**
+     * Convenience method to get the editor pane within the current editable.
+     */
+    private JTextPane getEditorPane() {
+        return this.currentEditable?.editorPane
     }
 
     /**
@@ -760,7 +768,7 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
                 }
             }
             else {
-                if (this.currentEditable?.editorPane?.getText()?.trim()?.length() > 0) {
+                if (this.editorPane.getText().trim().length() > 0) {
                     save()
                 }
             }
@@ -787,17 +795,7 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
      */
     @Override
     @Nullable File getCurrentFile() {
-        this.currentFile
-    }
-
-    /**
-     * Sets the current file.
-     *
-     * @param file The file to set.
-     */
-    @Override
-    void setCurrentFile(@Nullable File file) {
-        this.currentFile = file
+        this.editedFile
     }
 
     /**
@@ -805,7 +803,7 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
      */
     @Override
     @Nullable String getEditorContent() {
-        this.currentEditable?.editorPane?.text
+        this.editorPane?.text
     }
 
     /**
@@ -813,7 +811,7 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
      */
     @Override
     @Nullable String getEditorSelection() {
-        this.currentEditable?.editorPane?.selectedText
+        this.editorPane?.selectedText
     }
 
     /**
@@ -840,7 +838,7 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
             i = 0
         }
 
-        new JELine(this.editorPane, i)
+        new JELine(this.currentEditable.editorPane, i)
     }
 
     /**
@@ -990,7 +988,7 @@ class MarkdownEditor extends JFrame implements Editor, GUI, KeyListener, Configu
      */
     @Override
     void showEditorComponent() {
-        this.scrollPane.setViewportView(this.currentEditable?.editorPane)
+        this.scrollPane.setViewportView(this.editorPane)
     }
 
     /**

@@ -65,14 +65,7 @@ interface Editor extends EnvServices, MouseMotionProvider {
     /**
      * Returns the current file or null if none.
      */
-    @Nullable File getCurrentFile()
-
-    /**
-     * Sets the current file.
-     *
-     * @param file The file to set.
-     */
-    void setCurrentFile(@NotNull File file)
+    @Nullable File getEditedFile()
 
     /**
      * Returns the contents of the editorPane.
@@ -230,7 +223,7 @@ interface Editor extends EnvServices, MouseMotionProvider {
      *
      * @param file The file to edit.
      */
-    void selectFileForEditing(File file)
+    void setEditedFile(File file)
 
     /**
      * Returns the styler for the editorPane.

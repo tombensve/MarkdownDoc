@@ -34,53 +34,20 @@ class Editables {
     //
 
     /**
-     * Loads a new file creating an Editable associated with the file.
+     * Adds an editable to the editables.
      *
-     * @param file The file to load.
-     *
-     * @throws IOException on any IO failure.
+     * @param editable The editable to add.
      */
-    void load(@NotNull File file) throws IOException {
-        if (!this.editables.containsKey(file)) {
-            Editable editable = new EditableProvider(file: file, editorStyler: this.styler)
-            this.editables.put(file, editable)
-            editable.load(file)
-        }
+    void addEditable(Editable editable) {
+        this.editables.put(editable.file, editable)
     }
 
     /**
-     * Saves the specified Editable.
+     * Removes the specifed Editable from the Editables.
      *
-     * @param editable The Editable to save.
-     *
-     * @throws Exception on any IO failure.
+     * @param file The file referencing the editable to remove.
      */
-    void save(Editable editable) throws Exception {
-        if (this.editables.containsValue(editable)) {
-            editable.save()
-        }
-        else {
-            System.err.println("Tried to save unknown Editable! [${editable}]")
-        }
-    }
-
-    /**
-     * Saves the Editable belonging to the specified file.
-     *
-     * @param file The file whose Editable to save.
-     *
-     * @throws IOException on fly colliding with a cow.
-     */
-    void save(@NotNull File file) throws IOException {
-        save(this.editables.get(file))
-    }
-
-    /**
-     * Closes the specified file without saving!
-     *
-     * @param file The file to close.
-     */
-    void close(File file) {
+    void removeEditable(File file) {
         this.editables.remove(file)
     }
 

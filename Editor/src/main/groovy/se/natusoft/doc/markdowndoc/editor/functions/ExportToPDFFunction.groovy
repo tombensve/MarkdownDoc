@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -58,7 +58,6 @@ import javax.swing.border.SoftBevelBorder
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
-import java.lang.reflect.Field
 
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD
 
@@ -248,8 +247,8 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
             borderPanel.add(buttonPanel, BorderLayout.SOUTH)
 
             // Set initial values to last saved values for the specified file.
-            if (this.editor.getCurrentFile() != null) {
-                this.pdfData.loadExportData(this.editor.getCurrentFile())
+            if (this.editor.getEditedFile() != null) {
+                this.pdfData.loadExportData(this.editor.getEditedFile())
             }
 
             this.pdfMetaDataDialog.setVisible(true)
@@ -311,8 +310,8 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
             try {if (pdfStream!= null) pdfStream.close()} catch (IOException ignored) {}
         }
 
-        if (this.editor.getCurrentFile() != null) {
-            this.pdfData.saveExportData(this.editor.getCurrentFile())
+        if (this.editor.getEditedFile() != null) {
+            this.pdfData.saveExportData(this.editor.getEditedFile())
         }
 
         if (this.pdfData.openResult.getValue().equals("true")) {
