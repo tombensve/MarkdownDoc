@@ -75,7 +75,7 @@ class SelectEditableFunction implements EditorFunction {
      */
     @Override
     void perform() throws FunctionException {
-        this.popup = new EditableSelectorPopup(editor: this.editor)
+        this.popup = new EditableSelectorPopup(editor: this.editor, closer: { this.popup = null })
     }
 
     /**
@@ -117,6 +117,9 @@ class SelectEditableFunction implements EditorFunction {
      */
     @Override
     void close() {
-        this.popup?.setVisible(false)
+        if (this.popup != null) {
+            this.popup.visible = false
+            this.popup = null
+        }
     }
 }

@@ -47,6 +47,9 @@ class EditableSelectorPopup extends JFrame implements MouseListeners {
 
     Editor editor
 
+    /** Called on close. */
+    Closure closer
+
     //
     // Constructors
     //
@@ -197,7 +200,7 @@ class EditableSelectorPopup extends JFrame implements MouseListeners {
             EditableFileButton efb = e.source as EditableFileButton
             editor.editedFile = efb.file
 
-            visible = false
+            close()
         }
     }
 
@@ -220,7 +223,7 @@ class EditableSelectorPopup extends JFrame implements MouseListeners {
                             this.exitLevel = 1
                         }
                         else {
-                            visible = false
+                            close()
                         }
                     }
                 }
@@ -233,6 +236,13 @@ class EditableSelectorPopup extends JFrame implements MouseListeners {
         }
         this.mouseTime = new Date()
         this.mouseX = e.x
+    }
+
+    private void close() {
+        this.visible = false
+        if (this.closer != null) {
+            this.closer.call()
+        }
     }
 
 }
