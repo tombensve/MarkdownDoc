@@ -141,7 +141,7 @@ abstract class AbstractExportFunction implements EditorFunction {
     protected File getExportOutputFile(@NotNull String type, @NotNull String definition, @NotNull String... extFilter) {
         File selectedFile = null
         JFileChooser fileChooser = new JFileChooser()
-        fileChooser.setDialogTitle("Specify file to save " + type + " to")
+        fileChooser.setDialogTitle("Specify file to selectNewFile " + type + " to")
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG)
         if (this.editor.getEditedFile() != null) {
             Properties props = this.editor.getPersistentProps().load(fileToPropertiesName(this.editor.getEditedFile()))

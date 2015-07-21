@@ -3,10 +3,8 @@ package se.natusoft.doc.markdowndoc.editor.file
 import groovy.transform.CompileStatic
 import groovy.transform.ToString
 import groovy.transform.TypeChecked
-import net.iharder.dnd.FileDrop
 import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.api.Editable
-import se.natusoft.doc.markdowndoc.editor.api.JTextComponentStyler
 
 import javax.swing.*
 import javax.swing.event.UndoableEditEvent
@@ -32,12 +30,8 @@ class EditableProvider implements Editable {
 
     private UndoManager undoManager
 
-    //
-    // Properties
-    //
-
     /** The actual editor instance for this file. */
-    JTextPane editorPane = new JTextPane() {
+    private JTextPane editorPane = new JTextPane() {
         @Override
         Dimension getPreferredSize() {
             Dimension dim = super.getPreferredSize()
@@ -51,29 +45,28 @@ class EditableProvider implements Editable {
         }
     }
 
+    //
+    // Properties
+    //
+
     /** The currently loaded file or null if none. */
     File file
-
-    /** The styler for the file. */
-    JTextComponentStyler editorStyler
-    void setEditorStyler(JTextComponentStyler styler) {
-        this.editorStyler = styler
-        configureEditorPane()
+    void setFile(File file) throws IOException {
+        this.file = file
+        load(file)
     }
 
     /** The saved state of this editable. */
     boolean saved = false
 
     //
-    // Methods
+    // Constructors
     //
 
     /**
-     * Configures the editorPane with a StyledDocument and an undo manager.
+     * Creates a new EditableProvider instance.
      */
-    private void configureEditorPane() {
-        this.editorStyler.init(this.editorPane)
-
+    EditableProvider() {
         // Attach undo manager to document.
         Document doc = this.editorPane.getDocument()
 
@@ -90,7 +83,7 @@ class EditableProvider implements Editable {
 
         doc.addUndoableEditListener(new UndoableEditListener() {
             public void undoableEditHappened(UndoableEditEvent evt) {
-                this.undoManager.addEdit(evt.edit);
+                EditableProvider.this.undoManager.addEdit(evt.edit);
             }
         })
 
@@ -98,8 +91,8 @@ class EditableProvider implements Editable {
             public void actionPerformed(ActionEvent evt) {
                 try
                 {
-                    if (this.undoManager.canUndo()) {
-                        this.undoManager.undo()
+                    if (EditableProvider.this.undoManager.canUndo()) {
+                        EditableProvider.this.undoManager.undo()
                     }
                 }
                 catch (CannotUndoException cue) {
@@ -112,8 +105,8 @@ class EditableProvider implements Editable {
         this.editorPane.getActionMap().put("Redo", new AbstractAction("Redo") {
             public void actionPerformed(ActionEvent evt) {
                 try {
-                    if (this.undoManager.canRedo()) {
-                        this.undoManager.redo()
+                    if (EditableProvider.this.undoManager.canRedo()) {
+                        EditableProvider.this.undoManager.redo()
                     }
                 }
                 catch (CannotRedoException cre) {
@@ -124,6 +117,16 @@ class EditableProvider implements Editable {
         this.editorPane.getInputMap().put(KeyStroke.getKeyStroke(redoKey), "Redo")
     }
 
+    //
+    // Methods
+    //
+
+    /**
+     * Returns the editorPane instance.
+     */
+    JTextPane getEditorPane() {
+        this.editorPane
+    }
 
     /**
      * Loads a file and creates an editor pane. After this call getEditorPane() should be non null.
@@ -151,7 +154,7 @@ class EditableProvider implements Editable {
     /**
      * Saves the file.
      *
-     * @throws IOException on failure to save.
+     * @throws IOException on failure to selectNewFile.
      */
     @Override
     void save() throws IOException {

@@ -63,9 +63,9 @@ interface Editor extends EnvServices, MouseMotionProvider {
     int getWidth()
 
     /**
-     * Returns the current file or null if none.
+     * Returns the height of the editorPane.
      */
-    @Nullable File getEditedFile()
+    int getHeight()
 
     /**
      * Returns the contents of the editorPane.
@@ -157,7 +157,7 @@ interface Editor extends EnvServices, MouseMotionProvider {
     /**
      * Opens a new editorPane window.
      */
-    void openNewEditorWindow()
+    void createNewFile()
 
     /**
      * Copies the currently selected text.
@@ -194,27 +194,9 @@ interface Editor extends EnvServices, MouseMotionProvider {
     public void refreshStyling()
 
     /**
-     * Opens the specified file in the editorPane.
+     * Saves the current editable.
      *
-     * @param file The file to open.
-     *
-     * @throws java.io.IOException
-     */
-    void loadFile(@NotNull File file) throws IOException
-
-    /**
-     * Saves the currently edited file with the specified path.
-     *
-     * @param file The file path to save to.
-     *
-     * @throws IOException
-     */
-    void saveFileAs(@NotNull File file) throws IOException
-
-    /**
-     * Opens a file chooser for specifying file to save to.
-     *
-     * @throws IOException
+     * @throws IOException on failure to do so.
      */
     void save() throws IOException
 
@@ -223,7 +205,19 @@ interface Editor extends EnvServices, MouseMotionProvider {
      *
      * @param file The file to edit.
      */
-    void setEditedFile(File file)
+    void setEditedFile(@NotNull File file)
+
+    /**
+     * Returns the currently edited file.
+     */
+    @Nullable File getEditedFile()
+
+    /**
+     * Opens a file chooser for specifying file as a new file.
+     *
+     * @throws IOException
+     */
+    void selectNewFile() throws IOException
 
     /**
      * Returns the styler for the editorPane.

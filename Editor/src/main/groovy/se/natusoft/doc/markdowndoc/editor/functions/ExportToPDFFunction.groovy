@@ -271,7 +271,11 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
         catch (RuntimeException re) {
             re.printStackTrace(System.err)
             JOptionPane.showMessageDialog(
-                    this.editor.getGUI().getWindowFrame(), re.getMessage(), "Failed to save PDF!", JOptionPane.ERROR_MESSAGE)
+                    this.editor.getGUI().getWindowFrame(),
+                    re.getMessage(),
+                    "Failed to save PDF!",
+                    JOptionPane.ERROR_MESSAGE
+            )
         }
     }
 

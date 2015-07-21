@@ -116,15 +116,17 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
     private Closure monospacedFontConfigChanged = { @NotNull ConfigEntry ce ->
         this.monospacedFontFamily = Font.decode(ce.getValue()).getFamily()
 
-        StyledDocument doc = (StyledDocument)this.currentStylee.getDocument()
-        Style base = StyleContext.
-                getDefaultStyleContext().
-                getStyle(StyleContext.DEFAULT_STYLE)
-        doc.removeStyle("code")
-        this.codeStyle = doc.addStyle("code", base)
-        StyleConstants.setFontFamily(this.codeStyle, this.monospacedFontFamily)
-        StyleConstants.setFontSize(this.codeStyle, this.monospacedFontSize)
-        styleDocument()
+        if (this.currentStylee != null) {
+            StyledDocument doc = (StyledDocument) this.currentStylee.getDocument()
+            Style base = StyleContext.
+                    getDefaultStyleContext().
+                    getStyle(StyleContext.DEFAULT_STYLE)
+            doc.removeStyle("code")
+            this.codeStyle = doc.addStyle("code", base)
+            StyleConstants.setFontFamily(this.codeStyle, this.monospacedFontFamily)
+            StyleConstants.setFontSize(this.codeStyle, this.monospacedFontSize)
+            styleDocument()
+        }
     }
 
     // monospacedFontSize
@@ -142,15 +144,17 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
     private Closure monospacedFontSizeConfigChanged = { @NotNull ConfigEntry ce ->
         this.monospacedFontSize = Integer.valueOf(ce.getValue())
 
-        StyledDocument doc = (StyledDocument)this.currentStylee.getDocument()
-        Style base = StyleContext.
-                getDefaultStyleContext().
-                getStyle(StyleContext.DEFAULT_STYLE)
-        doc.removeStyle("code")
-        this.codeStyle = doc.addStyle("code", base)
-        StyleConstants.setFontFamily(this.codeStyle, this.monospacedFontFamily)
-        StyleConstants.setFontSize(this.codeStyle, this.monospacedFontSize)
-        styleDocument()
+        if (this.currentStylee != null) {
+            StyledDocument doc = (StyledDocument) this.currentStylee.getDocument()
+            Style base = StyleContext.
+                    getDefaultStyleContext().
+                    getStyle(StyleContext.DEFAULT_STYLE)
+            doc.removeStyle("code")
+            this.codeStyle = doc.addStyle("code", base)
+            StyleConstants.setFontFamily(this.codeStyle, this.monospacedFontFamily)
+            StyleConstants.setFontSize(this.codeStyle, this.monospacedFontSize)
+            styleDocument()
+        }
     }
 
     // markdownFormatWhileEditing
@@ -224,7 +228,7 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
      * @param stylee The stylee to initialize.
      */
     @Override
-    void init(@NotNull JTextPane stylee) {
+    void initDocumentModel(@NotNull JTextPane stylee) {
         StyledDocument doc = new DefaultStyledDocument() {
             void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
                 super.insertString(offset, str, a)
@@ -335,7 +339,7 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
      */
     @Override
     void styleDocument() {
-        if (isEnabled()) {
+        if (isEnabled() && this.currentStylee != null) {
             try {
                 StyledDocument doc = (StyledDocument) this.currentStylee.getDocument()
 
@@ -356,7 +360,7 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
      */
     @Override
     void styleCurrentParagraph() {
-        if (isEnabled()) {
+        if (isEnabled() && this.currentStylee != null) {
             try {
                 StyledDocument doc = (StyledDocument) this.currentStylee.getDocument()
 
@@ -374,14 +378,15 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
     /**
      * Styles part of the document specified by the paragraph bounds.
      *
+     * @param stylee The component to style.
      * @param bounds The bounds for styling.
      * @param text The text of the document to style.
      */
-    private void intStyleDocument(@NotNull JTextPane textComponentToStyle, @NotNull ParagraphBounds bounds, @Nullable String text) {
+    private void intStyleDocument(@NotNull JTextPane stylee, @NotNull ParagraphBounds bounds, @Nullable String text) {
         // Speedup by disabling component while styling.
-        textComponentToStyle.setEnabled(false)
+        stylee.setEnabled(false)
 
-        StyledDocument doc = (StyledDocument)textComponentToStyle.getDocument()
+        StyledDocument doc = (StyledDocument)stylee.getDocument()
         Style base = StyleContext.
                 getDefaultStyleContext().
                 getStyle(StyleContext.DEFAULT_STYLE)
@@ -517,7 +522,7 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
             ble.printStackTrace(System.err)
         }
 
-        textComponentToStyle.setEnabled(true)
+        stylee.setEnabled(true)
     }
 
 

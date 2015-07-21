@@ -85,7 +85,7 @@ class FileWindowProps {
     /**
      * Saves the specified bounds in the properties.
      *
-     * @param bounds The bounds to save.
+     * @param bounds The bounds to selectNewFile.
      */
     void setBounds(@NotNull Rectangle bounds) {
         this.props.setProperty(X, "" + (int)bounds.getX())
@@ -109,7 +109,7 @@ class FileWindowProps {
     /**
      * Saves the properties.
      *
-     * @param editor The editorPane to save for.
+     * @param editor The editorPane to selectNewFile for.
      */
     void saveBounds(@NotNull Editor  editor) {
         editor.persistentProps.save("default_bounds", this.props)

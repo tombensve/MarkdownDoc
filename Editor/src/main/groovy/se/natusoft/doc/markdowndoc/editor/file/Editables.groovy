@@ -3,10 +3,8 @@ package se.natusoft.doc.markdowndoc.editor.file
 import groovy.transform.CompileStatic
 import groovy.transform.ToString
 import groovy.transform.TypeChecked
-import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.api.Editable
-import se.natusoft.doc.markdowndoc.editor.api.JTextComponentStyler
 
 /**
  * This handles all Editables.
@@ -15,19 +13,18 @@ import se.natusoft.doc.markdowndoc.editor.api.JTextComponentStyler
 @TypeChecked
 @ToString(includeNames = true)
 class Editables {
+
+    /**
+     * A singleton instance.
+     */
+    static Editables inst = new Editables()
+
     //
     // Private Members
     //
 
     /** The current loaded editables. */
     private Map<File, Editable> editables = new HashMap<>()
-
-    //
-    // Properties
-    //
-
-    /** The styler instance. */
-    @NotNull /* userOf */ JTextComponentStyler styler
 
     //
     // Methods
@@ -64,6 +61,13 @@ class Editables {
         if (this.editables.isEmpty()) {
             return null
         }
-        this.editables.keySet().first()
+        files.first()
+    }
+
+    /**
+     * Returns all files.
+     */
+    Set<File> getFiles() {
+        this.editables.keySet()
     }
 }

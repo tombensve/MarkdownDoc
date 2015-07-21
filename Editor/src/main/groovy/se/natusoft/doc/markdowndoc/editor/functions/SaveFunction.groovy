@@ -58,7 +58,7 @@ import java.awt.event.ActionListener
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD
 
 /**
- * Provides a save function.
+ * Provides a selectNewFile function.
  */
 @CompileStatic
 @TypeChecked
@@ -81,7 +81,7 @@ class SaveFunction implements EditorFunction, Configurable {
     //
 
     private static final KeyConfigEntry keyboardShortcutConfig =
-            new KeyConfigEntry("editor.function.save.keyboard.shortcut", "Save keyboard shortcut",
+            new KeyConfigEntry("editor.function.selectNewFile.keyboard.shortcut", "Save keyboard shortcut",
                     new KeyboardKey("Ctrl+S"), CONFIG_GROUP_KEYBOARD)
 
     private Closure keyboardShortcutConfigChanged = { ConfigEntry ce ->
@@ -158,18 +158,13 @@ class SaveFunction implements EditorFunction, Configurable {
     @Override
     void perform() throws FunctionException {
         try {
-            if (this.editor.getEditedFile() != null) {
-                this.editor.saveFileAs(this.editor.getEditedFile())
-            }
-            else {
-                this.editor.save()
-            }
+            this.editor.save()
             showSavedInfo()
             this.editor.requestEditorFocus()
         }
         catch (IOException ioe) {
             JOptionPane.showMessageDialog(
-                    this.editor.getGUI().getWindowFrame(), ioe.getMessage(), "Failed to save!", JOptionPane.ERROR_MESSAGE)
+                    this.editor.getGUI().getWindowFrame(), ioe.getMessage(), "Failed to selectNewFile!", JOptionPane.ERROR_MESSAGE)
 
         }
     }

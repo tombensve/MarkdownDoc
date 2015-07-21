@@ -55,7 +55,7 @@ interface JTextComponentStyler {
      *
      * @param stylee The component to initialize.
      */
-    void init(@NotNull JTextPane stylee)
+    void initDocumentModel(@NotNull JTextPane stylee)
 
     /**
      * Sets the current component to style.

@@ -1,5 +1,7 @@
 package se.natusoft.doc.markdowndoc.editor.api
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 
@@ -8,17 +10,14 @@ import javax.swing.JTextPane
 /**
  * This represents an object that is editable. Basically a JTextPane and a File.
  */
+@CompileStatic
+@TypeChecked
 interface Editable extends MouseMotionProvider {
 
     /**
      * A JTextPane instance that can be put in the editor main editing view for editing.
      */
     @Nullable JTextPane getEditorPane()
-
-    /**
-     * Returns the styler for the document.
-     */
-    @Nullable JTextComponentStyler getEditorStyler()
 
     /**
      * Sets saved state to true or false.
@@ -55,7 +54,7 @@ interface Editable extends MouseMotionProvider {
     /**
      * Saves the file.
      *
-     * @throws IOException on failure to save.
+     * @throws IOException on failure to selectNewFile.
      */
     void save() throws IOException
 

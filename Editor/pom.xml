@@ -102,7 +102,7 @@
 
                             <archive>
                                 <manifest>
-                                    <mainClass>se.natusoft.doc.markdowndoc.editor.MarkdownEditor</mainClass>
+                                    <mainClass>se.natusoft.doc.markdowndoc.editor.MarkdownDocEditor</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>

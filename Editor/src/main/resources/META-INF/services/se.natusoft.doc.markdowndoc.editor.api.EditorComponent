@@ -21,6 +21,7 @@ se.natusoft.doc.markdowndoc.editor.functions.ExportToHTMLFunction
 se.natusoft.doc.markdowndoc.editor.functions.SettingsFunction
 se.natusoft.doc.markdowndoc.editor.functions.RestyleDocumentFunction
 se.natusoft.doc.markdowndoc.editor.functions.PasteRestyleFunction
+se.natusoft.doc.markdowndoc.editor.functions.SelectEditableFunction
 
 #
 # Filters (implementing EditorInputFilter).
