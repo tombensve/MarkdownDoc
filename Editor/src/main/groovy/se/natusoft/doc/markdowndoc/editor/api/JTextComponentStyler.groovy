@@ -42,6 +42,7 @@ import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 
 import javax.swing.*
+import javax.swing.text.StyledDocument
 
 /**
  * General API for edit time styling a JTextComponent.
@@ -51,23 +52,14 @@ import javax.swing.*
 interface JTextComponentStyler {
 
     /**
-     * Initializes the a new JTextPane with a configured StyledDocument.
-     *
-     * @param stylee The component to initialize.
+     * Creates a new styled and initialized document model.
      */
-    void initDocumentModel(@NotNull JTextPane stylee)
-
-    /**
-     * Sets the current component to style.
-     *
-     * @param stylee The stylee to set.
-     */
-    void setCurrentStylee(@NotNull JTextPane stylee)
+    @NotNull StyledDocument createDocumentModel()
 
     /**
      * Returns the currently styled component.
      */
-    @NotNull JTextPane getCurrentStylee()
+    @NotNull JTextPane getStylee()
 
     /**
      * Enables styling (on by default)

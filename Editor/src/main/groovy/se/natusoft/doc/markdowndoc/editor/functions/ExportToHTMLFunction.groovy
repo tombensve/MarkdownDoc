@@ -239,15 +239,15 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
             borderPanel.add(buttonPanel, BorderLayout.SOUTH)
 
             // Set initial values to last saved values for the specified file.
-            if (this.editor.getEditedFile() != null) {
-                this.htmlData.loadExportData(this.editor.getEditedFile())
+            if (this.editor.editable.file != null) {
+                this.htmlData.loadExportData(this.editor.editable.file)
             }
 
             this.htmlMetaDataDialog.setVisible(true)
             this.htmlMetaDataDialog.setSize(this.htmlMetaDataDialog.getPreferredSize())
 
-            Rectangle mainBounds = this.editor.getGUI().getWindowFrame().getBounds()
-            int x = (int)mainBounds.x + (int)(mainBounds.width / 2) - (int)(this.htmlMetaDataDialog.getWidth() / 2)
+            Rectangle mainBounds = this.editor.getGUI().windowFrame.bounds
+            int x = (int)mainBounds.x + (int)(mainBounds.width / 2) - (int)(this.htmlMetaDataDialog.width / 2)
             int y = (int)mainBounds.y + 70
             this.htmlMetaDataDialog.setLocation(x, y)
 
@@ -297,8 +297,8 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
             try {if (htmlStream!= null) htmlStream.close()} catch (IOException ignored) {}
         }
 
-        if (this.editor.getEditedFile() != null) {
-            this.htmlData.saveExportData(this.editor.getEditedFile())
+        if (this.editor?.editable?.file != null) {
+            this.htmlData.saveExportData(this.editor.editable.file)
         }
 
         if (this.htmlData.openResult.getValue().equals("true")) {

@@ -82,21 +82,16 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
     // Static members
     //
 
-    // Holds all configurations.
-    private static ConfigProvider configs = new ConfigProviderHolder()
-
-    // Manages persistent properties.
-    private static PersistentProps persistentPropertiesProvider = new PersistentPropertiesProvider()
-
     // This is for styling the editorPane while editing.
-    protected static ServiceLoader<JTextComponentStyler> stylerLoader = ServiceLoader.load(JTextComponentStyler.class)
-
-    // All Configurable instances of components or filters are stored in this.
-    protected static List<Configurable> configurables = new LinkedList<>()
+    protected static ServiceLoader<JTextComponentStylerFactory> stylerFactoryLoader =
+            ServiceLoader.load(JTextComponentStylerFactory.class)
 
     //
     // Private Members
     //
+
+    /** The currently edited editable. */
+    private Editable editable
 
     protected ToolBar toolBar
 
@@ -114,8 +109,6 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
 
     // This sits around the editorPane.
     private JScrollPane scrollPane
-
-    private Editable currentEditable
 
     // Saved on key "pressed" and used later to get the current caret position.
     private int keyPressedCaretPos = 0
@@ -141,12 +134,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
 
     protected List<MouseMotionListener> mouseMotionListeners = new LinkedList<>()
 
-    //
-    // Properties
-    //
-
-    // Styles an JTextPane.
-    JTextComponentStyler editorStyler
+    protected JTextComponentStylerFactory editorStylerFactory
 
     //
     // Editor Configs
@@ -230,24 +218,24 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
     //
 
     private Closure fontConfigChanged = { @NotNull ConfigEntry ce ->
-        this.currentEditable?.editorPane?.setFont(Font.decode(ce.getValue()).
+        this.editable?.editorPane?.setFont(Font.decode(ce.getValue()).
                 deriveFont(Float.valueOf(fontSizeConfig.getValue())))
     }
 
     private Closure fontSizeConfigChanged = { @NotNull ConfigEntry ce ->
-        this.currentEditable?.editorPane?.setFont(Font.decode(fontConfig.getValue()).deriveFont(Float.valueOf(ce.getValue())))
+        this.editable?.editorPane?.setFont(Font.decode(fontConfig.getValue()).deriveFont(Float.valueOf(ce.getValue())))
     }
 
     private Closure backgroundColorConfigChanged = { @NotNull ConfigEntry ce ->
-        this.currentEditable?.editorPane?.setBackground(new ConfigColor(ce))
+        this.editable?.editorPane?.setBackground(new ConfigColor(ce))
     }
 
     private Closure foregroundColorConfigChanged = { @NotNull ConfigEntry ce ->
-        this.currentEditable?.editorPane?.setForeground(new ConfigColor(ce))
+        this.editable?.editorPane?.setForeground(new ConfigColor(ce))
     }
 
     private Closure caretColorConfigChanged = { @NotNull ConfigEntry ce ->
-        this.currentEditable?.editorPane?.setCaretColor(new ConfigColor(ce))
+        this.editable?.editorPane?.setCaretColor(new ConfigColor(ce))
     }
 
     private Closure lookAndFeelConfigChanged = { @NotNull ConfigEntry ce ->
@@ -265,8 +253,13 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
             this.toolBar.detach(this)
         }
         try {
-            this.toolBar = (ToolBar)Class.forName(ce.getValue().
-                    replace("se.natusoft.doc.markdowndoc.editor","se.natusoft.doc.markdowndoc.editor.gui")).newInstance()
+            String cval = ce.getValue()
+            // translate old config to new since some ServiceLoader loaded components have moved package.
+            if (cval.startsWith("se.natusoft.doc.markdowndoc.editor") &&
+                    !cval.startsWith("se.natusoft.doc.markdowndoc.editor.gui")) {
+                cval = cval.replace("se.natusoft.doc.markdowndoc.editor","se.natusoft.doc.markdowndoc.editor.gui")
+            }
+            this.toolBar = (ToolBar)Class.forName(cval).newInstance()
             functions.each { EditorFunction function ->
                 // It is OK to not have a tool bar button!
                 if (function.getGroup() != null && function.getToolBarButton() != null) {
@@ -285,38 +278,38 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
     }
 
     private Closure topMarginConfigChanged = { @NotNull ConfigEntry ce ->
-        if (this.currentEditable != null) {
-            Insets margins = this.currentEditable.editorPane.getMargin()
+        if (this.editable != null) {
+            Insets margins = this.editable.editorPane.getMargin()
             margins.top = ((IntegerConfigEntry) ce).getIntValue()
-            this.currentEditable.editorPane.setMargin(margins)
-            this.currentEditable.editorPane.revalidate()
+            this.editable.editorPane.setMargin(margins)
+            this.editable.editorPane.revalidate()
         }
     }
 
     private Closure bottomMarginConfigChanged = { @NotNull ConfigEntry ce ->
-        if (this.currentEditable != null) {
-            Insets margins = this.currentEditable.editorPane.margin
+        if (this.editable != null) {
+            Insets margins = this.editable.editorPane.margin
             margins.bottom = ((IntegerConfigEntry) ce).intValue
-            this.currentEditable.editorPane.setMargin(margins)
-            this.currentEditable.editorPane.revalidate()
+            this.editable.editorPane.setMargin(margins)
+            this.editable.editorPane.revalidate()
         }
     }
 
     private Closure leftMarginConfigChanged = { @NotNull ConfigEntry ce ->
-        if (this.currentEditable != null) {
-            Insets margins = this.currentEditable.editorPane.getMargin()
+        if (this.editable != null) {
+            Insets margins = this.editable.editorPane.getMargin()
             margins.left = ((IntegerConfigEntry) ce).getIntValue()
-            this.currentEditable.editorPane.setMargin(margins)
-            this.currentEditable.editorPane.revalidate()
+            this.editable.editorPane.setMargin(margins)
+            this.editable.editorPane.revalidate()
         }
     }
 
     private Closure rightMarginConfigChanged = { @NotNull ConfigEntry ce ->
-        if (this.currentEditable != null) {
-            Insets margins = this.currentEditable.editorPane.getMargin()
+        if (this.editable != null) {
+            Insets margins = this.editable.editorPane.getMargin()
             margins.right = ((IntegerConfigEntry) ce).getIntValue()
-            this.currentEditable.editorPane.setMargin(margins)
-            this.currentEditable.editorPane.revalidate()
+            this.editable.editorPane.setMargin(margins)
+            this.editable.editorPane.revalidate()
         }
     }
 
@@ -326,7 +319,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(@NotNull ConfigProvider configProvider) {
+    void registerConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.registerConfig(fontConfig, this.fontConfigChanged)
         configProvider.registerConfig(fontSizeConfig, this.fontSizeConfigChanged)
         configProvider.registerConfig(backgroundColorConfig, this.backgroundColorConfigChanged)
@@ -346,7 +339,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.unregisterConfig(fontConfig, this.fontConfigChanged)
         configProvider.unregisterConfig(fontSizeConfig, this.fontSizeConfigChanged)
         configProvider.unregisterConfig(backgroundColorConfig, this.backgroundColorConfigChanged)
@@ -367,11 +360,13 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
     /**
      * Creates a new MarkdownEditor instance.
      */
-    MarkdownDocEditor() {}
+    MarkdownDocEditor(JTextComponentStylerFactory stylerFactory) {
+        this.editorStylerFactory = stylerFactory
+    }
 
     protected void closeWindow() {
-        ConfigProvider cp = getConfigProvider()
-        configurables.each {Configurable configurable ->
+        ConfigProvider cp = Services.configs
+        Services.configurables.each {Configurable configurable ->
             configurable.unregisterConfigs(cp)
         }
         setVisible(false)
@@ -384,14 +379,14 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
     void initGUI() {
         addWindowListener(new WindowListenerAdapter() {
             @Override
-            void windowClosing(WindowEvent ignored) {
+            void windowClosing(final WindowEvent ignored) {
                 closeWindow()
             }
         })
 
         // Register configs
-        registerConfigs(getConfigProvider())
-        configurables.add(this)
+        registerConfigs(Services.configs)
+        Services.configurables.add(this)
 
         // Set Look and Feel
 
@@ -420,8 +415,8 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
         this.editorPanel.setLayout(new BorderLayout())
         this.editorPanel.setAutoscrolls(true)
 
-        if (this.currentEditable != null) {
-            this.mouseMotionProviders.add(this.currentEditable)
+        if (this.editable != null) {
+            this.mouseMotionProviders.add(this.editable)
         }
 
         // This will center the cursor vertically in the window. I found that it got confusing
@@ -437,7 +432,6 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
         // Setup active view
 
         this.scrollPane = new JScrollPane()
-        //scrollPane.setAutoscrolls(true)
         this.scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER)
 
         this.scrollPane.setAutoscrolls(true)
@@ -451,11 +445,10 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
         List<DelayedInitializer> delayedInitializers = new LinkedList<>()
 
         componentLoader.each { EditorComponent component ->
-            println "component: ${component}"
 
             if (component instanceof Configurable) {
-                (component as Configurable).registerConfigs(getConfigProvider())
-                configurables.add(component as Configurable)
+                (component as Configurable).registerConfigs(Services.configs)
+                Services.configurables.add(component as Configurable)
             }
 
             component.setEditor(this)
@@ -476,7 +469,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
 
         }
 
-        delayedInitializers.each { DelayedInitializer delayedInitializer -> delayedInitializer.init() }
+        delayedInitializers.each { final DelayedInitializer delayedInitializer -> delayedInitializer.init() }
 
         // Additional setup now that a component have possibly loaded config.
 
@@ -511,7 +504,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
      * Convenience method to get the editor pane within the current editable.
      */
     private JTextPane getEditorPane() {
-        return this.currentEditable?.editorPane
+        return this.editable?.editorPane
     }
 
     /**
@@ -536,14 +529,6 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
     synchronized void removeMouseMotionListener(@NotNull MouseMotionListener listener) {
         this.mouseMotionListeners.remove(listener)
         this.mouseMotionProviders.each { MouseMotionProvider mmp -> mmp?.removeMouseMotionListener(listener) }
-    }
-
-    /**
-     * Returns the persistent properties provider.
-     */
-    @Override
-    @NotNull PersistentProps getPersistentProps() {
-        persistentPropertiesProvider
     }
 
     /**
@@ -615,15 +600,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
      */
     @Override
     @NotNull JTextComponentStyler getStyler() {
-        this.editorStyler
-    }
-
-    /**
-     * Returns the config API.
-     */
-    @SuppressWarnings("UnnecessaryQualifiedReference")
-    @NotNull ConfigProvider getConfigProvider() {
-        MarkdownDocEditor.configs
+        this.editable.styler
     }
 
     // KeyListener Implementation.
@@ -650,7 +627,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
                 keyCode != KeyEvent.VK_CONTROL &&
                 keyCode != KeyEvent.VK_SHIFT
         ) {
-            this.keyPressedCaretPos = this.currentEditable?.editorPane?.getCaretPosition()
+            this.keyPressedCaretPos = this.editable?.editorPane?.getCaretPosition()
 
             KeyboardKey keyboardKey = new KeyboardKey(e)
 
@@ -712,12 +689,12 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
      */
     private void dropFile(@NotNull File file)  {
         try {
-            if (!this.currentEditable?.saved) {
-                if (this.currentEditable.file == null) {
+            if (!this.editable?.saved) {
+                if (this.editable.file == null) {
                     selectNewFile()
                 }
                 else {
-                    this.currentEditable.save()
+                    this.editable.save()
                 }
             }
             else {
@@ -725,7 +702,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
                     selectNewFile()
                 }
             }
-            setEditedFile(file)
+            setEditable(Editables.inst.getEditable(file))
         }
         catch (IOException ioe) {
             JOptionPane.showMessageDialog(
@@ -783,7 +760,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
             i = 0
         }
 
-        new JELine(this.currentEditable.editorPane, i)
+        new JELine(this.editable.editorPane, i)
     }
 
     /**
@@ -803,10 +780,10 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
      */
     @Override
     void insertText(@NotNull String text) {
-        this.editorStyler.disable()
-        this.editorPane.replaceSelection(text)
-        this.editorStyler.enable()
-        this.editorStyler.styleCurrentParagraph()
+        this.editable.styler.disable()
+        this.editable.editorPane.replaceSelection(text)
+        this.editable.styler.enable()
+        this.editable.styler.styleCurrentParagraph()
     }
 
     /**
@@ -979,27 +956,25 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
     }
 
     /**
-     * Selects the file to edit in the editor view.
-     * <p/>
-     * If the file is a new file it will be loaded and added to the open editables.
+     * Selects the editable to edit in the editor view.
      *
      * @param file The file to edit.
      */
     @Override
-    void setEditedFile(@NotNull final File file) {
-        if (this.currentEditable != null) {
-            FileDrop.remove(this.currentEditable.editorPane)
-            this.currentEditable.editorPane.removeKeyListener(this)
-            this.mouseMotionProviders.remove(this.currentEditable)
+    void setEditable(@NotNull final Editable editable) {
+        if (this.editable != null) {
+            FileDrop.remove(this.editable.editorPane)
+            this.editable.editorPane.removeKeyListener(this)
+            this.mouseMotionProviders.remove(this.editable)
             this.mouseMotionListeners.each { final MouseMotionListener listener ->
-                this.currentEditable.removeMouseMotionListener(listener)
+                this.editable.removeMouseMotionListener(listener)
             }
         }
 
-        this.currentEditable = openFile(file, this.editorStyler)
-        this.scrollPane.setViewportView(this.currentEditable.editorPane)
+        this.editable = editable
+        this.scrollPane.viewportView = this.editable.editorPane
 
-        this.currentEditable.editorPane.addKeyListener(this)
+        this.editable.editorPane.addKeyListener(this)
 
         final Insets margins = new Insets(
                 topMargin.getIntValue(),
@@ -1007,10 +982,10 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
                 bottomMargin.getIntValue(),
                 rightMargin.getIntValue()
         )
-        this.currentEditable.editorPane.setMargin(margins)
+        this.editable.editorPane.setMargin(margins)
 
         //noinspection GroovyResultOfObjectAllocationIgnored
-        new FileDrop(this.currentEditable.editorPane, new  FileDrop.Listener() {
+        new FileDrop(this.editable.editorPane, new  FileDrop.Listener() {
             void filesDropped(final File[] files) {
                 if (files.length >= 1) {
                     dropFile(files[0])
@@ -1018,22 +993,20 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
             }
         })
 
-        this.mouseMotionProviders.add(this.currentEditable)
+        this.mouseMotionProviders.add(this.editable)
         this.mouseMotionListeners.each { final MouseMotionListener listener ->
-            this.currentEditable.addMouseMotionListener(listener)
+            this.editable.addMouseMotionListener(listener)
         }
 
-        this.styler.currentStylee = this.currentEditable.editorPane
+        Services.configs.refreshConfigs()
 
-        this.currentEditable.editorPane.setRequestFocusEnabled(true)
+        this.editable.styler.styleDocument()
+
+        this.editable.editorPane.setRequestFocusEnabled(true)
     }
 
-    /**
-     * Returns the currently edited file.
-     */
-    @Override
-    File getEditedFile() {
-        this.currentEditable.file
+    Editable getEditable() {
+        this.editable
     }
 
     /**
@@ -1043,7 +1016,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
      */
     @Override
     void save() throws IOException {
-        this.currentEditable.save()
+        this.editable.save()
     }
 
     /**
@@ -1059,7 +1032,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
         fileChooser.setFileFilter(filter)
         int returnVal = fileChooser.showSaveDialog(getGUI().getWindowFrame())
         if(returnVal == JFileChooser.APPROVE_OPTION) {
-            setEditedFile(fileChooser.getSelectedFile())
+            setEditable(openFile(fileChooser.getSelectedFile(), this.editorStylerFactory))
         }
     }
 
@@ -1101,42 +1074,32 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
     // Startup
     //
 
-    // This is incremented for each editorPane window opened and decreased for each closed.
-    // When 0 is reached again the JVM will exit.
-    private static int instanceCount = 0
-
     /**
-     * Opens one editorPane window with the specified file loaded.
-     *
-     * @param file The file to load.
+     * Opens one editorPane window. In this version there should only be one. You can now switch between
+     * multiple files within the same editor instance.
      *
      * @throws IOException
      */
-    static MarkdownDocEditor openEditor(final JTextComponentStyler styler) throws IOException {
-        ++MarkdownDocEditor.instanceCount
+    static MarkdownDocEditor openEditor(final JTextComponentStylerFactory stylerFactory) throws IOException {
 
-        final MarkdownDocEditor me = new MarkdownDocEditor() {
+        final MarkdownDocEditor mde = new MarkdownDocEditor(stylerFactory) {
             @Override
             void editorClosed() {
                 setVisible(false)
-                --MarkdownDocEditor.instanceCount
-                if (MarkdownDocEditor.instanceCount == 0) {
-                    System.exit(0)
-                }
-
+                System.exit(0)
             }
 
         }
-        me.editorStyler = styler
-        me.initGUI()
+        mde.initGUI()
 
-        enableOSXFullscreenIfOnOSX(me)
+        enableOSXFullscreenIfOnOSX(mde)
 
-        me.editedFile = Editables.inst.someEditable
-        me.visible = true
-        me.editorPane.requestFocus()
+        mde.editable = Editables.inst.someEditable
+        mde.visible = true
+        Services.configs.refreshConfigs()
+        mde.editorPane.requestFocus()
 
-        me
+        mde
     }
 
     /**
@@ -1149,11 +1112,10 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
      *
      * @return An Editable instance representing the file.
      */
-    @NotNull static Editable openFile(@NotNull final File file, final JTextComponentStyler styler) {
+    @NotNull static Editable openFile(@NotNull final File file, final JTextComponentStylerFactory stylerFactory) {
         Editable editable = Editables.inst.getEditable(file)
         if (editable == null) {
-            editable = new EditableProvider(file: file)
-            styler.initDocumentModel(editable.editorPane)
+            editable = new EditableProvider(file, stylerFactory)
             Editables.inst.addEditable(editable)
         }
         editable
@@ -1165,10 +1127,10 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
      * @param dir The directory to scan.
      * @param styler A styler to initialize the document model with.
      */
-    private static void loadDir(@NotNull final File dir, final JTextComponentStyler styler) {
+    private static void loadDir(@NotNull final File dir, final JTextComponentStylerFactory stylerFactory) {
         dir.eachFileRecurse(FileType.FILES) { final File file ->
             if (file.name.endsWith(".md") || file.name.endsWith(".markdown")) {
-                openFile(file, styler)
+                openFile(file, stylerFactory)
             }
         }
     }
@@ -1180,31 +1142,29 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
      */
     private static void startup(final String... args) {
         try {
-            final JTextComponentStyler editorStyler = stylerLoader.iterator().next()
-            if (editorStyler == null) {
+            final JTextComponentStylerFactory editorStylerFactory = stylerFactoryLoader.iterator().next()
+            if (editorStylerFactory == null) {
                 throw new RuntimeException("No META-INF/services/se.natusoft.doc.markdowndoc.editorPane.api." +
-                        "JTextComponentStyler file pointing out an implementation to use have been provided!")
-            }
-
-            //this.editorStyler.initDocumentModel(this.editorPane)
-            if (editorStyler instanceof Configurable) {
-                (editorStyler as Configurable).registerConfigs(MarkdownDocEditor.configs)
-                configurables.add(editorStyler as Configurable)
+                        "JTextComponentStylerFactory file pointing out an implementation to use have been provided!")
             }
 
             if (args.length > 0) {
                 args.each { final String arg ->
                     final File argFile = new File(arg)
-                    if (argFile.directory) {
-                        loadDir(argFile, editorStyler)
+                    if (argFile.exists()) {
+                        if (argFile.directory) {
+                            loadDir(argFile, editorStylerFactory)
+                        } else {
+                            openFile(argFile, editorStylerFactory)
+                        }
                     }
                     else {
-                        openFile(argFile, editorStyler)
+                        throw new IOException("File: '${argFile}' does not exist!")
                     }
                 }
             }
 
-            MarkdownDocEditor me = openEditor(editorStyler)
+            openEditor(editorStylerFactory)
 
 
         } catch (IOException ioe) {

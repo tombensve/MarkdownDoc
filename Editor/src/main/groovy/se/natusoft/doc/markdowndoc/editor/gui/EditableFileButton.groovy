@@ -2,6 +2,7 @@ package se.natusoft.doc.markdowndoc.editor.gui
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import se.natusoft.doc.markdowndoc.editor.api.Editable
 
 import javax.swing.*
 import java.awt.*
@@ -25,8 +26,8 @@ class EditableFileButton extends JButton implements MouseListeners {
     // Properties
     //
 
-    /** The file this button represents. */
-    File file
+    /** The editable this button represents. */
+    Editable editable
 
     //
     // Constructors
@@ -42,7 +43,7 @@ class EditableFileButton extends JButton implements MouseListeners {
 
     @Override
     String getText() {
-        return this.file?.name
+        return this.editable?.file?.name
     }
 
     /**
@@ -50,14 +51,16 @@ class EditableFileButton extends JButton implements MouseListeners {
      * @param g
      */
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(final Graphics g) {
         if (this.paintButton) {
             setForeground(Color.BLACK)
             super.paintComponent(g)
         }
         else {
             g.setColor(Color.WHITE)
-            g.drawString(file.name, ((width / 2) - (getFontMetrics(font).stringWidth(file.name) / 2)) as int,
+            g.drawString(
+                    this.editable.file.name, ((width / 2) -
+                    (getFontMetrics(font).stringWidth(this.editable.file.name) / 2)) as int,
                     ((height / 2) + font.size / 2) - 2 as int)
         }
     }
@@ -66,7 +69,7 @@ class EditableFileButton extends JButton implements MouseListeners {
      * Invoked when the mouse enters a component.
      */
     @Override
-    void mouseEntered(MouseEvent e) {
+    void mouseEntered(final MouseEvent ignored) {
         this.paintButton = true
         repaint()
 
@@ -76,24 +79,9 @@ class EditableFileButton extends JButton implements MouseListeners {
      * Invoked when the mouse exits a component.
      */
     @Override
-    void mouseExited(MouseEvent e) {
+    void mouseExited(final MouseEvent ignored) {
         this.paintButton = false
         repaint()
-    }
-
-    // For testing.
-    static void main(String... args) throws Exception {
-        JFrame jFrame = new JFrame()
-        jFrame.setLayout(new BorderLayout())
-        JPanel panel = new JPanel()
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS))
-        panel.add(new PathLabel(text: "/Users/tommy/Development/projects/Tools/MDD-Dev"))
-        panel.add(new EditableFileButton(file: new File("/Users/tommy/lee.tar.gz")))
-        jFrame.contentPane.add(new Margin(margin: 20), BorderLayout.WEST)
-        jFrame.contentPane.add(new Margin(margin: 20), BorderLayout.EAST)
-        jFrame.contentPane.add(panel, BorderLayout.CENTER)
-        jFrame.pack()
-        jFrame.setVisible(true)
     }
 
 }

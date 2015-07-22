@@ -247,8 +247,8 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
             borderPanel.add(buttonPanel, BorderLayout.SOUTH)
 
             // Set initial values to last saved values for the specified file.
-            if (this.editor.getEditedFile() != null) {
-                this.pdfData.loadExportData(this.editor.getEditedFile())
+            if (this.editor.editable.file != null) {
+                this.pdfData.loadExportData(this.editor.editable.file)
             }
 
             this.pdfMetaDataDialog.setVisible(true)
@@ -314,8 +314,8 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
             try {if (pdfStream!= null) pdfStream.close()} catch (IOException ignored) {}
         }
 
-        if (this.editor.getEditedFile() != null) {
-            this.pdfData.saveExportData(this.editor.getEditedFile())
+        if (this.editor?.editable?.file != null) {
+            this.pdfData.saveExportData(this.editor.editable.file)
         }
 
         if (this.pdfData.openResult.getValue().equals("true")) {

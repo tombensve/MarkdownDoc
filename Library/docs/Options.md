@@ -12,7 +12,7 @@ Note that values of __Boolean__ type should have a value of either "true" or "fa
 
 ## Common options
 
-<div class="options">
+<!-- @Div("options") -->
 
 ### generator (R)
 
@@ -151,7 +151,7 @@ This will generate one first page with a title, version, author, and copyright. 
 
 Shows help.
 
-</div>
+<!-- @EndDiv -->
 
 ### Comment block annotation setting of options
 
@@ -187,7 +187,7 @@ The following annotations options are available:
 
 Put this comment block at the top of the document! The optoins provided this way will not have an effect until the comment block have been processed by the generator, and the annotations found. Thereby it is also theoretically possible to change options further down the document. This should be seen as a side effect rather than a feature!!
 
-<div class="options">
+<!-- @Div("options") -->
 
 ## HTMLGenerator options
 
@@ -231,5 +231,5 @@ The path file links should be relative to.
 Shows help.
 
 
-</div>
+<!-- @EndDiv -->
 

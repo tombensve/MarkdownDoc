@@ -65,7 +65,7 @@ class SelectEditableFunction implements EditorFunction {
      */
     @Override
     KeyboardKey getKeyboardShortcut() {
-        null
+        new KeyboardKey("⌘+W")
     }
 
     /**
@@ -84,7 +84,7 @@ class SelectEditableFunction implements EditorFunction {
      * @param editor The editorPane to set.
      */
     @Override
-    void setEditor(@NotNull Editor editor) {
+    void setEditor(@NotNull final Editor editor) {
         this.editor = editor
 
         this.mouseMotionListener = new MouseMotionListener() {
@@ -103,9 +103,9 @@ class SelectEditableFunction implements EditorFunction {
      * Invoked when the mouse cursor has been moved onto a component
      * but no buttons have been pushed.
      */
-    void mouseMovedHandler(MouseEvent e) {
+    void mouseMovedHandler(final MouseEvent e) {
 
-        if (e.y > this.editor.getGUI().editorVisibleY && e.y < this.editor.height && this.popup == null) {
+        if (e.y > (this.editor.getGUI().editorVisibleY + 100) && e.y < (this.editor.height - 100) && this.popup == null) {
             if (e.x >= 0 && e.x <= 15) {
                 perform()
             }

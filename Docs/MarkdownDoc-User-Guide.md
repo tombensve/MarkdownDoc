@@ -697,8 +697,9 @@ Note that values of __Boolean__ type should have a value of either "true" or "fa
 
 ## Common options
 
-<!-- @Div("options") -->
-
+<!--
+  @Div("options")
+-->
 ### generator (R)
 
 Specifies the generator to run. Current valid values are:
@@ -839,8 +840,9 @@ This will generate one first page with a title, version, author, and copyright. 
 
 Shows help.
 
-<!-- @EndDiv -->
-
+<!--
+  @EndDiv
+-->
 ### Comment block annotation setting of options
 
 The PDF generator have a spedial feature to be able to set options via an annotation in a comment block. The annotations look like this:
@@ -892,8 +894,9 @@ The following annotations options are available:
 
 Put this comment block at the top of the document! The optoins provided this way will not have an effect until the comment block have been processed by the generator, and the annotations found. Thereby it is also theoretically possible to change options further down the document. This should be seen as a side effect rather than a feature!!
 
-<!-- @Div("options") -->
-
+<!--
+  @Div("options")
+-->
 ## HTMLGenerator options
 
 ### resultFile : String (R)
@@ -934,8 +937,9 @@ The path file links should be relative to.
 
 Shows help.
 
-<!-- @EndDiv -->
-
+<!--
+  @EndDiv
+-->
 # MarkdownDoc Editor
 
 This is an editor for editing markdown documents.

@@ -49,6 +49,7 @@ import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
+import se.natusoft.doc.markdowndoc.editor.file.Editables
 
 import javax.swing.*
 import javax.swing.filechooser.FileNameExtensionFilter
@@ -173,7 +174,7 @@ class OpenFunction implements EditorFunction, Configurable {
         fileChooser.setFileFilter(filter)
         int returnVal = fileChooser.showOpenDialog(this.editor.getGUI().getWindowFrame())
         if(returnVal == JFileChooser.APPROVE_OPTION) {
-            this.editor.setEditedFile(fileChooser.getSelectedFile())
+            this.editor.editable = Editables.inst.getEditable(fileChooser.getSelectedFile())
         }
     }
 

@@ -39,6 +39,7 @@ package se.natusoft.doc.markdowndoc.editor.functions.utils
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
+import se.natusoft.doc.markdowndoc.editor.Services
 import se.natusoft.doc.markdowndoc.editor.api.Editable
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.PersistentProps
@@ -111,8 +112,8 @@ class FileWindowProps {
      *
      * @param editor The editorPane to selectNewFile for.
      */
-    void saveBounds(@NotNull Editor  editor) {
-        editor.persistentProps.save("default_bounds", this.props)
+    void saveBounds() {
+        Services.persistentPropertiesProvider.save("default_bounds", this.props)
     }
 
     /**
@@ -120,8 +121,8 @@ class FileWindowProps {
      *
      * @param editor The editorPane to load for.
      */
-    void load(@NotNull Editor editor) {
-        this.props = editor.persistentProps.load("default_bounds")
+    void load() {
+        this.props = Services.persistentPropertiesProvider.load("default_bounds")
         if (this.props == null) {
             this.props = new Properties()
         }

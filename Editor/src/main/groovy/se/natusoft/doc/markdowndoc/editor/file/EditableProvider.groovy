@@ -4,7 +4,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.ToString
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
-import se.natusoft.doc.markdowndoc.editor.api.Editable
+import se.natusoft.doc.markdowndoc.editor.api.*
 
 import javax.swing.*
 import javax.swing.event.UndoableEditEvent
@@ -34,7 +34,7 @@ class EditableProvider implements Editable {
     private JTextPane editorPane = new JTextPane() {
         @Override
         Dimension getPreferredSize() {
-            Dimension dim = super.getPreferredSize()
+            final Dimension dim = super.getPreferredSize()
             dim.setSize(getWidth(), dim.getHeight())
 
             return dim
@@ -45,16 +45,15 @@ class EditableProvider implements Editable {
         }
     }
 
+    /** The currently loaded file or null if none. */
+    private File file
+
+    /** The styler for this editable. */
+    private JTextComponentStyler styler
+
     //
     // Properties
     //
-
-    /** The currently loaded file or null if none. */
-    File file
-    void setFile(File file) throws IOException {
-        this.file = file
-        load(file)
-    }
 
     /** The saved state of this editable. */
     boolean saved = false
@@ -65,15 +64,27 @@ class EditableProvider implements Editable {
 
     /**
      * Creates a new EditableProvider instance.
+     *
+     * @param file The file of this editable.
+     * @param stylerFactory A JTextComponentStylerFactory for creating a styler for the editable.
+     * @param configurables Required by the JTextComponentStylerFactory when creating styler.
+     * @param configProvider Required by the JTextComponentStylerFactory when creating styler.
+     *
+     * @throws IOException on failure to load file.
      */
-    EditableProvider() {
+    EditableProvider(
+            final @NotNull File file, @NotNull final JTextComponentStylerFactory stylerFactory) throws IOException {
+
+        this.file = file
+        this.styler = stylerFactory.createStyler(this)
+
         // Attach undo manager to document.
-        Document doc = this.editorPane.getDocument()
+        final Document doc = this.styler.createDocumentModel()
 
         String undoKey = "control Z"
         String redoKey = "control Y"
 
-        String osName = System.getProperty("os.name").toUpperCase()
+        final String osName = System.getProperty("os.name").toUpperCase()
         if (osName.contains("MAC")) {
             undoKey = "meta Z"
             redoKey = "shift meta Z"
@@ -82,20 +93,20 @@ class EditableProvider implements Editable {
         this.undoManager = new UndoManager()
 
         doc.addUndoableEditListener(new UndoableEditListener() {
-            public void undoableEditHappened(UndoableEditEvent evt) {
+            public void undoableEditHappened(final UndoableEditEvent evt) {
                 EditableProvider.this.undoManager.addEdit(evt.edit);
             }
         })
 
         this.editorPane.getActionMap().put("Undo", new AbstractAction("Undo") {
-            public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(final ActionEvent evt) {
                 try
                 {
                     if (EditableProvider.this.undoManager.canUndo()) {
                         EditableProvider.this.undoManager.undo()
                     }
                 }
-                catch (CannotUndoException cue) {
+                catch (final CannotUndoException cue) {
                     System.err.println("Undo problem: ${cue.message}")
                 }
             }
@@ -103,18 +114,20 @@ class EditableProvider implements Editable {
         this.editorPane.getInputMap().put(KeyStroke.getKeyStroke(undoKey), "Undo")
 
         this.editorPane.getActionMap().put("Redo", new AbstractAction("Redo") {
-            public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(final ActionEvent evt) {
                 try {
                     if (EditableProvider.this.undoManager.canRedo()) {
                         EditableProvider.this.undoManager.redo()
                     }
                 }
-                catch (CannotRedoException cre) {
+                catch (final CannotRedoException cre) {
                     System.err.println("Redo problem: ${cre.message}")
                 }
             }
         })
         this.editorPane.getInputMap().put(KeyStroke.getKeyStroke(redoKey), "Redo")
+
+        load()
     }
 
     //
@@ -129,16 +142,28 @@ class EditableProvider implements Editable {
     }
 
     /**
+     * Returns the styler.
+     */
+    JTextComponentStyler getStyler() {
+        this.styler
+    }
+
+    /**
+     * Returns the file.
+     */
+    File getFile() {
+        this.file
+    }
+
+    /**
      * Loads a file and creates an editor pane. After this call getEditorPane() should be non null.
      * @param file
      * @throws IOException
      */
     @Override
-    void load(@NotNull File file) throws IOException {
-        this.file = file
-
-        StringBuilder sb = new StringBuilder()
-        file.withReader('UTF-8') { BufferedReader reader ->
+    void load() throws IOException {
+        final StringBuilder sb = new StringBuilder()
+        file.withReader('UTF-8') { final BufferedReader reader ->
             reader.eachLine { String line ->
                 // Translate a special italicized quote that some markdown editors like to use into a
                 // standard quote.
@@ -148,7 +173,10 @@ class EditableProvider implements Editable {
             }
         }
 
+        this.styler.disable()
         this.editorPane.setText(sb.toString())
+        this.styler.enable()
+        this.styler.styleDocument()
     }
 
     /**
@@ -158,7 +186,7 @@ class EditableProvider implements Editable {
      */
     @Override
     void save() throws IOException {
-        file.withWriter('UTF-8') { BufferedWriter writer ->
+        file.withWriter('UTF-8') { final BufferedWriter writer ->
             writer.write(this.editorPane.text)
         }
     }
@@ -168,7 +196,7 @@ class EditableProvider implements Editable {
      *
      * @param listener The listener to add.
      */
-    void addMouseMotionListener(@NotNull MouseMotionListener listener) {
+    void addMouseMotionListener(@NotNull final MouseMotionListener listener) {
         this.editorPane.addMouseMotionListener(listener)
     }
 
@@ -177,7 +205,7 @@ class EditableProvider implements Editable {
      *
      * @param listener The listener to remove.
      */
-    void removeMouseMotionListener(@NotNull MouseMotionListener listener) {
+    void removeMouseMotionListener(@NotNull final MouseMotionListener listener) {
         this.editorPane.removeMouseMotionListener(listener)
     }
 

@@ -20,6 +20,11 @@ interface Editable extends MouseMotionProvider {
     @Nullable JTextPane getEditorPane()
 
     /**
+     * Returns the styler for this editable.
+     */
+    @Nullable JTextComponentStyler getStyler()
+
+    /**
      * Sets saved state to true or false.
      *
      * @param state The state to set.
@@ -37,19 +42,12 @@ interface Editable extends MouseMotionProvider {
      *
      * @throws IOException
      */
-    void load(@NotNull File file) throws IOException
+    void load() throws IOException
 
     /**
      * Returns the loaded file or null if no file have been loaded.
      */
     @Nullable File getFile()
-
-    /**
-     * Sets the file for this Editable.
-     *
-     * @param file The file to set.
-     */
-    void setFile(@NotNull File file)
 
     /**
      * Saves the file.

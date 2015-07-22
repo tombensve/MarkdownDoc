@@ -197,7 +197,9 @@ class MarkdownParser implements Parser {
                     }
 
                     if (docItem != null) {
-                        setParseFileOnDocItems(docItem, this.file != null ? this.file : null)
+                        if (this.file != null) {
+                            setParseFileOnDocItems(docItem, this.file)
+                        }
 
                         doc.addItem(docItem)
                         prevDocItem = docItem
@@ -210,7 +212,7 @@ class MarkdownParser implements Parser {
         }
         catch (Exception e) {
             throw new ParseException(
-                    file: this.file.absolutePath,
+                    file: this.file != null ? this.file.absolutePath : "[No file]",
                     line: lineReader.lastReadLine.toString(),
                     lineNo: lineReader.lineNo,
                     message: "Unknown error",

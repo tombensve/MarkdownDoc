@@ -1,4 +1,0 @@
-#
-# The JTextComponentStyler to use to style the editor document while editing.
-#
-se.natusoft.doc.markdowndoc.editor.MarkdownStyler

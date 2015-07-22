@@ -12,19 +12,12 @@ import se.natusoft.doc.markdowndoc.editor.api.Editable
 @CompileStatic
 @TypeChecked
 @ToString(includeNames = true)
-class Editables {
+class Editables extends HashMap<File, Editable> {
 
     /**
      * A singleton instance.
      */
     static Editables inst = new Editables()
-
-    //
-    // Private Members
-    //
-
-    /** The current loaded editables. */
-    private Map<File, Editable> editables = new HashMap<>()
 
     //
     // Methods
@@ -36,7 +29,7 @@ class Editables {
      * @param editable The editable to add.
      */
     void addEditable(Editable editable) {
-        this.editables.put(editable.file, editable)
+        put(editable.file, editable)
     }
 
     /**
@@ -45,7 +38,7 @@ class Editables {
      * @param file The file referencing the editable to remove.
      */
     void removeEditable(File file) {
-        this.editables.remove(file)
+        remove(file)
     }
 
     /**
@@ -54,20 +47,20 @@ class Editables {
      * @param file The File to get Editable for.
      */
     @Nullable Editable getEditable(File file) {
-        this.editables.get(file)
+        get(file)
     }
 
-    @Nullable File getSomeEditable() {
-        if (this.editables.isEmpty()) {
+    @Nullable Editable getSomeEditable() {
+        if (isEmpty()) {
             return null
         }
-        files.first()
+        get(files.first())
     }
 
     /**
      * Returns all files.
      */
     Set<File> getFiles() {
-        this.editables.keySet()
+        keySet()
     }
 }

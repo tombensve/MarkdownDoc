@@ -96,7 +96,7 @@ class EditableSelectorPopup extends JFrame implements MouseListeners {
                 groups.put(groupTitle, groupList)
             }
 
-            EditableFileButton editableFileButton = new EditableFileButton(file: file)
+            EditableFileButton editableFileButton = new EditableFileButton(editable: Editables.inst.getEditable(file))
             editableFileButton.addMouseListener(this)
             groupList.add(editableFileButton)
         }
@@ -134,7 +134,7 @@ class EditableSelectorPopup extends JFrame implements MouseListeners {
 
         background = Color.BLACK
         if (gd.isWindowTranslucencySupported(GraphicsDevice.WindowTranslucency.TRANSLUCENT)) {
-            opacity = 0.65f
+            opacity = 0.75f
         }
 
         setSize(1,1)
@@ -195,10 +195,10 @@ class EditableSelectorPopup extends JFrame implements MouseListeners {
      * and released) on a component.
      */
     @Override
-    void mouseClicked(MouseEvent e) {
+    void mouseClicked(final MouseEvent e) {
         if (e.source instanceof  EditableFileButton) {
-            EditableFileButton efb = e.source as EditableFileButton
-            editor.editedFile = efb.file
+            final EditableFileButton efb = e.source as EditableFileButton
+            editor.editable = efb.editable
 
             close()
         }

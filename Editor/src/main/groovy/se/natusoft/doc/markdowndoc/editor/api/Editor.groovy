@@ -201,16 +201,16 @@ interface Editor extends EnvServices, MouseMotionProvider {
     void save() throws IOException
 
     /**
-     * Selects the file to edit in the editor view.
+     * Selects the editable to edit in the editor view.
      *
-     * @param file The file to edit.
+     * @param editable The editable to edit.
      */
-    void setEditedFile(@NotNull File file)
+    void setEditable(@NotNull Editable editable)
 
     /**
-     * Returns the currently edited file.
+     * Returns the edited editable.
      */
-    @Nullable File getEditedFile()
+    @Nullable Editable getEditable()
 
     /**
      * Opens a file chooser for specifying file as a new file.

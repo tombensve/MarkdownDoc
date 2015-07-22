@@ -44,6 +44,7 @@ import se.natusoft.doc.markdown.api.Parser
 import se.natusoft.doc.markdown.exception.ParseException
 import se.natusoft.doc.markdown.model.Doc
 import se.natusoft.doc.markdown.parser.MarkdownParser
+import se.natusoft.doc.markdowndoc.editor.Services
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
@@ -112,20 +113,6 @@ abstract class AbstractExportFunction implements EditorFunction {
                 AbstractExportFunction.this.editor.getGUI()
             }
 
-            /**
-             * Returns the config API.
-             */
-            @NotNull ConfigProvider getConfigProvider() {
-                AbstractExportFunction.this.editor.getConfigProvider()
-            }
-
-            /**
-             * Returns the persistent properties provider.
-             */
-            @NotNull PersistentProps getPersistentProps() {
-                AbstractExportFunction.this.editor.getPersistentProps()
-            }
-
         }
     }
 
@@ -141,10 +128,11 @@ abstract class AbstractExportFunction implements EditorFunction {
     protected File getExportOutputFile(@NotNull String type, @NotNull String definition, @NotNull String... extFilter) {
         File selectedFile = null
         JFileChooser fileChooser = new JFileChooser()
-        fileChooser.setDialogTitle("Specify file to selectNewFile " + type + " to")
+        fileChooser.setDialogTitle("Specify file to save " + type + " to")
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG)
-        if (this.editor.getEditedFile() != null) {
-            Properties props = this.editor.getPersistentProps().load(fileToPropertiesName(this.editor.getEditedFile()))
+        if (this.editor.editable.file != null) {
+            Properties props = Services.persistentPropertiesProvider.
+                    load(fileToPropertiesName(this.editor.editable.file))
             if (props != null && props.getProperty(this.defaultsPropKey) != null) {
                 fileChooser.setSelectedFile(new File(props.getProperty(this.defaultsPropKey)))
             }

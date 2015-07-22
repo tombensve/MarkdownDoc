@@ -39,6 +39,7 @@ package se.natusoft.doc.markdowndoc.editor.functions.export
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
+import se.natusoft.doc.markdowndoc.editor.Services
 
 import java.awt.*
 import java.lang.reflect.Field
@@ -108,7 +109,7 @@ class ExportData {
      * @param file The properties file to load from.
      */
     void loadExportData(@NotNull File file) {
-        Properties props = this.delayedServicesData.getPersistentProps().load(fileToPropertiesName(file))
+        Properties props = Services.persistentPropertiesProvider.load(fileToPropertiesName(file))
         if (props != null) {
             props.stringPropertyNames().each { String propName ->
                 exportDataValues.findAll { ExportDataValue exportDataValue ->
@@ -132,7 +133,7 @@ class ExportData {
         }
         props.setProperty(delayedServicesData.defaultsPropKey,
                 delayedServicesData.exportFile.getAbsolutePath())
-        delayedServicesData.getPersistentProps().save(fileToPropertiesName(file), props)
+        Services.persistentPropertiesProvider.save(fileToPropertiesName(file), props)
     }
 
     /**

@@ -39,9 +39,9 @@ package se.natusoft.doc.markdowndoc.editor.functions
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
+import se.natusoft.doc.markdowndoc.editor.Services
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.*
-import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
@@ -91,7 +91,7 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
             new KeyConfigEntry("editor.function.settings.keyboard.shortcut", "Settings keyboard shortcut",
                     new KeyboardKey("Ctrl+E"), CONFIG_GROUP_KEYBOARD)
 
-    private Closure keyboardShortcutConfigChanged = { ConfigEntry ce ->
+    private Closure keyboardShortcutConfigChanged = { final ConfigEntry ce ->
         updateTooltipText()
     }
 
@@ -101,7 +101,7 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(@NotNull ConfigProvider configProvider) {
+    void registerConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -111,7 +111,7 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -120,11 +120,11 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
     //
 
     SettingsFunction() {
-        Icon settingsIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddsettings.png"))
+        final Icon settingsIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddsettings.png"))
         this.settingsButton = new JButton(settingsIcon)
         this.settingsButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent ignored) {
+            void actionPerformed(final ActionEvent ignored) {
                 perform()
             }
         })
@@ -178,7 +178,7 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
         }
 
         this.cancelValues = new HashMap<>()
-        withAllConfigEntriesDo { ConfigEntry configEntry ->
+        withAllConfigEntriesDo { final ConfigEntry configEntry ->
             this.settingsWindow.addConfig(configEntry)
             this.cancelValues.put(configEntry.getKey(), configEntry.getValue())
         }
@@ -191,8 +191,8 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
      *
      * @param closure The closure to run.
      */
-    private void withAllConfigEntriesDo(@NotNull Closure closure) {
-        this.editor.getConfigProvider().getConfigs().each closure
+    private static void withAllConfigEntriesDo(@NotNull final Closure closure) {
+        Services.configs.getConfigs().each closure
     }
 
     /**
@@ -200,7 +200,7 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
      */
     protected void cancel() {
 
-        withAllConfigEntriesDo { ConfigEntry configEntry ->
+        withAllConfigEntriesDo { final ConfigEntry configEntry ->
             configEntry.setValue(this.cancelValues.get(configEntry.getKey()))
         }
 
@@ -210,35 +210,35 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
      * Saves config to disk.
      */
     protected void save() {
-        Properties props = new Properties()
-        withAllConfigEntriesDo { ConfigEntry configEntry ->
+        final Properties props = new Properties()
+        withAllConfigEntriesDo { final ConfigEntry configEntry ->
             props.setProperty(configEntry.getKey(), configEntry.getValue())
         }
 
-        this.editor.getPersistentProps().save(SETTINGS_PROP_NAME, props)
+        Services.persistentPropertiesProvider.save(SETTINGS_PROP_NAME, props)
 
         // When we save, also remember the position and size of the editor window.
-        FileWindowProps fileWindowProps = new FileWindowProps()
+        final FileWindowProps fileWindowProps = new FileWindowProps()
         fileWindowProps.setBounds(this.editor.getGUI().getWindowFrame().getBounds())
-        fileWindowProps.saveBounds(this.editor)
+        fileWindowProps.saveBounds()
     }
 
     /**
      * Loads config from disk.
      */
     private void load() {
-        Properties props = this.editor.getPersistentProps().load(SETTINGS_PROP_NAME)
+        final Properties props = Services.persistentPropertiesProvider.load(SETTINGS_PROP_NAME)
         if (props != null) {
-            props.stringPropertyNames().each { String propName ->
-                String propValue = props.getProperty(propName)
-                ConfigEntry configEntry = this.editor.getConfigProvider().lookupConfig(propName)
+            props.stringPropertyNames().each { final String propName ->
+                final String propValue = props.getProperty(propName)
+                final ConfigEntry configEntry = Services.configs.lookupConfig(propName)
                 if (configEntry != null) {
                     configEntry.setValue(propValue)
                 }
             }
         }
         else {
-            withAllConfigEntriesDo { ConfigEntry configEntry ->
+            withAllConfigEntriesDo { final ConfigEntry configEntry ->
                 configEntry.setValue(configEntry.getValue()) // force gui update
             }
         }
@@ -246,8 +246,8 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
         SwingUtilities.updateComponentTreeUI(this.editor.getGUI().getWindowFrame())
 
         // Restore window position and size to last saved.
-        FileWindowProps fileWindowProps = new FileWindowProps()
-        fileWindowProps.load(this.editor)
+        final FileWindowProps fileWindowProps = new FileWindowProps()
+        fileWindowProps.load()
         if (fileWindowProps.hasProperties()) {
             this.editor.getGUI().getWindowFrame().setBounds(fileWindowProps.getBounds())
         }

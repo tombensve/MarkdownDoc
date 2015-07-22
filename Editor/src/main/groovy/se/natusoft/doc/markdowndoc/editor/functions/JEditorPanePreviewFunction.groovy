@@ -349,6 +349,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
 
             this.preview.requestFocus()
         } catch (Exception e) {
+            e.printStackTrace(System.err)
             JOptionPane.showMessageDialog(
                     this.editor.getGUI().getWindowFrame(), e.getMessage(), "Preview error!", JOptionPane.ERROR_MESSAGE)
         }
