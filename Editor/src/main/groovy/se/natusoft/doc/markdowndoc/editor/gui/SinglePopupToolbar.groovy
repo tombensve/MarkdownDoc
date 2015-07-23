@@ -57,7 +57,7 @@ import java.util.List
  */
 @CompileStatic
 @TypeChecked
-class SinglePopupToolbar implements ToolBar {
+class SinglePopupToolbar implements GuiGoodies, ToolBar {
 
     //
     // Private Members
@@ -177,9 +177,13 @@ class SinglePopupToolbar implements ToolBar {
 
         if (create) {
             this.toolBarWindow = new JWindow(parent)
+            initGuiGoodies(this.toolBarWindow)
+            safeOpacity = 0.75f
+            this.toolBarWindow.setBackground(Color.BLACK)
             this.toolBarWindow.setLayout(new BorderLayout())
             JPanel panel = new JPanel()
-            panel.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED))
+            panel.setBackground(Color.BLACK)
+//            panel.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED))
             this.toolBarWindow.add(panel, BorderLayout.CENTER)
             panel.setLayout(new FlowLayout(FlowLayout.LEFT))
             boolean separator = false

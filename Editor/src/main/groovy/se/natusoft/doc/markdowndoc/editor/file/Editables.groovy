@@ -63,4 +63,21 @@ class Editables extends HashMap<File, Editable> {
     Set<File> getFiles() {
         keySet()
     }
+
+    /**
+     * Returns the number of editables.
+     */
+    int getCount() {
+        return size()
+    }
+
+    /**
+     * Returns the editable at the specified position.
+     *
+     * @param pos The position to get editable at.
+     */
+    Editable getByPosition(int pos) {
+        File file = keySet().getAt(pos)
+        return get(file)
+    }
 }

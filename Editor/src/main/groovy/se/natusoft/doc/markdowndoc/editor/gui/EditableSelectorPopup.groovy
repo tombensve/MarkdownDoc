@@ -20,7 +20,11 @@ import java.awt.Rectangle
 import java.awt.Robot
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
+import java.awt.event.FocusEvent
+import java.awt.event.FocusListener
 import java.awt.event.MouseEvent
+import java.awt.event.MouseWheelEvent
+import java.awt.event.MouseWheelListener
 import java.awt.geom.RoundRectangle2D
 
 /**
@@ -28,7 +32,7 @@ import java.awt.geom.RoundRectangle2D
  */
 @CompileStatic
 @TypeChecked
-class EditableSelectorPopup extends JFrame implements MouseListeners {
+class EditableSelectorPopup extends JFrame implements GuiGoodies, MouseListeners {
 
     //
     // Private Members
@@ -55,14 +59,11 @@ class EditableSelectorPopup extends JFrame implements MouseListeners {
     //
 
     EditableSelectorPopup() {
-
-        GraphicsEnvironment ge =
-                GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice gd = ge.getDefaultScreenDevice();
-        Rectangle screenBounds =  gd.defaultConfiguration.bounds
+        initGuiGoodies(this)
 
         ColumnTopDownLeftRightLayout layout =
-                new ColumnTopDownLeftRightLayout(hmargin: 20, vmargin: 20, hgap: 20, vgap: 0, screenSize: screenBounds)
+                new ColumnTopDownLeftRightLayout(hmargin: 20, vmargin: 20, hgap: 20, vgap: 4,
+                        screenSize: defaultScreenBounds)
 
         setLayout(new BorderLayout())
         JScrollPane scrollPane = new JScrollPane(
@@ -121,27 +122,26 @@ class EditableSelectorPopup extends JFrame implements MouseListeners {
 
         add(scrollPane, BorderLayout.CENTER)
 
-        // This fills out the outside of the shape that is not part of a square with white, so it
-        // is not a true shaped window.
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                EditableSelectorPopup.this.setShape(new RoundRectangle2D.Double(0.0, 0.0, width as double,
-                        height as double, 10.0, 10.0))
-            }
-        })
-        undecorated = true
 
+        safeMakeRoundedRectangleShape()
+
+        undecorated = true
         background = Color.BLACK
-        if (gd.isWindowTranslucencySupported(GraphicsDevice.WindowTranslucency.TRANSLUCENT)) {
-            opacity = 0.75f
-        }
+        safeOpacity = 0.75f
 
         setSize(1,1)
         visible = true
         size = layout.optimalSize
-        setLocation(((screenBounds.width / 2) - (layout.optimalSize.width / 2)) as int,
-                ((screenBounds.height / 2) - (layout.optimalSize.height / 2)) as int)
+
+        final String osName = System.getProperty("os.name").toUpperCase()
+        if (osName.contains("MAC")) {
+            setLocation(0, 25)
+        }
+        else {
+            setLocation(0,0)
+        }
+//        setLocation(((defaultScreenBounds.width / 2) - (layout.optimalSize.width / 2)) as int,
+//                ((defaultScreenBounds.height / 2) - (layout.optimalSize.height / 2)) as int)
 
         Point p = new Point(first.x + this.x + 20, first.y + this.y + 10)
         moveMouse(p)
@@ -152,43 +152,6 @@ class EditableSelectorPopup extends JFrame implements MouseListeners {
     //
     // Methods
     //
-
-    /**
-     * From: http://stackoverflow.com/questions/2941324/how-do-i-set-the-position-of-the-mouse-in-java
-     * by Daniel.
-     * <p/>
-     * Groovyfied by me.
-     *
-     * @param p The point to move the mouse to.
-     */
-    static void moveMouse(Point p) {
-        GraphicsEnvironment ge = GraphicsEnvironment.localGraphicsEnvironment
-        GraphicsDevice[] gs = ge.screenDevices
-
-        // Search the devices for the one that draws the specified point.
-        for (GraphicsDevice device: gs) {
-            GraphicsConfiguration[] configurations = device.configurations
-            for (GraphicsConfiguration config: configurations) {
-                Rectangle bounds = config.bounds
-                if(bounds.contains(p)) {
-                    // Set point to screen coordinates.
-                    Point b = bounds.location
-                    Point s = new Point((p.x - b.x) as int, (p.y - b.y) as int)
-
-                    try {
-                        Robot r = new Robot(device)
-                        r.mouseMove(s.x as int, s.y as int)
-                    } catch (AWTException e) {
-                        e.printStackTrace()
-                    }
-
-                    return
-                }
-            }
-        }
-
-        // Couldn't move to the point, it may be off screen.
-    }
 
     /**
      * Invoked when the mouse button has been clicked (pressed

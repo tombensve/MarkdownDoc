@@ -51,6 +51,11 @@ import java.util.List
 @CompileStatic
 @TypeChecked
 class ColumnTopDownLeftRightLayout implements LayoutManager2 {
+
+    TODO: Don't put anything on the first 25 lines and not on the last 30 to take consideration
+    for both Mac and windows. KDE Linux seems to report a "correct" screen size rather than actual screen
+    size.
+
     //
     // Private Members
     //
@@ -87,7 +92,7 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
      * Since this is a property, you can change its initial value to something larger if wanted.
      * This size will never be shrunk, only grown if needed to fit content.
      */
-    Dimension optimalSize = new Dimension(400,300)
+    Dimension optimalSize = null
 
     /** The vertical margin to use at edges. */
     int vmargin = 0
@@ -178,6 +183,9 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
      * @param update If true actual layout will be done. If false only minimum size will be calculated.
      */
     private void doLayout(@NotNull Container parent, boolean update) {
+        if (this.optimalSize == null) {
+            this.optimalSize = new Dimension(400, this.screenSize.height as int)
+        }
         Insets insets = parent.insets
         int x = insets.left + this.hmargin + this.extraHMargin
         int y = insets.top + this.vmargin + this.extraVMargin
@@ -218,7 +226,7 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
         if ((x + commonWidth + this.hgap + this.extraHGap) > (this.optimalSize.width as int) &&
                 (x + commonWidth + this.hgap + this.extraHGap) < this.screenSize.width) {
             this.optimalSize = new Dimension((this.optimalSize.width + 40) as int,
-                    (this.optimalSize.height + 30) as int)
+                    this.optimalSize.height as int)
             doLayout(parent, update)
         }
         else if (this.spreadOut && optimalSize.width - (x + commonWidth + this.hgap + this.extraHGap) > 50) {
