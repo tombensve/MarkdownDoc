@@ -5,27 +5,10 @@ import groovy.transform.TypeChecked
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.file.Editables
 
-import javax.swing.JComponent
-import javax.swing.JFrame
-import javax.swing.JPanel
-import javax.swing.JScrollPane
-import java.awt.AWTException
-import java.awt.BorderLayout
-import java.awt.Color
-import java.awt.GraphicsConfiguration
-import java.awt.GraphicsDevice
-import java.awt.GraphicsEnvironment
-import java.awt.Point
-import java.awt.Rectangle
-import java.awt.Robot
-import java.awt.event.ComponentAdapter
-import java.awt.event.ComponentEvent
-import java.awt.event.FocusEvent
-import java.awt.event.FocusListener
+import javax.swing.*
+import java.awt.*
 import java.awt.event.MouseEvent
-import java.awt.event.MouseWheelEvent
-import java.awt.event.MouseWheelListener
-import java.awt.geom.RoundRectangle2D
+import java.util.List
 
 /**
  * This class is responsible for selecting one of the open editables for editing.
@@ -45,11 +28,17 @@ class EditableSelectorPopup extends JFrame implements GuiGoodies, MouseListeners
 
     private int exitLevel = 0
 
+    private Closure<Void> cancelCallback = { close() }
+
     //
     // Properties
     //
 
     Editor editor
+    void setEditor(Editor editor) {
+        this.editor = editor
+        this.editor.addCancelCallback cancelCallback
+    }
 
     /** Called on close. */
     Closure closer
@@ -63,7 +52,7 @@ class EditableSelectorPopup extends JFrame implements GuiGoodies, MouseListeners
 
         ColumnTopDownLeftRightLayout layout =
                 new ColumnTopDownLeftRightLayout(hmargin: 20, vmargin: 20, hgap: 20, vgap: 4,
-                        screenSize: defaultScreenBounds)
+                        screenSize: defaultScreen_Bounds)
 
         setLayout(new BorderLayout())
         JScrollPane scrollPane = new JScrollPane(
@@ -75,10 +64,10 @@ class EditableSelectorPopup extends JFrame implements GuiGoodies, MouseListeners
         scrollPane.setBackground(Color.BLACK)
 
         JPanel popupContentPane = new JPanel()
-        popupContentPane.setAutoscrolls(true)
-        popupContentPane.setBackground(Color.BLACK)
-        popupContentPane.setForeground(Color.WHITE)
-        popupContentPane.setLayout(layout)
+        popupContentPane.setAutoscrolls true
+        popupContentPane.setBackground Color.BLACK
+        popupContentPane.setForeground Color.WHITE
+        popupContentPane.setLayout layout
 
 
         Map<String, List<JComponent>> groups = new HashMap<>()
@@ -89,15 +78,17 @@ class EditableSelectorPopup extends JFrame implements GuiGoodies, MouseListeners
             if (groupTitle.length() > 25) {
                 groupTitle = "..." + groupTitle.substring(groupTitle.length() - 25)
             }
-            List<JComponent> groupList = groups.get(groupTitle)
+            List<JComponent> groupList = groups.get groupTitle
 
             if (groupList == null) {
                 groupList = new LinkedList<JComponent>()
-                groupList.add(new PathLabel(text: groupTitle))
-                groups.put(groupTitle, groupList)
+                groupList.add new PathLabel(text: "[${groupTitle}]")
+                groups.put groupTitle, groupList
             }
 
             EditableFileButton editableFileButton = new EditableFileButton(editable: Editables.inst.getEditable(file))
+            editableFileButton.foreground = Color.WHITE
+            editableFileButton.background = Color.BLACK
             editableFileButton.addMouseListener(this)
             groupList.add(editableFileButton)
         }
@@ -108,8 +99,6 @@ class EditableSelectorPopup extends JFrame implements GuiGoodies, MouseListeners
         groups.keySet().each { String key ->
             List<JComponent> groupList = groups.get(key)
             groupList.each { JComponent component ->
-                component.foreground = Color.WHITE
-                component.background = Color.BLACK
                 popupContentPane.add(component)
 
                 if (first == null && (EditableFileButton.class.isAssignableFrom(component.class))) {
@@ -120,33 +109,32 @@ class EditableSelectorPopup extends JFrame implements GuiGoodies, MouseListeners
 
         scrollPane.viewportView = popupContentPane
 
-        add(scrollPane, BorderLayout.CENTER)
+        add scrollPane, BorderLayout.CENTER
 
-
-        safeMakeRoundedRectangleShape()
+//        safeMakeRoundedRectangleShape()
 
         undecorated = true
         background = Color.BLACK
-        safeOpacity = 0.75f
+        safeOpacity = STANDARD_OPACITY
 
-        setSize(1,1)
+        setSize 1, 1
         visible = true
         size = layout.optimalSize
 
-        final String osName = System.getProperty("os.name").toUpperCase()
-        if (osName.contains("MAC")) {
-            setLocation(0, 25)
-        }
-        else {
-            setLocation(0,0)
-        }
-//        setLocation(((defaultScreenBounds.width / 2) - (layout.optimalSize.width / 2)) as int,
-//                ((defaultScreenBounds.height / 2) - (layout.optimalSize.height / 2)) as int)
+        setLocation 0, 0
 
-        Point p = new Point(first.x + this.x + 20, first.y + this.y + 10)
-        moveMouse(p)
+        moveMouse new Point(first.x + this.x + 20, first.y + this.y + 10)
 
-        popupContentPane.addMouseMotionListener(this)
+        popupContentPane.addMouseMotionListener this
+
+        popupContentPane.addMouseListener new CloseClickHandler()
+    }
+
+    private class CloseClickHandler implements MouseListeners {
+        @Override
+        void mouseClicked(MouseEvent e) {
+            close()
+        }
     }
 
     //
@@ -203,6 +191,9 @@ class EditableSelectorPopup extends JFrame implements GuiGoodies, MouseListeners
 
     private void close() {
         this.visible = false
+
+        this.editor?.removeCancelCallback cancelCallback
+
         if (this.closer != null) {
             this.closer.call()
         }

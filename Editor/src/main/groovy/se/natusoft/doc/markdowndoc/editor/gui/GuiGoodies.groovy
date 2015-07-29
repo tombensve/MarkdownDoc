@@ -17,10 +17,17 @@ import java.awt.geom.RoundRectangle2D
 trait GuiGoodies {
 
     //
+    // Constants
+    //
+
+    static final float STANDARD_OPACITY = 0.75f
+
+    //
     // Private Members
     //
 
     private Window window
+
     private static GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment()
     private static GraphicsDevice gd = ge.getDefaultScreenDevice()
     private static Rectangle screenBounds = gd.defaultConfiguration.bounds
@@ -35,11 +42,9 @@ trait GuiGoodies {
 
     void initGuiGoodies(final Window window) {
         this.window = window
-
-        final String osName = System.getProperty("os.name").toUpperCase()
     }
 
-    static Rectangle getDefaultScreenBounds() {
+    static Rectangle getDefaultScreen_Bounds() {
         return screenBounds
     }
 
@@ -84,9 +89,9 @@ trait GuiGoodies {
         final GraphicsDevice[] gs = ge.screenDevices
 
         // Search the devices for the one that draws the specified point.
-        for (final GraphicsDevice device: gs) {
+        gs.each { final GraphicsDevice device ->
             GraphicsConfiguration[] configurations = device.configurations
-            for (final GraphicsConfiguration config: configurations) {
+            configurations.each { final GraphicsConfiguration config ->
                 Rectangle bounds = config.bounds
                 if(bounds.contains(p)) {
                     // Set point to screen coordinates.
@@ -100,6 +105,11 @@ trait GuiGoodies {
                         e.printStackTrace()
                     }
 
+                    // Me:
+                    // IDEA claims this return is "unnecessary", but that is obviously not true
+                    // if you look where it is!! It can't apparently figure out that .each {...}
+                    // is a loop.
+                    //noinspection GroovyUnnecessaryReturn
                     return
                 }
             }

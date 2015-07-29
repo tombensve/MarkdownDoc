@@ -19,11 +19,11 @@ class PathLabel extends JLabel {
         //noinspection UnnecessaryQualifiedReference
         super("", JLabel.CENTER)
 
-        font = font.deriveFont(Font.BOLD)
-        Map<TextAttribute, ?> attributes = font.getAttributes();
-        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON); // IDEA only error!
-        setFont(font.deriveFont(attributes));
-        setForeground(Color.WHITE)
+        font = font.deriveFont Font.BOLD
+//        Map<TextAttribute, ?> attributes = font.getAttributes();
+//        attributes.put TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON  // IDEA only error!
+//        font = font.deriveFont attributes
+        foreground = Color.ORANGE
     }
 
     @Override

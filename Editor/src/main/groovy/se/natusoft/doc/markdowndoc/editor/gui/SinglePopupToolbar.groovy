@@ -44,7 +44,6 @@ import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
 import se.natusoft.doc.markdowndoc.editor.api.ToolBar
 
 import javax.swing.*
-import javax.swing.border.SoftBevelBorder
 import java.awt.*
 import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionListener
@@ -94,10 +93,10 @@ class SinglePopupToolbar implements GuiGoodies, ToolBar {
         int y = e.getY() - this.editor.getGUI().getEditorVisibleY()
         if (y <= getTopMargin() && e.getX() >= 0 && e.getX() <= getEditorWidth()) {
             if (!isOpen()) {
-                int toolbarWidth = calculateWidth()
+                final int toolbarWidth = calculateWidth()
                 int x = (int)(getParentFrame().getX() + (getParentFrame().getWidth() / 2) - (toolbarWidth / 2))
 
-                int titleBarHeight =
+                final int titleBarHeight =
                         (int)(getParentFrame().getBounds().getHeight() - getParentFrame().getContentPane().getBounds().getHeight())
                 open(getParentFrame(), x, getParentFrame().getY() + titleBarHeight + 2)
             }
@@ -171,39 +170,42 @@ class SinglePopupToolbar implements GuiGoodies, ToolBar {
      * @param x The X coordinate to open at.
      * @param y The Y coordinate to open at.
      */
-    private void open(@NotNull JFrame parent, int x, int y) {
+    private void open(@NotNull final JFrame parent, final int x, final int y) {
 
-        boolean create = (this.toolBarWindow == null)
+        final boolean create = (this.toolBarWindow == null)
 
         if (create) {
             this.toolBarWindow = new JWindow(parent)
+
             initGuiGoodies(this.toolBarWindow)
-            safeOpacity = 0.75f
+            safeOpacity = STANDARD_OPACITY
             this.toolBarWindow.setBackground(Color.BLACK)
+
             this.toolBarWindow.setLayout(new BorderLayout())
-            JPanel panel = new JPanel()
+
+            final JPanel panel = new JPanel()
             panel.setBackground(Color.BLACK)
 //            panel.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED))
             this.toolBarWindow.add(panel, BorderLayout.CENTER)
-            panel.setLayout(new FlowLayout(FlowLayout.LEFT))
+            panel.layout = new FlowLayout(FlowLayout.LEFT)
             boolean separator = false
-            this.toolBarGroups.each { String group ->
+            this.toolBarGroups.each { final String group ->
                 if (separator) {
                     panel.add(new JToolBar.Separator())
                 }
-                this.functions.get(group)?.each { EditorFunction editorFunction ->
-                    JComponent toolbarButton = editorFunction.getToolBarButton()
+                this.functions.get(group)?.each { final EditorFunction editorFunction ->
+                    final JComponent toolbarButton = editorFunction.getToolBarButton()
                     panel.add(toolbarButton)
                 }
                 separator = true
             }
             this.toolBarWindow.validate()
-            this.toolBarWindow.setSize(this.toolBarWindow.getPreferredSize())
-            this.calculatedWidth = this.toolBarWindow.getWidth()
+            this.toolBarWindow.size = this.toolBarWindow.preferredSize
+            this.calculatedWidth = this.toolBarWindow.width
         }
 
-        this.toolBarWindow.setLocation(x, y)
-        this.toolBarWindow.setVisible(true)
+        this.toolBarWindow.location = new Point(x, y)
+        this.toolBarWindow.visible = true
 
         this.open = true
     }
@@ -224,11 +226,11 @@ class SinglePopupToolbar implements GuiGoodies, ToolBar {
     private int calculateWidth() {
         int width = this.calculatedWidth
         if (width == 0) {
-            this.toolBarGroups.each { String group ->
-                this.functions.get(group)?.each { EditorFunction editorFunction ->
-                    width = (int)(width + editorFunction.getToolBarButton().getPreferredSize().width)
+            this.toolBarGroups.each { final String group ->
+                this.functions.get(group)?.each { final EditorFunction editorFunction ->
+                    width = (width + editorFunction.getToolBarButton().getPreferredSize().width) as int
                 }
-                width = width + 10
+                width = (width + 10) as int
             }
         }
 

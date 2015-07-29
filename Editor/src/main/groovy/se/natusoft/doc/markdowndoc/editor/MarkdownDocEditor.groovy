@@ -47,6 +47,7 @@ import se.natusoft.doc.markdowndoc.editor.api.*
 import se.natusoft.doc.markdowndoc.editor.config.*
 import se.natusoft.doc.markdowndoc.editor.file.EditableProvider
 import se.natusoft.doc.markdowndoc.editor.file.Editables
+import se.natusoft.doc.markdowndoc.editor.gui.MouseListeners
 import se.natusoft.doc.markdowndoc.editor.gui.MultiPopupToolbar
 import se.natusoft.doc.markdowndoc.editor.tools.ServiceDefLoader
 
@@ -57,6 +58,7 @@ import javax.swing.text.Caret
 import java.awt.*
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
+import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionListener
 import java.awt.event.WindowEvent
 import java.lang.reflect.Method
@@ -70,7 +72,9 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_T
  */
 @CompileStatic
 @TypeChecked
-class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Configurable, MouseMotionProvider {
+@Singleton
+class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, MouseListeners, Configurable,
+        MouseMotionProvider {
 
     //
     // Constants
@@ -121,20 +125,27 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
     // These EditorComponent:s are loaded using ServiceLoader returning EditorComponent
     // instances.
 
+    /** Dynamically loads different editor components found and registered on classpath. */
     protected ServiceLoader<EditorComponent> componentLoader = ServiceLoader.load(EditorComponent.class)
 
-    // Holds EditorComponents that are EditorFunction subclasses.
+    /** Holds EditorComponents that are EditorFunction subclasses. */
     protected List<EditorFunction> functions = new LinkedList<>()
 
-    // Holds EditorComponents that are EditorInputFilter subclasses.
+    /**  Holds EditorComponents that are EditorInputFilter subclasses.*/
     protected List<EditorInputFilter> filters = new LinkedList<>()
 
-    // The components that delivers mouse motion events.
+
+    /** Providers of mouse motion events. */
     protected List<MouseMotionProvider> mouseMotionProviders = new LinkedList<>()
 
+    /** listeners of mouse motion events. */
     protected List<MouseMotionListener> mouseMotionListeners = new LinkedList<>()
 
+    /** Factory for creating a styler. */
     protected JTextComponentStylerFactory editorStylerFactory
+
+    /** Any closure in this list will be called on triggering of cancel. */
+    protected List<Closure<Void>> cancelCallbacks = new LinkedList<>()
 
     //
     // Editor Configs
@@ -354,19 +365,12 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
     }
 
     //
-    // Constructorish
+    // Construction
     //
 
-    /**
-     * Creates a new MarkdownEditor instance.
-     */
-    MarkdownDocEditor(JTextComponentStylerFactory stylerFactory) {
-        this.editorStylerFactory = stylerFactory
-    }
-
     protected void closeWindow() {
-        ConfigProvider cp = Services.configs
-        Services.configurables.each {Configurable configurable ->
+        final ConfigProvider cp = Services.configs
+        Services.configurables.each {final Configurable configurable ->
             configurable.unregisterConfigs(cp)
         }
         setVisible(false)
@@ -442,9 +446,9 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
 
         // Load editorPane functions.
 
-        List<DelayedInitializer> delayedInitializers = new LinkedList<>()
+        final List<DelayedInitializer> delayedInitializers = new LinkedList<>()
 
-        componentLoader.each { EditorComponent component ->
+        componentLoader.each { final EditorComponent component ->
 
             if (component instanceof Configurable) {
                 (component as Configurable).registerConfigs(Services.configs)
@@ -469,6 +473,8 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
 
         }
 
+
+
         delayedInitializers.each { final DelayedInitializer delayedInitializer -> delayedInitializer.init() }
 
         // Additional setup now that a component have possibly loaded config.
@@ -483,6 +489,33 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
     //
     // Methods
     //
+
+    /**
+     * Adds a callback for cancel.
+     *
+     * @param callback The callback to add.
+     */
+    void addCancelCallback(final Closure<Void> callback) {
+        this.cancelCallbacks += callback
+    }
+
+    /**
+     * Removes a callback for cancel.
+     *
+     * @param callback The callback to remove.
+     */
+    void removeCancelCallback(final Closure<Void> callback) {
+        this.cancelCallbacks -= callback
+    }
+
+    /**
+     * Calls all cancel callbacks.
+     */
+    private callCancelCallbacks() {
+        this.cancelCallbacks.each { final Closure<Void> callback ->
+            callback.call()
+        }
+    }
 
     /**
      * Returns the editorPane GUI API.
@@ -620,8 +653,11 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
      */
     @Override
     void keyPressed(@NotNull KeyEvent e) {
-        int keyCode = e.getKeyCode()
-        if (
+        final int keyCode = e.getKeyCode()
+        if (keyCode == KeyEvent.VK_ESCAPE) {
+            callCancelCallbacks()
+        }
+        else if (
                 keyCode != KeyEvent.VK_META &&
                 keyCode != KeyEvent.VK_ALT &&
                 keyCode != KeyEvent.VK_CONTROL &&
@@ -629,9 +665,9 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
         ) {
             this.keyPressedCaretPos = this.editable?.editorPane?.getCaretPosition()
 
-            KeyboardKey keyboardKey = new KeyboardKey(e)
+            final KeyboardKey keyboardKey = new KeyboardKey(e)
 
-            this.functions.find { EditorFunction function ->
+            this.functions.find { final EditorFunction function ->
                 function.getKeyboardShortcut() != null && function.getKeyboardShortcut().equals(keyboardKey)
             }?.perform()
         }
@@ -718,7 +754,9 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
      * handle more more actions like exiting the JVM for example.
      */
     @Override
-    void editorClosed() {}
+    void editorClosed() {
+        System.exit(0)
+    }
 
     /**
      * Returns the contents of the editorPane.
@@ -969,12 +1007,14 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
             this.mouseMotionListeners.each { final MouseMotionListener listener ->
                 this.editable.removeMouseMotionListener(listener)
             }
+            this.editable.editorPane.removeMouseListener(this)
         }
 
         this.editable = editable
         this.scrollPane.viewportView = this.editable.editorPane
 
         this.editable.editorPane.addKeyListener(this)
+        this.editable.editorPane.addMouseListener(this)
 
         final Insets margins = new Insets(
                 topMargin.getIntValue(),
@@ -1005,6 +1045,20 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
         this.editable.editorPane.setRequestFocusEnabled(true)
     }
 
+    /**
+     * Invoked when the mouse button has been clicked (pressed
+     * and released) on a component.
+     */
+    @Override
+    void mouseClicked(final MouseEvent e) {
+        if (e.clickCount == 1) {
+            callCancelCallbacks()
+        }
+    }
+
+    /**
+     * Returns the current editable.
+     */
     Editable getEditable() {
         this.editable
     }
@@ -1080,16 +1134,10 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
      *
      * @throws IOException
      */
-    static MarkdownDocEditor openEditor(final JTextComponentStylerFactory stylerFactory) throws IOException {
+    static void setupAndOpenEditor(final JTextComponentStylerFactory stylerFactory) throws IOException {
 
-        final MarkdownDocEditor mde = new MarkdownDocEditor(stylerFactory) {
-            @Override
-            void editorClosed() {
-                setVisible(false)
-                System.exit(0)
-            }
-
-        }
+        final MarkdownDocEditor mde = MarkdownDocEditor.instance
+        mde.editorStylerFactory = stylerFactory
         mde.initGUI()
 
         enableOSXFullscreenIfOnOSX(mde)
@@ -1099,7 +1147,6 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
         Services.configs.refreshConfigs()
         mde.editorPane.requestFocus()
 
-        mde
     }
 
     /**
@@ -1164,7 +1211,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Conf
                 }
             }
 
-            openEditor(editorStylerFactory)
+            setupAndOpenEditor(editorStylerFactory)
 
 
         } catch (IOException ioe) {

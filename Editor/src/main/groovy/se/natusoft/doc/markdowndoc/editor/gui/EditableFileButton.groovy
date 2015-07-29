@@ -49,7 +49,7 @@ class EditableFileButton extends JComponent implements MouseListeners {
      */
     @Override
     public void paintComponent(final Graphics g) {
-        g.setColor(this.pointedAt ? Color.YELLOW : Color.WHITE)
+        g.setColor(this.pointedAt ? Color.GREEN : Color.WHITE)
         g.clearRect(this.x, this.y, this.width, this.height)
         g.drawString(
                 this.editable.file.name, ((width / 2) -

@@ -106,7 +106,7 @@ class SelectEditableFunction implements EditorFunction {
     void mouseMovedHandler(final MouseEvent e) {
 
         if (e.y > (this.editor.getGUI().editorVisibleY + 100) && e.y < (this.editor.height - 100) && this.popup == null) {
-            if (e.x >= 0 && e.x <= 15) {
+            if (e.x >= 0 && e.x <= 25) {
                 perform()
             }
         }

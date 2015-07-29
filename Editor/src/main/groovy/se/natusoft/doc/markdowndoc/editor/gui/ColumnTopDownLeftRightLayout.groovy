@@ -52,10 +52,6 @@ import java.util.List
 @TypeChecked
 class ColumnTopDownLeftRightLayout implements LayoutManager2 {
 
-    TODO: Don't put anything on the first 25 lines and not on the last 30 to take consideration
-    for both Mac and windows. KDE Linux seems to report a "correct" screen size rather than actual screen
-    size.
-
     //
     // Private Members
     //
@@ -184,11 +180,11 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
      */
     private void doLayout(@NotNull Container parent, boolean update) {
         if (this.optimalSize == null) {
-            this.optimalSize = new Dimension(400, this.screenSize.height as int)
+            this.optimalSize = new Dimension(400, this.screenSize.height + 1 as int)
         }
         Insets insets = parent.insets
         int x = insets.left + this.hmargin + this.extraHMargin
-        int y = insets.top + this.vmargin + this.extraVMargin
+        int y = 25 + insets.top + this.vmargin + this.extraVMargin
         int highestY = 0
 
         int commonWidth = 0
@@ -205,7 +201,7 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
 
             compPreferred.setSize(commonWidth, compPreferred.height)
 
-            if (y + (compPreferred.height as int) + this.vgap + this.extraVGap > optimalSize.height) {
+            if (y + 30 + (compPreferred.height as int) + this.vgap + this.extraVGap > optimalSize.height) {
                 x = x + commonWidth + this.hgap + this.extraHGap
                 y = insets.top + this.vmargin + this.extraVMargin
             }

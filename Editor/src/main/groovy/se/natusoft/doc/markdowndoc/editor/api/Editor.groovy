@@ -225,6 +225,20 @@ interface Editor extends EnvServices, MouseMotionProvider {
     @NotNull JTextComponentStyler getStyler()
 
     /**
+     * Adds a callback for cancel.
+     *
+     * @param callback The callback to add.
+     */
+    void addCancelCallback(final Closure<Void> callback)
+
+    /**
+     * Removes a callback for cancel.
+     *
+     * @param callback The callback to remove.
+     */
+    void removeCancelCallback(final Closure<Void> callback)
+
+    /**
      * This gets called when the window is closed. This can be overriden to
      * handle more more actions like exiting the JVM for example.
      */
