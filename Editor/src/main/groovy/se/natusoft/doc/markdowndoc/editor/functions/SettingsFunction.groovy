@@ -36,9 +36,11 @@
  */
 package se.natusoft.doc.markdowndoc.editor.functions
 
+import com.sun.xml.internal.ws.api.config.management.policy.ManagementAssertion
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
+import se.natusoft.doc.markdowndoc.editor.OS
 import se.natusoft.doc.markdowndoc.editor.Services
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.*
@@ -46,8 +48,9 @@ import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
-import se.natusoft.doc.markdowndoc.editor.functions.settings.gui.SettingsWindow
 import se.natusoft.doc.markdowndoc.editor.functions.utils.FileWindowProps
+import se.natusoft.doc.markdowndoc.editor.gui.PopupWindowConfig
+import se.natusoft.doc.markdowndoc.editor.gui.SettingsWindow
 
 import javax.swing.*
 import java.awt.event.ActionEvent
@@ -60,7 +63,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-class SettingsFunction implements EditorFunction, Configurable, DelayedInitializer {
+class SettingsFunction implements EditorFunction, Configurable, DelayedInitializer, OS {
     //
     // Constants
     //
@@ -75,6 +78,11 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
     private SettingsWindow settingsWindow = null
 
     private Map<String, String> cancelValues = null
+
+    private float settingsOpacity = 1.0f
+
+    private int bottomMargin = -1
+    private int topMargin = -1
 
     //
     // Properties
@@ -91,8 +99,22 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
             new KeyConfigEntry("editor.function.settings.keyboard.shortcut", "Settings keyboard shortcut",
                     new KeyboardKey("Ctrl+E"), CONFIG_GROUP_KEYBOARD)
 
-    private Closure keyboardShortcutConfigChanged = { final ConfigEntry ce ->
+    private Closure keyboardShortcutConfigChanged = { final ConfigEntry ignored ->
         updateTooltipText()
+    }
+
+    private Closure settingsOpacityChanged = { @NotNull final ConfigEntry ce ->
+        final int ival = Integer.valueOf(ce.value)
+        final float fval = ((ival as float) / 100.0f) as float
+        updateOpacity(fval)
+    }
+
+    private Closure settingsWindowTopMarginConfigChanged = { final ConfigEntry ce ->
+        updateWindowTopMargin(Integer.valueOf(ce.value))
+    }
+
+    private Closure settingsWindowBottomMarginConfigChanged = { final ConfigEntry ce ->
+        updateWindowBottomMargin(Integer.valueOf(ce.value))
     }
 
     /**
@@ -103,6 +125,9 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
     @Override
     void registerConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
+        configProvider.registerConfig(PopupWindowConfig.popupOpacityConfig, settingsOpacityChanged)
+        configProvider.registerConfig(PopupWindowConfig.screenTopMargin, settingsWindowTopMarginConfigChanged)
+        configProvider.registerConfig(PopupWindowConfig.screenBottomMargin, settingsWindowBottomMarginConfigChanged)
     }
 
     /**
@@ -113,6 +138,9 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
     @Override
     void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
+        configProvider.unregisterConfig(PopupWindowConfig.popupOpacityConfig, settingsOpacityChanged)
+        configProvider.unregisterConfig(PopupWindowConfig.screenTopMargin, settingsWindowTopMarginConfigChanged)
+        configProvider.unregisterConfig(PopupWindowConfig.screenBottomMargin, settingsWindowBottomMarginConfigChanged)
     }
 
     //
@@ -139,6 +167,30 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
         this.settingsButton.setToolTipText("Settings (" + keyboardShortcutConfig.getKeyboardKey() + ")")
     }
 
+    private void updateOpacity(float newOpacity) {
+        if (newOpacity < 0.10f) {
+            newOpacity = 0.10f
+        }
+        this.settingsOpacity = newOpacity
+        if (this.settingsWindow != null) {
+            this.settingsWindow.safeOpacity = this.settingsOpacity
+        }
+    }
+
+    private void updateWindowTopMargin(final int topMargin) {
+        this.topMargin = topMargin
+        if (this.settingsWindow != null) {
+            this.settingsWindow.updateBounds()
+        }
+    }
+
+    private void updateWindowBottomMargin(final int bottomMargin) {
+        this.bottomMargin = bottomMargin
+        if (this.settingsWindow != null) {
+            this.settingsWindow.updateBounds()
+        }
+    }
+
     @Override
     @NotNull String getGroup() {
         ToolBarGroups.CONFIG.name()
@@ -162,28 +214,65 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
         keyboardShortcutConfig.getKeyboardKey()
     }
 
+    private Closure<Float> settingsOpacityProvider = {
+        this.settingsOpacity
+    }
+
+    private Closure<Integer> bottomMarginProvider = {
+        int val = this.bottomMargin
+        if (val == -1) {
+            if (windowsOS) {
+                val = 70
+            }
+            else if (linuxOS) {
+                val = 40
+            }
+            else {
+                val = 0
+            }
+        }
+        val
+    }
+
+    private Closure<Integer> topMarginProvider = {
+        int val = this.topMargin
+        if (val == -1) {
+            val = 0
+        }
+        val
+    }
+
+    private Closure<Void> cancelSettingsProvider = {
+        cancel()
+    }
+
+    private Closure<Void> saveSettingsProvider = {
+        save()
+    }
+
     @Override
     void perform() throws FunctionException {
-        this.settingsWindow = new SettingsWindow() {
+        if (this.settingsWindow == null) {
+            this.settingsWindow = new SettingsWindow(
+                    windowOpacityProvider: this.settingsOpacityProvider,
+                    topMarginProvider: this.topMarginProvider,
+                    bottomMarginProvider: this.bottomMarginProvider,
+                    cancelSettingsProvider: this.cancelSettingsProvider,
+                    saveSettingsProvider: this.saveSettingsProvider
+            )
 
-            @Override
-            protected void cancelSettings() {
-                cancel()
+            this.cancelValues = new HashMap<>()
+            withAllConfigEntriesDo { final ConfigEntry configEntry ->
+                this.settingsWindow.addConfig(configEntry)
+                this.cancelValues.put(configEntry.getKey(), configEntry.getValue())
             }
 
-            @Override
-            protected void saveSettings() {
-                save()
-            }
+            this.settingsWindow.windowVisibility = true
         }
-
-        this.cancelValues = new HashMap<>()
-        withAllConfigEntriesDo { final ConfigEntry configEntry ->
-            this.settingsWindow.addConfig(configEntry)
-            this.cancelValues.put(configEntry.getKey(), configEntry.getValue())
+        else {
+            this.settingsWindow.visible = true
+            this.settingsWindow.requestFocus()
         }
-
-        this.settingsWindow.setVisible(true)
     }
 
     /**
@@ -204,6 +293,7 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
             configEntry.setValue(this.cancelValues.get(configEntry.getKey()))
         }
 
+        this.settingsWindow = null
     }
 
     /**
@@ -221,6 +311,8 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
         final FileWindowProps fileWindowProps = new FileWindowProps()
         fileWindowProps.setBounds(this.editor.getGUI().getWindowFrame().getBounds())
         fileWindowProps.saveBounds()
+
+        this.settingsWindow = null
     }
 
     /**

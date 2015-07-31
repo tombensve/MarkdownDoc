@@ -736,7 +736,7 @@ class PDFGenerator implements Generator {
 
         float yTop = document.top() - document.topMargin() - (float)(yItemSizeTop / 2) + 15
         float yBottom = document.bottom() + (float)(yItemSizeBottom / 2)
-        float x = (float)(document.right() - document.left()) / 2f + document.leftMargin()
+        float x = (float)((document.right() - document.left()) / 2f + document.leftMargin())
 
         // Rendered from top of page
 

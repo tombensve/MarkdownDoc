@@ -90,11 +90,17 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
      */
     Dimension optimalSize = null
 
-    /** The vertical margin to use at edges. */
-    int vmargin = 0
+    /** The top margin to use. */
+    int topMargin = 0
 
-    /** The horizontal margin to use at edges. */
-    int hmargin = 0
+    /** The bottom margin to use. */
+    int bottomMargin = 0
+
+    /** The left margin to use. */
+    int leftMargin = 0
+
+    /** The right margin to use.  */
+    int rightMargin = 0
 
     /** The gap to put between each component row. */
     int vgap = 0
@@ -178,32 +184,38 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
      * @param parent The parent container we are doing layout for.
      * @param update If true actual layout will be done. If false only minimum size will be calculated.
      */
-    private void doLayout(@NotNull Container parent, boolean update) {
+    private void doLayout(@NotNull final Container parent, final boolean update) {
         if (this.optimalSize == null) {
-            this.optimalSize = new Dimension(400, this.screenSize.height + 1 as int)
+            this.optimalSize = new Dimension(400, this.screenSize.height as int)
         }
-        Insets insets = parent.insets
-        int x = insets.left + this.hmargin + this.extraHMargin
-        int y = 25 + insets.top + this.vmargin + this.extraVMargin
+
+        if (this.bottomMargin == 0) this.bottomMargin = this.topMargin
+        if (this.rightMargin == 0) this.rightMargin = this.leftMargin
+
+        final Insets insets = parent.insets
+        int x = insets.left + this.leftMargin + this.extraHMargin
+        int y = insets.top + this.topMargin + this.extraVMargin
         int highestY = 0
 
         int commonWidth = 0
-        for (Component comp : this.components) {
+        for (final Component comp : this.components) {
             int compWidth = (int)comp.preferredSize.width
             if (compWidth > commonWidth) {
                 commonWidth = compWidth
             }
         }
 
-        for (Component comp : components) {
+        for (final Component comp : components) {
 
             Dimension compPreferred = comp.preferredSize
 
             compPreferred.setSize(commonWidth, compPreferred.height)
 
-            if (y + 30 + (compPreferred.height as int) + this.vgap + this.extraVGap > optimalSize.height) {
-                x = x + commonWidth + this.hgap + this.extraHGap
-                y = insets.top + this.vmargin + this.extraVMargin
+            if ((y + (compPreferred.height as int) + this.bottomMargin + this.vgap + this.extraVGap) >
+                    (optimalSize.height as int)) {
+
+                x = (int)(x + commonWidth + this.hgap + this.extraHGap)
+                y = (int)(insets.top + this.topMargin + this.extraVMargin)
             }
 
             if (update) {
@@ -215,8 +227,8 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
             if (y > highestY) { highestY = y }
         }
 
-        int minWidth = x + insets.right
-        int minHeight = insets.top + highestY + insets.bottom
+        final int minWidth = x + insets.right + commonWidth + this.rightMargin
+        final int minHeight = insets.top + highestY + insets.bottom
         this.minimumSize.setSize(minWidth, minHeight)
 
         if ((x + commonWidth + this.hgap + this.extraHGap) > (this.optimalSize.width as int) &&

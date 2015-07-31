@@ -4,11 +4,15 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
+import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
+import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
+import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
 import se.natusoft.doc.markdowndoc.editor.gui.EditableSelectorPopup
+import se.natusoft.doc.markdowndoc.editor.gui.PopupWindowConfig
 
 import javax.swing.*
 import java.awt.event.MouseEvent
@@ -20,7 +24,7 @@ import java.awt.event.MouseMotionListener
  */
 @CompileStatic
 @TypeChecked
-class SelectEditableFunction implements EditorFunction {
+class SelectEditableFunction implements EditorFunction, Configurable {
     //
     // Private Members
     //
@@ -30,6 +34,40 @@ class SelectEditableFunction implements EditorFunction {
     private MouseMotionListener mouseMotionListener = null
 
     private EditableSelectorPopup popup = null
+
+    private float popupOpacity = 1.0f
+
+    //
+    // Configs
+    //
+
+    private Closure popupOpacityChanged = { @NotNull final ConfigEntry ce ->
+        int iVal = Integer.valueOf(ce.value)
+        this.popupOpacity = ((float)iVal / 100.0f ) as float
+        if (this.popup != null) {
+            this.popup.updateOpacity(this.popupOpacity)
+        }
+    }
+
+    /**
+     * Register configurations.
+     *
+     * @param configProvider The config provider to register with.
+     */
+    @Override
+    void registerConfigs(@NotNull final ConfigProvider configProvider) {
+        configProvider.registerConfig(PopupWindowConfig.popupOpacityConfig, popupOpacityChanged)
+    }
+
+    /**
+     * Unregister configurations.
+     *
+     * @param configProvider The config provider to unregister with.
+     */
+    @Override
+    void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
+        configProvider.unregisterConfig(PopupWindowConfig.popupOpacityConfig, popupOpacityChanged)
+    }
 
     //
     // Methods
@@ -76,6 +114,7 @@ class SelectEditableFunction implements EditorFunction {
     @Override
     void perform() throws FunctionException {
         this.popup = new EditableSelectorPopup(editor: this.editor, closer: { this.popup = null })
+        this.popup.showWindow(this.popupOpacity)
     }
 
     /**
@@ -122,4 +161,5 @@ class SelectEditableFunction implements EditorFunction {
             this.popup = null
         }
     }
+
 }

@@ -1,6 +1,7 @@
 package se.natusoft.doc.markdowndoc.editor.gui
 
 import groovy.transform.CompileStatic
+import groovy.transform.PackageScope
 import groovy.transform.TypeChecked
 
 import javax.swing.*
@@ -44,13 +45,28 @@ trait GuiGoodies {
         this.window = window
     }
 
+    @PackageScope Window getManagedWindow() {
+        this.window
+    }
+
     static Rectangle getDefaultScreen_Bounds() {
         return screenBounds
     }
 
+    static Rectangle getDefaultScreen_Bounds(final int topMargin, final int bottomMargin) {
+        return new Rectangle(
+                screenBounds.x as int,
+                (screenBounds.y + topMargin) as int,
+                screenBounds.width as int,
+                (screenBounds.height - bottomMargin) as int
+        )
+    }
+
     void setSafeOpacity(final float _opacity) {
         if (supportsTranslucency) {
-            this.window.opacity = _opacity
+            if (_opacity >= 0.0f && _opacity <= 1.0f) {
+                this.window.opacity = _opacity
+            }
         }
     }
 
@@ -73,6 +89,46 @@ trait GuiGoodies {
         public void componentResized(final ComponentEvent e) {
             window.setShape(new RoundRectangle2D.Double(0.0, 0.0, this.window.width as double,
                     this.window.height as double, 10.0, 10.0))
+        }
+    }
+
+    void fadeInWindow(final float maxOpacity) {
+        new Thread(new FadeInRunnable(guiGoodies: this, maxOpacity: maxOpacity)).start()
+    }
+
+    @CompileStatic
+    @TypeChecked
+    private static class FadeInRunnable implements  Runnable {
+        GuiGoodies guiGoodies
+        float maxOpacity
+
+        @Override
+        void run() {
+            Thread.sleep(500)
+            for (float op = 0.0f; op <= maxOpacity; op = op + 0.02f) {
+                guiGoodies.safeOpacity = op
+                Thread.sleep(5)
+            }
+        }
+    }
+
+    void fadeOutWindow(final Closure<Void> closeWindow) {
+        new Thread(new FadeOutRunnable(guiGoodies: this, closeWindow: closeWindow)).start()
+    }
+
+    @CompileStatic
+    @TypeChecked
+    private static class FadeOutRunnable implements Runnable {
+        GuiGoodies guiGoodies
+        Closure<Void> closeWindow = null
+
+        @Override
+        void run() {
+            for (float op = this.guiGoodies.getManagedWindow().getOpacity(); op >= 0.0f; op = op - 0.02f) {
+                guiGoodies.safeOpacity = op
+                Thread.sleep(5)
+            }
+            closeWindow?.call()
         }
     }
 

@@ -2,6 +2,7 @@ package se.natusoft.doc.markdowndoc.editor.gui
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.file.Editables
 
@@ -30,6 +31,12 @@ class EditableSelectorPopup extends JFrame implements GuiGoodies, MouseListeners
 
     private Closure<Void> cancelCallback = { close() }
 
+    private ColumnTopDownLeftRightLayout layout =
+            new ColumnTopDownLeftRightLayout(leftMargin: 20, topMargin: 30, hgap: 20, vgap: 4,
+                    screenSize: defaultScreen_Bounds)
+
+    private EditableFileButton first = null
+
     //
     // Properties
     //
@@ -49,10 +56,6 @@ class EditableSelectorPopup extends JFrame implements GuiGoodies, MouseListeners
 
     EditableSelectorPopup() {
         initGuiGoodies(this)
-
-        ColumnTopDownLeftRightLayout layout =
-                new ColumnTopDownLeftRightLayout(hmargin: 20, vmargin: 20, hgap: 20, vgap: 4,
-                        screenSize: defaultScreen_Bounds)
 
         setLayout(new BorderLayout())
         JScrollPane scrollPane = new JScrollPane(
@@ -93,8 +96,6 @@ class EditableSelectorPopup extends JFrame implements GuiGoodies, MouseListeners
             groupList.add(editableFileButton)
         }
 
-        EditableFileButton first = null
-
         // Then add them to the component.
         groups.keySet().each { String key ->
             List<JComponent> groupList = groups.get(key)
@@ -115,19 +116,30 @@ class EditableSelectorPopup extends JFrame implements GuiGoodies, MouseListeners
 
         undecorated = true
         background = Color.BLACK
-        safeOpacity = STANDARD_OPACITY
+//        safeOpacity = STANDARD_OPACITY
+
+        popupContentPane.addMouseMotionListener this
+
+        popupContentPane.addMouseListener new CloseClickHandler()
+    }
+
+    void showWindow(final float _opacity) {
+
+        updateOpacity(_opacity)
 
         setSize 1, 1
         visible = true
+
         size = layout.optimalSize
 
         setLocation 0, 0
 
         moveMouse new Point(first.x + this.x + 20, first.y + this.y + 10)
 
-        popupContentPane.addMouseMotionListener this
+    }
 
-        popupContentPane.addMouseListener new CloseClickHandler()
+    final void updateOpacity(final float _opacity) {
+        safeOpacity = _opacity
     }
 
     private class CloseClickHandler implements MouseListeners {

@@ -47,6 +47,7 @@ import se.natusoft.doc.markdowndoc.editor.api.*
 import se.natusoft.doc.markdowndoc.editor.config.*
 import se.natusoft.doc.markdowndoc.editor.file.EditableProvider
 import se.natusoft.doc.markdowndoc.editor.file.Editables
+import se.natusoft.doc.markdowndoc.editor.gui.GuiGoodies
 import se.natusoft.doc.markdowndoc.editor.gui.MouseListeners
 import se.natusoft.doc.markdowndoc.editor.gui.MultiPopupToolbar
 import se.natusoft.doc.markdowndoc.editor.tools.ServiceDefLoader
@@ -72,9 +73,9 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_T
  */
 @CompileStatic
 @TypeChecked
-@Singleton
+@Singleton(strict = false) // Need constructor!
 class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, MouseListeners, Configurable,
-        MouseMotionProvider {
+        MouseMotionProvider, GuiGoodies {
 
     //
     // Constants
@@ -224,9 +225,17 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
     private static IntegerConfigEntry rightMargin = new IntegerConfigEntry("editor.pane.right.margin",
             "The right margin.", 60, 0, 500, CONFIG_GROUP_EDITING)
 
+//    private static DoubleConfigEntry editorOpacity = new DoubleConfigEntry("editor.window.opacity",
+//            "The editor opacity.", 1.0d, 0.0d,1.0d, CONFIG_GROUP_EDITING)
+
     //
     // Config callbacks
     //
+
+//    private Closure opacityChanged = { @NotNull ConfigEntry ce ->
+//        float opacity = Float.valueOf(ce.value)
+//        safeOpacity = opacity
+//    }
 
     private Closure fontConfigChanged = { @NotNull ConfigEntry ce ->
         this.editable?.editorPane?.setFont(Font.decode(ce.getValue()).
@@ -367,6 +376,10 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
     //
     // Construction
     //
+
+    MarkdownDocEditor() {
+        initGuiGoodies(this)
+    }
 
     protected void closeWindow() {
         final ConfigProvider cp = Services.configs

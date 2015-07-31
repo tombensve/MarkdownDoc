@@ -21,6 +21,7 @@
             <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
             <artifactId>markdown-doc-lib</artifactId>
             <version>${project.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>

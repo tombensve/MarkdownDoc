@@ -9,7 +9,7 @@ __[Apache Software License version 2.0](http://www.apache.org/licenses/LICENSE-2
 
 The following third party products are using this license:
 
-* [groovy-all-2.4.3](http://groovy.codehaus.org/)
+* [groovy-all-2.4.4](http://groovy-lang.org)
 * [annotations-13.0](http://www.jetbrains.org)
 
 __[Apache version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)__
