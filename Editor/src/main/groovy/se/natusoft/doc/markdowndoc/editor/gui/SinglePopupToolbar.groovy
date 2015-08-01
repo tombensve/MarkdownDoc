@@ -206,21 +206,20 @@ class SinglePopupToolbar implements GuiGoodies, ToolBar, Configurable {
      * @param y The Y coordinate to open at.
      */
     private void open(@NotNull final JFrame parent, final int x, final int y) {
-        safeOpacity = this.toolbarOpacity
 
         final boolean create = (this.toolBarWindow == null)
 
         if (create) {
             this.toolBarWindow = new JWindow(parent)
-
             initGuiGoodies(this.toolBarWindow)
+            safeOpacity = this.toolbarOpacity
+
             this.toolBarWindow.setBackground(Color.BLACK)
 
             this.toolBarWindow.setLayout(new BorderLayout())
 
             final JPanel panel = new JPanel()
             panel.setBackground(Color.BLACK)
-//            panel.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED))
             this.toolBarWindow.add(panel, BorderLayout.CENTER)
             panel.layout = new FlowLayout(FlowLayout.LEFT)
             boolean separator = false

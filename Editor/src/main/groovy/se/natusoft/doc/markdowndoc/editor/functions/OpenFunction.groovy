@@ -39,6 +39,7 @@ package se.natusoft.doc.markdowndoc.editor.functions
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
+import se.natusoft.doc.markdowndoc.editor.MarkdownDocEditor
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
@@ -85,7 +86,7 @@ class OpenFunction implements EditorFunction, Configurable {
             new KeyConfigEntry("editor.function.open.keyboard.shortcut", "Open keyboard shortcut",
                     new KeyboardKey("Ctrl+O"), CONFIG_GROUP_KEYBOARD)
 
-    private Closure keyboardShortcutConfigChanged = { ConfigEntry ce ->
+    private Closure keyboardShortcutConfigChanged = { final ConfigEntry ce ->
         updateTooltipText()
     }
 
@@ -95,7 +96,7 @@ class OpenFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(@NotNull ConfigProvider configProvider) {
+    void registerConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -105,7 +106,7 @@ class OpenFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -114,11 +115,11 @@ class OpenFunction implements EditorFunction, Configurable {
     //
 
     OpenFunction() {
-        Icon openIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddopen.png"))
+        final Icon openIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddopen.png"))
         this.openButton = new JButton(openIcon)
         this.openButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent actionEvent) {
+            void actionPerformed(final ActionEvent actionEvent) {
                 perform()
             }
         })
@@ -158,7 +159,7 @@ class OpenFunction implements EditorFunction, Configurable {
         try {
             open()
         }
-        catch (IOException ioe) {
+        catch (final IOException ioe) {
             throw new FunctionException(message: ioe.getMessage(), cause: ioe)
         }
     }
@@ -167,14 +168,17 @@ class OpenFunction implements EditorFunction, Configurable {
      * Opens a new file using a file chooser.
      */
     private void open() throws IOException {
-        JFileChooser fileChooser = new JFileChooser()
+        final JFileChooser fileChooser = new JFileChooser()
         fileChooser.setDialogType(JFileChooser.OPEN_DIALOG)
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        final FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "Markdown", "md", "markdown")
         fileChooser.setFileFilter(filter)
-        int returnVal = fileChooser.showOpenDialog(this.editor.getGUI().getWindowFrame())
+        final int returnVal = fileChooser.showOpenDialog(this.editor.getGUI().getWindowFrame())
         if(returnVal == JFileChooser.APPROVE_OPTION) {
-            this.editor.editable = Editables.inst.getEditable(fileChooser.getSelectedFile())
+            if (Editables.inst.getEditable(fileChooser.selectedFile) == null) {
+                MarkdownDocEditor.openFile(fileChooser.selectedFile)
+            }
+            this.editor.editable = Editables.inst.getEditable(fileChooser.selectedFile)
         }
     }
 

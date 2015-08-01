@@ -42,14 +42,19 @@ import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
+import se.natusoft.doc.markdowndoc.editor.api.Editable
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
+import se.natusoft.doc.markdowndoc.editor.file.Editables
+import se.natusoft.doc.markdowndoc.editor.gui.GuiGoodies
+import se.natusoft.doc.markdowndoc.editor.gui.PopupWindowConfig
 
 import javax.swing.*
+import javax.swing.border.EmptyBorder
 import javax.swing.border.SoftBevelBorder
 import java.awt.*
 import java.awt.event.ActionEvent
@@ -62,12 +67,14 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-class SaveFunction implements EditorFunction, Configurable {
+class SaveFunction implements EditorFunction, Configurable, GuiGoodies {
     //
     // Private Members
     //
 
     private JButton saveButton
+
+    float popupOpacity = 1.0f
 
     //
     // Properties
@@ -84,8 +91,13 @@ class SaveFunction implements EditorFunction, Configurable {
             new KeyConfigEntry("editor.function.selectNewFile.keyboard.shortcut", "Save keyboard shortcut",
                     new KeyboardKey("Ctrl+S"), CONFIG_GROUP_KEYBOARD)
 
-    private Closure keyboardShortcutConfigChanged = { ConfigEntry ce ->
+    private Closure keyboardShortcutConfigChanged = { final ConfigEntry ce ->
         updateTooltipText()
+    }
+
+    private Closure popupOpacityChanged = { final ConfigEntry ce ->
+        int ival = Integer.valueOf(ce.value)
+        this.popupOpacity = ((ival as float) / 100.0f) as float
     }
 
     /**
@@ -96,6 +108,7 @@ class SaveFunction implements EditorFunction, Configurable {
     @Override
     void registerConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
+        configProvider.registerConfig(PopupWindowConfig.popupOpacityConfig, popupOpacityChanged)
     }
 
     /**
@@ -106,6 +119,7 @@ class SaveFunction implements EditorFunction, Configurable {
     @Override
     void unregisterConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
+        configProvider.unregisterConfig(PopupWindowConfig.popupOpacityConfig, popupOpacityChanged)
     }
 
     //
@@ -158,13 +172,24 @@ class SaveFunction implements EditorFunction, Configurable {
     @Override
     void perform() throws FunctionException {
         try {
-            this.editor.save()
-            showSavedInfo()
+//            this.editor.save()
+            int noSaved = 0
+            Editables.inst.values().each { final Editable editable ->
+                if (!editable.saved) {
+                    editable.save()
+                    noSaved = noSaved + 1
+                }
+            }
+            showSavedInfo(noSaved)
             this.editor.requestEditorFocus()
         }
-        catch (IOException ioe) {
+        catch (final IOException ioe) {
             JOptionPane.showMessageDialog(
-                    this.editor.getGUI().getWindowFrame(), ioe.getMessage(), "Failed to selectNewFile!", JOptionPane.ERROR_MESSAGE)
+                    this.editor.getGUI().getWindowFrame(),
+                    ioe.getMessage(),
+                    "Failed to save file(s)!",
+                    JOptionPane.ERROR_MESSAGE
+            )
 
         }
     }
@@ -172,25 +197,34 @@ class SaveFunction implements EditorFunction, Configurable {
     /**
      * Shows "Saved!" for 2,5 seconds up in the left cornet of the edit window.
      */
-    private void showSavedInfo() {
+    private void showSavedInfo(final int noSaved) {
         new Thread() {
             @SuppressWarnings("UnnecessaryQualifiedReference")
             @Override
             void run() {
-                int x = editor.getGUI().getWindowFrame().getX()
-                int y = editor.getGUI().getWindowFrame().getY()
+                final int x = editor.getGUI().getWindowFrame().getX()
+                final int y = editor.getGUI().getWindowFrame().getY()
 
-                JWindow window = new JWindow(editor.getGUI().getWindowFrame())
-                window.setLayout(new BorderLayout())
-                JPanel panel = new JPanel(new BorderLayout())
-                panel.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED))
+                final JWindow window = new JWindow(editor.getGUI().getWindowFrame())
+                initGuiGoodies(window)
+                SaveFunction.this.safeOpacity = SaveFunction.this.popupOpacity
+                window.layout = new BorderLayout()
+
+                final JPanel panel = new JPanel(new BorderLayout())
+                panel.background = Color.BLACK
+                panel.foreground = Color.WHITE
+                //panel.border = new SoftBevelBorder(SoftBevelBorder.RAISED)
+                panel.border = new EmptyBorder(3, 6, 3, 6)
                 window.add(panel, BorderLayout.CENTER)
-                panel.add(new JLabel("Saved!"))
-                window.setLocation(x + 10, y + 30)
-                window.setVisible(true)
-                window.setSize(window.getPreferredSize())
-                try { Thread.sleep(2500) } catch (Exception ignored) {}
-                window.setVisible(false)
+                JLabel label = new JLabel("Saved ${noSaved} files!")
+                label.background = Color.BLACK
+                label.foreground = Color.WHITE
+                panel.add(label)
+                window.location = new Point(x + 10, y + 30)
+                window.visible = true
+                window.size = window.preferredSize
+                try { Thread.sleep(2500) } catch (final Exception ignored) {}
+                window.visible = false
             }
         }.start()
     }

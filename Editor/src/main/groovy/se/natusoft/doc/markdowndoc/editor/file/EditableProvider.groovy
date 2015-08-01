@@ -55,8 +55,11 @@ class EditableProvider implements Editable {
     // Properties
     //
 
-    /** The saved state of this editable. */
-    boolean saved = false
+    /**
+     * The saved state of this editable. This will be changed to false when editable is active in editor and
+     * text is entered.
+     */
+    boolean saved = true
 
     //
     // Constructors
@@ -177,6 +180,7 @@ class EditableProvider implements Editable {
         this.editorPane.setText(sb.toString())
         this.styler.enable()
         this.styler.styleDocument()
+        saved = true
     }
 
     /**
@@ -189,6 +193,7 @@ class EditableProvider implements Editable {
         file.withWriter('UTF-8') { final BufferedWriter writer ->
             writer.write(this.editorPane.text)
         }
+        saved = true
     }
 
     /**

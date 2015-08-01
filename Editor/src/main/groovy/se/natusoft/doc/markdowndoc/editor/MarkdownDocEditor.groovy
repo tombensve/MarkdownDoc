@@ -88,8 +88,10 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
     //
 
     // This is for styling the editorPane while editing.
-    protected static ServiceLoader<JTextComponentStylerFactory> stylerFactoryLoader =
+    static final ServiceLoader<JTextComponentStylerFactory> stylerFactoryLoader =
             ServiceLoader.load(JTextComponentStylerFactory.class)
+
+    static final JTextComponentStylerFactory editorStylerFactory = stylerFactoryLoader?.iterator()?.next()
 
     //
     // Private Members
@@ -141,9 +143,6 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
 
     /** listeners of mouse motion events. */
     protected List<MouseMotionListener> mouseMotionListeners = new LinkedList<>()
-
-    /** Factory for creating a styler. */
-    protected JTextComponentStylerFactory editorStylerFactory
 
     /** Any closure in this list will be called on triggering of cancel. */
     protected List<Closure<Void>> cancelCallbacks = new LinkedList<>()
@@ -667,7 +666,9 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      * a key typed event.
      */
     @Override
-    void keyTyped(KeyEvent ignored) {}
+    void keyTyped(KeyEvent e) {
+        this.editable.saved = false
+    }
 
     /**
      * Invoked when a key has been pressed.
@@ -1109,7 +1110,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
         fileChooser.setFileFilter(filter)
         int returnVal = fileChooser.showSaveDialog(getGUI().getWindowFrame())
         if(returnVal == JFileChooser.APPROVE_OPTION) {
-            setEditable(openFile(fileChooser.getSelectedFile(), this.editorStylerFactory))
+            setEditable(openFile(fileChooser.getSelectedFile()))
         }
     }
 
@@ -1157,10 +1158,9 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      *
      * @throws IOException
      */
-    static void setupAndOpenEditor(final JTextComponentStylerFactory stylerFactory) throws IOException {
+    static void setupAndOpenEditor() throws IOException {
 
         final MarkdownDocEditor mde = MarkdownDocEditor.instance
-        mde.editorStylerFactory = stylerFactory
         mde.initGUI()
 
         enableOSXFullscreenIfOnOSX(mde)
@@ -1178,14 +1178,13 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      * Editable is returned.
      *
      * @param file The file to open.
-     * @param styler The styler to initialize the document model with.
      *
      * @return An Editable instance representing the file.
      */
-    @NotNull static Editable openFile(@NotNull final File file, final JTextComponentStylerFactory stylerFactory) {
+    @NotNull static Editable openFile(@NotNull final File file) {
         Editable editable = Editables.inst.getEditable(file)
         if (editable == null) {
-            editable = new EditableProvider(file, stylerFactory)
+            editable = new EditableProvider(file, this.editorStylerFactory)
             Editables.inst.addEditable(editable)
         }
         editable
@@ -1195,12 +1194,11 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      * Recursively loads all markdown files in directory.
      *
      * @param dir The directory to scan.
-     * @param styler A styler to initialize the document model with.
      */
-    private static void loadDir(@NotNull final File dir, final JTextComponentStylerFactory stylerFactory) {
+    private static void loadDir(@NotNull final File dir) {
         dir.eachFileRecurse(FileType.FILES) { final File file ->
             if (file.name.endsWith(".md") || file.name.endsWith(".markdown")) {
-                openFile(file, stylerFactory)
+                openFile(file)
             }
         }
     }
@@ -1212,7 +1210,6 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      */
     private static void startup(final String... args) {
         try {
-            final JTextComponentStylerFactory editorStylerFactory = stylerFactoryLoader.iterator().next()
             if (editorStylerFactory == null) {
                 throw new RuntimeException("No META-INF/services/se.natusoft.doc.markdowndoc.editorPane.api." +
                         "JTextComponentStylerFactory file pointing out an implementation to use have been provided!")
@@ -1223,9 +1220,9 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
                     final File argFile = new File(arg)
                     if (argFile.exists()) {
                         if (argFile.directory) {
-                            loadDir(argFile, editorStylerFactory)
+                            loadDir(argFile)
                         } else {
-                            openFile(argFile, editorStylerFactory)
+                            openFile(argFile)
                         }
                     }
                     else {
@@ -1234,7 +1231,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
                 }
             }
 
-            setupAndOpenEditor(editorStylerFactory)
+            setupAndOpenEditor()
 
 
         } catch (IOException ioe) {
