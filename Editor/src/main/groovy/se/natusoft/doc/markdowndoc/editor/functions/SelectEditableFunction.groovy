@@ -8,11 +8,9 @@ import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
-import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
 import se.natusoft.doc.markdowndoc.editor.gui.EditableSelectorPopup
-import se.natusoft.doc.markdowndoc.editor.gui.PopupWindowConfig
 
 import javax.swing.*
 import java.awt.event.MouseEvent
@@ -35,19 +33,11 @@ class SelectEditableFunction implements EditorFunction, Configurable {
 
     private EditableSelectorPopup popup = null
 
-    private float popupOpacity = 1.0f
+    private ConfigProvider configProvider = null
 
     //
     // Configs
     //
-
-    private Closure popupOpacityChanged = { @NotNull final ConfigEntry ce ->
-        int iVal = Integer.valueOf(ce.value)
-        this.popupOpacity = ((float)iVal / 100.0f ) as float
-        if (this.popup != null) {
-            this.popup.updateOpacity(this.popupOpacity)
-        }
-    }
 
     /**
      * Register configurations.
@@ -56,7 +46,7 @@ class SelectEditableFunction implements EditorFunction, Configurable {
      */
     @Override
     void registerConfigs(@NotNull final ConfigProvider configProvider) {
-        configProvider.registerConfig(PopupWindowConfig.popupOpacityConfig, popupOpacityChanged)
+        this.configProvider = configProvider
     }
 
     /**
@@ -66,7 +56,9 @@ class SelectEditableFunction implements EditorFunction, Configurable {
      */
     @Override
     void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
-        configProvider.unregisterConfig(PopupWindowConfig.popupOpacityConfig, popupOpacityChanged)
+        if (this.popup != null) {
+            this.popup.unregisterConfigs(configProvider)
+        }
     }
 
     //
@@ -113,8 +105,10 @@ class SelectEditableFunction implements EditorFunction, Configurable {
      */
     @Override
     void perform() throws FunctionException {
-        this.popup = new EditableSelectorPopup(editor: this.editor, closer: { close() })
-        this.popup.showWindow(this.popupOpacity)
+        this.popup = new EditableSelectorPopup(editor: this.editor, closer: { close() } )
+        this.popup.registerConfigs(this.configProvider)
+        this.configProvider.refreshConfigs()
+        this.popup.showWindow()
     }
 
     /**
@@ -160,6 +154,7 @@ class SelectEditableFunction implements EditorFunction, Configurable {
     void close() {
         if (this.popup != null) {
             this.popup.visible = false
+            this.popup.unregisterConfigs(this.configProvider)
             this.popup = null
         }
     }

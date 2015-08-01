@@ -56,37 +56,7 @@ import java.awt.event.WindowEvent
  */
 @CompileStatic
 @TypeChecked
-class SettingsWindow extends JFrame implements GuiGoodies, OS, Colors {
-    //
-    // Required Data API
-    //
-
-    /**
-     * Defines live parameters that must be provided.
-     */
-    static interface LiveParams {
-
-        /** The opacity of the popup window. */
-        float getWindowOpacity()
-
-        /** The bottom margin for popup window. */
-        int getBottomMargin()
-
-        /** The top margin for popup window. */
-        int getTopMargin()
-
-        /**
-         * Callback for saving.
-         */
-        void saveSettings()
-
-        /**
-         * Callback for cancelling.
-         */
-        void cancelSettings()
-
-    }
-
+class SettingsPopup extends PopupWindow implements OS {
     //
     // Private Members
     //
@@ -108,23 +78,14 @@ class SettingsWindow extends JFrame implements GuiGoodies, OS, Colors {
             hgap: 4,
             leftMargin: 5,
             rightMargin: 5,
-            topMargin: 30,
-            bottomMargin: 30
+            topMargin: 10,
+            bottomMargin: 30 // We need 30 due to the save and cancel buttons at the bottom.
     )
 
-
-    /** Live parameters provided by caller. */
-//    private LiveParams liveParams
 
     //
     // Properties
     //
-
-    Closure<Float> windowOpacityProvider
-
-    Closure<Integer> bottomMarginProvider
-
-    Closure<Integer> topMarginProvider
 
     Closure<Void> saveSettingsProvider
 
@@ -134,18 +95,6 @@ class SettingsWindow extends JFrame implements GuiGoodies, OS, Colors {
     // Methods
     //
 
-    private float getWindowOpacity() {
-        this.windowOpacityProvider?.call()
-    }
-
-    private int getBottomMargin() {
-        this.bottomMarginProvider?.call()
-    }
-
-    private int getTopMargin() {
-        this.topMarginProvider?.call()
-    }
-
     private void saveSettings() {
         this.saveSettingsProvider?.call()
     }
@@ -154,14 +103,33 @@ class SettingsWindow extends JFrame implements GuiGoodies, OS, Colors {
         this.cancelSettingsProvider?.call()
     }
 
+    /**
+     * Called when the top margin changes.
+     *
+     * @param _windowTopMargin The new top margin.
+     */
+    @Override
+    protected void updateWindowTopMargin(final int _windowTopMargin) {
+        super.updateWindowTopMargin(_windowTopMargin)
+        updateBounds()
+    }
+
+    /**
+     * Called when the new bottom margin changes.
+     *
+     * @param _windowBottomMargin The new bottom margin.
+     */
+    @Override
+    protected void updateWindowBottomMargin(final int _windowBottomMargin) {
+        super.updateWindowBottomMargin(_windowBottomMargin)
+        updateBounds()
+    }
+
+
     private void setupWindow() {
         super.title = "MarkdownDoc Editor Settings"
 
-        initGuiGoodies(this)
         layout = new BorderLayout()
-        undecorated = true
-        background = Color.BLACK
-        foreground = Color.WHITE
 
         addWindowListener(new WindowListenerAdapter() {
             @Override
@@ -171,7 +139,7 @@ class SettingsWindow extends JFrame implements GuiGoodies, OS, Colors {
         })
 
         this.contentLayout.screenSize =
-                getDefaultScreen_Bounds(this.topMargin, this.bottomMargin)
+                getDefaultScreen_Bounds(this.windowTopMargin, this.windowBottomMargin)
 
         this.groupPane = new JPanel(this.contentLayout)
         this.groupPane.border = null
@@ -217,24 +185,24 @@ class SettingsWindow extends JFrame implements GuiGoodies, OS, Colors {
     void updateBounds() {
 
         this.contentLayout.screenSize =
-                getDefaultScreen_Bounds(this.topMargin, this.bottomMargin)
+                getDefaultScreen_Bounds(this.windowTopMargin, this.windowBottomMargin)
 
         final Dimension ps = preferredSize
 
         if (defaultScreen_Bounds.width - ps.width > 0) {
             setBounds(
                     (defaultScreen_Bounds.width - ps.width) as int,
-                    this.topMargin,
+                    this.windowTopMargin,
                     ps.width as int,
-                    ((int)defaultScreen_Bounds.height - this.bottomMargin) as int
+                    ((int)defaultScreen_Bounds.height - this.windowTopMargin - this.windowBottomMargin) as int
             )
         }
         else {
             setBounds(
                     0,
-                    this.topMargin,
+                    this.windowTopMargin,
                     defaultScreen_Bounds.width as int,
-                    ((int)defaultScreen_Bounds.height - this.bottomMargin) as int
+                    ((int)defaultScreen_Bounds.height - this.windowTopMargin - this.windowBottomMargin) as int
             )
         }
     }
@@ -259,7 +227,7 @@ class SettingsWindow extends JFrame implements GuiGoodies, OS, Colors {
             visible = true
 
 
-            fadeInWindow(this.windowOpacity)
+            fadeInWindow(this.popupOpacity)
         }
         else {
             visible = false

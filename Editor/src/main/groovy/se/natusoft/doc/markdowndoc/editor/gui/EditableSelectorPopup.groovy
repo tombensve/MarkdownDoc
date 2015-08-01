@@ -16,7 +16,7 @@ import java.util.List
  */
 @CompileStatic
 @TypeChecked
-class EditableSelectorPopup extends JFrame implements GuiGoodies, MouseListeners {
+class EditableSelectorPopup extends PopupWindow implements MouseListeners {
 
     //
     // Private Members
@@ -32,8 +32,8 @@ class EditableSelectorPopup extends JFrame implements GuiGoodies, MouseListeners
     private Closure<Void> cancelCallback = { close() }
 
     private ColumnTopDownLeftRightLayout layout =
-            new ColumnTopDownLeftRightLayout(leftMargin: 20, topMargin: 30, hgap: 20, vgap: 4,
-                    screenSize: defaultScreen_Bounds)
+            new ColumnTopDownLeftRightLayout(leftMargin: 20, rightMargin: 20, topMargin: 10, bottomMargin: 10,
+                    hgap: 20, vgap: 4, screenSize: defaultScreen_Bounds)
 
     private EditableFileButton moveToOnOpen = null
 
@@ -58,7 +58,6 @@ class EditableSelectorPopup extends JFrame implements GuiGoodies, MouseListeners
      * Creates a new popup window.
      */
     EditableSelectorPopup() {
-        initGuiGoodies(this)
 
         setLayout(new BorderLayout())
         final JScrollPane scrollPane = new JScrollPane(
@@ -145,31 +144,23 @@ class EditableSelectorPopup extends JFrame implements GuiGoodies, MouseListeners
 
     /**
      * This shows the window.
-     *
-     * @param _opacity The opacity to set on the window before making it visible.
      */
-    void showWindow(final float _opacity) {
+    void showWindow() {
 
-        updateOpacity(_opacity)
+        updateOpacity(popupOpacity)
 
         setSize 1, 1
         visible = true
 
-        size = layout.optimalSize
+        size = new Dimension(
+                layout.optimalSize.width as int,
+                (defaultScreen_Bounds.height - windowTopMargin - windowBottomMargin + 1) as int
+        )
 
-        setLocation 0, 0
+        setLocation 0, windowTopMargin
 
         moveMouse new Point(this.moveToOnOpen.x + this.x + 20, this.moveToOnOpen.y + this.y + 10)
 
-    }
-
-    /**
-     * Updates the opacity of the popup window. This gets called when config is changed.
-     *
-     * @param _opacity The new opacity.
-     */
-    final void updateOpacity(final float _opacity) {
-        safeOpacity = _opacity
     }
 
     //

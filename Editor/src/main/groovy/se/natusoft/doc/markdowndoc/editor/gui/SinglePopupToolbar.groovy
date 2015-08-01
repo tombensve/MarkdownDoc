@@ -98,7 +98,8 @@ class SinglePopupToolbar implements GuiGoodies, ToolBar, Configurable {
      */
     @Override
     void registerConfigs(@NotNull final ConfigProvider configProvider) {
-        configProvider.registerConfig(PopupWindowConfig.popupOpacityConfig, opacityChanged)
+        // We reuse the PopupWindow configuration for opacity.
+        configProvider.registerConfig(PopupWindow.popupOpacityConfig, opacityChanged)
     }
 
     /**
@@ -108,7 +109,8 @@ class SinglePopupToolbar implements GuiGoodies, ToolBar, Configurable {
      */
     @Override
     void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
-        configProvider.unregisterConfig(PopupWindowConfig.popupOpacityConfig, opacityChanged)
+        // We reuse the PopupWindow configuration for opacity.
+        configProvider.unregisterConfig(PopupWindow.popupOpacityConfig, opacityChanged)
     }
 
     //
@@ -125,6 +127,7 @@ class SinglePopupToolbar implements GuiGoodies, ToolBar, Configurable {
     //
 
     protected void mouseMovedHandler(@NotNull final MouseEvent e) {
+        if (this.editor == null) return
         final int y = e.getY() - this.editor.getGUI().getEditorVisibleY()
         if (y <= getTopMargin() && e.getX() >= 0 && e.getX() <= getEditorWidth()) {
             if (!isOpen()) {

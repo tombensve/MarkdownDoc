@@ -51,11 +51,10 @@ import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
 import se.natusoft.doc.markdowndoc.editor.file.Editables
 import se.natusoft.doc.markdowndoc.editor.gui.GuiGoodies
-import se.natusoft.doc.markdowndoc.editor.gui.PopupWindowConfig
+import se.natusoft.doc.markdowndoc.editor.gui.PopupWindow
 
 import javax.swing.*
 import javax.swing.border.EmptyBorder
-import javax.swing.border.SoftBevelBorder
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
@@ -108,7 +107,7 @@ class SaveFunction implements EditorFunction, Configurable, GuiGoodies {
     @Override
     void registerConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
-        configProvider.registerConfig(PopupWindowConfig.popupOpacityConfig, popupOpacityChanged)
+        configProvider.registerConfig(PopupWindow.popupOpacityConfig, popupOpacityChanged)
     }
 
     /**
@@ -119,7 +118,7 @@ class SaveFunction implements EditorFunction, Configurable, GuiGoodies {
     @Override
     void unregisterConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
-        configProvider.unregisterConfig(PopupWindowConfig.popupOpacityConfig, popupOpacityChanged)
+        configProvider.unregisterConfig(PopupWindow.popupOpacityConfig, popupOpacityChanged)
     }
 
     //
