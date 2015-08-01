@@ -10,7 +10,9 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_T
 class PopupWindowConfig {
 
     public static final IntegerConfigEntry popupOpacityConfig = new IntegerConfigEntry("editor.common.popup.opacity",
-            "Popup opacity.", 100, 0, 100, CONFIG_GROUP_TOOL)
+            "Popup opacity.", 75, 0, 100, CONFIG_GROUP_TOOL)
+
+    // The -1 values means not set, in which case a default will be calculated depending on platform run on.
 
     public static final IntegerConfigEntry screenTopMargin =
             new IntegerConfigEntry("editor.common.popup.top.margin", "Top margin of popup windows.",

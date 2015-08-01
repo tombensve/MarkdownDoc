@@ -64,7 +64,7 @@ trait GuiGoodies {
 
     void setSafeOpacity(final float _opacity) {
         if (supportsTranslucency) {
-            if (_opacity >= 0.0f && _opacity <= 1.0f) {
+            if (_opacity >= 0.0f && _opacity <= 1.0f && this.window != null) {
                 this.window.opacity = _opacity
             }
         }

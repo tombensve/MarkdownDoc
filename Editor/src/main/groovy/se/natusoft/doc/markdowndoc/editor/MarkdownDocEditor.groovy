@@ -271,6 +271,10 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
     private Closure toolbarConfigChanged = { @NotNull ConfigEntry ce ->
         if (this.toolBar != null) {
             this.toolBar.detach(this)
+            if (this.toolBar instanceof Configurable) {
+                (this.toolBar as Configurable).unregisterConfigs(Services.configs)
+                Services.configurables.remove(this.toolBar as Configurable)
+            }
         }
         try {
             String cval = ce.getValue()
@@ -280,7 +284,11 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
                 cval = cval.replace("se.natusoft.doc.markdowndoc.editor","se.natusoft.doc.markdowndoc.editor.gui")
             }
             this.toolBar = (ToolBar)Class.forName(cval).newInstance()
-            functions.each { EditorFunction function ->
+            if (this.toolBar instanceof Configurable) {
+                (this.toolBar as Configurable).registerConfigs(Services.configs)
+                Services.configurables.add(this.toolBar as Configurable)
+            }
+            this.functions.each { EditorFunction function ->
                 // It is OK to not have a tool bar button!
                 if (function.getGroup() != null && function.getToolBarButton() != null) {
                     this.toolBar.addFunction(function)
@@ -472,7 +480,9 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
 
             if (component instanceof EditorFunction) {
                 this.functions.add(component as EditorFunction)
-            } else if (component instanceof EditorInputFilter) {
+            }
+
+            if (component instanceof EditorInputFilter) {
                 this.filters.add(component as EditorInputFilter)
             }
 

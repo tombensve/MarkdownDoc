@@ -39,9 +39,12 @@ package se.natusoft.doc.markdowndoc.editor.gui
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
+import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
+import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
 import se.natusoft.doc.markdowndoc.editor.api.ToolBar
+import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 
 import javax.swing.*
 import java.awt.*
@@ -56,7 +59,7 @@ import java.util.List
  */
 @CompileStatic
 @TypeChecked
-class SinglePopupToolbar implements GuiGoodies, ToolBar {
+class SinglePopupToolbar implements GuiGoodies, ToolBar, Configurable {
 
     //
     // Private Members
@@ -76,6 +79,38 @@ class SinglePopupToolbar implements GuiGoodies, ToolBar {
 
     private MouseMotionListener mouseMotionListener = null
 
+    private float toolbarOpacity = 1.0f
+
+    //
+    // Config
+    //
+
+    private Closure opacityChanged = { final ConfigEntry ce ->
+        final int ival = Integer.valueOf(ce.value)
+        this.toolbarOpacity = (((float)ival) / 100.0f) as float
+        safeOpacity = this.toolbarOpacity
+    }
+
+    /**
+     * Register configurations.
+     *
+     * @param configProvider The config provider to register with.
+     */
+    @Override
+    void registerConfigs(@NotNull final ConfigProvider configProvider) {
+        configProvider.registerConfig(PopupWindowConfig.popupOpacityConfig, opacityChanged)
+    }
+
+    /**
+     * Unregister configurations.
+     *
+     * @param configProvider The config provider to unregister with.
+     */
+    @Override
+    void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
+        configProvider.unregisterConfig(PopupWindowConfig.popupOpacityConfig, opacityChanged)
+    }
+
     //
     // Constructors
     //
@@ -89,12 +124,12 @@ class SinglePopupToolbar implements GuiGoodies, ToolBar {
     // Methods
     //
 
-    protected void mouseMovedHandler(@NotNull MouseEvent e) {
-        int y = e.getY() - this.editor.getGUI().getEditorVisibleY()
+    protected void mouseMovedHandler(@NotNull final MouseEvent e) {
+        final int y = e.getY() - this.editor.getGUI().getEditorVisibleY()
         if (y <= getTopMargin() && e.getX() >= 0 && e.getX() <= getEditorWidth()) {
             if (!isOpen()) {
                 final int toolbarWidth = calculateWidth()
-                int x = (int)(getParentFrame().getX() + (getParentFrame().getWidth() / 2) - (toolbarWidth / 2))
+                final int x = (int)(getParentFrame().getX() + (getParentFrame().getWidth() / 2) - (toolbarWidth / 2))
 
                 final int titleBarHeight =
                         (int)(getParentFrame().getBounds().getHeight() - getParentFrame().getContentPane().getBounds().getHeight())
@@ -113,15 +148,15 @@ class SinglePopupToolbar implements GuiGoodies, ToolBar {
      *
      * @param editor The associated editorPane provided.
      */
-    void attach(@NotNull Editor editor) {
+    void attach(@NotNull final Editor editor) {
         this.editor = editor
 
         this.mouseMotionListener = new MouseMotionListener() {
             @Override
-            void mouseDragged(MouseEvent e) {}
+            void mouseDragged(final MouseEvent e) {}
 
             @Override
-            void mouseMoved(MouseEvent e) {
+            void mouseMoved(final MouseEvent e) {
                 mouseMovedHandler(e)
             }
         }
@@ -134,7 +169,7 @@ class SinglePopupToolbar implements GuiGoodies, ToolBar {
      * @param editor The editorPane to detach from.
      */
     @Override
-    void detach(@NotNull Editor editor) {
+    void detach(@NotNull final Editor editor) {
         close()
         editor.removeMouseMotionListener(this.mouseMotionListener)
         this.editor = null
@@ -171,6 +206,7 @@ class SinglePopupToolbar implements GuiGoodies, ToolBar {
      * @param y The Y coordinate to open at.
      */
     private void open(@NotNull final JFrame parent, final int x, final int y) {
+        safeOpacity = this.toolbarOpacity
 
         final boolean create = (this.toolBarWindow == null)
 
@@ -178,7 +214,6 @@ class SinglePopupToolbar implements GuiGoodies, ToolBar {
             this.toolBarWindow = new JWindow(parent)
 
             initGuiGoodies(this.toolBarWindow)
-            safeOpacity = STANDARD_OPACITY
             this.toolBarWindow.setBackground(Color.BLACK)
 
             this.toolBarWindow.setLayout(new BorderLayout())
@@ -249,7 +284,7 @@ class SinglePopupToolbar implements GuiGoodies, ToolBar {
      *
      * @param function The function to add.
      */
-    void addFunction(@NotNull EditorFunction function) {
+    void addFunction(@NotNull final EditorFunction function) {
         if (!this.toolBarGroups.contains(function.getGroup())) {
             this.toolBarGroups.add(function.getGroup())
         }
@@ -277,10 +312,10 @@ class SinglePopupToolbar implements GuiGoodies, ToolBar {
      *
      * @param group The tool bar group to enable.
      */
-    void disableGroup(@NotNull String group) {
-        List<EditorFunction> functions = this.functions.get(group)
+    void disableGroup(@NotNull final String group) {
+        final List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
-            functions.each { EditorFunction function ->
+            functions.each { final EditorFunction function ->
                 function.getToolBarButton().setEnabled(false)
             }
         }
@@ -294,10 +329,10 @@ class SinglePopupToolbar implements GuiGoodies, ToolBar {
      *
      * @param group The tool bar group to disable.
      */
-    void enableGroup(@NotNull String group) {
-        List<EditorFunction> functions = this.functions.get(group)
+    void enableGroup(@NotNull final String group) {
+        final List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
-            functions.each { EditorFunction function ->
+            functions.each { final EditorFunction function ->
                 function.getToolBarButton().setEnabled(true)
             }
         }

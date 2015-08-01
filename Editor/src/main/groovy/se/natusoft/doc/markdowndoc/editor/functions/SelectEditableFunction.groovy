@@ -103,7 +103,7 @@ class SelectEditableFunction implements EditorFunction, Configurable {
      */
     @Override
     KeyboardKey getKeyboardShortcut() {
-        new KeyboardKey("⌘+W")
+        new KeyboardKey("Ctrl+W")
     }
 
     /**
@@ -113,7 +113,7 @@ class SelectEditableFunction implements EditorFunction, Configurable {
      */
     @Override
     void perform() throws FunctionException {
-        this.popup = new EditableSelectorPopup(editor: this.editor, closer: { this.popup = null })
+        this.popup = new EditableSelectorPopup(editor: this.editor, closer: { close() })
         this.popup.showWindow(this.popupOpacity)
     }
 
@@ -144,8 +144,10 @@ class SelectEditableFunction implements EditorFunction, Configurable {
      */
     void mouseMovedHandler(final MouseEvent e) {
 
-        if (e.y > (this.editor.getGUI().editorVisibleY + 100) && e.y < (this.editor.height - 100) && this.popup == null) {
-            if (e.x >= 0 && e.x <= 25) {
+        if (e.y > (this.editor.getGUI().editorVisibleY + 100) && e.y < (this.editor.height - 100)
+                && this.popup == null) {
+
+            if (e.x >= 0 && e.x <= 30) {
                 perform()
             }
         }
