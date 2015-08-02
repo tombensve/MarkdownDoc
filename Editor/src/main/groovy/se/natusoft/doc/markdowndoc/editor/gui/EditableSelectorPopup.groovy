@@ -2,12 +2,13 @@ package se.natusoft.doc.markdowndoc.editor.gui
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
-
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.file.Editables
 
 import javax.swing.*
 import java.awt.*
+import java.awt.event.ComponentAdapter
+import java.awt.event.ComponentEvent
 import java.awt.event.MouseEvent
 import java.util.List
 
@@ -22,20 +23,31 @@ class EditableSelectorPopup extends PopupWindow implements MouseListeners {
     // Private Members
     //
 
-    /** Used to time mouse movement. */
+    /** Used to time mouse movement for a  mouse shake close. */
     private Date mouseTime = null
 
+    /** Used in conjunction with mouse shake close. */
     private int mouseX = 0
 
+    /** Used in conjunction with mouse shake close. */
     private int exitLevel = 0
 
     private Closure<Void> cancelCallback = { close() }
 
     private ColumnTopDownLeftRightLayout layout =
-            new ColumnTopDownLeftRightLayout(leftMargin: 20, rightMargin: 20, topMargin: 10, bottomMargin: 10,
-                    hgap: 20, vgap: 4, screenSize: defaultScreen_Bounds)
+            new ColumnTopDownLeftRightLayout(
+                    leftMargin: 20,
+                    rightMargin: 30,
+                    topMargin: 10,
+                    bottomMargin: filterBottomMargin(40),
+                    hgap: 20,
+                    vgap: 4,
+                    screenSize: getDefaultScreen_Bounds(windowTopMargin, windowBottomMargin)
+            )
 
     private EditableFileButton moveToOnOpen = null
+
+    private JPanel popupContentPane = null
 
     //
     // Properties
@@ -44,7 +56,7 @@ class EditableSelectorPopup extends PopupWindow implements MouseListeners {
     Editor editor
     void setEditor(final Editor editor) {
         this.editor = editor
-        this.editor.addCancelCallback cancelCallback
+        this.editor.addCancelCallback(cancelCallback)
     }
 
     /** Called on close. */
@@ -68,11 +80,11 @@ class EditableSelectorPopup extends PopupWindow implements MouseListeners {
         scrollPane.setViewportBorder(null)
         scrollPane.setBackground(Color.BLACK)
 
-        final JPanel popupContentPane = new JPanel()
-        popupContentPane.setAutoscrolls true
-        popupContentPane.setBackground Color.BLACK
-        popupContentPane.setForeground Color.WHITE
-        popupContentPane.setLayout layout
+        this.popupContentPane = new JPanel()
+        this.popupContentPane.setAutoscrolls(true)
+        this.popupContentPane.setBackground(Color.BLACK)
+        this.popupContentPane.setForeground(Color.WHITE)
+        this.popupContentPane.setLayout(layout)
 
 
         final Map<String, List<JComponent>> groups = new HashMap<>()
@@ -129,9 +141,9 @@ class EditableSelectorPopup extends PopupWindow implements MouseListeners {
         undecorated = true
         background = Color.BLACK
 
-        popupContentPane.addMouseMotionListener this
+        popupContentPane.addMouseMotionListener(this)
 
-        popupContentPane.addMouseListener new CloseClickHandler()
+        popupContentPane.addMouseListener(new CloseClickHandler())
     }
 
 
@@ -149,18 +161,38 @@ class EditableSelectorPopup extends PopupWindow implements MouseListeners {
 
         updateOpacity(popupOpacity)
 
-        setSize 1, 1
-        visible = true
+        // Wait with setting size until the popup window have been completely shown so
+        // that we get the correct sizes of components being laid out.
+        addComponentListener(new ComponentAdapter() {
 
-        size = new Dimension(
-                layout.optimalSize.width as int,
-                (defaultScreen_Bounds.height - windowTopMargin - windowBottomMargin + 1) as int
+            @Override
+            void componentShown(ComponentEvent e) {
+                updatePopupSize()
+            }
+
+        })
+
+        visible = true
+        setSize(10, 10)
+
+        this.layout.doLayout(this.popupContentPane, false)
+    }
+
+    /**
+     * Updates the size of the window after being opened.
+     */
+    private void updatePopupSize() {
+        final boolean fullScreen = isFullScreenWindow(this.editor.GUI.windowFrame)
+
+        this.bounds = new Rectangle(
+                0,
+                (fullScreen ? 0 : this.windowTopMargin) as int,
+                (this.layout.optimalSize.width as int) + 10,
+                (fullScreen ? this.defaultScreen_Bounds.height :
+                        this.defaultScreen_Bounds.height - this.windowTopMargin - this.windowBottomMargin + 1) as int
         )
 
-        setLocation 0, windowTopMargin
-
-        moveMouse new Point(this.moveToOnOpen.x + this.x + 20, this.moveToOnOpen.y + this.y + 10)
-
+        moveMouse(new Point(this.moveToOnOpen.x + this.x + 20, this.moveToOnOpen.y + this.y + 10))
     }
 
     //

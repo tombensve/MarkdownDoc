@@ -1,7 +1,7 @@
 package se.natusoft.doc.markdowndoc.editor.gui
 
 import org.jetbrains.annotations.NotNull
-import se.natusoft.doc.markdowndoc.editor.OS
+import se.natusoft.doc.markdowndoc.editor.OSTrait
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
@@ -15,7 +15,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_T
 /**
  * Base class for popup window.
  */
-class PopupWindow extends JFrame implements Configurable, GuiGoodies, Colors, OS {
+class PopupWindow extends JFrame implements Configurable, GuiGoodiesTrait, Colors, OSTrait {
 
     //
     // Private Members
@@ -82,7 +82,7 @@ class PopupWindow extends JFrame implements Configurable, GuiGoodies, Colors, OS
     }
 
     //
-    // Cosntructors
+    // Constructors
     //
 
     PopupWindow() {
@@ -117,6 +117,9 @@ class PopupWindow extends JFrame implements Configurable, GuiGoodies, Colors, OS
             if (macOSXOS) {
                 this._topMargin = 23
             }
+            else if (linuxOS) {
+                this._topMargin = 4
+            }
             else {
                 this._topMargin = 0
             }
@@ -144,6 +147,24 @@ class PopupWindow extends JFrame implements Configurable, GuiGoodies, Colors, OS
                 this._bottomMargin = 0
             }
         }
+    }
+
+    /**
+     * This filters the actual content bottom margin, not the screen bottom margin.
+     *
+     * @param bottomMargin The original bottom margin.
+     *
+     * @return A possibly updated bottom margin.
+     */
+    protected int filterBottomMargin(int bottomMargin) {
+        if (linuxOS) {
+            bottomMargin += 20
+        }
+        else if (windowsOS) {
+            bottomMargin += 10
+        }
+
+        return bottomMargin
     }
 
     /**

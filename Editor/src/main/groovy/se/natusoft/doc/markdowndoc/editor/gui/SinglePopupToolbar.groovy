@@ -59,7 +59,7 @@ import java.util.List
  */
 @CompileStatic
 @TypeChecked
-class SinglePopupToolbar implements GuiGoodies, ToolBar, Configurable {
+class SinglePopupToolbar implements GuiGoodiesTrait, ToolBar, Configurable {
 
     //
     // Private Members

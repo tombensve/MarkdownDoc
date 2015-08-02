@@ -108,9 +108,6 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
     /** The gap to put between each component. */
     int hgap = 0
 
-    /** If true then the content is spread out over the window area. */
-    boolean spreadOut = false
-
     //
     // Methods
     //
@@ -125,7 +122,7 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
      * @param comp the component to be added
      */
     @Override
-    void addLayoutComponent(@Nullable("Not used") String name, @NotNull Component comp) {
+    void addLayoutComponent(@Nullable("Not used") final String name, @NotNull final Component comp) {
         this.components.add(comp)
     }
 
@@ -135,7 +132,7 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
      * @param comp the component to be removed
      */
     @Override
-    void removeLayoutComponent(@NotNull Component comp) {
+    void removeLayoutComponent(@NotNull final Component comp) {
         this.components.remove(comp)
     }
 
@@ -147,7 +144,7 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
      * @see #minimumLayoutSize
      */
     @Override
-    @NotNull Dimension preferredLayoutSize(Container parent) {
+    @NotNull Dimension preferredLayoutSize(final Container parent) {
         minimumLayoutSize(parent)
     }
 
@@ -159,7 +156,7 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
      * @see #preferredLayoutSize
      */
     @Override
-    @NotNull Dimension minimumLayoutSize(Container parent) {
+    @NotNull Dimension minimumLayoutSize(final Container parent) {
         synchronized (parent.getTreeLock()) {
             doLayout(parent, false)
         }
@@ -172,7 +169,7 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
      * @param parent the container to be laid out
      */
     @Override
-    void layoutContainer(@NotNull Container parent) {
+    void layoutContainer(@NotNull final Container parent) {
         synchronized (parent.getTreeLock()) {
             doLayout(parent, true)
         }
@@ -184,10 +181,23 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
      * @param parent The parent container we are doing layout for.
      * @param update If true actual layout will be done. If false only minimum size will be calculated.
      */
-    private void doLayout(@NotNull final Container parent, final boolean update) {
-        if (this.optimalSize == null) {
-            this.optimalSize = new Dimension(400, this.screenSize.height as int)
-        }
+    public void doLayout(@NotNull final Container parent, final boolean update) {
+        doLayout(parent, update, this.screenSize.height as int)
+    }
+
+    /**
+     * Does the job of laying out the components.
+     *
+     * @param parent The parent container we are doing layout for.
+     * @param update If true actual layout will be done. If false only minimum size will be calculated.
+     * @param screenHeight The height of the screen to use.
+     */
+    public void doLayout(@NotNull final Container parent, final boolean update, final int screenHeight) {
+
+        this.optimalSize = new Dimension(400, screenHeight)
+
+        // Optimize:
+        //if (parent.size.width == 0) return
 
         if (this.bottomMargin == 0) this.bottomMargin = this.topMargin
         if (this.rightMargin == 0) this.rightMargin = this.leftMargin
@@ -220,7 +230,7 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
 
             if (update) {
                 comp.setLocation(x, y)
-                comp.setSize(commonWidth, compPreferred.height as int)
+                comp.setSize(compPreferred)
             }
 
             y = y + (compPreferred.height as int) + this.vgap + this.extraVGap
@@ -228,22 +238,9 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
         }
 
         final int minWidth = x + insets.right + commonWidth + this.rightMargin
-        final int minHeight = insets.top + highestY + insets.bottom
+        final int minHeight = insets.top + highestY + insets.bottom + 15
         this.minimumSize.setSize(minWidth, minHeight)
-
-        if ((x + commonWidth + this.hgap + this.extraHGap) > (this.optimalSize.width as int) &&
-                (x + commonWidth + this.hgap + this.extraHGap) < this.screenSize.width) {
-            this.optimalSize = new Dimension((this.optimalSize.width + 40) as int,
-                    this.optimalSize.height as int)
-            doLayout(parent, update)
-        }
-        else if (this.spreadOut && optimalSize.width - (x + commonWidth + this.hgap + this.extraHGap) > 50) {
-            this.extraHMargin += 20
-            this.extraVMargin += 10
-            this.extraHGap += 10
-            this.extraVGap += 4
-            doLayout(parent, update)
-        }
+        this.optimalSize.setSize(minWidth, minHeight)
     }
 
     /**
@@ -254,7 +251,7 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
      * @param constraints where/how the component is added to the layout.
      */
     @Override
-    void addLayoutComponent(@NotNull Component comp, @Nullable("Not used") Object constraints) {
+    void addLayoutComponent(@NotNull final Component comp, @Nullable("Not used") final Object constraints) {
 
         addLayoutComponent("", comp)
     }
@@ -268,7 +265,7 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
      * @see java.awt.LayoutManager
      */
     @Override
-    Dimension maximumLayoutSize(@NotNull Container target) {
+    Dimension maximumLayoutSize(@NotNull final Container target) {
         preferredLayoutSize(target)
     }
 
@@ -282,7 +279,7 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
      * @param target The target container we are doing layout for.
      */
     @Override
-    float getLayoutAlignmentX(@Nullable("Not used") Container target) {
+    float getLayoutAlignmentX(@Nullable("Not used") final Container target) {
         0.0f
     }
 
@@ -296,7 +293,7 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
      * @param target The target container we are doing layout for.
      */
     @Override
-    float getLayoutAlignmentY(@Nullable("Not used") Container target) {
+    float getLayoutAlignmentY(@Nullable("Not used") final Container target) {
         0.0f
     }
 
@@ -307,7 +304,7 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
      * @param target The target container we are doing layout for.
      */
     @Override
-    void invalidateLayout(@Nullable("Not used") Container target) {
+    void invalidateLayout(@Nullable("Not used") final Container target) {
         // Nothing to invalidate.
     }
 }

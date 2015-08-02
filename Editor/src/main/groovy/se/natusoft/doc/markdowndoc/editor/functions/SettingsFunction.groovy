@@ -39,7 +39,7 @@ package se.natusoft.doc.markdowndoc.editor.functions
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
-import se.natusoft.doc.markdowndoc.editor.OS
+import se.natusoft.doc.markdowndoc.editor.OSTrait
 import se.natusoft.doc.markdowndoc.editor.Services
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.*
@@ -48,6 +48,7 @@ import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
 import se.natusoft.doc.markdowndoc.editor.functions.utils.FileWindowProps
+import se.natusoft.doc.markdowndoc.editor.gui.GuiGoodiesTrait
 import se.natusoft.doc.markdowndoc.editor.gui.SettingsPopup
 
 import javax.swing.*
@@ -61,7 +62,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-class SettingsFunction implements EditorFunction, Configurable, DelayedInitializer, OS {
+class SettingsFunction implements EditorFunction, Configurable, DelayedInitializer, OSTrait, GuiGoodiesTrait {
     //
     // Constants
     //
@@ -72,20 +73,30 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
     // Private Members
     //
 
+    /** An activation button that is registered with the active toolbar.  */
     private JButton settingsButton = null
 
+    /** A copy of current values for restoring on cancel. */
     private Map<String, String> cancelValues = null
 
-    private SettingsPopup settingsPopup =
-            new SettingsPopup(saveSettingsProvider: saveSettingsProvider, cancelSettingsProvider: cancelSettingsProvider)
+    /** The popup window for editing settings. */
+    private SettingsPopup settingsPopup = null
 
-    boolean initialized = false
+    /**
+     * We need a delayed and recurring registration and unregistration of configs for the popup window
+     * so we save the config provider in registerConfigs(...). It is valid for as long as the application
+     * is running, so that is a perfectly OK thing to do.
+     */
+    private ConfigProvider configProvider = null
 
     //
     // Properties
     //
 
-    /** The editor this function is bound to. */
+    /**
+     * The editor this function is bound to. With the exception of (un)registerConfigs() this should
+     * be set before any other method is called.
+     */
     Editor editor = null
 
     //
@@ -108,8 +119,9 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
      */
     @Override
     void registerConfigs(@NotNull final ConfigProvider configProvider) {
+        this.configProvider = configProvider
+
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
-        this.settingsPopup.registerConfigs(configProvider)
     }
 
     /**
@@ -120,7 +132,6 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
     @Override
     void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
-        this.settingsPopup.unregisterConfigs(configProvider)
     }
 
     //
@@ -180,22 +191,25 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
 
     @Override
     void perform() throws FunctionException {
-        if (!this.initialized) {
+        this.cancelValues = new HashMap<>()
 
-            this.cancelValues = new HashMap<>()
-            withAllConfigEntriesDo { final ConfigEntry configEntry ->
-                this.settingsPopup.addConfig(configEntry)
-                this.cancelValues.put(configEntry.getKey(), configEntry.getValue())
-            }
+        this.settingsPopup = new SettingsPopup(
+                saveSettingsProvider: saveSettingsProvider,
+                cancelSettingsProvider: cancelSettingsProvider,
+                fullScreenMode: isFullScreenWindow(this.editor.GUI.windowFrame)
+        )
 
-            this.settingsPopup.windowVisibility = true
+        this.settingsPopup.registerConfigs(this.configProvider)
+        // Since we just registered configs the popup window has not yet received its config values.
+        // A refresh of configs will call all updaters with the current values.
+        this.configProvider.refreshConfigs()
 
-            this.initialized = true
+        withAllConfigEntriesDo { final ConfigEntry configEntry ->
+            this.settingsPopup.addConfig(configEntry)
+            this.cancelValues.put(configEntry.getKey(), configEntry.getValue())
         }
-        else {
-            this.settingsPopup.visible = true
-            this.settingsPopup.requestFocus()
-        }
+
+        this.settingsPopup.windowVisibility = true
     }
 
     /**
@@ -215,6 +229,9 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
         withAllConfigEntriesDo { final ConfigEntry configEntry ->
             configEntry.setValue(this.cancelValues.get(configEntry.getKey()))
         }
+
+        this.settingsPopup.unregisterConfigs(this.configProvider)
+        this.settingsPopup = null
     }
 
     /**
@@ -232,6 +249,9 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
         final FileWindowProps fileWindowProps = new FileWindowProps()
         fileWindowProps.setBounds(this.editor.getGUI().getWindowFrame().getBounds())
         fileWindowProps.saveBounds()
+
+        this.settingsPopup.unregisterConfigs(this.configProvider)
+        this.settingsPopup = null
     }
 
     /**

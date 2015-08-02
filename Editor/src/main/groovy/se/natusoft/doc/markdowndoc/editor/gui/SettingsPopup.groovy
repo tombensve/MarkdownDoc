@@ -39,7 +39,7 @@ package se.natusoft.doc.markdowndoc.editor.gui
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
-import se.natusoft.doc.markdowndoc.editor.OS
+import se.natusoft.doc.markdowndoc.editor.OSTrait
 import se.natusoft.doc.markdowndoc.editor.adapters.WindowListenerAdapter
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 
@@ -56,7 +56,7 @@ import java.awt.event.WindowEvent
  */
 @CompileStatic
 @TypeChecked
-class SettingsPopup extends PopupWindow implements OS {
+class SettingsPopup extends PopupWindow implements OSTrait {
     //
     // Private Members
     //
@@ -79,17 +79,18 @@ class SettingsPopup extends PopupWindow implements OS {
             leftMargin: 5,
             rightMargin: 5,
             topMargin: 10,
-            bottomMargin: 30 // We need 30 due to the save and cancel buttons at the bottom.
+            bottomMargin: filterBottomMargin(30) // We need to reserve space for save and cancel button.
     )
-
 
     //
     // Properties
     //
 
-    Closure<Void> saveSettingsProvider
+    @NotNull Closure<Void> saveSettingsProvider
 
-    Closure<Void> cancelSettingsProvider
+    @NotNull Closure<Void> cancelSettingsProvider
+
+    @NotNull boolean fullScreenMode
 
     //
     // Methods
@@ -184,25 +185,27 @@ class SettingsPopup extends PopupWindow implements OS {
 
     void updateBounds() {
 
-        this.contentLayout.screenSize =
-                getDefaultScreen_Bounds(this.windowTopMargin, this.windowBottomMargin)
+//        this.contentLayout.screenSize =
+//                getDefaultScreen_Bounds(this.windowTopMargin, this.windowBottomMargin)
 
         final Dimension ps = preferredSize
 
         if (defaultScreen_Bounds.width - ps.width > 0) {
             setBounds(
                     (defaultScreen_Bounds.width - ps.width) as int,
-                    this.windowTopMargin,
+                    (this.fullScreenMode ? 0i : this.windowTopMargin) as int,
                     ps.width as int,
-                    ((int)defaultScreen_Bounds.height - this.windowTopMargin - this.windowBottomMargin) as int
+                    (this.fullScreenMode ? (int)defaultScreen_Bounds.height :
+                            (int)defaultScreen_Bounds.height - this.windowTopMargin - this.windowBottomMargin) as int
             )
         }
         else {
             setBounds(
                     0,
-                    this.windowTopMargin,
+                    (this.fullScreenMode ? 0i : this.windowTopMargin) as int,
                     defaultScreen_Bounds.width as int,
-                    ((int)defaultScreen_Bounds.height - this.windowTopMargin - this.windowBottomMargin) as int
+                    (this.fullScreenMode ? (int)defaultScreen_Bounds.height :
+                            (int)defaultScreen_Bounds.height - this.windowTopMargin - this.windowBottomMargin) as int
             )
         }
     }

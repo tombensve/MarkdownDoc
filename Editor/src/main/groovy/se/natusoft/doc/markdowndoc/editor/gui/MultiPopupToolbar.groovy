@@ -90,6 +90,7 @@ class MultiPopupToolbar implements ToolBar {
     //
 
     protected mouseMovedHandler(@NotNull MouseEvent e) {
+        if (this.editor == null) return
         int y = e.getY() - this.editor.getGUI().getEditorVisibleY()
         if (y <= getTopMargin() && e.getX() >= 0 && e.getX() <= getEditorWidth()) {
             if (!isOpen()) {

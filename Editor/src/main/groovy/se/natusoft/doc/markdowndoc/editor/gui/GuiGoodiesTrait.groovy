@@ -15,7 +15,7 @@ import java.awt.geom.RoundRectangle2D
  */
 @CompileStatic
 @TypeChecked
-trait GuiGoodies {
+trait GuiGoodiesTrait {
 
     //
     // Constants
@@ -53,12 +53,16 @@ trait GuiGoodies {
         return screenBounds
     }
 
+    static boolean isFullScreenWindow(Window w) {
+        w.height == screenBounds.height && w.width == screenBounds.width
+    }
+
     static Rectangle getDefaultScreen_Bounds(final int topMargin, final int bottomMargin) {
         return new Rectangle(
                 screenBounds.x as int,
                 (screenBounds.y + topMargin) as int,
                 screenBounds.width as int,
-                (screenBounds.height - bottomMargin) as int
+                (screenBounds.height - topMargin - bottomMargin) as int
         )
     }
 
@@ -99,7 +103,7 @@ trait GuiGoodies {
     @CompileStatic
     @TypeChecked
     private static class FadeInRunnable implements  Runnable {
-        GuiGoodies guiGoodies
+        GuiGoodiesTrait guiGoodies
         float maxOpacity
 
         @Override
@@ -119,7 +123,7 @@ trait GuiGoodies {
     @CompileStatic
     @TypeChecked
     private static class FadeOutRunnable implements Runnable {
-        GuiGoodies guiGoodies
+        GuiGoodiesTrait guiGoodies
         Closure<Void> closeWindow = null
 
         @Override

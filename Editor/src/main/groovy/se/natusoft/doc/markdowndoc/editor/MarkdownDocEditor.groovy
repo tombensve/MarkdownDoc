@@ -47,7 +47,7 @@ import se.natusoft.doc.markdowndoc.editor.api.*
 import se.natusoft.doc.markdowndoc.editor.config.*
 import se.natusoft.doc.markdowndoc.editor.file.EditableProvider
 import se.natusoft.doc.markdowndoc.editor.file.Editables
-import se.natusoft.doc.markdowndoc.editor.gui.GuiGoodies
+import se.natusoft.doc.markdowndoc.editor.gui.GuiGoodiesTrait
 import se.natusoft.doc.markdowndoc.editor.gui.MouseListeners
 import se.natusoft.doc.markdowndoc.editor.gui.MultiPopupToolbar
 import se.natusoft.doc.markdowndoc.editor.tools.ServiceDefLoader
@@ -75,7 +75,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_T
 @TypeChecked
 @Singleton(strict = false) // Need constructor!
 class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, MouseListeners, Configurable,
-        MouseMotionProvider, GuiGoodies {
+        MouseMotionProvider, GuiGoodiesTrait {
 
     //
     // Constants

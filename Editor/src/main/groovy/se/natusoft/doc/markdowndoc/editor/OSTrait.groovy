@@ -3,7 +3,7 @@ package se.natusoft.doc.markdowndoc.editor
 /**
  * A trait that determines OS run on.
  */
-trait OS {
+trait OSTrait {
     private static final String osName = System.getProperty("os.name").toLowerCase()
 
     static boolean isWindowsOS() {
