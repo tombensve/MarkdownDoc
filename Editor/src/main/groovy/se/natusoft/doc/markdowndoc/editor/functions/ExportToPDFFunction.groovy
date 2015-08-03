@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -52,8 +52,11 @@ import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
 import se.natusoft.doc.markdowndoc.editor.functions.export.*
+import se.natusoft.doc.markdowndoc.editor.gui.ColorsTrait
+import se.natusoft.doc.markdowndoc.editor.gui.PopupWindow
 
 import javax.swing.*
+import javax.swing.border.EmptyBorder
 import javax.swing.border.SoftBevelBorder
 import java.awt.*
 import java.awt.event.ActionEvent
@@ -66,7 +69,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-class ExportToPDFFunction extends AbstractExportFunction implements EditorFunction, Configurable {
+class ExportToPDFFunction extends AbstractExportFunction implements EditorFunction, Configurable, ColorsTrait {
     //
     // Constants
     //
@@ -87,7 +90,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
     // The following are referenced from GUI callbacks and thus must be part of the instance.
 
     /** The PDF meta data / options dialog. */
-    private JWindow pdfMetaDataDialog = null
+    private PDFMetaDataDialog pdfMetaDataDialog = new PDFMetaDataDialog()
 
     //
     // Config
@@ -109,6 +112,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
     @Override
     void registerConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
+        this.pdfMetaDataDialog.registerConfigs(configProvider)
     }
 
     /**
@@ -119,6 +123,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
     @Override
     void unregisterConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
+        this.pdfMetaDataDialog.unregisterConfigs(configProvider)
     }
 
     /**
@@ -210,54 +215,12 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
         this.exportFile = getExportOutputFile("PDF", "pdf", "pdf")
 
         if (this.exportFile != null) {
-            this.pdfMetaDataDialog = new JWindow(this.editor.getGUI().getWindowFrame())
-            this.pdfMetaDataDialog.setLayout(new BorderLayout())
-
-            JPanel borderPanel = new JPanel(new BorderLayout())
-            borderPanel.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED))
-            this.pdfMetaDataDialog.add(borderPanel, BorderLayout.CENTER)
-
-            this.pdfData.loadDataValues()
-            this.pdfData.setBackgroundColor(editor.getGUI().getWindowFrame().getBackground())
-
-            JPanel dataLabelPanel = new JPanel(new GridLayout(this.pdfData.exportDataValues.size(),1))
-            borderPanel.add(dataLabelPanel, BorderLayout.WEST)
-
-            JPanel dataValuePanel = new JPanel(new GridLayout(this.pdfData.exportDataValues.size(),1))
-            borderPanel.add(dataValuePanel, BorderLayout.CENTER)
-
-            borderPanel.add(Box.createRigidArea(new Dimension(12, 12)), BorderLayout.EAST)
-
-            this.pdfData.exportDataValues.each { ExportDataValue exportDataValue ->
-                dataLabelPanel.add(exportDataValue.labelComp)
-                dataValuePanel.add(exportDataValue.valueComp)
-            }
-
-            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
-            JButton generateButton = new JButton("Generate")
-            generateButton.addActionListener({ ActionEvent actionEvent ->
-                this.pdfMetaDataDialog.setVisible(false)
-                generatePDF()
-            } as ActionListener)
-            buttonPanel.add(generateButton)
-            JButton cancelButton = new JButton("Cancel")
-            cancelButton.addActionListener({ ActionEvent actionEvent -> pdfMetaDataDialog.setVisible(false) } as ActionListener)
-            buttonPanel.add(cancelButton)
-
-            borderPanel.add(buttonPanel, BorderLayout.SOUTH)
-
             // Set initial values to last saved values for the specified file.
-            if (this.editor.editable.file != null) {
-                this.pdfData.loadExportData(this.editor.editable.file)
+            if (editor.editable.file != null) {
+                this.pdfData.loadExportData(editor.editable.file)
             }
 
-            this.pdfMetaDataDialog.setVisible(true)
-            this.pdfMetaDataDialog.setSize(this.pdfMetaDataDialog.getPreferredSize())
-
-            Rectangle mainBounds = this.editor.getGUI().getWindowFrame().getBounds()
-            int x = (int)mainBounds.x + (int)(mainBounds.width / 2) - (int)(this.pdfMetaDataDialog.getWidth() / 2)
-            int y = (int)mainBounds.y + 70
-            this.pdfMetaDataDialog.setLocation(x, y)
+            this.pdfMetaDataDialog.open()
         }
     }
 
@@ -335,4 +298,81 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
      * Cleanup and unregister any configs.
      */
     void close() {}
+
+    //
+    // Inner Classes
+    //
+
+    @CompileStatic
+    @TypeChecked
+    private class PDFMetaDataDialog extends PopupWindow {
+
+        PDFMetaDataDialog() {
+            safeOpacity = popupOpacity
+
+            setLayout(new BorderLayout())
+
+            JPanel borderPanel = new JPanel(new BorderLayout())
+            borderPanel.setBorder(new EmptyBorder(5, 5, 5, 5))
+            add(borderPanel, BorderLayout.CENTER)
+            updateColors(borderPanel)
+
+            pdfData.loadDataValues()
+
+            JPanel dataLabelPanel = new JPanel(new GridLayout(pdfData.exportDataValues.size(),1))
+            borderPanel.add(dataLabelPanel, BorderLayout.WEST)
+            updateColors(dataLabelPanel)
+
+            JPanel dataValuePanel = new JPanel(new GridLayout(pdfData.exportDataValues.size(),1))
+            borderPanel.add(dataValuePanel, BorderLayout.CENTER)
+            updateColors(dataValuePanel)
+
+            borderPanel.add(Box.createRigidArea(new Dimension(12, 12)), BorderLayout.EAST)
+
+            pdfData.exportDataValues.each { ExportDataValue exportDataValue ->
+                updateColors(exportDataValue.labelComp)
+
+                dataLabelPanel.add(exportDataValue.labelComp)
+                dataValuePanel.add(exportDataValue.valueComp)
+            }
+
+            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
+            updateColors(buttonPanel)
+
+            JButton generateButton = new JButton("Generate")
+            generateButton.addActionListener({ ActionEvent actionEvent ->
+                close()
+                doGeneratePDF()
+            } as ActionListener)
+            buttonPanel.add(generateButton)
+            JButton cancelButton = new JButton("Cancel")
+            cancelButton.addActionListener({ ActionEvent actionEvent -> close() } as ActionListener)
+            buttonPanel.add(cancelButton)
+
+            borderPanel.add(buttonPanel, BorderLayout.SOUTH)
+
+        }
+
+        // Closure can access these, and these can access outer class, but closure cannot access outer class
+        // directly. Thereby these bounces. Closures also seem to have problems calling private methods of
+        // owner class!
+
+        void open() {
+            setVisible(true)
+            setSize(getPreferredSize())
+
+            Rectangle mainBounds = editor.getGUI().getWindowFrame().getBounds()
+            int x = (int)mainBounds.x + (int)(mainBounds.width / 2) - (int)(getWidth() / 2)
+            int y = (int)mainBounds.y + 70
+            setLocation(x, y)
+        }
+
+        void close() {
+            setVisible(false)
+        }
+
+        void doGeneratePDF() {
+            generatePDF()
+        }
+    }
 }

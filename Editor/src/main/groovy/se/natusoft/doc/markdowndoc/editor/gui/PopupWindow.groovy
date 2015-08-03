@@ -1,38 +1,38 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
  *         2015-08-03: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdowndoc.editor.gui
 
@@ -51,7 +51,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_T
 /**
  * Base class for popup window.
  */
-class PopupWindow extends JFrame implements Configurable, GuiGoodiesTrait, Colors, OSTrait {
+class PopupWindow extends JFrame implements Configurable, GuiGoodiesTrait, ColorsTrait, OSTrait {
 
     //
     // Private Members
@@ -126,6 +126,7 @@ class PopupWindow extends JFrame implements Configurable, GuiGoodiesTrait, Color
         undecorated = true
         background = Color.BLACK
         foreground = Color.WHITE
+        autoRequestFocus = true
     }
 
     //
@@ -141,6 +142,21 @@ class PopupWindow extends JFrame implements Configurable, GuiGoodiesTrait, Color
         this._popupOpacity = opacity
         safeOpacity = opacity
     }
+
+    // NOTE: Even though we can get screen bounds, we have no way of determining actually usable space
+    //       on screen. This depends on what the desktop reserves at top or bottom. Thereby I'm forced
+    //       to check which OS is we are run on to make adaptations. This gets difficult on both Linux
+    //       and windows since Linux have a number of different desktops, and Windows differs in space
+    //       used at bottom between pre windows 8 and windows 8. I have partly gone around this problem
+    //       by making the top and bottom "margins" (for the lack of a better name) configurable in
+    //       settings.
+    //
+    //       Maybe the use of full height popups is a bad idea.
+
+    // NOTE: If the last 2 words of the above comment are shown in strong bright orange with red text,
+    //       then you are using IDEA! Just ignore it. I have found no way to disable this horrible
+    //       feature of not being able to use the word made of of b+a+d without being slapped in the
+    //       face with something bright orange!
 
     /**
      * Called when the top margin changes.
