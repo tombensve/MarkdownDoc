@@ -53,11 +53,11 @@ import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
 import se.natusoft.doc.markdowndoc.editor.functions.export.*
 import se.natusoft.doc.markdowndoc.editor.gui.ColorsTrait
+import se.natusoft.doc.markdowndoc.editor.gui.ExportMetaDataDialog
 import se.natusoft.doc.markdowndoc.editor.gui.PopupWindow
 
 import javax.swing.*
 import javax.swing.border.EmptyBorder
-import javax.swing.border.SoftBevelBorder
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
@@ -69,7 +69,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-class ExportToPDFFunction extends AbstractExportFunction implements EditorFunction, Configurable, ColorsTrait {
+class ExportToPDFFunction extends AbstractExportFunction implements EditorFunction, Configurable {
     //
     // Constants
     //
@@ -87,10 +87,10 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
     /** Holds all input values for the generate PDF meta data dialog. */
     private PDFData pdfData = new PDFData(getLocalServiceData())
 
-    // The following are referenced from GUI callbacks and thus must be part of the instance.
-
     /** The PDF meta data / options dialog. */
-    private PDFMetaDataDialog pdfMetaDataDialog = new PDFMetaDataDialog()
+    @SuppressWarnings("GroovyMissingReturnStatement")
+    private ExportMetaDataDialog pdfMetaDataDialog =
+            new ExportMetaDataDialog(exportData: this.pdfData, generate: { generatePDF() })
 
     //
     // Config
@@ -220,7 +220,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
                 this.pdfData.loadExportData(editor.editable.file)
             }
 
-            this.pdfMetaDataDialog.open()
+            this.pdfMetaDataDialog.open(this.editor.GUI)
         }
     }
 
@@ -298,81 +298,4 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
      * Cleanup and unregister any configs.
      */
     void close() {}
-
-    //
-    // Inner Classes
-    //
-
-    @CompileStatic
-    @TypeChecked
-    private class PDFMetaDataDialog extends PopupWindow {
-
-        PDFMetaDataDialog() {
-            safeOpacity = popupOpacity
-
-            setLayout(new BorderLayout())
-
-            JPanel borderPanel = new JPanel(new BorderLayout())
-            borderPanel.setBorder(new EmptyBorder(5, 5, 5, 5))
-            add(borderPanel, BorderLayout.CENTER)
-            updateColors(borderPanel)
-
-            pdfData.loadDataValues()
-
-            JPanel dataLabelPanel = new JPanel(new GridLayout(pdfData.exportDataValues.size(),1))
-            borderPanel.add(dataLabelPanel, BorderLayout.WEST)
-            updateColors(dataLabelPanel)
-
-            JPanel dataValuePanel = new JPanel(new GridLayout(pdfData.exportDataValues.size(),1))
-            borderPanel.add(dataValuePanel, BorderLayout.CENTER)
-            updateColors(dataValuePanel)
-
-            borderPanel.add(Box.createRigidArea(new Dimension(12, 12)), BorderLayout.EAST)
-
-            pdfData.exportDataValues.each { ExportDataValue exportDataValue ->
-                updateColors(exportDataValue.labelComp)
-
-                dataLabelPanel.add(exportDataValue.labelComp)
-                dataValuePanel.add(exportDataValue.valueComp)
-            }
-
-            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
-            updateColors(buttonPanel)
-
-            JButton generateButton = new JButton("Generate")
-            generateButton.addActionListener({ ActionEvent actionEvent ->
-                close()
-                doGeneratePDF()
-            } as ActionListener)
-            buttonPanel.add(generateButton)
-            JButton cancelButton = new JButton("Cancel")
-            cancelButton.addActionListener({ ActionEvent actionEvent -> close() } as ActionListener)
-            buttonPanel.add(cancelButton)
-
-            borderPanel.add(buttonPanel, BorderLayout.SOUTH)
-
-        }
-
-        // Closure can access these, and these can access outer class, but closure cannot access outer class
-        // directly. Thereby these bounces. Closures also seem to have problems calling private methods of
-        // owner class!
-
-        void open() {
-            setVisible(true)
-            setSize(getPreferredSize())
-
-            Rectangle mainBounds = editor.getGUI().getWindowFrame().getBounds()
-            int x = (int)mainBounds.x + (int)(mainBounds.width / 2) - (int)(getWidth() / 2)
-            int y = (int)mainBounds.y + 70
-            setLocation(x, y)
-        }
-
-        void close() {
-            setVisible(false)
-        }
-
-        void doGeneratePDF() {
-            generatePDF()
-        }
-    }
 }

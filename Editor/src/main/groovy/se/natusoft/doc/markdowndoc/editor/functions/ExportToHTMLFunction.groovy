@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -47,17 +47,19 @@ import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
+import se.natusoft.doc.markdowndoc.editor.api.MouseMotionProvider
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
 import se.natusoft.doc.markdowndoc.editor.functions.export.*
+import se.natusoft.doc.markdowndoc.editor.gui.ExportMetaDataDialog
 
 import javax.swing.*
-import javax.swing.border.SoftBevelBorder
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
+import java.awt.event.MouseMotionListener
 
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD
 
@@ -66,7 +68,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunction, Configurable {
+class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunction, Configurable, MouseMotionProvider {
     //
     // Constants
     //
@@ -82,12 +84,12 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
     private JButton htmlButton
 
     /** Holds all input values for the generate PDF meta data dialog. */
-    private HTMLData htmlData = new HTMLData(getLocalServiceData())
-
-    // The following are referenced from GUI callbacks and thus must be part of the instance.
+    private final HTMLData htmlData = new HTMLData(getLocalServiceData())
 
     /** The PDF meta data / options dialog. */
-    private JWindow htmlMetaDataDialog
+    @SuppressWarnings("GroovyMissingReturnStatement")
+    private ExportMetaDataDialog htmlMetaDataDialog =
+            new ExportMetaDataDialog(exportData: this.htmlData, generate: { generateHTML() })
 
     //
     // Config
@@ -97,7 +99,7 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
             new KeyConfigEntry("editor.function.export.html.keyboard.shortcut", "Export HTML keyboard shortcut",
                     new KeyboardKey("Ctrl+H"), CONFIG_GROUP_KEYBOARD)
 
-    private Closure keyboardShortcutConfigChanged = { ConfigEntry ce ->
+    private Closure keyboardShortcutConfigChanged = { final ConfigEntry ce ->
         updateTooltipText()
     }
 
@@ -107,8 +109,9 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(@NotNull ConfigProvider configProvider) {
+    void registerConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
+        this.htmlMetaDataDialog.registerConfigs(configProvider)
     }
 
     /**
@@ -117,10 +120,30 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
+        this.htmlMetaDataDialog.unregisterConfigs(configProvider)
     }
 
+    /**
+     * Adds a mouse motion listener to receive mouse motion events.
+     *
+     * @param listener The listener to add.
+     */
+    @Override
+    void addMouseMotionListener(@NotNull final MouseMotionListener listener) {
+        this.htmlMetaDataDialog.addMouseMotionListener(listener)
+    }
+
+    /**
+     * Removes a mouse motion listener.
+     *
+     * @param listener The listener to remove.
+     */
+    @Override
+    void removeMouseMotionListener(@NotNull final MouseMotionListener listener) {
+        this.htmlMetaDataDialog.removeMouseMotionListener(listener)
+    }
 
     //
     // Inner Classes
@@ -143,7 +166,7 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
         )
         private ExportDataValue openResult = new ExportDataSelectValue("Open result:")
 
-        HTMLData(@NotNull DelayedServiceData delayedServiceData) {
+        HTMLData(@NotNull final DelayedServiceData delayedServiceData) {
             super(delayedServiceData)
             ((ExportFileValue)css).delayedServiceData = delayedServiceData
             ((ExportFileValue)fileLinks).delayedServiceData = delayedServiceData
@@ -156,9 +179,9 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
 
     ExportToHTMLFunction() {
         super(GENERATED_HTML_FILE)
-        Icon htmlIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddhtml.png"))
+        final Icon htmlIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddhtml.png"))
         this.htmlButton = new JButton(htmlIcon)
-        htmlButton.addActionListener({ ActionEvent actionEvent -> perform() } as ActionListener)
+        htmlButton.addActionListener({ final ActionEvent actionEvent -> perform() } as ActionListener)
         updateTooltipText()
     }
 
@@ -200,57 +223,13 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
         this.exportFile = getExportOutputFile("HTML", "html", "html", "htm")
 
         if (this.exportFile != null) {
-            this.htmlMetaDataDialog = new JWindow(this.editor.getGUI().getWindowFrame())
-            this.htmlMetaDataDialog.setLayout(new BorderLayout())
-
-            JPanel borderPanel = new JPanel(new BorderLayout())
-            borderPanel.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED))
-            this.htmlMetaDataDialog.add(borderPanel, BorderLayout.CENTER)
-
-            this.htmlData.loadDataValues()
-            this.htmlData.setBackgroundColor(this.editor.getGUI().getWindowFrame().getBackground())
-
-            JPanel dataLabelPanel = new JPanel(new GridLayout(this.htmlData.exportDataValues.size(),1))
-            borderPanel.add(dataLabelPanel, BorderLayout.WEST)
-
-            JPanel dataValuePanel = new JPanel(new GridLayout(this.htmlData.exportDataValues.size(),1))
-            borderPanel.add(dataValuePanel, BorderLayout.CENTER)
-
-            borderPanel.add(Box.createRigidArea(new Dimension(12, 12)), BorderLayout.EAST)
-
-            this.htmlData.exportDataValues.each { ExportDataValue exportDataValue ->
-                dataLabelPanel.add(exportDataValue.labelComp)
-                dataValuePanel.add(exportDataValue.valueComp)
-            }
-
-            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
-            JButton generateButton = new JButton("Generate")
-            generateButton.addActionListener({ ActionEvent actionEvent ->
-                this.htmlMetaDataDialog.setVisible(false)
-                generateHTML()
-            } as ActionListener)
-            buttonPanel.add(generateButton)
-            JButton cancelButton = new JButton("Cancel")
-            cancelButton.addActionListener({ ActionEvent actionEvent ->
-                this.htmlMetaDataDialog.setVisible(false)
-            } as ActionListener)
-            buttonPanel.add(cancelButton)
-
-            borderPanel.add(buttonPanel, BorderLayout.SOUTH)
 
             // Set initial values to last saved values for the specified file.
-            if (this.editor.editable.file != null) {
-                this.htmlData.loadExportData(this.editor.editable.file)
+            if (editor.editable.file != null) {
+                this.htmlData.loadExportData(editor.editable.file)
             }
 
-            this.htmlMetaDataDialog.setVisible(true)
-            this.htmlMetaDataDialog.setSize(this.htmlMetaDataDialog.getPreferredSize())
-
-            Rectangle mainBounds = this.editor.getGUI().windowFrame.bounds
-            int x = (int)mainBounds.x + (int)(mainBounds.width / 2) - (int)(this.htmlMetaDataDialog.width / 2)
-            int y = (int)mainBounds.y + 70
-            this.htmlMetaDataDialog.setLocation(x, y)
-
+            this.htmlMetaDataDialog.open(this.editor.GUI)
         }
     }
 
@@ -261,7 +240,7 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
         try {
             _generateHTML()
         }
-        catch (RuntimeException re) {
+        catch (final RuntimeException re) {
             re.printStackTrace(System.err)
             JOptionPane.showMessageDialog(
                     this.editor.getGUI().getWindowFrame(), re.getMessage(), "Failed to save HTML!",
@@ -273,8 +252,8 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
      * Actually performs the PDF generation using MarkdownDocs PDF generator.
      */
     private void _generateHTML() {
-        Generator generator = new HTMLGenerator()
-        HTMLGeneratorOptions htmlOpts = new HTMLGeneratorOptions()
+        final Generator generator = new HTMLGenerator()
+        final HTMLGeneratorOptions htmlOpts = new HTMLGeneratorOptions()
         htmlOpts.setInlineCSS(Boolean.valueOf(this.htmlData.inlineCSS.getValue()))
         htmlOpts.setCss(this.htmlData.css.getValue())
         if (this.htmlData.fileLinks.getValue().trim().length() > 0) {
@@ -287,14 +266,14 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
             generator.generate(getMarkdownDocument(), htmlOpts, null, htmlStream)
             htmlStream.flush()
         }
-        catch (IOException ioe) {
+        catch (final IOException ioe) {
             throw new RuntimeException(ioe.getMessage(), ioe)
         }
-        catch (GenerateException ge) {
+        catch (final GenerateException ge) {
             throw new RuntimeException(ge.getMessage(), ge)
         }
         finally {
-            try {if (htmlStream!= null) htmlStream.close()} catch (IOException ignored) {}
+            try {if (htmlStream!= null) htmlStream.close()} catch (final IOException ignored) {}
         }
 
         if (this.editor?.editable?.file != null) {
@@ -302,20 +281,20 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
         }
 
         if (this.htmlData.openResult.getValue().equals("true")) {
-            Desktop desktop = Desktop.getDesktop()
+            final Desktop desktop = Desktop.getDesktop()
             try {
                 desktop.open(this.exportFile)
             }
-            catch (IOException ioe) {
+            catch (final IOException ioe2) {
                 JOptionPane.showMessageDialog(
-                        this.editor.getGUI().getWindowFrame(), ioe.getMessage(), "Failed to open PDF!",
+                        this.editor.getGUI().getWindowFrame(), ioe2.getMessage(), "Failed to open HTML!",
                         JOptionPane.ERROR_MESSAGE)
             }
         }
     }
 
     /**
-     * Cleanup and unregister any configs.
+     * Cleanup.
      */
     void close() {}
 }
