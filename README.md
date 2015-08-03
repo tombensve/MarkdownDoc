@@ -40,11 +40,11 @@ Editor [[MarkdownDocEditor-1.4.App.jar](http://dl.bintray.com/tommy/maven/se/nat
 -->
 ## Project License
 
-[Apache version 2.0](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/licsApache-2.0.md)
+[Apache Software License version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 ## Third Party Licenses
 
-[Apache version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+[Apache Software License version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 The following third party products are using this license:
 
