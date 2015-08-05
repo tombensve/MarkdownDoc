@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -128,15 +128,15 @@ class SinglePopupToolbar implements GuiGoodiesTrait, ToolBar, Configurable {
 
     protected void mouseMovedHandler(@NotNull final MouseEvent e) {
         if (this.editor == null) return
-        final int y = e.getY() - this.editor.getGUI().getEditorVisibleY()
-        if (y <= getTopMargin() && e.getX() >= 0 && e.getX() <= getEditorWidth()) {
+        final int y = e.y - this.editor.GUI.editorVisibleY
+        if (y <= topMargin && e.x >= 0 && e.x <= editorWidth) {
             if (!isOpen()) {
                 final int toolbarWidth = calculateWidth()
-                final int x = (int)(getParentFrame().getX() + (getParentFrame().getWidth() / 2) - (toolbarWidth / 2))
+                final int x = (int)(parentFrame.x + (parentFrame.width / 2) - (toolbarWidth / 2))
 
                 final int titleBarHeight =
-                        (int)(getParentFrame().getBounds().getHeight() - getParentFrame().getContentPane().getBounds().getHeight())
-                open(getParentFrame(), x, getParentFrame().getY() + titleBarHeight + 2)
+                        (int)(parentFrame.bounds.height - parentFrame.contentPane.bounds.height)
+                open(parentFrame, x, parentFrame.y + titleBarHeight + 2)
             }
         }
         else {
@@ -216,6 +216,7 @@ class SinglePopupToolbar implements GuiGoodiesTrait, ToolBar, Configurable {
             this.toolBarWindow = new JWindow(parent)
             initGuiGoodies(this.toolBarWindow)
             safeOpacity = this.toolbarOpacity
+            safeMakeRoundedRectangleShape()
 
             this.toolBarWindow.setBackground(Color.BLACK)
 

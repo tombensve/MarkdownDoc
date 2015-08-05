@@ -263,7 +263,6 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
             void insertString(final int offset, final String str, final AttributeSet a) throws BadLocationException {
                 super.insertString(offset, str, a)
                 if (MarkdownStyler.this.enabled) styleCurrentParagraph()
-                println "Styler: ${MarkdownStyler.this.enabled}"
             }
 
             void remove(final int offs, final int len) throws BadLocationException {

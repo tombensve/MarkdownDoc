@@ -37,6 +37,8 @@
 package se.natusoft.doc.markdowndoc.editor.gui
 
 import javax.swing.JComponent
+import javax.swing.JFrame
+import javax.swing.JWindow
 import java.awt.Color
 
 /**
@@ -47,5 +49,15 @@ trait ColorsTrait {
     static void updateColors(JComponent component) {
         component.background = Color.BLACK
         component.foreground = Color.WHITE
+    }
+
+    static void updateColors(JWindow window) {
+        window.background = Color.BLACK
+        window.foreground = Color.WHITE
+    }
+
+    static void updateColors(JFrame frame) {
+        frame.background = Color.BLACK
+        frame.foreground = Color.WHITE
     }
 }
