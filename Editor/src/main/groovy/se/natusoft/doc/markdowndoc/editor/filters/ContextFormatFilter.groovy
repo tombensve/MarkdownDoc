@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -76,7 +76,7 @@ class ContextFormatFilter implements EditorInputFilter, Configurable {
     /**
      * Configuration callback for markdown formatting while editing.
      */
-    private Closure doubleSpacedBulletsConfigChanged = { ConfigEntry ce ->
+    private Closure doubleSpacedBulletsConfigChanged = { @NotNull final ConfigEntry ce ->
         this.doubleSpacedBullets = Boolean.valueOf(ce.getValue())
     }
 
@@ -86,7 +86,7 @@ class ContextFormatFilter implements EditorInputFilter, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(@NotNull ConfigProvider configProvider) {
+    void registerConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.registerConfig(doubleSpacedBulletsConfig, doubleSpacedBulletsConfigChanged)
     }
 
@@ -96,7 +96,7 @@ class ContextFormatFilter implements EditorInputFilter, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.unregisterConfig(doubleSpacedBulletsConfig, doubleSpacedBulletsConfigChanged)
     }
 
@@ -104,38 +104,38 @@ class ContextFormatFilter implements EditorInputFilter, Configurable {
     // Methods
     //
 
-    private static boolean isBulletChar(char bulletChar) {
+    private static boolean isBulletChar(final char bulletChar) {
         bulletChar == '+' as char || bulletChar == '-' as char || bulletChar == '*' as char
     }
 
-    private static boolean isBulletChar(String bulletChar) {
+    private static boolean isBulletChar(@NotNull final String bulletChar) {
         bulletChar.length() > 0 && isBulletChar(bulletChar.charAt(0))
     }
 
-    private static boolean isBulletStart(String line) {
+    private static boolean isBulletStart(@NotNull final String line) {
         line.length() > 1 && isBulletChar(line.charAt(0)) && line.charAt(1) == ' ' as char
     }
 
     @Override
-    void keyPressed(@NotNull KeyEvent keyEvent) {
+    void keyPressed(@NotNull final KeyEvent keyEvent) {
         try {
             // Catch new lines
-            if (keyEvent.getKeyChar() == '\n' as char) {
-                Line currentLine = this.editor.getCurrentLine()
+            if (keyEvent.keyChar == '\n' as char) {
+                Line currentLine = this.editor.currentLine
 
                 if (currentLine != null) {
-                    String trimmedLine = currentLine.getText().trim()
+                    final String trimmedLine = currentLine.text.trim()
 
                     // -- Handle pre-formatted --
 
-                    if ((currentLine.getText().length() > 0 && currentLine.getText().charAt(0) == '\t' as char) ||
-                            currentLine.getText().startsWith("    ")) {
-                        if (currentLine.getText().charAt(0) == '\t' as char) {
-                            currentLine.getNextLine().setText("\t")
+                    if ((currentLine.text.length() > 0 && currentLine.text.charAt(0) == '\t' as char) ||
+                            currentLine.text.startsWith("    ")) {
+                        if (currentLine.text.charAt(0) == '\t' as char) {
+                            currentLine.nextLine.text = "\t"
                             this.editor.moveCaretForward(1)
                         }
                         else {
-                            currentLine.getNextLine().setText("    ")
+                            currentLine.nextLine.text = "    " + currentLine.nextLine.text
                             this.editor.moveCaretForward(4)
                         }
                     }
@@ -144,7 +144,7 @@ class ContextFormatFilter implements EditorInputFilter, Configurable {
 
                     // If the previous line only contains a list bullet and no text, blank the line.
                     else if (trimmedLine.length() == 1 && isBulletChar(trimmedLine)) {
-                        currentLine.setText("")
+                        currentLine.text = ""
                     }
                     // Otherwise start the new line with a new list bullet.
                     else if (isBulletStart(trimmedLine)) {
@@ -152,21 +152,21 @@ class ContextFormatFilter implements EditorInputFilter, Configurable {
                         // the next line. If return was pressed at the end of the line the next line
                         // will be empty (with the exception of possible whitespace). In this case we
                         // add a new bullet. If it is not empty we don't to anything.
-                        if (currentLine.getNextLine().getText().trim().length() == 0) {
-                            int indentPos = currentLine.getText().indexOf("*")
+                        if (currentLine.nextLine.text.trim().length() == 0) {
+                            int indentPos = currentLine.text.indexOf("*")
                             if (this.doubleSpacedBullets) {
                                 this.editor.addBlankLine()
-                                currentLine = currentLine.getNextLine()
+                                currentLine = currentLine.nextLine
                             }
-                            StringBuilder newLine = new StringBuilder()
+                            final StringBuilder newLine = new StringBuilder()
                             while (indentPos > 0) {
                                 newLine.append(' ')
                                 --indentPos
                             }
                             newLine.append(trimmedLine.substring(0, 2))
-                            Line nextLine = currentLine.getNextLine()
+                            final Line nextLine = currentLine.nextLine
                             if (nextLine != null) {
-                                nextLine.setText(newLine.toString())
+                                nextLine.text = newLine.toString() + nextLine.text
                                 this.editor.moveCaretForward(newLine.length())
                             }
                         }
@@ -176,60 +176,66 @@ class ContextFormatFilter implements EditorInputFilter, Configurable {
 
                     // If the previous line only contains a quote (>) char and no text, blank the line
                     else if (trimmedLine.equals(">")) {
-                        currentLine.setText("")
+                        currentLine.text = ""
                     }
                     // Otherwise start the new line with a quote (>) character.
                     else if (trimmedLine.startsWith("> ")) {
-                        int indentPos = currentLine.getText().indexOf('>')
-                        StringBuilder newLine = new StringBuilder()
+                        int indentPos = currentLine.text.indexOf('>')
+                        final StringBuilder newLine = new StringBuilder()
                         while (indentPos > 0) {
                             newLine.append(' ')
                             --indentPos
                         }
                         newLine.append("> ")
-                        Line nextLine = currentLine.getNextLine()
+                        final Line nextLine = currentLine.nextLine
                         if (nextLine != null) {
-                            nextLine.setText(newLine.toString())
+                            nextLine.text = newLine.toString()
                             this.editor.moveCaretForward(newLine.length())
                         }
                     }
                 }
             }
-            else if (keyEvent.getKeyChar() == '\t' as char) {
-                Line line = this.editor.getCurrentLine()
-                boolean isLastLine = line.isLastLine()
-                if (keyEvent.isShiftDown()) {
+            // Shift-Tab for bullet indents.
+            else if (keyEvent.keyChar == '\t' as char) {
+                Line line = this.editor.currentLine
+                final boolean isLastLine = line.isLastLine()
+                if (keyEvent.shiftDown) {
                     // JEditorPane does something weird on shift-tab
                     if (isLastLine) {
-                        line = line.getPreviousLine()
+                        line = line.previousLine
                     }
                 }
-                if (line.getText().trim().startsWith("*")) {
-                    if (keyEvent.isShiftDown()) {
-                        if (line.getText().startsWith("   ")) {
-                            line.setText(line.getText().substring(3))
+                if (line.text.trim().startsWith("*")) {
+                    if (keyEvent.shiftDown) {
+                        if (line.text.startsWith("   ")) {
+                            line.text = line.text.substring(3)
                             if (!isLastLine) {
                                 this.editor.moveCaretBack(3)
                             }
                         }
                     }
                     else {
-                        int startPos = line.getLineStartPost()
-                        int caretLoc = this.editor.getCaretDot()
-                        int tabIx = line.getText().indexOf("\t")
+                        final int startPos = line.lineStartPost
+                        final int caretLoc = this.editor.caretDot
+                        final int tabIx = line.text.indexOf("\t")
                         int moveChars = 3
 
                         if ((startPos + tabIx) <= caretLoc) {
                             moveChars = 2
                         }
 
-                        line.setText("   " + line.getText().replace("\t", ""))
+                        line.text = "   " + line.text.replace("\t", "")
                         this.editor.moveCaretForward(moveChars)
                     }
                 }
+                else {
+                    this.editor.currentLine.text = this.editor.currentLine.text.replace("\t", "    ")
+                    this.editor.moveCaretForward(3)
+
+                }
             }
         }
-        catch (BadLocationException ble) {
+        catch (final BadLocationException ble) {
             ble.printStackTrace(System.err)
         }
 
