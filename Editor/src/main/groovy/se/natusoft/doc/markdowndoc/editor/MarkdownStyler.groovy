@@ -461,7 +461,18 @@ class MarkdownStyler implements Configurable, JTextComponentStyler {
                             }
                             pos = epos
                         }
-
+                        // -- Code --------
+                        else if (c == '`' as char) {
+                            ++pos
+                            int spos = pos
+                            int cnt = 0
+                            while (pos < text.length() && text.charAt(pos) != '`' && text.charAt(pos) != '\n') {
+                                ++cnt
+                                ++pos
+                            }
+                            doc.setCharacterAttributes(spos, cnt, this.codeStyle, true)
+                            ++pos
+                        }
                         // -- Monospaced --------
                         else if ((pos >= 4 && c == SPACE && text.charAt(pos + 1) == SPACE &&
                                 text.charAt(pos + 2) == SPACE && text.charAt(pos + 3) == SPACE) ||
