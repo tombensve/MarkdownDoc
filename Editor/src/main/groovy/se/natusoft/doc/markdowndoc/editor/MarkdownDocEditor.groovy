@@ -1131,6 +1131,9 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
     private static Editable handleSelectedFile(final File file, Editable firstOpened) {
         if (file.isDirectory()) {
             loadDir(file)
+            if (firstOpened == null) {
+                firstOpened = Editables.inst.firstEditable
+            }
         }
         else {
             if (!file.exists()) {

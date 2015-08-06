@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -91,7 +91,7 @@ class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntry> {
      * @param configChanged A ConfigChanged callback to add to the list of callbacks for the config.
      */
     @Override
-    void registerConfig(@NotNull ConfigEntry configEntry, @NotNull Closure configChanged) {
+    void registerConfig(@NotNull ConfigEntry configEntry, @Nullable Closure configChanged) {
         if (!this.configMap.containsKey(configEntry.getKey())) {
             configEntry.setConfigProvider(this)
             this.configMap.put(configEntry.getKey(), configEntry)
@@ -114,7 +114,7 @@ class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntry> {
      * @param configChanged The ConfigChanged callback to unregister.
      */
     @Override
-    void unregisterConfig(@NotNull ConfigEntry configEntry, @NotNull Closure configChanged) {
+    void unregisterConfig(@NotNull ConfigEntry configEntry, @Nullable Closure configChanged) {
         List<Closure> configChangedEntries = this.configChangedCallbacks.get(configEntry)
         if (configChangedEntries != null && configChanged != null) {
             configChangedEntries.remove(configChanged)
