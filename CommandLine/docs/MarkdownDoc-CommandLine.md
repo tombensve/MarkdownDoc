@@ -8,7 +8,7 @@ MarkdownDoc can be run using `java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar`. 
            or
            java -jar markdowndoc-cmd-line-n.n[.n].exec.jar <generator> <fileSpec> --<generator option> ...
            or
-           java -jar markdowndoc-cmd-line-n.n[.n].exec.jar <generator> <fileSpec> parserOptions:<parserOptions> —<generator option> ...
+           java -jar markdowndoc-cmd-line-n.n[.n].exec.jar <generator> <fileSpec> parserOptions:<parserOptions> —-<generator option> ...
            or
            java -jar markdowndoc-cmd-line-n.n[.n].exec.jar <path to a .mddoc file>
 
@@ -20,7 +20,7 @@ The markdowndoc-cmd-line-n.n\[.n\]-exec.jar is a jar generated to contain all de
 
 The _\<generator\>_ part should be either _pdf_, _html_, or _md_.
 
-The _\<filespec/>_ part is a comma separated list of paths relative to the current directory. The filename part of the path can contain regular expressions and the directory part of the path can specify `.../**/...` to mean any levels of subdirectories. 
+The _\<filespec/\>_ part is a comma separated list of paths relative to the current directory. The filename part of the path can contain regular expressions and the directory part of the path can specify `.../**/...` to mean any levels of subdirectories. 
 
 Example: `root/\*\*/docs/.\*.md`
 

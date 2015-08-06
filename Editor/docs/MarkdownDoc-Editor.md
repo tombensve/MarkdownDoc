@@ -75,6 +75,12 @@ But by just opening an empty editor and entering a blank preview you can quickly
 ### Mac OS X Fullscreen support
 
 When you run this editor on a Mac with Lion+ you will get a litte double arrow in the right corner of the window titlebar, which will bring upp the editor window in fullscreen. 
+
+### Version 1.4 usage changes
+
+In prevous versions there were only one file per window and you could open multiple windows. Now there is only one window and you can open multiple files and select which file to work with in the editor window. It is like a tabbed window, but instead of tabs there is a popup list of all open files and you click on the one you want to edit. The reason for this is to have editing distraction free. When you are writing, you only have the text you are working on and nothing else in the window. This works even better with full screen. 
+
+Since the editor now has become very file oriented you can no longer edit an unknown file that you specify a file for later when you save. So when you press the "+" toolbar icon or start the editor without any files specified then a file chooser will popup. In this case you can either navigate to a directory and then enter a name for a new file and it will be created or you can specify existing files and they will be opened. Do note that since you can open multiple files at the same time, the opened files does not necessarily become the current edited file visible in the window! But if you move the mouse to the left window edge you will get the newly opened files in the file list. 
   
 ## Running
 
@@ -97,7 +103,7 @@ Do note that since all keyboard actions can be configured in settings this docum
 	________________________________________________________
 	Save file             Ctrl+S               Yes
 	Open file             Ctrl+O               Yes
-	Open new window       Ctrl+N               Yes
+	Open/create new file  Ctrl+N               Yes
 	Insert heading        Ctrl+T               Yes
 	Insert bold           Ctrl+B               Yes
 	Insert italics        Ctrl+I               Yes
@@ -121,8 +127,6 @@ If you are on a Mac you might want to change the keyboard mappings to use Cmd ra
 ## Currently Missing
 
 Fancy functions like search and replace.
-
-Undo capability.
 
 ## Bugs
 

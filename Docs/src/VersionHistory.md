@@ -19,9 +19,16 @@ About versions, they are hell! After personal experience of having different ver
 
 * Added labels in options for all previously hardcoded text strings in PDFGenerator. It should now be possible to completely generate a document in a different language than English. These can also be set with comment annotations as mentioned above.
 
-* Added Undo / Redo to editor.
+* Added Undo / Redo to editor. Swing apparently provides support for this for a JTextPane/JEditorPane, you just have to register an UndoManager. __However__, it reacts on all changes, including styling. Since styling is applied afterward, and on the whole paragraph since it is not only about the current character, this is also registered as a change in the undo manager. So undos will undo styling also. So after undoing what you wanted to undo, do a Ctrl/Cmd+R to fix styling again. 
 
-The addition of MSS made huge changes to the code. To be as backwards compatible as possible the defaults for the MSS settings are as things looked before. There is also a _default.mss_ file that gets used if you don't supply your own. This has settings that mimics the previous styles. 
+* Editor updated quite a lot! 
+   * All _known_ bugs fixed.
+   * Now handles multipe files in one editor window. It actually only supports one window now, but you switch between the open files by moving mouse to the left window egde which will popup a list of all open files and you just click on the one you want to work on.
+   * It is possible to specify a directory as input to editor. In this case it will scan the directory for markdown files and open all found. It is actually possible to specify multiple directories just as it is possible to specify multiple files.
+   * When the toolbar is shown at the top of the window, the name of the current file is also shown att the bottom of the window.
+   * The editor GUI has gone though some cosmetics. 
+
+The addition of MSS made huge changes to the code. To be as backwards compatible as possible, the defaults for the MSS settings are as things looked before. There is also a _default.mss_ file that gets used if you don't supply your own. This has settings that mimics the previous styles. 
 
 Also note that the PDF UserGuide now shows off the new features, mostly for that purpose :-).
 
