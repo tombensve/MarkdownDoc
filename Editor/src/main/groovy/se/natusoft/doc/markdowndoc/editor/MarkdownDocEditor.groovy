@@ -73,7 +73,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_T
  */
 @CompileStatic
 @TypeChecked
-@Singleton(strict = false) // Need constructor!
+@Singleton
 class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, MouseListeners, Configurable,
         MouseMotionProvider, GuiGoodiesTrait {
 
@@ -380,14 +380,6 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
         configProvider.unregisterConfig(toolbarConfig, this.toolbarConfigChanged)
     }
 
-    //
-    // Construction
-    //
-
-    MarkdownDocEditor() {
-        initGuiGoodies(this)
-    }
-
     protected void closeWindow() {
         final ConfigProvider cp = Services.configs
         Services.configurables.each {final Configurable configurable ->
@@ -401,6 +393,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      * Sets up the gui, etc.
      */
     void initGUI() {
+        initGuiGoodies(this)
         addWindowListener(new WindowListenerAdapter() {
             @Override
             void windowClosing(final WindowEvent ignored) {
@@ -1104,16 +1097,52 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      */
     @Override
     void selectNewFile() throws IOException {
-        JFileChooser fileChooser = new JFileChooser()
-        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG)
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Markdown", "md", "markdown")
+        doSelectNewFile(this.GUI)
+    }
+
+    /**
+     * Opens a file chooser for specifying file as a new file.
+     *
+     * @throws IOException
+     */
+    static Editable doSelectNewFile(final GUI gui) throws IOException {
+        Editable firstOpened = null
+
+        final JFileChooser fileChooser = new JFileChooser()
+        fileChooser.approveButtonText = "Create/Open"
+        fileChooser.dialogTitle = "Create new or open file(s)"
+        final FileNameExtensionFilter filter = new FileNameExtensionFilter("Markdown", "md", "markdown", "mdpart")
         fileChooser.setFileFilter(filter)
-        int returnVal = fileChooser.showSaveDialog(getGUI().getWindowFrame())
+        fileChooser.fileSelectionMode = JFileChooser.FILES_AND_DIRECTORIES
+        fileChooser.multiSelectionEnabled = true
+        // NOTE: According to the Javadoc showDialog(...) can take a null for the first argument. However
+        //       when null is passed there is an ArrayIndexOutOfBounds displayed on stderr! It is however not
+        //       thrown back here, so things still work. (Java 8, haven't tested with earlier.)
+        final int returnVal = fileChooser.showDialog(gui?.windowFrame, "Create/Open")
         if(returnVal == JFileChooser.APPROVE_OPTION) {
-            File selFile = fileChooser.selectedFile
-            selFile.createNewFile()
-            setEditable(openFile(fileChooser.selectedFile))
+            fileChooser.selectedFiles.each { final File file ->
+                firstOpened = handleSelectedFile(file, firstOpened)
+            }
         }
+
+        firstOpened
+    }
+
+    private static Editable handleSelectedFile(final File file, Editable firstOpened) {
+        if (file.isDirectory()) {
+            loadDir(file)
+        }
+        else {
+            if (!file.exists()) {
+                file.createNewFile()
+            }
+            final Editable openedEditable = openFile(file)
+            if (firstOpened == null) {
+                firstOpened = openedEditable
+            }
+        }
+
+        firstOpened
     }
 
     // ----
@@ -1161,13 +1190,48 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      * @throws IOException
      */
     static void setupAndOpenEditor() throws IOException {
+        Editable defaultEditable = null
+
+        // BUG: The files have to be loaded (at least one) before the GUI is initialized. This is a bug!
+        if (Editables.inst.empty) {
+            try {
+                defaultEditable = doSelectNewFile(null)
+            }
+            catch (final IOException ioe) {
+                System.err.println("Failed to open file dialog!")
+                ioe.printStackTrace(System.err)
+                System.exit(1)
+            }
+            if (Editables.inst.empty) {
+                // TODO: A popup here maybe ?
+                System.err.println("Since you did not specify a file you have to specify the name of " +
+                        "a new file, but since you cancelled the file dialog the editor cannot open!")
+                System.exit(1)
+            }
+        }
+        else {
+            // Since we have multiple files with only one visible at a time, which one do we start with ?
+            // I decided to go with the first entry, but note that Editables actually is a Map, so what
+            // is meant by first is a bit loose.
+            defaultEditable = Editables.inst.firstEditable
+        }
 
         final MarkdownDocEditor mde = MarkdownDocEditor.instance
         mde.initGUI()
 
         enableOSXFullscreenIfOnOSX(mde)
 
-        mde.editable = Editables.inst.someEditable
+        if (defaultEditable != null) {
+            // Since we have multiple files with only one visible at a time, which one do we start with ?
+            // I decided to go with the first entry, but note that Editables actually is a Map, so what
+            // is meant by first is a bit loose.
+            mde.editable = defaultEditable
+        }
+        else {
+            System.err.println("BUG: defaultEditable not set in setupAndOpenEditor()!")
+            System.exit(1)
+        }
+
         mde.visible = true
         Services.configs.refreshConfigs()
         mde.editorPane.requestFocus()
@@ -1199,7 +1263,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      */
     private static void loadDir(@NotNull final File dir) {
         dir.eachFileRecurse(FileType.FILES) { final File file ->
-            if (file.name.endsWith(".md") || file.name.endsWith(".markdown")) {
+            if (file.name.endsWith(".md") || file.name.endsWith(".markdown") || file.name.endsWith(".mdpart")) {
                 openFile(file)
             }
         }
@@ -1251,7 +1315,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
             new Runnable() {
                 @Override void run()
                 {
-                    startup(".")
+                    startup(args)
                 }
             }
         )
