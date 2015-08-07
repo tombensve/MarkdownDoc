@@ -174,7 +174,7 @@ class SelectEditableFunction implements EditorFunction, Configurable {
                 mouseMovedHandler(e)
             }
         }
-        this.editor.addMouseMotionListener(this.mouseMotionListener)
+        this.editor.GUI.windowFrame.addMouseMotionListener(this.mouseMotionListener)
     }
 
     /**
@@ -182,8 +182,7 @@ class SelectEditableFunction implements EditorFunction, Configurable {
      * but no buttons have been pushed.
      */
     void mouseMovedHandler(final MouseEvent e) {
-
-        if (e.y > (this.editor.getGUI().editorVisibleY + 100) && e.y < (this.editor.height - 100)
+        if (e.locationOnScreen.y > (this.editor.GUI.windowFrame.y + 100) && e.locationOnScreen.y < (this.editor.GUI.windowFrame.height - 100)
                 && this.popup == null) {
 
             if (e.x >= 0 && e.x <= 30) {

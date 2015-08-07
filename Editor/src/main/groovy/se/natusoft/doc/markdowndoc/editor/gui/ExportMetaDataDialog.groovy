@@ -102,8 +102,9 @@ class ExportMetaDataDialog extends PopupWindow implements MouseMotionProvider {
     // owner class!
 
     void open(@NotNull final GUI gui) {
-        setVisible(true)
-        setSize(getPreferredSize())
+        visible = true
+        alwaysOnTop = true
+        size = preferredSize
 
         final Rectangle mainBounds = gui.getWindowFrame().getBounds()
         final int x = (int)mainBounds.x + (int)(mainBounds.width / 2) - (int)(getWidth() / 2)
@@ -112,7 +113,7 @@ class ExportMetaDataDialog extends PopupWindow implements MouseMotionProvider {
     }
 
     void close() {
-        setVisible(false)
+        visible = false
     }
 
     void doGenerate() {

@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -571,6 +571,7 @@ class MarkdownParser implements Parser {
 
         char p = 0
         boolean escapeChar = false
+        boolean ignoreFormatting = false
 
         for (int i = 0 ; i < sb.length(); i++) {
             int j = (i + 1) < sb.length() ? i + 1 : -1
@@ -604,7 +605,7 @@ class MarkdownParser implements Parser {
                         break
 
                     case {
-                        it == '_' &&
+                        it == '_' && !ignoreFormatting &&
                         !(current instanceof Link) &&
                         (
                             (
@@ -618,7 +619,7 @@ class MarkdownParser implements Parser {
                         )
                     }:
                     case {
-                        it == '*' &&
+                        it == '*' && !ignoreFormatting &&
                         !(current instanceof Link) &&
                         (
                             (
@@ -654,25 +655,25 @@ class MarkdownParser implements Parser {
                         break
 
                     // &nbsp;
-                    case {it == "&" && n == "n"} :
+                    case {it == "&" && n == "n" && !ignoreFormatting} :
                         paragraph.addItem(new Space())
                         i = i + 5
                         break;
 
                     // &gt;
-                    case {it == "&" && n == "g"} :
+                    case {it == "&" && n == "g" && !ignoreFormatting} :
                         current << ">"
                         i = i + 3
                         break;
 
                     // &lt;
-                    case {it == "&" && n == "l"} :
+                    case {it == "&" && n == "l" && !ignoreFormatting} :
                         current << "<"
                         i = i + 3
                         break;
 
                     // &amp;
-                    case {it == "&" && n =="a"} :
+                    case {it == "&" && n =="a" && !ignoreFormatting} :
                         current << "&"
                         i = i + 4
                         break;
@@ -681,20 +682,23 @@ class MarkdownParser implements Parser {
                         paragraph.addItem(current)
                         if (current instanceof Code) {
                             current = itemStack.pop().createNewWithSameConfig()
+                            ignoreFormatting = false
                         }
                         else {
                             itemStack.push(current)
                             current = new Code(renderPrefixedSpace: false)
+                            ignoreFormatting = true
                         }
                         break
 
-                    case { it == '[' && p != '!' && !(current instanceof Link) && !(current instanceof Code)}:
+                    case { it == '[' && !ignoreFormatting && p != '!' && !(current instanceof Link) &&
+                            !(current instanceof Code)}:
                         paragraph.addItem(current)
                         itemStack.push((DocItem)current)
                         current = new MDLink(renderPrefixedSpace: false)
                         break
 
-                    case { it == '!' && n == '[' && !(current instanceof Link)}:
+                    case { it == '!' && !ignoreFormatting && n == '[' && !(current instanceof Link)}:
                         paragraph.addItem(current)
                         itemStack.push((DocItem)current)
                         current = new MDImage(renderPrefixedSpace: false)
@@ -725,13 +729,13 @@ class MarkdownParser implements Parser {
                         }
                         break
 
-                    case { it == '<' && (current.class == PlainText.class)} :
+                    case { it == '<' && !ignoreFormatting && (current.class == PlainText.class)} :
                         paragraph.addItem(current)
                         itemStack.push(current)
                         current = new AutoLink(renderPrefixedSpace: false)
                         break;
 
-                    case { it == '>' && (current.class == AutoLink.class)}:
+                    case { it == '>' && !ignoreFormatting && (current.class == AutoLink.class)}:
                         paragraph.addItem(current)
                         current =  itemStack.pop().createNewWithSameConfig()
                         break
