@@ -231,6 +231,10 @@
           "color": "#7A4727",
           "size": 12
         }
+      },
+
+      "functions": {
+        "imgAlign": "LEFT"
       }
     }
   },

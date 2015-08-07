@@ -40,12 +40,6 @@ The settings dialog allows you to configure almost anything/everything:
 
    - Don't write the keyboard shortcut in text, just press the keyboard shortcut you want to set.
 
-   - Configured keyboard values are stored in their string representation and matched as strings. 
-
-      - This means that the code does not have to do a humongous if statement set for each possible alternative.
-
-      - This also means that due to differences in java implementations and versions the string representation might be Ctrl+K or ^+K. So if you change java version you might also have to update keyboard mappings in settings. 
-
 - Margins.
 
 - Editor font.
@@ -95,30 +89,225 @@ One or more files can be specified as arguments.
 
 This requires Java 7+!
 
+<div class="functions">
+
 ## Functions
 
-Do note that since all keyboard actions can be configured in settings this documents the default keyboard settings. Also note that the defaults are adapted for Windows and Linux. On a mac you might want to change Ctrl to the Cmd key instead. 
+### Bringing upp the toolbar
 
-	                Keyboard default    Available in toolbar
-	________________________________________________________
-	Save file             Ctrl+S               Yes
-	Open file             Ctrl+O               Yes
-	Open/create new file  Ctrl+N               Yes
-	Insert heading        Ctrl+T               Yes
-	Insert bold           Ctrl+B               Yes
-	Insert italics        Ctrl+I               Yes
-	Insert list           Ctrl+L               Yes
-	Insert quote          Ctrl+Q               Yes
-	Insert image          Ctrl+M               Yes
-	Insert link           Ctrl+N               Yes
-	Preview               Ctrl+F               Yes
-	Generate PDF          Ctrl+P               Yes
-	Generate HTML         Ctrl+H               Yes
-	Settings              Ctrl+E               Yes
-	Restyle document      Ctrl+R               No
-	Restyle on paste (*)  Ctrl+V               No
+Move the mouse to the top of the editor window and the toolbar will automatically popup. Move the mouse down again and it will go away. 
 
-(\*) This can be disabled by setting the key to anything other than the paste key.
+### Save file(s)
+
+![](file:Editor/src/main/resources/icons/mddsave.png) 
+
+Default key: Ctrl+S. This is changeable in the settings. 
+
+This saves all open files that have been modified and not saved. A small pupup appears for a short while in the upper left corner of the window to indicate how many files were saved. If it the number is 0 then there were no modified files needing save.
+
+### Open file
+
+![](file:Editor/src/main/resources/icons/mddopen.png)
+
+Default key: Ctrl+O. This is changeable in the settings.
+
+This opens a file chooser to select one markdown file to open. The opened file will be selected for editing in the window.
+
+This function is kind of unneccesarry in this version, but I decided to leave it in anyhow. It differs slightly from Open/Create.
+
+### Open / Create
+
+![](file:Editor/Src/main/resources/icons/mddnew.png)
+
+Default key: Ctrl+N. This is changeable in the settings.
+
+This opens a file chooser of "save" type, where you can also enter a filename in the chooser dialog. Here you can navigate to a directory, and then enter the name of a new file that will then be created and opened. In this file chooser you can alternatively navigate to a directory and then select one or more existing files and have all selected files being opened. 
+
+In this case since there can be more than one file, no files is set as the current edited in the window. You have to bring up the list of open files and select one of the newly added files to edit it.
+
+### Insert heading
+
+![](file:Editor/src/main/resources/icons/mddheading.png)
+
+Default key: Ctrl+T. This is changeable in the settings.
+
+This just adds a # character. This is just a help for those that are still unfamiliar with markdown to produce the correct heading character.
+
+### Insert bold
+
+![](file:Editor/Src/main/resources/icons/mddbold.png)
+
+Default key: Ctrl+B. This is changeable in the settings.
+
+This adds 4 '\_' characters with the cursor placed between the first 2 and the last 2. 2 underscores before and after makes bold text in markdown. 2 asterisks before and after does the same thing, but the editor uses underscores for this specified help function. This function can actually be useful even if you are familiar with markdown, but also helps those not familiar with markdown to get the correct formatting character.
+
+### Insert italics
+
+![](file:Editor/Src/main/resources/icons/mdditalics.png) 
+
+Default key: Ctrl+I. This is changeable in the settings.
+
+This adds 2 '\_' characters with the cursor placed between them. 1 underscore before and after makes italic text in markdown. 1 asterisk before and after does the same thing, but the editor uses underscores for this specific help funciton. Asterisks also means other things in markdown so underscores in this case is less confusing. This function can actually be useful even if you are not familiar with markdown, but also helsp those not familiar with markdown to get the correct formatting character. 
+
+### Insert list
+
+![](file:Editor/src/main/resources/icons/mddlist.png)
+
+Default key: Ctrl+L. This is changeable in the settings.
+
+This adds and asterisk and a space which is how you make a list entry for an unordered list in markdown. This is to help those unfamiliar with markdown. Do note that it is also possible to make a numbered list, in which case you replace the asterisk with a number like 1. 
+
+### Insert quote
+
+![](file:Editor/src/main/resources/icons/mddquote.png)
+
+Default key: Ctrl+Q. This is changeable in the settings.
+
+This inserts a '>' character and a space which is how you make quoted text in markdown. This is to help those unfamiliar with markdown. 
+
+### Insert image
+
+![](file:Editor/src/main/resources/icons/mddimg.png)
+ 
+Default key: Ctrl+M. This is changeable in the settings.
+
+This function will open a small popup window where you can enter 3 pieces of information: 1) An alt text. 2) A URL to the image. 3) An image title. Only the URL is required. When you press the "Insert" button in the popup window, then the image reference will be inserted into the text in markdown format:  `![Alt text](url "title")` .
+
+### Insert link
+
+![](file:Editor/src/main/resources/icons/mddlink.png)
+
+Default key: Ctrl+N. This is changeable in the settings.
+
+This function will ppen a small popup window where you can enter 3 pieces of information: 1) The link text. 2) The link URL. 3) A link title. You should provide a link text and an URL as minimum. When you press the "Insert" button in the popup window, then the link will be inserted into the text in markdown format: `[link text](url "title")`. 
+
+### Preview
+
+![](file:Editor/src/main/resources/icons/mddpreview.png)
+
+Default key: Ctrl+F. This is changeable in the settings.
+
+This will format the markdown in the editor into HTML and show it in readonly mode instead of the editable content. To go back to editing again do a Ctrl+F again or use the toolbar button. Do note that while in preview mode it is possible to drag and drop markdown files into the window to have them previewed. This does not affect what you are editing in any way. When you go back to edit mode again your edited text will be there and a new preview will preview that text. 
+
+Please also note that the preview HTML rendering is done by the Java GUI library (Swing) component JEditorPane. This is far from an optimal HTML renderer! It can make things look strange sometimes. It also insists on indenting the beginning of every paragraph if you are using a Java version \< 1.8. If anyone knows of a free, open source, swing compatible HTML renderer, that is better please let me know.
+
+### Generate PDF
+
+![](file:Editor/src/main/resources/icons/mddpdf.png)
+
+Default key: Ctrl+P. This is changeable in the settings.
+
+This will first open a file chooser to select target PDF file to generate to. Then a popup window with meta data for the PDF generation will open. 
+
+Press the "Generate" button to actually generate the PDF document. 
+
+![](file:Editor/docs/images/PDFOptions.png)
+
+The choices are:
+
+#### Page size
+
+This is one of the standard paper sizes like A4 or Letter. 
+
+#### Title
+
+This is the title of the document. This will be shown on the front page.
+
+#### Subject
+
+This is an optional subject / subtitle. This will be shown on the front page.
+
+#### Keywords
+
+A space separated set of keywords. These will not be shown anywhere, but will be added as meta data to the PDF document.
+
+#### Author
+
+The author of the document. This will be shown on the front page.
+
+####  Version
+
+The current version of the document. This will be shown on the front page.
+
+#### Copyright year
+
+The year of copyright. This will be shown on the front page in the format: "Copyright (C) {year} by {by}".
+
+#### Copyright by
+
+The one holding the copyright. 
+
+#### Generate section numbers
+
+When this is selected numbers are generated for each heading. For example: 1, 1.1, 1.3.5, ... This is common for professional documents.
+
+#### Generate title page: 
+
+This will produce a first page with a document title, subject, author, version and copyright.  
+
+#### Generate TOC
+
+This will generate a table of contents. This will come after the title page if that is generated, but before the document. 
+
+#### Open result
+
+If this is selected then the generated PDF will be opened by the system default PDF viewer.
+
+### Generate HTML
+
+![](file:Editor/src/main/resources/icons/mddhtml.png)
+
+Default key: Ctrl+H. This is changeable in the settings.
+
+This will first open a file chooser to select HTML file to generate to. Then a popup window will be opened containing meta data for generation of the HTML.
+
+![](file:Editor/docs/images/HTMLOptions.png)
+
+#### Inline CSS
+
+If you select this option then the CSS file you point out will be included within the generated HTML file. 
+
+#### CSS file
+
+This is the CSS file to use. Write a path to the CSS file or use the "Select" button to open a file chooser. This is optional and can be skipped, but the resulting HMTL can be rather boring if you don't provide a CSS.
+
+#### file: links relative to
+
+This is a path that file: links in the document isrelative to. This is used to resolve local filesystem images. 
+
+#### Open result
+
+If this is selected then the generated HTML will be opened by the system default browser. 
+
+### Setting
+
+![](file:Editor/src/main/resources/icons/mddsettings.png)
+
+Default key: Ctrl+E. This is changeable in the settings.
+
+This opens the settings popup window where you can configure keys, margins, colors, etc. 
+
+### Restyle document
+
+Default key: Ctrl+R. This is changeable in the settings.
+
+This will force a complete restyling of the whole document. 
+
+### Restyle on paste
+
+Default key: Ctrl+V. This is changeable in the settings.
+
+This also forces a restyle of the document, but when paste of text into the document is done. For this to work it must be mapped to the same key as is used for paste. On windows and linux it is Ctrl+V, on Mac it is Cmd+V. This function can be disabled by setting the key to something else than the paste key.
+
+### Open list of open files
+
+Default key: Ctrl+1. This is changeable in the settings.
+
+This opens a popup window with all the open files. Click on a file to select it for editing in the window. 
+
+This function can also be activated by moving the mouse point to the left edge of the editor window. 
+
+</div>
 
 ## If you're on a Mac
 
@@ -132,7 +321,7 @@ Fancy functions like search and replace.
 
 ### By me
 
-Only images with absolute path (even http: urls) are rendered in preview. Not sure I can fix this since the preview is generated in memory. I don't really know what the JTextPane sees links relative to then. Possibly if I can resolve the full path to a relative image using the same scheme as used in the PDFGenerator.
+Currently none known.
 
 ### By Oracle
 
