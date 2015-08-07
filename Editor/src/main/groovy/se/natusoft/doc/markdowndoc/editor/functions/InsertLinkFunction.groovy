@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
@@ -48,6 +48,10 @@ import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
+import se.natusoft.doc.markdowndoc.editor.gui.ColorsTrait
+import se.natusoft.doc.markdowndoc.editor.gui.GuiGoodiesTrait
+import se.natusoft.doc.markdowndoc.editor.gui.MDETitledBorder
+import se.natusoft.doc.markdowndoc.editor.gui.PopupWindow
 
 import javax.swing.*
 import javax.swing.border.SoftBevelBorder
@@ -55,6 +59,8 @@ import javax.swing.border.TitledBorder
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
+import java.awt.event.FocusEvent
+import java.awt.event.FocusListener
 
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD
 
@@ -63,7 +69,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-class InsertLinkFunction implements EditorFunction, Configurable {
+class InsertLinkFunction implements EditorFunction, Configurable, GuiGoodiesTrait, ColorsTrait {
     //
     // Private Members
     //
@@ -76,6 +82,8 @@ class InsertLinkFunction implements EditorFunction, Configurable {
     private JTextField linkURL
     private JTextField linkTitle
     private JWindow inputDialog
+
+    float popupOpacity = 1.0f
 
     //
     // Properties
@@ -96,6 +104,11 @@ class InsertLinkFunction implements EditorFunction, Configurable {
         updateTooltipText()
     }
 
+    private Closure popupOpacityChanged = { ConfigEntry ce ->
+        int ival = Integer.valueOf(ce.value)
+        this.popupOpacity = ((ival as float) / 100.0f) as float
+    }
+
     /**
      * Register configurations.
      *
@@ -104,6 +117,7 @@ class InsertLinkFunction implements EditorFunction, Configurable {
     @Override
     void registerConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
+        configProvider.registerConfig(PopupWindow.popupOpacityConfig, popupOpacityChanged)
     }
 
     /**
@@ -114,6 +128,7 @@ class InsertLinkFunction implements EditorFunction, Configurable {
     @Override
     void unregisterConfigs(@NotNull ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
+        configProvider.unregisterConfig(PopupWindow.popupOpacityConfig, popupOpacityChanged)
     }
 
     //
@@ -184,32 +199,74 @@ class InsertLinkFunction implements EditorFunction, Configurable {
      */
     @Override
     void perform() throws FunctionException {
-        Color bgColor = this.editor.getGUI().getWindowFrame().getBackground()
 
         Box vBox = Box.createVerticalBox()
 
         JPanel linkTextPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
+        linkTextPanel.setBorder(new MDETitledBorder(title: "Link text:", titleColor: defaultForegroundColor))
+        updateColors(linkTextPanel)
         this.linkText = new JTextField(32)
-        this.linkText.setBackground(bgColor)
-        this.linkText.setBorder(new TitledBorder("Link text:"))
+        this.linkText.addFocusListener(new FocusListener() {
+            @Override
+            void focusGained(FocusEvent e) {
+                InsertLinkFunction.this.linkText.foreground = InsertLinkFunction.this.defaultBackgroundColor
+                InsertLinkFunction.this.linkText.background = InsertLinkFunction.this.defaultForegroundColor
+            }
+
+            @Override
+            void focusLost(FocusEvent e) {
+                InsertLinkFunction.this.linkText.foreground = InsertLinkFunction.this.defaultForegroundColor
+                InsertLinkFunction.this.linkText.background = InsertLinkFunction.this.defaultBackgroundColor
+            }
+        })
+        updateColors(this.linkText)
         linkTextPanel.add(this.linkText)
         vBox.add(linkTextPanel)
 
         JPanel linkURLPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
+        linkURLPanel.setBorder(new MDETitledBorder(title: "Link URL:", titleColor: defaultForegroundColor))
+        updateColors(linkURLPanel)
         this.linkURL = new JTextField(32)
-        this.linkURL.setBackground(bgColor)
-        this.linkURL.setBorder(new TitledBorder("Link URL:"))
+        this.linkURL.addFocusListener(new FocusListener() {
+            @Override
+            void focusGained(FocusEvent e) {
+                InsertLinkFunction.this.linkURL.foreground = InsertLinkFunction.this.defaultBackgroundColor
+                InsertLinkFunction.this.linkURL.background = InsertLinkFunction.this.defaultForegroundColor
+            }
+
+            @Override
+            void focusLost(FocusEvent e) {
+                InsertLinkFunction.this.linkURL.foreground = InsertLinkFunction.this.defaultForegroundColor
+                InsertLinkFunction.this.linkURL.background = InsertLinkFunction.this.defaultBackgroundColor
+            }
+        })
+        updateColors(this.linkURL)
         linkURLPanel.add(this.linkURL)
         vBox.add(linkURLPanel)
 
         JPanel linkTitlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
+        linkTitlePanel.setBorder(new MDETitledBorder(title: "Link title:", titleColor: defaultForegroundColor))
+        updateColors(linkTitlePanel)
         this.linkTitle = new JTextField(32)
-        this.linkTitle.setBackground(bgColor)
-        this.linkTitle.setBorder(new TitledBorder("Link title:"))
+        this.linkTitle.addFocusListener(new FocusListener() {
+            @Override
+            void focusGained(FocusEvent e) {
+                InsertLinkFunction.this.linkTitle.foreground = InsertLinkFunction.this.defaultBackgroundColor
+                InsertLinkFunction.this.linkTitle.background = InsertLinkFunction.this.defaultForegroundColor
+            }
+
+            @Override
+            void focusLost(FocusEvent e) {
+                InsertLinkFunction.this.linkTitle.foreground = InsertLinkFunction.this.defaultForegroundColor
+                InsertLinkFunction.this.linkTitle.background = InsertLinkFunction.this.defaultBackgroundColor
+            }
+        })
+        updateColors(this.linkTitle)
         linkTitlePanel.add(this.linkTitle)
         vBox.add(linkTitlePanel)
 
         JPanel insertCancelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
+        updateColors(insertCancelPanel)
         JButton insertButton = new JButton("Insert")
         insertButton.addActionListener(new ActionListener() {
             @Override
@@ -242,8 +299,12 @@ class InsertLinkFunction implements EditorFunction, Configurable {
         vBox.add(insertCancelPanel)
 
         this.inputDialog = new JWindow(this.editor.getGUI().getWindowFrame())
+        initGuiGoodies(this.inputDialog)
+        safeOpacity = this.popupOpacity
+        safeMakeRoundedRectangleShape()
+        updateColors(this.inputDialog)
+
         this.inputDialog.setLayout(new BorderLayout())
-        vBox.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED))
         this.inputDialog.add(vBox, BorderLayout.CENTER)
         this.inputDialog.setSize(this.inputDialog.getPreferredSize())
         this.linkButton.setEnabled(false)

@@ -46,18 +46,27 @@ import java.awt.Color
  */
 trait ColorsTrait {
 
+    static Color getDefaultForegroundColor() {
+        Color.WHITE
+    }
+
+    static Color getDefaultBackgroundColor() {
+        Color.BLACK
+    }
+
     static void updateColors(JComponent component) {
-        component.background = Color.BLACK
-        component.foreground = Color.WHITE
+        component.background = defaultBackgroundColor
+        component.foreground = defaultForegroundColor
     }
 
     static void updateColors(JWindow window) {
-        window.background = Color.BLACK
-        window.foreground = Color.WHITE
+        window.background = defaultBackgroundColor
+        window.foreground = defaultForegroundColor
     }
 
     static void updateColors(JFrame frame) {
-        frame.background = Color.BLACK
-        frame.foreground = Color.WHITE
+        frame.background = defaultBackgroundColor
+        frame.foreground = defaultForegroundColor
     }
+
 }

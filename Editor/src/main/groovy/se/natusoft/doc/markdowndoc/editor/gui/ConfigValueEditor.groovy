@@ -100,8 +100,8 @@ class ConfigValueEditor extends JPanel implements ActionListener, ColorsTrait {
             setupDefaultConfigEntry(configEntry)
         }
 
-        final TitledBorder border = new TitledBorder(configEntry.getDescription())
-        border.setTitleColor(Color.WHITE)
+        final TitledBorder border = new MDETitledBorder(title: configEntry.getDescription())
+        border.setTitleColor(defaultForegroundColor)
         setBorder(border)
 
         final FontMetrics fm = getFontMetrics(getFont())
@@ -232,8 +232,8 @@ class ConfigValueEditor extends JPanel implements ActionListener, ColorsTrait {
             }
         })
 
-        final JButton colorChooserButton = new JButton("<html><font color='black'>...</font></html>")
-        updateColors(colorChooserButton)
+        final JButton colorChooserButton = new JButton("...")
+//        updateColors(colorChooserButton)
         colorPanel.add(colorChooserButton)
         colorChooserButton.addActionListener(new ActionListener() {
             @Override
@@ -343,14 +343,14 @@ class ConfigValueEditor extends JPanel implements ActionListener, ColorsTrait {
         this.keyboardKeyField.addFocusListener(new FocusListener() {
             @Override
             void focusGained(final FocusEvent e) {
-                keyboardKeyField.background = Color.WHITE
-                keyboardKeyField.foreground = Color.BLACK
+                keyboardKeyField.background = ConfigValueEditor.this.defaultForegroundColor
+                keyboardKeyField.foreground = ConfigValueEditor.this.defaultBackgroundColor
             }
 
             @Override
             void focusLost(final FocusEvent e) {
-                keyboardKeyField.background = Color.BLACK
-                keyboardKeyField.foreground = Color.WHITE
+                keyboardKeyField.background = ConfigValueEditor.this.defaultBackgroundColor
+                keyboardKeyField.foreground = ConfigValueEditor.this.defaultForegroundColor
             }
         })
         refreshKeyboardKeyConfigEntry(configEntry)
@@ -374,14 +374,14 @@ class ConfigValueEditor extends JPanel implements ActionListener, ColorsTrait {
         this.textField.addFocusListener(new FocusListener() {
             @Override
             void focusGained(final FocusEvent e) {
-                textField.background = Color.WHITE
-                textField.foreground = Color.BLACK
+                textField.background = ConfigValueEditor.this.defaultForegroundColor
+                textField.foreground = ConfigValueEditor.this.defaultBackgroundColor
             }
 
             @Override
             void focusLost(final FocusEvent e) {
-                textField.background = Color.BLACK
-                textField.foreground = Color.WHITE
+                textField.background = ConfigValueEditor.this.defaultBackgroundColor
+                textField.foreground = ConfigValueEditor.this.defaultForegroundColor
             }
         })
         refreshDefaultConfigEntry(configEntry)

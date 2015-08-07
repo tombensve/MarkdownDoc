@@ -1123,6 +1123,9 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
             fileChooser.selectedFiles.each { final File file ->
                 firstOpened = handleSelectedFile(file, firstOpened)
             }
+            if (fileChooser.selectedFile != null) {
+                firstOpened = handleSelectedFile(fileChooser.selectedFile, firstOpened)
+            }
         }
 
         firstOpened
