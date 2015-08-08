@@ -30,7 +30,7 @@ Available through maven at bintray JCentral: [http://jcenter.bintray.com/](http:
 Command line \[[markdowndoc-cmd-line-1.4.exec.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/1.4/markdowndoc-cmd-line-1.4.exec.jar)\]
 
 
-Editor \[[MarkdownDocEditor-1.4.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/1.4/MarkdownDocEditor-1.4.App.jar)\] \[[MarkdownDocEditor.app.zip](http://download.natusoft.se/MarkdownDocEditor-1.4.dmg)\].
+Editor \[[MarkdownDocEditor-1.4.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/1.4/MarkdownDocEditor-1.4.App.jar)\] \[[MarkdownDocEditor-1.4.dmg](http://download.natusoft.se/MarkdownDocEditor-1.4.dmg)\].
 
 [Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md)
 
