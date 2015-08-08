@@ -2,7 +2,7 @@
 
 The library is made up of a document model representing all formats of markdown, parsers and generators. The parsers produce a document model and the generators generate from that model. The document model represents the markdown formats. Thereby there are no HTML pass-through from a markdown document! This tool only deals with markdown, not HTML.
 
-The API docs for the library can be found [here](http://apidoc.natusoft.se/MarkdownDoc1_4).
+The API docs for the library can be found [here](http://apidoc.natusoft.se/MarkdownDoc/).
 
 ## Usage
 
@@ -141,3 +141,29 @@ Usage:
 This will generate all output formats as specified in the .mddoc file.
 
 See the "The mddoc file type" section for more information on the .mdddoc format.
+
+## Bugs
+
+### By me
+
+Nothing currenty known by me.
+
+### By IText (PDF generating)
+
+The position of images on the page gets somewhat off when text and image is mixed in the same paragraph (or section in IText language). IText also seem to have problems calculating the size of a paragraph that has an image in it, making text go beyond the bottom of a page. As long as images are on their own with no other text the PDF result will be as expected.
+
+For example, this will cause problems:
+
+    Toolbar icon: ![](images/saveicon.png)
+    
+    Bla bla ...
+
+Also note that the first might look more or less OK, but the more of these in the document it will get more and more off. After around 6 such the image appears in the paragraph above! 
+
+This will not cause a problem:
+
+    Toolbar icon:
+    
+    ![](images/saveicon.png)
+    
+    Bla bla ...

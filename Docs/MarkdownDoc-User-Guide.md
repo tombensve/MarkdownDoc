@@ -74,11 +74,11 @@ The known (and intentional) differences are:
 
 * No entity encoding of email addresses.
 
-* No multiple block quote levels (as of now). I've never personally missed having multiple quote levels, which is why I haven't done something about that yet.
+* No multiple block quote levels (as of now). I've never personally missed having multiple quote levels, which is why I haven't done something about that yet. No one has contacted me asking for it either :-).
 
 * Does not support any other formatting within strong, emphasized, or header. I personally don't see enough of a problem with this, that I'll prioritize it.
 
-If you find any of the missing features a problem, I'll happily accept pull requests. :-)
+If you find any of the missing features a problem, I'll happily accept pull requests. :-) Seriously it is OK to contact me with functionality wishes. Do note however that I work on this and other projects entirely in my spare time.
 
 ## File specifications
 
@@ -232,7 +232,7 @@ or
             ...
         <!-- @EndDiv -->
 
-The latter does not affect GitHub. In either usage the HTMLGenerator will generate a correct HTML div, while the MarkdownGenerator will generate the comment variant, and the PDFGenerator will not generate anything, but will use the divs to affect styling via MSS.
+The latter does not affect GitHub wich ceases its markdown formatting within divs. In either usage the HTMLGenerator will generate a correct HTML div, while the MarkdownGenerator will generate the comment variant, and the PDFGenerator will not generate anything, but will use the divs to affect styling via MSS.
 
 The div has to be the only thing on the line, both start and end tag! Also, there can be a maximum of 3 spaces before the div tag. If there are 4 or more it will become a code block!
 
@@ -242,7 +242,7 @@ __Note:__ that the HTML div variant will have to look exactly like the example a
 
 The library is made up of a document model representing all formats of markdown, parsers and generators. The parsers produce a document model and the generators generate from that model. The document model represents the markdown formats. Thereby there are no HTML pass-through from a markdown document! This tool only deals with markdown, not HTML.
 
-The API docs for the library can be found [here](http://apidoc.natusoft.se/MarkdownDoc1_4).
+The API docs for the library can be found [here](http://apidoc.natusoft.se/MarkdownDoc/).
 
 ## Usage
 
@@ -376,6 +376,32 @@ Usage:
 This will generate all output formats as specified in the .mddoc file.
 
 See the "The mddoc file type" section for more information on the .mdddoc format.
+
+## Bugs
+
+### By me
+
+Nothing currenty known by me.
+
+### By IText (PDF generating)
+
+The position of images on the page gets somewhat off when text and image is mixed in the same paragraph (or section in IText language). IText also seem to have problems calculating the size of a paragraph that has an image in it, making text go beyond the bottom of a page. As long as images are on their own with no other text the PDF result will be as expected.
+
+For example, this will cause problems:
+
+        Toolbar icon: ![](images/saveicon.png)
+        
+        Bla bla ...
+
+Also note that the first might look more or less OK, but the more of these in the document it will get more and more off. After around 6 such the image appears in the paragraph above!
+
+This will not cause a problem:
+
+        Toolbar icon:
+        
+        ![](images/saveicon.png)
+        
+        Bla bla ...
 
 # MSS (Markdown Style Sheet)
 
@@ -1030,7 +1056,7 @@ One or more files can be specified as arguments.
 
 This requires Java 7+!
 
-<!-- @Div("functions") -->
+<!-- @Div("imageLeft") -->
 
 ## Functions
 
@@ -1072,7 +1098,7 @@ In this case since there can be more than one file, no files is set as the curre
 
 Default key: Ctrl+T. This is changeable in the settings.
 
-This just adds a # character. This is just a help for those that are still unfamiliar with markdown to produce the correct heading character.
+This just adds a # character which is the markdown heading character. Insert as many as the heading level you want, max 6.
 
 ### Insert bold
 
@@ -1080,7 +1106,7 @@ This just adds a # character. This is just a help for those that are still unfam
 
 Default key: Ctrl+B. This is changeable in the settings.
 
-This adds 4 '_' characters with the cursor placed between the first 2 and the last 2. 2 underscores before and after makes bold text in markdown. 2 asterisks before and after does the same thing, but the editor uses underscores for this specified help function. This function can actually be useful even if you are familiar with markdown, but also helps those not familiar with markdown to get the correct formatting character.
+This adds 4 '_' characters with the cursor placed between the first 2 and the last 2. 2 underscores before and after makes bold text in markdown. 2 asterisks before and after does the same thing, but the editor uses underscores for this specific help function.
 
 ### Insert italics
 
@@ -1088,7 +1114,7 @@ This adds 4 '_' characters with the cursor placed between the first 2 and the la
 
 Default key: Ctrl+I. This is changeable in the settings.
 
-This adds 2 '_' characters with the cursor placed between them. 1 underscore before and after makes italic text in markdown. 1 asterisk before and after does the same thing, but the editor uses underscores for this specific help funciton. Asterisks also means other things in markdown so underscores in this case is less confusing. This function can actually be useful even if you are not familiar with markdown, but also helsp those not familiar with markdown to get the correct formatting character.
+This adds 2 '_' characters with the cursor placed between them. 1 underscore before and after makes italic text in markdown. 1 asterisk before and after does the same thing, but the editor uses underscores for this specific help funciton. Asterisks also means other things in markdown so underscores in this case is less confusing.
 
 ### Insert list
 
@@ -1096,7 +1122,7 @@ This adds 2 '_' characters with the cursor placed between them. 1 underscore bef
 
 Default key: Ctrl+L. This is changeable in the settings.
 
-This adds and asterisk and a space which is how you make a list entry for an unordered list in markdown. This is to help those unfamiliar with markdown. Do note that it is also possible to make a numbered list, in which case you replace the asterisk with a number like 1.
+This adds and asterisk and a space which is how you make a list entry for an unordered list in markdown. Do note that it is also possible to make a numbered list, in which case you replace the asterisk with a number like 1. See the markdown reference section of this document for more information.
 
 ### Insert quote
 
@@ -1104,7 +1130,7 @@ This adds and asterisk and a space which is how you make a list entry for an uno
 
 Default key: Ctrl+Q. This is changeable in the settings.
 
-This inserts a '>' character and a space which is how you make quoted text in markdown. This is to help those unfamiliar with markdown.
+This inserts a '>' character and a space which is how you make quoted text in markdown.
 
 ### Insert image
 
@@ -1120,7 +1146,7 @@ This function will open a small popup window where you can enter 3 pieces of inf
 
 Default key: Ctrl+N. This is changeable in the settings.
 
-This function will ppen a small popup window where you can enter 3 pieces of information: 1) The link text. 2) The link URL. 3) A link title. You should provide a link text and an URL as minimum. When you press the "Insert" button in the popup window, then the link will be inserted into the text in markdown format: `[link text](url "title")`.
+This function will open a small popup window where you can enter 3 pieces of information: 1) The link text. 2) The link URL. 3) A link title. You should provide a link text and an URL as minimum. When you press the "Insert" button in the popup window, then the link will be inserted into the text in markdown format: `[link text](url "title")`.
 
 ### Preview
 
@@ -1130,7 +1156,7 @@ Default key: Ctrl+F. This is changeable in the settings.
 
 This will format the markdown in the editor into HTML and show it in readonly mode instead of the editable content. To go back to editing again do a Ctrl+F again or use the toolbar button. Do note that while in preview mode it is possible to drag and drop markdown files into the window to have them previewed. This does not affect what you are editing in any way. When you go back to edit mode again your edited text will be there and a new preview will preview that text.
 
-Please also note that the preview HTML rendering is done by the Java GUI library (Swing) component JEditorPane. This is far from an optimal HTML renderer! It can make things look strange sometimes. It also insists on indenting the beginning of every paragraph if you are using a Java version < 1.8. If anyone knows of a free, open source, swing compatible HTML renderer, that is better please let me know.
+_Please also note that the preview HTML rendering is done by the Java GUI library (Swing) component JEditorPane_._This is far from an optimal HTML renderer_!_It can make things look strange sometimes_._It also insists on indenting the beginning of every code block_._If anyone knows of a free_,_open source_,_swing compatible HTML renderer_,_that is better please let me know._
 
 ### Generate PDF
 
@@ -1258,6 +1284,10 @@ If you are on a Mac you might want to change the keyboard mappings to use Cmd ra
 
 Fancy functions like search and replace.
 
+## Laptop power warning
+
+The markdown styling as you type in the editor do pull some CPU since basically the whole paragraph needs to be reformated on every key. My Mac Book Pro marks this app as a heavy energy user. To minimize battery drain you can turn off the styling as you type in the settings.
+
 ## Bugs
 
 ### By me
@@ -1266,9 +1296,9 @@ Currently none known.
 
 ### By Oracle
 
-* This editor uses the standard Swing component JTextPane. This is unfortunately not an optimal component. Specially for styling it gets slow for large documents. In earlier versions of Java 7 this component had a word wrap problem when deleting text either using backspace or cutting text. In that case it rerendered the text screwing up the format until new text was entered again. _As of Java 8 this bug is fixed_, but other new bugs have been added. They are however smaller and don't occur so often.
+This editor uses the standard Swing component JTextPane. This is unfortunately not an optimal component. Specially for styling it gets slow for large documents. In earlier versions of Java 7 this component had a word wrap problem when deleting text either using backspace or cutting text. In that case it rerendered the text screwing up the format until new text was entered again. _As of Java 8 this bug is fixed_, but other new bugs have been added. They are however smaller and don't occur so often.
 
-* Sometimes when the JTextPane is opened the pane will not render at all! Just increase the width of the window util text appears. Then save so that the window size for that file will be remembered. I have one and only one document for which this happens and I cannot tell what it is that causes the problem. This could be a mac only problem.
+Sometimes when the JTextPane is opened the pane will not render at all! Just increase the width of the window util text appears. Then save so that the window size for that file will be remembered. I have one and only one document for which this happens and I cannot tell what it is that causes the problem. This could be a mac only problem.
 
 # The mddoc file type
 
@@ -1337,7 +1367,7 @@ About versions, they are hell! After personal experience of having different ver
 
 * Added possibility to also have an image on the title page.
 
-* Added annotations within a comment block. Most of the options for the PDF generator can now be specified with annotations in the document. For example `@PDFPageSize("A4")`. This means for example that the title page can be part of the document. This comment with annotations should preferrably be the first thing in the document.
+* Added annotations within a comment block. Most of the options for the PDF generator can now be specified with annotations in the document. For example `@PDFPageSize("A4")`. This means for example that the title page can be part of the document. This comment with annotations should preferrably be the first thing in the document. The reason for the very Javaish format of the annotation is that it is explicit enough to not be accidentally and unwantedly matched.
 
 * Added labels in options for all previously hardcoded text strings in PDFGenerator. It should now be possible to completely generate a document in a different language than English. These can also be set with comment annotations as mentioned above.
 

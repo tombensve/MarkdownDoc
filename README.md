@@ -1,4 +1,4 @@
-# MarkdownDoc
+![](http://download.natusoft.se/Images/MarkdownDoc/MarkdownDoc.png)
 
 Copyright (C) 2012 Natusoft AB
 
@@ -71,7 +71,7 @@ About versions, they are hell! After personal experience of having different ver
 
 * Added possibility to also have an image on the title page.
 
-* Added annotations within a comment block. Most of the options for the PDF generator can now be specified with annotations in the document. For example `@PDFPageSize("A4")`. This means for example that the title page can be part of the document. This comment with annotations should preferrably be the first thing in the document.
+* Added annotations within a comment block. Most of the options for the PDF generator can now be specified with annotations in the document. For example `@PDFPageSize("A4")`. This means for example that the title page can be part of the document. This comment with annotations should preferrably be the first thing in the document. The reason for the very Javaish format of the annotation is that it is explicit enough to not be accidentally and unwantedly matched.
 
 * Added labels in options for all previously hardcoded text strings in PDFGenerator. It should now be possible to completely generate a document in a different language than English. These can also be set with comment annotations as mentioned above.
 

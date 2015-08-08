@@ -266,6 +266,8 @@ class EditableSelectorPopup extends PopupWindow implements MouseListeners {
             editor.editable = efb.editable
 
             close()
+            JFrame wf = this.editor.GUI.windowFrame
+            moveMouse(new Point(wf.x + (wf.width / 2) as int, wf.y + (wf.height / 2) as int))
         }
     }
 

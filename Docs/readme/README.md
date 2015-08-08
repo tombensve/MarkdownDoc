@@ -1,4 +1,4 @@
-# MarkdownDoc
+![](http://download.natusoft.se/Images/MarkdownDoc/MarkdownDoc.png)
 
 Copyright (C) 2012 Natusoft AB
 

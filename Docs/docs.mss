@@ -233,7 +233,7 @@
         }
       },
 
-      "functions": {
+      "imageLeft": {
         "imgAlign": "LEFT"
       }
     }
