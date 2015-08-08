@@ -90,6 +90,31 @@
 
     <profiles>
         <profile>
+            <id>mac-app-bundle</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>sh.tak.appbundler</groupId>
+                        <artifactId>appbundle-maven-plugin</artifactId>
+                        <version>1.0.4</version>
+                        <configuration>
+                            <mainClass>se.natusoft.doc.markdowndoc.editor.MarkdownDocEditor</mainClass>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>bundle</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+
+        </profile>
+
+        <profile>
             <id>assemble-exec</id>
             <build>
                 <plugins>

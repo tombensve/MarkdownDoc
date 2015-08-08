@@ -3,3 +3,4 @@
 .idea/*
 *.iml
 Library/docs/api/*
+macapp/MarkdownDocEditor.app/*
