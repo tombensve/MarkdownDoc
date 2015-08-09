@@ -641,7 +641,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      */
     @Override
     int getEditorVisibleY() {
-        this.scrollPane.getViewport().getViewRect().y
+        this.scrollPane.viewport.viewRect.y
     }
 
     /**
@@ -1003,12 +1003,12 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
     @Override
     void refreshStyling() {
         final String text = getEditorContent()
-        final int caretDot = getCaretDot()
-        getGUI().getStyler().disable()
-        setEditorContent(text)
-        setCaretDot(caretDot)
-        getGUI().getStyler().enable()
-        getStyler().styleDocument()
+        final int caretDot = this.caretDot // Save for restore after text update.
+        styler.disable()
+        editorContent = text
+        this.caretDot = caretDot // Restore of previous caret position.
+        styler.enable()
+        styler.styleDocument()
     }
 
     /**
@@ -1035,10 +1035,10 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
         this.editable.editorPane.addMouseListener(this)
 
         final Insets margins = new Insets(
-                topMargin.getIntValue(),
-                leftMargin.getIntValue(),
-                bottomMargin.getIntValue(),
-                rightMargin.getIntValue()
+                topMargin.intValue,
+                leftMargin.intValue,
+                bottomMargin.intValue,
+                rightMargin.intValue
         )
         this.editable.editorPane.setMargin(margins)
 
@@ -1060,7 +1060,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
 
         this.editable.styler.styleDocument()
 
-        this.editable.editorPane.setRequestFocusEnabled(true)
+        this.editable.editorPane.requestFocusEnabled = true
     }
 
     /**

@@ -253,7 +253,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
      * @param file
      */
     private void showFile(@NotNull final File file) {
-        if (file.getName().endsWith("md") || file.getName().endsWith("markdown")) {
+        if (file.name.endsWith("md") || file.name.endsWith("markdown")) {
             try {
                 final StringBuilder markdownText = new StringBuilder()
                 final BufferedReader mdFileReader = new BufferedReader(new FileReader(file))
@@ -266,7 +266,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
                 mdFileReader.close()
 
                 final String html = markdownToHTML(markdownText.toString())
-                this.preview.setText(html)
+                this.preview.text = html
                 this.preview.setLocation(0,0)
             }
             catch (final ParseException pe) {
@@ -311,11 +311,11 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
     void perform() throws FunctionException {
         if (!this.enabled) {
             this.enabled = true
-            this.previewButton.setSelected(this.enabled)
+            this.previewButton.selected = this.enabled
             previewOn()
         } else {
             this.enabled = false
-            this.previewButton.setSelected(this.enabled)
+            this.previewButton.selected = this.enabled
             previewOff()
             this.editor.requestEditorFocus()
         }
@@ -341,7 +341,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
 
             // Set a relatively correct position in the HTML view based on the
             // edit view.
-            this.preview.setLocation(this.editor.getCaretLocation())
+            this.preview.location = this.editor.caretLocation
 
             this.editor.showOtherComponent(this.preview)
 
@@ -380,10 +380,10 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
         final ByteArrayOutputStream htmlStream = new ByteArrayOutputStream()
         final Generator generator = new HTMLGenerator()
         final HTMLGeneratorOptions htmlOpts = new HTMLGeneratorOptions()
-        htmlOpts.setInlineCSS(true)
-        htmlOpts.setCss(null)
-        htmlOpts.setPrimitiveHTML(true)
-        htmlOpts.setResultFile(null)
+        htmlOpts.inlineCSS = true
+        htmlOpts.css = null
+        htmlOpts.primitiveHTML = true
+        htmlOpts.resultFile = null
         generator.generate(document, htmlOpts, null, htmlStream)
         htmlStream.close()
 

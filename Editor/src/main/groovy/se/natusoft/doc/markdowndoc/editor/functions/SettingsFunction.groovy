@@ -207,7 +207,7 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
 
         withAllConfigEntriesDo { final ConfigEntry configEntry ->
             this.settingsPopup.addConfig(configEntry)
-            this.cancelValues.put(configEntry.getKey(), configEntry.getValue())
+            this.cancelValues.put(configEntry.key, configEntry.value)
         }
 
         this.settingsPopup.windowVisibility = true
@@ -241,14 +241,14 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
     protected void save() {
         final Properties props = new Properties()
         withAllConfigEntriesDo { final ConfigEntry configEntry ->
-            props.setProperty(configEntry.getKey(), configEntry.getValue())
+            props.setProperty(configEntry.key, configEntry.value)
         }
 
         Services.persistentPropertiesProvider.save(SETTINGS_PROP_NAME, props)
 
         // When we save, also remember the position and size of the editor window.
         final FileWindowProps fileWindowProps = new FileWindowProps()
-        fileWindowProps.setBounds(this.editor.getGUI().getWindowFrame().getBounds())
+        fileWindowProps.setBounds(this.editor.GUI.windowFrame.bounds)
         fileWindowProps.saveBounds()
 
         this.settingsPopup.unregisterConfigs(this.configProvider)
@@ -265,23 +265,23 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
                 final String propValue = props.getProperty(propName)
                 final ConfigEntry configEntry = Services.configs.lookupConfig(propName)
                 if (configEntry != null) {
-                    configEntry.setValue(propValue)
+                    configEntry.value = propValue
                 }
             }
         }
         else {
             withAllConfigEntriesDo { final ConfigEntry configEntry ->
-                configEntry.setValue(configEntry.getValue()) // force gui update
+                configEntry.value = configEntry.getValue() // force gui update
             }
         }
 
-        SwingUtilities.updateComponentTreeUI(this.editor.getGUI().getWindowFrame())
+        SwingUtilities.updateComponentTreeUI(this.editor.GUI.windowFrame)
 
         // Restore window position and size to last saved.
         final FileWindowProps fileWindowProps = new FileWindowProps()
         fileWindowProps.load()
         if (fileWindowProps.hasProperties()) {
-            this.editor.getGUI().getWindowFrame().setBounds(fileWindowProps.getBounds())
+            this.editor.GUI.windowFrame.bounds = fileWindowProps.getBounds()
         }
 
     }
