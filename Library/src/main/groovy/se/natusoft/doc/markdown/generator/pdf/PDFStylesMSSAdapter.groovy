@@ -1,38 +1,38 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
  *         2015-07-15: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdown.generator.pdf
 
@@ -78,11 +78,11 @@ class PDFStylesMSSAdapter {
      *
      * @param font The name of the font to check.
      */
-    private static boolean isStandardFont(@NotNull String font) {
+    private static boolean isStandardFont(@NotNull final String font) {
         try {
             return Font.FontFamily.valueOf(font) != null
         }
-        catch (IllegalArgumentException ignore) {}
+        catch (final IllegalArgumentException ignore) {}
 
         false
     }
@@ -102,21 +102,21 @@ class PDFStylesMSSAdapter {
 
         if (!isStandardFont(mssFont.family.toUpperCase())) {
             // We don't have a standard font! Lets see if we can find a ttf font!
-            MSSExtFont mssExtFont = this.mss.getPdfExternalFontPath(mssFont.family)
+            final MSSExtFont mssExtFont = this.mss.getPdfExternalFontPath(mssFont.family)
             if (mssExtFont == null) {
                 throw new GenerateException(message: "Font '${mssFont.family}' is not a standard font and an " +
                         "external font matching this name was not found either.")
             }
 
-            byte[] fontBytes = loadFont(mssExtFont)
+            final byte[] fontBytes = loadFont(mssExtFont)
             String fontName = mssFont.family
             if (!fontName.contains(".")) { fontName += ".ttf" }
-            BaseFont baseFont
+            final BaseFont baseFont
             try {
                 baseFont = BaseFont.createFont(fontName, mssExtFont.encoding, BaseFont.EMBEDDED, BaseFont.NOT_CACHED,
                         fontBytes, new byte[0])
             }
-            catch (Exception ignore) {
+            catch (final Exception ignore) {
                 fontName = mssFont.family + ".otf"
                 baseFont = BaseFont.createFont(fontName, mssExtFont.encoding, BaseFont.EMBEDDED, BaseFont.NOT_CACHED,
                         fontBytes, new byte[0])
@@ -138,16 +138,16 @@ class PDFStylesMSSAdapter {
      * @throws GenerateException on failure to load font.
      */
     private @NotNull byte[] loadFont(@NotNull final MSSExtFont mssExtFont) throws GenerateException {
-        ByteArrayOutputStream fontBytes = new ByteArrayOutputStream()
-        File fontPath
+        final ByteArrayOutputStream fontBytes = new ByteArrayOutputStream()
+        final File fontPath
         try {
             fontPath = this.generatorContext.fileResource.getResourceFile(mssExtFont.fontPath)
         }
-        catch (IOException ioe) {
+        catch (final IOException ioe) {
             throw new GenerateException(message: "Font '${mssExtFont.fontPath}' was not found!", cause: ioe)
         }
 
-        BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(fontPath))
+        final BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(fontPath))
         try {
             int b = inputStream.read()
             while (b >= 0) {
@@ -155,7 +155,7 @@ class PDFStylesMSSAdapter {
                 b = inputStream.read()
             }
         }
-        catch (IOException ioe) {
+        catch (final IOException ioe) {
             throw new GenerateException(message: "Failed to load font (${mssExtFont.fontPath})!", cause: ioe)
         }
         finally {
@@ -176,8 +176,8 @@ class PDFStylesMSSAdapter {
     @NotNull Font getFont(@NotNull final MSS.MSS_Pages section) throws GenerateException {
         validate()
 
-        MSSFont mssFont = this.mss.forDocument.getFont(section)
-        MSSColorPair mssColorPair = this.mss.forDocument.getColorPair(section)
+        final MSSFont mssFont = this.mss.forDocument.getFont(section)
+        final MSSColorPair mssColorPair = this.mss.forDocument.getColorPair(section)
 
         resolveFont(mssFont, mssColorPair)
     }
@@ -190,8 +190,8 @@ class PDFStylesMSSAdapter {
     @NotNull Font getFont(@NotNull final MSS.MSS_TOC section) {
         validate()
 
-        MSSFont mssFont = this.mss.forTOC.getFont(section)
-        MSSColorPair mssColorPair = this.mss.forTOC.getColorPair(section)
+        final MSSFont mssFont = this.mss.forTOC.getFont(section)
+        final MSSColorPair mssColorPair = this.mss.forTOC.getColorPair(section)
 
         resolveFont(mssFont, mssColorPair)
     }
@@ -204,8 +204,8 @@ class PDFStylesMSSAdapter {
     @NotNull Font getFont(@NotNull final MSS.MSS_Front_Page section) {
         validate()
 
-        MSSFont mssFont = this.mss.forFrontPage.getFont(section)
-        MSSColorPair mssColorPair = this.mss.forFrontPage.getColorPair(section)
+        final MSSFont mssFont = this.mss.forFrontPage.getFont(section)
+        final MSSColorPair mssColorPair = this.mss.forFrontPage.getColorPair(section)
 
         resolveFont(mssFont, mssColorPair)
     }

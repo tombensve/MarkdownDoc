@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -52,7 +52,7 @@ class ListItem extends DocItem {
      *
      * @param item
      */
-    void addItem(@NotNull("Intentionally not null in general!") DocItem item) {
+    void addItem(@NotNull final DocItem item) {
         throw new IllegalArgumentException("A ListItem can only take Paragraph objects!")
     }
 
@@ -61,7 +61,7 @@ class ListItem extends DocItem {
      *
      * @param paragraph The paragraph to add.
      */
-    void addItem(@NotNull Paragraph paragraph) {
+    void addItem(@NotNull final Paragraph paragraph) {
         super.addItem(paragraph)
     }
 
@@ -78,10 +78,10 @@ class ListItem extends DocItem {
      *
      * @param indentLevel The indentation size.
      */
-    @NotNull String toString(int indentLevel) {
-        StringBuilder sb = new StringBuilder()
+    @NotNull String toString(final int indentLevel) {
+        final StringBuilder sb = new StringBuilder()
 
-        for (DocItem paraItem : super.items) {
+        super.items.each { final DocItem paraItem ->
             indentLevel.times { sb.append(' ') }
             sb.append(paraItem.toString())
         }

@@ -112,6 +112,7 @@ class ConfigValueEditor extends JPanel implements ActionListener, ColorsTrait {
     // Methods
     //
 
+    @SuppressWarnings("GroovyUnusedDeclaration")
     void refresh() {
         if (this.configEntry instanceof BooleanConfigEntry) {
             refreshBooleanConfigEntry((BooleanConfigEntry) configEntry)
@@ -273,7 +274,7 @@ class ConfigValueEditor extends JPanel implements ActionListener, ColorsTrait {
         add(panel)
         this.doubleSpinner.addChangeListener(new ChangeListener() {
             @Override
-            void stateChanged(ChangeEvent e) {
+            void stateChanged(final ChangeEvent e) {
                 final JSpinner doubleSpinner = (JSpinner)e.getSource()
                 configEntry.setDoubleValue((Double) doubleSpinner.getValue())
             }

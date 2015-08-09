@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -69,8 +69,8 @@ class MDDocFileHandler {
      *
      * @throws ParseException
      */
-    static execute(@NotNull String path, boolean verbose) throws ParseException {
-        Properties mdDocFile = new Properties()
+    static execute(@NotNull final String path, final boolean verbose) throws ParseException {
+        final Properties mdDocFile = new Properties()
         FileInputStream mdDocFileStream = null
         BufferedInputStream bufferedInputStream = null
         try {
@@ -78,7 +78,7 @@ class MDDocFileHandler {
             bufferedInputStream = new BufferedInputStream(mdDocFileStream)
             mdDocFile.load(bufferedInputStream)
         }
-        catch (IOException ioe) {
+        catch (final IOException ioe) {
             throw new ParseException(file: path, lineNo: 0, line: "", message: ioe.getMessage())
         }
         finally {
@@ -86,20 +86,20 @@ class MDDocFileHandler {
             if (mdDocFileStream != null) mdDocFileStream.close()
         }
 
-        String fileSpec = mdDocFile.get("inputPaths")
+        final String fileSpec = mdDocFile.get("inputPaths")
 
-        Properties parserOptions = new Properties();
-        for (String key : mdDocFile.stringPropertyNames()) {
+        final Properties parserOptions = new Properties();
+        for (final String key : mdDocFile.stringPropertyNames()) {
             if (key.startsWith("parserOption.")) {
                 parserOptions.setProperty(key.substring(13), mdDocFile.getProperty(key))
             }
         }
 
         if (verbose) System.out.println("Parsing input files:")
-        Doc document = new Doc();
+        final Doc document = new Doc();
 
-        SourcePaths sourcePaths = new SourcePaths(fileSpec);
-        for (File file : sourcePaths.getSourceFiles()) {
+        final SourcePaths sourcePaths = new SourcePaths(fileSpec);
+        for (final File file : sourcePaths.getSourceFiles()) {
             if (verbose) System.out.println("    " + file.getPath() + " ...");
             Parser parser = ParserProvider.getParserForFile(file);
             if (parser == null) {
@@ -109,13 +109,13 @@ class MDDocFileHandler {
         }
         if (verbose) System.out.println("All parsed!");
 
-        boolean generatePDF = Boolean.valueOf(mdDocFile.getProperty("generate.pdf"))
-        boolean generateHTML = Boolean.valueOf(mdDocFile.getProperty("generate.html"))
-        boolean generateMarkdown = Boolean.valueOf(mdDocFile.getProperty("generate.markdown"))
+        final boolean generatePDF = Boolean.valueOf(mdDocFile.getProperty("generate.pdf"))
+        final boolean generateHTML = Boolean.valueOf(mdDocFile.getProperty("generate.html"))
+        final boolean generateMarkdown = Boolean.valueOf(mdDocFile.getProperty("generate.markdown"))
 
         if (generatePDF) {
-            List<String> genOptsList = new LinkedList<>()
-            for (String key : mdDocFile.stringPropertyNames()) {
+            final List<String> genOptsList = new LinkedList<>()
+            for (final String key : mdDocFile.stringPropertyNames()) {
                 if (key.startsWith("pdf.")) {
                     genOptsList.add("-" + key.substring(4))
                     genOptsList.add(mdDocFile.getProperty(key))
@@ -123,9 +123,10 @@ class MDDocFileHandler {
             }
             String[] genOpts = new String[genOptsList.size()]
             genOpts = genOptsList.toArray(genOpts)
-            PDFGenerator pdfGenerator = new PDFGenerator()
-            CommandLineOptionsManager<Options> optMgr = new CommandLineOptionsManager<Options>(pdfGenerator.getOptionsClass());
-            Options options = optMgr.loadOptions("-", genOpts, 0);
+            final PDFGenerator pdfGenerator = new PDFGenerator()
+            final CommandLineOptionsManager<Options> optMgr =
+                    new CommandLineOptionsManager<Options>(pdfGenerator.getOptionsClass());
+            final Options options = optMgr.loadOptions("-", genOpts, 0);
 
             if (verbose) System.out.print("Generating " + options.getResultFile() + "...");
             pdfGenerator.generate(document, options, null)
@@ -133,8 +134,8 @@ class MDDocFileHandler {
         }
 
         if (generateHTML) {
-            List<String> genOptsList = new LinkedList<>()
-            for (String key : mdDocFile.stringPropertyNames()) {
+            final List<String> genOptsList = new LinkedList<>()
+            mdDocFile.stringPropertyNames().each { final String key ->
                 if (key.startsWith("html.")) {
                     genOptsList.add("-" + key.substring(5))
                     genOptsList.add(mdDocFile.getProperty(key))
@@ -142,9 +143,10 @@ class MDDocFileHandler {
             }
             String[] genOpts = new String[genOptsList.size()]
             genOpts = genOptsList.toArray(genOpts)
-            HTMLGenerator htmlGenerator = new HTMLGenerator()
-            CommandLineOptionsManager<Options> optMgr = new CommandLineOptionsManager<Options>(htmlGenerator.getOptionsClass());
-            Options options = optMgr.loadOptions("-", genOpts, 0);
+            final HTMLGenerator htmlGenerator = new HTMLGenerator()
+            final CommandLineOptionsManager<Options> optMgr =
+                    new CommandLineOptionsManager<Options>(htmlGenerator.getOptionsClass());
+            final Options options = optMgr.loadOptions("-", genOpts, 0);
 
             if (verbose) System.out.print("Generating " + options.getResultFile() + "...");
             htmlGenerator.generate(document, options, null)
@@ -152,8 +154,8 @@ class MDDocFileHandler {
         }
 
         if (generateMarkdown) {
-            List<String> genOptsList = new LinkedList<>()
-            for (String key : mdDocFile.stringPropertyNames()) {
+            final List<String> genOptsList = new LinkedList<>()
+            mdDocFile.stringPropertyNames().each { final String key ->
                 if (key.startsWith("markdown.")) {
                     genOptsList.add("-" + key.substring(9))
                     genOptsList.add(mdDocFile.getProperty(key))
@@ -161,9 +163,10 @@ class MDDocFileHandler {
             }
             String[] genOpts = new String[genOptsList.size()]
             genOpts = genOptsList.toArray(genOpts)
-            MarkdownGenerator markdownGenerator = new MarkdownGenerator()
-            CommandLineOptionsManager<Options> optMgr = new CommandLineOptionsManager<Options>(markdownGenerator.getOptionsClass());
-            Options options = optMgr.loadOptions("-", genOpts, 0);
+            final MarkdownGenerator markdownGenerator = new MarkdownGenerator()
+            final CommandLineOptionsManager<Options> optMgr =
+                    new CommandLineOptionsManager<Options>(markdownGenerator.getOptionsClass());
+            final Options options = optMgr.loadOptions("-", genOpts, 0);
 
             if (verbose) System.out.print("Generating " + options.getResultFile() + "...");
             markdownGenerator.generate(document, options, null)

@@ -36,14 +36,13 @@
  */
 package se.natusoft.doc.markdowndoc.editor.gui
 
-import javax.swing.JComponent
-import javax.swing.JFrame
-import javax.swing.JWindow
-import java.awt.Color
+import javax.swing.*
+import java.awt.*
 
 /**
  * A trait for color setting support.
  */
+@SuppressWarnings("GroovyUnusedDeclaration")
 trait ColorsTrait {
 
     static Color getDefaultForegroundColor() {
@@ -54,17 +53,17 @@ trait ColorsTrait {
         Color.BLACK
     }
 
-    static void updateColors(JComponent component) {
+    static void updateColors(final JComponent component) {
         component.background = defaultBackgroundColor
         component.foreground = defaultForegroundColor
     }
 
-    static void updateColors(JWindow window) {
+    static void updateColors(final JWindow window) {
         window.background = defaultBackgroundColor
         window.foreground = defaultForegroundColor
     }
 
-    static void updateColors(JFrame frame) {
+    static void updateColors(final JFrame frame) {
         frame.background = defaultBackgroundColor
         frame.foreground = defaultForegroundColor
     }

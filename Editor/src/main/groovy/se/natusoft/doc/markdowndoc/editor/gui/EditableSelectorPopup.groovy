@@ -71,6 +71,7 @@ class EditableSelectorPopup extends PopupWindow implements MouseListeners {
     /** Used in conjunction with mouse shake close. */
     private int exitLevel = 0
 
+    @SuppressWarnings("GroovyMissingReturnStatement") // IDEA is having a problem with Closure<Void> not returning anything.
     private Closure<Void> cancelCallback = { close() }
 
     private ColumnTopDownLeftRightLayout layout =
@@ -222,7 +223,7 @@ class EditableSelectorPopup extends PopupWindow implements MouseListeners {
         addComponentListener(new ComponentAdapter() {
 
             @Override
-            void componentShown(ComponentEvent e) {
+            void componentShown(final ComponentEvent e) {
                 updatePopupSize()
             }
 
@@ -266,7 +267,7 @@ class EditableSelectorPopup extends PopupWindow implements MouseListeners {
             editor.editable = efb.editable
 
             close()
-            JFrame wf = this.editor.GUI.windowFrame
+            final JFrame wf = this.editor.GUI.windowFrame
             moveMouse(new Point(wf.x + (wf.width / 2) as int, wf.y + (wf.height / 2) as int))
         }
     }

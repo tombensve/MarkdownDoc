@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -220,11 +220,11 @@ class PDFGenerator implements Generator {
      * @param rootDir An optional root directory to prefix output paths with. This overrides the rootDir in options!
      */
     @Override
-    void generate(@NotNull final Doc doc, @NotNull final Options opts, @Nullable File rootDir)
+    void generate(@NotNull final Doc doc, @NotNull final Options opts, @Nullable final File rootDir)
             throws IOException, GenerateException {
 
-        File resultFile = rootDir != null ? new File(rootDir, opts.resultFile) : new File(opts.resultFile)
-        FileOutputStream resultStream = new FileOutputStream(resultFile)
+        final File resultFile = rootDir != null ? new File(rootDir, opts.resultFile) : new File(opts.resultFile)
+        final FileOutputStream resultStream = new FileOutputStream(resultFile)
         try {
             generate(doc, opts, rootDir, resultStream)
         }
@@ -245,10 +245,10 @@ class PDFGenerator implements Generator {
      * @throws IOException on I/O failures.
      * @throws GenerateException on other failures to generate target.
      */
-    void generate(@NotNull final Doc doc, @NotNull final Options opts, @Nullable File rootDir,
+    void generate(@NotNull final Doc doc, @NotNull final Options opts, @Nullable final File rootDir,
                   @NotNull final OutputStream resultStream) throws IOException, GenerateException {
 
-        PDFGeneratorContext context = new PDFGeneratorContext(
+        final PDFGeneratorContext context = new PDFGeneratorContext(
                 options: opts as PDFGeneratorOptions,
                 rootDir:  rootDir,
                 fileResource: new FileResource(rootDir: rootDir, optsRootDir: (opts as PDFGeneratorOptions).rootDir)
@@ -257,8 +257,8 @@ class PDFGenerator implements Generator {
         context.pdfStyles.generatorContext = context
 
         if (context.options.mss != null && !context.options.mss.isEmpty()) {
-            File mssFile = context.fileResource.getResourceFile(context.options.mss)
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(mssFile))
+            final File mssFile = context.fileResource.getResourceFile(context.options.mss)
+            final BufferedInputStream bis = new BufferedInputStream(new FileInputStream(mssFile))
             try {
                 context.pdfStyles.mss = MSS.fromInputStream(bis)
             }
@@ -273,16 +273,16 @@ class PDFGenerator implements Generator {
 
         context.initRun()
 
-        LinkedList<String> divs = new LinkedList<>()
+        final LinkedList<String> divs = new LinkedList<>()
 
         context.pdfStyles.mss.currentDivs = divs
 
-        doc.items.each { DocItem docItem ->
+        doc.items.each { final DocItem docItem ->
 
             switch (docItem.format) {
                 case DocFormat.Comment:
                     // We skip comments in general, but act on "@PB" within the comment for doing a page break.
-                    Comment comment = (Comment)docItem;
+                    final Comment comment = (Comment)docItem;
                     if (comment.text.indexOf("@PB") >= 0) {
                         context.documentItems.add(new NewPage())
                     }
@@ -317,7 +317,7 @@ class PDFGenerator implements Generator {
                     break
 
                 case DocFormat.Div:
-                    Div div = docItem as Div
+                    final Div div = docItem as Div
                     if (div.start) {
                         divs.offerFirst(div.name)
                     }
@@ -337,7 +337,7 @@ class PDFGenerator implements Generator {
             context.documentItems.add(context.currentChapter)
         }
 
-        Rectangle pageSize = new Rectangle(PageSize.getRectangle(context.options.pageSize))
+        final Rectangle pageSize = new Rectangle(PageSize.getRectangle(context.options.pageSize))
         if (context.options.backgroundColor != null) {
             pageSize.backgroundColor = new PDFColorMSSAdapter(new MSSColor(color: context.options.backgroundColor))
         }
@@ -374,7 +374,7 @@ class PDFGenerator implements Generator {
 
             // Since this.documentItems is just an ArrayList of Sections we have to add them to the real
             // documentItems now.
-            context.documentItems.each {Section section ->
+            context.documentItems.each { final Section section ->
                 if (section instanceof NewPage) {
                     document.newPage()
                 }
@@ -423,7 +423,7 @@ class PDFGenerator implements Generator {
         }
 
         // Since this.documentItems is just an ArrayList of Sections we have to add them to the real documentItems now.
-        context.documentItems.each { Section section ->
+        context.documentItems.each { final Section section ->
             if (section instanceof NewPage) {
                 document.newPage() // This completely refuses to do anything!!!
             }
@@ -445,62 +445,62 @@ class PDFGenerator implements Generator {
      *
      * @return true if anything was updated, false otherwise.
      */
-    private static boolean extractCommentOptionsAnnotations(@NotNull Comment comment,
-                                                            @NotNull PDFGeneratorContext context) {
+    private static boolean extractCommentOptionsAnnotations(@NotNull final Comment comment,
+                                                            @NotNull final PDFGeneratorContext context) {
         boolean updated = false
 
-        updated |= updateOptsFromAnnotation("@PDFTitle", comment) { String text ->
+        updated |= updateOptsFromAnnotation("@PDFTitle", comment) { final String text ->
             context.options.title = text
         }
-        updated |= updateOptsFromAnnotation("@PDFSubject", comment) { String text ->
+        updated |= updateOptsFromAnnotation("@PDFSubject", comment) { final String text ->
             context.options.subject = text
         }
-        updated |= updateOptsFromAnnotation("@PDFKeywords", comment) { String text ->
+        updated |= updateOptsFromAnnotation("@PDFKeywords", comment) { final String text ->
             context.options.keywords = text
         }
-        updated |= updateOptsFromAnnotation("@PDFAuthor", comment) { String text ->
+        updated |= updateOptsFromAnnotation("@PDFAuthor", comment) { final String text ->
             context.options.author = text
         }
-        updated |= updateOptsFromAnnotation("@PDFVersion", comment) { String text ->
+        updated |= updateOptsFromAnnotation("@PDFVersion", comment) { final String text ->
             context.options.version = text
         }
-        updated |= updateOptsFromAnnotation("@PDFCopyright", comment) { String text ->
+        updated |= updateOptsFromAnnotation("@PDFCopyright", comment) { final String text ->
             context.options.copyright = text
         }
-        updated |= updateOptsFromAnnotation("@PDFAuthorLabel", comment) { String text ->
+        updated |= updateOptsFromAnnotation("@PDFAuthorLabel", comment) { final String text ->
             context.options.authorLabel = text
         }
-        updated |= updateOptsFromAnnotation("@PDFVersionLabel", comment) { String text ->
+        updated |= updateOptsFromAnnotation("@PDFVersionLabel", comment) { final String text ->
             context.options.versionLabel = text
         }
-        updated |= updateOptsFromAnnotation("@PDFPageLabel", comment) { String text ->
+        updated |= updateOptsFromAnnotation("@PDFPageLabel", comment) { final String text ->
             context.options.pageLabel = text
         }
-        updated |= updateOptsFromAnnotation("@PDFTableOfContentsLabel", comment) { String text ->
+        updated |= updateOptsFromAnnotation("@PDFTableOfContentsLabel", comment) { final String text ->
             context.options.tableOfContentsLabel = text
         }
-        updated |= updateOptsFromAnnotation("@PDFPageSize", comment) { String text ->
+        updated |= updateOptsFromAnnotation("@PDFPageSize", comment) { final String text ->
             context.options.pageSize = text
         }
-        updated |= updateOptsFromAnnotation("@PDFHideLinks", comment) { String text ->
+        updated |= updateOptsFromAnnotation("@PDFHideLinks", comment) { final String text ->
             context.options.hideLinks = Boolean.valueOf(text)
         }
-        updated |= updateOptsFromAnnotation("@PDFUnorderedListItemPrefix", comment) { String text ->
+        updated |= updateOptsFromAnnotation("@PDFUnorderedListItemPrefix", comment) { final String text ->
             context.options.unorderedListItemPrefix = text
         }
-        updated |= updateOptsFromAnnotation("@PDFFirstLineParagraphIndent", comment) { String text ->
+        updated |= updateOptsFromAnnotation("@PDFFirstLineParagraphIndent", comment) { final String text ->
             context.options.firstLineParagraphIndent = Boolean.valueOf(text)
         }
-        updated |= updateOptsFromAnnotation("@PDFGenerateSectionNumbers", comment) { String text ->
+        updated |= updateOptsFromAnnotation("@PDFGenerateSectionNumbers", comment) { final String text ->
             context.options.generateSectionNumbers = Boolean.valueOf(text)
         }
-        updated |= updateOptsFromAnnotation("@PDFGenerateTOC", comment) { String text ->
+        updated |= updateOptsFromAnnotation("@PDFGenerateTOC", comment) { final String text ->
             context.options.generateTOC = Boolean.valueOf(text)
         }
-        updated |= updateOptsFromAnnotation("@PDFGenerateTitlePage", comment) { String text ->
+        updated |= updateOptsFromAnnotation("@PDFGenerateTitlePage", comment) { final String text ->
             context.options.generateTitlePage = Boolean.valueOf(text)
         }
-        updated |= updateOptsFromAnnotation("@PDFTitlePageImage", comment) { String text ->
+        updated |= updateOptsFromAnnotation("@PDFTitlePageImage", comment) { final String text ->
             context.options.titlePageImage = text
         }
 
@@ -517,10 +517,10 @@ class PDFGenerator implements Generator {
      *
      * @return true if and update was made, false otherwise.
      */
-    private static boolean updateOptsFromAnnotation(@NotNull String ann, @NotNull Comment comment,
-                                                 @NotNull Closure<Object> update) {
+    private static boolean updateOptsFromAnnotation(@NotNull final String ann, @NotNull final Comment comment,
+                                                 @NotNull final Closure<Object> update) {
         boolean updated = false
-        String text = extractCommentAnnotation(ann, comment)
+        final String text = extractCommentAnnotation(ann, comment)
         if (text != null) {
             update.call(text)
             updated = true
@@ -538,14 +538,15 @@ class PDFGenerator implements Generator {
      *
      * @return The extracted annotation text or null if not found.
      */
-    private static @Nullable String extractCommentAnnotation(@NotNull String name, @NotNull Comment comment) {
+    private static @Nullable String extractCommentAnnotation(@NotNull final String name,
+                                                             @NotNull final Comment comment) {
         String result = null
 
-        String search = comment.text
+        final String search = comment.text
         int ix = search.indexOf(name)
         if (ix >= 0) {
             ix = search.indexOf("(", ix)
-            int endIx = getEndParenthesis(search, ix + 1)
+            final int endIx = getEndParenthesis(search, ix + 1)
             result = search.substring(ix + 1, endIx).trim()
             if (result.startsWith("\"") || result.startsWith("'")) {
                 result = result.substring(1)
@@ -566,11 +567,11 @@ class PDFGenerator implements Generator {
      *
      * @return The end index.
      */
-    private static int getEndParenthesis(@NotNull String text, int startIx) {
+    private static int getEndParenthesis(@NotNull final String text, final int startIx) {
         boolean ignore = false
         int ix = startIx
         boolean done = false
-        int length = text.length()
+        final int length = text.length()
         while (!done) {
             if (ix < length) {
                 if (text.charAt(ix) != '\n' as char && text.charAt(ix) != '\r' as char) {
@@ -606,7 +607,7 @@ class PDFGenerator implements Generator {
      *
      * @return The possibly replaced text.
      */
-    private static @NotNull String textReplace(@NotNull String text) {
+    private static @NotNull String textReplace(@NotNull final String text) {
 
         text.replace("(C)", "©")
     }
@@ -619,8 +620,8 @@ class PDFGenerator implements Generator {
      * @param context The PDF generator context.
      */
     private static void writeTOC(@NotNull final PdfWriter pdfWriter, @NotNull final PDFDocument document,
-                          @NotNull PDFGeneratorContext context) {
-        PdfContentByte cb = pdfWriter.getDirectContent()
+                          @NotNull final PDFGeneratorContext context) {
+        final PdfContentByte cb = pdfWriter.getDirectContent()
 
         ++context.pageOffset
 
@@ -639,7 +640,7 @@ class PDFGenerator implements Generator {
         )
 
         y = y - 28
-        context.toc.each { TOC tocEntry ->
+        context.toc.each { final TOC tocEntry ->
             writeText(
                     cb,
                     Element.ALIGN_LEFT,
@@ -661,13 +662,14 @@ class PDFGenerator implements Generator {
             if ( y < document.bottom()) {
                 document.newPage()
                 y = document.top()- document.topMargin()
-                ++context.pageOffset
+                //noinspection GroovyResultOfIncrementOrDecrementUsed
+                ++context.pageOffset // ^^^^ Its getting ridiculous, its in an if statement on true block !!!
             }
         }
     }
 
-    private static String indentTocEntry(TOC toc) {
-        StringBuilder sb = new StringBuilder()
+    private static String indentTocEntry(final TOC toc) {
+        final StringBuilder sb = new StringBuilder()
         // We subtract 1 because the enum starts with "toc" and "h1" to "h6" is at ordinal 1 to 6.
         (toc.level.ordinal() - 1).times { sb.append("  ") }
         sb.append(toc.sectionTitle)
@@ -685,10 +687,10 @@ class PDFGenerator implements Generator {
      * @param y The Y position of the text.
      * @param font The font to use.
      */
-    private static void writeText(@NotNull PdfContentByte cb, int align, @NotNull String text, float x, float y,
-                                  @NotNull final Font font) {
+    private static void writeText(@NotNull final PdfContentByte cb, final int align, @NotNull final String text,
+                                  final float x, final float y, @NotNull final Font font) {
 
-        Phrase phrase = new Phrase(text, font)
+        final Phrase phrase = new Phrase(text, font)
         // The following unfortunately only accept NORMAL and BOLD styles. ITALIC and UNDERLINE is ignored!
         // Colors are also ignored!
         ColumnText.showTextAligned(cb, align, phrase, x, y, 0.0f)
@@ -702,12 +704,15 @@ class PDFGenerator implements Generator {
      * @param context The PDF generator context.
      */
     private static void writeTitlePage(@NotNull final PdfWriter pdfWriter, @NotNull final PDFDocument document,
-                                @NotNull PDFGeneratorContext context) {
+                                @NotNull final PDFGeneratorContext context) {
 
-        PdfContentByte canvas = pdfWriter.getDirectContent()
+        final PdfContentByte canvas = pdfWriter.getDirectContent()
 
-        PDFColorMSSAdapter background = new PDFColorMSSAdapter(context.pdfStyles.mss.forFrontPage.getColorPair(MSS.MSS_Front_Page.title).background)
-        Rectangle rect = new Rectangle(document.left(), document.top(), document.right(), document.bottom());
+        final PDFColorMSSAdapter background = new PDFColorMSSAdapter(
+                context.pdfStyles.mss.forFrontPage.getColorPair(MSS.MSS_Front_Page.title).background
+        )
+
+        final Rectangle rect = new Rectangle(document.left(), document.top(), document.right(), document.bottom());
         rect.borderWidthBottom = 0
         rect.borderColorBottom = background
         rect.borderWidthLeft = 0
@@ -717,11 +722,11 @@ class PDFGenerator implements Generator {
 
         ++context.pageOffset
 
-        String title = context.options.title
-        String subject = context.options.subject
-        String author = context.options.author
-        String version = context.options.version
-        String copyRight = context.options.copyright
+        final String title = context.options.title
+        final String subject = context.options.subject
+        final String author = context.options.author
+        final String version = context.options.version
+        final String copyRight = context.options.copyright
 
         int topItems = 0
         int bottomItems = 0
@@ -731,69 +736,69 @@ class PDFGenerator implements Generator {
         if (author != null) ++bottomItems
         if (copyRight != null) ++bottomItems
 
-        float yItemSizeTop = (float)(((document.top() - document.bottom()) / 2) / topItems)
-        float yItemSizeBottom = (float)(((document.top() - document.bottom()) / 2) / bottomItems)
+        final float yItemSizeTop = (float)(((document.top() - document.bottom()) / 2) / topItems)
+        final float yItemSizeBottom = (float)(((document.top() - document.bottom()) / 2) / bottomItems)
 
         float yTop = document.top() - document.topMargin() - (float)(yItemSizeTop / 2) + 15
         float yBottom = document.bottom() + (float)(yItemSizeBottom / 2)
-        float x = (float)((document.right() - document.left()) / 2f + document.leftMargin())
+        final float x = (float)((document.right() - document.left()) / 2f + document.leftMargin())
 
         // Rendered from top of page
 
         if (title != null) {
-            Font font = context.pdfStyles.getFont(MSS.MSS_Front_Page.title)
-            Chunk chunk = new Chunk(textReplace(title), font)
-            Phrase phrase = new Phrase(chunk)
+            final Font font = context.pdfStyles.getFont(MSS.MSS_Front_Page.title)
+            final Chunk chunk = new Chunk(textReplace(title), font)
+            final Phrase phrase = new Phrase(chunk)
             ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, phrase, x, yTop, 0.0f)
             yTop = (float)(yTop - (yItemSizeTop / 2f))
         }
 
         if (subject != null) {
-            Font font = context.pdfStyles.getFont(MSS.MSS_Front_Page.subject)
-            Chunk chunk = new Chunk(textReplace(subject), font)
-            Phrase phrase = new Phrase(chunk)
+            final Font font = context.pdfStyles.getFont(MSS.MSS_Front_Page.subject)
+            final Chunk chunk = new Chunk(textReplace(subject), font)
+            final Phrase phrase = new Phrase(chunk)
             ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, phrase, x, yTop, 0.0f)
             yTop = (float)(yTop - (yItemSizeTop / 2f))
         }
 
         if (version != null) {
-            Font font = context.pdfStyles.getFont(MSS.MSS_Front_Page.version)
-            Chunk chunk = new Chunk("${context.options.versionLabel} " + version, font)
-            Phrase phrase = new Phrase(chunk)
+            final Font font = context.pdfStyles.getFont(MSS.MSS_Front_Page.version)
+            final Chunk chunk = new Chunk("${context.options.versionLabel} " + version, font)
+            final Phrase phrase = new Phrase(chunk)
             ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, phrase, x, yTop, 0.0f)
         }
 
         // Rendered from bottom of page
 
         if (copyRight != null) {
-            Font font = context.pdfStyles.getFont(MSS.MSS_Front_Page.copyright)
-            Chunk chunk = new Chunk(textReplace(copyRight), font)
-            Phrase phrase = new Phrase(chunk)
+            final Font font = context.pdfStyles.getFont(MSS.MSS_Front_Page.copyright)
+            final Chunk chunk = new Chunk(textReplace(copyRight), font)
+            final Phrase phrase = new Phrase(chunk)
             ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, phrase, x, yBottom, 0.0f)
             yBottom = (float)(yBottom + (yItemSizeBottom / 2))
         }
 
         if (author != null) {
-            Font font = context.pdfStyles.getFont(MSS.MSS_Front_Page.author)
-            Chunk chunk = new Chunk("${context.options.authorLabel} " + author, font)
-            Phrase phrase = new Phrase(chunk)
+            final Font font = context.pdfStyles.getFont(MSS.MSS_Front_Page.author)
+            final Chunk chunk = new Chunk("${context.options.authorLabel} " + author, font)
+            final Phrase phrase = new Phrase(chunk)
             ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, phrase, x, yBottom, 0.0f)
         }
 
         if (context.options.titlePageImage != null && context.options.titlePageImage.trim().length() != 0) {
-            MSSImage mssImage = context.pdfStyles.mss.forFrontPage.getImageData()
-            PDFImage image
+            final MSSImage mssImage = context.pdfStyles.mss.forFrontPage.getImageData()
+            final PDFImage image
 
             // Note that http:// does contain a ':'!
-            String imageRef = context.options.titlePageImage.replace("http:", "http§").replace("https:", "https§").
+            final String imageRef = context.options.titlePageImage.replace("http:", "http§").replace("https:", "https§").
                     replace("ftp:", "ftp§")
-            String[] parts = imageRef.split(":")
+            final String[] parts = imageRef.split(":")
             if (parts.length != 3) {
                 throw new GenerateException(message: "Bad image specification! Should be <path/URL>:x:y!")
             }
-            String imagePath = parts[0].replace('§', ':')
-            float imgX = Float.valueOf(parts[1])
-            float imgY = Float.valueOf(parts[2])
+            final String imagePath = parts[0].replace('§', ':')
+            final float imgX = Float.valueOf(parts[1])
+            final float imgY = Float.valueOf(parts[2])
 
             try {
                 if (imagePath.startsWith("http://") || imagePath.startsWith("https://") ||
@@ -804,17 +809,17 @@ class PDFGenerator implements Generator {
                     if (!resourcePath.startsWith("/")) {
                         resourcePath = "/" + resourcePath
                     }
-                    URL resourceURL = System.getResource(resourcePath)
+                    final URL resourceURL = System.getResource(resourcePath)
                     if (resourceURL != null) {
                         image = PDFImage.getInstance(resourceURL)
                     }
                     else {
-                        String localPath = context.fileResource.getResourceFile(imagePath)
+                        final String localPath = context.fileResource.getResourceFile(imagePath)
                         image = PDFImage.getInstance(localPath)
                     }
                 }
             }
-            catch (DocumentException | IOException e) {
+            catch (final DocumentException | IOException e) {
                 throw new GenerateException(message: "Failed to load front page image! [${e.message}]", cause: e)
             }
 
@@ -833,7 +838,7 @@ class PDFGenerator implements Generator {
      * @param section The section to handle.
      * @param context The PDF generator context.
      */
-    private static void handleSectionOpts(@NotNull Section section, @NotNull final PDFGeneratorContext context) {
+    private static void handleSectionOpts(@NotNull final Section section, @NotNull final PDFGeneratorContext context) {
         section.numberStyle = Section.NUMBERSTYLE_DOTTED_WITHOUT_FINAL_DOT
 
         if (!context.options.generateSectionNumbers) {
@@ -847,7 +852,9 @@ class PDFGenerator implements Generator {
      * @param header The header model to write.
      * @param context The PDF generator context
      */
-    private static void writeHeader(@NotNull final Header header, @NotNull PDFGeneratorContext context) {
+    @SuppressWarnings(["GroovyUntypedAccess", "GroovyResultOfIncrementOrDecrementUsed"])
+    // The inspection fails to handle Groovys 'it' value.
+    private static void writeHeader(@NotNull final Header header, @NotNull final PDFGeneratorContext context) {
 
         switch (header.level) {
             case { it == Header.Level.H1 } :
@@ -856,10 +863,10 @@ class PDFGenerator implements Generator {
                 if (context.currentChapter != null) {
                     context.documentItems.add(context.currentChapter)
                 }
-                PDFParagraph title = new PDFParagraph()
+                final PDFParagraph title = new PDFParagraph()
                 updateHeaderParagraph(title, header.text, MSS.MSS_Pages.h1, context)
 
-                Chapter chapter = new Chapter(title, context.chapterNumber++)
+                final Chapter chapter = new Chapter(title, context.chapterNumber++)
 
                 handleSectionOpts(chapter, context)
 
@@ -874,10 +881,10 @@ class PDFGenerator implements Generator {
                 break
 
             case { it == Header.Level.H2 } :
-                PDFParagraph title = new PDFParagraph()
+                final PDFParagraph title = new PDFParagraph()
                 updateHeaderParagraph(title, header.text, MSS.MSS_Pages.h2, context)
 
-                Section section
+                final Section section
                 if (context.currentChapter != null) {
                     section = context.currentChapter.addSection(title, 2)
                 }
@@ -901,10 +908,10 @@ class PDFGenerator implements Generator {
                 break
 
             case { it == Header.Level.H3 } :
-                PDFParagraph title = new PDFParagraph()
+                final PDFParagraph title = new PDFParagraph()
                 updateHeaderParagraph(title, header.text, MSS.MSS_Pages.h3, context)
 
-                Section section
+                final Section section
                 if (context.currentH2 != null) {
                     section = context.currentH2.addSection(title, 3)
                 }
@@ -926,10 +933,10 @@ class PDFGenerator implements Generator {
                 break
 
             case { it == Header.Level.H4 } :
-                PDFParagraph title = new PDFParagraph()
+                final PDFParagraph title = new PDFParagraph()
                 updateHeaderParagraph(title, header.text, MSS.MSS_Pages.h4, context)
 
-                Section section
+                final Section section
                 if (context.currentH3 != null) {
                     section = context.currentH3.addSection(title, 4)
                 }
@@ -950,10 +957,10 @@ class PDFGenerator implements Generator {
                 break
 
             case { it == Header.Level.H5 } :
-                PDFParagraph title = new PDFParagraph()
+                final PDFParagraph title = new PDFParagraph()
                 updateHeaderParagraph(title, header.text, MSS.MSS_Pages.h5, context)
 
-                Section section
+                final Section section
                 if (context.currentH4 != null) {
                     section = context.currentH4.addSection(title, 5)
                 }
@@ -973,10 +980,10 @@ class PDFGenerator implements Generator {
                 break
 
             case { it == Header.Level.H6 } :
-                PDFParagraph title = new PDFParagraph()
+                final PDFParagraph title = new PDFParagraph()
                 updateHeaderParagraph(title, header.text, MSS.MSS_Pages.h6, context)
 
-                Section section
+                final Section section
                 if (context.currentH5 != null) {
                     section = context.currentH5.addSection(title, 6)
                 }
@@ -1005,10 +1012,10 @@ class PDFGenerator implements Generator {
      *
      * @return The created Chunk.
      */
-    private static @NotNull Chunk createHeaderChunk(@NotNull String text, @NotNull MSS.MSS_Pages level,
+    private static @NotNull Chunk createHeaderChunk(@NotNull final String text, @NotNull final MSS.MSS_Pages level,
                                     @NotNull final PDFGeneratorContext context) {
-        Font font = context.pdfStyles.getFont(level)
-        Chunk chunk = new Chunk(textReplace(text), font)
+        final Font font = context.pdfStyles.getFont(level)
+        final Chunk chunk = new Chunk(textReplace(text), font)
         chunk.textRise = 2.0f
         chunk.lineHeight = (font.size + 2.0f) as float
         chunk.background = new PDFColorMSSAdapter(context.pdfStyles.mss.forDocument.getColorPair(level).background)
@@ -1024,8 +1031,8 @@ class PDFGenerator implements Generator {
      * @param level The level of the header.
      * @param context The PDF generator context.
      */
-    private static void updateHeaderParagraph(@NotNull final PDFParagraph header, @NotNull String text,
-                                       @NotNull MSS.MSS_Pages level, @NotNull PDFGeneratorContext context) {
+    private static void updateHeaderParagraph(@NotNull final PDFParagraph header, @NotNull final String text,
+                                       @NotNull final MSS.MSS_Pages level, @NotNull final PDFGeneratorContext context) {
 
         header.add(createHeaderChunk(text, level, context))
 
@@ -1044,7 +1051,7 @@ class PDFGenerator implements Generator {
      *
      * @return A valid Section
      */
-    private static @NotNull Section getOrCreateCurrentSection(@NotNull PDFGeneratorContext context) {
+    private static @NotNull Section getOrCreateCurrentSection(@NotNull final PDFGeneratorContext context) {
         if (context.currentSection == null) {
             context.currentChapter = new Chapter(0)
             context.currentSection = context.currentChapter
@@ -1059,10 +1066,10 @@ class PDFGenerator implements Generator {
      * @param blockQuote The block quote model to write.
      * @param context The PDF generator context.
      */
-    private static void writeBlockQuote(@NotNull final BlockQuote blockQuote, @NotNull PDFGeneratorContext context) {
-        PDFParagraph pdfParagraph = new PDFParagraph()
+    private static void writeBlockQuote(@NotNull final BlockQuote blockQuote, @NotNull final PDFGeneratorContext context) {
+        final PDFParagraph pdfParagraph = new PDFParagraph()
         pdfParagraph.setIndentationLeft(20.0f)
-        Font bqFont = new Font(context.pdfStyles.getFont(MSS.MSS_Pages.block_quote))
+        final Font bqFont = new Font(context.pdfStyles.getFont(MSS.MSS_Pages.block_quote))
 
         // Since the MSS stylesheet always return a color, it cannot be used to override options colors.
         // It has to be the other way around.
@@ -1074,7 +1081,7 @@ class PDFGenerator implements Generator {
             )
         }
 
-        PDFColorMSSAdapter background = new PDFColorMSSAdapter(
+        final PDFColorMSSAdapter background = new PDFColorMSSAdapter(
                 context.pdfStyles.mss.forDocument.getColorPair(MSS.MSS_Pages.block_quote).background
         )
 
@@ -1092,10 +1099,10 @@ class PDFGenerator implements Generator {
      * @param codeBlock The code block text to write.
      * @param context The PDF generator context.
      */
-    private static void writeCodeBlock(@NotNull final CodeBlock codeBlock, @NotNull PDFGeneratorContext context) {
-        Font codeFont = new Font(context.pdfStyles.getFont(MSS.MSS_Pages.code))
+    private static void writeCodeBlock(@NotNull final CodeBlock codeBlock, @NotNull final PDFGeneratorContext context) {
+        final Font codeFont = new Font(context.pdfStyles.getFont(MSS.MSS_Pages.code))
 
-        PDFParagraph pdfParagraph = new PDFParagraph(codeFont.size + 2)
+        final PDFParagraph pdfParagraph = new PDFParagraph(codeFont.size + 2)
 
         if (context.options.codeColor != null) {
             codeFont.setColor(
@@ -1105,7 +1112,7 @@ class PDFGenerator implements Generator {
             )
         }
 
-        for (DocItem item : codeBlock.items) {
+        for (final DocItem item : codeBlock.items) {
             Chunk chunk = new Chunk(item.toString(), codeFont)
             chunk.setLineHeight((float)(codeFont.size))
             chunk.setTextRise(-2)
@@ -1128,8 +1135,8 @@ class PDFGenerator implements Generator {
      *
      * @param context The PDF generator context.
      */
-    private static void writeHorizontalRule(@NotNull PDFGeneratorContext context) {
-        PDFParagraph pdfParagraph = new PDFParagraph()
+    private static void writeHorizontalRule(@NotNull final PDFGeneratorContext context) {
+        final PDFParagraph pdfParagraph = new PDFParagraph()
         pdfParagraph.add(HORIZONTAL_RULE)
         getOrCreateCurrentSection(context).add(pdfParagraph)
     }
@@ -1142,8 +1149,8 @@ class PDFGenerator implements Generator {
      *
      * @return a configured PDFList object.
      */
-    private static PDFList listToPDFList(@NotNull final List list, @NotNull PDFGeneratorOptions options) {
-        PDFList pdfList
+    private static PDFList listToPDFList(@NotNull final List list, @NotNull final PDFGeneratorOptions options) {
+        final PDFList pdfList
         if (list.ordered) {
             pdfList = new PDFList(PDFList.ORDERED)
         }
@@ -1164,10 +1171,10 @@ class PDFGenerator implements Generator {
      *
      * @throws GenerateException on failure to write this list.
      */
-    private static void writeList(@NotNull final List list, @NotNull PDFGeneratorContext context)
+    private static void writeList(@NotNull final List list, @NotNull final PDFGeneratorContext context)
             throws GenerateException {
 
-        PDFList pdfList = listToPDFList(list, context.options)
+        final PDFList pdfList = listToPDFList(list, context.options)
         writeList(pdfList, list, 0f, context)
         getOrCreateCurrentSection(context).add(pdfList)
         getOrCreateCurrentSection(context).add(Chunk.NEWLINE)
@@ -1183,15 +1190,15 @@ class PDFGenerator implements Generator {
      *
      * @throws GenerateException on failure to write this list.
      */
-    private static void writeList(@NotNull PDFList pdfList, @NotNull final List list, float indent,
-                           @NotNull PDFGeneratorContext context) throws GenerateException {
+    private static void writeList(@NotNull final PDFList pdfList, @NotNull final List list, final float indent,
+                           @NotNull final PDFGeneratorContext context) throws GenerateException {
 
         pdfList.setIndentationLeft(indent)
-        for (DocItem item : list.items) {
+        list.items.each { final DocItem item ->
             if (item instanceof ListItem) {
-                PDFListItem listItem = new PDFListItem()
+                final PDFListItem listItem = new PDFListItem()
                 boolean first = true
-                item.items.each { pg ->
+                item.items.each { final pg ->
                     if (!first) {
                         // We have to fake a paragraph here since adding a (PDF)Paragraph to a (PDF)ListItem which
                         // is a (PDF)Paragraph screws it up making the list dots or numbers disappear. This
@@ -1214,7 +1221,7 @@ class PDFGenerator implements Generator {
                 pdfList.add(listItem)
             }
             else if (item instanceof List) {
-                PDFList subList = listToPDFList(item as List, context.options)
+                final PDFList subList = listToPDFList(item as List, context.options)
                 writeList(subList, item as List, (float)(indent + 10f), context)
                 pdfList.add(subList)
             }
@@ -1232,10 +1239,10 @@ class PDFGenerator implements Generator {
      *
      * @throws GenerateException on failure to write paragraph.
      */
-    private static void writeParagraph(@NotNull final Paragraph paragraph, @NotNull PDFGeneratorContext context)
+    private static void writeParagraph(@NotNull final Paragraph paragraph, @NotNull final PDFGeneratorContext context)
             throws GenerateException {
 
-        PDFParagraph pdfParagraph = new PDFParagraph()
+        final PDFParagraph pdfParagraph = new PDFParagraph()
 
         pdfParagraph.setSpacingAfter(10)
         if (context.options.firstLineParagraphIndent) {
@@ -1256,8 +1263,8 @@ class PDFGenerator implements Generator {
      *
      * @throws GenerateException on failure to write paragraph.
      */
-    private static void writeParagraph(@NotNull PDFParagraph pdfParagraph, @NotNull final Paragraph paragraph,
-                                @NotNull final Font font, @NotNull PDFGeneratorContext context)
+    private static void writeParagraph(@NotNull final PDFParagraph pdfParagraph, @NotNull final Paragraph paragraph,
+                                @NotNull final Font font, @NotNull final PDFGeneratorContext context)
             throws GenerateException {
 
         writeParagraph(
@@ -1281,12 +1288,12 @@ class PDFGenerator implements Generator {
      *
      * @throws GenerateException on failure to write paragraph.
      */
-    private static void writeParagraph(@NotNull PDFParagraph pdfParagraph, @NotNull final Paragraph paragraph,
+    private static void writeParagraph(@NotNull final PDFParagraph pdfParagraph, @NotNull final Paragraph paragraph,
                                 @NotNull final Font font, @NotNull final PDFColorMSSAdapter background,
-                                @NotNull PDFGeneratorContext context) throws GenerateException {
+                                @NotNull final PDFGeneratorContext context) throws GenerateException {
 
         boolean first = true
-        for (DocItem docItem : paragraph.items) {
+        paragraph.items.each { final DocItem docItem ->
             if (docItem.renderPrefixedSpace && !first) {
                 pdfParagraph.add(" ")
             }
@@ -1341,10 +1348,10 @@ class PDFGenerator implements Generator {
      * @param background The background color to use.
      * @param context The PDF generator context.
      */
-    private static void writeCode(@NotNull final Code code, @NotNull PDFParagraph pdfParagraph,
-                           @NotNull PDFGeneratorContext context) {
+    private static void writeCode(@NotNull final Code code, @NotNull final PDFParagraph pdfParagraph,
+                           @NotNull final PDFGeneratorContext context) {
 
-        Chunk chunk = new Chunk(code.text, context.pdfStyles.getFont(MSS.MSS_Pages.code))
+        final Chunk chunk = new Chunk(code.text, context.pdfStyles.getFont(MSS.MSS_Pages.code))
         chunk.setLineHeight(8)
         chunk.setCharacterSpacing(1.0f)
         pdfParagraph.add(chunk)
@@ -1357,10 +1364,10 @@ class PDFGenerator implements Generator {
      * @param pdfParagraph The iText paragraph model to add to.
      * @param context The PDF generator context.
      */
-    private static void writeEmphasis(@NotNull final Emphasis emphasis, @NotNull PDFParagraph pdfParagraph,
-                               @NotNull PDFGeneratorContext context) {
+    private static void writeEmphasis(@NotNull final Emphasis emphasis, @NotNull final PDFParagraph pdfParagraph,
+                               @NotNull final PDFGeneratorContext context) {
 
-        Chunk chunk = new Chunk(textReplace(emphasis.text), context.pdfStyles.getFont(MSS.MSS_Pages.emphasis))
+        final Chunk chunk = new Chunk(textReplace(emphasis.text), context.pdfStyles.getFont(MSS.MSS_Pages.emphasis))
 
         // BUG: There seem to be a bug in iText here. For Italics iText seem to always render a white background
         //      no matter what color is in chunk.background. It works fine for Bold below.
@@ -1378,10 +1385,10 @@ class PDFGenerator implements Generator {
      * @param pdfParagraph The iText paragraph model to add to.
      * @param context The PDF generator context
      */
-    private static void writeStrong(@NotNull final Strong strong, @NotNull PDFParagraph pdfParagraph,
-                             @NotNull PDFGeneratorContext context) {
+    private static void writeStrong(@NotNull final Strong strong, @NotNull final PDFParagraph pdfParagraph,
+                             @NotNull final PDFGeneratorContext context) {
 
-        Chunk chunk = new Chunk(textReplace(strong.text), context.pdfStyles.getFont(MSS.MSS_Pages.strong))
+        final Chunk chunk = new Chunk(textReplace(strong.text), context.pdfStyles.getFont(MSS.MSS_Pages.strong))
 
         chunk.background = new PDFColorMSSAdapter(
                 context.pdfStyles.mss.forDocument.getColorPair(MSS.MSS_Pages.strong).background
@@ -1397,13 +1404,13 @@ class PDFGenerator implements Generator {
      * @param pdfParagraph The iText paragraph model to add to.
      * @param context The PDF generator context.
      */
-    private static void writeImage(@NotNull final Image image, @NotNull PDFParagraph pdfParagraph,
-                            @NotNull PDFGeneratorContext context) {
+    private static void writeImage(@NotNull final Image image, @NotNull final PDFParagraph pdfParagraph,
+                            @NotNull final PDFGeneratorContext context) {
 
-        PDFImage pdfImage = PDFImage.getInstance(new URL(context.fileResource.resolveUrl(image.url)))
+        final PDFImage pdfImage = PDFImage.getInstance(new URL(context.fileResource.resolveUrl(image.url)))
 
         if (pdfImage != null) {
-            MSSImage imageInfo = context.pdfStyles.mss.forDocument.imageStyle
+            final MSSImage imageInfo = context.pdfStyles.mss.forDocument.imageStyle
 
             if (imageInfo.scalePercent != null) pdfImage.scalePercent(imageInfo.scalePercent)
             if (imageInfo.align != null) {
@@ -1440,14 +1447,14 @@ class PDFGenerator implements Generator {
      * @param background The background color to use.
      * @param context The PDF generator context.
      */
-    private static void writeLink(@NotNull final Link link, @NotNull PDFParagraph pdfParagraph,
-                           @NotNull final PDFColorMSSAdapter background, @NotNull PDFGeneratorContext context) {
+    private static void writeLink(@NotNull final Link link, @NotNull final PDFParagraph pdfParagraph,
+                           @NotNull final PDFColorMSSAdapter background, @NotNull final PDFGeneratorContext context) {
 
         if (context.options.hideLinks) {
             writePlainText(link, pdfParagraph, context.pdfStyles.getFont(MSS.MSS_Pages.standard), background)
         }
         else {
-            Anchor anchor = new Anchor(link.text, context.pdfStyles.getFont(MSS.MSS_Pages.anchor))
+            final Anchor anchor = new Anchor(link.text, context.pdfStyles.getFont(MSS.MSS_Pages.anchor))
             anchor.setReference(link.url)
             setBackgroundColorOnChunks(anchor.chunks, background)
             pdfParagraph.add(anchor)
@@ -1461,10 +1468,10 @@ class PDFGenerator implements Generator {
      * @param pdfParagraph The iText paragraph to add to.
      * @param font The font to use.
      */
-    private static void writePlainText(@NotNull final PlainText plainText, @NotNull PDFParagraph pdfParagraph,
+    private static void writePlainText(@NotNull final PlainText plainText, @NotNull final PDFParagraph pdfParagraph,
                                        @NotNull final Font font, @NotNull final PDFColorMSSAdapter background) {
 
-        Chunk chunk = new Chunk(textReplace(plainText.text), font)
+        final Chunk chunk = new Chunk(textReplace(plainText.text), font)
         chunk.background = background
         pdfParagraph.add(chunk)
     }
@@ -1478,7 +1485,7 @@ class PDFGenerator implements Generator {
     private static void setBackgroundColorOnChunks(@NotNull final JList<Chunk> chunks,
                                                    @NotNull final PDFColorMSSAdapter background) {
 
-        chunks.each { Chunk chunk ->
+        chunks.each { final Chunk chunk ->
             chunk.background = background
         }
     }
@@ -1506,18 +1513,18 @@ class PDFGenerator implements Generator {
         @Override
         void onEndPage(@NotNull final PdfWriter writer, @NotNull final PDFDocument document) {
             if (document.pageNumber > (int)this.pageOffset.call()) {
-                PdfContentByte cb = writer.getDirectContent()
+                final PdfContentByte cb = writer.getDirectContent()
 
                 // Write the filename centered as page header
                 String fileName = this.resultFile
-                int fsIx = fileName.lastIndexOf(File.separator)
+                final int fsIx = fileName.lastIndexOf(File.separator)
                 if (fsIx >= 0) {
                     fileName = fileName.substring(fsIx + 1)
                 }
-                int dotIx = fileName.lastIndexOf('.')
+                final int dotIx = fileName.lastIndexOf('.')
                 fileName = fileName.substring(0, dotIx)
-                Chunk dfChunk = new Chunk(fileName, this.pdfStyles.getFont(MSS.MSS_Pages.footer))
-                Phrase documentFile = new Phrase(dfChunk)
+                final Chunk dfChunk = new Chunk(fileName, this.pdfStyles.getFont(MSS.MSS_Pages.footer))
+                final Phrase documentFile = new Phrase(dfChunk)
                 ColumnText.showTextAligned(
                         cb,
                         Element.ALIGN_CENTER,
@@ -1528,10 +1535,10 @@ class PDFGenerator implements Generator {
                 )
 
                 // Write the page number to the right as a page footer.
-                Chunk pageChunk = new Chunk("${context.options.pageLabel} " +
+                final Chunk pageChunk = new Chunk("${context.options.pageLabel} " +
                         (document.getPageNumber() - (int)this.pageOffset.call()),
                         this.pdfStyles.getFont(MSS.MSS_Pages.footer))
-                Phrase pageNo = new Phrase(pageChunk)
+                final Phrase pageNo = new Phrase(pageChunk)
                 ColumnText.showTextAligned(
                         cb,
                         Element.ALIGN_RIGHT,
@@ -1544,11 +1551,11 @@ class PDFGenerator implements Generator {
         }
 
         @Override
-        void onChapter(@NotNull final PdfWriter writer, @NotNull final PDFDocument document, float paragraphPosition,
-                       @NotNull final PDFParagraph title) {
+        void onChapter(@NotNull final PdfWriter writer, @NotNull final PDFDocument document,
+                       final float paragraphPosition, @NotNull final PDFParagraph title) {
 
             if (this.updateTOC && title != null) {
-                MSS.MSS_TOC tocLevel =
+                final MSS.MSS_TOC tocLevel =
                         MSS.MSS_TOC.valueOf(PdfName.decodeName(new String(title.getRole().bytes)).toLowerCase())
                 this.toc.add(
                         new TOC(
@@ -1561,11 +1568,11 @@ class PDFGenerator implements Generator {
         }
 
         @Override
-        void onSection(@NotNull final PdfWriter writer, @NotNull final PDFDocument document, float paragraphPosition,
-                       int depth, @NotNull final PDFParagraph title) {
+        void onSection(@NotNull final PdfWriter writer, @NotNull final PDFDocument document,
+                       final float paragraphPosition, final int depth, @NotNull final PDFParagraph title) {
 
             if (this.updateTOC && title != null) {
-                MSS.MSS_TOC tocLevel =
+                final MSS.MSS_TOC tocLevel =
                         MSS.MSS_TOC.valueOf(PdfName.decodeName(new String(title.getRole().bytes)).toLowerCase())
                 this.toc.add(
                         new TOC(

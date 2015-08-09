@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
@@ -62,8 +62,8 @@ class PersistentPropertiesProvider implements PersistentProps {
     /**
      * Sets up and returns the properties directory.
      */
-    private File getPropsDir() {
-        String userHome = System.getProperties().getProperty("user.home")
+    private static File getPropsDir() {
+        final String userHome = System.getProperties().getProperty("user.home")
         File propsDir = new File(userHome)
         propsDir = new File(propsDir, ".markdownDoc")
         if (!propsDir.exists()) {
@@ -81,8 +81,8 @@ class PersistentPropertiesProvider implements PersistentProps {
      * @return A Properties object or null if not available (or failure to read it!).
      */
     @Override
-    Properties load(String name) {
-        File propsFile = new File(getPropsDir(), name + ".properties")
+    Properties load(final String name) {
+        final File propsFile = new File(getPropsDir(), name + ".properties")
         Properties props = null
 
         FileReader propsReader = null
@@ -91,12 +91,13 @@ class PersistentPropertiesProvider implements PersistentProps {
             props = new Properties()
             props.load(propsReader)
         }
-        catch (FileNotFoundException fnfe) {}
-        catch (IOException ioe) {
+        catch (final FileNotFoundException ignore) {}
+        catch (final IOException ioe) {
             System.err.println("ERROR: " + ioe.getMessage())
         }
         finally {
-            try {if (propsReader != null) propsReader.close()} catch (IOException cieo) {}
+            //noinspection GroovyUnusedCatchParameter
+            try {if (propsReader != null) propsReader.close()} catch (final IOException unused) {}
         }
 
         props
@@ -109,19 +110,19 @@ class PersistentPropertiesProvider implements PersistentProps {
      * @param props The properties to save.
      */
     @Override
-    void save(String name, Properties props) {
-        File propsFile = new File(getPropsDir(), name + ".properties")
+    void save(final String name, final Properties props) {
+        final File propsFile = new File(getPropsDir(), name + ".properties")
 
         FileWriter writer = null
         try {
             writer = new FileWriter(propsFile)
             props.store(writer, "Properties for '" + name + "'.")
         }
-        catch (IOException ioe) {
+        catch (final IOException ioe) {
             System.err.println("ERROR: " + ioe.getMessage())
         }
         finally {
-            try { if (writer != null) writer.close() } catch (IOException cioe) {}
+            try { if (writer != null) writer.close() } catch (final IOException ignore) {}
         }
     }
 }

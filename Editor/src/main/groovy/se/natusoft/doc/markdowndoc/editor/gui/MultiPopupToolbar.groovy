@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -89,15 +89,15 @@ class MultiPopupToolbar implements ToolBar {
     // Methods
     //
 
-    protected mouseMovedHandler(@NotNull MouseEvent e) {
+    protected mouseMovedHandler(@NotNull final MouseEvent e) {
         if (this.editor == null) return
-        int y = e.getY() - this.editor.getGUI().getEditorVisibleY()
+        final int y = e.getY() - this.editor.getGUI().getEditorVisibleY()
         if (y <= getTopMargin() && e.getX() >= 0 && e.getX() <= getEditorWidth()) {
             if (!isOpen()) {
-                int toolbarWidth = calculateWidth()
-                int x = getParentFrame().getX() + (int)(getParentFrame().getWidth() / 2) - (int)(toolbarWidth / 2)
+                final int toolbarWidth = calculateWidth()
+                final int x = getParentFrame().getX() + (int)(getParentFrame().getWidth() / 2) - (int)(toolbarWidth / 2)
 
-                int titleBarHeight =
+                final int titleBarHeight =
                         (int)(getParentFrame().getBounds().getHeight() - getParentFrame().getContentPane().getBounds().getHeight())
                 open(getParentFrame(), x, getParentFrame().getY() + titleBarHeight + 2)
             }
@@ -114,15 +114,15 @@ class MultiPopupToolbar implements ToolBar {
      *
      * @param editor The associated editorPane provided.
      */
-    void attach(@NotNull Editor editor) {
+    void attach(@NotNull final Editor editor) {
         this.editor = editor
 
         this.mouseMotionListener = new MouseMotionListener() {
             @Override
-            void mouseDragged(MouseEvent ignore) {}
+            void mouseDragged(final MouseEvent ignore) {}
 
             @Override
-            void mouseMoved(MouseEvent e) {
+            void mouseMoved(final MouseEvent e) {
                 mouseMovedHandler(e)
             }
         }
@@ -135,7 +135,7 @@ class MultiPopupToolbar implements ToolBar {
      * @param editor The editorPane to detach from.
      */
     @Override
-    void detach(@NotNull Editor editor) {
+    void detach(@NotNull final Editor editor) {
         close()
         editor.removeMouseMotionListener(this.mouseMotionListener)
         this.editor = null
@@ -171,19 +171,19 @@ class MultiPopupToolbar implements ToolBar {
      * @param x The X coordinate to open at.
      * @param y The Y coordinate to open at.
      */
-    private void open(@NotNull JFrame parent, int x, int y) {
+    private void open(@NotNull final JFrame parent, int x, final int y) {
 
-        boolean create = this.buttonWindows.isEmpty()
+        final boolean create = this.buttonWindows.isEmpty()
 
         int width = 0
-        Iterator<JWindow> buttonIterator = this.buttonWindows.iterator()
-        this.toolBarGroups.each { String group ->
-            this.functions.get(group)?.each { EditorFunction editorFunction ->
+        final Iterator<JWindow> buttonIterator = this.buttonWindows.iterator()
+        this.toolBarGroups.each { final String group ->
+            this.functions.get(group)?.each { final EditorFunction editorFunction ->
                 JWindow buttonWindow
                 if (create) {
                     buttonWindow = new JWindow(parent)
                     buttonWindow.setLayout(new BorderLayout())
-                    JComponent toolbarButton = editorFunction.getToolBarButton()
+                    final JComponent toolbarButton = editorFunction.getToolBarButton()
                     //toolbarButton.setSize(80, 80)
                     buttonWindow.add(toolbarButton, BorderLayout.CENTER)
                     this.buttonWindows.add(buttonWindow)
@@ -211,7 +211,7 @@ class MultiPopupToolbar implements ToolBar {
      * Closes the toolbar.
      */
     private void close() {
-        this.buttonWindows.each { JWindow buttonWindow ->
+        this.buttonWindows.each { final JWindow buttonWindow ->
             buttonWindow.setVisible(false)
         }
 
@@ -224,8 +224,8 @@ class MultiPopupToolbar implements ToolBar {
     private int calculateWidth() {
         int width = this.calculatedWidth
         if (width == 0) {
-            this.toolBarGroups.each { String group ->
-                this.functions.get(group)?.each { EditorFunction editorFunction ->
+            this.toolBarGroups.each { final String group ->
+                this.functions.get(group)?.each { final EditorFunction editorFunction ->
                     width += (int)editorFunction.getToolBarButton().getPreferredSize().width
                 }
                 width = width + 10
@@ -247,7 +247,7 @@ class MultiPopupToolbar implements ToolBar {
      *
      * @param function The function to add.
      */
-    void addFunction(@NotNull EditorFunction function) {
+    void addFunction(@NotNull final EditorFunction function) {
         if (!this.toolBarGroups.contains(function.getGroup())) {
             this.toolBarGroups.add(function.getGroup())
         }
@@ -275,10 +275,10 @@ class MultiPopupToolbar implements ToolBar {
      *
      * @param group The tool bar group to enable.
      */
-    void disableGroup(@NotNull String group) {
-        List<EditorFunction> functions = this.functions.get(group)
+    void disableGroup(@NotNull final String group) {
+        final List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
-            functions.each { EditorFunction function ->
+            functions.each { final EditorFunction function ->
                 function.getToolBarButton().setEnabled(false)
             }
         }
@@ -292,10 +292,10 @@ class MultiPopupToolbar implements ToolBar {
      *
      * @param group The tool bar group to disable.
      */
-    void enableGroup(@NotNull String group) {
-        List<EditorFunction> functions = this.functions.get(group)
+    void enableGroup(@NotNull final String group) {
+        final List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
-            functions.each { EditorFunction function ->
+            functions.each { final EditorFunction function ->
                 function.getToolBarButton().setEnabled(true)
             }
         }

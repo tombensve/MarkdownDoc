@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -75,7 +75,7 @@ class PasteRestyleFunction implements EditorFunction, Configurable {
             new KeyConfigEntry("editor.function.restyleonpaste.keyboard.shortcut", "Restyle on paste keyboard shortcut",
                     new KeyboardKey("Ctrl+V"), CONFIG_GROUP_KEYBOARD)
 
-    private Closure keyboardShortcutConfigChanged = { ConfigEntry ce ->
+    private Closure keyboardShortcutConfigChanged = { final ConfigEntry ce ->
         // Do nothing!
     }
 
@@ -85,7 +85,7 @@ class PasteRestyleFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(@NotNull ConfigProvider configProvider) {
+    void registerConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -95,7 +95,7 @@ class PasteRestyleFunction implements EditorFunction, Configurable {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
     }
 
@@ -132,7 +132,7 @@ class PasteRestyleFunction implements EditorFunction, Configurable {
         try {
             this.editor.refreshStyling()
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             System.err.println("ERROR: " + e.getMessage())
         }
     }

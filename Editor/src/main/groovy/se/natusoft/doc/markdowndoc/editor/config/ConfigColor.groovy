@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -58,7 +58,7 @@ class ConfigColor extends Color {
      * @param configEntry The config entry containing the color specification. Its valueComp
      *                    must be in the format "r:g:b".
      */
-    ConfigColor(@NotNull ConfigEntry configEntry) {
+    ConfigColor(@NotNull final ConfigEntry configEntry) {
         super(getRed(configEntry.getValue()), getGreen(configEntry.getValue()), getBlue(configEntry.getValue()))
     }
 
@@ -71,7 +71,7 @@ class ConfigColor extends Color {
      *
      * @param colorPart The color part to get.
      */
-    private static int toColor(@NotNull String colorStr, @NotNull ColorPart colorPart) {
+    private static int toColor(@NotNull final String colorStr, @NotNull final ColorPart colorPart) {
         Integer.valueOf(colorStr.split(":")[colorPart.ordinal()])
     }
 
@@ -80,7 +80,7 @@ class ConfigColor extends Color {
      *
      * @param colorStr The complete config color spec.
      */
-    private static final int getRed(@NotNull String colorStr) {
+    private static final int getRed(@NotNull final String colorStr) {
         toColor(colorStr, ColorPart.RED)
     }
 
@@ -89,7 +89,7 @@ class ConfigColor extends Color {
      *
      * @param colorStr The complete config color spec.
      */
-    private static final int getGreen(@NotNull String colorStr) {
+    private static final int getGreen(@NotNull final String colorStr) {
         toColor(colorStr, ColorPart.GREEN)
     }
 
@@ -98,7 +98,7 @@ class ConfigColor extends Color {
      *
      * @param colorStr The complete config color spec.
      */
-    private static final int getBlue(@NotNull String colorStr) {
+    private static final int getBlue(@NotNull final String colorStr) {
         toColor(colorStr, ColorPart.BLUE)
     }
 }

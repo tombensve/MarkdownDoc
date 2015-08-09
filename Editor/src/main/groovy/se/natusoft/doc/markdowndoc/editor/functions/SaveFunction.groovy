@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -95,7 +95,7 @@ class SaveFunction implements EditorFunction, Configurable, GuiGoodiesTrait {
     }
 
     private Closure popupOpacityChanged = { final ConfigEntry ce ->
-        int ival = Integer.valueOf(ce.value)
+        final int ival = Integer.valueOf(ce.value)
         this.popupOpacity = ((ival as float) / 100.0f) as float
     }
 
@@ -105,7 +105,7 @@ class SaveFunction implements EditorFunction, Configurable, GuiGoodiesTrait {
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(@NotNull ConfigProvider configProvider) {
+    void registerConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
         configProvider.registerConfig(PopupWindow.popupOpacityConfig, popupOpacityChanged)
     }
@@ -116,7 +116,7 @@ class SaveFunction implements EditorFunction, Configurable, GuiGoodiesTrait {
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
         configProvider.unregisterConfig(PopupWindow.popupOpacityConfig, popupOpacityChanged)
     }
@@ -126,11 +126,11 @@ class SaveFunction implements EditorFunction, Configurable, GuiGoodiesTrait {
     //
 
     SaveFunction() {
-        Icon saveIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddsave.png"))
+        final Icon saveIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddsave.png"))
         this.saveButton = new JButton(saveIcon)
         this.saveButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent ignored) {
+            void actionPerformed(final ActionEvent ignored) {
                 perform()
             }
         })
@@ -215,7 +215,7 @@ class SaveFunction implements EditorFunction, Configurable, GuiGoodiesTrait {
                 //panel.border = new SoftBevelBorder(SoftBevelBorder.RAISED)
                 panel.border = new EmptyBorder(3, 6, 3, 6)
                 window.add(panel, BorderLayout.CENTER)
-                JLabel label = new JLabel("Saved ${noSaved} files!")
+                final JLabel label = new JLabel("Saved ${noSaved} files!")
                 label.background = Color.BLACK
                 label.foreground = Color.WHITE
                 panel.add(label)

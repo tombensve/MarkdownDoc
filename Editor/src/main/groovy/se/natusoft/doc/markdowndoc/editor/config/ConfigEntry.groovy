@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -83,7 +83,7 @@ class ConfigEntry {
      * @param description The description of the config.
      * @param configGroup The configuration group this config belongs to.
      */
-    ConfigEntry(@NotNull String key, @NotNull String description, @NotNull String configGroup) {
+    ConfigEntry(@NotNull final String key, @NotNull final String description, @NotNull final String configGroup) {
         this.key = key
         this.description = description
         this.configGroup = configGroup
@@ -97,7 +97,9 @@ class ConfigEntry {
      * @param defaultValue The default valueComp of the config.
      * @param configGroup The configuration group this config belongs to.
      */
-    ConfigEntry(@NotNull String key, @NotNull String description, @NotNull  String defaultValue, @NotNull String configGroup) {
+    ConfigEntry(@NotNull final String key, @NotNull final String description, @NotNull final String defaultValue,
+                @NotNull final String configGroup) {
+
         this(key, description, configGroup)
         this.value = defaultValue
     }
@@ -118,7 +120,7 @@ class ConfigEntry {
      *
      * @param value The valueComp to set.
      */
-    void setValue(@NotNull String value) {
+    void setValue(@NotNull final String value) {
         this.value = value
         refresh()
     }
@@ -127,7 +129,7 @@ class ConfigEntry {
      * Refresh all listeners of this.
      */
     void refresh() {
-        this.configProvider.lookupConfigChanged(this).each { Closure configChanged ->
+        this.configProvider.lookupConfigChanged(this).each { final Closure configChanged ->
             configChanged(this)
         }
     }

@@ -85,7 +85,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
      * @param function The function to add.
      */
     @Override
-    void addFunction(@NotNull EditorFunction function) {
+    void addFunction(@NotNull final EditorFunction function) {
         if (!this.toolBarGroups.contains(function.getGroup())) {
             this.toolBarGroups.add(function.getGroup())
         }
@@ -106,12 +106,12 @@ class WindowToolBar extends JToolBar implements ToolBar {
     @SuppressWarnings("UnnecessaryQualifiedReference")
     @Override
     void createToolBarContent() {
-        Iterator<String> groupIterator = this.toolBarGroups.iterator()
+        final Iterator<String> groupIterator = this.toolBarGroups.iterator()
         while (groupIterator.hasNext()) {
             String group = groupIterator.next()
 
             List<EditorFunction> functions = this.functions.get(group)
-            functions.each { EditorFunction function ->
+            functions.each { final EditorFunction function ->
                 add(function.getToolBarButton())
             }
 
@@ -127,10 +127,10 @@ class WindowToolBar extends JToolBar implements ToolBar {
      * @param group The tool bar group to enable.
      */
     @Override
-    void disableGroup(@NotNull String group) {
-        List<EditorFunction> functions = this.functions.get(group)
+    void disableGroup(@NotNull final String group) {
+        final List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
-            functions.each { EditorFunction function ->
+            functions.each { final EditorFunction function ->
                 function.getToolBarButton().setEnabled(false)
             }
         }
@@ -145,10 +145,10 @@ class WindowToolBar extends JToolBar implements ToolBar {
      * @param group The tool bar group to disable.
      */
     @Override
-    void enableGroup(@NotNull String group) {
-        List<EditorFunction> functions = this.functions.get(group)
+    void enableGroup(@NotNull final String group) {
+        final List<EditorFunction> functions = this.functions.get(group)
         if (functions != null) {
-            functions.each { EditorFunction function ->
+            functions.each { final EditorFunction function ->
                 function.getToolBarButton().setEnabled(true)
             }
         }
@@ -163,7 +163,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
      * @param editor The associated editorPane provided.
      */
     @Override
-    void attach(@NotNull Editor editor) {
+    void attach(@NotNull final Editor editor) {
         editor.getGUI().getEditorPanel().add(this, BorderLayout.NORTH)
     }
 
@@ -173,7 +173,7 @@ class WindowToolBar extends JToolBar implements ToolBar {
      * @param editor The editorPane to detach from.
      */
     @Override
-    void detach(@NotNull Editor editor) {
+    void detach(@NotNull final Editor editor) {
         editor.getGUI().getEditorPanel().remove(this)
     }
 

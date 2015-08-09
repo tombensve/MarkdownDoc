@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -57,7 +57,7 @@ class MDLine extends Line  {
      *
      * @param line The content of the line.
      */
-    MDLine(@NotNull String line, int lineNumber) {
+    MDLine(@NotNull final String line, final int lineNumber) {
         super(line, lineNumber)
     }
 
@@ -66,7 +66,7 @@ class MDLine extends Line  {
      *
      * @param line The original Line to turn into an MDLine.
      */
-    MDLine(@NotNull Line line) {
+    MDLine(@NotNull final Line line) {
         super(line.toString(), line.lineNumber)
     }
 
@@ -79,7 +79,7 @@ class MDLine extends Line  {
      *
      * @param text The text of the line.
      */
-    protected Line newLine(@NotNull String text) {
+    protected Line newLine(@NotNull final String text) {
         new MDLine(text, super.lineNumber)
     }
 
@@ -89,7 +89,7 @@ class MDLine extends Line  {
      *
      * @param startsWith The text to check for.
      */
-    boolean startsWith(@NotNull String startsWith) {
+    boolean startsWith(@NotNull final String startsWith) {
         super.startsWith(startsWith) || this.origLine.startsWith(" " + startsWith) ||
                 this.origLine.startsWith("  " + startsWith)
     }
@@ -118,14 +118,14 @@ class MDLine extends Line  {
         boolean list = false;
 
         if (super.origLine != null && super.origLine.trim().length() >= 1) {
-            StringTokenizer lineTokenizer = new StringTokenizer(super.origLine, " ")
+            final StringTokenizer lineTokenizer = new StringTokenizer(super.origLine, " ")
             String firstWord = lineTokenizer.nextToken()
 
             if (firstWord.endsWith(".")) {
                 firstWord = firstWord.substring(0, firstWord.length() - 1)
                 boolean onlyDigits = true;
                 for (int i = 0; i < firstWord.length(); i++) {
-                    if (!firstWord.charAt(i).isDigit()) {
+                    if (!(firstWord.charAt(i) as Character).isDigit()) {
                         onlyDigits = false;
                         break;
                     }
@@ -136,9 +136,9 @@ class MDLine extends Line  {
                 }
             }
             else {
-                char c = this.origLine.trim().charAt(0)
+                final char c = this.origLine.trim().charAt(0)
                 char n = 0
-                try { n = this.origLine.trim().charAt(1)} catch (IndexOutOfBoundsException ignore) {}
+                try { n = this.origLine.trim().charAt(1)} catch (final IndexOutOfBoundsException ignore) {}
                 list = (c == '*' as char || c == '+' as char || c == '-' as char) &&
                         (n != '*' as char && n != '+' as char && n != '-' as char && !n.isDigit())
             }
@@ -152,7 +152,7 @@ class MDLine extends Line  {
      */
     boolean isOrderedList() {
         if (super.origLine != null && super.origLine.trim().length() >= 1) {
-            char c = this.origLine.trim().charAt(0)
+            final char c = this.origLine.trim().charAt(0)
             return c.isDigit()
         }
         false
@@ -178,10 +178,10 @@ class MDLine extends Line  {
      *
      * @param urls The current known urls.
      */
-    boolean isLinkURLSpec(@NotNull Map urls) {
+    boolean isLinkURLSpec(@NotNull final Map urls) {
         boolean found = false;
 
-        for (String urlText : urls.keySet()) {
+        for (final String urlText : urls.keySet()) {
             if (this.origLine.trim().startsWith("[" + urlText + "]:")) {
                 found = true
                 break
@@ -217,7 +217,7 @@ class MDLine extends Line  {
      *
      * @return true if all other return false.
      */
-    boolean isPartOfParagraph(@NotNull Map urls) {
+    boolean isPartOfParagraph(@NotNull final Map urls) {
         // Note the distinction: A List contains one or more Paragraph:s. A BlockQuote *is* a Paragraph!
         !(isList() || isOrderedList() || isHeader() || isHorizRuler() || isLinkURLSpec(urls) ||
                 isCommentStart() || isCommentEnd()) || isBlockQuote()
@@ -231,7 +231,7 @@ class MDLine extends Line  {
      *
      * @return true if all other return false.
      */
-    boolean isPartOfListParagraph(Map urls) {
+    boolean isPartOfListParagraph(@NotNull final Map urls) {
         // Again, note: isList() does not mean a list paragraph, but a new list (or list item). Each list item contains
         // a paragraph. It is such a paragraph we are trying to identify here (by the exclusion of other).
         !(isBlockQuote() || isList() || isOrderedList() || isHeader() || isHorizRuler() || isLinkURLSpec(urls) ||

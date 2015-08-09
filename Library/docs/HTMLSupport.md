@@ -29,7 +29,7 @@ or
         ...
     <!-- @EndDiv -->
 
-The latter does not affect GitHub wich ceases its markdown formatting within divs. In either usage the HTMLGenerator will generate a correct HTML div, while the MarkdownGenerator will generate the comment variant, and the PDFGenerator will not generate anything, but will use the divs to affect styling via MSS.
+The latter does not affect GitHub. In either usage the HTMLGenerator will generate a correct HTML div, while the MarkdownGenerator will generate the comment variant, and the PDFGenerator will not generate anything, but will use the divs to affect styling via MSS.
 
 The div has to be the only thing on the line, both start and end tag! Also, there can be a maximum of 3 spaces before the div tag. If there are 4 or more it will become a code block!
 

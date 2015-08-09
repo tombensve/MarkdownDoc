@@ -167,10 +167,10 @@ class SelectEditableFunction implements EditorFunction, Configurable {
 
         this.mouseMotionListener = new MouseMotionListener() {
             @Override
-            void mouseDragged(MouseEvent e) {}
+            void mouseDragged(final MouseEvent e) {}
 
             @Override
-            void mouseMoved(MouseEvent e) {
+            void mouseMoved(final MouseEvent e) {
                 mouseMovedHandler(e)
             }
         }

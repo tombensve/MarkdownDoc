@@ -52,6 +52,14 @@ The following third party products are using this license:
 
 * [annotations-13.0](http://www.jetbrains.org)
 
+* [groovy-all-2.4.4](http://groovy-lang.org)
+
+[GNU Affero General Public License version v3](http://www.fsf.org/licensing/licenses/agpl-3.0.html)
+
+The following third party products are using this license:
+
+* [itext-pdfa-5.5.6-1](http://itextpdf.com)
+
 <!--
   CLM
 -->

@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -92,18 +92,15 @@ class MarkdownGenerator implements Generator {
     @Override
     void generate(@NotNull final Doc document, @NotNull final Options opts, @Nullable final File rootDir)
             throws IOException, GenerateException {
-        MarkdownGeneratorContext context = new MarkdownGeneratorContext(
+        final MarkdownGeneratorContext context = new MarkdownGeneratorContext(
                 options: opts as MarkdownGeneratorOptions,
                 rootDir: rootDir
         )
 
-        def writer
-        if (rootDir != null) {
-            writer = new FileWriter(rootDir.path + File.separator + context.options.resultFile)
-        }
-        else {
-            writer = new FileWriter(context.options.resultFile)
-        }
+        final def writer = rootDir != null ?
+                new FileWriter(rootDir.path + File.separator + context.options.resultFile) :
+                new FileWriter(context.options.resultFile)
+
         try {
             doGenerate(document, writer, context)
         }
@@ -125,13 +122,14 @@ class MarkdownGenerator implements Generator {
      */
     @Override
     void generate(@NotNull final Doc document, @NotNull final Options opts, @Nullable final File rootDir,
-                  @NotNull OutputStream resultStream) throws IOException, GenerateException {
+                  @NotNull final OutputStream resultStream) throws IOException, GenerateException {
+        final
         MarkdownGeneratorContext context = new MarkdownGeneratorContext(
                 options: opts as MarkdownGeneratorOptions,
                 rootDir: rootDir
         )
 
-        OutputStreamWriter resultWriter = new OutputStreamWriter(resultStream)
+        final OutputStreamWriter resultWriter = new OutputStreamWriter(resultStream)
         doGenerate(document, resultWriter, context)
     }
 
@@ -146,9 +144,9 @@ class MarkdownGenerator implements Generator {
                                    @NotNull final MarkdownGeneratorContext context)
             throws IOException, GenerateException {
 
-        PrintWriter pw = new PrintWriter(writer)
+        final PrintWriter pw = new PrintWriter(writer)
 
-        document.items.each { DocItem docItem ->
+        document.items.each { final DocItem docItem ->
             switch (docItem.format) {
                 case DocFormat.Comment:
                     pw.println("<!--")
@@ -207,7 +205,7 @@ class MarkdownGenerator implements Generator {
     }
 
     private static void writeCodeBlock(@NotNull final CodeBlock codeBlock, @NotNull final PrintWriter pw) {
-        codeBlock.items.each { DocItem item ->
+        codeBlock.items.each { final DocItem item ->
             pw.print("    " + item.toString())
             pw.println()
         }
@@ -220,27 +218,30 @@ class MarkdownGenerator implements Generator {
     }
 
     private static void writeList(@NotNull final List list, @NotNull final PrintWriter pw,
-                                  @NotNull MarkdownGeneratorContext context) {
+                                  @NotNull final MarkdownGeneratorContext context) {
         writeList(list, pw, "", context)
     }
 
-    private static void writeList(@NotNull final List list, @NotNull final PrintWriter pw, @NotNull String indent,
+    private static void writeList(@NotNull final List list, @NotNull final PrintWriter pw, @NotNull final String indent,
                                   @NotNull final MarkdownGeneratorContext context) {
-        int itemNo = 1;
 
-        list.items.each { DocItem li ->
+        //noinspection GroovyVariableCanBeFinal
+        int itemNo = 1; //      ^^^^^ Here we go again! No, this can definitively not be final!
+
+        list.items.each { final DocItem li ->
             if (li instanceof List) {
                 writeList((List)li, pw, indent + "   ", context)
             }
             else {
                 if (list.ordered) {
                     pw.print(indent)
-                    pw.print("" + itemNo++ + ". ")
+                    pw.print("" + itemNo + ". ")
+                    itemNo++
                 }
                 else {
                     pw.print(indent + "* ")
                 }
-                li.items.each { pg ->
+                li.items.each { final pg ->
                     writeParagraph((Paragraph)pg, pw, context)
                 }
             }
@@ -251,7 +252,7 @@ class MarkdownGenerator implements Generator {
                                        @NotNull final MarkdownGeneratorContext context)
             throws GenerateException {
         boolean first = true
-        paragraph.items.each { DocItem docItem ->
+        paragraph.items.each { final DocItem docItem ->
             if (docItem.renderPrefixedSpace && !first) {
                 pw.print(" ")
             }
@@ -318,7 +319,7 @@ class MarkdownGenerator implements Generator {
     }
 
     private static void writeImage(@NotNull final Image image, @NotNull final PrintWriter pw,
-                                   @NotNull MarkdownGeneratorContext context) {
+                                   @NotNull final MarkdownGeneratorContext context) {
         pw.print("![" + image.text + "](" + resolveUrl(image.url, image.parseFile, context))
         if (image.title != null && image.title.trim().length() > 0) {
             pw.print(" " + image.title)
@@ -348,6 +349,8 @@ class MarkdownGenerator implements Generator {
         }
     }
 
+    // TODO: Break out resolveUrl & possiblyMakeRelative to a common base class or a Trait.
+
     /**
      * - Adds file: if no protocol is specified.
      * - If file: then resolved to full path if not found with relative path.
@@ -356,21 +359,21 @@ class MarkdownGenerator implements Generator {
      * @param parseFile The source file of the DocItem item.
      * @param context The generator run context.
      */
-    private static String resolveUrl(@NotNull String url, @NotNull File parseFile,
+    private static String resolveUrl(@NotNull final String url, @NotNull final File parseFile,
                                      @NotNull final MarkdownGeneratorContext context) {
         String resolvedUrl = url
         if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http:")) {
             resolvedUrl = "file:" + resolvedUrl
         }
         if (resolvedUrl.startsWith("file:")) {
-            String path = resolvedUrl.substring(5)
+            final String path = resolvedUrl.substring(5)
             File testFile = new File(path)
 
             if (!testFile.exists()) {
                 // Try relative to parseFile first.
                 int ix = parseFile.canonicalPath.lastIndexOf(File.separator)
                 if (ix >= 0) {
-                    String path1 = parseFile.canonicalPath.substring(0, ix + 1) + path
+                    final String path1 = parseFile.canonicalPath.substring(0, ix + 1) + path
                     if (context.rootDir != null) {
                         // The result file is relative to the root dir!
                         resolvedUrl = "file:" + possiblyMakeRelative(context.rootDir.canonicalPath + File.separator +
@@ -386,7 +389,7 @@ class MarkdownGenerator implements Generator {
                     // Try relative to result file.
                     ix = context.options.resultFile.lastIndexOf(File.separator)
                     if (ix >= 0) {
-                        String path2 = context.options.resultFile.substring(0, ix + 1) + path
+                        final String path2 = context.options.resultFile.substring(0, ix + 1) + path
                         if (context.rootDir != null) {
                             // The result file is relative to the root dir!
                             resolvedUrl = "file:" + possiblyMakeRelative(context.rootDir.canonicalPath +
@@ -412,15 +415,15 @@ class MarkdownGenerator implements Generator {
      *
      * @return A possibly relative path.
      */
-    private static @NotNull String possiblyMakeRelative(@NotNull String path,
+    private static @NotNull String possiblyMakeRelative(@NotNull final String path,
                                                         @NotNull final MarkdownGeneratorContext context) {
         String resultPath = path
 
         if (context.options.makeFileLinksRelativeTo != null &&
                 context.options.makeFileLinksRelativeTo.trim().length() > 0) {
-            String[] relativeToParts = context.options.makeFileLinksRelativeTo.split("\\+")
-            File relFilePath = new File(relativeToParts[0])
-            String expandedRelativePath = relFilePath.canonicalPath
+            final String[] relativeToParts = context.options.makeFileLinksRelativeTo.split("\\+")
+            final File relFilePath = new File(relativeToParts[0])
+            final String expandedRelativePath = relFilePath.canonicalPath
             if (resultPath.startsWith(expandedRelativePath)) {
                 resultPath = resultPath.substring(expandedRelativePath.length() + 1)
                 if (relativeToParts.length > 1) {

@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
@@ -45,11 +45,9 @@ import se.natusoft.doc.markdown.exception.ParseException
 import se.natusoft.doc.markdown.model.Doc
 import se.natusoft.doc.markdown.parser.MarkdownParser
 import se.natusoft.doc.markdowndoc.editor.Services
-import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
 import se.natusoft.doc.markdowndoc.editor.api.GUI
-import se.natusoft.doc.markdowndoc.editor.api.PersistentProps
 import se.natusoft.doc.markdowndoc.editor.functions.export.DelayedServiceData
 
 import javax.swing.*
@@ -79,7 +77,7 @@ abstract class AbstractExportFunction implements EditorFunction {
     // Constructor
     //
 
-    AbstractExportFunction(@NotNull String defaultsPropKey) {
+    AbstractExportFunction(@NotNull final String defaultsPropKey) {
         this.defaultsPropKey = defaultsPropKey
     }
 
@@ -125,21 +123,23 @@ abstract class AbstractExportFunction implements EditorFunction {
      *                   being filtered. For example "pdf".
      * @param extFilter The actual extensions of files to make selectable in file chooser. For example "html", "htm".
      */
-    protected File getExportOutputFile(@NotNull String type, @NotNull String definition, @NotNull String... extFilter) {
+    protected File getExportOutputFile(@NotNull final String type, @NotNull final String definition,
+                                       @NotNull final String... extFilter) {
+
         File selectedFile = null
-        JFileChooser fileChooser = new JFileChooser()
+        final JFileChooser fileChooser = new JFileChooser()
         fileChooser.setDialogTitle("Specify file to save " + type + " to")
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG)
         if (this.editor.editable.file != null) {
-            Properties props = Services.persistentPropertiesProvider.
+            final Properties props = Services.persistentPropertiesProvider.
                     load(fileToPropertiesName(this.editor.editable.file))
             if (props != null && props.getProperty(this.defaultsPropKey) != null) {
                 fileChooser.setSelectedFile(new File(props.getProperty(this.defaultsPropKey)))
             }
         }
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(definition, extFilter)
+        final FileNameExtensionFilter filter = new FileNameExtensionFilter(definition, extFilter)
         fileChooser.setFileFilter(filter)
-        int returnVal = fileChooser.showSaveDialog(this.editor.getGUI().getWindowFrame())
+        final int returnVal = fileChooser.showSaveDialog(this.editor.getGUI().getWindowFrame())
         if(returnVal == JFileChooser.APPROVE_OPTION) {
             selectedFile = fileChooser.getSelectedFile()
         }
@@ -153,7 +153,7 @@ abstract class AbstractExportFunction implements EditorFunction {
      *
      * @param file The file to convert to properties name.
      */
-    protected String fileToPropertiesName(@NotNull File file) {
+    protected static String fileToPropertiesName(@NotNull final File file) {
         file.getName().replace(".", "_")
     }
 
@@ -161,23 +161,23 @@ abstract class AbstractExportFunction implements EditorFunction {
      * Extracts the markdown text in the editorPane and returns a parsed Doc document model of it.
      */
     protected @NotNull Doc getMarkdownDocument() {
-        String markdownText = this.editor.getEditorContent()
-        ByteArrayInputStream markDownStream = new ByteArrayInputStream(markdownText.getBytes())
+        final String markdownText = this.editor.getEditorContent()
+        final ByteArrayInputStream markDownStream = new ByteArrayInputStream(markdownText.getBytes())
 
-        Parser parser = new MarkdownParser()
-        Doc document = new Doc()
-        Properties parserOptions = new Properties()
+        final Parser parser = new MarkdownParser()
+        final Doc document = new Doc()
+        final Properties parserOptions = new Properties()
         try {
             parser.parse(document, markDownStream, parserOptions)
         }
-        catch (ParseException pe) {
+        catch (final ParseException pe) {
             throw new RuntimeException(pe.getMessage(), pe)
         }
-        catch (IOException ioe) {
+        catch (final IOException ioe) {
             throw new RuntimeException(ioe.getMessage(), ioe)
         }
         finally {
-            try {markDownStream.close()} catch (IOException cioe) {}
+            try {markDownStream.close()} catch (final IOException ignore) {}
         }
 
         document

@@ -183,6 +183,7 @@ class PopupWindow extends JFrame implements Configurable, GuiGoodiesTrait, Color
      *
      * @param windowBottomMargin The new bottom margin.
      */
+    @SuppressWarnings("GroovyIfStatementWithIdenticalBranches")
     protected void updateWindowBottomMargin(final int windowBottomMargin) {
         this._bottomMargin = windowBottomMargin
         if (this._bottomMargin == -1) {
@@ -208,6 +209,10 @@ class PopupWindow extends JFrame implements Configurable, GuiGoodiesTrait, Color
      *
      * @return A possibly updated bottom margin.
      */
+    @SuppressWarnings("GrMethodMayBeStatic")
+    // No, method may not be static! The OSTrait methods linuxOS and windowsOS are not found if the
+    // method is static. Even if the 2 OSTrait methods themselves are static the actual trait seems to
+    // only be connected to the instance.
     protected int filterBottomMargin(int bottomMargin) {
         if (linuxOS) {
             bottomMargin += 20
@@ -226,6 +231,7 @@ class PopupWindow extends JFrame implements Configurable, GuiGoodiesTrait, Color
         return this._popupOpacity
     }
 
+    @SuppressWarnings("GroovyUnusedDeclaration")
     protected void setPopupOpacity(final float popupOpacity) {
         this._popupOpacity = popupOpacity
     }
@@ -237,6 +243,7 @@ class PopupWindow extends JFrame implements Configurable, GuiGoodiesTrait, Color
         return this._topMargin
     }
 
+    @SuppressWarnings("GroovyUnusedDeclaration")
     protected void setWindowTopMargin(final int windowTopMargin) {
         this._topMargin = windowTopMargin
     }
@@ -248,6 +255,7 @@ class PopupWindow extends JFrame implements Configurable, GuiGoodiesTrait, Color
         return this._bottomMargin
     }
 
+    @SuppressWarnings("GroovyUnusedDeclaration")
     protected void setWindowBottomMargin(final int windowBottomMargin) {
         this._bottomMargin = windowBottomMargin
     }

@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -86,7 +86,7 @@ class SourcePath {
      *
      * @param pathExpression The path expression as explained above.
      */
-    SourcePath(@NotNull String pathExpression) {
+    SourcePath(@NotNull final String pathExpression) {
         this(new File(pathExpression), "")
     }
 
@@ -111,7 +111,7 @@ class SourcePath {
      * @param projRoot The root dir of the project being built.
      * @param pathExpression The path expression as explained above.
      */
-    SourcePath(@NotNull File projRoot, @NotNull String pathExpression) {
+    SourcePath(@NotNull final File projRoot, @NotNull final String pathExpression) {
         this.origProjRoot = projRoot
         File pathFile = new File(projRoot, pathExpression)
         // We translate '!' to '\' to support regular expression escaping in windows which would treat '\' in the
@@ -134,7 +134,7 @@ class SourcePath {
      *
      * @param path The path to supply source files for.
      */
-    SourcePath(@NotNull File path) {
+    SourcePath(@NotNull final File path) {
         this.path = path
     }
 
@@ -145,7 +145,7 @@ class SourcePath {
      * @param recursive If true source files will be searched for recursively down the file structure.
      * @param fileRegexpFilter A filter to apply for each file. Example ".*.java". This can be null which means no filter.
      */
-    SourcePath(@NotNull File path, boolean recursive, @Nullable String fileRegexpFilter) {
+    SourcePath(@NotNull final File path, final boolean recursive, @Nullable final String fileRegexpFilter) {
         this.path = path
         this.recursive = recursive
         this.fileRegexpFilter = fileRegexpFilter
@@ -160,10 +160,10 @@ class SourcePath {
      *
      * @param name The name to check.
      */
-    private final boolean isRegularExpression(@NotNull String name) {
+    private static final boolean isRegularExpression(@NotNull final String name) {
         boolean result =  name.contains("*")  || name.contains("[") || name.contains("?") || name.contains("(")
-        int dot = name.indexOf(".")
-        int bs = name.indexOf("\\")
+        final int dot = name.indexOf(".")
+        final int bs = name.indexOf("\\")
         if (!result && dot >= 0 && bs != (dot - 1)) {
             result = true
         }
@@ -176,7 +176,8 @@ class SourcePath {
      *
      * @param recursive If true source files will be searched for recursively down the file structure.
      */
-    void setRecursive(boolean recursive) {
+    @SuppressWarnings("GroovyUnusedDeclaration")
+    void setRecursive(final boolean recursive) {
         this.recursive = recursive
     }
 
@@ -185,7 +186,8 @@ class SourcePath {
      *
      * @param fileRegexpFilter A filter to apply for each file. Example ".*.java". This can be null which means no filter.
      */
-    void setFileRegexpFilter(@Nullable String fileRegexpFilter) {
+    @SuppressWarnings("GroovyUnusedDeclaration")
+    void setFileRegexpFilter(@Nullable final String fileRegexpFilter) {
         this.fileRegexpFilter = fileRegexpFilter
     }
 
@@ -193,7 +195,7 @@ class SourcePath {
      * @return Returns all the source files matching the path criteria.
      */
     @NotNull List<File> getSourceFiles() {
-        List<File> sourceFiles = new ArrayList<File>()
+        final List<File> sourceFiles = new ArrayList<File>()
 
         findSourceFiles(this.path, sourceFiles)
 
@@ -206,10 +208,10 @@ class SourcePath {
      * @param currentPath The path to start finding files in.
      * @param sourceFiles Found files are added to this list.
      */
-    private void findSourceFiles(@NotNull File currentPath, @NotNull List<File> sourceFiles) {
+    private void findSourceFiles(@NotNull final File currentPath, @NotNull final List<File> sourceFiles) {
         if (currentPath != null) {
             if (currentPath.exists()) {
-                for (File file : currentPath.listFiles()) {
+                for (final File file : currentPath.listFiles()) {
                     if (file.isDirectory() && this.recursive) {
                         findSourceFiles(file, sourceFiles)
                     }
@@ -235,18 +237,14 @@ class SourcePath {
      * @param sourceFiles The list of files to add to.
      * @param file The file to add as is or the files it lists.
      */
-    private void provideFile(@NotNull List<File> sourceFiles, @NotNull File file) {
+    private void provideFile(@NotNull final List<File> sourceFiles, @NotNull final File file) {
         if (file.getName().endsWith(".fs")) {
-            String fileSet = loadFileSetFile(file)
+            final String fileSet = loadFileSetFile(file)
             if (fileSet != null) {
-                SourcePaths sourcePaths = null
-                if (this.origProjRoot != null) {
-                    sourcePaths = new SourcePaths(this.origProjRoot, fileSet)
-                }
-                else {
-                    sourcePaths = new SourcePaths(fileSet)
-                }
-                for (File fsFile : sourcePaths.getSourceFiles()) {
+                final SourcePaths sourcePaths = this.origProjRoot != null ?
+                        new SourcePaths(this.origProjRoot, fileSet) : new SourcePaths(fileSet)
+
+                sourcePaths.getSourceFiles().each { final File fsFile ->
                     sourceFiles.add(fsFile)
                 }
             }
@@ -263,12 +261,12 @@ class SourcePath {
      *
      * @return A string with its content or null on failure to load.
      */
-    private @Nullable String loadFileSetFile(@NotNull File fsFile) {
+    private @Nullable static final String loadFileSetFile(@NotNull final File fsFile) {
         String fsSetFiles = null
 
         try {
-            StringBuilder sb = new StringBuilder()
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fsFile)))
+            final StringBuilder sb = new StringBuilder()
+            final BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fsFile)))
 
             String line = ""
             while (line != null) {
@@ -281,7 +279,7 @@ class SourcePath {
             br.close()
             fsSetFiles = sb.toString()
         }
-        catch (IOException ioe) {
+        catch (final IOException ioe) {
             System.err.println("Failed to load file-set file: " + ioe.getMessage())
         }
 
@@ -293,7 +291,7 @@ class SourcePath {
      */
     @Override
     @NotNull String toString() {
-        StringBuilder sb = new StringBuilder()
+        final StringBuilder sb = new StringBuilder()
         sb.append(this.path)
         if (this.recursive) {
             sb.append("/**")

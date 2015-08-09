@@ -42,10 +42,12 @@ import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
-import se.natusoft.doc.markdowndoc.editor.api.Editable
 import se.natusoft.doc.markdowndoc.editor.api.JTextComponentStyler
 import se.natusoft.doc.markdowndoc.editor.api.JTextComponentStyler.ParagraphBounds
-import se.natusoft.doc.markdowndoc.editor.config.*
+import se.natusoft.doc.markdowndoc.editor.config.BooleanConfigEntry
+import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
+import se.natusoft.doc.markdowndoc.editor.config.IntegerConfigEntry
+import se.natusoft.doc.markdowndoc.editor.config.ValidSelectionConfigEntry
 
 import javax.swing.*
 import javax.swing.text.*

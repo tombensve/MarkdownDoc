@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -48,6 +48,7 @@ import java.util.List
  * Creates a flow layout where each content box is the same size, that is the size of the largest
  * component added.
  */
+@SuppressWarnings("GroovyUnusedDeclaration")
 @CompileStatic
 @TypeChecked
 class SmartFlowLayout implements LayoutManager2 {
@@ -75,15 +76,6 @@ class SmartFlowLayout implements LayoutManager2 {
     boolean commonWidth = true
 
     //
-    // Constructors
-    //
-
-    /**
-     * Creates a new SmartFlowLayout.
-     */
-    SmartFlowLayout() {}
-
-    //
     // Methods
     //
 
@@ -97,7 +89,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @param comp the component to be added
      */
     @Override
-    void addLayoutComponent(@Nullable("Not used") String name, @NotNull Component comp) {
+    void addLayoutComponent(@Nullable("Not used") final String name, @NotNull final Component comp) {
         this.components.add(comp)
     }
 
@@ -107,7 +99,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @param comp the component to be removed
      */
     @Override
-    void removeLayoutComponent(@NotNull Component comp) {
+    void removeLayoutComponent(@NotNull final Component comp) {
         this.components.remove(comp)
     }
 
@@ -119,7 +111,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @see #minimumLayoutSize
      */
     @Override
-    @NotNull Dimension preferredLayoutSize(Container parent) {
+    @NotNull Dimension preferredLayoutSize(final Container parent) {
         minimumLayoutSize(parent)
     }
 
@@ -131,7 +123,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @see #preferredLayoutSize
      */
     @Override
-    @NotNull Dimension minimumLayoutSize(Container parent) {
+    @NotNull Dimension minimumLayoutSize(final Container parent) {
         synchronized (parent.getTreeLock()) {
             doLayout(parent, false)
         }
@@ -144,7 +136,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @param parent the container to be laid out
      */
     @Override
-    void layoutContainer(@NotNull Container parent) {
+    void layoutContainer(@NotNull final Container parent) {
         synchronized (parent.getTreeLock()) {
             doLayout(parent, true)
         }
@@ -156,8 +148,8 @@ class SmartFlowLayout implements LayoutManager2 {
      * @param parent The parent container we are doing layout for.
      * @param update If true actual layout will be done. If false only minimum size will be calculated.
      */
-    private void doLayout(@NotNull Container parent, boolean update) {
-        Insets insets = parent.getInsets()
+    private void doLayout(@NotNull final Container parent, final boolean update) {
+        final Insets insets = parent.getInsets()
         int x = insets.left
         int y = insets.top
 
@@ -168,7 +160,7 @@ class SmartFlowLayout implements LayoutManager2 {
 
         int cheight = 0
         int cwidth = 0
-        for (Component comp : this.components) {
+        for (final Component comp : this.components) {
             int compWidth = (int)comp.getPreferredSize().getWidth()
             if (compWidth > cwidth) {
                 cwidth = compWidth
@@ -179,8 +171,8 @@ class SmartFlowLayout implements LayoutManager2 {
             }
         }
 
-        int noCols = (int)(realBoundsContainer.getWidth() / cwidth)
-        int leftOfWidth = (int)(realBoundsContainer.getWidth() - (cwidth * noCols))
+        final int noCols = (int)(realBoundsContainer.getWidth() / cwidth)
+        final int leftOfWidth = (int)(realBoundsContainer.getWidth() - (cwidth * noCols))
         if (noCols > 1) {
             cwidth = cwidth + (int)(leftOfWidth / noCols)
         }
@@ -188,7 +180,7 @@ class SmartFlowLayout implements LayoutManager2 {
             cwidth = realBoundsContainer.getWidth() - 2
         }
 
-        for (Component comp : this.components) {
+        for (final Component comp : this.components) {
             Dimension compPreferred = comp.getPreferredSize()
             if (this.commonWidth) {
                 compPreferred.setSize(cwidth, compPreferred.getHeight())
@@ -209,8 +201,8 @@ class SmartFlowLayout implements LayoutManager2 {
             x = x + cwidth + this.hgap
         }
 
-        int minWidth = x + insets.right
-        int minHeight = y + cheight + insets.bottom
+        final int minWidth = x + insets.right
+        final int minHeight = y + cheight + insets.bottom
         this.minimumSize.setSize(minWidth, minHeight)
     }
 
@@ -222,7 +214,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @param constraints where/how the component is added to the layout.
      */
     @Override
-    void addLayoutComponent(@NotNull Component comp, @Nullable("Not used") Object constraints) {
+    void addLayoutComponent(@NotNull final Component comp, @Nullable("Not used") final Object constraints) {
 
         addLayoutComponent("", comp)
     }
@@ -236,7 +228,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @see java.awt.LayoutManager
      */
     @Override
-    Dimension maximumLayoutSize(@NotNull Container target) {
+    Dimension maximumLayoutSize(@NotNull final Container target) {
         preferredLayoutSize(target)
     }
 
@@ -250,7 +242,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @param target The target container we are doing layout for.
      */
     @Override
-    float getLayoutAlignmentX(@Nullable("Not used") Container target) {
+    float getLayoutAlignmentX(@Nullable("Not used") final Container target) {
         0.0f
     }
 
@@ -264,7 +256,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @param target The target container we are doing layout for.
      */
     @Override
-    float getLayoutAlignmentY(@Nullable("Not used") Container target) {
+    float getLayoutAlignmentY(@Nullable("Not used") final Container target) {
         0.0f
     }
 
@@ -275,7 +267,7 @@ class SmartFlowLayout implements LayoutManager2 {
      * @param target The target container we are doing layout for.
      */
     @Override
-    void invalidateLayout(@Nullable("Not used") Container target) {
+    void invalidateLayout(@Nullable("Not used") final Container target) {
         // Nothing to invalidate.
     }
 }

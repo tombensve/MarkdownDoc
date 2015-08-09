@@ -91,7 +91,7 @@ class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntry> {
      * @param configChanged A ConfigChanged callback to add to the list of callbacks for the config.
      */
     @Override
-    void registerConfig(@NotNull ConfigEntry configEntry, @Nullable Closure configChanged) {
+    void registerConfig(@NotNull final ConfigEntry configEntry, @Nullable final Closure configChanged) {
         if (!this.configMap.containsKey(configEntry.getKey())) {
             configEntry.setConfigProvider(this)
             this.configMap.put(configEntry.getKey(), configEntry)
@@ -114,8 +114,8 @@ class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntry> {
      * @param configChanged The ConfigChanged callback to unregister.
      */
     @Override
-    void unregisterConfig(@NotNull ConfigEntry configEntry, @Nullable Closure configChanged) {
-        List<Closure> configChangedEntries = this.configChangedCallbacks.get(configEntry)
+    void unregisterConfig(@NotNull final ConfigEntry configEntry, @Nullable final Closure configChanged) {
+        final List<Closure> configChangedEntries = this.configChangedCallbacks.get(configEntry)
         if (configChangedEntries != null && configChanged != null) {
             configChangedEntries.remove(configChanged)
         }
@@ -135,7 +135,7 @@ class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntry> {
      * @param key The key of the config entry to get.
      */
     @Override
-    @Nullable ConfigEntry lookupConfig(@NotNull String key) {
+    @Nullable ConfigEntry lookupConfig(@NotNull final String key) {
         return this.configMap.get(key)
     }
 
@@ -145,7 +145,7 @@ class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntry> {
      * @param configEntry The config entry to lookup ConfigChanged callbacks for.
      */
     @Override
-    @Nullable List<Closure> lookupConfigChanged(@NotNull ConfigEntry configEntry) {
+    @Nullable List<Closure> lookupConfigChanged(@NotNull final ConfigEntry configEntry) {
         return this.configChangedCallbacks.get(configEntry)
     }
 
@@ -153,7 +153,7 @@ class ConfigProviderHolder implements ConfigProvider, Iterable<ConfigEntry> {
      * Refreshes all configs by triggering callbacks.
      */
     void refreshConfigs() {
-        getConfigs().each { ConfigEntry ce ->
+        getConfigs().each { final ConfigEntry ce ->
             ce.refresh()
         }
     }

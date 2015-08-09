@@ -54,8 +54,6 @@ import se.natusoft.doc.markdowndoc.editor.gui.MDETitledBorder
 import se.natusoft.doc.markdowndoc.editor.gui.PopupWindow
 
 import javax.swing.*
-import javax.swing.border.SoftBevelBorder
-import javax.swing.border.TitledBorder
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
@@ -100,12 +98,12 @@ class InsertLinkFunction implements EditorFunction, Configurable, GuiGoodiesTrai
             new KeyConfigEntry("editor.function.insert.link.keyboard.shortcut", "Insert link keyboard shortcut",
                     new KeyboardKey("Ctrl+N"), CONFIG_GROUP_KEYBOARD)
 
-    private Closure keyboardShortcutConfigChanged = { ConfigEntry ce ->
+    private Closure keyboardShortcutConfigChanged = { final ConfigEntry ce ->
         updateTooltipText()
     }
 
-    private Closure popupOpacityChanged = { ConfigEntry ce ->
-        int ival = Integer.valueOf(ce.value)
+    private Closure popupOpacityChanged = { final ConfigEntry ce ->
+        final int ival = Integer.valueOf(ce.value)
         this.popupOpacity = ((ival as float) / 100.0f) as float
     }
 
@@ -115,7 +113,7 @@ class InsertLinkFunction implements EditorFunction, Configurable, GuiGoodiesTrai
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(@NotNull ConfigProvider configProvider) {
+    void registerConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
         configProvider.registerConfig(PopupWindow.popupOpacityConfig, popupOpacityChanged)
     }
@@ -126,7 +124,7 @@ class InsertLinkFunction implements EditorFunction, Configurable, GuiGoodiesTrai
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
         configProvider.unregisterConfig(PopupWindow.popupOpacityConfig, popupOpacityChanged)
     }
@@ -136,11 +134,11 @@ class InsertLinkFunction implements EditorFunction, Configurable, GuiGoodiesTrai
     //
 
     InsertLinkFunction() {
-        Icon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddlink.png"))
+        final Icon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddlink.png"))
         this.linkButton = new JButton(imageIcon)
         linkButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent actionEvent) {
+            void actionPerformed(final ActionEvent actionEvent) {
                 perform()
             }
         })
@@ -200,21 +198,21 @@ class InsertLinkFunction implements EditorFunction, Configurable, GuiGoodiesTrai
     @Override
     void perform() throws FunctionException {
 
-        Box vBox = Box.createVerticalBox()
+        final Box vBox = Box.createVerticalBox()
 
-        JPanel linkTextPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
+        final JPanel linkTextPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
         linkTextPanel.setBorder(new MDETitledBorder(title: "Link text:", titleColor: defaultForegroundColor))
         updateColors(linkTextPanel)
         this.linkText = new JTextField(32)
         this.linkText.addFocusListener(new FocusListener() {
             @Override
-            void focusGained(FocusEvent e) {
+            void focusGained(final FocusEvent e) {
                 InsertLinkFunction.this.linkText.foreground = InsertLinkFunction.this.defaultBackgroundColor
                 InsertLinkFunction.this.linkText.background = InsertLinkFunction.this.defaultForegroundColor
             }
 
             @Override
-            void focusLost(FocusEvent e) {
+            void focusLost(final FocusEvent e) {
                 InsertLinkFunction.this.linkText.foreground = InsertLinkFunction.this.defaultForegroundColor
                 InsertLinkFunction.this.linkText.background = InsertLinkFunction.this.defaultBackgroundColor
             }
@@ -223,19 +221,19 @@ class InsertLinkFunction implements EditorFunction, Configurable, GuiGoodiesTrai
         linkTextPanel.add(this.linkText)
         vBox.add(linkTextPanel)
 
-        JPanel linkURLPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
+        final JPanel linkURLPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
         linkURLPanel.setBorder(new MDETitledBorder(title: "Link URL:", titleColor: defaultForegroundColor))
         updateColors(linkURLPanel)
         this.linkURL = new JTextField(32)
         this.linkURL.addFocusListener(new FocusListener() {
             @Override
-            void focusGained(FocusEvent e) {
+            void focusGained(final FocusEvent e) {
                 InsertLinkFunction.this.linkURL.foreground = InsertLinkFunction.this.defaultBackgroundColor
                 InsertLinkFunction.this.linkURL.background = InsertLinkFunction.this.defaultForegroundColor
             }
 
             @Override
-            void focusLost(FocusEvent e) {
+            void focusLost(final FocusEvent e) {
                 InsertLinkFunction.this.linkURL.foreground = InsertLinkFunction.this.defaultForegroundColor
                 InsertLinkFunction.this.linkURL.background = InsertLinkFunction.this.defaultBackgroundColor
             }
@@ -244,19 +242,19 @@ class InsertLinkFunction implements EditorFunction, Configurable, GuiGoodiesTrai
         linkURLPanel.add(this.linkURL)
         vBox.add(linkURLPanel)
 
-        JPanel linkTitlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
+        final JPanel linkTitlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
         linkTitlePanel.setBorder(new MDETitledBorder(title: "Link title:", titleColor: defaultForegroundColor))
         updateColors(linkTitlePanel)
         this.linkTitle = new JTextField(32)
         this.linkTitle.addFocusListener(new FocusListener() {
             @Override
-            void focusGained(FocusEvent e) {
+            void focusGained(final FocusEvent e) {
                 InsertLinkFunction.this.linkTitle.foreground = InsertLinkFunction.this.defaultBackgroundColor
                 InsertLinkFunction.this.linkTitle.background = InsertLinkFunction.this.defaultForegroundColor
             }
 
             @Override
-            void focusLost(FocusEvent e) {
+            void focusLost(final FocusEvent e) {
                 InsertLinkFunction.this.linkTitle.foreground = InsertLinkFunction.this.defaultForegroundColor
                 InsertLinkFunction.this.linkTitle.background = InsertLinkFunction.this.defaultBackgroundColor
             }
@@ -265,12 +263,12 @@ class InsertLinkFunction implements EditorFunction, Configurable, GuiGoodiesTrai
         linkTitlePanel.add(this.linkTitle)
         vBox.add(linkTitlePanel)
 
-        JPanel insertCancelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
+        final JPanel insertCancelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
         updateColors(insertCancelPanel)
-        JButton insertButton = new JButton("Insert")
+        final JButton insertButton = new JButton("Insert")
         insertButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent ignored) {
+            void actionPerformed(final ActionEvent ignored) {
                 inputDialog.setVisible(false)
                 linkButton.setEnabled(true)
 
@@ -286,10 +284,10 @@ class InsertLinkFunction implements EditorFunction, Configurable, GuiGoodiesTrai
             }
         })
         insertCancelPanel.add(insertButton)
-        JButton cancelButton = new JButton("Cancel")
+        final JButton cancelButton = new JButton("Cancel")
         cancelButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent ignored) {
+            void actionPerformed(final ActionEvent ignored) {
                 inputDialog.setVisible(false)
                 linkButton.setEnabled(true)
                 editor.requestEditorFocus()
@@ -309,9 +307,9 @@ class InsertLinkFunction implements EditorFunction, Configurable, GuiGoodiesTrai
         this.inputDialog.setSize(this.inputDialog.getPreferredSize())
         this.linkButton.setEnabled(false)
         this.inputDialog.setVisible(true)
-        Rectangle mainBounds = this.editor.getGUI().getWindowFrame().getBounds()
-        int x = (int)mainBounds.x + (int)(mainBounds.width / 2) - (int)(this.inputDialog.getWidth() / 2)
-        int y = (int)mainBounds.y + 70
+        final Rectangle mainBounds = this.editor.getGUI().getWindowFrame().getBounds()
+        final int x = (int)mainBounds.x + (int)(mainBounds.width / 2) - (int)(this.inputDialog.getWidth() / 2)
+        final int y = (int)mainBounds.y + 70
         this.inputDialog.setLocation(x,y)
 
     }

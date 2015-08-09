@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -67,10 +67,10 @@ class ValidSelectionConfigEntry extends ConfigEntry {
      * @param configGroup The config group this config belongs to.
      */
     ValidSelectionConfigEntry(
-            @NotNull String key,
-            @NotNull String description,
-            @NotNull ValidValues validValues,
-            @NotNull String configGroup
+            @NotNull final String key,
+            @NotNull final String description,
+            @NotNull final ValidValues validValues,
+            @NotNull final String configGroup
     ) {
         super(key, description, configGroup)
         this.validValues = validValues
@@ -86,11 +86,11 @@ class ValidSelectionConfigEntry extends ConfigEntry {
      * @param configGroup The config group this config belongs to.
      */
     ValidSelectionConfigEntry(
-            @NotNull String key,
-            @NotNull String description,
-            @NotNull String defaultValue,
-            @NotNull ValidValues validValues,
-            @NotNull String configGroup
+            @NotNull final String key,
+            @NotNull final String description,
+            @NotNull final String defaultValue,
+            @NotNull final ValidValues validValues,
+            @NotNull final String configGroup
     ) {
         super(key, description, defaultValue, configGroup)
         this.validValues = validValues
@@ -124,8 +124,8 @@ class ValidSelectionConfigEntry extends ConfigEntry {
      *
      * @param strings The String List to convert.
      */
-    static @NotNull String[] stringListToArray(@NotNull List<String> strings) {
-        String[] array = new String[strings.size()]
+    static @NotNull String[] stringListToArray(@NotNull final List<String> strings) {
+        final String[] array = new String[strings.size()]
         strings.toArray(array)
     }
 
@@ -134,8 +134,8 @@ class ValidSelectionConfigEntry extends ConfigEntry {
      *
      * @param stringValues The string array to convert.
      */
-    static @NotNull Value[] convertToValues(@NotNull String[] stringValues) {
-        Value[] values = new Value[stringValues.length]
+    static @NotNull Value[] convertToValues(@NotNull final String[] stringValues) {
+        final Value[] values = new Value[stringValues.length]
         for (int i = 0; i < stringValues.length; i++) {
             values[i] = new Value(stringValues[i])
         }
@@ -150,8 +150,8 @@ class ValidSelectionConfigEntry extends ConfigEntry {
      * @param stringValues The string array to convert.
      * @param cutAtLast The character to find last of and use text after as show text.
      */
-    static @NotNull Value[] convertToValues(@NotNull String[] stringValues, @NotNull String cutAtLast) {
-        Value[] values = new Value[stringValues.length]
+    static @NotNull Value[] convertToValues(@NotNull final String[] stringValues, @NotNull final String cutAtLast) {
+        final Value[] values = new Value[stringValues.length]
         for (int i = 0; i < stringValues.length; i++) {
             String use = stringValues[i]
             String show = use.substring(use.lastIndexOf(cutAtLast) + 1)
@@ -181,7 +181,7 @@ class ValidSelectionConfigEntry extends ConfigEntry {
          * @param show The part of the valueComp to show in the gui.
          * @param use The real/full valueComp to store in config and use.
          */
-        Value(@NotNull String show, @NotNull String use) {
+        Value(@NotNull final String show, @NotNull final String use) {
             this.show = show
             this.use = use
         }
@@ -191,7 +191,7 @@ class ValidSelectionConfigEntry extends ConfigEntry {
          *
          * @param use The real valueComp to use. This is also set as show valueComp.
          */
-        Value(@NotNull String use) {
+        Value(@NotNull final String use) {
             this.show = use
             this.use = use
         }
@@ -224,7 +224,7 @@ class ValidSelectionConfigEntry extends ConfigEntry {
          *
          * @param o The object to compare to.
          */
-        boolean equals(@NotNull Object o) {
+        boolean equals(@NotNull final Object o) {
             o instanceof Value && ((Value) o).show.equals(this.show)
         }
     }

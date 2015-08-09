@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -71,7 +71,7 @@ public class LineReader {
      *
      * @param reader The reader to wrap.
      */
-    LineReader(@NotNull Reader reader) {
+    LineReader(@NotNull final Reader reader) {
         this.reader = new BufferedReader(reader)
     }
 
@@ -84,7 +84,7 @@ public class LineReader {
      *
      * @param text The text to wrap in a Line.
      */
-    protected @NotNull Line createLine(@NotNull String text) {
+    protected @NotNull Line createLine(@NotNull final String text) {
         new Line(text, this.lineNo)
     }
 
@@ -102,7 +102,7 @@ public class LineReader {
             line = this.readAhead.pollFirst()
         }
         else {
-            String str = this.reader.readLine()
+            final String str = this.reader.readLine()
             if (str != null) {
                 line = createLine(str.replaceAll("\t", "    "))
             }
@@ -120,7 +120,7 @@ public class LineReader {
      *
      * @param line The line to push back.
      */
-    void pushBackLine(@NotNull Line line) {
+    void pushBackLine(@NotNull final Line line) {
         this.readAhead.offerLast(line)
         --this.lineNo
     }
@@ -133,8 +133,8 @@ public class LineReader {
      * @throws IOException on any I/O failure.
      */
     @Nullable Line peekNextLine() throws IOException {
-        Line saveLastReadLine = this.lastReadLine
-        Line line = readLine()
+        final Line saveLastReadLine = this.lastReadLine
+        final Line line = readLine()
         if (line != null) {
             pushBackLine(line)
         }
@@ -156,7 +156,7 @@ public class LineReader {
      *
      * @param lineClosure The closure to call.
      */
-    void each(@NotNull Closure lineClosure) {
+    void each(@NotNull final Closure lineClosure) {
         while (hasLine()) {
             lineClosure.call(readLine(), peekNextLine())
         }

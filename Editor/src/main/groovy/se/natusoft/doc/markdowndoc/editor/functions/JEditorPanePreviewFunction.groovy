@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -48,11 +48,11 @@ import se.natusoft.doc.markdown.generator.HTMLGenerator
 import se.natusoft.doc.markdown.generator.options.HTMLGeneratorOptions
 import se.natusoft.doc.markdown.model.Doc
 import se.natusoft.doc.markdown.parser.MarkdownParser
-import se.natusoft.doc.markdowndoc.editor.gui.MDECaret
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.*
 import se.natusoft.doc.markdowndoc.editor.config.*
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
+import se.natusoft.doc.markdowndoc.editor.gui.MDECaret
 
 import javax.swing.*
 import javax.swing.text.html.HTMLEditorKit
@@ -97,7 +97,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
                     new ValidSelectionConfigEntry.ValidValues() {
                         @Override
                         ValidSelectionConfigEntry.Value[] validValues() {
-                            GraphicsEnvironment gEnv = GraphicsEnvironment
+                            final GraphicsEnvironment gEnv = GraphicsEnvironment
                                     .getLocalGraphicsEnvironment()
                             return ValidSelectionConfigEntry.convertToValues(gEnv.getAvailableFontFamilyNames())
                         }
@@ -122,39 +122,39 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
             "The right margin.", 60, 0, 500, CONFIG_GROUP_PREVIEW)
 
 
-    private Closure keyboardShortcutConfigChanged = { ConfigEntry ce ->
+    private Closure keyboardShortcutConfigChanged = { final ConfigEntry ce ->
         updateTooltipText()
     }
 
-    private Closure fontConfigChanged = { ConfigEntry ce ->
+    private Closure fontConfigChanged = { final ConfigEntry ce ->
         ((HTMLEditorKit) preview.getEditorKit()).getStyleSheet().addRule(
                 "body {font-family: " + ce.getValue() + " font-size: " +
                         fontSizeConfig.getValue() + " }")
         SwingUtilities.updateComponentTreeUI(preview)
     }
 
-    private Closure fontSizeConfigChanged = { ConfigEntry ce ->
+    private Closure fontSizeConfigChanged = { final ConfigEntry ce ->
         ((HTMLEditorKit) preview.getEditorKit()).getStyleSheet().addRule(
                 "body {font-family: " + fontConfig.getValue() + " }")
         SwingUtilities.updateComponentTreeUI(preview)
     }
 
-    private Closure topMarginConfigChanged = { ConfigEntry ce ->
+    private Closure topMarginConfigChanged = { final ConfigEntry ce ->
         this.preview.margin.top = ((IntegerConfigEntry)ce).intValue
         this.preview.revalidate()
     }
 
-    private Closure bottomMarginConfigChanged = { ConfigEntry ce ->
+    private Closure bottomMarginConfigChanged = { final ConfigEntry ce ->
         this.preview.margin.bottom = ((IntegerConfigEntry)ce).intValue
         this.preview.revalidate()
     }
 
-    private Closure leftMarginConfigChanged = { ConfigEntry ce ->
+    private Closure leftMarginConfigChanged = { final ConfigEntry ce ->
         this.preview.margin.left = ((IntegerConfigEntry)ce).intValue
         this.preview.revalidate()
     }
 
-    private Closure rightMarginConfigChanged = { ConfigEntry ce ->
+    private Closure rightMarginConfigChanged = { final ConfigEntry ce ->
         this.preview.margin.right = ((IntegerConfigEntry)ce).intValue
         this.preview.revalidate()
     }
@@ -166,7 +166,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(@NotNull ConfigProvider configProvider) {
+    void registerConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, this.keyboardShortcutConfigChanged)
         configProvider.registerConfig(fontConfig, this.fontConfigChanged)
         configProvider.registerConfig(fontSizeConfig, this.fontSizeConfigChanged)
@@ -182,7 +182,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, this.keyboardShortcutConfigChanged)
         configProvider.unregisterConfig(fontConfig, this.fontConfigChanged)
         configProvider.unregisterConfig(fontSizeConfig, this.fontSizeConfigChanged)
@@ -197,11 +197,11 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
     //
 
     JEditorPanePreviewFunction() {
-        Icon previewIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddpreview.png"))
+        final Icon previewIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddpreview.png"))
         this.previewButton = new JToggleButton(previewIcon)
         this.previewButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent ignored) {
+            void actionPerformed(final ActionEvent ignored) {
                 JEditorPanePreviewFunction.this.enabled = !JEditorPanePreviewFunction.this.previewButton.isSelected()
                 perform()
             }
@@ -226,7 +226,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
 
         //noinspection GroovyResultOfObjectAllocationIgnored
         new FileDrop(this.preview, new FileDrop.Listener() {
-            void filesDropped(File[] files) {
+            void filesDropped(final File[] files) {
                 if (files.length >= 1) {
                     showFile(files[0])
                 }
@@ -252,11 +252,11 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
      *
      * @param file
      */
-    private void showFile(@NotNull File file) {
+    private void showFile(@NotNull final File file) {
         if (file.getName().endsWith("md") || file.getName().endsWith("markdown")) {
             try {
-                StringBuilder markdownText = new StringBuilder()
-                BufferedReader mdFileReader = new BufferedReader(new FileReader(file))
+                final StringBuilder markdownText = new StringBuilder()
+                final BufferedReader mdFileReader = new BufferedReader(new FileReader(file))
                 String line = mdFileReader.readLine()
                 while (line != null) {
                     markdownText.append(line)
@@ -265,17 +265,17 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
                 }
                 mdFileReader.close()
 
-                String html = markdownToHTML(markdownText.toString())
+                final String html = markdownToHTML(markdownText.toString())
                 this.preview.setText(html)
                 this.preview.setLocation(0,0)
             }
-            catch (ParseException pe) {
+            catch (final ParseException pe) {
                 pe.printStackTrace(System.err)
             }
-            catch (GenerateException ge) {
+            catch (final GenerateException ge) {
                 ge.printStackTrace(System.err)
             }
-            catch (IOException ioe) {
+            catch (final IOException ioe) {
                 ioe.printStackTrace(System.err)
             }
         }
@@ -336,7 +336,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
      */
     private void previewOn() {
         try {
-            String html = markdownToHTML(this.editor.getEditorContent())
+            final String html = markdownToHTML(this.editor.getEditorContent())
             this.preview.setText(html)
 
             // Set a relatively correct position in the HTML view based on the
@@ -348,7 +348,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
             this.editor.disableToolBarGroup(ToolBarGroups.FORMAT.name())
 
             this.preview.requestFocus()
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace(System.err)
             JOptionPane.showMessageDialog(
                     this.editor.getGUI().getWindowFrame(), e.getMessage(), "Preview error!", JOptionPane.ERROR_MESSAGE)
@@ -366,20 +366,20 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
      * @throws ParseException
      * @throws GenerateException
      */
-    private static @NotNull String markdownToHTML(@NotNull String markdownText)
+    private static @NotNull String markdownToHTML(@NotNull final String markdownText)
             throws IOException, ParseException, GenerateException {
 
-        ByteArrayInputStream markDownStream = new ByteArrayInputStream(markdownText.getBytes())
+        final ByteArrayInputStream markDownStream = new ByteArrayInputStream(markdownText.getBytes())
 
-        Parser parser = new MarkdownParser()
-        Doc document = new Doc()
-        Properties parserOptions = new Properties()
+        final Parser parser = new MarkdownParser()
+        final Doc document = new Doc()
+        final Properties parserOptions = new Properties()
         parser.parse(document, markDownStream, parserOptions)
         markDownStream.close()
 
-        ByteArrayOutputStream htmlStream = new ByteArrayOutputStream()
-        Generator generator = new HTMLGenerator()
-        HTMLGeneratorOptions htmlOpts = new HTMLGeneratorOptions()
+        final ByteArrayOutputStream htmlStream = new ByteArrayOutputStream()
+        final Generator generator = new HTMLGenerator()
+        final HTMLGeneratorOptions htmlOpts = new HTMLGeneratorOptions()
         htmlOpts.setInlineCSS(true)
         htmlOpts.setCss(null)
         htmlOpts.setPrimitiveHTML(true)
@@ -401,17 +401,17 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
     // KeyListener methods
 
     @Override
-    void keyTyped(KeyEvent e) {
+    void keyTyped(final KeyEvent e) {
         ((KeyListener)this.editor).keyTyped(e)
     }
 
     @Override
-    void keyPressed(KeyEvent e) {
+    void keyPressed(final KeyEvent e) {
         ((KeyListener)this.editor).keyPressed(e)
     }
 
     @Override
-    void keyReleased(KeyEvent e) {
+    void keyReleased(final KeyEvent e) {
         ((KeyListener)this.editor).keyReleased(e)
     }
 
@@ -421,7 +421,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
      * @param listener The listener to add.
      */
     @Override
-    void addMouseMotionListener(@NotNull MouseMotionListener listener) {
+    void addMouseMotionListener(@NotNull final MouseMotionListener listener) {
         this.preview.addMouseMotionListener(listener)
     }
 
@@ -431,7 +431,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
      * @param listener The listener to remove.
      */
     @Override
-    void removeMouseMotionListener(@NotNull MouseMotionListener listener) {
+    void removeMouseMotionListener(@NotNull final MouseMotionListener listener) {
         this.preview.removeMouseMotionListener(listener)
     }
 }

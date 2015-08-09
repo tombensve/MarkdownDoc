@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -77,7 +77,7 @@ class Line {
      * @param line The content of the line.
      * @param lineNumber The line number of the line.
      */
-    Line(@NotNull String line, int lineNumber) {
+    Line(@NotNull final String line, final int lineNumber) {
         this.origLine = line
         this.words = line.split("\\s+")
         this.lineNumber = lineNumber
@@ -92,11 +92,11 @@ class Line {
      *
      * @param beg The string to remove.
      */
-    @NotNull Line removeBeg(@NotNull String beg) {
+    @NotNull Line removeBeg(@NotNull final String beg) {
         Line line = this
         if (this.origLine.trim().startsWith(beg)) {
-            int ix = this.origLine.indexOf(beg);
-            String nwLine = this.origLine.substring(ix + 1);
+            final int ix = this.origLine.indexOf(beg);
+            final String nwLine = this.origLine.substring(ix + 1);
             line = newLine(nwLine)
         }
 
@@ -108,7 +108,7 @@ class Line {
      *
      * @param text The text of the line.
      */
-    protected @NotNull Line newLine(@NotNull String text) {
+    protected @NotNull Line newLine(@NotNull final String text) {
         new Line(text, this.lineNumber)
     }
 
@@ -119,7 +119,7 @@ class Line {
      *
      * @return A new Line instance.
      */
-    @NotNull Line removeAll(@NotNull String text) {
+    @NotNull Line removeAll(@NotNull final String text) {
         newLine(this.origLine.replaceAll(text, ""))
     }
 
@@ -129,7 +129,7 @@ class Line {
      * @param regex what to replace.
      * @param with What to replace with.
      */
-    @NotNull Line replaceAll(@NotNull String regex, @NotNull String with) {
+    @NotNull Line replaceAll(@NotNull final String regex, @NotNull final String with) {
         newLine(this.origLine.replaceAll(regex, with))
     }
 
@@ -153,6 +153,7 @@ class Line {
      * </pre>
      * If you however do line.currentWord before this method then this will return the second word.
      */
+    @SuppressWarnings("GroovyResultOfIncrementOrDecrementUsed")
     @NotNull String getNextWord() {
         String str = ""
 
@@ -166,6 +167,7 @@ class Line {
     /**
      * Returns the previous word or "" if already at first word.
      */
+    @SuppressWarnings("GroovyResultOfIncrementOrDecrementUsed")
     @NotNull String getPrevWord() {
         String str = ""
 
@@ -224,7 +226,7 @@ class Line {
      *
      * @param word The position of the word to get.
      */
-    @NotNull String getWord(int word) {
+    @NotNull String getWord(final int word) {
         this.words[word];
     }
 
@@ -240,7 +242,7 @@ class Line {
      *
      * @param position The position to set.
      */
-    void setCurrentWordPosition(int position) {
+    void setCurrentWordPosition(final int position) {
         this.currentWord = position
     }
 
@@ -273,7 +275,7 @@ class Line {
     @NotNull Line removeLeadingSpaces() {
         Line nl = this
 
-        int ls = getLeadingSpaces()
+        final int ls = getLeadingSpaces()
         if (ls > 0) {
             nl = newLine(this.origLine.substring(ls))
         }
@@ -286,7 +288,7 @@ class Line {
      *
      * @param wordClosure The closure to call.
      */
-    void eachWord(@NotNull Closure wordClosure) {
+    void eachWord(@NotNull final Closure wordClosure) {
         this.words.each wordClosure
     }
 
@@ -295,7 +297,7 @@ class Line {
      *
      * @param startsWith The text to check for.
      */
-    boolean startsWith(@NotNull String startsWith) {
+    boolean startsWith(@NotNull final String startsWith) {
         this.origLine.startsWith(startsWith)
     }
 
@@ -304,7 +306,7 @@ class Line {
      *
      * @param startsWith The text to check for.
      */
-    boolean startsWithExcludingWhitespace(@NotNull String startsWith) {
+    boolean startsWithExcludingWhitespace(@NotNull final String startsWith) {
         this.origLine.trim().startsWith(startsWith)
     }
 
@@ -313,7 +315,7 @@ class Line {
      *
      * @param endsWith The text to check for.
      */
-    boolean endsWith(@NotNull String endsWith) {
+    boolean endsWith(@NotNull final String endsWith) {
         this.origLine.endsWith(endsWith)
     }
 
@@ -322,7 +324,7 @@ class Line {
      *
      * @param endsWith The text to check for.
      */
-    boolean endsWithExcludingWhitespace(@NotNull String endsWith) {
+    boolean endsWithExcludingWhitespace(@NotNull final String endsWith) {
         this.origLine.trim().endsWith(endsWith)
     }
 
@@ -331,7 +333,7 @@ class Line {
      *
      * @param contains The text to check for.
      */
-    boolean contains(@NotNull String contains) {
+    boolean contains(@NotNull final String contains) {
         this.origLine.indexOf(contains) >= 0
     }
 
@@ -340,7 +342,7 @@ class Line {
      *
      * @param regexp The regexp to match.
      */
-    boolean matches(@NotNull String regexp) {
+    boolean matches(@NotNull final String regexp) {
         this.origLine.matches(regexp)
     }
 
@@ -358,7 +360,7 @@ class Line {
         String space = ""
         boolean first = true
         String text = ""
-        eachWord { String word ->
+        eachWord { final String word ->
             if (!first) {
                 text += space + word
                 space = " "
@@ -374,10 +376,10 @@ class Line {
      *
      * @param index The index of the char to get.
      */
-    char charAt(int index) {
+    char charAt(final int index) {
         this.origLine.charAt(index)
     }
-    
+
     /**
      * Returns this Line as a String (as originally read from file!)
      */

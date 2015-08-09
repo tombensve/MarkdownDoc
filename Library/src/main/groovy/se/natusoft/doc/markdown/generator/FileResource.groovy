@@ -1,38 +1,38 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
  *         2015-07-15: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdown.generator
 
@@ -68,8 +68,8 @@ class FileResource {
      *
      * @throws IOException If resource file cannot be found.
      */
-    File getResourceFile(@NotNull String path) throws IOException {
-        File resourceFile
+    File getResourceFile(@NotNull final String path) throws IOException {
+        final File resourceFile
 
         if (this.rootDir == null && this.optsRootDir != null && !this.optsRootDir.isEmpty()) {
             this.rootDir = new File(this.optsRootDir)
@@ -97,26 +97,15 @@ class FileResource {
      * @param root The root to start at. Should probably be new File("").
      * @param path The relative path to find.
      */
-    private @Nullable File resolveFile(@NotNull File root, @NotNull String path) {
+    private @Nullable File resolveFile(@NotNull File root, @NotNull final String path) {
         root = root.absoluteFile
-        File file = new File(root, path)
+        final File file = new File(root, path)
         if (file.exists()) { return file }
         if (root.parentFile == null) { return null }
 
         resolveFile(root.parentFile, path)
     }
-
-    /**
-     * Returns an InputStream to the specified path if found.
-     *
-     * @param path The path to get InputStream for.
-     *
-     * @throws IOException if file reference in path cannot be found.
-     */
-    @NotNull InputStream getResource(@NotNull String path) throws IOException {
-        new FileInputStream(getResourceFile(path))
-    }
-
+    
     /**
      * Adds file: if no protocol is specified.
      *
@@ -146,7 +135,7 @@ class FileResource {
                 resPath = resPath.substring(5)
             }
 
-            File testFile = getResourceFile(resPath)
+            final File testFile = getResourceFile(resPath)
 
             resolvedUrl = "file:" + testFile.absolutePath
 
@@ -155,18 +144,4 @@ class FileResource {
         return resolvedUrl
     }
 
-    /**
-     * Makes sure the path ends file File.separator.
-     *
-     * @param path The path to ensure.
-     *
-     * @return Possibly updated path.
-     */
-    private static @NotNull String ensureSeparatorAtEnd(@NotNull String path) {
-        if (!path.trim().endsWith(File.separator)) {
-            path = path + File.separator
-        }
-
-        path
-    }
 }

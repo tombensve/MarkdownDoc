@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -68,12 +68,12 @@ class IntegerConfigEntry extends ConfigEntry {
      * @param configGroup The config group this config belongs to.
      */
     IntegerConfigEntry(
-            @NotNull String key,
-            @NotNull String description,
-            int defaultValue,
-            int min,
-            int max,
-            @NotNull String configGroup
+            @NotNull final String key,
+            @NotNull final String description,
+            final int defaultValue,
+            final int min,
+            final int max,
+            @NotNull final String configGroup
     ) {
         super(key, description, "" + defaultValue, configGroup)
         this.min = min
@@ -96,7 +96,7 @@ class IntegerConfigEntry extends ConfigEntry {
      *
      * @param value The int valueComp to set.
      */
-    void setIntValue(int value) {
+    void setIntValue(final int value) {
         setValue("" + value)
     }
 

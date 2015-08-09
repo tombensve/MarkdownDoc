@@ -66,9 +66,19 @@ While in preview mode, drag and drop a markdown file on the preview window to ha
 
 But by just opening an empty editor and entering a blank preview you can quickly read multiple markdown documents formatted by just dropping them on the window.
 
-### Mac OS X Fullscreen support
+### Mac OS X
+
+#### Fullscreen support
 
 When you run this editor on a Mac with Lion+ you will get a litte double arrow in the right corner of the window titlebar, which will bring upp the editor window in fullscreen. 
+
+#### MarkdownDocEditor.app
+
+The editor is also available in MarkdownDocEditor.app format. The build plugin that creates this .app packaging does however not support passing on arguments to the app when run this way. That means selecting a markdown file and doing "open with" will fail. It will always open the file chooser for you to select the file(s) to edit. 
+
+Also note that since this .app is not signed, Mac OS X Mavericks and upp will not allow you to run the app if you do not open upp for running all types of apps in the security settings.   
+
+Due to GUI bugs in the editor component of earlier versions of Java, Java 1.8 or higher is required to be installed on your system for the app to be able to run, assuming you are using the patched version I'm providing for download in the README.md document. If you checkout the source and build yourself then it will require Java 1.6 and upp. But be warned: You will be annoyed if you use Java lower than 1.8!
 
 ### Version 1.4 usage changes
 
@@ -83,7 +93,7 @@ Can be run with java -jar or double clicked on. If you are using Windows 7 or 8 
 
 The executable jar have the following name: MarkdownDocEditor-n.n.n-App.jar
 
-One or more files can be specified as arguments.
+One or more files or directories can be specified as arguments. For a directory all markdown files found in the directory and subdirectories will be loaded. As said above this does not apply if you are running the .app version.
 
 ## Requirements
 
@@ -92,6 +102,10 @@ This requires Java 7+!
 <div class="imageLeft">
 
 ## Functions
+
+This section documents the different functions of the editor, and how to trigger the function.
+
+The images are the toolbar icon for the function.
 
 ### Bringing upp the toolbar
 
@@ -113,7 +127,7 @@ Default key: Ctrl+O. This is changeable in the settings.
 
 This opens a file chooser to select one markdown file to open. The opened file will be selected for editing in the window.
 
-This function is kind of unneccesarry in this version, but I decided to leave it in anyhow. It differs slightly from Open/Create.
+This function is kind of unneccesarry in this version, but I decided to leave it in anyhow. It differs slightly from Open/Create. It is likely to go away in future versions.
 
 ### Open / Create
 
@@ -121,9 +135,11 @@ This function is kind of unneccesarry in this version, but I decided to leave it
 
 Default key: Ctrl+N. This is changeable in the settings.
 
-This opens a file chooser of "save" type, where you can also enter a filename in the chooser dialog. Here you can navigate to a directory, and then enter the name of a new file that will then be created and opened. In this file chooser you can alternatively navigate to a directory and then select one or more existing files and have all selected files being opened. 
+This opens a file chooser where you can also enter a filename in the chooser dialog. Here you can navigate to a directory, and then enter the name of a new file that will then be created and opened. In this file chooser you can alternatively navigate to a directory and then select one or more existing files and have all selected files being opened. 
 
-In this case since there can be more than one file, no files is set as the current edited in the window. You have to bring up the list of open files and select one of the newly added files to edit it.
+Since there can be more than one file, no file is set as the current edited in the window. You have to bring up the list of open files and select one of the newly added files to edit it. 
+
+The exception to this is when you have started the edtior without any files, which will triger this file chooser then one of the selected files will become the edited file since there always have to be one file in the editor.
 
 ### Insert heading
 
@@ -305,7 +321,7 @@ Default key: Ctrl+1. This is changeable in the settings.
 
 This opens a popup window with all the open files. Click on a file to select it for editing in the window. 
 
-This function can also be activated by moving the mouse point to the left edge of the editor window. 
+This function can also be activated by moving the mouse to the left edge of the editor window. 
 
 </div>
 
@@ -325,7 +341,7 @@ The markdown styling as you type in the editor do pull some CPU since basically 
 
 ### By me
 
-Currently none known.
+All known bugs have been fixed in this version.
 
 ### By Oracle
 

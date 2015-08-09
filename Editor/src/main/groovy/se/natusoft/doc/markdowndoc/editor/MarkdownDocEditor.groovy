@@ -156,7 +156,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
                     new ValidSelectionConfigEntry.ValidValues() {
                         @Override
                         ValidSelectionConfigEntry.Value[] validValues() {
-                            GraphicsEnvironment gEnv = GraphicsEnvironment
+                            final GraphicsEnvironment gEnv = GraphicsEnvironment
                                     .getLocalGraphicsEnvironment()
                             return ValidSelectionConfigEntry.convertToValues(gEnv.getAvailableFontFamilyNames())
                         }
@@ -184,9 +184,9 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
                         ValidSelectionConfigEntry.Value[] validValues() {
                             ValidSelectionConfigEntry.Value[] vv =
                                     new ValidSelectionConfigEntry.Value[0]
-                            UIManager.getInstalledLookAndFeels().each { UIManager.LookAndFeelInfo lfi ->
-                                String className = lfi.getClassName()
-                                String simpleName = className.substring(className.lastIndexOf('.') + 1)
+                            UIManager.getInstalledLookAndFeels().each { final UIManager.LookAndFeelInfo lfi ->
+                                final String className = lfi.getClassName()
+                                final String simpleName = className.substring(className.lastIndexOf('.') + 1)
                                 vv += new ValidSelectionConfigEntry.Value(simpleName, className)
                             }
                             return vv
@@ -201,8 +201,8 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
                     new ValidSelectionConfigEntry.ValidValues() {
                         @Override
                         ValidSelectionConfigEntry.Value[] validValues() {
-                            List<String> toolbarProviders = new LinkedList<>()
-                            ServiceDefLoader.load(ToolBar.class).each { Class toolbarClass ->
+                            final List<String> toolbarProviders = new LinkedList<>()
+                            ServiceDefLoader.load(ToolBar.class).each { final Class toolbarClass ->
                                 toolbarProviders.add(toolbarClass.getName())
                             }
                             return ValidSelectionConfigEntry.convertToValues(ValidSelectionConfigEntry.stringListToArray(toolbarProviders),
@@ -236,38 +236,39 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
 //        safeOpacity = opacity
 //    }
 
-    private Closure fontConfigChanged = { @NotNull ConfigEntry ce ->
+    private Closure fontConfigChanged = { @NotNull final ConfigEntry ce ->
         this.editable?.editorPane?.setFont(Font.decode(ce.getValue()).
                 deriveFont(Float.valueOf(fontSizeConfig.getValue())))
     }
 
-    private Closure fontSizeConfigChanged = { @NotNull ConfigEntry ce ->
+    private Closure fontSizeConfigChanged = { @NotNull final ConfigEntry ce ->
         this.editable?.editorPane?.setFont(Font.decode(fontConfig.getValue()).deriveFont(Float.valueOf(ce.getValue())))
     }
 
-    private Closure backgroundColorConfigChanged = { @NotNull ConfigEntry ce ->
+    private Closure backgroundColorConfigChanged = { @NotNull final ConfigEntry ce ->
         this.editable?.editorPane?.setBackground(new ConfigColor(ce))
     }
 
-    private Closure foregroundColorConfigChanged = { @NotNull ConfigEntry ce ->
+    private Closure foregroundColorConfigChanged = { @NotNull final ConfigEntry ce ->
         this.editable?.editorPane?.setForeground(new ConfigColor(ce))
     }
 
-    private Closure caretColorConfigChanged = { @NotNull ConfigEntry ce ->
+    private Closure caretColorConfigChanged = { @NotNull final ConfigEntry ce ->
         this.editable?.editorPane?.setCaretColor(new ConfigColor(ce))
     }
 
-    private Closure lookAndFeelConfigChanged = { @NotNull ConfigEntry ce ->
+    private Closure lookAndFeelConfigChanged = { @NotNull final ConfigEntry ce ->
         try {
             UIManager.setLookAndFeel(ce.getValue())
             SwingUtilities.updateComponentTreeUI(this)  // update awt
             validate()
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+        } catch (final ClassNotFoundException | InstantiationException | IllegalAccessException |
+                 UnsupportedLookAndFeelException e) {
             e.printStackTrace()
         }
     }
 
-    private Closure toolbarConfigChanged = { @NotNull ConfigEntry ce ->
+    private Closure toolbarConfigChanged = { @NotNull final ConfigEntry ce ->
         if (this.toolBar != null) {
             this.toolBar.detach(this)
             if (this.toolBar instanceof Configurable) {
@@ -287,7 +288,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
                 (this.toolBar as Configurable).registerConfigs(Services.configs)
                 Services.configurables.add(this.toolBar as Configurable)
             }
-            this.functions.each { EditorFunction function ->
+            this.functions.each { final EditorFunction function ->
                 // It is OK to not have a tool bar button!
                 if (function.getGroup() != null && function.getToolBarButton() != null) {
                     this.toolBar.addFunction(function)
@@ -299,41 +300,41 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
             this.toolBar.attach(this)
             validate()
         }
-        catch (ReflectiveOperationException e) {
+        catch (final ReflectiveOperationException e) {
             e.printStackTrace()
         }
     }
 
-    private Closure topMarginConfigChanged = { @NotNull ConfigEntry ce ->
+    private Closure topMarginConfigChanged = { @NotNull final ConfigEntry ce ->
         if (this.editable != null) {
-            Insets margins = this.editable.editorPane.getMargin()
+            final Insets margins = this.editable.editorPane.getMargin()
             margins.top = ((IntegerConfigEntry) ce).getIntValue()
             this.editable.editorPane.setMargin(margins)
             this.editable.editorPane.revalidate()
         }
     }
 
-    private Closure bottomMarginConfigChanged = { @NotNull ConfigEntry ce ->
+    private Closure bottomMarginConfigChanged = { @NotNull final ConfigEntry ce ->
         if (this.editable != null) {
-            Insets margins = this.editable.editorPane.margin
+            final Insets margins = this.editable.editorPane.margin
             margins.bottom = ((IntegerConfigEntry) ce).intValue
             this.editable.editorPane.setMargin(margins)
             this.editable.editorPane.revalidate()
         }
     }
 
-    private Closure leftMarginConfigChanged = { @NotNull ConfigEntry ce ->
+    private Closure leftMarginConfigChanged = { @NotNull final ConfigEntry ce ->
         if (this.editable != null) {
-            Insets margins = this.editable.editorPane.getMargin()
+            final Insets margins = this.editable.editorPane.getMargin()
             margins.left = ((IntegerConfigEntry) ce).getIntValue()
             this.editable.editorPane.setMargin(margins)
             this.editable.editorPane.revalidate()
         }
     }
 
-    private Closure rightMarginConfigChanged = { @NotNull ConfigEntry ce ->
+    private Closure rightMarginConfigChanged = { @NotNull final ConfigEntry ce ->
         if (this.editable != null) {
-            Insets margins = this.editable.editorPane.getMargin()
+            final Insets margins = this.editable.editorPane.getMargin()
             margins.right = ((IntegerConfigEntry) ce).getIntValue()
             this.editable.editorPane.setMargin(margins)
             this.editable.editorPane.revalidate()
@@ -410,7 +411,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
         if (lookAndFeelConfig.getValue().length() > 0) {
             try {
                 UIManager.setLookAndFeel(lookAndFeelConfig.getValue())
-            } catch (
+            } catch (final
                     ClassNotFoundException |
                     InstantiationException |
                     IllegalAccessException |
@@ -561,10 +562,10 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      * @param listener The listener to add.
      */
     @Override
-    synchronized void addMouseMotionListener(@NotNull MouseMotionListener listener) {
+    synchronized void addMouseMotionListener(@NotNull final MouseMotionListener listener) {
         this.mouseMotionListeners.add(listener)
         this.mouseMotionProviders.each {
-            MouseMotionProvider mmp -> mmp?.addMouseMotionListener(listener)
+            final MouseMotionProvider mmp -> mmp?.addMouseMotionListener(listener)
         }
     }
 
@@ -574,9 +575,9 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      * @param listener The listener to remove.
      */
     @Override
-    synchronized void removeMouseMotionListener(@NotNull MouseMotionListener listener) {
+    synchronized void removeMouseMotionListener(@NotNull final MouseMotionListener listener) {
         this.mouseMotionListeners.remove(listener)
-        this.mouseMotionProviders.each { MouseMotionProvider mmp -> mmp?.removeMouseMotionListener(listener) }
+        this.mouseMotionProviders.each { final MouseMotionProvider mmp -> mmp?.removeMouseMotionListener(listener) }
     }
 
     /**
@@ -659,7 +660,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      * a key typed event.
      */
     @Override
-    void keyTyped(KeyEvent e) {
+    void keyTyped(final KeyEvent e) {
         this.editable.saved = false
     }
 
@@ -669,7 +670,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      * a key pressed event.
      */
     @Override
-    void keyPressed(@NotNull KeyEvent e) {
+    void keyPressed(@NotNull final KeyEvent e) {
         final int keyCode = e.getKeyCode()
         if (keyCode == KeyEvent.VK_ESCAPE) {
             callCancelCallbacks()
@@ -721,8 +722,8 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      * a key released event.
      */
     @Override
-    void keyReleased(@NotNull KeyEvent e) {
-        int keyCode = e.getKeyCode()
+    void keyReleased(@NotNull final KeyEvent e) {
+        final int keyCode = e.getKeyCode()
         if (
                 keyCode != KeyEvent.VK_META &&
                         keyCode != KeyEvent.VK_ALT &&
@@ -740,7 +741,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      *
      * @param file The file dropped.
      */
-    private void dropFile(@NotNull File file)  {
+    private void dropFile(@NotNull final File file)  {
         try {
             if (!this.editable?.saved) {
                 if (this.editable.file == null) {
@@ -757,7 +758,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
             }
             setEditable(Editables.inst.getEditable(file))
         }
-        catch (IOException ioe) {
+        catch (final IOException ioe) {
             JOptionPane.showMessageDialog(
                     this, ioe.getMessage(),
                     "Failed to open dropped file!", JOptionPane.ERROR_MESSAGE)
@@ -807,7 +808,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
                 --i
             }
         }
-        catch (BadLocationException ignored) {
+        catch (final BadLocationException ignored) {
             i = 0
         }
         // If i was < 0 to start with it will still be that here!
@@ -824,7 +825,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      * @param content The new content to set.
      */
     @Override
-    void setEditorContent(@NotNull String content) {
+    void setEditorContent(@NotNull final String content) {
         this.editorPane.setText(content)
     }
 
@@ -834,7 +835,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      * @param text The text to insert.
      */
     @Override
-    void insertText(@NotNull String text) {
+    void insertText(@NotNull final String text) {
         this.editable.styler.disable()
         this.editable.editorPane.replaceSelection(text)
         this.editable.styler.enable()
@@ -854,8 +855,8 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      * @param noChars The number of characters to move caret.
      */
     @Override
-    void moveCaretBack(int noChars) {
-        Caret caret = this.editorPane.getCaret()
+    void moveCaretBack(final int noChars) {
+        final Caret caret = this.editorPane.getCaret()
         caret.setDot(caret.getDot() - noChars)
     }
 
@@ -972,7 +973,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      * Makes the specified component visible in the main scrollable view.
      */
     @Override
-    void showOtherComponent(@NotNull JComponent component) {
+    void showOtherComponent(@NotNull final JComponent component) {
         this.scrollPane.setViewportView(component)
     }
 
@@ -982,7 +983,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      * @param groupName The name of the tool bar group to enable.
      */
     @Override
-    void enableToolBarGroup(@NotNull String groupName) {
+    void enableToolBarGroup(@NotNull final String groupName) {
         this.toolBar.enableGroup(groupName)
     }
 
@@ -992,7 +993,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      * @param groupName The name of the tool bar group to disable.
      */
     @Override
-    void disableToolBarGroup(@NotNull String groupName) {
+    void disableToolBarGroup(@NotNull final String groupName) {
         this.toolBar.disableGroup(groupName)
     }
 
@@ -1179,7 +1180,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
             method.invoke(util, window, true)
         } catch (final ClassNotFoundException ignored) {
             /* Not on Mac OS X! */
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace(System.err)
         }
 
@@ -1306,7 +1307,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
             setupAndOpenEditor()
 
 
-        } catch (IOException ioe) {
+        } catch (final IOException ioe) {
             System.err.println("Failed to open editorPane: " + ioe.message)
         }
     }

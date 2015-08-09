@@ -129,7 +129,7 @@ __DEPRECATED__! Use an .mss file instead! The blockquote color to use in this do
 
 ### codeColor : String (O)
 
-__DEPRECATED__! Use and .mss file instead! The code color to use in this document in "R:G:B" format where each R, G, and B are a number 0 - 255.
+__DEPRECATED__! Use an .mss file instead! The code color to use in this document in "R:G:B" format where each R, G, and B are a number 0 - 255.
 
 ### mss : String (O)
 

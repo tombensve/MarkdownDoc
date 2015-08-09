@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -37,7 +37,6 @@
 package se.natusoft.doc.markdown.model
 
 import groovy.transform.CompileStatic
-import groovy.transform.PackageScope
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
@@ -96,7 +95,7 @@ abstract class DocItem {
         copyConfig(this.class.newInstance() as DocItem)
     }
 
-    @NotNull protected DocItem copyConfig(DocItem docItem) {
+    @NotNull protected DocItem copyConfig(final DocItem docItem) {
         docItem.setKeepConsecutiveTogether(this.keepConsecutiveTogether)
         docItem.setAddBetweenKeepTogether(this.addBetweenKeepTogether)
         docItem.setIsHierarchy(this.isHierarchy)
@@ -110,7 +109,7 @@ abstract class DocItem {
      *
      * @param paragraph A Paragraph to add.
      */
-    void addItem(@NotNull DocItem docItem) {
+    void addItem(@NotNull final DocItem docItem) {
         this.items.add(docItem)
     }
 
@@ -119,8 +118,8 @@ abstract class DocItem {
      *
      * @param items the items to add.
      */
-    void addItems(@NotNull JList<DocItem> items) {
-        for (DocItem item : items) {
+    void addItems(@NotNull final JList<DocItem> items) {
+        items.each { final DocItem item ->
             addItem(item);
         }
     }
@@ -130,8 +129,8 @@ abstract class DocItem {
      *
      * @param text Text to add.
      */
-    void addItem(@NotNull String text) {
-        PlainText pt = new PlainText(text: text)
+    void addItem(@NotNull final String text) {
+        final PlainText pt = new PlainText(text: text)
         this.items.add(pt);
     }
 
@@ -156,7 +155,7 @@ abstract class DocItem {
      *
      * @param prevItem The previous item to compare to.
      */
-    boolean isHierarchyDown(@Nullable("For this specific implementation.") DocItem prevItem) {
+    boolean isHierarchyDown(@NotNull final DocItem prevItem) {
         false
     }
 
@@ -165,7 +164,7 @@ abstract class DocItem {
      *
      * @param prevItem The previous item to compare to.
      */
-    boolean isHierarchyUp(@Nullable("For this specific implementation.") DocItem prevItem) {
+    boolean isHierarchyUp(@NotNull final DocItem prevItem) {
         false
     }
 
@@ -174,18 +173,18 @@ abstract class DocItem {
      *
      * @param docItem The DocItem to test.
      */
-    boolean isSameType(@NotNull DocItem docItem) {
+    boolean isSameType(@NotNull final DocItem docItem) {
         this.class == docItem.class
     }
 
     /**
-     * This returns the format of the sub model of DocFormat or if this method is not overridden null. Only
-     * the models representing the formats in DocFormat will override this.
+     * This returns the format of the sub model or if this method is not overridden NOT_RELEVANT. Only
+     * the models representing the formats in DocFormat will override this and they must return non null.
+     * For other subclasses this is simply not used.
 ´    */
-    @Nullable("For non format representing subclasses and this specific implementation.")
-    @NotNull("For format representing subclasses.")
+    @NotNull
     DocFormat getFormat() {
-        null
+        DocFormat.NOT_RELEVANT
     }
 
     /**
@@ -196,7 +195,7 @@ abstract class DocItem {
     boolean validate() {
         boolean valid = true
 
-        for (DocItem di : this.items) {
+        for (final DocItem di : this.items) {
             if (!di.validate()) {
                 valid = false;
                 break;
@@ -213,7 +212,7 @@ abstract class DocItem {
         def str = ""
 
         boolean first = true
-        for (DocItem item : this.items) {
+        for (final DocItem item : this.items) {
             if (item.renderPrefixedSpace && !first) str += " "
             first = false
             str += item.toString()

@@ -202,11 +202,11 @@ class EditableProvider implements Editable, OSTrait {
     void load() throws IOException {
         final StringBuilder sb = new StringBuilder()
         file.withReader('UTF-8') { final BufferedReader reader ->
-            reader.eachLine { String line ->
+            reader.eachLine { final String line ->
                 // Translate a special italicized quote that some markdown editors like to use into a
                 // standard quote.
-                line = line.replace("‚Äù", "\"")
-                sb.append(line)
+                final String modifiedLine = line.replace("‚Äù", "\"")
+                sb.append(modifiedLine)
                 sb.append("\n")
             }
         }

@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -40,9 +40,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 
-import javax.swing.JComponent
-import javax.swing.JLabel
-import java.awt.Color
+import javax.swing.*
 
 /**
  * Base of all field values in PDFData
@@ -70,7 +68,7 @@ abstract class ExportDataValue {
      *
      * @param labelText The label text for this value.
      */
-    ExportDataValue(@NotNull String labelText) {
+    ExportDataValue(@NotNull final String labelText) {
         this.labelComp = new JLabel("    " + labelText + " ")
     }
 
@@ -86,15 +84,6 @@ abstract class ExportDataValue {
     }
 
     /**
-     * Sets the background color of the value edit component.
-     *
-     * @param bgColor The color to set.
-     */
-    void setBackgroundColor(@NotNull Color bgColor) {
-        ensureValueComp().setBackground(bgColor)
-    }
-
-    /**
      * This must be overridden by subclasses that wants to delay the creation of the valueComp.
      */
     protected @NotNull JComponent ensureValueComp() {
@@ -104,12 +93,12 @@ abstract class ExportDataValue {
     /**
      * Returns the value of this export data value.
      */
-    abstract String getValue()
+    abstract @NotNull String getValue()
 
     /**
      * Sets the value of this export data value.
      *
      * @param value The value to set.
      */
-    abstract void setValue(String value)
+    abstract void setValue(@NotNull String value)
 }

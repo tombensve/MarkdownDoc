@@ -41,7 +41,6 @@ import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.api.*
 import se.natusoft.doc.markdowndoc.editor.config.BooleanConfigEntry
-import se.natusoft.doc.markdowndoc.editor.config.ConfigChanged
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 
 import javax.swing.text.BadLocationException

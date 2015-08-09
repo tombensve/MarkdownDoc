@@ -64,7 +64,7 @@ class Editables extends HashMap<File, Editable> {
      *
      * @param editable The editable to add.
      */
-    void addEditable(Editable editable) {
+    void addEditable(final Editable editable) {
         put(editable.file, editable)
     }
 
@@ -73,7 +73,7 @@ class Editables extends HashMap<File, Editable> {
      *
      * @param file The file referencing the editable to remove.
      */
-    void removeEditable(File file) {
+    void removeEditable(final File file) {
         remove(file)
     }
 
@@ -82,7 +82,7 @@ class Editables extends HashMap<File, Editable> {
      *
      * @param file The File to get Editable for.
      */
-    @Nullable Editable getEditable(File file) {
+    @Nullable Editable getEditable(final File file) {
         get(file)
     }
 
@@ -112,8 +112,8 @@ class Editables extends HashMap<File, Editable> {
      *
      * @param pos The position to get editable at.
      */
-    Editable getByPosition(int pos) {
-        File file = keySet().getAt(pos)
+    Editable getByPosition(final int pos) {
+        final File file = keySet().getAt(pos)
         return get(file)
     }
 }

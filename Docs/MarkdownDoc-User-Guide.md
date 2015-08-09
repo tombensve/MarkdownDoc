@@ -232,7 +232,7 @@ or
             ...
         <!-- @EndDiv -->
 
-The latter does not affect GitHub wich ceases its markdown formatting within divs. In either usage the HTMLGenerator will generate a correct HTML div, while the MarkdownGenerator will generate the comment variant, and the PDFGenerator will not generate anything, but will use the divs to affect styling via MSS.
+The latter does not affect GitHub. In either usage the HTMLGenerator will generate a correct HTML div, while the MarkdownGenerator will generate the comment variant, and the PDFGenerator will not generate anything, but will use the divs to affect styling via MSS.
 
 The div has to be the only thing on the line, both start and end tag! Also, there can be a maximum of 3 spaces before the div tag. If there are 4 or more it will become a code block!
 
@@ -844,7 +844,7 @@ __DEPRECATED__! Use an .mss file instead! The blockquote color to use in this do
 
 ### codeColor : String (O)
 
-__DEPRECATED__! Use and .mss file instead! The code color to use in this document in "R:G:B" format where each R, G, and B are a number 0 - 255.
+__DEPRECATED__! Use an .mss file instead! The code color to use in this document in "R:G:B" format where each R, G, and B are a number 0 - 255.
 
 ### mss : String (O)
 
@@ -1034,9 +1034,19 @@ While in preview mode, drag and drop a markdown file on the preview window to ha
 
 But by just opening an empty editor and entering a blank preview you can quickly read multiple markdown documents formatted by just dropping them on the window.
 
-### Mac OS X Fullscreen support
+### Mac OS X
+
+#### Fullscreen support
 
 When you run this editor on a Mac with Lion+ you will get a litte double arrow in the right corner of the window titlebar, which will bring upp the editor window in fullscreen.
+
+#### MarkdownDocEditor.app
+
+The editor is also available in MarkdownDocEditor.app format. The build plugin that creates this .app packaging does however not support passing on arguments to the app when run this way. That means selecting a markdown file and doing "open with" will fail. It will always open the file chooser for you to select the file(s) to edit.
+
+Also note that since this .app is not signed, Mac OS X Mavericks and upp will not allow you to run the app if you do not open upp for running all types of apps in the security settings.
+
+Due to GUI bugs in the editor component of earlier versions of Java, Java 1.8 or higher is required to be installed on your system for the app to be able to run, assuming you are using the patched version I'm providing for download in the README.md document. If you checkout the source and build yourself then it will require Java 1.6 and upp. But be warned: You will be annoyed if you use Java lower than 1.8!
 
 ### Version 1.4 usage changes
 
@@ -1050,7 +1060,7 @@ Can be run with java -jar or double clicked on. If you are using Windows 7 or 8 
 
 The executable jar have the following name: MarkdownDocEditor-n.n.n-App.jar
 
-One or more files can be specified as arguments.
+One or more files or directories can be specified as arguments. For a directory all markdown files found in the directory and subdirectories will be loaded. As said above this does not apply if you are running the .app version.
 
 ## Requirements
 
@@ -1060,13 +1070,17 @@ This requires Java 7+!
 
 ## Functions
 
+This section documents the different functions of the editor, and how to trigger the function.
+
+The images are the toolbar icon for the function.
+
 ### Bringing upp the toolbar
 
 Move the mouse to the top of the editor window and the toolbar will automatically popup. Move the mouse down again and it will go away.
 
 ### Save file(s)
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/src/main/resources/icons/mddsave.png)
+![](file:Editor/src/main/resources/icons/mddsave.png)
 
 Default key: Ctrl+S. This is changeable in the settings.
 
@@ -1074,27 +1088,29 @@ This saves all open files that have been modified and not saved. A small pupup a
 
 ### Open file
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/src/main/resources/icons/mddopen.png)
+![](file:Editor/src/main/resources/icons/mddopen.png)
 
 Default key: Ctrl+O. This is changeable in the settings.
 
 This opens a file chooser to select one markdown file to open. The opened file will be selected for editing in the window.
 
-This function is kind of unneccesarry in this version, but I decided to leave it in anyhow. It differs slightly from Open/Create.
+This function is kind of unneccesarry in this version, but I decided to leave it in anyhow. It differs slightly from Open/Create. It is likely to go away in future versions.
 
 ### Open / Create
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/Src/main/resources/icons/mddnew.png)
+![](file:Editor/Src/main/resources/icons/mddnew.png)
 
 Default key: Ctrl+N. This is changeable in the settings.
 
-This opens a file chooser of "save" type, where you can also enter a filename in the chooser dialog. Here you can navigate to a directory, and then enter the name of a new file that will then be created and opened. In this file chooser you can alternatively navigate to a directory and then select one or more existing files and have all selected files being opened.
+This opens a file chooser where you can also enter a filename in the chooser dialog. Here you can navigate to a directory, and then enter the name of a new file that will then be created and opened. In this file chooser you can alternatively navigate to a directory and then select one or more existing files and have all selected files being opened.
 
-In this case since there can be more than one file, no files is set as the current edited in the window. You have to bring up the list of open files and select one of the newly added files to edit it.
+Since there can be more than one file, no file is set as the current edited in the window. You have to bring up the list of open files and select one of the newly added files to edit it.
+
+The exception to this is when you have started the edtior without any files, which will triger this file chooser then one of the selected files will become the edited file since there always have to be one file in the editor.
 
 ### Insert heading
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/src/main/resources/icons/mddheading.png)
+![](file:Editor/src/main/resources/icons/mddheading.png)
 
 Default key: Ctrl+T. This is changeable in the settings.
 
@@ -1102,7 +1118,7 @@ This just adds a # character which is the markdown heading character. Insert as 
 
 ### Insert bold
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/Src/main/resources/icons/mddbold.png)
+![](file:Editor/Src/main/resources/icons/mddbold.png)
 
 Default key: Ctrl+B. This is changeable in the settings.
 
@@ -1110,7 +1126,7 @@ This adds 4 '_' characters with the cursor placed between the first 2 and the la
 
 ### Insert italics
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/Src/main/resources/icons/mdditalics.png)
+![](file:Editor/Src/main/resources/icons/mdditalics.png)
 
 Default key: Ctrl+I. This is changeable in the settings.
 
@@ -1118,7 +1134,7 @@ This adds 2 '_' characters with the cursor placed between them. 1 underscore bef
 
 ### Insert list
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/src/main/resources/icons/mddlist.png)
+![](file:Editor/src/main/resources/icons/mddlist.png)
 
 Default key: Ctrl+L. This is changeable in the settings.
 
@@ -1126,7 +1142,7 @@ This adds and asterisk and a space which is how you make a list entry for an uno
 
 ### Insert quote
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/src/main/resources/icons/mddquote.png)
+![](file:Editor/src/main/resources/icons/mddquote.png)
 
 Default key: Ctrl+Q. This is changeable in the settings.
 
@@ -1134,7 +1150,7 @@ This inserts a '>' character and a space which is how you make quoted text in ma
 
 ### Insert image
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/src/main/resources/icons/mddimg.png)
+![](file:Editor/src/main/resources/icons/mddimg.png)
 
 Default key: Ctrl+M. This is changeable in the settings.
 
@@ -1142,7 +1158,7 @@ This function will open a small popup window where you can enter 3 pieces of inf
 
 ### Insert link
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/src/main/resources/icons/mddlink.png)
+![](file:Editor/src/main/resources/icons/mddlink.png)
 
 Default key: Ctrl+N. This is changeable in the settings.
 
@@ -1150,7 +1166,7 @@ This function will open a small popup window where you can enter 3 pieces of inf
 
 ### Preview
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/src/main/resources/icons/mddpreview.png)
+![](file:Editor/src/main/resources/icons/mddpreview.png)
 
 Default key: Ctrl+F. This is changeable in the settings.
 
@@ -1160,7 +1176,7 @@ _Please also note that the preview HTML rendering is done by the Java GUI librar
 
 ### Generate PDF
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/src/main/resources/icons/mddpdf.png)
+![](file:Editor/src/main/resources/icons/mddpdf.png)
 
 Default key: Ctrl+P. This is changeable in the settings.
 
@@ -1168,7 +1184,7 @@ This will first open a file chooser to select target PDF file to generate to. Th
 
 Press the "Generate" button to actually generate the PDF document.
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/docs/images/PDFOptions.png)
+![](file:Editor/docs/images/PDFOptions.png)
 
 The choices are:
 
@@ -1222,13 +1238,13 @@ If this is selected then the generated PDF will be opened by the system default 
 
 ### Generate HTML
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/src/main/resources/icons/mddhtml.png)
+![](file:Editor/src/main/resources/icons/mddhtml.png)
 
 Default key: Ctrl+H. This is changeable in the settings.
 
 This will first open a file chooser to select HTML file to generate to. Then a popup window will be opened containing meta data for generation of the HTML.
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/docs/images/HTMLOptions.png)
+![](file:Editor/docs/images/HTMLOptions.png)
 
 #### Inline CSS
 
@@ -1248,7 +1264,7 @@ If this is selected then the generated HTML will be opened by the system default
 
 ### Setting
 
-![](file:/Users/tommy/Development/projects/Tools/MDD-Dev/Docs/Editor/src/main/resources/icons/mddsettings.png)
+![](file:Editor/src/main/resources/icons/mddsettings.png)
 
 Default key: Ctrl+E. This is changeable in the settings.
 
@@ -1272,7 +1288,7 @@ Default key: Ctrl+1. This is changeable in the settings.
 
 This opens a popup window with all the open files. Click on a file to select it for editing in the window.
 
-This function can also be activated by moving the mouse point to the left edge of the editor window.
+This function can also be activated by moving the mouse to the left edge of the editor window.
 
 <!-- @EndDiv -->
 
@@ -1292,7 +1308,7 @@ The markdown styling as you type in the editor do pull some CPU since basically 
 
 ### By me
 
-Currently none known.
+All known bugs have been fixed in this version.
 
 ### By Oracle
 
@@ -1634,6 +1650,14 @@ The following third party products are using this license:
 * [OptionsManager-2.0.3](http://github.com/tombensve/OptionsManager)
 
 * [annotations-13.0](http://www.jetbrains.org)
+
+* [groovy-all-2.4.4](http://groovy-lang.org)
+
+[GNU Affero General Public License version v3](http://www.fsf.org/licensing/licenses/agpl-3.0.html)
+
+The following third party products are using this license:
+
+* [itext-pdfa-5.5.6-1](http://itextpdf.com)
 
 <!--
   CLM

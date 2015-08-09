@@ -69,6 +69,7 @@ class SettingsPopup extends PopupWindow implements OSTrait {
 
     // This closure have to be defined at this level to be able to call the setWindowsVisibility() method.
     // If it is defined within a method it has access to method details, but not other class methods.
+    @SuppressWarnings("GroovyMissingReturnStatement")
     private Closure<Void> closeWindow = {
         setWindowVisibility(false)
     }

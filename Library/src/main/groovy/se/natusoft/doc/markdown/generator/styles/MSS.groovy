@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
@@ -368,19 +368,19 @@ class MSS {
      *
      * @throws MSSException On reference to non defined color.
      */
-    private @NotNull MSSColor lookupColor(@NotNull String name) throws MSSException {
+    private @NotNull MSSColor lookupColor(@NotNull final String name) throws MSSException {
         MSSColor color = this.colorMap.get(name)
 
         if (color == null) {
             if (name.contains(":") || name.startsWith("#")) {
                 color = new MSSColor(color: name)
             } else {
-                JSONObject jssColors = this.mss.getProperty(MSS_Top.colors.name()) as JSONObject
+                final JSONObject jssColors = this.mss.getProperty(MSS_Top.colors.name()) as JSONObject
                 if (jssColors == null) {
                     throw new MSSException(message: "No color names have been defined in the \"colors\" section of the MSS file! " +
                             "'${name}' was asked for!")
                 } else {
-                    String colorValue = jssColors.getProperty(name)?.toString()
+                    final String colorValue = jssColors.getProperty(name)?.toString()
                     if (colorValue == null) throw new MSSException(message: "The color '${name}' has not been defined in the \"colors\" section " +
                             "of the MSS file!")
                     color = new MSSColor(color: colorValue)
@@ -399,9 +399,9 @@ class MSS {
      * @param colorPair The color pair to update.
      * @param section The section to update from.
      */
-    private void updateMSSColorPairIfNotSet(@NotNull MSSColorPair colorPair, @Nullable final JSONObject section) {
+    private void updateMSSColorPairIfNotSet(@NotNull final MSSColorPair colorPair, @Nullable final JSONObject section) {
         // If a null section is passed this code will not break, it will just not do anything at all in that case.
-        JSONString color = section?.getProperty(MSS_Colors.color.name()) as JSONString
+        final JSONString color = section?.getProperty(MSS_Colors.color.name()) as JSONString
         if (color != null) {
             colorPair.updateForegroundIfNotSet(lookupColor(color.toString()))
         }
@@ -417,21 +417,21 @@ class MSS {
      * @param font The font to update.
      * @param section The section to update from.
      */
-    private static void updateMSSFontIfNotSet(@NotNull MSSFont font, @Nullable final JSONObject section) {
-        JSONString family = section?.getProperty(MSS_Font.family.name()) as JSONString
+    private static void updateMSSFontIfNotSet(@NotNull final MSSFont font, @Nullable final JSONObject section) {
+        final JSONString family = section?.getProperty(MSS_Font.family.name()) as JSONString
         font.updateFamilyIfNotSet(family?.toString())
 
-        JSONNumber size = section?.getProperty(MSS_Font.size.name()) as JSONNumber
+        final JSONNumber size = section?.getProperty(MSS_Font.size.name()) as JSONNumber
         font.updateSizeIfNotSet(size != null ? size.toInt() : -1i)
 
-        JSONString style = section?.getProperty(MSS_Font.style.name()) as JSONString
+        final JSONString style = section?.getProperty(MSS_Font.style.name()) as JSONString
         if (style != null) {
             MSSFontStyle mssFontStyle = MSSFontStyle.valueOf(style.toString().toUpperCase())
             if (mssFontStyle == null) { throw new MSSException(message: "'${style}' is not a valid font style!") }
             font.updateStyleIfNotSet(mssFontStyle)
         }
 
-        JSONBoolean hr = section?.getProperty(MSS_Font.hr.name()) as JSONBoolean
+        final JSONBoolean hr = section?.getProperty(MSS_Font.hr.name()) as JSONBoolean
         if (hr != null) {
             font.updateHrIfNotSet(hr.asBoolean)
         }
@@ -443,14 +443,14 @@ class MSS {
      * @param image The image properties to update.
      * @param section The section to update from.
      */
-    private static void updateMSSImageIfNotSet(@NotNull MSSImage image, @Nullable final JSONObject section) {
-        JSONNumber scale = section?.getProperty(MSS_IMAGE.imgScalePercent.name()) as JSONNumber
+    private static void updateMSSImageIfNotSet(@NotNull final MSSImage image, @Nullable final JSONObject section) {
+        final JSONNumber scale = section?.getProperty(MSS_IMAGE.imgScalePercent.name()) as JSONNumber
         image.updateScaleIfNotSet(scale)
 
-        JSONString align = section?.getProperty(MSS_IMAGE.imgAlign.name()) as JSONString
+        final JSONString align = section?.getProperty(MSS_IMAGE.imgAlign.name()) as JSONString
         image.updateAlignIfNotSet(align)
 
-        JSONNumber rotate = section?.getProperty(MSS_IMAGE.imgRotateDegrees.name()) as JSONNumber
+        final JSONNumber rotate = section?.getProperty(MSS_IMAGE.imgRotateDegrees.name()) as JSONNumber
         image.updateRotateIfNotSet(rotate)
     }
 
@@ -459,7 +459,7 @@ class MSS {
      *
      * @param colorPair The color pair to ensure.
      */
-    private static @NotNull MSSColorPair ensureColorPair(@NotNull MSSColorPair colorPair) {
+    private static @NotNull MSSColorPair ensureColorPair(@NotNull final MSSColorPair colorPair) {
         colorPair.updateForegroundIfNotSet(MSSColor.BLACK)
         colorPair.updateBackgroundIfNotSet(MSSColor.WHITE)
 
@@ -471,7 +471,7 @@ class MSS {
      *
      * @param font The font to ensure.
      */
-    private static @NotNull MSSFont ensureFont(@NotNull MSSFont font) {
+    private static @NotNull MSSFont ensureFont(@NotNull final MSSFont font) {
         font.updateFamilyIfNotSet("HELVETICA")
         font.updateSizeIfNotSet(10)
         font.updateStyleIfNotSet(MSSFontStyle.NORMAL)
@@ -484,7 +484,7 @@ class MSS {
      *
      * @param image The image data to ensure.
      */
-    private static @NotNull MSSImage ensureImage(@NotNull MSSImage image) {
+    private static @NotNull MSSImage ensureImage(@NotNull final MSSImage image) {
         image.updateScaleIfNotSet(new JSONNumber(60.0f))
         image.updateAlignIfNotSet(new JSONString("LEFT"))
         image.updateRotateIfNotSet(new JSONNumber(0.0f))
@@ -544,13 +544,13 @@ class MSS {
      * Returns a MSSImage containing image format information.
      */
     @NotNull MSSImage getImageStyleForDocument() {
-        MSSImage image = new MSSImage()
+        final MSSImage image = new MSSImage()
 
         if (this.currentDivs != null) {
-            this.currentDivs.each { String divName ->
-                JSONObject div = this.divs.getProperty(divName) as JSONObject
+            this.currentDivs.each { final String divName ->
+                final JSONObject div = this.divs.getProperty(divName) as JSONObject
 
-                JSONObject standard = div?.getProperty(MSS_Pages.standard.name()) as JSONObject
+                final JSONObject standard = div?.getProperty(MSS_Pages.standard.name()) as JSONObject
                 if (standard != null) {
                     updateMSSImageIfNotSet(image, standard.getProperty(MSS_Pages.image.name()) as JSONObject)
                 }
@@ -561,7 +561,7 @@ class MSS {
         }
 
 
-        JSONObject standard = this.pages.getProperty(MSS_Pages.standard.name()) as JSONObject
+        final JSONObject standard = this.pages.getProperty(MSS_Pages.standard.name()) as JSONObject
         if (standard != null) {
             updateMSSImageIfNotSet(image, standard.getProperty(MSS_Pages.image.name()) as JSONObject)
         }
@@ -898,15 +898,15 @@ class MSS {
      * @return
      * @throws IOException
      */
-    static @NotNull MSS fromInputStream(@NotNull InputStream styleStream) throws IOException {
-        JSONObject mss = (JSONObject) JSON.read(styleStream, new JSONErrorHandler() {
+    static @NotNull MSS fromInputStream(@NotNull final InputStream styleStream) throws IOException {
+        final JSONObject mss = (JSONObject) JSON.read(styleStream, new JSONErrorHandler() {
             @Override
-            void warning(@NotNull String message) {
+            void warning(@NotNull final String message) {
                 System.err.println(message);
             }
 
             @Override
-            void fail(@NotNull String message, @Nullable Throwable cause) throws RuntimeException {
+            void fail(@NotNull final String message, @Nullable final Throwable cause) throws RuntimeException {
                 throw new RuntimeException(message, cause)
             }
         });
@@ -922,7 +922,7 @@ class MSS {
      * @throws IOException Theoretically this should never happen ...
      */
     static @NotNull MSS defaultMSS() throws IOException {
-        InputStream mssStream = TestSafeResource.getResource("mss/default.mss")
+        final InputStream mssStream = TestSafeResource.getResource("mss/default.mss")
         try {
             fromInputStream(mssStream)
         }
@@ -938,14 +938,14 @@ class MSS {
      * @param path The current path (to help provide a better error message).
      * @throws IOException On validation failures.
      */
-    private static void validateMSS(@NotNull final JSONObject jssPart, @NotNull String path) throws IOException {
-        jssPart.propertyNames.each { JSONString name ->
+    private static void validateMSS(@NotNull final JSONObject jssPart, @NotNull final String path) throws IOException {
+        jssPart.propertyNames.each { final JSONString name ->
             if (!validName(name.toString())) {
                 if (!path.endsWith("divs/") && !path.endsWith("colors/")) {
                     throw new IOException("Bad MSS field name: '${name}' in path '${path}'!")
                 }
             }
-            JSONValue value = jssPart.getProperty(name)
+            final JSONValue value = jssPart.getProperty(name)
             if (value instanceof JSONObject) {
                 validateMSS((JSONObject) value, "${path}${name}/")
             }
@@ -959,7 +959,7 @@ class MSS {
      *
      * @return true on OK name, false otherwise.
      */
-    private static boolean validName(@NotNull String name) {
+    private static boolean validName(@NotNull final String name) {
         boolean ok = false
 
         if (!ok) {
@@ -993,11 +993,11 @@ class MSS {
         ok
     }
 
-    private static boolean safe(@NotNull Closure<Boolean> enumCheck) {
+    private static boolean safe(@NotNull final Closure<Boolean> enumCheck) {
         try {
             return enumCheck.call()
         }
-        catch (IllegalArgumentException ignored) { }
+        catch (final IllegalArgumentException ignored) { }
 
         false
     }

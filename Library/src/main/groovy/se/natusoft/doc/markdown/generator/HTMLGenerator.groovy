@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -89,18 +89,15 @@ class HTMLGenerator implements Generator {
     @Override
     void generate(@NotNull final Doc document, @NotNull final Options opts, @Nullable final File rootDir)
             throws IOException, GenerateException {
-        HTMLGeneratorContext context = new HTMLGeneratorContext(
+        final HTMLGeneratorContext context = new HTMLGeneratorContext(
                 options: opts as HTMLGeneratorOptions,
                 rootDir: rootDir
         )
 
-        def writer //= new FileWriter(rootDir != null ? (rootDir.getPath() + File.separator + options.resultFile) : options.resultFile)
-        if (rootDir != null) {
-            writer = new FileWriter(rootDir.path + File.separator + context.options.resultFile)
-        }
-        else {
-            writer = new FileWriter(context.options.resultFile)
-        }
+        final def writer = rootDir != null ?
+                new FileWriter(rootDir.path + File.separator + context.options.resultFile) :
+                new FileWriter(context.options.resultFile)
+
         try {
             doGenerate(document, context.options, writer, context)
         }
@@ -123,14 +120,14 @@ class HTMLGenerator implements Generator {
      */
     @Override
     void generate(@NotNull final Doc document, @NotNull final Options opts, @Nullable final File rootDir,
-                  @NotNull OutputStream resultStream)
+                  @NotNull final OutputStream resultStream)
             throws IOException, GenerateException {
-        HTMLGeneratorContext context = new HTMLGeneratorContext(
+        final HTMLGeneratorContext context = new HTMLGeneratorContext(
                 options: opts as HTMLGeneratorOptions,
                 rootDir: rootDir
         )
 
-        OutputStreamWriter resultWriter = new OutputStreamWriter(resultStream)
+        final OutputStreamWriter resultWriter = new OutputStreamWriter(resultStream)
         doGenerate(document, context.options, resultWriter, context)
         resultWriter.close()
     }
@@ -143,11 +140,11 @@ class HTMLGenerator implements Generator {
      * @param options The options.
      */
     private static void doGenerate(@NotNull final Doc document, @NotNull final HTMLGeneratorOptions options,
-                            @NotNull Writer writer, @NotNull HTMLGeneratorContext context)
+                            @NotNull final Writer writer, @NotNull final HTMLGeneratorContext context)
             throws IOException, GenerateException {
 
-        PrintWriter printWriter = new PrintWriter(writer)
-        def html = new HTMLOutput(pw: printWriter)
+        final def printWriter = new PrintWriter(writer)
+        final def html = new HTMLOutput(pw: printWriter)
 
         if (!options.primitiveHTML) {
             printWriter.println("<!DOCTYPE html>")
@@ -163,10 +160,10 @@ class HTMLGenerator implements Generator {
         if (options.css != null && options.css.trim().length() > 0) {
             if (options.inlineCSS) {
                 html.tagln("style type=\"text/css\"")
-                BufferedReader reader
+                final BufferedReader reader
                 if (options.css.startsWith("classpath:")) {
-                    String css = options.css.substring(10)
-                    InputStream inStream = ClassLoader.getSystemResourceAsStream(css)
+                    final String css = options.css.substring(10)
+                    final InputStream inStream = ClassLoader.getSystemResourceAsStream(css)
                     reader = new BufferedReader(new InputStreamReader(inStream))
                 }
                 else {
@@ -189,7 +186,7 @@ class HTMLGenerator implements Generator {
         html.etagln("head")
         html.tagln("body")
 
-        document.items.each { DocItem docItem ->
+        document.items.each { final DocItem docItem ->
             switch (docItem.format) {
                 case DocFormat.Comment:
                     html.doIndent()
@@ -242,7 +239,7 @@ class HTMLGenerator implements Generator {
     }
 
     private static void writeBlockQuote(@NotNull final BlockQuote blockQuote, @NotNull final HTMLOutput html,
-                                 @NotNull HTMLGeneratorContext context) {
+                                 @NotNull final HTMLGeneratorContext context) {
         html.tagln("blockquote")
         html.tagln("p")
         html.doIndent()
@@ -254,7 +251,7 @@ class HTMLGenerator implements Generator {
     private static void writeCodeBlock(@NotNull final CodeBlock codeBlock, @NotNull final HTMLOutput html) {
         html.tagln("pre")
         html.tagln("code")
-        codeBlock.items.each { DocItem item ->
+        codeBlock.items.each { final DocItem item ->
             html.content(item.toString())
             html.outputln("")
         }
@@ -267,20 +264,20 @@ class HTMLGenerator implements Generator {
     }
 
     private static void writeList(@NotNull final List list, @NotNull final HTMLOutput html,
-                           @NotNull HTMLGeneratorContext context) {
+                           @NotNull final HTMLGeneratorContext context) {
         if (list.ordered) {
             html.tagln("ol")
         }
         else {
             html.tagln("ul")
         }
-        list.items.each { DocItem li ->
+        list.items.each { final DocItem li ->
             if (li instanceof List) {
                 writeList((List)li, html, context)
             }
             else {
                 html.tagln("li")
-                li.items.each { pg ->
+                li.items.each { final pg ->
                     writeParagraph((Paragraph)pg, html, context)
                 }
                 html.etagln("li")
@@ -295,7 +292,7 @@ class HTMLGenerator implements Generator {
     }
 
     private static void writeParagraph(@NotNull final Paragraph paragraph, @NotNull  final HTMLOutput html,
-                                @NotNull HTMLGeneratorContext context)
+                                @NotNull final HTMLGeneratorContext context)
             throws GenerateException {
         html.tagln("p")
         html.doIndent()
@@ -304,10 +301,10 @@ class HTMLGenerator implements Generator {
     }
 
     private static void writeParagraphContent(@NotNull final Paragraph paragraph, @NotNull final HTMLOutput html,
-                                       @NotNull HTMLGeneratorContext context)
+                                       @NotNull final HTMLGeneratorContext context)
             throws GenerateException {
         boolean first = true
-        paragraph.items.each { DocItem docItem ->
+        paragraph.items.each { final DocItem docItem ->
             if (docItem.renderPrefixedSpace && !first) {
                 html.content(" ")
             }
@@ -366,7 +363,7 @@ class HTMLGenerator implements Generator {
     }
 
     private static void writeImage(@NotNull final Image image, @NotNull  final HTMLOutput html,
-                            @NotNull HTMLGeneratorContext context) {
+                            @NotNull final HTMLGeneratorContext context) {
         html.tage("img src='" + resolveUrl(image.url, image.parseFile, context) + "' title='" + image.title +
                 "' alt='" + image.text + "'")
     }
@@ -390,6 +387,8 @@ class HTMLGenerator implements Generator {
         }
     }
 
+    // TODO: Break out resolveUrl & possiblyMakeRelative to a common base class or a Trait.
+
     /**
      * - Adds file: if no protocol is specified.
      * - If file: then resolved to full path if not found with relative path.
@@ -397,21 +396,21 @@ class HTMLGenerator implements Generator {
      * @param url The DocItem item provided url.
      * @param parseFile The source file of the DocItem item.
      */
-    private static @NotNull String resolveUrl(@NotNull String url, @NotNull File parseFile,
-                                       @NotNull HTMLGeneratorContext context) {
+    private static @NotNull String resolveUrl(@NotNull final String url, @NotNull final File parseFile,
+                                       @NotNull final HTMLGeneratorContext context) {
         String resolvedUrl = url
-        if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http:")) {
+        if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http")) {
             resolvedUrl = "file:" + resolvedUrl
         }
         if (resolvedUrl.startsWith("file:")) {
-            String path = resolvedUrl.substring(5)
+            final String path = resolvedUrl.substring(5)
             File testFile = new File(path)
 
             if (!testFile.exists()) {
                 // Try relative to parseFile first.
                 int ix = parseFile != null ? parseFile.canonicalPath.lastIndexOf(File.separator) : -1
                 if (ix >= 0) {
-                    String path1 = parseFile.canonicalPath.substring(0, ix + 1) + path
+                    final String path1 = parseFile.canonicalPath.substring(0, ix + 1) + path
                     if (context.rootDir != null) {
                         // The result file is relative to the root dir!
                         resolvedUrl = "file:" + possiblyMakeRelative(context.rootDir.canonicalPath +
@@ -427,7 +426,7 @@ class HTMLGenerator implements Generator {
                     // Try relative to result file.
                     ix = context.options.resultFile != null ? context.options.resultFile.lastIndexOf(File.separator) : -1
                     if (ix >= 0) {
-                        String path2 = context.options.resultFile.substring(0, ix + 1) + path
+                        final String path2 = context.options.resultFile.substring(0, ix + 1) + path
                         if (context.rootDir != null) {
                             // The result file is relative to the root dir!
                             resolvedUrl = "file:" + possiblyMakeRelative(context.rootDir.canonicalPath +
@@ -452,13 +451,14 @@ class HTMLGenerator implements Generator {
      *
      * @return A possibly relative path.
      */
-    private static @NotNull String possiblyMakeRelative(@NotNull String path, @NotNull HTMLGeneratorContext context) {
+    private static @NotNull String possiblyMakeRelative(@NotNull final String path,
+                                                        @NotNull final HTMLGeneratorContext context) {
         String resultPath = path
 
         if (context.options.makeFileLinksRelativeTo != null && context.options.makeFileLinksRelativeTo.trim().length() > 0) {
-            String[] relativeToParts = context.options.makeFileLinksRelativeTo.split("\\+")
-            File relFilePath = new File(relativeToParts[0])
-            String expandedRelativePath = relFilePath.canonicalPath
+            final String[] relativeToParts = context.options.makeFileLinksRelativeTo.split("\\+")
+            final File relFilePath = new File(relativeToParts[0])
+            final String expandedRelativePath = relFilePath.canonicalPath
             if (resultPath.startsWith(expandedRelativePath)) {
                 resultPath = resultPath.substring(expandedRelativePath.length() + 1)
                 if (relativeToParts.length > 1) {
@@ -499,7 +499,7 @@ class HTMLGenerator implements Generator {
          *
          * @return A new string with replacements.
          */
-        private static @NotNull String replace(@NotNull String content) {
+        private static @NotNull String replace(@NotNull final String content) {
             return content.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
         }
 
@@ -516,7 +516,7 @@ class HTMLGenerator implements Generator {
          *
          * @param tag The name of the tag to output.
          */
-        void tag(@NotNull String tag) {
+        void tag(@NotNull final String tag) {
             pw.print("<" + tag + ">")
         }
 
@@ -526,7 +526,7 @@ class HTMLGenerator implements Generator {
          * @param tag The name of the tag to output.
          * @param content The content of the tag.
          */
-        void tag(@NotNull String tag, @NotNull String content) {
+        void tag(@NotNull final String tag, @NotNull final String content) {
             pw.print("<" + tag + ">" + replace(content) + "</" + tag + ">")
         }
 
@@ -535,7 +535,7 @@ class HTMLGenerator implements Generator {
          *
          * @param tag The tag to output.
          */
-        void tage(@NotNull String tag) {
+        void tage(@NotNull final String tag) {
             doIndent()
             pw.print("<" + tag + "/>")
         }
@@ -545,7 +545,7 @@ class HTMLGenerator implements Generator {
          *
          * @param tag The tag to output.
          */
-        void tagln(@NotNull String tag) {
+        void tagln(@NotNull final String tag) {
             doIndent()
             pw.println("<" + tag + ">")
             incrementIndent()
@@ -557,7 +557,7 @@ class HTMLGenerator implements Generator {
          * @param tag The tag to output.
          * @param content The content of the tag.
          */
-        void tagln(@NotNull String tag, @NotNull String content) {
+        void tagln(@NotNull final String tag, @NotNull final String content) {
             doIndent()
             pw.println("<" + tag + ">" + replace(content) + "</" + tag + ">")
         }
@@ -567,7 +567,7 @@ class HTMLGenerator implements Generator {
          *
          * @param content The content to output.
          */
-        void content(@NotNull String content) {
+        void content(@NotNull final String content) {
             pw.print(replace(content))
         }
 
@@ -576,7 +576,7 @@ class HTMLGenerator implements Generator {
          *
          * @param cont The content to output.
          */
-        void contentln(@NotNull String cont) {
+        void contentln(@NotNull final String cont) {
             doIndent()
             content(cont)
             pw.println()
@@ -592,7 +592,7 @@ class HTMLGenerator implements Generator {
          *
          * @param text The text to output.
          */
-        void output(@NotNull String text) {
+        void output(@NotNull final String text) {
             pw.print(text)
         }
 
@@ -606,7 +606,7 @@ class HTMLGenerator implements Generator {
          *
          * @param text The text to output.
          */
-        void outputln(@NotNull String text) {
+        void outputln(@NotNull final String text) {
             pw.println(text)
         }
 
@@ -615,7 +615,7 @@ class HTMLGenerator implements Generator {
          *
          * @param tag The tag to end.
          */
-        void etag(@NotNull String tag) {
+        void etag(@NotNull final String tag) {
             pw.print("</" + tag + ">")
         }
 
@@ -624,7 +624,7 @@ class HTMLGenerator implements Generator {
          *
          * @param tag The tag to end.
          */
-        void etagln(@NotNull String tag) {
+        void etagln(@NotNull final String tag) {
             decrementIndent()
             doIndent()
             pw.println("</" + tag + ">")
@@ -641,6 +641,9 @@ class HTMLGenerator implements Generator {
          * Outputs indentation at current indent level.
          */
         void doIndent() {
+            // If the ".times" part is error marked in red then you are using IDEA. It is perfectly valid to
+            // do a .times on an int. This compiles without any problems. If it were Eclipse I would not
+            // be surprised, but I do put the JetBrains to a higher standard.
             this.indent.times {
                 pw.print(" ")
             }

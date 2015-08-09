@@ -3,21 +3,14 @@ package se.natusoft.doc.markdowndoc.editor.gui
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
-import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.GUI
 import se.natusoft.doc.markdowndoc.editor.api.MouseMotionProvider
 import se.natusoft.doc.markdowndoc.editor.functions.export.ExportData
 import se.natusoft.doc.markdowndoc.editor.functions.export.ExportDataValue
 
-import javax.swing.Box
-import javax.swing.JButton
-import javax.swing.JPanel
+import javax.swing.*
 import javax.swing.border.EmptyBorder
-import java.awt.BorderLayout
-import java.awt.Dimension
-import java.awt.FlowLayout
-import java.awt.GridLayout
-import java.awt.Rectangle
+import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 

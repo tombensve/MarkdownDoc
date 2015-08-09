@@ -54,9 +54,6 @@ import se.natusoft.doc.markdowndoc.editor.gui.MDETitledBorder
 import se.natusoft.doc.markdowndoc.editor.gui.PopupWindow
 
 import javax.swing.*
-import javax.swing.border.EmptyBorder
-import javax.swing.border.SoftBevelBorder
-import javax.swing.border.TitledBorder
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
@@ -134,11 +131,11 @@ class InsertImageFunction implements EditorFunction, Configurable, GuiGoodiesTra
     //
 
     InsertImageFunction() {
-        Icon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddimg.png"))
+        final Icon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddimg.png"))
         this.imageButton = new JButton(imageIcon)
         imageButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent ignored) {
+            void actionPerformed(final ActionEvent ignored) {
                 perform()
             }
         })
@@ -186,18 +183,6 @@ class InsertImageFunction implements EditorFunction, Configurable, GuiGoodiesTra
         keyboardShortcutConfig.getKeyboardKey()
     }
 
-    private static JPanel createLabelPanel(String text) {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT))
-        panel.add(new JLabel(text))
-        panel
-    }
-
-    private static JPanel createTextFieldPanel(JTextField textField) {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT))
-        panel.add(textField)
-        panel
-    }
-
     /**
      * Performs the function.
      *
@@ -207,23 +192,23 @@ class InsertImageFunction implements EditorFunction, Configurable, GuiGoodiesTra
     @Override
     void perform() throws FunctionException {
 
-        Box vBox = Box.createVerticalBox()
+        final Box vBox = Box.createVerticalBox()
         updateColors(vBox)
 
-        JPanel altTextPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
+        final JPanel altTextPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
         altTextPanel.setBorder(new MDETitledBorder(title: "Alt text:", titleColor: defaultForegroundColor))
         updateColors(altTextPanel)
         this.imageAltText = new JTextField(32)
         updateColors(this.imageAltText)
         this.imageAltText.addFocusListener(new FocusListener() {
             @Override
-            void focusGained(FocusEvent e) {
+            void focusGained(final FocusEvent e) {
                 InsertImageFunction.this.imageAltText.foreground = InsertImageFunction.this.defaultBackgroundColor
                 InsertImageFunction.this.imageAltText.background = InsertImageFunction.this.defaultForegroundColor
             }
 
             @Override
-            void focusLost(FocusEvent e) {
+            void focusLost(final FocusEvent e) {
                 InsertImageFunction.this.imageAltText.foreground = InsertImageFunction.this.defaultForegroundColor
                 InsertImageFunction.this.imageAltText.background = InsertImageFunction.this.defaultBackgroundColor
             }
@@ -231,32 +216,32 @@ class InsertImageFunction implements EditorFunction, Configurable, GuiGoodiesTra
         altTextPanel.add(this.imageAltText)
         vBox.add(altTextPanel)
 
-        JPanel imageUrlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
+        final JPanel imageUrlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
         imageUrlPanel.setBorder(new MDETitledBorder(title: "Image URL:", titleColor: defaultForegroundColor))
         updateColors(imageUrlPanel)
         this.imageURL = new JTextField(25)
         updateColors(this.imageURL)
         this.imageURL.addFocusListener(new FocusListener() {
             @Override
-            void focusGained(FocusEvent e) {
+            void focusGained(final FocusEvent e) {
                 InsertImageFunction.this.imageURL.foreground = InsertImageFunction.this.defaultBackgroundColor
                 InsertImageFunction.this.imageURL.background = InsertImageFunction.this.defaultForegroundColor
             }
 
             @Override
-            void focusLost(FocusEvent e) {
+            void focusLost(final FocusEvent e) {
                 InsertImageFunction.this.imageURL.foreground = InsertImageFunction.this.defaultForegroundColor
                 InsertImageFunction.this.imageURL.background = InsertImageFunction.this.defaultBackgroundColor
             }
         })
         imageUrlPanel.add(this.imageURL)
-        JButton fileSelectButton = new JButton("...")
+        final JButton fileSelectButton = new JButton("...")
         fileSelectButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent ignored) {
-                JFileChooser fileChooser = new JFileChooser()
+            void actionPerformed(final ActionEvent ignored) {
+                final JFileChooser fileChooser = new JFileChooser()
                 fileChooser.setDialogType(JFileChooser.OPEN_DIALOG)
-                int returnVal = fileChooser.showOpenDialog(editor.getGUI().getWindowFrame())
+                final int returnVal = fileChooser.showOpenDialog(editor.getGUI().getWindowFrame())
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     imageURL.setText("file:" + fileChooser.getSelectedFile())
                     inputDialog.requestFocus()
@@ -267,20 +252,20 @@ class InsertImageFunction implements EditorFunction, Configurable, GuiGoodiesTra
         imageUrlPanel.add(fileSelectButton)
         vBox.add(imageUrlPanel)
 
-        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
+        final JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
         titlePanel.setBorder(new MDETitledBorder(title: "Image title:", titleColor: defaultForegroundColor))
         updateColors(titlePanel)
         this.imageTitle = new JTextField(32)
         updateColors(this.imageTitle)
         this.imageTitle.addFocusListener(new FocusListener() {
             @Override
-            void focusGained(FocusEvent e) {
+            void focusGained(final FocusEvent e) {
                 InsertImageFunction.this.imageTitle.foreground = InsertImageFunction.this.defaultBackgroundColor
                 InsertImageFunction.this.imageTitle.background = InsertImageFunction.this.defaultForegroundColor
             }
 
             @Override
-            void focusLost(FocusEvent e) {
+            void focusLost(final FocusEvent e) {
                 InsertImageFunction.this.imageTitle.foreground = InsertImageFunction.this.defaultForegroundColor
                 InsertImageFunction.this.imageTitle.background = InsertImageFunction.this.defaultBackgroundColor
             }
@@ -288,12 +273,12 @@ class InsertImageFunction implements EditorFunction, Configurable, GuiGoodiesTra
         titlePanel.add(this.imageTitle)
         vBox.add(titlePanel)
 
-        JPanel insertCancelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
+        final JPanel insertCancelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER))
         updateColors(insertCancelPanel)
-        JButton insertButton = new JButton("Insert")
+        final JButton insertButton = new JButton("Insert")
         insertButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent ignored) {
+            void actionPerformed(final ActionEvent ignored) {
                 inputDialog.setVisible(false)
                 imageButton.setEnabled(true)
                 editor.insertText("![" + imageAltText.getText() + "](" +
@@ -303,10 +288,10 @@ class InsertImageFunction implements EditorFunction, Configurable, GuiGoodiesTra
             }
         })
         insertCancelPanel.add(insertButton)
-        JButton cancelButton = new JButton("Cancel")
+        final JButton cancelButton = new JButton("Cancel")
         cancelButton.addActionListener(new ActionListener() {
             @Override
-            void actionPerformed(ActionEvent ignored) {
+            void actionPerformed(final ActionEvent ignored) {
                 inputDialog.setVisible(false)
                 imageButton.setEnabled(true)
                 editor.requestEditorFocus()
@@ -327,9 +312,9 @@ class InsertImageFunction implements EditorFunction, Configurable, GuiGoodiesTra
         this.inputDialog.setSize(this.inputDialog.getPreferredSize())
         this.imageButton.setEnabled(false)
         this.inputDialog.setVisible(true)
-        Rectangle mainBounds = this.editor.getGUI().getWindowFrame().getBounds()
-        int x = (int)(mainBounds.x + (mainBounds.width / 2) - (this.inputDialog.getWidth() / 2))
-        int y = (int)(mainBounds.y + 70)
+        final Rectangle mainBounds = this.editor.getGUI().getWindowFrame().getBounds()
+        final int x = (int)(mainBounds.x + (mainBounds.width / 2) - (this.inputDialog.getWidth() / 2))
+        final int y = (int)(mainBounds.y + 70)
         this.inputDialog.setLocation(x,y)
     }
 

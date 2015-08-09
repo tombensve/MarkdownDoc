@@ -52,12 +52,9 @@ import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
 import se.natusoft.doc.markdowndoc.editor.functions.export.*
-import se.natusoft.doc.markdowndoc.editor.gui.ColorsTrait
 import se.natusoft.doc.markdowndoc.editor.gui.ExportMetaDataDialog
-import se.natusoft.doc.markdowndoc.editor.gui.PopupWindow
 
 import javax.swing.*
-import javax.swing.border.EmptyBorder
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
@@ -100,7 +97,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
             new KeyConfigEntry("editor.function.export.pdf.keyboard.shortcut", "Export PDF keyboard shortcut",
                     new KeyboardKey("Ctrl+P"), CONFIG_GROUP_KEYBOARD)
 
-    private Closure keyboardShortcutConfigChanged = { ConfigEntry ce ->
+    private Closure keyboardShortcutConfigChanged = { final ConfigEntry ce ->
         updateTooltipText()
     }
 
@@ -110,7 +107,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
      * @param configProvider The config provider to register with.
      */
     @Override
-    void registerConfigs(@NotNull ConfigProvider configProvider) {
+    void registerConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
         this.pdfMetaDataDialog.registerConfigs(configProvider)
     }
@@ -121,7 +118,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
      * @param configProvider The config provider to unregister with.
      */
     @Override
-    void unregisterConfigs(@NotNull ConfigProvider configProvider) {
+    void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
         this.pdfMetaDataDialog.unregisterConfigs(configProvider)
     }
@@ -145,7 +142,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
         private ExportDataValue generateTOC = new ExportDataSelectValue("Generate TOC:")
         private ExportDataValue openResult = new ExportDataSelectValue("Open result:")
 
-        PDFData(@NotNull DelayedServiceData delayedServiceData) {
+        PDFData(@NotNull final DelayedServiceData delayedServiceData) {
             super(delayedServiceData)
         }
     }
@@ -159,9 +156,9 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
      */
     ExportToPDFFunction() {
         super(GENERATED_PDF_FILE)
-        Icon pdfIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddpdf.png"))
+        final Icon pdfIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddpdf.png"))
         this.pdfToolbarButton = new JButton(pdfIcon)
-        this.pdfToolbarButton.addActionListener({ ActionEvent actionEvent -> perform() } as ActionListener)
+        this.pdfToolbarButton.addActionListener({ final ActionEvent actionEvent -> perform() } as ActionListener)
         updateTooltipText()
     }
 
@@ -231,7 +228,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
         try {
             _generatePDF()
         }
-        catch (RuntimeException re) {
+        catch (final RuntimeException re) {
             re.printStackTrace(System.err)
             JOptionPane.showMessageDialog(
                     this.editor.getGUI().getWindowFrame(),
@@ -246,8 +243,8 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
      * Actually performs the PDF generation using MarkdownDocs PDF generator.
      */
     private void _generatePDF() {
-        Generator generator = new PDFGenerator()
-        PDFGeneratorOptions pdfOpts = new PDFGeneratorOptions()
+        final Generator generator = new PDFGenerator()
+        final PDFGeneratorOptions pdfOpts = new PDFGeneratorOptions()
         pdfOpts.setResultFile(this.exportFile.getAbsolutePath())
         pdfOpts.setAuthor(this.pdfData.author.getValue())
         pdfOpts.setTitle(this.pdfData.title.getValue())
@@ -267,14 +264,14 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
             generator.generate(getMarkdownDocument(), pdfOpts, null, pdfStream)
             pdfStream.flush()
         }
-        catch (IOException ioe) {
+        catch (final IOException ioe) {
             throw new RuntimeException(ioe.getMessage(), ioe)
         }
-        catch (GenerateException ge) {
+        catch (final GenerateException ge) {
             throw new RuntimeException(ge.getMessage(), ge)
         }
         finally {
-            try {if (pdfStream!= null) pdfStream.close()} catch (IOException ignored) {}
+            try {if (pdfStream!= null) pdfStream.close()} catch (final IOException ignored) {}
         }
 
         if (this.editor?.editable?.file != null) {
@@ -282,13 +279,14 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
         }
 
         if (this.pdfData.openResult.getValue().equals("true")) {
-            Desktop desktop = Desktop.getDesktop()
+            final Desktop desktop = Desktop.getDesktop()
             try {
                 desktop.open(this.exportFile)
             }
-            catch (IOException ioe) {
+            catch (final IOException ioe2) {
                 JOptionPane.showMessageDialog(
-                        this.editor.getGUI().getWindowFrame(), ioe.getMessage(), "Failed to open PDF!", JOptionPane.ERROR_MESSAGE)
+                        this.editor.getGUI().getWindowFrame(), ioe2.getMessage(), "Failed to open PDF!",
+                        JOptionPane.ERROR_MESSAGE)
             }
         }
     }

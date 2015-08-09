@@ -93,7 +93,7 @@ class MarkdownParser implements Parser {
      * @throws ParseException on parse failures.
      */
     @Override
-    void parse(@NotNull Doc doc, @NotNull File parseFile, @Nullable Properties parserOptions)
+    void parse(@NotNull final Doc doc, @NotNull final File parseFile, @Nullable final Properties parserOptions)
             throws IOException, ParseException {
 
         this.file = parseFile
@@ -112,7 +112,7 @@ class MarkdownParser implements Parser {
      * @throws ParseException on parse failures.
      */
     @Override
-    void parse(@NotNull Doc doc, @NotNull InputStream parseStream, @Nullable Properties parserOptions)
+    void parse(@NotNull final Doc doc, @NotNull final InputStream parseStream, @Nullable final Properties parserOptions)
             throws IOException, ParseException {
 
         LineReader lineReader = null
@@ -120,7 +120,7 @@ class MarkdownParser implements Parser {
             lineReader = new MDLineReader(new InputStreamReader(parseStream))
 
             DocItem prevDocItem = null
-            Stack<DocItem> hierarchyStack = new Stack<DocItem>()
+            final Stack<DocItem> hierarchyStack = new Stack<DocItem>()
 
 
             while (lineReader.hasLine()) {
@@ -129,16 +129,16 @@ class MarkdownParser implements Parser {
                 if (!line.empty) {
                     DocItem docItem = null
 
-                    def divStartCase = { MDLine it -> it.startDiv }
-                    def divEndCase = { MDLine it -> it.endDiv }
-                    def commentStartCase = { MDLine it -> it.commentStart }
-                    def headerCase       = { MDLine it -> it.header }
-                    def listCase         = { MDLine it -> it.list && (it.leadingSpaces < 4 ||
+                    def divStartCase = { final MDLine it -> it.startDiv }
+                    def divEndCase = { final MDLine it -> it.endDiv }
+                    def commentStartCase = { final MDLine it -> it.commentStart }
+                    def headerCase       = { final MDLine it -> it.header }
+                    def listCase         = { final MDLine it -> it.list && (it.leadingSpaces < 4 ||
                                                           (prevDocItem != null && prevDocItem.isHierarchy)) }
-                    def codeBlockCase    = { MDLine it -> it.codeBlock }
-                    def blockQuoteCase   = { MDLine it -> it.blockQuote }
-                    def horizRulerCase   = { MDLine it -> it.horizRuler }
-                    def linkUrlCSpecCase = { MDLine it -> it.isLinkURLSpec(this.links) }
+                    def codeBlockCase    = { final MDLine it -> it.codeBlock }
+                    def blockQuoteCase   = { final MDLine it -> it.blockQuote }
+                    def horizRulerCase   = { final MDLine it -> it.horizRuler }
+                    def linkUrlCSpecCase = { final MDLine it -> it.isLinkURLSpec(this.links) }
 
                     switch (line) {
                         case commentStartCase : docItem = parseComment    (line, lineReader); break
@@ -187,7 +187,7 @@ class MarkdownParser implements Parser {
                             }
 
                             if (addItem) {
-                                for (DocItem content : docItem.items) {
+                                for (final DocItem content : docItem.items) {
                                     prevDocItem.addItem(content)
                                 }
                             }
@@ -207,10 +207,10 @@ class MarkdownParser implements Parser {
                 }
             }
         }
-        catch (ParseException pe) {
+        catch (final ParseException pe) {
             throw pe;
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             throw new ParseException(
                     file: this.file != null ? this.file.absolutePath : "[No file]",
                     line: lineReader.lastReadLine.toString(),
@@ -232,10 +232,10 @@ class MarkdownParser implements Parser {
      * @param docItems The DocItem:s to set the parse file on.
      * @param parseFile The parse file to set.
      */
-    private void setParseFileOnDocItems(@NotNull DocItem docItem, @NotNull File parseFile) {
+    private void setParseFileOnDocItems(@NotNull final DocItem docItem, @NotNull final File parseFile) {
         docItem.parseFile = parseFile
         if (docItem.hasSubItems()) {
-            for (DocItem subDocItem : docItem.items) {
+            for (final DocItem subDocItem : docItem.items) {
                 setParseFileOnDocItems(subDocItem, parseFile)
             }
         }
@@ -247,7 +247,7 @@ class MarkdownParser implements Parser {
      * @param fileName The file to check extension of.
      */
     @Override
-    boolean validFileExtension(@NotNull String fileName) {
+    boolean validFileExtension(@NotNull final String fileName) {
         fileName.endsWith(".md") || fileName.endsWith(".markdown") || fileName.endsWith(".mdpart")
     }
 
@@ -259,10 +259,10 @@ class MarkdownParser implements Parser {
      *
      * @return A Comment.
      */
-    private static @NotNull DocItem parseComment(@NotNull final MDLine line, @NotNull MDLineReader lineReader) {
+    private static @NotNull DocItem parseComment(@NotNull final MDLine line, @NotNull final MDLineReader lineReader) {
         Line currentLine = line
 
-        StringBuilder sb = new StringBuilder()
+        final StringBuilder sb = new StringBuilder()
         if (!(line as MDLine).commentEnd) {
             while (lineReader.hasLine() && !(lineReader.peekNextLine() as MDLine).commentEnd) {
                 currentLine = lineReader.readLine()
@@ -286,7 +286,7 @@ class MarkdownParser implements Parser {
      * @param line The line to extract name from.
      */
     private static @NotNull DocItem parseStartDiv(@NotNull final Line line) {
-        String[] parts = line.toString().split("\"")
+        final String[] parts = line.toString().split("\"")
         if (parts.length != 3) throw new ParseException(message: "Strange div attempt found!", lineNo: line.lineNumber,
                 line: line.toString())
         Div.startDiv(parts[1])
@@ -310,19 +310,19 @@ class MarkdownParser implements Parser {
      * @throws IOException on failure to read input.
      * @throws ParseException On incorrect format being parsed.
      */
-    private @NotNull DocItem parseHeader(@NotNull final Line line, @NotNull LineReader lineReader)
+    private @NotNull DocItem parseHeader(@NotNull final Line line, @NotNull final LineReader lineReader)
             throws IOException, ParseException {
 
-        String text = line.toString()
+        final String text = line.toString()
 
-        Header.Level level
+        final Header.Level level
         switch (text) {
-            case { String it -> it.startsWith("######") } : level = Header.Level.H6; break
-            case { String it -> it.startsWith("#####")  } : level = Header.Level.H5; break
-            case { String it -> it.startsWith("####")   } : level = Header.Level.H4; break
-            case { String it -> it.startsWith("###")    } : level = Header.Level.H3; break
-            case { String it -> it.startsWith("##")     } : level = Header.Level.H2; break
-            case { String it -> it.startsWith("#")      } : level = Header.Level.H1; break
+            case { final String it -> it.startsWith("######") } : level = Header.Level.H6; break
+            case { final String it -> it.startsWith("#####")  } : level = Header.Level.H5; break
+            case { final String it -> it.startsWith("####")   } : level = Header.Level.H4; break
+            case { final String it -> it.startsWith("###")    } : level = Header.Level.H3; break
+            case { final String it -> it.startsWith("##")     } : level = Header.Level.H2; break
+            case { final String it -> it.startsWith("#")      } : level = Header.Level.H1; break
 
             case { lineReader.hasLine() && lineReader.peekNextLine().contains("===") } :
                 level = Header.Level.H1
@@ -341,7 +341,7 @@ class MarkdownParser implements Parser {
             )
         }
 
-        Header header = new Header(level: level)
+        final Header header = new Header(level: level)
 
         header.addItem(line.removeAll("#").removeLeadingSpaces())
 
@@ -358,10 +358,10 @@ class MarkdownParser implements Parser {
      *
      * @throws IOException on input failure.
      */
-    private static @NotNull DocItem parseCodeBlock(@NotNull final Line line, @NotNull LineReader lineReader)
+    private static @NotNull DocItem parseCodeBlock(@NotNull final Line line, @NotNull final LineReader lineReader)
             throws IOException {
 
-        CodeBlock codeBlock = new CodeBlock()
+        final CodeBlock codeBlock = new CodeBlock()
         codeBlock.addItem(line)
 
         while (lineReader.hasLine() && ((MDLine)lineReader.peekNextLine()).codeBlock) {
@@ -381,8 +381,10 @@ class MarkdownParser implements Parser {
      *
      * @throws IOException on input failure.
      */
-    private @NotNull DocItem parseBlockQuote(@NotNull final Line line, @NotNull LineReader lineReader) throws IOException {
-        BlockQuote blockQuote = new BlockQuote()
+    private @NotNull DocItem parseBlockQuote(@NotNull final Line line,
+                                             @NotNull final LineReader lineReader) throws IOException {
+
+        final BlockQuote blockQuote = new BlockQuote()
         parseParagraph(blockQuote, line.removeFirstWord(), lineReader, ">")
 
         blockQuote
@@ -398,11 +400,13 @@ class MarkdownParser implements Parser {
      *
      * @throws IOException on input failure.
      */
-    private @NotNull DocItem parseList(@NotNull final MDLine line, @NotNull LineReader lineReader) throws IOException {
-        MDList list = new MDList(ordered: line.orderedList, indentLevel: line.leadingSpaces)
+    private @NotNull DocItem parseList(@NotNull final MDLine line,
+                                       @NotNull final LineReader lineReader) throws IOException {
 
-        boolean isList = true
-        int indent = line.leadingSpaces >= 3 ? line.leadingSpaces : 3
+        final MDList list = new MDList(ordered: line.orderedList, indentLevel: line.leadingSpaces)
+
+        final boolean isList = true
+        final int indent = line.leadingSpaces >= 3 ? line.leadingSpaces : 3
 
         MDLine mdLine = line
 
@@ -412,7 +416,7 @@ class MarkdownParser implements Parser {
         mdLine = (MDLine)mdLine.removeBeg("+")
         mdLine = (MDLine)mdLine.removeBeg("-")
 
-        ListItem listItem = new ListItem()
+        final ListItem listItem = new ListItem()
         Paragraph liParagraph = new Paragraph()
         parseParagraph(liParagraph, mdLine.removeFirstWord(), lineReader, isList)
         listItem.addItem(liParagraph)
@@ -440,7 +444,7 @@ class MarkdownParser implements Parser {
      * @param mdLine The current line
      */
     private void parseLinkUrlSpec(@NotNull final Line line) throws ParseException {
-        Line _line = line.removeAll("\\[").removeAll("\\]:")
+        final Line _line = line.removeAll("\\[").removeAll("\\]:")
         if ( _line.numberOfWords < 2) {
             throw new ParseException(
                     file: this.file.getAbsolutePath(),
@@ -449,7 +453,7 @@ class MarkdownParser implements Parser {
             )
         }
 
-        Link link = this.links[ _line.getWord(0)]
+        final Link link = this.links[ _line.getWord(0)]
         if (link == null) {
             throw new ParseException(
                     file: this.file.getAbsolutePath(),
@@ -480,8 +484,8 @@ class MarkdownParser implements Parser {
      * @throws IOException
      * @throws ParseException
      */
-    private void parseParagraph(@NotNull Paragraph paragraph, @NotNull final Line line, @NotNull LineReader lineReader)
-            throws IOException, ParseException {
+    private void parseParagraph(@NotNull final Paragraph paragraph, @NotNull final Line line,
+                                @NotNull final LineReader lineReader) throws IOException, ParseException {
 
         parseParagraph(paragraph, line, lineReader, (String)null)
     }
@@ -496,8 +500,9 @@ class MarkdownParser implements Parser {
      * @throws IOException
      * @throws ParseException
      */
-    private void parseParagraph(@NotNull Paragraph paragraph, @NotNull final Line line, @NotNull LineReader lineReader,
-                                boolean isList) throws IOException, ParseException {
+    private void parseParagraph(@NotNull final Paragraph paragraph, @NotNull final Line line,
+                                @NotNull final LineReader lineReader, final boolean isList)
+            throws IOException, ParseException {
 
         parseParagraph(paragraph, line, lineReader, (String)null, isList)
     }
@@ -513,8 +518,9 @@ class MarkdownParser implements Parser {
      * @throws IOException
      * @throws ParseException
      */
-    private void parseParagraph(@NotNull Paragraph paragraph, @NotNull final Line line, @NotNull LineReader lineReader,
-                                @Nullable String removeBeginningWord) throws IOException, ParseException {
+    private void parseParagraph(@NotNull final Paragraph paragraph, @NotNull final Line line,
+                                @NotNull final LineReader lineReader, @Nullable final String removeBeginningWord)
+            throws IOException, ParseException {
 
         parseParagraph(paragraph, line, lineReader, removeBeginningWord, false)
     }
@@ -530,11 +536,13 @@ class MarkdownParser implements Parser {
      * @throws IOException
      * @throws ParseException
      */
-    private void parseParagraph(@NotNull Paragraph paragraph, @NotNull final Line line, @NotNull LineReader lineReader,
-                                @Nullable String removeBeginningWord, boolean isList)
+    @SuppressWarnings("GroovyUntypedAccess")
+    private void parseParagraph(@NotNull final Paragraph paragraph, @NotNull final Line line,
+                                @NotNull final LineReader lineReader, @Nullable final String removeBeginningWord,
+                                final boolean isList)
             throws IOException, ParseException {
 
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
 
         Line parseLine = line
         boolean done = false;
@@ -545,7 +553,7 @@ class MarkdownParser implements Parser {
 
                 parseLine = parseLine.removeFirstWord()
             }
-            parseLine.eachWord {
+            parseLine.eachWord { final String it ->
                 sb << space
                 sb << it
                 space = " "
@@ -567,7 +575,7 @@ class MarkdownParser implements Parser {
 
         DocItem current = new PlainText(renderPrefixedSpace: false)
 
-        LinkedList<DocItem> itemStack = new LinkedList<DocItem>()
+        final LinkedList<DocItem> itemStack = new LinkedList<DocItem>()
 
         char p = 0
         boolean escapeChar = false

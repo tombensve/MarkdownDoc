@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -64,8 +64,8 @@ class ServiceDefLoader {
      *
      * @param serviceAPI The service API to load.
      */
-    private ServiceDefLoader(@NotNull Class serviceAPI) {
-        BufferedReader svcReader = new BufferedReader(
+    private ServiceDefLoader(@NotNull final Class serviceAPI) {
+        final BufferedReader svcReader = new BufferedReader(
                 new InputStreamReader(
                     Thread.currentThread().getContextClassLoader().getResourceAsStream("META-INF/services/" + serviceAPI.getName())
                 )
@@ -88,7 +88,7 @@ class ServiceDefLoader {
 
             svcReader.close()
         }
-        catch (IOException ioe) {
+        catch (final IOException ioe) {
             ioe.printStackTrace()
         }
     }
@@ -102,26 +102,8 @@ class ServiceDefLoader {
      *
      * @param serviceAPI The service API to load services definitions for.
      */
-    static Iterator<Class> load(@NotNull Class serviceAPI) {
+    static Iterator<Class> load(@NotNull final Class serviceAPI) {
         new ServiceDefLoader(serviceAPI).services.iterator()
     }
 
-    /**
-     * Convenience to instantiate the specified service class.
-     *
-     * @param svcClass The class to instantiate.
-     * @param <T> The type of the class.
-     *
-     * @return The instantiated instance or null on failure.
-     */
-    static <T> T instantiate(@NotNull Class<T> svcClass) {
-        T instance = null
-        try {
-            instance = (T)svcClass.newInstance()
-        }
-        catch (IllegalAccessException | InstantiationException e) {
-            e.printStackTrace(System.err)
-        }
-        instance
-    }
 }

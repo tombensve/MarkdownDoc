@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -77,11 +77,6 @@ import java.util.List
 @TypeChecked
 class Javadoc2MDParser implements Parser {
 
-    // TODO:
-    // Yes, this code is currently a bit messy! To begin with the need for "declaration" to be a member should be fixed. This
-    // in turn means the file can't be read line by line!
-    // Most of the members shouldn't be there, but a smarter reading of the file could solve most of this.
-
     //
     // Constants
     //
@@ -125,7 +120,7 @@ class Javadoc2MDParser implements Parser {
      * @throws ParseException on parse failures.
      */
     @Override
-    void parse(Doc document, InputStream parseStream, Properties parserOptions) throws IOException, ParseException {
+    void parse(final Doc document, final InputStream parseStream, final Properties parserOptions) throws IOException, ParseException {
         throw new ParseException(message: "Parsing from an InputStream is not supported by this parser!")
     }
 
@@ -140,7 +135,9 @@ class Javadoc2MDParser implements Parser {
      * @throws ParseException on parse failures.
      */
     @Override
-    void parse(@NotNull Doc document, @NotNull File parseFile, @Nullable final Properties parserOptions) throws IOException, ParseException {
+    void parse(@NotNull final Doc document, @NotNull final File parseFile,
+               @Nullable final Properties parserOptions) throws IOException, ParseException {
+
         this.inJavadocBlock = false
         this.inDeclarationBlock = false
         this.pkg = ""
@@ -148,9 +145,9 @@ class Javadoc2MDParser implements Parser {
         this.declaration = null
         this.parserOptions = parserOptions
 
-        Doc localDoc = new Doc();
+        final Doc localDoc = new Doc();
 
-        parseFile.eachLine { String line ->
+        parseFile.eachLine { final String line ->
             if (!inJavadocBlock && !inDeclarationBlock && line.trim().startsWith("package")) {
                 this.pkg = line.replaceFirst("package ", "").replace(';', ' ').trim()
             }
@@ -200,28 +197,28 @@ class Javadoc2MDParser implements Parser {
      * @param docItems
      * @param parseFile
      */
-    private void setParseFileOnDocItems(@NotNull DocItem docItem, @NotNull File parseFile) {
+    private void setParseFileOnDocItems(@NotNull final DocItem docItem, @NotNull final File parseFile) {
         docItem.parseFile = parseFile
         if (docItem.hasSubItems()) {
-            for (DocItem subDocItem : docItem.items) {
+            for (final DocItem subDocItem : docItem.items) {
                 setParseFileOnDocItems(subDocItem, parseFile)
             }
         }
     }
 
-    private static boolean isFieldOrConst(@NotNull String line) {
+    private static boolean isFieldOrConst(@NotNull final String line) {
         line.trim().endsWith(";")
     }
 
-    private static boolean isInterfaceMethod(@NotNull String line) {
+    private static boolean isInterfaceMethod(@NotNull final String line) {
         (line.contains("(") || line.contains(")")) && line.trim().endsWith(";")
     }
 
-    private static boolean isMethod(@NotNull String line) {
+    private static boolean isMethod(@NotNull final String line) {
         line.trim().endsWith("{") || line.trim().endsWith("{}") || line.trim().endsWith("{ }")
     }
 
-    private static boolean isEnumConst(@NotNull String line) {
+    private static boolean isEnumConst(@NotNull final String line) {
         line.replace(',', ' ').trim().split(" ").length == 1 && !line.contains("@")
     }
 
@@ -230,7 +227,7 @@ class Javadoc2MDParser implements Parser {
      *
      * @param line The javadoc line to save for later.
      */
-    private void saveJavadocLine(@NotNull String line) {
+    private void saveJavadocLine(@NotNull final String line) {
         String sline = line.trim()
         if (sline.startsWith("/**")) {
             sline = sline.substring(3)
@@ -264,7 +261,7 @@ class Javadoc2MDParser implements Parser {
      * @param line The current declaration line. A declaration might occupy more than one line so until we see the end of
      *             it, we just save the line text possibly adding it to previous text.
      */
-    private void parseDeclarationLine(@NotNull Doc document, @NotNull String line) {
+    private void parseDeclarationLine(@NotNull final Doc document, @NotNull final String line) {
         if (this.declaration == null) {
             this.declaration = line.trim()
         }
@@ -272,24 +269,24 @@ class Javadoc2MDParser implements Parser {
             this.declaration += " " + line.trim()
         }
 
-        VisibilityUtil visibility = new VisibilityUtil(this.declaration)
-        DeclarationTypeUtil declType = new DeclarationTypeUtil(this.declaration)
+        final VisibilityUtil visibility = new VisibilityUtil(this.declaration)
+        final DeclarationTypeUtil declType = new DeclarationTypeUtil(this.declaration)
 
         if (isFieldOrConst(this.declaration) || isMethod(this.declaration) || isEnumConst(this.declaration)) {
             inDeclarationBlock = false
 
             boolean classOrInterface = false;
-            Paragraph p = new Paragraph()
+            final Paragraph p = new Paragraph()
             if ((declType.isClass() || declType.isInterface() || declType.isEnum()) && (visibility.isPublic() || visibility.isProtected())) {
 
                 classOrInterface = true
-                String[] words = this.declaration.split("\\s+")
+                final String[] words = this.declaration.split("\\s+")
                 boolean handledName = false
                 for (int i = 0; i < words.length; i++) {
                     String word = words[i]
 
                     if (VisibilityUtil.isPublic(word) || VisibilityUtil.isProtected(word)) {
-                        PlainText pt = new PlainText(text: word)
+                        final PlainText pt = new PlainText(text: word)
                         p.addItem(pt)
                     }
                     else if (DeclarationTypeUtil.isDeclarationType(word) || ModifierUtil.isModifier(word)) {
@@ -305,28 +302,28 @@ class Javadoc2MDParser implements Parser {
                         else {
                             // Note that we remove any  '{' at the end since we will add it ourself later
                             // after the [package] specification.
-                            PlainText pt = new PlainText(text:  word.replace('{', ' ').trim() + " ")
+                            final PlainText pt = new PlainText(text:  word.replace('{', ' ').trim() + " ")
                             p.addItem(pt)
                         }
                     }
                 }
-                PlainText pt = new PlainText(text: "[" + this.pkg + "] {")
-                p.addItem(pt)
+                final PlainText pt2 = new PlainText(text: "[" + this.pkg + "] {")
+                p.addItem(pt2)
             }
             else {
                 if (visibility.isPublic() || visibility.isProtected()) {
-                    Strong s = new Strong(text: removeAnnotations(this.declaration.replace(';', ' ').replace('{', ' ').replace('}', ' ').
+                    final Strong s = new Strong(text: removeAnnotations(this.declaration.replace(';', ' ').replace('{', ' ').replace('}', ' ').
                             trim()))
                     p.addItem(s)
                 }
                 // For interfaces!
                 else if (isInterfaceMethod(this.declaration) && !visibility.isPrivate()) {
-                    Strong s = new Strong(text: removeAnnotations(this.declaration.replace(';', ' ').replace('{', ' ').replace('}', ' ').
+                    final Strong s = new Strong(text: removeAnnotations(this.declaration.replace(';', ' ').replace('{', ' ').replace('}', ' ').
                             trim()))
                     p.addItem(s)
                 }
                 else if (isEnumConst(this.declaration)) {
-                    Strong s = new Strong(text: removeAnnotations(this.declaration.replace(',', ' ').trim()))
+                    final Strong s = new Strong(text: removeAnnotations(this.declaration.replace(',', ' ').trim()))
                     p.addItem(s)
                 }
             }
@@ -357,7 +354,7 @@ class Javadoc2MDParser implements Parser {
      *
      * @return The update line without annotations.
      */
-    private static String removeAnnotations(@NotNull String line) {
+    private static String removeAnnotations(@NotNull final String line) {
         line.replaceAll("(@[A-Z,a-z]+){1} ", "")
     }
 
@@ -367,10 +364,10 @@ class Javadoc2MDParser implements Parser {
      * @param document The document model to add javadoc information to.
      * @param classOrInterface true if this javadoc is for a class or interface.
      */
-    private void parseJavadoc(@NotNull Doc document, boolean classOrInterface) {
-        List<String> text = new LinkedList<>()
-        List<String> params = new LinkedList<>()
-        List<String> exceptions = new LinkedList<>()
+    private void parseJavadoc(@NotNull final Doc document, final boolean classOrInterface) {
+        final List<String> text = new LinkedList<>()
+        final List<String> params = new LinkedList<>()
+        final List<String> exceptions = new LinkedList<>()
         String returnDesc = null
         String seeDesc = null
 
@@ -382,7 +379,7 @@ class Javadoc2MDParser implements Parser {
         }
 
         boolean textPart = true
-        this.javadoc.each { String jdline ->
+        this.javadoc.each { final String jdline ->
             if (jdline.contains("@param")) {
                 textPart = false
                 params.add(jdline)
@@ -408,15 +405,15 @@ class Javadoc2MDParser implements Parser {
 
         DocItem p
         if (this.parserOptions != null && this.parserOptions.getProperty(MARKDOWN_JAVADOC) != null) {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream()
-            PrintStream ps = new PrintStream(baos)
-            text.each { line ->
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream()
+            final PrintStream ps = new PrintStream(baos)
+            text.each { final String line ->
                 ps.println(line)
             }
             ps.flush()
             ps.close()
-            MarkdownParser mdParser = new MarkdownParser()
-            ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray())
+            final MarkdownParser mdParser = new MarkdownParser()
+            final ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray())
             mdParser.parse(document, bais, this.parserOptions)
         }
         else {
@@ -424,7 +421,7 @@ class Javadoc2MDParser implements Parser {
             PlainText format = new PlainText()
             boolean preMode = false
 
-            text.each { String line ->
+            text.each { final String line ->
                 if (!preMode && line.trim().matches("^<[Pp][Rr][Ee]>.*")) {
                     preMode = true
                     p.addItem(format)
@@ -442,7 +439,7 @@ class Javadoc2MDParser implements Parser {
                     p.addItem(line)
                 }
                 else {
-                    line.split("\\s+|>\\s*|</").each { String word ->
+                    line.split("\\s+|>\\s*|</").each { final String word ->
                         if (word.matches("^<[Pp].?") ) {
                             p.addItem(format)
                             format = new PlainText()
@@ -469,7 +466,7 @@ class Javadoc2MDParser implements Parser {
                 p.addItem(new Emphasis(text: "Returns"))
                 document.addItem(p)
                 p = new BlockQuote()
-                PlainText pt = new PlainText(text: returnDesc)
+                final PlainText pt = new PlainText(text: returnDesc)
                 p.addItem(pt)
                 document.addItem(p)
             }
@@ -479,12 +476,12 @@ class Javadoc2MDParser implements Parser {
                 p.addItem(new Emphasis(text: "Parameters"))
                 document.addItem(p)
 
-                params.each { String param ->
+                params.each { final String param ->
                     p = new BlockQuote()
-                    String[] words = param.split("\\s+")
+                    final String[] words = param.split("\\s+")
                     p.addItem(new Emphasis(text: words[1]))
                     if (words.length > 2) {
-                        PlainText pt = new PlainText()
+                        final PlainText pt = new PlainText()
                         pt.text = "- "
                         for (int i = 2; i < words.length; i++) {
                             pt.text += (words[i] + " ")
@@ -500,12 +497,12 @@ class Javadoc2MDParser implements Parser {
                 p.addItem(new Emphasis(text: "Throws"))
                 document.addItem(p)
 
-                exceptions.each { String exc ->
+                exceptions.each { final String exc ->
                     p = new BlockQuote()
-                    String[] words = exc.split("\\s+")
+                    final String[] words = exc.split("\\s+")
                     p.addItem(new Emphasis(text: words[1]))
                     if (words.length > 2) {
-                        PlainText pt = new PlainText()
+                        final PlainText pt = new PlainText()
                         pt.text = "- "
                         for (int i = 2; i < words.length; i++) {
                             pt.text += (words[i] + " ")
@@ -521,7 +518,7 @@ class Javadoc2MDParser implements Parser {
                 p.addItem(new Emphasis(text: "See"))
                 document.addItem(p)
                 p = new BlockQuote()
-                PlainText pt = new PlainText(text: seeDesc.replace('#', '.'))
+                final PlainText pt = new PlainText(text: seeDesc.replace('#', '.'))
                 p.addItem(pt)
                 document.addItem(p)
             }
@@ -535,7 +532,7 @@ class Javadoc2MDParser implements Parser {
      * @param fileName The file to check extension of.
      */
     @Override
-    boolean validFileExtension(@NotNull String fileName) {
+    boolean validFileExtension(@NotNull final String fileName) {
         fileName.endsWith(".java")
     }
 
@@ -547,7 +544,7 @@ class Javadoc2MDParser implements Parser {
 
         private String visibility
 
-        VisibilityUtil(@NotNull String declaration) {
+        VisibilityUtil(@NotNull final String declaration) {
             if (declaration.trim().length() > 0) {
                 this.visibility = declaration.split(" ")[0]
             }
@@ -560,7 +557,7 @@ class Javadoc2MDParser implements Parser {
             this.visibility.equals("public")
         }
 
-        static boolean isPublic(@NotNull String word) {
+        static boolean isPublic(@NotNull final String word) {
             word.equals("public")
         }
 
@@ -568,7 +565,7 @@ class Javadoc2MDParser implements Parser {
             this.visibility.equals("protected")
         }
 
-        static boolean isProtected(@NotNull String word) {
+        static boolean isProtected(@NotNull final String word) {
             word.equals("protected")
         }
 
@@ -576,7 +573,8 @@ class Javadoc2MDParser implements Parser {
             this.visibility.equals("private")
         }
 
-        static isPrivate(@NotNull String word) {
+        @SuppressWarnings("GroovyUnusedDeclaration")
+        static isPrivate(@NotNull final String word) {
             word.equals("private")
         }
 
@@ -593,7 +591,7 @@ class Javadoc2MDParser implements Parser {
 
         private String declaration
 
-        public DeclarationTypeUtil(String declaration) {
+        public DeclarationTypeUtil(final String declaration) {
             this.declaration = declaration
         }
 
@@ -609,7 +607,7 @@ class Javadoc2MDParser implements Parser {
             this.declaration.contains("enum ")
         }
 
-        public static boolean isDeclarationType(@NotNull String word) {
+        public static boolean isDeclarationType(@NotNull final String word) {
             word.equals("class") || word.equals("interface") || word.equals("enum")
         }
     }
@@ -620,7 +618,7 @@ class Javadoc2MDParser implements Parser {
     @CompileStatic
     private static class ModifierUtil {
 
-        public static boolean isModifier(@NotNull String word) {
+        public static boolean isModifier(@NotNull final String word) {
             word.equals("final") || word.equals("abstract") || word.equals("static")
         }
     }

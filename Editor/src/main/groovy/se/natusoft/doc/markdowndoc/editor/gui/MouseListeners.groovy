@@ -1,38 +1,38 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
  *         2015-08-03: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdowndoc.editor.gui
 
@@ -54,32 +54,31 @@ trait MouseListeners implements MouseListener, MouseMotionListener {
      * and released) on a component.
      */
     @Override
-    void mouseClicked(MouseEvent e) {}
+    void mouseClicked(final MouseEvent e) {}
 
     /**
      * Invoked when a mouse button has been pressed on a component.
      */
     @Override
-    void mousePressed(MouseEvent e) {}
+    void mousePressed(final MouseEvent e) {}
 
     /**
      * Invoked when a mouse button has been released on a component.
      */
     @Override
-    void mouseReleased(MouseEvent e) {}
+    void mouseReleased(final MouseEvent e) {}
 
     /**
      * Invoked when the mouse enters a component.
      */
     @Override
-    void mouseEntered(MouseEvent e) {
-    }
+    void mouseEntered(final MouseEvent e) {}
 
     /**
      * Invoked when the mouse exits a component.
      */
     @Override
-    void mouseExited(MouseEvent e) {}
+    void mouseExited(final MouseEvent e) {}
 
     /**
      * Invoked when a mouse button is pressed on a component and then
@@ -93,13 +92,13 @@ trait MouseListeners implements MouseListener, MouseMotionListener {
      * Drag&amp;Drop operation.
      */
     @Override
-    void mouseDragged(MouseEvent e) {}
+    void mouseDragged(final MouseEvent e) {}
 
     /**
      * Invoked when the mouse cursor has been moved onto a component
      * but no buttons have been pushed.
      */
     @Override
-    void mouseMoved(MouseEvent e) {}
+    void mouseMoved(final MouseEvent e) {}
 
 }
