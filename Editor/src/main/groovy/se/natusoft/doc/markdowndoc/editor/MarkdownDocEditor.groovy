@@ -756,6 +756,8 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
                     selectNewFile()
                 }
             }
+            Editable droppedEditable = new EditableProvider(file, editorStylerFactory)
+            Editables.inst.addEditable(droppedEditable)
             setEditable(Editables.inst.getEditable(file))
         }
         catch (final IOException ioe) {
