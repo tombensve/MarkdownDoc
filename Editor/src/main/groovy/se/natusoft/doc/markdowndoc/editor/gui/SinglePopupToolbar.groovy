@@ -59,7 +59,7 @@ import java.util.List
  */
 @CompileStatic
 @TypeChecked
-class SinglePopupToolbar implements GuiGoodiesTrait, ToolBar, Configurable {
+class SinglePopupToolbar implements GuiEnvToolsTrait, ToolBar, Configurable {
 
     //
     // Private Members
@@ -128,9 +128,10 @@ class SinglePopupToolbar implements GuiGoodiesTrait, ToolBar, Configurable {
 
     protected void mouseMovedHandler(@NotNull final MouseEvent e) {
         if (this.editor == null) return
+
         final int y = e.y - this.editor.GUI.editorVisibleY
         if (y <= topMargin && e.x >= 0 && e.x <= editorWidth) {
-            if (!isOpen()) {
+            if (!isOpen() && !PopupLock.instance.locked) {
                 final int toolbarWidth = calculateWidth()
                 final int x = (int)(parentFrame.x + (parentFrame.width / 2) - (toolbarWidth / 2))
 
@@ -195,6 +196,7 @@ class SinglePopupToolbar implements GuiGoodiesTrait, ToolBar, Configurable {
     }
 
     /**
+     *
      * Convenience method to get information from associated editorPane.
      */
     private int getEditorWidth() {
@@ -209,12 +211,13 @@ class SinglePopupToolbar implements GuiGoodiesTrait, ToolBar, Configurable {
      * @param y The Y coordinate to open at.
      */
     private void open(@NotNull final JFrame parent, final int x, final int y) {
+        PopupLock.instance.locked = true
 
         final boolean create = (this.toolBarWindow == null)
 
         if (create) {
             this.toolBarWindow = new JWindow(parent)
-            initGuiGoodies(this.toolBarWindow)
+            initGuiEnvTools(this.toolBarWindow)
             safeOpacity = this.toolbarOpacity
             safeMakeRoundedRectangleShape()
 
@@ -252,6 +255,8 @@ class SinglePopupToolbar implements GuiGoodiesTrait, ToolBar, Configurable {
      * Closes the toolbar.
      */
     private void close() {
+        PopupLock.instance.locked = false
+
         if (this.toolBarWindow != null) {
             this.toolBarWindow.setVisible(false)
         }

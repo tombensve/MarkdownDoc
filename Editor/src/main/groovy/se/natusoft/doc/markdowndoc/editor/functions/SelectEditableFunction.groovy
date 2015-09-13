@@ -48,6 +48,7 @@ import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
 import se.natusoft.doc.markdowndoc.editor.gui.EditableSelectorPopup
+import se.natusoft.doc.markdowndoc.editor.gui.PopupLock
 
 import javax.swing.*
 import java.awt.event.MouseEvent
@@ -150,6 +151,8 @@ class SelectEditableFunction implements EditorFunction, Configurable {
      */
     @Override
     void perform() throws FunctionException {
+        if (PopupLock.instance.locked) return
+
         this.popup = new EditableSelectorPopup(editor: this.editor, closer: { close() } )
         this.popup.registerConfigs(this.configProvider)
         this.configProvider.refreshConfigs()

@@ -47,8 +47,8 @@ import se.natusoft.doc.markdowndoc.editor.api.*
 import se.natusoft.doc.markdowndoc.editor.config.*
 import se.natusoft.doc.markdowndoc.editor.file.EditableProvider
 import se.natusoft.doc.markdowndoc.editor.file.Editables
-import se.natusoft.doc.markdowndoc.editor.gui.GuiGoodiesTrait
-import se.natusoft.doc.markdowndoc.editor.gui.MouseListeners
+import se.natusoft.doc.markdowndoc.editor.gui.GuiEnvToolsTrait
+import se.natusoft.doc.markdowndoc.editor.gui.MouseListenersTrait
 import se.natusoft.doc.markdowndoc.editor.gui.MultiPopupToolbar
 import se.natusoft.doc.markdowndoc.editor.tools.ServiceDefLoader
 
@@ -74,8 +74,8 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_T
 @CompileStatic
 @TypeChecked
 @Singleton
-class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, MouseListeners, Configurable,
-        MouseMotionProvider, GuiGoodiesTrait {
+class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, MouseListenersTrait, Configurable,
+        MouseMotionProvider, GuiEnvToolsTrait {
 
     //
     // Constants
@@ -394,7 +394,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      * Sets up the gui, etc.
      */
     void initGUI() {
-        initGuiGoodies(this)
+        initGuiEnvTools(this)
         addWindowListener(new WindowListenerAdapter() {
             @Override
             void windowClosing(final WindowEvent ignored) {

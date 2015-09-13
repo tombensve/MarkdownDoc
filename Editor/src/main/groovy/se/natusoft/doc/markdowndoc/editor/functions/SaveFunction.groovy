@@ -50,7 +50,7 @@ import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
 import se.natusoft.doc.markdowndoc.editor.file.Editables
-import se.natusoft.doc.markdowndoc.editor.gui.GuiGoodiesTrait
+import se.natusoft.doc.markdowndoc.editor.gui.GuiEnvToolsTrait
 import se.natusoft.doc.markdowndoc.editor.gui.PopupWindow
 
 import javax.swing.*
@@ -66,7 +66,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-class SaveFunction implements EditorFunction, Configurable, GuiGoodiesTrait {
+class SaveFunction implements EditorFunction, Configurable, GuiEnvToolsTrait {
     //
     // Private Members
     //
@@ -205,7 +205,7 @@ class SaveFunction implements EditorFunction, Configurable, GuiGoodiesTrait {
                 final int y = editor.getGUI().getWindowFrame().getY()
 
                 final JWindow window = new JWindow(editor.getGUI().getWindowFrame())
-                initGuiGoodies(window)
+                initGuiEnvTools(window)
                 SaveFunction.this.safeOpacity = SaveFunction.this.popupOpacity
                 window.layout = new BorderLayout()
 

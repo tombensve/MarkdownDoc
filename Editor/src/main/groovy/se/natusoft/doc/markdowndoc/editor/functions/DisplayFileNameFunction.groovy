@@ -11,7 +11,8 @@ import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
 import se.natusoft.doc.markdowndoc.editor.gui.ColorsTrait
-import se.natusoft.doc.markdowndoc.editor.gui.GuiGoodiesTrait
+import se.natusoft.doc.markdowndoc.editor.gui.GuiEnvToolsTrait
+import se.natusoft.doc.markdowndoc.editor.gui.PopupLock
 import se.natusoft.doc.markdowndoc.editor.gui.PopupWindow
 
 import javax.swing.*
@@ -25,7 +26,7 @@ import java.awt.event.MouseMotionListener
  */
 @CompileStatic
 @TypeChecked
-class DisplayFileNameFunction implements EditorFunction, Configurable, GuiGoodiesTrait, ColorsTrait {
+class DisplayFileNameFunction implements EditorFunction, Configurable, GuiEnvToolsTrait, ColorsTrait {
 
     //
     // Config
@@ -158,7 +159,9 @@ class DisplayFileNameFunction implements EditorFunction, Configurable, GuiGoodie
         if (this.editor == null) return
         final int y = e.y - this.editor.GUI.editorVisibleY
         if (y <= this.editor.topMargin && e.x >= 0 && e.x <= this.editor.width) {
-            displayName()
+            if (!PopupLock.instance.locked) {
+                displayName()
+            }
         }
         else {
             hideName()
@@ -182,7 +185,7 @@ class DisplayFileNameFunction implements EditorFunction, Configurable, GuiGoodie
     protected void displayName() {
         if (this.nameDisplayPopup == null) {
             this.nameDisplayPopup = new JWindow(this.editor.GUI.windowFrame)
-            initGuiGoodies(this.nameDisplayPopup)
+            initGuiEnvTools(this.nameDisplayPopup)
             updateOpacity()
             safeMakeRoundedRectangleShape()
 

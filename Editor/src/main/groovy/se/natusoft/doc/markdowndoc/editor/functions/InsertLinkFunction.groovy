@@ -49,7 +49,7 @@ import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
 import se.natusoft.doc.markdowndoc.editor.gui.ColorsTrait
-import se.natusoft.doc.markdowndoc.editor.gui.GuiGoodiesTrait
+import se.natusoft.doc.markdowndoc.editor.gui.GuiEnvToolsTrait
 import se.natusoft.doc.markdowndoc.editor.gui.MDETitledBorder
 import se.natusoft.doc.markdowndoc.editor.gui.PopupWindow
 
@@ -67,7 +67,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  */
 @CompileStatic
 @TypeChecked
-class InsertLinkFunction implements EditorFunction, Configurable, GuiGoodiesTrait, ColorsTrait {
+class InsertLinkFunction implements EditorFunction, Configurable, GuiEnvToolsTrait, ColorsTrait {
     //
     // Private Members
     //
@@ -297,7 +297,7 @@ class InsertLinkFunction implements EditorFunction, Configurable, GuiGoodiesTrai
         vBox.add(insertCancelPanel)
 
         this.inputDialog = new JWindow(this.editor.getGUI().getWindowFrame())
-        initGuiGoodies(this.inputDialog)
+        initGuiEnvTools(this.inputDialog)
         safeOpacity = this.popupOpacity
         safeMakeRoundedRectangleShape()
         updateColors(this.inputDialog)

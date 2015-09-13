@@ -45,13 +45,14 @@ import se.natusoft.doc.markdowndoc.editor.config.IntegerConfigEntry
 
 import javax.swing.JFrame
 import java.awt.Color
+import java.awt.Window
 
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_TOOL
 
 /**
  * Base class for popup window.
  */
-class PopupWindow extends JFrame implements Configurable, GuiGoodiesTrait, ColorsTrait, OSTrait {
+class PopupWindow extends JFrame implements Configurable, GuiEnvToolsTrait, ColorsTrait, OSTrait {
 
     //
     // Private Members
@@ -64,6 +65,17 @@ class PopupWindow extends JFrame implements Configurable, GuiGoodiesTrait, Color
     private int _bottomMargin = 0
 
     //
+    // Properties
+    //
+
+    /**
+     * The parent of the popup window. This is needed to determine popup position and size.
+     * <p/>
+     * Note that this is only stored here, it is subclasses that makes use of it.
+     */
+    Window parentWindow
+
+    //
     // Config
     //
 
@@ -72,13 +84,13 @@ class PopupWindow extends JFrame implements Configurable, GuiGoodiesTrait, Color
 
     // The -1 values means not set, in which case a default will be calculated depending on platform run on.
 
-    public static final IntegerConfigEntry screenTopMargin =
-            new IntegerConfigEntry("editor.common.popup.top.margin", "Top margin of popup windows.",
-                    -1, -1, Integer.MAX_VALUE, CONFIG_GROUP_TOOL)
-
-    public static final IntegerConfigEntry screenBottomMargin =
-            new IntegerConfigEntry("editor.common.popup.bottom.margin", "Bottom margin of popup windows.",
-                    -1, -1, Integer.MAX_VALUE, CONFIG_GROUP_TOOL)
+//    public static final IntegerConfigEntry screenTopMargin =
+//            new IntegerConfigEntry("editor.common.popup.top.margin", "Top margin of popup windows.",
+//                    -1, -1, Integer.MAX_VALUE, CONFIG_GROUP_TOOL)
+//
+//    public static final IntegerConfigEntry screenBottomMargin =
+//            new IntegerConfigEntry("editor.common.popup.bottom.margin", "Bottom margin of popup windows.",
+//                    -1, -1, Integer.MAX_VALUE, CONFIG_GROUP_TOOL)
 
     protected Closure popupOpacityChanged = { @NotNull final ConfigEntry ce ->
         final int ival = Integer.valueOf(ce.value)
@@ -101,8 +113,8 @@ class PopupWindow extends JFrame implements Configurable, GuiGoodiesTrait, Color
     @Override
     void registerConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.registerConfig(popupOpacityConfig, popupOpacityChanged)
-        configProvider.registerConfig(screenTopMargin, popupWindowTopMarginConfigChanged)
-        configProvider.registerConfig(screenBottomMargin, popupWindowBottomMarginConfigChanged)
+//        configProvider.registerConfig(screenTopMargin, popupWindowTopMarginConfigChanged)
+//        configProvider.registerConfig(screenBottomMargin, popupWindowBottomMarginConfigChanged)
     }
 
     /**
@@ -113,8 +125,8 @@ class PopupWindow extends JFrame implements Configurable, GuiGoodiesTrait, Color
     @Override
     void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
         configProvider.unregisterConfig(popupOpacityConfig, popupOpacityChanged)
-        configProvider.unregisterConfig(screenTopMargin, popupWindowTopMarginConfigChanged)
-        configProvider.unregisterConfig(screenBottomMargin, popupWindowBottomMarginConfigChanged)
+//        configProvider.unregisterConfig(screenTopMargin, popupWindowTopMarginConfigChanged)
+//        configProvider.unregisterConfig(screenBottomMargin, popupWindowBottomMarginConfigChanged)
     }
 
     //
@@ -122,11 +134,14 @@ class PopupWindow extends JFrame implements Configurable, GuiGoodiesTrait, Color
     //
 
     PopupWindow() {
-        initGuiGoodies(this)
+        initGuiEnvTools(this)
         undecorated = true
         background = Color.BLACK
         foreground = Color.WHITE
         autoRequestFocus = true
+        if (alwaysOnTopSupported) {
+            alwaysOnTop = true
+        }
     }
 
     //
@@ -165,17 +180,6 @@ class PopupWindow extends JFrame implements Configurable, GuiGoodiesTrait, Color
      */
     protected void updateWindowTopMargin(final int windowTopMargin) {
         this._topMargin = windowTopMargin
-        if (this._topMargin == -1) {
-            if (macOSXOS) {
-                this._topMargin = 23
-            }
-            else if (linuxOS) {
-                this._topMargin = 4
-            }
-            else {
-                this._topMargin = 0
-            }
-        }
     }
 
     /**
@@ -186,42 +190,6 @@ class PopupWindow extends JFrame implements Configurable, GuiGoodiesTrait, Color
     @SuppressWarnings("GroovyIfStatementWithIdenticalBranches")
     protected void updateWindowBottomMargin(final int windowBottomMargin) {
         this._bottomMargin = windowBottomMargin
-        if (this._bottomMargin == -1) {
-            if (windowsOS) {
-                this._bottomMargin = 70
-            }
-            else if (linuxOS) {
-                this._bottomMargin = 40
-            }
-            else if (macOSXOS) {
-                this._bottomMargin = 0
-            }
-            else {
-                this._bottomMargin = 0
-            }
-        }
-    }
-
-    /**
-     * This filters the actual content bottom margin, not the screen bottom margin.
-     *
-     * @param bottomMargin The original bottom margin.
-     *
-     * @return A possibly updated bottom margin.
-     */
-    @SuppressWarnings("GrMethodMayBeStatic")
-    // No, method may not be static! The OSTrait methods linuxOS and windowsOS are not found if the
-    // method is static. Even if the 2 OSTrait methods themselves are static the actual trait seems to
-    // only be connected to the instance.
-    protected int filterBottomMargin(int bottomMargin) {
-        if (linuxOS) {
-            bottomMargin += 20
-        }
-        else if (windowsOS) {
-            bottomMargin += 10
-        }
-
-        return bottomMargin
     }
 
     /**

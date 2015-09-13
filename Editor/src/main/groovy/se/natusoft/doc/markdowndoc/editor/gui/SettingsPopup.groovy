@@ -80,7 +80,7 @@ class SettingsPopup extends PopupWindow implements OSTrait {
             leftMargin: 5,
             rightMargin: 5,
             topMargin: 10,
-            bottomMargin: filterBottomMargin(30) // We need to reserve space for save and cancel button.
+            bottomMargin: 30 // We need to reserve space for save and cancel button.
     )
 
     //
@@ -140,9 +140,6 @@ class SettingsPopup extends PopupWindow implements OSTrait {
             }
         })
 
-        this.contentLayout.screenSize =
-                getDefaultScreen_Bounds(this.windowTopMargin, this.windowBottomMargin)
-
         this.groupPane = new JPanel(this.contentLayout)
         this.groupPane.border = null
         updateColors(this.groupPane)
@@ -182,37 +179,25 @@ class SettingsPopup extends PopupWindow implements OSTrait {
         buttons.add(cancelButton)
 
         add(buttons, BorderLayout.SOUTH)
+
+        safeMakeRoundedRectangleShape()
     }
 
     void updateBounds() {
 
-//        this.contentLayout.screenSize =
-//                getDefaultScreen_Bounds(this.windowTopMargin, this.windowBottomMargin)
+        this.bounds = new Rectangle(
+                this.parentWindow.x + 50,
+                this.parentWindow.y + 80,
+                this.parentWindow.width - 100,
+                this.parentWindow.height - 160
+        )
 
-        final Dimension ps = preferredSize
-
-        if (defaultScreen_Bounds.width - ps.width > 0) {
-            setBounds(
-                    (defaultScreen_Bounds.width - ps.width) as int,
-                    (this.fullScreenMode ? 0i : this.windowTopMargin) as int,
-                    ps.width as int,
-                    (this.fullScreenMode ? (int)defaultScreen_Bounds.height :
-                            (int)defaultScreen_Bounds.height - this.windowTopMargin - this.windowBottomMargin) as int
-            )
-        }
-        else {
-            setBounds(
-                    0,
-                    (this.fullScreenMode ? 0i : this.windowTopMargin) as int,
-                    defaultScreen_Bounds.width as int,
-                    (this.fullScreenMode ? (int)defaultScreen_Bounds.height :
-                            (int)defaultScreen_Bounds.height - this.windowTopMargin - this.windowBottomMargin) as int
-            )
-        }
+        moveMouse(new Point((this.bounds.x + 20) as int, (this.bounds.y + 20) as int))
     }
 
     void setWindowVisibility(final boolean state) {
         if (state) {
+            PopupLock.instance.locked = true
 
             setupWindow()
 
@@ -234,6 +219,8 @@ class SettingsPopup extends PopupWindow implements OSTrait {
             fadeInWindow(this.popupOpacity)
         }
         else {
+            PopupLock.instance.locked = false
+            PopupLock.instance.transferLock = false
             visible = false
         }
     }

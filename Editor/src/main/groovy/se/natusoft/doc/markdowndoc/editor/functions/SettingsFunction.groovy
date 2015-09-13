@@ -48,7 +48,8 @@ import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
 import se.natusoft.doc.markdowndoc.editor.functions.utils.FileWindowProps
-import se.natusoft.doc.markdowndoc.editor.gui.GuiGoodiesTrait
+import se.natusoft.doc.markdowndoc.editor.gui.GuiEnvToolsTrait
+import se.natusoft.doc.markdowndoc.editor.gui.PopupLock
 import se.natusoft.doc.markdowndoc.editor.gui.SettingsPopup
 
 import javax.swing.*
@@ -63,7 +64,7 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
 @SuppressWarnings("GroovyMissingReturnStatement") // IDEA bugs out on Closure<Void> expecting it to return something.
 @CompileStatic
 @TypeChecked
-class SettingsFunction implements EditorFunction, Configurable, DelayedInitializer, OSTrait, GuiGoodiesTrait {
+class SettingsFunction implements EditorFunction, Configurable, DelayedInitializer, OSTrait, GuiEnvToolsTrait {
     //
     // Constants
     //
@@ -192,12 +193,16 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
 
     @Override
     void perform() throws FunctionException {
+        if (PopupLock.instance.transferLock) return
+        PopupLock.instance.transferLock = true
+
         this.cancelValues = new HashMap<>()
 
         this.settingsPopup = new SettingsPopup(
                 saveSettingsProvider: saveSettingsProvider,
                 cancelSettingsProvider: cancelSettingsProvider,
-                fullScreenMode: isFullScreenWindow(this.editor.GUI.windowFrame)
+                fullScreenMode: isFullScreenWindow(this.editor.GUI.windowFrame),
+                parentWindow: this.editor.GUI.windowFrame
         )
 
         this.settingsPopup.registerConfigs(this.configProvider)

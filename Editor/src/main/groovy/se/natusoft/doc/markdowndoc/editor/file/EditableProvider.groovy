@@ -202,6 +202,9 @@ class EditableProvider implements Editable, OSTrait {
     void load() throws IOException {
         final StringBuilder sb = new StringBuilder()
         file.withReader('UTF-8') { final BufferedReader reader ->
+            // If you are using IDEA 14.1.4 the "String" part below will be marked as an error.
+            // It isn't! BufferedReader.eachLine() do provide a String. IDEA have a general
+            // problem with closures taking a String argument. Other types seem to work OK.
             reader.eachLine { final String line ->
                 // Translate a special italicized quote that some markdown editors like to use into a
                 // standard quote.

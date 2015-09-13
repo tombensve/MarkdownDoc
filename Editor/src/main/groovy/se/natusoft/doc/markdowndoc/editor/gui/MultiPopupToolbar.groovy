@@ -91,9 +91,10 @@ class MultiPopupToolbar implements ToolBar {
 
     protected mouseMovedHandler(@NotNull final MouseEvent e) {
         if (this.editor == null) return
+
         final int y = e.getY() - this.editor.getGUI().getEditorVisibleY()
         if (y <= getTopMargin() && e.getX() >= 0 && e.getX() <= getEditorWidth()) {
-            if (!isOpen()) {
+            if (!isOpen() && !PopupLock.instance.locked) {
                 final int toolbarWidth = calculateWidth()
                 final int x = getParentFrame().getX() + (int)(getParentFrame().getWidth() / 2) - (int)(toolbarWidth / 2)
 
@@ -172,6 +173,7 @@ class MultiPopupToolbar implements ToolBar {
      * @param y The Y coordinate to open at.
      */
     private void open(@NotNull final JFrame parent, int x, final int y) {
+        PopupLock.instance.locked = true
 
         final boolean create = this.buttonWindows.isEmpty()
 
@@ -211,6 +213,8 @@ class MultiPopupToolbar implements ToolBar {
      * Closes the toolbar.
      */
     private void close() {
+        PopupLock.instance.locked = false
+
         this.buttonWindows.each { final JWindow buttonWindow ->
             buttonWindow.setVisible(false)
         }

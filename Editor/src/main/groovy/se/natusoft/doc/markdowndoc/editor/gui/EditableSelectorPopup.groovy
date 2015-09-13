@@ -56,7 +56,7 @@ import java.util.List
  */
 @CompileStatic
 @TypeChecked
-class EditableSelectorPopup extends PopupWindow implements MouseListeners {
+class EditableSelectorPopup extends PopupWindow implements MouseListenersTrait {
 
     //
     // Private Members
@@ -79,10 +79,9 @@ class EditableSelectorPopup extends PopupWindow implements MouseListeners {
                     leftMargin: 20,
                     rightMargin: 30,
                     topMargin: 10,
-                    bottomMargin: filterBottomMargin(40),
+                    bottomMargin: 40,
                     hgap: 20,
-                    vgap: 4,
-                    screenSize: getDefaultScreen_Bounds(windowTopMargin, windowBottomMargin)
+                    vgap: 4
             )
 
     private EditableFileButton moveToOnOpen = null
@@ -96,6 +95,7 @@ class EditableSelectorPopup extends PopupWindow implements MouseListeners {
     Editor editor
     void setEditor(final Editor editor) {
         this.editor = editor
+        this.parentWindow = this.editor.GUI.windowFrame
         this.editor.addCancelCallback(cancelCallback)
     }
 
@@ -176,7 +176,7 @@ class EditableSelectorPopup extends PopupWindow implements MouseListeners {
 
         add scrollPane, BorderLayout.CENTER
 
-//        safeMakeRoundedRectangleShape()
+        safeMakeRoundedRectangleShape()
 
         undecorated = true
         background = Color.BLACK
@@ -189,7 +189,7 @@ class EditableSelectorPopup extends PopupWindow implements MouseListeners {
     }
 
 
-    private class CloseClickHandler implements MouseListeners {
+    private class CloseClickHandler implements MouseListenersTrait {
         @Override
         void mouseClicked(final MouseEvent e) {
             close()
@@ -215,6 +215,8 @@ class EditableSelectorPopup extends PopupWindow implements MouseListeners {
      * This shows the window.
      */
     void showWindow() {
+
+        PopupLock.instance.locked = true
 
         updateOpacity(popupOpacity)
 
@@ -242,11 +244,10 @@ class EditableSelectorPopup extends PopupWindow implements MouseListeners {
         final boolean fullScreen = isFullScreenWindow(this.editor.GUI.windowFrame)
 
         this.bounds = new Rectangle(
-                0,
-                (fullScreen ? 0 : this.windowTopMargin) as int,
-                (this.layout.optimalSize.width as int) + 10,
-                (fullScreen ? this.defaultScreen_Bounds.height :
-                        this.defaultScreen_Bounds.height - this.windowTopMargin - this.windowBottomMargin + 1) as int
+                this.parentWindow.x + 50,
+                this.parentWindow.y + 80,
+                this.parentWindow.width - 100,
+                this.parentWindow.height - 160
         )
 
         moveMouse(new Point(this.moveToOnOpen.x + this.x + 20, this.moveToOnOpen.y + this.y + 10))
@@ -307,6 +308,8 @@ class EditableSelectorPopup extends PopupWindow implements MouseListeners {
     }
 
     private void close() {
+        PopupLock.instance.locked = false
+
         this.visible = false
 
         this.editor?.removeCancelCallback cancelCallback

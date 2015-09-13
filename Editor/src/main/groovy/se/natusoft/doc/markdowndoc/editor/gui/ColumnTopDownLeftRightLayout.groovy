@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -77,9 +77,6 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
     //
     // Properties
     //
-
-    /** The size of the screen. This must be provided or there will be an NPE! */
-    @NotNull Rectangle screenSize
 
     /**
      * This is the calculated optimal size of a  window that should hold this content. Note that
@@ -182,22 +179,8 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
      * @param update If true actual layout will be done. If false only minimum size will be calculated.
      */
     public void doLayout(@NotNull final Container parent, final boolean update) {
-        doLayout(parent, update, this.screenSize.height as int)
-    }
 
-    /**
-     * Does the job of laying out the components.
-     *
-     * @param parent The parent container we are doing layout for.
-     * @param update If true actual layout will be done. If false only minimum size will be calculated.
-     * @param screenHeight The height of the screen to use.
-     */
-    public void doLayout(@NotNull final Container parent, final boolean update, final int screenHeight) {
-
-        this.optimalSize = new Dimension(400, screenHeight)
-
-        // Optimize:
-        //if (parent.size.width == 0) return
+        this.optimalSize = new Dimension(400, 600)
 
         if (this.bottomMargin == 0) this.bottomMargin = this.topMargin
         if (this.rightMargin == 0) this.rightMargin = this.leftMargin
@@ -222,7 +205,7 @@ class ColumnTopDownLeftRightLayout implements LayoutManager2 {
             compPreferred.setSize(commonWidth, compPreferred.height)
 
             if ((y + (compPreferred.height as int) + this.bottomMargin + this.vgap + this.extraVGap) >
-                    (optimalSize.height as int)) {
+                    (parent.height as int)) {
 
                 x = (int)(x + commonWidth + this.hgap + this.extraHGap)
                 y = (int)(insets.top + this.topMargin + this.extraVMargin)
