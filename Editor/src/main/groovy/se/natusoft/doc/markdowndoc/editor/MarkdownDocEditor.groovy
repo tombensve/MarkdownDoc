@@ -81,7 +81,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
     // Constants
     //
 
-    private static final String WINDOW_TITLE = "MarkdownDoc Editor 1.4"
+    private static final String WINDOW_TITLE = "MarkdownDoc Editor 1.4.1"
 
     //
     // Static members

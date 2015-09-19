@@ -5,8 +5,8 @@
 
     @PDFTitle("MarkdownDoc")
     @PDFSubject("User Guide")
-    @PDFKeywords("markdown MarkdownDoc mdd_version_1.4")
-    @PDFVersion(1 . 4) Due to the font used I put a space between to make the dot more visible.
+    @PDFKeywords("markdown MarkdownDoc mdd_version_1.4.1")
+    @PDFVersion(1 . 4 . 1) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
     @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
@@ -48,7 +48,7 @@ In short MarkdownDoc provides the following:
 
 ### Binaries
 
-Binaries are made available at [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/view) and Bintrays JCenter repository: <http://jcenter.bintray.com> which should also contain everything in maven central.
+Binaries are made available at [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/view) and Bintrays JCenter repository: <http://jcenter.bintray.com> which also mirrors everything in maven central.
 
 ### Thanks
 
@@ -71,7 +71,7 @@ The known (and intentional) differences are:
 
 * Does not support any other formatting within strong, emphasized, or header. I personally don't see enough of a problem with this, that I'll prioritize it. 
 
-If you find any of the missing features a problem, I'll happily accept pull requests. :-) Seriously it is OK to contact me with functionality wishes. Do note however that I work on this and other projects entirely in my spare time. 
+If you find any of the missing features a problem, I'll happily accept pull requests. :-) Seriously, it is OK to contact me with functionality wishes. Do note however that I work on this and other projects entirely in my spare time. 
 
 ## File specifications
 

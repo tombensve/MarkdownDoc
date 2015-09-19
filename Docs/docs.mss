@@ -174,7 +174,7 @@
       },
       "h1": {
         "size": 20,
-        "style": "BOLD"
+        "style": "NORMAL"
       },
       "h2": {
         "size": 18,
@@ -184,19 +184,19 @@
       },
       "h3": {
         "size": 16,
-        "style": "BOLD"
+        "style": "NORMAL"
       },
       "h4": {
         "size": 14,
-        "style": "BOLD"
+        "style": "NORMAL"
       },
       "h5": {
         "size": 12,
-        "style": "BOLD"
+        "style": "NORMAL"
       },
       "h6": {
         "size": 10,
-        "style": "BOLD"
+        "style": "NORMAL"
       },
       "emphasis": {
         "style": "ITALIC"
@@ -279,7 +279,7 @@
     "toc": {
     },
     "h1": {
-      "style": "BOLD"
+      "style": "NORMAL"
     },
     "h2": {
       "style": "ITALIC",

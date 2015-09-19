@@ -6,8 +6,8 @@
 
     @PDFTitle("MarkdownDoc")
     @PDFSubject("User Guide")
-    @PDFKeywords("markdown MarkdownDoc mdd_version_1.4")
-    @PDFVersion(1 . 4) Due to the font used I put a space between to make the dot more visible.
+    @PDFKeywords("markdown MarkdownDoc mdd_version_1.4.1")
+    @PDFVersion(1 . 4 . 1) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
     @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
@@ -56,7 +56,7 @@ In short MarkdownDoc provides the following:
 
 ### Binaries
 
-Binaries are made available at [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/view) and Bintrays JCenter repository: [http://jcenter.bintray.com](http://jcenter.bintray.com) which should also contain everything in maven central.
+Binaries are made available at [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/view) and Bintrays JCenter repository: [http://jcenter.bintray.com](http://jcenter.bintray.com) which also mirrors everything in maven central.
 
 ### Thanks
 
@@ -78,7 +78,7 @@ The known (and intentional) differences are:
 
 * Does not support any other formatting within strong, emphasized, or header. I personally don't see enough of a problem with this, that I'll prioritize it.
 
-If you find any of the missing features a problem, I'll happily accept pull requests. :-) Seriously it is OK to contact me with functionality wishes. Do note however that I work on this and other projects entirely in my spare time.
+If you find any of the missing features a problem, I'll happily accept pull requests. :-) Seriously, it is OK to contact me with functionality wishes. Do note however that I work on this and other projects entirely in my spare time.
 
 ## File specifications
 
@@ -1046,7 +1046,7 @@ The editor is also available in MarkdownDocEditor.app format. The build plugin t
 
 Also note that since this .app is not signed, Mac OS X Mavericks and upp will not allow you to run the app if you do not open upp for running all types of apps in the security settings.
 
-Due to GUI bugs in the editor component of earlier versions of Java, Java 1.8 or higher is required to be installed on your system for the app to be able to run, assuming you are using the patched version I'm providing for download in the README.md document. If you checkout the source and build yourself then it will require Java 1.6 and upp. But be warned: You will be annoyed if you use Java lower than 1.8!
+Due to GUI bugs in the editor component of earlier versions of Java, Java 1.8 or higher is required to be installed on your system for the app to be able to run, assuming you are using the version I'm providing for download in the README.md document. If you checkout the source and build yourself then it will require Java 1.6 and upp. But be warned: You will be annoyed if you use Java lower than 1.8!
 
 ### Version 1.4 usage changes
 
@@ -1072,7 +1072,7 @@ This requires Java 7+!
 
 This section documents the different functions of the editor, and how to trigger the function.
 
-The images are the toolbar icon for the function.
+The images are the toolbar icon for the function. Not all functions install themselves in the toolbar.
 
 ### Bringing upp the toolbar
 
@@ -1188,51 +1188,51 @@ Press the "Generate" button to actually generate the PDF document.
 
 The choices are:
 
-#### Page size
+##### Page size
 
 This is one of the standard paper sizes like A4 or Letter.
 
-#### Title
+##### Title
 
 This is the title of the document. This will be shown on the front page.
 
-#### Subject
+##### Subject
 
 This is an optional subject / subtitle. This will be shown on the front page.
 
-#### Keywords
+##### Keywords
 
 A space separated set of keywords. These will not be shown anywhere, but will be added as meta data to the PDF document.
 
-#### Author
+##### Author
 
 The author of the document. This will be shown on the front page.
 
-#### Version
+##### Version
 
 The current version of the document. This will be shown on the front page.
 
-#### Copyright year
+##### Copyright year
 
 The year of copyright. This will be shown on the front page in the format: "Copyright (C) {year} by {by}".
 
-#### Copyright by
+##### Copyright by
 
 The one holding the copyright.
 
-#### Generate section numbers
+##### Generate section numbers
 
 When this is selected numbers are generated for each heading. For example: 1, 1.1, 1.3.5, ... This is common for professional documents.
 
-#### Generate title page: 
+##### Generate title page: 
 
 This will produce a first page with a document title, subject, author, version and copyright.
 
-#### Generate TOC
+##### Generate TOC
 
 This will generate a table of contents. This will come after the title page if that is generated, but before the document.
 
-#### Open result
+##### Open result
 
 If this is selected then the generated PDF will be opened by the system default PDF viewer.
 
@@ -1246,19 +1246,19 @@ This will first open a file chooser to select HTML file to generate to. Then a p
 
 ![](file:Editor/docs/images/HTMLOptions.png)
 
-#### Inline CSS
+##### Inline CSS
 
 If you select this option then the CSS file you point out will be included within the generated HTML file.
 
-#### CSS file
+##### CSS file
 
 This is the CSS file to use. Write a path to the CSS file or use the "Select" button to open a file chooser. This is optional and can be skipped, but the resulting HMTL can be rather boring if you don't provide a CSS.
 
-#### file: links relative to
+##### file: links relative to
 
 This is a path that file: links in the document isrelative to. This is used to resolve local filesystem images.
 
-#### Open result
+##### Open result
 
 If this is selected then the generated HTML will be opened by the system default browser.
 
@@ -1289,6 +1289,14 @@ Default key: Ctrl+1. This is changeable in the settings.
 This opens a popup window with all the open files. Click on a file to select it for editing in the window.
 
 This function can also be activated by moving the mouse to the left edge of the editor window.
+
+### Goto next open file
+
+This is an alternative to the above function and allows you to jump around the open files. Each time this function is triggered the editor window will switch content. Internally the editor just keeps a list of all open files, and this just jumps to the next file in that list until the last file is reached and it jumps to the first instead. This function will also show the name of the current "jumped to" file at the bottom of the window just like when you move the mouse up to the toolbar area.
+
+Note that this function has no default key configured and must be set in the settings window before it can be used. On Mac Alt+Tab works since it is not used by the system, on Windows and Linux you probably need some other key combination.
+
+This function is new in version 1.4.1.
 
 <!-- @EndDiv -->
 
@@ -1370,6 +1378,16 @@ As you can see pdf options are prefixed with "pdf.", html options are prefixed w
 # Version history
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
+
+## 1.4.1
+
+Only fixes in editor!
+
+* The popup windows now only popup over the editor window. The fullscreen popups worked badly on different platforms which reserves different parts of the screen.
+
+* Disabled rounded corner popup windows since they also worked with different quality on different platforms.
+
+* Added editor function to _Alt-Tab or something_ around opened files in the editor. For this to work at all you need to open configuration and set a keyboard compination that triggers this. There is no failsafe default that works on all platforms. The config is called "content switch keyboard shortcut".
 
 ## 1.4
 
@@ -1878,75 +1896,30 @@ The following third party products are using this license:
 -->
 ## Apache version 2.0
 
-              Toggle navigation
-              
-              
-              
-            
-            
+            The Apache Software Foundation
+            Apache License, Version 2.0
           
           
+            
+              Home -->
+              Foundation
+              Projects
+              People
+              Get Involved
+              Download
+              Support Apache
+            
             Home&nbsp;&raquo&nbsp;Licenses
             
               
-                  About 
-                  
-                          Overview
-                          Members
-                          Process
-                          Sponsorship
-                          Glossary
-                          FAQ
-                          Contact                      
-                  
               
-                Projects
-                      
-                    People 
-                    
-                              Overview
-                              Committers
-                              Meritocracy
-                              Roles
-                              Planet Apache
-                    
-                
-              
-                Get Involved 
-                
-                  Overview
-                          Community Development
-                          ApacheCon
-                
-                      
-              Download
-              
-                  Support Apache 
-                  
-                          Sponsorship
-                          Donations
-                          Buy Stuff
-                          Thanks
-                  
               
             
           
-        
+          
+          Apache LicenseVersion 2.0, January 2004
 
- (function() {  var cx = '005703438322411770421:5mgshgrgx2u';  var gcse = document.createElement('script');  gcse.type = 'text/javascript';  gcse.async = true;  gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +  '//cse.google.com/cse.js?cx=' + cx;  var s = document.getElementsByTagName('script')[0]();  s.parentNode.insertBefore(gcse, s);  })();
-
-                The Apache Way
-                Contribute
-                ASF Sponsors
-        
-
-/_The following code is added by mdx_elementid.py  It was originally lifted from http://subversion.apache.org/style/site.css _/ /_
-
-* Hide class="elementid-permalink", except when an enclosing heading
-
-* has the :hover property.
-
-*  .headerlink, .elementid-permalink {  visibility: hidden; } h2:hover > .headerlink, h3:hover > .headerlink, h1:hover > .headerlink, h6:hover > .headerlink, h4:hover > .headerlink, h5:hover > .headerlink, dt:hover > .elementid-permalink { visibility: visible } Apache LicenseVersion 2.0, January 2004 http://www.apache.org/licenses/ TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+http://www.apache.org/licenses/ TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 
 1. Definitions. "License" shall mean the terms and conditions for use, reproduction, and distribution as defined by Sections 1 through 9 of this document. "Licensor" shall mean the copyright owner or entity authorized by the copyright owner that is granting the License. "Legal Entity" shall mean the union of the acting entity and all other entities that control, are controlled by, or are under common control with that entity. For the purposes of this definition, "control" means (i) the power, direct or indirect, to cause the direction or management of such entity, whether by contract or otherwise, or (ii) ownership of fifty percent (50%) or more of the outstanding shares, or (iii) beneficial ownership of such entity. "You" (or "Your") shall mean an individual or Legal Entity exercising permissions granted by this License. "Source" form shall mean the preferred form for making modifications, including but not limited to software source code, documentation source, and configuration files. "Object" form shall mean any form resulting from mechanical transformation or translation of a Source form, including but not limited to compiled object code, generated documentation, and conversions to other media types. "Work" shall mean the work of authorship, whether in Source or Object form, made available under the License, as indicated by a copyright notice that is included in or attached to the work (an example is provided in the Appendix below). "Derivative Works" shall mean any work, whether in Source or Object form, that is based on (or derived from) the Work and for which the editorial revisions, annotations, elaborations, or other modifications represent, as a whole, an original work of authorship. For the purposes of this License, Derivative Works shall not include works that remain separable from, or merely link (or bind by name) to the interfaces of, the Work and Derivative Works thereof. "Contribution" shall mean any work of authorship, including the original version of the Work and any modifications or additions to that Work or Derivative Works thereof, that is intentionally submitted to Licensor for inclusion in the Work by the copyright owner or by an individual or Legal Entity authorized to submit on behalf of the copyright owner. For the purposes of this definition, "submitted" means any form of electronic, verbal, or written communication sent to the Licensor or its representatives, including but not limited to communication on electronic mailing lists, source code control systems, and issue tracking systems that are managed by, or on behalf of, the Licensor for the purpose of discussing and improving the Work, but excluding communication that is conspicuously marked or otherwise designated in writing by the copyright owner as "Not a Contribution." "Contributor" shall mean Licensor and any individual or Legal Entity on behalf of whom a Contribution has been received by Licensor and subsequently incorporated within the Work.
 
@@ -1962,9 +1935,7 @@ You must cause any modified files to carry prominent notices stating that You ch
 
 You must retain, in the Source form of any Derivative Works that You distribute, all copyright, patent, trademark, and attribution notices from the Source form of the Work, excluding those notices that do not pertain to any part of the Derivative Works; and
 
-If the Work includes a "NOTICE" text file as part of its distribution, then any Derivative Works that You distribute must include a readable copy of the attribution notices contained within such NOTICE file, excluding those notices that do not pertain to any part of the Derivative Works, in at least one of the following places: within a NOTICE text file distributed as part of the Derivative Works; within the Source form or documentation, if provided along with the Derivative Works; or, within a display generated by the Derivative Works, if and wherever such third-party notices normally appear. The contents of the NOTICE file are for informational purposes only and do not modify the License. You may add Your own attribution notices within Derivative Works that You distribute, alongside or as an addendum to the NOTICE text from the Work, provided that such additional attribution notices cannot be construed as modifying the License.
-
-You may add Your own copyright statement to Your modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of Your modifications, or for any such Derivative Works as a whole, provided Your use, reproduction, and distribution of the Work otherwise complies with the conditions stated in this License.
+If the Work includes a "NOTICE" text file as part of its distribution, then any Derivative Works that You distribute must include a readable copy of the attribution notices contained within such NOTICE file, excluding those notices that do not pertain to any part of the Derivative Works, in at least one of the following places: within a NOTICE text file distributed as part of the Derivative Works; within the Source form or documentation, if provided along with the Derivative Works; or, within a display generated by the Derivative Works, if and wherever such third-party notices normally appear. The contents of the NOTICE file are for informational purposes only and do not modify the License. You may add Your own attribution notices within Derivative Works that You distribute, alongside or as an addendum to the NOTICE text from the Work, provided that such additional attribution notices cannot be construed as modifying the License. You may add Your own copyright statement to Your modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of Your modifications, or for any such Derivative Works as a whole, provided Your use, reproduction, and distribution of the Work otherwise complies with the conditions stated in this License.
 
 1. Submission of Contributions. Unless You explicitly state otherwise, any Contribution intentionally submitted for inclusion in the Work by You to the Licensor shall be under the terms and conditions of this License, without any additional terms or conditions. Notwithstanding the above, nothing herein shall supersede or modify the terms of any separate license agreement you may have executed with Licensor regarding such Contributions.
 
@@ -1974,78 +1945,85 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 4. Limitation of Liability. In no event and under no legal theory, whether in tort (including negligence), contract, or otherwise, unless required by applicable law (such as deliberate and grossly negligent acts) or agreed to in writing, shall any Contributor be liable to You for damages, including any direct, indirect, special, incidental, or consequential damages of any character arising as a result of this License or out of the use or inability to use the Work (including but not limited to damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other commercial damages or losses), even if such Contributor has been advised of the possibility of such damages.
 
-5. Accepting Warranty or Additional Liability. While redistributing the Work or Derivative Works thereof, You may choose to offer, and charge a fee for, acceptance of support, warranty, indemnity, or other liability obligations and/or rights consistent with this License. However, in accepting such obligations, You may act only on Your own behalf and on Your sole responsibility, not on behalf of any other Contributor, and only if You agree to indemnify, defend, and hold each Contributor harmless for any liability incurred by, or claims asserted against, such Contributor by reason of your accepting any such warranty or additional liability. END OF TERMS AND CONDITIONS APPENDIX: How to apply the Apache License to your work&para; To apply the Apache License to your work, attach the following boilerplate notice, with the fields enclosed by brackets "[]()" replaced with your own identifying information. (Don't include the brackets!) The text should be enclosed in the appropriate comment syntax for the file format. We also recommend that a file or class name and description of purpose be included on the same "printed page" as the copyright notice for easier identification within third-party archives. Copyright [yyyy]() [name of copyright owner]()
+5. Accepting Warranty or Additional Liability. While redistributing the Work or Derivative Works thereof, You may choose to offer, and charge a fee for, acceptance of support, warranty, indemnity, or other liability obligations and/or rights consistent with this License. However, in accepting such obligations, You may act only on Your own behalf and on Your sole responsibility, not on behalf of any other Contributor, and only if You agree to indemnify, defend, and hold each Contributor harmless for any liability incurred by, or claims asserted against, such Contributor by reason of your accepting any such warranty or additional liability. END OF TERMS AND CONDITIONS APPENDIX: How to apply the Apache License to your work To apply the Apache License to your work, attach the following boilerplate notice, with the fields enclosed by brackets "[]()" replaced with your own identifying information. (Don't include the brackets!) The text should be enclosed in the appropriate comment syntax for the file format. We also recommend that a file or class name and description of purpose be included on the same "printed page" as the copyright notice for easier identification within third-party archives.  Copyright [yyyy]() [name of copyright owner]()
 
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ Licensed under the Apache License, Version 2.0 (the "License");  you may not use this file except in compliance with the License.  You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ Unless required by applicable law or agreed to in writing, software  distributed under the License is distributed on an "AS IS" BASIS,  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and  limitations under the License.
 
-                        Community
-                        
-                            Overview
-                            Conferences
-                            Summer of Code
-                            Getting Started
-                            The Apache Way
-                            Travel Assistance
-                            Get Involved
-                            Community FAQ
-                        
-                    
-                    
-                    
-                        Innovation
-                        
-                            Incubator
-                            Labs
-                            Licensing
-                            Licensing FAQ
-                            Trademark Policy
-                            Contacts
-                        
-                    
-        
-                        Tech Operations
-                    
-                              Developer Information
-                              Infrastructure
-                              Security
-                              Status
-                              Contacts
-                    
-                    
-        
-                        Press
-                
-                            Overview
-                            ASF News
-                            Announcements
-                            Twitter Feed
-                            Contacts
-                
-                    
-                    
-                    
-                        Legal
-                
-                            Legal Affairs
-                            Licenses
-                            Trademark Policy
-                            Public Records
-                Privacy Policy
-                            Export Information
-                            License/Distribution FAQ
-                            Contacts
-                
-                    
-        
-                        Copyright &#169; 2015 The Apache Software Foundation, Licensed under the Apache License, Version 2.0.
-                        Apache and the Apache feather logo are trademarks of The Apache Software Foundation.
-                    
-                
+
+
+
+
+ Projects
+
+HTTP Server Abdera Accumulo ACE ActiveMQ Airavata Ant APR Archiva Aries Avro Axis Buildr BVal Camel Cassandra Cayenne Chemistry Click Cocoon Commons Continuum CouchDB Creadur CXF DB Deltacloud Directory Empire-db ESME Etch Felix Flex Flume Forrest Geronimo Gora Gump Hadoop Hama HBase Hive HttpComponents Jackrabbit James Jena JMeter jUDDI Karaf Lenya Libcloud Logging Lucene Lucy Mahout ManifoldCF Maven MINA MRUnit MyFaces Nutch ODE OFBiz Oltu OODT Oozie OpenJPA OpenMeetings OpenNLP OpenOffice OpenWebBeans PDFBox Perl Pig Pivot POI Portals Qpid Rave River Roller Santuario ServiceMix Shindig Shiro Sling SpamAssassin STDCXX Sqoop Struts Subversion Synapse Syncope Tapestry Tcl Thrift Tika Tiles Tomcat TomEE Traffic Server Turbine Tuscany UIMA Velocity Web Services Whirr Wicket Xalan Xerces XMLBeans XML Graphics ZooKeeper
+
+            Foundation
             
+              FAQ 
+              Licenses 
+              Trademarks  
+              News 
+              Press Inquiries 
+              Public Records 
+              Mailing Lists 
+              Sponsorship 
+              Donations 
+              Buy Stuff 
+              Thanks 
+              Contact 
+            
+          
+          
+            Foundation Projects
+            
+              Attic 
+              Conferences 
+              Community Development 
+              Incubator 
+              Infrastructure 
+              Labs 
+              Legal Affairs 
+              Public Relations 
+              Security 
+              Travel Assistance 
+            
+          
+          
+          
+            Community
+            
+              People 
+              Memorials 
+              Feathercast 
+              Project Blogs 
+              PlanetApache 
+            
+          
+          
+            How It Works
+            
+              Introduction 
+              Meritocracy 
+              Structure 
+              Roles 
+              Collaboration 
+              Incubator 
+              Other entities 
+              Glossary 
+              Voting 
+            
+          
+        
+        
+        
+        
+        
+          Copyright &#169; 2012 The Apache Software Foundation, Licensed under the Apache License, Version 2.0.Apache and the Apache feather logo are trademarks of The Apache Software Foundation.
+        
 
 <!--
   
@@ -2053,21 +2031,39 @@ Unless required by applicable law or agreed to in writing, software distributed 
 -->
 ## GNU Affero General Public License version v3
 
- Skip to main text
+Skip to content |
 
- Set language
+Skip to navigation | Accessibility
 
-&nbsp;English[en]() &nbsp; &nbsp;  català[ca]() &nbsp; &nbsp;  Deutsch[de]() &nbsp; &nbsp;  français[fr]() &nbsp; &nbsp;  日本語[ja]() &nbsp; &nbsp;  русский[ru]() &nbsp; &nbsp;  українська[uk]() &nbsp; 
+            The GNU Operating System
+        
+          Sign up for the Free Software Supporter
+          A monthly email newsletter about GNU and Free Software
+          
+        
+          Enter your email address (e.g. richard@example.com) &nbsp; 
+          
+        
+        
+          
+        
+        Search:
+        
+        
 
-&nbsp; &nbsp;JOINTHEFSF
+&nbsp; &nbsp; &nbsp; Philosophy  Licenses  Education  Downloads  Documentation  HelpGNU  JointheFSF!
 
-Free Software Supporter
+Skip translations list
 
- GNU Operating System
+&nbsp;English[en]()
 
-Sponsored by the Free Software Foundation
+&nbsp;català[ca]()
 
-&nbsp; &nbsp; AboutGNU  Philosophy  Licenses  Education  Software  Documentation  HelpGNU
+&nbsp;Deutsch[de]()
+
+&nbsp;français[fr]()
+
+&nbsp;русский[ru]()
 
 GNU Affero General Public License
 
@@ -2324,33 +2320,34 @@ If your software can interact with users remotely through a computer network, yo
 
 You should also get your employer (if you work as a programmer) or school, if any, to sign a "copyright disclaimer" for the program, if necessary. For more information on this, and how to apply and follow the GNU AGPL, see [http://www.gnu.org/licenses/](http://www.gnu.org/licenses/).
 
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; GNUhomepage  FSFhomepage  GNUArt  GNUFun  GNU'sWho? &nbsp; &nbsp; &nbsp;  FreeSoftwareDirectory  Sitemap
+            GNU&nbsp;home&nbsp;page
+            FSF&nbsp;home&nbsp;page
+            GNU&nbsp;Art
+            GNU&nbsp;Fun
+            GNU's&nbsp;Who?
+            Free&nbsp;Software&nbsp;Directory
+            Site&nbsp;map
+        
 
-<uo;Our mission is to preserve, protect and promote the freedom to use, study, copy, modify, and redistribute computer software, and to defend the rights of Free Software users.&rdquo;
-
-The Free Software Foundation is the principal organizational sponsor of the GNU Operating System. Support GNU and the FSF by buying manuals and gear, joining the FSF as an associate member, or making a donation, either directly to the FSF or via Flattr.
+The Free Software Foundation is the principal organizational sponsor of the GNU Operating System. Our mission is to preserve, protect and promote the freedom to use, study, copy, modify, and redistribute computer software, and to defend the rights of Free Software users. Support GNU and the FSF by buying manuals and gear, joining the FSF as an associate member or by making a donation, either directly to the FSF or via Flattr.
 
 back to top
 
-Please send general FSF & GNU inquiries to [gnu@gnu.org](gnu@gnu.org). There are also other ways to contact the FSF. Broken links and other corrections or suggestions can be sent to [webmasters@gnu.org](webmasters@gnu.org).
+Please send FSF & GNU inquiries to gnu@gnu.org. There are also other ways to contact the FSF.
 
-            <web-translators@gnu.org>.
-        
-            For information on coordinating and submitting translations of
-            our web pages, see Translations
-            README. -->
+Please send broken links and other corrections or suggestions to webmasters@gnu.org.
 
 Please see the Translations README for information on coordinating and submitting translations of this article.
 
 Copyright notice above.
 
-Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
 
-Copyright Infringement Notification
+Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
 
 Updated:
 
-$Date: 2014/11/08 15:03:59 $
+$Date: 2012/06/10 08:04:10 $
 
 ## GNU Affero General Public License version v3
 

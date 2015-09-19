@@ -78,7 +78,7 @@ The editor is also available in MarkdownDocEditor.app format. The build plugin t
 
 Also note that since this .app is not signed, Mac OS X Mavericks and upp will not allow you to run the app if you do not open upp for running all types of apps in the security settings.   
 
-Due to GUI bugs in the editor component of earlier versions of Java, Java 1.8 or higher is required to be installed on your system for the app to be able to run, assuming you are using the patched version I'm providing for download in the README.md document. If you checkout the source and build yourself then it will require Java 1.6 and upp. But be warned: You will be annoyed if you use Java lower than 1.8!
+Due to GUI bugs in the editor component of earlier versions of Java, Java 1.8 or higher is required to be installed on your system for the app to be able to run, assuming you are using the version I'm providing for download in the README.md document. If you checkout the source and build yourself then it will require Java 1.6 and upp. But be warned: You will be annoyed if you use Java lower than 1.8!
 
 ### Version 1.4 usage changes
 
@@ -105,7 +105,7 @@ This requires Java 7+!
 
 This section documents the different functions of the editor, and how to trigger the function.
 
-The images are the toolbar icon for the function.
+The images are the toolbar icon for the function. Not all functions install themselves in the toolbar.
 
 ### Bringing upp the toolbar
 
@@ -221,51 +221,51 @@ Press the "Generate" button to actually generate the PDF document.
 
 The choices are:
 
-#### Page size
+##### Page size
 
 This is one of the standard paper sizes like A4 or Letter. 
 
-#### Title
+##### Title
 
 This is the title of the document. This will be shown on the front page.
 
-#### Subject
+##### Subject
 
 This is an optional subject / subtitle. This will be shown on the front page.
 
-#### Keywords
+##### Keywords
 
 A space separated set of keywords. These will not be shown anywhere, but will be added as meta data to the PDF document.
 
-#### Author
+##### Author
 
 The author of the document. This will be shown on the front page.
 
-####  Version
+#####  Version
 
 The current version of the document. This will be shown on the front page.
 
-#### Copyright year
+##### Copyright year
 
 The year of copyright. This will be shown on the front page in the format: "Copyright (C) {year} by {by}".
 
-#### Copyright by
+##### Copyright by
 
 The one holding the copyright. 
 
-#### Generate section numbers
+##### Generate section numbers
 
 When this is selected numbers are generated for each heading. For example: 1, 1.1, 1.3.5, ... This is common for professional documents.
 
-#### Generate title page: 
+##### Generate title page: 
 
 This will produce a first page with a document title, subject, author, version and copyright.  
 
-#### Generate TOC
+##### Generate TOC
 
 This will generate a table of contents. This will come after the title page if that is generated, but before the document. 
 
-#### Open result
+##### Open result
 
 If this is selected then the generated PDF will be opened by the system default PDF viewer.
 
@@ -279,19 +279,19 @@ This will first open a file chooser to select HTML file to generate to. Then a p
 
 ![](file:Editor/docs/images/HTMLOptions.png)
 
-#### Inline CSS
+##### Inline CSS
 
 If you select this option then the CSS file you point out will be included within the generated HTML file. 
 
-#### CSS file
+##### CSS file
 
 This is the CSS file to use. Write a path to the CSS file or use the "Select" button to open a file chooser. This is optional and can be skipped, but the resulting HMTL can be rather boring if you don't provide a CSS.
 
-#### file: links relative to
+##### file: links relative to
 
 This is a path that file: links in the document isrelative to. This is used to resolve local filesystem images. 
 
-#### Open result
+##### Open result
 
 If this is selected then the generated HTML will be opened by the system default browser. 
 
@@ -322,6 +322,14 @@ Default key: Ctrl+1. This is changeable in the settings.
 This opens a popup window with all the open files. Click on a file to select it for editing in the window. 
 
 This function can also be activated by moving the mouse to the left edge of the editor window. 
+
+### Goto next open file
+
+This is an alternative to the above function and allows you to jump around the open files. Each time this function is triggered the editor window will switch content. Internally the editor just keeps a list of all open files, and this just jumps to the next file in that list until the last file is reached and it jumps to the first instead. This function will also show the name of the current "jumped to" file at the bottom of the window just like when you move the mouse up to the toolbar area.
+
+Note that this function has no default key configured and must be set in the settings window before it can be used. On Mac Alt+Tab works since it is not used by the system, on Windows and Linux you probably need some other key combination. 
+
+This function is new in version 1.4.1.
 
 </div>
 

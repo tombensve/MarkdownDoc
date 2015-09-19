@@ -23,6 +23,7 @@ se.natusoft.doc.markdowndoc.editor.functions.RestyleDocumentFunction
 se.natusoft.doc.markdowndoc.editor.functions.PasteRestyleFunction
 se.natusoft.doc.markdowndoc.editor.functions.SelectEditableFunction
 se.natusoft.doc.markdowndoc.editor.functions.DisplayFileNameFunction
+se.natusoft.doc.markdowndoc.editor.functions.ContentSwitchFunction
 
 #
 # Filters (implementing EditorInputFilter).

@@ -11,6 +11,7 @@ import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
 import se.natusoft.doc.markdowndoc.editor.gui.ColorsTrait
+import se.natusoft.doc.markdowndoc.editor.gui.FileNamePopup
 import se.natusoft.doc.markdowndoc.editor.gui.GuiEnvToolsTrait
 import se.natusoft.doc.markdowndoc.editor.gui.PopupLock
 import se.natusoft.doc.markdowndoc.editor.gui.PopupWindow
@@ -28,17 +29,6 @@ import java.awt.event.MouseMotionListener
 @TypeChecked
 class DisplayFileNameFunction implements EditorFunction, Configurable, GuiEnvToolsTrait, ColorsTrait {
 
-    //
-    // Config
-    //
-
-    private float opacity = 1.0f
-
-    private Closure opacityChanged = { final ConfigEntry ce ->
-        final int ival = Integer.valueOf(ce.value)
-        this.opacity = (ival / 100) as float
-        updateOpacity()
-    }
 
     /**
      * Register configurations.
@@ -47,9 +37,7 @@ class DisplayFileNameFunction implements EditorFunction, Configurable, GuiEnvToo
      */
     @Override
     void registerConfigs(@NotNull final ConfigProvider configProvider) {
-        // We reuse the PopupWindows opacity config constant so that we do not get multiple configs for opacity in
-        // the settings.
-        configProvider.registerConfig(PopupWindow.popupOpacityConfig, opacityChanged)
+        this.fileNamePopup.registerConfigs(configProvider)
     }
 
     /**
@@ -59,23 +47,22 @@ class DisplayFileNameFunction implements EditorFunction, Configurable, GuiEnvToo
      */
     @Override
     void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
-        configProvider.unregisterConfig(PopupWindow.popupOpacityConfig, opacityChanged)
+        this.fileNamePopup.unregisterConfigs(configProvider)
     }
 
     //
     // Private Members
     //
 
+    private FileNamePopup fileNamePopup = new FileNamePopup()
+
     private MouseMotionListener mouseMotionListener
-
-    private JWindow nameDisplayPopup = null
-
-    private JLabel nameLabel = null
 
     //
     // Properties
     //
 
+    /** The function triggering edtior. */
     Editor editor
 
     //
@@ -133,6 +120,7 @@ class DisplayFileNameFunction implements EditorFunction, Configurable, GuiEnvToo
     @Override
     void setEditor(@NotNull final Editor editor) {
         this.editor = editor
+        this.fileNamePopup.parent = this.editor.GUI.windowFrame
 
         this.mouseMotionListener = new MouseMotionListener() {
             @Override
@@ -160,69 +148,11 @@ class DisplayFileNameFunction implements EditorFunction, Configurable, GuiEnvToo
         final int y = e.y - this.editor.GUI.editorVisibleY
         if (y <= this.editor.topMargin && e.x >= 0 && e.x <= this.editor.width) {
             if (!PopupLock.instance.locked) {
-                displayName()
+                this.fileNamePopup.displayName(this.editor.editable.file.name)
             }
         }
         else {
-            hideName()
-        }
-    }
-
-    protected void updateOpacity() {
-        if (this.nameDisplayPopup != null) {
-            safeOpacity = this.opacity
-        }
-    }
-
-    public void setFileName(final String fileName) {
-        if (this.nameLabel != null) {
-            this.nameLabel.text = fileName
-            this.nameDisplayPopup.validate()
-            this.nameDisplayPopup.size = this.nameDisplayPopup.preferredSize
-        }
-    }
-
-    protected void displayName() {
-        if (this.nameDisplayPopup == null) {
-            this.nameDisplayPopup = new JWindow(this.editor.GUI.windowFrame)
-            initGuiEnvTools(this.nameDisplayPopup)
-            updateOpacity()
-            safeMakeRoundedRectangleShape()
-
-            updateColors(this.nameDisplayPopup)
-
-            this.nameDisplayPopup.layout = new BorderLayout()
-
-            final JPanel panel = new JPanel()
-            updateColors(panel)
-            this.nameDisplayPopup.add(panel, BorderLayout.CENTER)
-            panel.layout = new BorderLayout()
-
-            panel.setBorder(new EmptyBorder(5, 5, 5, 5))
-
-            this.nameLabel = new JLabel()
-            updateColors(this.nameLabel)
-            this.nameLabel.font = this.nameLabel.font.deriveFont(Font.BOLD)
-            this.nameLabel.font = this.nameLabel.font.deriveFont(40.0f)
-
-            panel.add(this.nameLabel, BorderLayout.CENTER)
-        }
-
-        fileName = this.editor.editable.file.name
-
-        final JFrame parent = this.editor.GUI.windowFrame
-        final Container contentPane = parent.contentPane
-        final int x = (parent.x + (parent.width / 2) - (this.nameDisplayPopup.width / 2)) as int
-        final int y = (parent.y + contentPane.y + contentPane.height - this.nameDisplayPopup.height - 10) as int
-
-        this.nameDisplayPopup.location = new Point(x, y)
-        this.nameDisplayPopup.visible = true
-    }
-
-
-    protected void hideName() {
-        if (this.nameDisplayPopup != null) {
-            this.nameDisplayPopup.visible = false
+            this.fileNamePopup.hideName()
         }
     }
 

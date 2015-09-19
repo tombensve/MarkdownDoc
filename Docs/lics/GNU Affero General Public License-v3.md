@@ -283,6 +283,27 @@
 
 
 
+Skip to content |
+
+Skip to navigation |
+Accessibility
+
+
+
+
+
+
+      
+        
+
+        The GNU Operating System
+
+
+
+	
+	  Sign up for the Free Software Supporter
+	  A monthly email newsletter about GNU and Free Software
+	  
 
 
 
@@ -290,129 +311,68 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- Skip to main text
- 
- 
- Set language
- 
- 
- 
+	  Enter your email address (e.g. richard@example.com) &nbsp; 
+	  
+	
+	
+      
 
 
  
+
   
+   
+    Search:
+    
+    
+   
   
+
   
+   Philosophy
+   Licenses
+   Education
+   Downloads
+   Documentation
+   Help&nbsp;GNU
+   Join&nbsp;the&nbsp;FSF!
   
- 
 
-
-
-
-English&nbsp;[en] &nbsp;
-català&nbsp;[ca] &nbsp;
-Deutsch&nbsp;[de] &nbsp;
-français&nbsp;[fr] &nbsp;
-日本語&nbsp;[ja] &nbsp;
-русский&nbsp;[ru] &nbsp;
-українська&nbsp;[uk] &nbsp;
-
-
-
-
-
-
-
-
-
-JOIN&nbsp;THE&nbsp;FSF
-
-Free Software Supporter
-
- 
-  
-  
-  
-  
- 
- 
-  
-  
  
 
 
 
 
 
+
+
+
+
+
+
+
+
+Skip translations list
+
+
+
+
+
+
+
+
+
+English&nbsp;[en]
+
+català&nbsp;[ca]
+
+Deutsch&nbsp;[de]
+
+français&nbsp;[fr]
+
+русский&nbsp;[ru]
+
  
- GNU Operating System
-
-
-Sponsored by the Free Software Foundation
-
-
-
-
-
- 
-  About&nbsp;GNU
-  Philosophy
-  Licenses
-  Education
-  Software
-  Documentation
-  Help&nbsp;GNU
- 
-
-
-
-
 
 
 
@@ -1119,37 +1079,33 @@ if any, to sign a "copyright disclaimer" for the program, if necessary.
 For more information on this, and how to apply and follow the GNU AGPL, see
 <http://www.gnu.org/licenses/>.
 
- 
 
 
               
 
- 
-  GNU&nbsp;home&nbsp;page
-  FSF&nbsp;home&nbsp;page
-  GNU&nbsp;Art
-  GNU&nbsp;Fun
-  GNU's&nbsp;Who?
-  Free&nbsp;Software&nbsp;Directory
-  Site&nbsp;map
- 
+    
+
+	
+		GNU&nbsp;home&nbsp;page
+		FSF&nbsp;home&nbsp;page
+		GNU&nbsp;Art
+		GNU&nbsp;Fun
+		GNU's&nbsp;Who?
+		Free&nbsp;Software&nbsp;Directory
+		Site&nbsp;map
+	
 
 
 
 
-
-&ldquo;Our
+The Free Software
+Foundation is the principal organizational sponsor of the GNU Operating System. Our
 mission is to preserve, protect and promote the freedom to use, study,
 copy, modify, and redistribute computer software, and to defend the
-rights of Free Software users.&rdquo;
-
-
-The Free Software Foundation is
-the principal organizational sponsor of the GNU Operating System.
-Support GNU and the FSF by buying manuals and gear, 
-joining the FSF as an associate member, or making
-a donation, either directly to the FSF or via
-Flattr.
+rights of Free Software users. Support GNU and the FSF by buying manuals and gear, joining the FSF as an associate
+member or by making a
+donation, either directly to the FSF 
+or via Flattr.
 
 back to top
 
@@ -1160,43 +1116,42 @@ back to top
 
 
 
-Please send general FSF &amp; GNU inquiries to
-<gnu@gnu.org>.
-There are also other ways to contact
-the FSF.  Broken links and other corrections or suggestions can be sent
-to <webmasters@gnu.org>.
 
 
-        <web-translators@gnu.org>.
 
-        For information on coordinating and submitting translations of
-        our web pages, see Translations
-        README. -->
-Please see the Translations
-README for information on coordinating and submitting translations
-of this article.
+ 
 
+
+
+
+Please send FSF &amp; GNU inquiries to 
+gnu@gnu.org.
+There are also other ways to contact 
+the FSF.
+
+Please send broken links and other corrections or suggestions to
+webmasters@gnu.org.
+
+
+
+Please see the 
+Translations
+README for information on coordinating and submitting
+translations of this article.
 
 
 
 Copyright notice above.
-
+51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
 
 Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
 
 
 
-
-Copyright Infringement Notification
-
-
-
-
-
-
 Updated:
 
-$Date: 2014/11/08 15:03:59 $
+$Date: 2012/06/10 08:04:10 $
+
 
 
 

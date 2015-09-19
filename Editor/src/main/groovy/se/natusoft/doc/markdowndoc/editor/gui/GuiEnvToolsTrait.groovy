@@ -118,13 +118,14 @@ trait GuiEnvToolsTrait {
     }
 
     void safeMakeRoundedRectangleShape() {
-        if (supportsPerPixelTranslucency) {
-            if (this.window instanceof JFrame) {
-                (this.window as JFrame).undecorated = true
-            }
-
-            this.window.addComponentListener(new ComponentSquareShaper(window: this.window))
-        }
+        // This looks too bad in most cases, so I'm commenting this out before I finally decide.
+//        if (supportsPerPixelTranslucency) {
+//            if (this.window instanceof JFrame) {
+//                (this.window as JFrame).undecorated = true
+//            }
+//
+//            this.window.addComponentListener(new ComponentSquareShaper(window: this.window))
+//        }
     }
 
     private static class ComponentSquareShaper extends ComponentAdapter {
