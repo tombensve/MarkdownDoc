@@ -1,6 +1,6 @@
 # Settings / Options
 
-The options for each generator are represented by a JavaBean model using [OptionsManager](http://github.com/tombensve/OptionsManager) annotations. Independent of how you run a generator it is the same options model that is used the only difference is in how it is populated. If it is from code you just user setter methods to set values. If it is from the command line jar then each option name is prefixed with -- and passed as command line argument. In this case it is OptionsManager that will populate the model from arguments. If it is from the maven plugin then each option is set in the pom with xml tags of the same name as the options. In this case it is maven that populates the options.
+The options for each generator are represented by a JavaBean model using [OptionsManager](http://github.com/tombensve/OptionsManager) annotations. Independent of how you run a generator it is the same options model that is used the only difference is in how it is populated. If it is from code you just use setter methods to set values. If it is from the command line jar then each option name is prefixed with -- and passed as command line argument. In this case it is OptionsManager that will populate the model from arguments. If it is from the maven plugin then each option is set in the pom with xml tags of the same name as the options. In this case it is maven that populates the options.
 
 The options will be described here in general, not centric to any way of running.
 
@@ -155,7 +155,7 @@ Shows help.
 
 ### Comment block annotation setting of options
 
-The PDF generator have a spedial feature to be able to set options via an annotation in a comment block. The annotations look like this:
+The PDF generator have a special feature to be able to set options via an annotation in a comment block. The annotations look like this:
 
     <!--
     
@@ -164,7 +164,7 @@ The PDF generator have a spedial feature to be able to set options via an annota
     
     -->
 
-The following annotations options are available:
+The following annotation options are available:
 
 - @PDFTitle(title)
 - @PDFSubject(subject)

@@ -212,7 +212,7 @@ This is recognized as a special space. It will not be reacted on for code blocks
 
 ## HTML comments
 
-These are recognized, parsed and passed along in model. It is upp to generator to decide to generate comments or not. T he HTMLGenerator do generate comments, as do the MarkdownGenerator. The PDFGenerator does not for obvious reasons.
+These are recognized, parsed and passed along in model. It is upp to generator to decide to generate comments or not. The HTMLGenerator do generate comments, as do the MarkdownGenerator. The PDFGenerator does not for obvious reasons.
 
 I think it is nice to be able to have comments in documents. Comment blocks are also used to hide other MarkdownDoc special features also. For example options annotations.
 
@@ -711,7 +711,7 @@ This section deals with document styles. It has 3 sections: "pages", "front_page
 
 # Settings / Options
 
-The options for each generator are represented by a JavaBean model using [OptionsManager](http://github.com/tombensve/OptionsManager) annotations. Independent of how you run a generator it is the same options model that is used the only difference is in how it is populated. If it is from code you just user setter methods to set values. If it is from the command line jar then each option name is prefixed with -- and passed as command line argument. In this case it is OptionsManager that will populate the model from arguments. If it is from the maven plugin then each option is set in the pom with xml tags of the same name as the options. In this case it is maven that populates the options.
+The options for each generator are represented by a JavaBean model using [OptionsManager](http://github.com/tombensve/OptionsManager) annotations. Independent of how you run a generator it is the same options model that is used the only difference is in how it is populated. If it is from code you just use setter methods to set values. If it is from the command line jar then each option name is prefixed with -- and passed as command line argument. In this case it is OptionsManager that will populate the model from arguments. If it is from the maven plugin then each option is set in the pom with xml tags of the same name as the options. In this case it is maven that populates the options.
 
 The options will be described here in general, not centric to any way of running.
 
@@ -871,7 +871,7 @@ Shows help.
 -->
 ### Comment block annotation setting of options
 
-The PDF generator have a spedial feature to be able to set options via an annotation in a comment block. The annotations look like this:
+The PDF generator have a special feature to be able to set options via an annotation in a comment block. The annotations look like this:
 
         <!--
         
@@ -880,7 +880,7 @@ The PDF generator have a spedial feature to be able to set options via an annota
         
         -->
 
-The following annotations options are available:
+The following annotation options are available:
 
 * @PDFTitle(title)
 
@@ -994,7 +994,7 @@ Can make formatting characters to be made very tiny while editing, by enabling a
 
 Attaches an UndoManager to the document model. Ctrl-Z does an undo, and Ctrl-Y does a redo for all platforms except Mac, which uses Meta-Z for undo, and Shift-Meta-Z for redo.
 
-Do note however that if you enable styling as you type in settings, then the styling actions also gets recorded by the UndoManager! So a the first Ctrl-Z might just undo the styling, and the next Ctrl-Z does what you expected it to do. I have currently not found a way around this.
+Do note however that if you enable styling as you type in settings, then the styling actions also gets recorded by the UndoManager! So the first Ctrl-Z might just undo the styling, and the next Ctrl-Z does what you expected it to do. I have currently not found a way around this.
 
 ### Generate PDF & HTML
 
@@ -1038,7 +1038,7 @@ But by just opening an empty editor and entering a blank preview you can quickly
 
 #### Fullscreen support
 
-When you run this editor on a Mac with Lion+ you will get a litte double arrow in the right corner of the window titlebar, which will bring upp the editor window in fullscreen.
+When you run this editor on a Mac with Lion+ you will get a litte double arrow in the right corner of the window titlebar, or with Mavericks+ it will be the green dot, which will bring upp the editor window in fullscreen.
 
 #### MarkdownDocEditor.app
 

@@ -8,8 +8,7 @@ This is recognized as a special space. It will not be reacted on for code blocks
 
 ## HTML comments
 
-These are recognized, parsed and passed along in model. It is upp to generator to decide to generate comments or not. T
-he HTMLGenerator do generate comments, as do the MarkdownGenerator. The PDFGenerator does not for obvious reasons.
+These are recognized, parsed and passed along in model. It is upp to generator to decide to generate comments or not. The HTMLGenerator do generate comments, as do the MarkdownGenerator. The PDFGenerator does not for obvious reasons.
 
 I think it is nice to be able to have comments in documents. Comment blocks are also used to hide other MarkdownDoc special features also. For example options annotations. 
 

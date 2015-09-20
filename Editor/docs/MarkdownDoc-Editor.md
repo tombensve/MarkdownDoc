@@ -26,7 +26,7 @@ Can make formatting characters to be made very tiny while editing, by enabling a
 
 Attaches an UndoManager to the document model. Ctrl-Z does an undo, and Ctrl-Y does a redo for all platforms except Mac, which uses Meta-Z for undo, and Shift-Meta-Z for redo.
 
-Do note however that if you enable styling as you type in settings, then the styling actions also gets recorded by the UndoManager! So a the first Ctrl-Z might just undo the styling, and the next Ctrl-Z does what you expected it to do. I have currently not found a way around this.
+Do note however that if you enable styling as you type in settings, then the styling actions also gets recorded by the UndoManager! So the first Ctrl-Z might just undo the styling, and the next Ctrl-Z does what you expected it to do. I have currently not found a way around this.
 
 ### Generate PDF & HTML
 
@@ -70,7 +70,7 @@ But by just opening an empty editor and entering a blank preview you can quickly
 
 #### Fullscreen support
 
-When you run this editor on a Mac with Lion+ you will get a litte double arrow in the right corner of the window titlebar, which will bring upp the editor window in fullscreen. 
+When you run this editor on a Mac with Lion+ you will get a litte double arrow in the right corner of the window titlebar, or with Mavericks+ it will be the green dot, which will bring upp the editor window in fullscreen. 
 
 #### MarkdownDocEditor.app
 
