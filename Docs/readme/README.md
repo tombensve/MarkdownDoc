@@ -10,7 +10,7 @@ __Author:__ Tommy Svensson (tommy@natusoft.se)
 
 _A tool for generating HTML and PDF from markdown for the purpose of documentation._
 
-[User Guide](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/Markdown-User-Guide.md)
+[User Guide](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.md)
 
 <!--
 I tried to make PDF link raw directly, by using the link I get from github when I finally click on raw:
