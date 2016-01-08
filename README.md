@@ -27,9 +27,9 @@ PDF viewing difficult!
 
 Available through maven at bintray JCentral: [http://jcenter.bintray.com/](http://jcenter.bintray.com/). MarkdownDoc on [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/).
 
-Command line [[markdowndoc-cmd-line-1.4.2.exec.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/ markdowndoc-cmd-line/1.4.2/markdowndoc-cmd-line-1.4.2.exec.jar)]
+Command line [[markdowndoc-cmd-line-1.4.2.exec.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/1.4.2/markdowndoc-cmd-line-1.4.2.exec.jar)]
 
-Editor [[MarkdownDocEditor-1.4.2.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/ MarkdownDocEditor/1.4.2/MarkdownDocEditor-1.4.2.App.jar)] [[MarkdownDocEditor-1.4.2.dmg](http://download.natusoft.se/MarkdownDocEditor-1.4.2.dmg)].
+Editor [[MarkdownDocEditor-1.4.2.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/1.4.2/MarkdownDocEditor-1.4.2.App.jar)] [[MarkdownDocEditor-1.4.2.dmg](http://download.natusoft.se/MarkdownDocEditor-1.4.2.dmg)].
 
 [Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md)
 
@@ -40,25 +40,17 @@ Editor [[MarkdownDocEditor-1.4.2.App.jar](http://dl.bintray.com/tommy/maven/se/n
 -->
 ## Project License
 
-[Apache Software License version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+[Apache version 2.0](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/licsApache-2.0.md)
 
 ## Third Party Licenses
 
-[Apache Software License version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+[Apache version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 The following third party products are using this license:
 
 * [OptionsManager-2.0.3](http://github.com/tombensve/OptionsManager)
 
 * [annotations-13.0](http://www.jetbrains.org)
-
-* [groovy-all-2.4.4](http://groovy-lang.org)
-
-[GNU Affero General Public License version v3](http://www.fsf.org/licensing/licenses/agpl-3.0.html)
-
-The following third party products are using this license:
-
-* [itext-pdfa-5.5.6-1](http://itextpdf.com)
 
 <!--
   CLM
