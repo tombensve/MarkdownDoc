@@ -113,7 +113,7 @@ Move the mouse to the top of the editor window and the toolbar will automaticall
 
 ### Save file(s)
 
-![](file:Editor/src/main/resources/icons/mdd2save.png) 
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2save.png) 
 
 Default key: Ctrl+S. This is changeable in the settings. 
 
@@ -121,7 +121,7 @@ This saves all open files that have been modified and not saved. A small pupup a
 
 ### Open file
 
-![](file:Editor/src/main/resources/icons/mdd2open.png)
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2open.png)
 
 Default key: Ctrl+O. This is changeable in the settings.
 
@@ -133,7 +133,7 @@ In addition to markdown files the open function will also allow opening the same
 
 ### Open / Create
 
-![](file:Editor/Src/main/resources/icons/mdd2new.png)
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2new.png)
 
 Default key: Ctrl+N. This is changeable in the settings.
 
@@ -147,7 +147,7 @@ In addition to markdown files the open function will also allow opening the same
 
 ### List of open files popup
 
-![](file:Editor/src/main/resources/icons/mdd2openfiles.png)
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2openfiles.png)
 
 Default key: Ctrl+1. This is changeable in the settings.
 
@@ -155,7 +155,7 @@ This is new in version 1.4.2. This opens the popup window that allows for select
 
 ### Insert heading
 
-![](file:Editor/src/main/resources/icons/mdd2heading.png)
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2heading.png)
 
 Default key: Ctrl+T. This is changeable in the settings.
 
@@ -163,7 +163,7 @@ This just adds a # character which is the markdown heading character. Insert as 
 
 ### Insert bold
 
-![](file:Editor/Src/main/resources/icons/mdd2bold.png)
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2bold.png)
 
 Default key: Ctrl+B. This is changeable in the settings.
 
@@ -171,7 +171,7 @@ This adds 4 '\_' characters with the cursor placed between the first 2 and the l
 
 ### Insert italics
 
-![](file:Editor/Src/main/resources/icons/mdd2italics.png) 
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2italics.png) 
 
 Default key: Ctrl+I. This is changeable in the settings.
 
@@ -179,7 +179,7 @@ This adds 2 '\_' characters with the cursor placed between them. 1 underscore be
 
 ### Insert list
 
-![](file:Editor/src/main/resources/icons/mdd2list.png)
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2list.png)
 
 Default key: Ctrl+L. This is changeable in the settings.
 
@@ -187,7 +187,7 @@ This adds and asterisk and a space which is how you make a list entry for an uno
 
 ### Insert quote
 
-![](file:Editor/src/main/resources/icons/mdd2quote.png)
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2quote.png)
 
 Default key: Ctrl+Q. This is changeable in the settings.
 
@@ -195,7 +195,7 @@ This inserts a '>' character and a space which is how you make quoted text in ma
 
 ### Insert image
 
-![](file:Editor/src/main/resources/icons/mdd2image.png)
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2image.png)
  
 Default key: Ctrl+M. This is changeable in the settings.
 
@@ -203,7 +203,7 @@ This function will open a small popup window where you can enter 3 pieces of inf
 
 ### Insert link
 
-![](file:Editor/src/main/resources/icons/mdd2link.png)
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2link.png)
 
 Default key: Ctrl+N. This is changeable in the settings.
 
@@ -211,7 +211,7 @@ This function will open a small popup window where you can enter 3 pieces of inf
 
 ### Preview
 
-![](file:Editor/src/main/resources/icons/mdd2preview.png)
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2preview.png)
 
 Default key: Ctrl+F. This is changeable in the settings.
 
@@ -221,7 +221,7 @@ _Please also note that the preview HTML rendering is done by the Java GUI librar
 
 ### Generate PDF
 
-![](file:Editor/src/main/resources/icons/mdd2pdf.png)
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2pdf.png)
 
 Default key: Ctrl+P. This is changeable in the settings.
 
@@ -229,7 +229,7 @@ This will first open a file chooser to select target PDF file to generate to. Th
 
 Press the "Generate" button to actually generate the PDF document. 
 
-![](file:Editor/docs/images/PDFOptions.png)
+![](http://download.natusoft.se/Images/MarkdownDoc/PDFOptions.png)
 
 The choices are:
 
@@ -283,13 +283,13 @@ If this is selected then the generated PDF will be opened by the system default 
 
 ### Generate HTML
 
-![](file:Editor/src/main/resources/icons/mdd2html.png)
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2html.png)
 
 Default key: Ctrl+H. This is changeable in the settings.
 
 This will first open a file chooser to select HTML file to generate to. Then a popup window will be opened containing meta data for generation of the HTML.
 
-![](file:Editor/docs/images/HTMLOptions.png)
+![](http://download.natusoft.se/Images/MarkdownDoc/HTMLOptions.png)
 
 ##### Inline CSS
 
@@ -309,7 +309,7 @@ If this is selected then the generated HTML will be opened by the system default
 
 ### Setting
 
-![](file:Editor/src/main/resources/icons/mdd2settings.png)
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2settings.png)
 
 Default key: Ctrl+E. This is changeable in the settings.
 
