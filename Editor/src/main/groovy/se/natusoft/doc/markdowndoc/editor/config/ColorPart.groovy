@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         1.4
+ *         1.4.2
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
