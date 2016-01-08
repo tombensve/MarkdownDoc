@@ -111,7 +111,7 @@ class InsertQuoteFunction implements EditorFunction, Configurable {
     //
 
     InsertQuoteFunction() {
-        final Icon quoteIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddquote.png"))
+        final Icon quoteIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mdd2quote.png"))
         this.quoteButton = new JButton(quoteIcon)
         quoteButton.addActionListener(new ActionListener() {
             @Override

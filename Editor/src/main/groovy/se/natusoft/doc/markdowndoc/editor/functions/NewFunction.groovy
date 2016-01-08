@@ -111,7 +111,7 @@ class NewFunction implements EditorFunction, Configurable {
     //
 
     NewFunction() {
-        final Icon newIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddnew.png"))
+        final Icon newIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mdd2new.png"))
         this.newButton = new JButton(newIcon)
         newButton.addActionListener(new ActionListener() {
             @Override

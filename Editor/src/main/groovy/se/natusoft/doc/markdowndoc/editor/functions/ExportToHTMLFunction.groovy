@@ -179,7 +179,7 @@ class ExportToHTMLFunction extends AbstractExportFunction implements EditorFunct
 
     ExportToHTMLFunction() {
         super(GENERATED_HTML_FILE)
-        final Icon htmlIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddhtml.png"))
+        final Icon htmlIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mdd2html.png"))
         this.htmlButton = new JButton(htmlIcon)
         htmlButton.addActionListener({ final ActionEvent actionEvent -> perform() } as ActionListener)
         updateTooltipText()

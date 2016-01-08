@@ -111,7 +111,7 @@ class InsertListFunction implements EditorFunction, Configurable {
     //
 
     InsertListFunction() {
-        final Icon listIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddlist.png"))
+        final Icon listIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mdd2list.png"))
         this.listButton = new JButton(listIcon)
         listButton.addActionListener(new ActionListener() {
             @Override

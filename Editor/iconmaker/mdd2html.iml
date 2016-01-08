@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>icons</key>
+	<array>
+		<dict>
+			<key>backgroundColor</key>
+			<data>
+			BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0NvbG9yAISECE5TT2Jq
+			ZWN0AIWEAWMDhAJmZoOamZk+AYY=
+			</data>
+			<key>backgroundIcon</key>
+			<true/>
+			<key>frameColor</key>
+			<data>
+			BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0NvbG9yAISECE5TT2Jq
+			ZWN0AIWEAWMDhAJmZoOamZk+AYY=
+			</data>
+			<key>items</key>
+			<array>
+				<dict>
+					<key>className</key>
+					<string>OText</string>
+					<key>cutOutFillColor</key>
+					<false/>
+					<key>cutOutMonoColor</key>
+					<false/>
+					<key>dataNSTextStorageData</key>
+					<data>
+					BAtzdHJlYW10eXBlZIHoA4QBQISEhA1OU1Rl
+					eHRTdG9yYWdlAISEGU5TTXV0YWJsZUF0dHJp
+					YnV0ZWRTdHJpbmcAhIQSTlNBdHRyaWJ1dGVk
+					U3RyaW5nAISECE5TT2JqZWN0AIWShISED05T
+					TXV0YWJsZVN0cmluZwGEhAhOU1N0cmluZwGW
+					hAErBjwuLi4vPoaEAmlJAQaShISEDE5TRGlj
+					dGlvbmFyeQCWhAFpA5KEmZkHTlNDb2xvcoaS
+					hISEB05TQ29sb3IAloQBYwOEAmZmgzMzMz8B
+					hpKEmZkQTlNQYXJhZ3JhcGhTdHlsZYaShISE
+					EE5TUGFyYWdyYXBoU3R5bGUAloQEQ0NAUwQA
+					hQCGkoSZmQZOU0ZvbnSGkoSEhAZOU0ZvbnQe
+					lpwghAVbMzJjXQYAAAAWAAAA//5IAGUAcgBj
+					AHUAbABhAG4AdQBtAAAAhAFmSJ4AngGeAJ4A
+					hoaG
+					</data>
+					<key>dataNSTextStorageSize</key>
+					<string>{0.87872000000000006, 0.35999999999999999}</string>
+					<key>fillColor</key>
+					<data>
+					BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0Nv
+					bG9yAISECE5TT2JqZWN0AIWEAWMBhARmZmZm
+					AQEBAYY=
+					</data>
+					<key>name</key>
+					<string>Text</string>
+					<key>offset</key>
+					<string>{0.062500000000000097, 0.73750000000000004}</string>
+					<key>useAutoCustomCutOut</key>
+					<true/>
+				</dict>
+			</array>
+			<key>name</key>
+			<string>mdd2html</string>
+			<key>shadowColor</key>
+			<data>
+			BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0NvbG9yAISECE5TT2Jq
+			ZWN0AIWEAWMDhAJmZgCDzczMPoY=
+			</data>
+			<key>specifyFrameColor</key>
+			<false/>
+			<key>specifyShadowColor</key>
+			<false/>
+		</dict>
+	</array>
+	<key>iconsFormatVersion</key>
+	<integer>2</integer>
+</dict>
+</plist>

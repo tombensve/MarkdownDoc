@@ -134,7 +134,7 @@ class InsertLinkFunction implements EditorFunction, Configurable, GuiEnvToolsTra
     //
 
     InsertLinkFunction() {
-        final Icon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddlink.png"))
+        final Icon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mdd2link.png"))
         this.linkButton = new JButton(imageIcon)
         linkButton.addActionListener(new ActionListener() {
             @Override

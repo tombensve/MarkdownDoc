@@ -111,7 +111,7 @@ class InsertHeadingFunction implements EditorFunction, Configurable {
     //
 
     InsertHeadingFunction() {
-        final Icon headingIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddheading.png"))
+        final Icon headingIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mdd2heading.png"))
         this.headerButton = new JButton(headingIcon)
         headerButton.addActionListener(new ActionListener() {
             @Override

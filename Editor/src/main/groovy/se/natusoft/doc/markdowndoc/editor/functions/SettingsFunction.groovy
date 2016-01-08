@@ -141,7 +141,7 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
     //
 
     SettingsFunction() {
-        final Icon settingsIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddsettings.png"))
+        final Icon settingsIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mdd2settings.png"))
         this.settingsButton = new JButton(settingsIcon)
         this.settingsButton.addActionListener(new ActionListener() {
             @Override

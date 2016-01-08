@@ -156,7 +156,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
      */
     ExportToPDFFunction() {
         super(GENERATED_PDF_FILE)
-        final Icon pdfIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddpdf.png"))
+        final Icon pdfIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mdd2pdf.png"))
         this.pdfToolbarButton = new JButton(pdfIcon)
         this.pdfToolbarButton.addActionListener({ final ActionEvent actionEvent -> perform() } as ActionListener)
         updateTooltipText()

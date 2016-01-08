@@ -111,7 +111,7 @@ class InsertBoldFunction implements EditorFunction, Configurable {
     //
 
     InsertBoldFunction() {
-        final Icon boldIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddbold.png"))
+        final Icon boldIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mdd2bold.png"))
         this.boldButton = new JButton(boldIcon)
         boldButton.addActionListener(new ActionListener() {
             @Override

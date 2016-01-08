@@ -131,7 +131,7 @@ class InsertImageFunction implements EditorFunction, Configurable, GuiEnvToolsTr
     //
 
     InsertImageFunction() {
-        final Icon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddimg.png"))
+        final Icon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mdd2image.png"))
         this.imageButton = new JButton(imageIcon)
         imageButton.addActionListener(new ActionListener() {
             @Override

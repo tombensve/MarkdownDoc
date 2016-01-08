@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>icons</key>
+	<array>
+		<dict>
+			<key>backgroundColor</key>
+			<data>
+			BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0NvbG9yAISECE5TT2Jq
+			ZWN0AIWEAWMDhAJmZoOamZk+AYY=
+			</data>
+			<key>backgroundIcon</key>
+			<false/>
+			<key>frameColor</key>
+			<data>
+			BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0NvbG9yAISECE5TT2Jq
+			ZWN0AIWEAWMDhAJmZoOamZk+AYY=
+			</data>
+			<key>items</key>
+			<array>
+				<dict>
+					<key>className</key>
+					<string>OPolygon</string>
+					<key>cutOutFillColor</key>
+					<false/>
+					<key>cutOutMonoColor</key>
+					<false/>
+					<key>fillColor</key>
+					<data>
+					BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0Nv
+					bG9yAISECE5TT2JqZWN0AIWEAWMBhARmZmZm
+					AQEBAYY=
+					</data>
+					<key>name</key>
+					<string>Path</string>
+					<key>offset</key>
+					<string>{0, 0}</string>
+					<key>polygonPoints</key>
+					<array>
+						<dict>
+							<key>bezier</key>
+							<true/>
+							<key>curve1</key>
+							<string>{0.32500000000000001, 0.60000000000000009}</string>
+							<key>curve2</key>
+							<string>{0.0625, 0.72500000000000009}</string>
+							<key>point</key>
+							<string>{0.0625, 0.60000000000000009}</string>
+						</dict>
+						<dict>
+							<key>bezier</key>
+							<true/>
+							<key>curve1</key>
+							<string>{0.0625, 0.47500000000000003}</string>
+							<key>curve2</key>
+							<string>{0.0625, 0.4375}</string>
+							<key>point</key>
+							<string>{0.0625, 0.4375}</string>
+						</dict>
+						<dict>
+							<key>bezier</key>
+							<false/>
+							<key>curve1</key>
+							<string>{0, 0}</string>
+							<key>curve2</key>
+							<string>{0, 0}</string>
+							<key>point</key>
+							<string>{0.3125, 0.4375}</string>
+						</dict>
+						<dict>
+							<key>bezier</key>
+							<false/>
+							<key>curve1</key>
+							<string>{0, 0}</string>
+							<key>curve2</key>
+							<string>{0, 0}</string>
+							<key>point</key>
+							<string>{0.3125, 0.27500000000000002}</string>
+						</dict>
+						<dict>
+							<key>bezier</key>
+							<false/>
+							<key>curve1</key>
+							<string>{0, 0}</string>
+							<key>curve2</key>
+							<string>{0, 0}</string>
+							<key>point</key>
+							<string>{0.47500000000000003, 0.53749999999999998}</string>
+						</dict>
+						<dict>
+							<key>bezier</key>
+							<false/>
+							<key>curve1</key>
+							<string>{0, 0}</string>
+							<key>curve2</key>
+							<string>{0, 0}</string>
+							<key>point</key>
+							<string>{0.32500000000000001, 0.72500000000000009}</string>
+						</dict>
+						<dict>
+							<key>bezier</key>
+							<false/>
+							<key>curve1</key>
+							<string>{0, 0}</string>
+							<key>curve2</key>
+							<string>{0, 0}</string>
+							<key>point</key>
+							<string>{0.32500000000000001, 0.60000000000000009}</string>
+						</dict>
+					</array>
+					<key>useAutoCustomCutOut</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>className</key>
+					<string>ORectangle</string>
+					<key>cutOutFillColor</key>
+					<false/>
+					<key>cutOutMonoColor</key>
+					<false/>
+					<key>fillColor</key>
+					<data>
+					BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0Nv
+					bG9yAISECE5TT2JqZWN0AIWEAWMBhARmZmZm
+					AQEBAYY=
+					</data>
+					<key>name</key>
+					<string>Rectangle</string>
+					<key>offset</key>
+					<string>{-0.037499999999999978, 0}</string>
+					<key>polygonPoints</key>
+					<array>
+						<dict>
+							<key>bezier</key>
+							<false/>
+							<key>curve1</key>
+							<string>{0.029054054054054056, 0.04322033898305086}</string>
+							<key>curve2</key>
+							<string>{0.029054054054054056, 0.04322033898305086}</string>
+							<key>point</key>
+							<string>{0.53749999999999998, 0.8500000000000002}</string>
+						</dict>
+						<dict>
+							<key>bezier</key>
+							<false/>
+							<key>curve1</key>
+							<string>{0.029054054054054056, 0.04322033898305086}</string>
+							<key>curve2</key>
+							<string>{0.029054054054054056, 0.04322033898305086}</string>
+							<key>point</key>
+							<string>{0.53749999999999998, 0.15000000000000002}</string>
+						</dict>
+						<dict>
+							<key>bezier</key>
+							<false/>
+							<key>curve1</key>
+							<string>{0.029054054054054056, 0.04322033898305086}</string>
+							<key>curve2</key>
+							<string>{0.029054054054054056, 0.04322033898305086}</string>
+							<key>point</key>
+							<string>{0.97499999999999998, 0.15000000000000002}</string>
+						</dict>
+						<dict>
+							<key>bezier</key>
+							<false/>
+							<key>curve1</key>
+							<string>{0.029054054054054056, 0.04322033898305086}</string>
+							<key>curve2</key>
+							<string>{0.029054054054054056, 0.04322033898305086}</string>
+							<key>point</key>
+							<string>{0.97499999999999998, 0.8500000000000002}</string>
+						</dict>
+					</array>
+					<key>useAutoCustomCutOut</key>
+					<true/>
+				</dict>
+			</array>
+			<key>name</key>
+			<string>mdd2open</string>
+			<key>shadowColor</key>
+			<data>
+			BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0NvbG9yAISECE5TT2Jq
+			ZWN0AIWEAWMDhAJmZgCDzczMPoY=
+			</data>
+			<key>specifyFrameColor</key>
+			<true/>
+			<key>specifyShadowColor</key>
+			<false/>
+		</dict>
+	</array>
+	<key>iconsFormatVersion</key>
+	<integer>2</integer>
+</dict>
+</plist>

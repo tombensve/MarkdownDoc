@@ -742,7 +742,7 @@ Selects the parser to run. Valid values are:
 
 * markdown
 
-* byext[ension] _This is the defalt value!_
+* byext[ension] _This is the default value!_
 
 The latter selects parser based on extension of file being parsed. This is in general a good idea to use since there are currently both a markdown parser and a javadoc parser. By using _byext_ it ispossible to pass both .md and .java (and .groovy) files. Each parser is registered as a standard Java service and loaded with ServiceLoader. Each parser also provides which file extensions it recognizes. This is how a parser is resolved.
 

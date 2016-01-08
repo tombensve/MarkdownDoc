@@ -126,7 +126,7 @@ class SaveFunction implements EditorFunction, Configurable, GuiEnvToolsTrait {
     //
 
     SaveFunction() {
-        final Icon saveIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddsave.png"))
+        final Icon saveIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mdd2save.png"))
         this.saveButton = new JButton(saveIcon)
         this.saveButton.addActionListener(new ActionListener() {
             @Override

@@ -111,7 +111,7 @@ class InsertItalicsFunction implements EditorFunction, Configurable {
     //
 
     InsertItalicsFunction() {
-        final Icon italicsIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mdditalics.png"))
+        final Icon italicsIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mdd2italics.png"))
         this.italicsButton = new JButton(italicsIcon)
         italicsButton.addActionListener(new ActionListener() {
             @Override

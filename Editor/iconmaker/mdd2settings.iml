@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>icons</key>
+	<array>
+		<dict>
+			<key>backgroundColor</key>
+			<data>
+			BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0NvbG9yAISECE5TT2Jq
+			ZWN0AIWEAWMDhAJmZoOamZk+AYY=
+			</data>
+			<key>backgroundIcon</key>
+			<false/>
+			<key>frameColor</key>
+			<data>
+			BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0NvbG9yAISECE5TT2Jq
+			ZWN0AIWEAWMDhAJmZoOamZk+AYY=
+			</data>
+			<key>items</key>
+			<array>
+				<dict>
+					<key>className</key>
+					<string>OText</string>
+					<key>cutOutFillColor</key>
+					<false/>
+					<key>cutOutMonoColor</key>
+					<false/>
+					<key>dataNSTextStorageData</key>
+					<data>
+					BAtzdHJlYW10eXBlZIHoA4QBQISEhA1OU1Rl
+					eHRTdG9yYWdlAISEGU5TTXV0YWJsZUF0dHJp
+					YnV0ZWRTdHJpbmcAhIQSTlNBdHRyaWJ1dGVk
+					U3RyaW5nAISECE5TT2JqZWN0AIWShISED05T
+					TXV0YWJsZVN0cmluZwGEhAhOU1N0cmluZwGW
+					hAErAT+GhAJpSQEBkoSEhAxOU0RpY3Rpb25h
+					cnkAloQBaQOShJmZB05TQ29sb3KGkoSEhAdO
+					U0NvbG9yAJaEAWMDhAJmZoMzMzM/AYaShJmZ
+					EE5TUGFyYWdyYXBoU3R5bGWGkoSEhBBOU1Bh
+					cmFncmFwaFN0eWxlAJaEBENDQFMEAIUAhpKE
+					mZkGTlNGb250hpKEhIQGTlNGb250HpacIIQF
+					WzMyY10GAAAAFgAAAP/+SABlAHIAYwB1AGwA
+					YQBuAHUAbQAAAIQBZoEgAZ4AngGeAJ4AhoaG
+					</data>
+					<key>dataNSTextStorageSize</key>
+					<string>{0.74263999999999997, 1.4399999999999999}</string>
+					<key>fillColor</key>
+					<data>
+					BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0Nv
+					bG9yAISECE5TT2JqZWN0AIWEAWMBhARmZmZm
+					AQEBAYY=
+					</data>
+					<key>name</key>
+					<string>Text</string>
+					<key>offset</key>
+					<string>{0.125, 1.2124999999999999}</string>
+					<key>useAutoCustomCutOut</key>
+					<true/>
+				</dict>
+			</array>
+			<key>name</key>
+			<string>mdd2settings</string>
+			<key>shadowColor</key>
+			<data>
+			BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0NvbG9yAISECE5TT2Jq
+			ZWN0AIWEAWMDhAJmZgCDzczMPoY=
+			</data>
+			<key>specifyFrameColor</key>
+			<false/>
+			<key>specifyShadowColor</key>
+			<false/>
+		</dict>
+	</array>
+	<key>iconsFormatVersion</key>
+	<integer>2</integer>
+</dict>
+</plist>

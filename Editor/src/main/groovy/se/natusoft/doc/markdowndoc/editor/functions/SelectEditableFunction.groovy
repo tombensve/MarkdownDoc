@@ -44,6 +44,7 @@ import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
+import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
@@ -51,6 +52,8 @@ import se.natusoft.doc.markdowndoc.editor.gui.EditableSelectorPopup
 import se.natusoft.doc.markdowndoc.editor.gui.PopupLock
 
 import javax.swing.*
+import java.awt.event.ActionEvent
+import java.awt.event.ActionListener
 import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionListener
 
@@ -75,13 +78,19 @@ class SelectEditableFunction implements EditorFunction, Configurable {
 
     private ConfigProvider configProvider = null
 
+    private JButton selectEditableButton = null
+
     //
     // Configs
     //
 
     private static final KeyConfigEntry keyboardShortcutConfig =
-            new KeyConfigEntry("editor.function.editables.keyboard.shortcut", "Editables list keyboard shortcut",
+            new KeyConfigEntry("editor.function.editables.keyboard.shortcut", "Editable files list keyboard shortcut",
                     new KeyboardKey("Ctrl+1"), CONFIG_GROUP_KEYBOARD)
+
+    private Closure keyboardShortcutConfigChanged = { final ConfigEntry ce ->
+        updateTooltipText()
+    }
 
     /**
      * Register configurations.
@@ -90,7 +99,7 @@ class SelectEditableFunction implements EditorFunction, Configurable {
      */
     @Override
     void registerConfigs(@NotNull final ConfigProvider configProvider) {
-        configProvider.registerConfig(keyboardShortcutConfig, null)
+        configProvider.registerConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
         this.configProvider = configProvider
     }
 
@@ -101,10 +110,26 @@ class SelectEditableFunction implements EditorFunction, Configurable {
      */
     @Override
     void unregisterConfigs(@NotNull final ConfigProvider configProvider) {
-        configProvider.unregisterConfig(keyboardShortcutConfig, null)
+        configProvider.unregisterConfig(keyboardShortcutConfig, keyboardShortcutConfigChanged)
         if (this.popup != null) {
             this.popup.unregisterConfigs(configProvider)
         }
+    }
+
+    //
+    // Constructors
+    //
+
+    public SelectEditableFunction() {
+        final Icon selectEditableIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mdd2openfiles.png"))
+        this.selectEditableButton = new JButton(selectEditableIcon)
+        this.selectEditableButton.addActionListener(new ActionListener() {
+            @Override
+            void actionPerformed(final ActionEvent ignored) {
+                perform()
+            }
+        })
+        updateTooltipText()
     }
 
     //
@@ -133,7 +158,7 @@ class SelectEditableFunction implements EditorFunction, Configurable {
      */
     @Override
     JComponent getToolBarButton() {
-        null
+        this.selectEditableButton
     }
 
     /**
@@ -141,7 +166,7 @@ class SelectEditableFunction implements EditorFunction, Configurable {
      */
     @Override
     KeyboardKey getKeyboardShortcut() {
-        this.keyboardShortcutConfig.keyboardKey
+        keyboardShortcutConfig.keyboardKey
     }
 
     /**
@@ -151,8 +176,6 @@ class SelectEditableFunction implements EditorFunction, Configurable {
      */
     @Override
     void perform() throws FunctionException {
-        if (PopupLock.instance.locked) return
-
         this.popup = new EditableSelectorPopup(editor: this.editor, closer: { close() } )
         this.popup.registerConfigs(this.configProvider)
         this.configProvider.refreshConfigs()
@@ -167,31 +190,10 @@ class SelectEditableFunction implements EditorFunction, Configurable {
     @Override
     void setEditor(@NotNull final Editor editor) {
         this.editor = editor
-
-        this.mouseMotionListener = new MouseMotionListener() {
-            @Override
-            void mouseDragged(final MouseEvent e) {}
-
-            @Override
-            void mouseMoved(final MouseEvent e) {
-                mouseMovedHandler(e)
-            }
-        }
-        this.editor.GUI.windowFrame.addMouseMotionListener(this.mouseMotionListener)
     }
 
-    /**
-     * Invoked when the mouse cursor has been moved onto a component
-     * but no buttons have been pushed.
-     */
-    void mouseMovedHandler(final MouseEvent e) {
-        if (e.locationOnScreen.y > (this.editor.GUI.windowFrame.y + 100) && e.locationOnScreen.y < (this.editor.GUI.windowFrame.height - 100)
-                && this.popup == null) {
-
-            if (e.x >= 0 && e.x <= 30) {
-                perform()
-            }
-        }
+    private void updateTooltipText() {
+        this.selectEditableButton.setToolTipText("Select current file (" + keyboardShortcutConfig.getKeyboardKey() + ")")
     }
 
     /**

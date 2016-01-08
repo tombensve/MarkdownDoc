@@ -216,8 +216,6 @@ class EditableSelectorPopup extends PopupWindow implements MouseListenersTrait {
      */
     void showWindow() {
 
-        PopupLock.instance.locked = true
-
         updateOpacity(popupOpacity)
 
         // Wait with setting size until the popup window have been completely shown so

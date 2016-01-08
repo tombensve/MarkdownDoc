@@ -197,7 +197,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
     //
 
     JEditorPanePreviewFunction() {
-        final Icon previewIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddpreview.png"))
+        final Icon previewIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mdd2preview.png"))
         this.previewButton = new JToggleButton(previewIcon)
         this.previewButton.addActionListener(new ActionListener() {
             @Override

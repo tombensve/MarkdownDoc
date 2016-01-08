@@ -114,7 +114,7 @@ class OpenFunction implements EditorFunction, Configurable {
     //
 
     OpenFunction() {
-        final Icon openIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mddopen.png"))
+        final Icon openIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mdd2open.png"))
         this.openButton = new JButton(openIcon)
         this.openButton.addActionListener(new ActionListener() {
             @Override
