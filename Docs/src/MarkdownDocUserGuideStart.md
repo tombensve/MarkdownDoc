@@ -6,7 +6,7 @@
     @PDFTitle("MarkdownDoc")
     @PDFSubject("User Guide")
     @PDFKeywords("markdown MarkdownDoc mdd_version_1.4.1")
-    @PDFVersion(1 . 4 . 1) Due to the font used I put a space between to make the dot more visible.
+    @PDFVersion(1 . 4 . 2) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
     @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")

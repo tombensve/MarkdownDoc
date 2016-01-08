@@ -241,17 +241,87 @@ class SourcePath {
         if (file.getName().endsWith(".fs")) {
             final String fileSet = loadFileSetFile(file)
             if (fileSet != null) {
-                final SourcePaths sourcePaths = this.origProjRoot != null ?
+                SourcePaths sourcePaths = this.origProjRoot != null ?
                         new SourcePaths(this.origProjRoot, fileSet) : new SourcePaths(fileSet)
 
-                sourcePaths.getSourceFiles().each { final File fsFile ->
-                    sourceFiles.add(fsFile)
+                if (sourcePaths.hasSourceFiles()) {
+                    sourcePaths.getSourceFiles().each { final File fsFile ->
+                        sourceFiles.add(fsFile)
+                    }
+                }
+                else {
+                    // The paths in the fs file is not relative to provided root or current directory.
+                    // So try relative to fileset file.
+                    sourcePaths = new SourcePaths(file.parentFile, fileSet)
+                    if (sourcePaths.hasSourceFiles()) {
+                        sourcePaths.getSourceFiles().each { final File fsFile ->
+                            sourceFiles.add(fsFile)
+                        }
+                    }
+                    else {
+                        // The above also failed, so as a last effort, see if this is a maven project, that is
+                        // there are pom.xml files in fileset file dir or above. If so we find the top pom.xml
+                        // and then try again with the top pom.xml directory as root.
+                        File mavenRoot = file.parentFile
+                        mavenRoot = findFirstMavenPom(mavenRoot)
+                        if (mavenRoot.parentFile != null) {
+                            mavenRoot = getMavenRootDir(mavenRoot)
+                            if (mavenRoot.parentFile != null) {
+                                sourcePaths = new SourcePaths(mavenRoot, fileSet)
+                                sourcePaths.getSourceFiles().each { final File fsFile ->
+                                    sourceFiles.add(fsFile)
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
         else {
             sourceFiles.add(file)
         }
+    }
+
+    /**
+     * Returns the directory containing the first found pom.xml file looking upwards, or the root directory.
+     *
+     * @param dir The directory to start looking at.
+     */
+    private static File findFirstMavenPom(File dir) {
+        while (dir.parentFile != null && !havePOM(dir.listFiles())) {
+            dir = dir.parentFile
+        }
+
+        return dir
+    }
+
+    /**
+     * Returns a File representing the directory whose parent directory does not have a pom.xml.
+     * In other words, the root of a multi-module build.
+     */
+    private static File getMavenRootDir(File root) {
+        while (havePOM(root.getParentFile().listFiles())) {
+            root = root.getParentFile()
+        }
+
+        return root
+    }
+
+    /**
+     * Checks if any of the passed files is a pom.xml.
+     *
+     * @param files The files to check.
+     *
+     * @return true if found, false otherwise.
+     */
+    private static boolean havePOM(File[] files) {
+        for (File file : files) { // The Groovy .each {...} fails here and only loops once even if there are more than one file!
+            if (file.name == "pom.xml") {
+                return true
+            }
+        }
+
+        return false
     }
 
     /**

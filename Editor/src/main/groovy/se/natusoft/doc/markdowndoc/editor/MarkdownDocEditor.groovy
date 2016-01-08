@@ -42,6 +42,8 @@ import groovy.transform.TypeChecked
 import net.iharder.dnd.FileDrop
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
+import se.natusoft.doc.markdown.util.SourcePath
+import se.natusoft.doc.markdown.util.SourcePaths
 import se.natusoft.doc.markdowndoc.editor.adapters.WindowListenerAdapter
 import se.natusoft.doc.markdowndoc.editor.api.*
 import se.natusoft.doc.markdowndoc.editor.config.*
@@ -453,7 +455,6 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
         this.scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER)
 
         this.scrollPane.setAutoscrolls(true)
-        //this.scrollPane.getViewport().setAlignmentY(0.0f)
 
         this.editorPanel.add(scrollPane, BorderLayout.CENTER)
         add(this.editorPanel, BorderLayout.CENTER)
@@ -462,7 +463,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
 
         final List<DelayedInitializer> delayedInitializers = new LinkedList<>()
 
-        componentLoader.each { final EditorComponent component ->
+        this.componentLoader.each { final EditorComponent component ->
 
             if (component instanceof Configurable) {
                 (component as Configurable).registerConfigs(Services.configs)
@@ -1114,7 +1115,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
         final JFileChooser fileChooser = new JFileChooser()
         fileChooser.approveButtonText = "Create/Open"
         fileChooser.dialogTitle = "Create new or open file(s)"
-        final FileNameExtensionFilter filter = new FileNameExtensionFilter("Markdown", "md", "markdown", "mdpart")
+        final FileNameExtensionFilter filter = new FileNameExtensionFilter("Markdown", "md", "markdown", "mdpart", "fs")
         fileChooser.setFileFilter(filter)
         fileChooser.fileSelectionMode = JFileChooser.FILES_AND_DIRECTORIES
         fileChooser.multiSelectionEnabled = true
@@ -1141,6 +1142,12 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
                 firstOpened = Editables.inst.firstEditable
             }
         }
+        else if (file.name.endsWith(".fs")) {
+            handleFileset(file)
+            if (firstOpened == null) {
+                firstOpened = Editables.inst.firstEditable
+            }
+        }
         else {
             if (!file.exists()) {
                 file.createNewFile()
@@ -1159,6 +1166,23 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
     //
     // Static methods
     //
+
+    /**
+     * This should be passed a fileset file (ending in .fs). The file will be loaded and each markdown file reference in it will be opened.
+     *
+     * @param file A File pointing to an .fs file.
+     */
+    static void handleFileset(File file) {
+        // The support for .fs files are actually handled by SourcePaths (or rather its internal SourcePath class) and will
+        // expand the contents of an .fs file so that the call to getSourceFiles() will contain all the files referenced
+        // by the .fs file.
+        SourcePaths sourcePaths = new SourcePaths(file.absolutePath)
+        sourcePaths.sourceFiles.each { File sourceFile ->
+            if (sourceFile.name.endsWith(".markdown") || sourceFile.name.endsWith(".md") || sourceFile.name.endsWith(".mdpart")) {
+                openFile(sourceFile)
+            }
+        }
+    }
 
     /**
      * Turns on full screen support in Lion+.
@@ -1259,7 +1283,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
     @NotNull static Editable openFile(@NotNull final File file) {
         Editable editable = Editables.inst.getEditable(file)
         if (editable == null) {
-            editable = new EditableProvider(file, this.editorStylerFactory)
+            editable = new EditableProvider(file, editorStylerFactory)
             Editables.inst.addEditable(editable)
         }
         editable
@@ -1296,7 +1320,11 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
                     if (argFile.exists()) {
                         if (argFile.directory) {
                             loadDir(argFile)
-                        } else {
+                        }
+                        else if (argFile.name.endsWith(".fs")) {
+                            handleFileset(argFile)
+                        }
+                        else {
                             openFile(argFile)
                         }
                     }

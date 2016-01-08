@@ -113,7 +113,7 @@ Move the mouse to the top of the editor window and the toolbar will automaticall
 
 ### Save file(s)
 
-![](file:Editor/src/main/resources/icons/mddsave.png) 
+![](file:Editor/src/main/resources/icons/mdd2save.png) 
 
 Default key: Ctrl+S. This is changeable in the settings. 
 
@@ -121,7 +121,7 @@ This saves all open files that have been modified and not saved. A small pupup a
 
 ### Open file
 
-![](file:Editor/src/main/resources/icons/mddopen.png)
+![](file:Editor/src/main/resources/icons/mdd2open.png)
 
 Default key: Ctrl+O. This is changeable in the settings.
 
@@ -129,9 +129,11 @@ This opens a file chooser to select one markdown file to open. The opened file w
 
 This function is kind of unneccesarry in this version, but I decided to leave it in anyhow. It differs slightly from Open/Create. It is likely to go away in future versions.
 
+In addition to markdown files the open function will also allow opening the same .fs files as the maven plugin can use. In this case all references to markdown files in the .fs file will be opened.
+
 ### Open / Create
 
-![](file:Editor/Src/main/resources/icons/mddnew.png)
+![](file:Editor/Src/main/resources/icons/mdd2new.png)
 
 Default key: Ctrl+N. This is changeable in the settings.
 
@@ -141,9 +143,19 @@ Since there can be more than one file, no file is set as the current edited in t
 
 The exception to this is when you have started the edtior without any files, which will triger this file chooser then one of the selected files will become the edited file since there always have to be one file in the editor.
 
+In addition to markdown files the open function will also allow opening the same .fs files as the maven plugin can use. In this case all references to markdown files in the .fs file will be opened.
+
+### List of open files popup
+
+![](file:Editor/src/main/resources/icons/mdd2openfiles.png)
+
+Default key: Ctrl+1. This is changeable in the settings.
+
+This is new in version 1.4.2. This opens the popup window that allows for selecting which open file to work on. This was previously triggered by moving the mouse to the left window edge. 
+
 ### Insert heading
 
-![](file:Editor/src/main/resources/icons/mddheading.png)
+![](file:Editor/src/main/resources/icons/mdd2heading.png)
 
 Default key: Ctrl+T. This is changeable in the settings.
 
@@ -151,7 +163,7 @@ This just adds a # character which is the markdown heading character. Insert as 
 
 ### Insert bold
 
-![](file:Editor/Src/main/resources/icons/mddbold.png)
+![](file:Editor/Src/main/resources/icons/mdd2bold.png)
 
 Default key: Ctrl+B. This is changeable in the settings.
 
@@ -159,7 +171,7 @@ This adds 4 '\_' characters with the cursor placed between the first 2 and the l
 
 ### Insert italics
 
-![](file:Editor/Src/main/resources/icons/mdditalics.png) 
+![](file:Editor/Src/main/resources/icons/mdd2italics.png) 
 
 Default key: Ctrl+I. This is changeable in the settings.
 
@@ -167,7 +179,7 @@ This adds 2 '\_' characters with the cursor placed between them. 1 underscore be
 
 ### Insert list
 
-![](file:Editor/src/main/resources/icons/mddlist.png)
+![](file:Editor/src/main/resources/icons/mdd2list.png)
 
 Default key: Ctrl+L. This is changeable in the settings.
 
@@ -175,7 +187,7 @@ This adds and asterisk and a space which is how you make a list entry for an uno
 
 ### Insert quote
 
-![](file:Editor/src/main/resources/icons/mddquote.png)
+![](file:Editor/src/main/resources/icons/mdd2quote.png)
 
 Default key: Ctrl+Q. This is changeable in the settings.
 
@@ -183,7 +195,7 @@ This inserts a '>' character and a space which is how you make quoted text in ma
 
 ### Insert image
 
-![](file:Editor/src/main/resources/icons/mddimg.png)
+![](file:Editor/src/main/resources/icons/mdd2image.png)
  
 Default key: Ctrl+M. This is changeable in the settings.
 
@@ -191,7 +203,7 @@ This function will open a small popup window where you can enter 3 pieces of inf
 
 ### Insert link
 
-![](file:Editor/src/main/resources/icons/mddlink.png)
+![](file:Editor/src/main/resources/icons/mdd2link.png)
 
 Default key: Ctrl+N. This is changeable in the settings.
 
@@ -199,7 +211,7 @@ This function will open a small popup window where you can enter 3 pieces of inf
 
 ### Preview
 
-![](file:Editor/src/main/resources/icons/mddpreview.png)
+![](file:Editor/src/main/resources/icons/mdd2preview.png)
 
 Default key: Ctrl+F. This is changeable in the settings.
 
@@ -209,7 +221,7 @@ _Please also note that the preview HTML rendering is done by the Java GUI librar
 
 ### Generate PDF
 
-![](file:Editor/src/main/resources/icons/mddpdf.png)
+![](file:Editor/src/main/resources/icons/mdd2pdf.png)
 
 Default key: Ctrl+P. This is changeable in the settings.
 
@@ -271,7 +283,7 @@ If this is selected then the generated PDF will be opened by the system default 
 
 ### Generate HTML
 
-![](file:Editor/src/main/resources/icons/mddhtml.png)
+![](file:Editor/src/main/resources/icons/mdd2html.png)
 
 Default key: Ctrl+H. This is changeable in the settings.
 
@@ -297,7 +309,7 @@ If this is selected then the generated HTML will be opened by the system default
 
 ### Setting
 
-![](file:Editor/src/main/resources/icons/mddsettings.png)
+![](file:Editor/src/main/resources/icons/mdd2settings.png)
 
 Default key: Ctrl+E. This is changeable in the settings.
 
@@ -314,14 +326,6 @@ This will force a complete restyling of the whole document.
 Default key: Ctrl+V. This is changeable in the settings.
 
 This also forces a restyle of the document, but when paste of text into the document is done. For this to work it must be mapped to the same key as is used for paste. On windows and linux it is Ctrl+V, on Mac it is Cmd+V. This function can be disabled by setting the key to something else than the paste key.
-
-### Open list of open files
-
-Default key: Ctrl+1. This is changeable in the settings.
-
-This opens a popup window with all the open files. Click on a file to select it for editing in the window. 
-
-This function can also be activated by moving the mouse to the left edge of the editor window. 
 
 ### Goto next open file
 

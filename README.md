@@ -67,6 +67,18 @@ The following third party products are using this license:
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
 
+## 1.4.2
+
+### Editor
+
+The editor has been updated:
+
+* The popup window of all open files is no longer accessable by moving the mouse pointer to the left side of the window. This was a really bad idea! It was very easy to unintentionally trigger this popup. This function has now gotten an icon and been added to the toolbar instead. It already had a keyboard shortcut before and still does.
+
+* All toolbar icons have been redone.
+
+* It is now also possible to open the same .fs files as supported by the maven plugin. All markdown documents referenced in the .fs file will be opened in the editor. If an .fs file also points out a java source file for javadoc parsing it will be ignored. Only markdown documents are opened.
+
 ## 1.4.1
 
 Only fixes in editor!
