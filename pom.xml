@@ -47,7 +47,7 @@
         <optmgr.ver>2.0.3</optmgr.ver>
         <fileeditor-maven-support.ver>1.1</fileeditor-maven-support.ver>
         <ftp-maven-plugin.ver>1.0.1</ftp-maven-plugin.ver>
-        <itext.ver>5.5.1</itext.ver>
+        <itext.ver>5.5.6-1</itext.ver>
         <groovy.ver>2.4.4</groovy.ver> <groovy.artifact>groovy-all</groovy.artifact>
         <gmaven-plus.ver>1.5</gmaven-plus.ver>
         <jb.annotations.ver>13.0</jb.annotations.ver>
@@ -123,6 +123,13 @@
                 <groupId>com.itextpdf</groupId>
                 <artifactId>itext-pdfa</artifactId>
                 <version>${itext.ver}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>se.natusoft.json</groupId>
+                <artifactId>basic-json-lib</artifactId>
+                <version>1.0</version>
             </dependency>
 
             <dependency>
@@ -188,6 +195,12 @@
                             <version>${fileeditor-maven-support.ver}</version>
                         </dependency>
                     </dependencies>
+                </plugin>
+
+                <plugin>
+                    <groupId>se.natusoft.tools.codelicmgr</groupId>
+                    <artifactId>CodeLicenseManager-maven-plugin</artifactId>
+                    <version>${clm.ver}</version>
                 </plugin>
 
                 <plugin>
@@ -274,7 +287,6 @@
                     <plugin>
                         <groupId>se.natusoft.tools.codelicmgr</groupId>
                         <artifactId>CodeLicenseManager-maven-plugin</artifactId>
-                        <version>${clm.ver}</version>
 
                         <executions>
                             <execution>
@@ -314,7 +326,6 @@
 
                         <groupId>se.natusoft.tools.codelicmgr</groupId>
                         <artifactId>CodeLicenseManager-maven-plugin</artifactId>
-                        <version>${clm.ver}</version>
 
                         <dependencies>
                             <dependency>
