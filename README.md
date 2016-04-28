@@ -2,7 +2,7 @@
 
 Copyright (C) 2012 Natusoft AB
 
-__Version:__ 1.4.2
+__Version:__ 1.4.3
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
@@ -27,9 +27,9 @@ PDF viewing difficult!
 
 Available through maven at bintray JCentral: [http://jcenter.bintray.com/](http://jcenter.bintray.com/). MarkdownDoc on [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/).
 
-Command line [[markdowndoc-cmd-line-1.4.2.exec.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/1.4.2/markdowndoc-cmd-line-1.4.2.exec.jar)]
+Command line [[markdowndoc-cmd-line-1.4.3.exec.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/1.4.3/markdowndoc-cmd-line-1.4.3.exec.jar)]
 
-Editor [[MarkdownDocEditor-1.4.2.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/1.4.2/MarkdownDocEditor-1.4.2.App.jar)] [[MarkdownDocEditor-1.4.2.dmg](http://download.natusoft.se/MarkdownDocEditor-1.4.2.dmg)].
+Editor [[MarkdownDocEditor-1.4.3.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/1.4.3/MarkdownDocEditor-1.4.3.App.jar)] [[MarkdownDocEditor-1.4.3.dmg](http://download.natusoft.se/MarkdownDocEditor-1.4.3.dmg)].
 
 [Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md)
 
@@ -66,6 +66,14 @@ The following third party products are using this license:
 # Version history
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
+
+## 1.4.3
+
+### Library
+
+Implemented a suggestion from Mikhail Kopylov that also allows images to be referenced relative from the .md file they are part of.
+
+Added information about options for referencing images in _MarkdowndDoc_ under the _Markdown Reference_ section.
 
 ## 1.4.2
 

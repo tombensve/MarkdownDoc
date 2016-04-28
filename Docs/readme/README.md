@@ -2,7 +2,7 @@
 
 Copyright (C) 2012 Natusoft AB
 
-__Version:__ 1.4.2
+__Version:__ 1.4.3
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
@@ -28,10 +28,10 @@ PDF viewing difficult!
 Available through maven at bintray JCentral: [http://jcenter.bintray.com/](http://jcenter.bintray.com/).
 MarkdownDoc on [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/).
 
-Command line \[[markdowndoc-cmd-line-1.4.2.exec.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/1.4.2/markdowndoc-cmd-line-1.4.2.exec.jar)\]
+Command line \[[markdowndoc-cmd-line-1.4.3.exec.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/1.4.3/markdowndoc-cmd-line-1.4.3.exec.jar)\]
 
 
-Editor \[[MarkdownDocEditor-1.4.2.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/1.4.2/MarkdownDocEditor-1.4.2.App.jar)\] \[[MarkdownDocEditor-1.4.2.dmg](http://download.natusoft.se/MarkdownDocEditor-1.4.2.dmg)\].
+Editor \[[MarkdownDocEditor-1.4.3.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/1.4.3/MarkdownDocEditor-1.4.3.App.jar)\] \[[MarkdownDocEditor-1.4.3.dmg](http://download.natusoft.se/MarkdownDocEditor-1.4.3.dmg)\].
 
 [Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md)
 

@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4.2
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
@@ -69,7 +69,27 @@ class FileResource {
      * @throws IOException If resource file cannot be found.
      */
     File getResourceFile(@NotNull final String path) throws IOException {
+        return getResourceFile(path, null)
+    }
+
+    /**
+     * Returns a File object pointing to the specified resource.
+     *
+     * @param path The path of the resource to get.
+     * @param relativeFile If not null then the path can be relative to this file (Suggested by Mikhail Kopylov).
+     *
+     * @throws IOException If resource file cannot be found.
+     */
+    File getResourceFile(@NotNull final String path, @Nullable File relativeFile) throws IOException {
         final File resourceFile
+
+        // Suggested by Mikhail Kopylov.
+        if (relativeFile != null) {
+            resourceFile = resolveFile(relativeFile, path)
+            if (null != resourceFile) {
+                return resourceFile
+            }
+        }
 
         if (this.rootDir == null && this.optsRootDir != null && !this.optsRootDir.isEmpty()) {
             this.rootDir = new File(this.optsRootDir)
@@ -105,7 +125,7 @@ class FileResource {
 
         resolveFile(root.parentFile, path)
     }
-    
+
     /**
      * Adds file: if no protocol is specified.
      *
@@ -122,6 +142,26 @@ class FileResource {
      * @param url The DocItem item provided url.
      */
     @NotNull String resolveUrl(@NotNull final String url) {
+        return resolveUrl(url, null)
+    }
+
+    /**
+     * Adds file: if no protocol is specified.
+     *
+     * In the case of a file: path it resolved starting at current directory and then going up to root,
+     * trying the path in the passed url. This means that you should always make file references from
+     * the top root of your project, since even if a build is built at lower levels it will resolve
+     * the path.
+     * <p/>
+     * The only real difference between this method and getResourceFile is that it handles and URL, which
+     * among other things iText needs for loading images. So if an external URL reference is passed then
+     * it will just be returned as passed. But when a file: reference is passed then we try to resolve
+     * the file.
+     *
+     * @param url The DocItem item provided url.
+     * @param relativeFile If non null then a file: url can be relative to this file.
+     */
+    @NotNull String resolveUrl(@NotNull final String url, @Nullable File relativeFile) {
         String resolvedUrl = url.trim()
 
         if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http") && !resolvedUrl.startsWith("jar:")) {
@@ -135,7 +175,7 @@ class FileResource {
                 resPath = resPath.substring(5)
             }
 
-            final File testFile = getResourceFile(resPath)
+            final File testFile = getResourceFile(resPath, relativeFile)
 
             resolvedUrl = "file:" + testFile.absolutePath
 

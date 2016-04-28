@@ -115,6 +115,17 @@ Short "autolink" version:
 
     ![Alt text](/path/to/img.png "title")
 
+Note that for __MarkdownDoc__ "/path/to/img.png" can be one of the following:
+
+* A http URL.
+
+* A local path which is resolved by first looking at the current directory. If not found the parent directory is tried. This repeats until root directory is reached. You should never use ".." in these paths!
+
+* A local path relative to the _.md_ document referencing it. In this case "../images/myimg.png" is valid.
+
+"file:" URLs are also allowed and behave the same as local paths.
+
+
 ## backslash (\)
 
 The \\ character can be used to escape characters that have markdown meaning. \\\\ will for example produce \\. \\\* will produce \*.

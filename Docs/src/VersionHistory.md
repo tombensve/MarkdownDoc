@@ -3,7 +3,17 @@
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
 
+
+## 1.4.3
+
+### Library
+
+Implemented a suggestion from Mikhail Kopylov that also allows images to be referenced relative from the .md file they are part of.
+
+Added information about options for referencing images in _MarkdowndDoc_ under the _Markdown Reference_ section.
+
 ## 1.4.2
+
 ### Editor
 
 The editor has been updated:
@@ -12,13 +22,13 @@ The editor has been updated:
 
 * All toolbar icons have been redone.
 
-* It is now also possible to open the same .fs files as supported by the maven plugin. All markdown documents referenced in the .fs file will be opened in the editor. If an .fs file also points out a java source file for javadoc parsing it will be ignored. Only markdown documents are opened. 
+* It is now also possible to open the same .fs files as supported by the maven plugin. All markdown documents referenced in the .fs file will be opened in the editor. If an .fs file also points out a java source file for javadoc parsing it will be ignored. Only markdown documents are opened.
 
 ## 1.4.1
 
-Only fixes in editor! 
+Only fixes in editor!
 
-* The popup windows now only popup over the editor window. The fullscreen popups worked badly on different platforms which reserves different parts of the screen. 
+* The popup windows now only popup over the editor window. The fullscreen popups worked badly on different platforms which reserves different parts of the screen.
 
 * Disabled rounded corner popup windows since they also worked with different quality on different platforms.
 
@@ -26,9 +36,9 @@ Only fixes in editor!
 
 ## 1.4
 
-* Added support for what I call _Markdown Style Sheet_ or MSS for short. This is only applicable to PDF generation. For HTML there is CSS, and generating CSS from the MSS is a bad idea. The MSS is relatively simple and JSON based. 
+* Added support for what I call _Markdown Style Sheet_ or MSS for short. This is only applicable to PDF generation. For HTML there is CSS, and generating CSS from the MSS is a bad idea. The MSS is relatively simple and JSON based.
 
-  * It supports ttf, otf, and any other format supported by iText for external fonts. 
+  * It supports ttf, otf, and any other format supported by iText for external fonts.
 
   * It allows for image configuration like scaling, rotating, and alignment. Before all images were alinged to the left. Now they can be alingned to the  left, middle, or right. In previous versions all images was scaled to 60 percent due to iText rendering images very much bigger than any other image viewer (that I have at least).  This scaling can now be set with MSS.
 
@@ -40,16 +50,16 @@ Only fixes in editor!
 
 * Added labels in options for all previously hardcoded text strings in PDFGenerator. It should now be possible to completely generate a document in a different language than English. These can also be set with comment annotations as mentioned above.
 
-* Added Undo / Redo to editor. Swing apparently provides support for this for a JTextPane/JEditorPane, you just have to register an UndoManager. __However__, it reacts on all changes, including styling. Since styling is applied afterward, and on the whole paragraph since it is not only about the current character, this is also registered as a change in the undo manager. So undos will undo styling also. So after undoing what you wanted to undo, do a Ctrl/Cmd+R to fix styling again. 
+* Added Undo / Redo to editor. Swing apparently provides support for this for a JTextPane/JEditorPane, you just have to register an UndoManager. __However__, it reacts on all changes, including styling. Since styling is applied afterward, and on the whole paragraph since it is not only about the current character, this is also registered as a change in the undo manager. So undos will undo styling also. So after undoing what you wanted to undo, do a Ctrl/Cmd+R to fix styling again.
 
-* Editor updated quite a lot! 
+* Editor updated quite a lot!
    * All _known_ bugs fixed.
    * Now handles multipe files in one editor window. It actually only supports one window now, but you switch between the open files by moving mouse to the left window egde which will popup a list of all open files and you just click on the one you want to work on.
    * It is possible to specify a directory as input to editor. In this case it will scan the directory for markdown files and open all found. It is actually possible to specify multiple directories just as it is possible to specify multiple files.
    * When the toolbar is shown at the top of the window, the name of the current file is also shown att the bottom of the window.
-   * The editor GUI has gone though some cosmetics. 
+   * The editor GUI has gone though some cosmetics.
 
-The addition of MSS made huge changes to the code. To be as backwards compatible as possible, the defaults for the MSS settings are as things looked before. There is also a _default.mss_ file that gets used if you don't supply your own. This has settings that mimics the previous styles. 
+The addition of MSS made huge changes to the code. To be as backwards compatible as possible, the defaults for the MSS settings are as things looked before. There is also a _default.mss_ file that gets used if you don't supply your own. This has settings that mimics the previous styles.
 
 Also note that the PDF UserGuide now shows off the new features, mostly for that purpose :-).
 

@@ -7,7 +7,7 @@
     @PDFTitle("MarkdownDoc")
     @PDFSubject("User Guide")
     @PDFKeywords("markdown MarkdownDoc mdd_version_1.4.1")
-    @PDFVersion(1 . 4 . 2) Due to the font used I put a space between to make the dot more visible.
+    @PDFVersion(1 . 4 . 3) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
     @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
@@ -1383,6 +1383,14 @@ As you can see pdf options are prefixed with "pdf.", html options are prefixed w
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
 
+## 1.4.3
+
+### Library
+
+Implemented a suggestion from Mikhail Kopylov that also allows images to be referenced relative from the .md file they are part of.
+
+Added information about options for referencing images in _MarkdowndDoc_ under the _Markdown Reference_ section.
+
 ## 1.4.2
 
 ### Editor
@@ -1661,6 +1669,16 @@ Short "autolink" version:
         ![Alt text](/path/to/img.png)
         
         ![Alt text](/path/to/img.png "title")
+
+Note that for __MarkdownDoc__ "/path/to/img.png" can be one of the following:
+
+* A http URL.
+
+* A local path which is resolved by first looking at the current directory. If not found the parent directory is tried. This repeats until root directory is reached. You should never use ".." in these paths!
+
+* A local path relative to the _.md_ document referencing it. In this case "../images/myimg.png" is valid.
+
+"file:" URLs are also allowed and behave the same as local paths.
 
 ## backslash (\)
 

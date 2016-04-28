@@ -7,7 +7,7 @@
     <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
     <artifactId>markdown-doc</artifactId>
     <packaging>pom</packaging>
-    <version>1.4.2</version>
+    <version>1.4.3</version>
 
     <modules>
         <module>Docs</module>
@@ -36,7 +36,7 @@
 
                 mvn -Pset-version generate-sources
         -->
-        <projectVersion>1.4.2</projectVersion>
+        <projectVersion>1.4.3</projectVersion>
 
         <!--
             These are used in dependencyManagement and pluginManagement below, but here the versions are
