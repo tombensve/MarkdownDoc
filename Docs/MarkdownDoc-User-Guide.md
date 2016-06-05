@@ -1034,11 +1034,17 @@ While in preview mode, drag and drop a markdown file on the preview window to ha
 
 But by just opening an empty editor and entering a blank preview you can quickly read multiple markdown documents formatted by just dropping them on the window.
 
-### Mac OS X
+### Fullscreen support
 
-#### Fullscreen support
+When in fullscreen mode then the settings popup will still popup to the right, but on top of the editor window, so it will still work in that mode.
+
+#### Mac OS X
 
 When you run this editor on a Mac with Lion+ you will get a litte double arrow in the right corner of the window titlebar, or with Mavericks+ it will be the green dot, which will bring upp the editor window in fullscreen.
+
+#### Windows (10)
+
+On Windows10 pressing the square button on the top right side of the window will enter some kind of fullscreen.
 
 #### MarkdownDocEditor.app
 
@@ -1052,7 +1058,7 @@ Due to GUI bugs in the editor component of earlier versions of Java, Java 1.8 or
 
 In prevous versions there were only one file per window and you could open multiple windows. Now there is only one window and you can open multiple files and select which file to work with in the editor window. It is like a tabbed window, but instead of tabs there is a popup list of all open files and you click on the one you want to edit. The reason for this is to have editing distraction free. When you are writing, you only have the text you are working on and nothing else in the window. This works even better with full screen.
 
-Since the editor now has become very file oriented you can no longer edit an unknown file that you specify a file for later when you save. So when you press the "+" toolbar icon or start the editor without any files specified then a file chooser will popup. In this case you can either navigate to a directory and then enter a name for a new file and it will be created or you can specify existing files and they will be opened. Do note that since you can open multiple files at the same time, the opened files does not necessarily become the current edited file visible in the window! But if you move the mouse to the left window edge you will get the newly opened files in the file list.
+Since the editor now has become very file oriented you can no longer edit an unknown file that you specify a file for later when you save. So when you press the "+" toolbar icon or start the editor without any files specified then a file chooser will popup. In this case you can either navigate to a directory and then enter a name for a new file and it will be created or you can specify existing files and they will be opened. Do note that since you can open multiple files at the same time, the opened files does not necessarily become the current edited file visible in the window! But if you open the files poup you will get the newly opened files in the file list.
 
 ## Running
 
@@ -1320,13 +1326,17 @@ The markdown styling as you type in the editor do pull some CPU since basically 
 
 ### By me
 
-All known bugs have been fixed in this version.
+All _known_ bugs have been fixed.
 
 ### By Oracle
 
 This editor uses the standard Swing component JTextPane. This is unfortunately not an optimal component. Specially for styling it gets slow for large documents. In earlier versions of Java 7 this component had a word wrap problem when deleting text either using backspace or cutting text. In that case it rerendered the text screwing up the format until new text was entered again. _As of Java 8 this bug is fixed_, but other new bugs have been added. They are however smaller and don't occur so often.
 
 Sometimes when the JTextPane is opened the pane will not render at all! Just increase the width of the window util text appears. Then save so that the window size for that file will be remembered. I have one and only one document for which this happens and I cannot tell what it is that causes the problem. This could be a mac only problem.
+
+### Other
+
+On Windows 7 generating a PDF within the editor throws a NullPointerException! This does not happen on Mac OS X, Linux, nor Windows 10. I see this as a Windows 7 bug.
 
 # The mddoc file type
 
@@ -1382,6 +1392,12 @@ As you can see pdf options are prefixed with "pdf.", html options are prefixed w
 # Version history
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
+
+## 1.4.4
+
+### Editor
+
+The settings poppup is now popped up to the right of the window, not over it, unless in fullscreen mode then the popup will still be to the right, but on top of the editor window obviously :-). This makes it easier to se the result when playing with settings.
 
 ## 1.4.3
 

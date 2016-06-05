@@ -2,7 +2,7 @@
 
 Copyright (C) 2012 Natusoft AB
 
-__Version:__ 1.4.3
+__Version:__ 1.4.4
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
@@ -27,9 +27,9 @@ PDF viewing difficult!
 
 Available through maven at bintray JCentral: [http://jcenter.bintray.com/](http://jcenter.bintray.com/). MarkdownDoc on [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/).
 
-Command line [[markdowndoc-cmd-line-1.4.3.exec.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/1.4.3/markdowndoc-cmd-line-1.4.3.exec.jar)]
+Command line [[markdowndoc-cmd-line-1.4.4.exec.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/1.4.4/markdowndoc-cmd-line-1.4.4.exec.jar)]
 
-Editor [[MarkdownDocEditor-1.4.3.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/1.4.3/MarkdownDocEditor-1.4.3.App.jar)] [[MarkdownDocEditor-1.4.3.dmg](http://download.natusoft.se/MarkdownDocEditor-1.4.3.dmg)].
+Editor [[MarkdownDocEditor-1.4.4.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/1.4.4/MarkdownDocEditor-1.4.4.App.jar)] [[MarkdownDocEditor-1.4.4.dmg](http://download.natusoft.se/MarkdownDocEditor-1.4.4.dmg)].
 
 [Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md)
 
@@ -66,6 +66,12 @@ The following third party products are using this license:
 # Version history
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
+
+## 1.4.4
+
+### Editor
+
+The settings poppup is now popped up to the right of the window, not over it, unless in fullscreen mode then the popup will still be to the right, but on top of the editor window obviously :-). This makes it easier to se the result when playing with settings.
 
 ## 1.4.3
 
