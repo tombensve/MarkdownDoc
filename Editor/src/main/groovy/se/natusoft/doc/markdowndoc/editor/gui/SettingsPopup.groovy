@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Code Version
  *         1.4.2
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -44,6 +44,10 @@ import se.natusoft.doc.markdowndoc.editor.adapters.WindowListenerAdapter
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 
 import javax.swing.border.EmptyBorder
+import java.awt.event.ComponentAdapter
+import java.awt.event.ComponentEvent
+import java.awt.event.ComponentListener
+import java.awt.event.WindowListener
 import java.util.List
 import javax.swing.*
 import java.awt.*
@@ -72,6 +76,28 @@ class SettingsPopup extends PopupWindow implements OSTrait {
     @SuppressWarnings("GroovyMissingReturnStatement")
     private Closure<Void> closeWindow = {
         setWindowVisibility(false)
+    }
+
+    /** This is kept as a member so that we can remove it again on close. */
+    private ComponentListener parentMovedListener = new ComponentAdapter() {
+        /**
+         * Invoked when the component's position changes.
+         */
+        @Override
+        void componentMoved(ComponentEvent e) {
+            super.componentMoved(e)
+            updateBounds()
+        }
+
+        /**
+         * Invoked when the component's size changes.
+         */
+        @Override
+        public void componentResized(ComponentEvent e) {
+            super.componentResized(e)
+            updateBounds()
+        }
+
     }
 
     private ColumnTopDownLeftRightLayout contentLayout = new ColumnTopDownLeftRightLayout(
@@ -140,6 +166,8 @@ class SettingsPopup extends PopupWindow implements OSTrait {
             }
         })
 
+        this.parentWindow.addComponentListener(this.parentMovedListener)
+
         this.groupPane = new JPanel(this.contentLayout)
         this.groupPane.border = null
         updateColors(this.groupPane)
@@ -158,24 +186,20 @@ class SettingsPopup extends PopupWindow implements OSTrait {
 
         final JButton saveButton = new JButton(text: "Save")
         //updateColors(saveButton)
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            void actionPerformed(final ActionEvent ignored) {
+        saveButton.addActionListener { final ActionEvent ignored ->
                 saveSettings()
                 fadeOutWindow(closeWindow)
-            }
-        })
+        }
+
         buttons.add(saveButton)
 
         final JButton cancelButton = new JButton(text: "Cancel")
         //updateColors(cancelButton)
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            void actionPerformed(final ActionEvent ignored) {
+        cancelButton.addActionListener { final ActionEvent ignored ->
                 cancelSettings()
                 fadeOutWindow(closeWindow)
-            }
-        })
+        }
+
         buttons.add(cancelButton)
 
         add(buttons, BorderLayout.SOUTH)
@@ -184,15 +208,23 @@ class SettingsPopup extends PopupWindow implements OSTrait {
     }
 
     void updateBounds() {
-
-        this.bounds = new Rectangle(
-                this.parentWindow.x + 50,
-                this.parentWindow.y + 80,
-                this.parentWindow.width - 100,
-                this.parentWindow.height - 160
-        )
-
-        moveMouse(new Point((this.bounds.x + 20) as int, (this.bounds.y + 20) as int))
+        int width = ((int)minimumSize.width + 125) * 2
+        if (fullScreenMode) {
+            this.bounds = new Rectangle(
+                    this.parentWindow.x + this.parentWindow.width - width,
+                    this.parentWindow.y,
+                    width,
+                    this.parentWindow.height
+            )
+        }
+        else {
+            this.bounds = new Rectangle (
+                    this.parentWindow.x + this.parentWindow.width,
+                    this.parentWindow.y,
+                    width,
+                    this.parentWindow.height
+            )
+        }
     }
 
     void setWindowVisibility(final boolean state) {
@@ -211,10 +243,10 @@ class SettingsPopup extends PopupWindow implements OSTrait {
                 }
             }
 
-            updateBounds()
             safeOpacity = 0.0f
             visible = true
-
+            updateBounds()
+            moveMouse(new Point((this.bounds.x + 20) as int, (this.bounds.y + 20) as int))
 
             fadeInWindow(this.popupOpacity)
         }
@@ -222,6 +254,7 @@ class SettingsPopup extends PopupWindow implements OSTrait {
             PopupLock.instance.locked = false
             PopupLock.instance.transferLock = false
             visible = false
+            this.parentWindow.removeComponentListener(this.parentMovedListener)
         }
     }
 
