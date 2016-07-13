@@ -18,8 +18,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>itext-pdfa</artifactId>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
             <scope>compile</scope>
         </dependency>
 

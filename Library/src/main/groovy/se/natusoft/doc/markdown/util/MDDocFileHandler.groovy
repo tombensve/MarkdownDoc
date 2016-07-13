@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.4.2
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -44,7 +44,7 @@ import se.natusoft.doc.markdown.api.Parser
 import se.natusoft.doc.markdown.exception.ParseException
 import se.natusoft.doc.markdown.generator.HTMLGenerator
 import se.natusoft.doc.markdown.generator.MarkdownGenerator
-import se.natusoft.doc.markdown.generator.PDFGenerator
+import se.natusoft.doc.markdown.generator.PDFITextGenerator
 import se.natusoft.doc.markdown.model.Doc
 import se.natusoft.doc.markdown.parser.ParserProvider
 import se.natusoft.tools.optionsmgr.CommandLineOptionsManager
@@ -121,16 +121,16 @@ class MDDocFileHandler {
                     genOptsList.add(mdDocFile.getProperty(key))
                 }
             }
-            String[] genOpts = new String[genOptsList.size()]
-            genOpts = genOptsList.toArray(genOpts)
-            final PDFGenerator pdfGenerator = new PDFGenerator()
-            final CommandLineOptionsManager<Options> optMgr =
-                    new CommandLineOptionsManager<Options>(pdfGenerator.getOptionsClass());
-            final Options options = optMgr.loadOptions("-", genOpts, 0);
-
-            if (verbose) System.out.print("Generating " + options.getResultFile() + "...");
-            pdfGenerator.generate(document, options, null)
-            if (verbose) System.out.println("done.");
+//            String[] genOpts = new String[genOptsList.size()]
+//            genOpts = genOptsList.toArray(genOpts)
+//            final PDFITextGenerator pdfGenerator = new PDFITextGenerator()
+//            final CommandLineOptionsManager<Options> optMgr =
+//                    new CommandLineOptionsManager<Options>(pdfGenerator.getOptionsClass());
+//            final Options options = optMgr.loadOptions("-", genOpts, 0);
+//
+//            if (verbose) System.out.print("Generating " + options.getResultFile() + "...");
+//            pdfGenerator.generate(document, options, null)
+//            if (verbose) System.out.println("done.");
         }
 
         if (generateHTML) {

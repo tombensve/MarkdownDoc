@@ -12,7 +12,7 @@ import se.natusoft.tools.optionsmgr.CommandLineOptionsManager
  * Test for MarkdownParser.
  */
 @CompileStatic
-class PDFGeneratorWithMSSDevTest extends GroovyTestCase {
+class PDFITextGeneratorWithMSSDevTest extends GroovyTestCase {
 
     /*
      * Note that this test only tests that the parsing and result generation executes
@@ -32,7 +32,7 @@ class PDFGeneratorWithMSSDevTest extends GroovyTestCase {
         Doc doc = new Doc()
         parser.parse(doc, testFile, new Properties())
 
-        Generator generator = new PDFGenerator()
+        Generator generator //= new PDFITextGenerator()
 
         CommandLineOptionsManager<Options> optMgr = new CommandLineOptionsManager<Options>(generator.optionsClass)
         def args = [
