@@ -574,7 +574,7 @@ class PDFITextGenerator /*implements Generator*/ {
 //
 //        float y = document.top() - document.topMargin()
 //
-//        writeText(
+//        text(
 //                cb,
 //                Element.ALIGN_CENTER,
 //                context.options.tableOfContentsLabel,
@@ -585,7 +585,7 @@ class PDFITextGenerator /*implements Generator*/ {
 //
 //        y = y - 28
 //        context.toc.each { final TOC tocEntry ->
-//            writeText(
+//            text(
 //                    cb,
 //                    Element.ALIGN_LEFT,
 //                    context.options.generateSectionNumbers ? tocEntry.sectionTitle : indentTocEntry(tocEntry) ,
@@ -594,7 +594,7 @@ class PDFITextGenerator /*implements Generator*/ {
 //                    context.pdfStyles.getFont(tocEntry.level)
 //            )
 //
-//            writeText(
+//            text(
 //                    cb,
 //                    Element.ALIGN_RIGHT, "" + tocEntry.pageNumber,
 //                    (float)(document.right() - document.rightMargin()),
@@ -631,7 +631,7 @@ class PDFITextGenerator /*implements Generator*/ {
 //     * @param y The Y position of the text.
 //     * @param font The font to use.
 //     */
-//    private static void writeText(@NotNull final PdfContentByte cb, final int align, @NotNull final String text,
+//    private static void text(@NotNull final PdfContentByte cb, final int align, @NotNull final String text,
 //                                  final float x, final float y, @NotNull final Font font) {
 //
 //        final Phrase phrase = new Phrase(text, font)

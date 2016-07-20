@@ -2,6 +2,7 @@ package se.natusoft.doc.markdown.generator.pdf
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.apache.pdfbox.multipdf.Overlay
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.PDPageContentStream
@@ -10,64 +11,167 @@ import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.generator.styles.MSSColor
 import se.natusoft.doc.markdown.generator.styles.MSSColorPair
-import se.natusoft.doc.markdown.io.Line
+import se.natusoft.doc.markdown.util.NotNullTrait
 
 /**
  * This wraps an PDPageContentStream object and provide utilities to render on page.
  */
 @CompileStatic
 @TypeChecked
-class PDFDoc {
+class PDFDoc implements NotNullTrait {
+
+    //
+    // Constants
+    //
+
+    public static final String A0 = "A0"
+    public static final String A1 = "A1"
+    public static final String A2 = "A2"
+    public static final String A3 = "A3"
+    public static final String A4 = "A4"
+    public static final String A5 = "A5"
+    public static final String A6 = "A6"
+    public static final String LEGAL = "LEGAL"
+    public static final String LETTER = "LETTER"
+
+    private static Map<String, PDRectangle> pageSizes = [
+            A0: PDRectangle.A0,
+            A1: PDRectangle.A1,
+            A2: PDRectangle.A2,
+            A3: PDRectangle.A3,
+            A4: PDRectangle.A4,
+            A5: PDRectangle.A5,
+            A6: PDRectangle.A6,
+            LEGAL: PDRectangle.LEGAL,
+            LETTER: PDRectangle.LETTER
+    ]
+
     //
     // Inner Models
     //
 
+    /**
+     * This represents a location with an x and a y.
+     */
     static class Location {
         float x = 0.0f, y = -1.0f
+    }
+
+    /**
+     * This represents a background box, below text.
+     */
+    static class Box {
+        Location startLocation
+        Location endLocation
+        String color
+    }
+
+    /**
+     * This holds 2 documents in parallel. One is used to render text, while the other
+     * is used to render rects, etc below the text. These documents are merged on save.
+     */
+    private class GenDocument {
+        //
+        // Properties
+        //
+
+        PDDocument document = new PDDocument()
+        PDPage docPage
+        PDPageContentStream docStream
+
+        PDDocument bgDocument = new PDDocument()
+        PDPage bgDocPage
+        PDPageContentStream bgDocStream
+
+        //
+        // Methods
+        //
+
+        void newPage() {
+            docPage = new PDPage()
+            docPage.setMediaBox(PDFDoc.this.pageFormat)
+            document.addPage(docPage)
+            if (this.docStream != null) {
+                ensureTextModeOff()
+                this.docStream.close()
+            }
+            this.docStream = new PDPageContentStream(this.document, this.docPage)
+
+            bgDocPage = new PDPage()
+            bgDocPage.setMediaBox(PDFDoc.this.pageFormat)
+            bgDocument.addPage(bgDocPage)
+            if (this.bgDocStream != null) {
+                this.bgDocStream.close()
+            }
+            this.bgDocStream = new PDPageContentStream(this.bgDocument, this.bgDocPage)
+        }
     }
 
     //
     // Private Members
     //
 
-    /** The format to use for pages. */
-    private PDRectangle pageFormat = PDRectangle.A4
-
     /** The current font to use. */
     @NotNull
     private PDFFontMSSAdapter fontMSSAdapter
+
+    /** A boxed area in progress if not null. */
+    private Box box
+
+//    /** The document the page is part of. */
+//    @NotNull
+//    private PDDocument document = null
+
+    /** Holds the generated document. */
+    @NotNull
+    private GenDocument genDoc = new GenDocument()
+
+    /** Is set to true on beginText. */
+    private boolean textMode = false
 
     //
     // Properties
     //
 
+    /** The size of the page. Use constants on this class for valid standard sizes. */
+    String pageSize = A4
+
     /** The current coordinates. */
     @NotNull
-    private Location pageLocation = new Location()
-    Location getPageLocation() { this.pageLocation }
+    private Location _pageLocation = new Location()
+    public Location getPageLocation(){ this._pageLocation }
+    protected void setPageLocation(Location location) { this._pageLocation = location }
 
-    /** The PDFBox page representative. */
-    @Nullable
-    PDPage currentPage = null
-
-    /** The content stream for the page. */
-    @Nullable
-    PDPageContentStream contentStream = null
-
-    /** The document the page is part of. */
-    @NotNull
-    PDDocument document = null
+//    /** The content stream for the page. */
+//    @Nullable
+//    PDPageContentStream contentStream = null
 
     /** The page margins. */
     float topMargin, bottomMargin, leftMargin, rightMargin
 
     /** The current page number. When the whole document is rendered this will be the last page number. */
     private int pageNo = 1
-    int getPageNo() { this.pageNo }
+    public int getPageNo() { this.pageNo }
+
+    /** Should be set to true when rendering pre formatted text. */
+    boolean preFormatted = false
+
+    /** The current foreground and background colors.*/
+    private MSSColorPair colors
+    public MSSColorPair getColors() { this.colors }
 
     //
     // Methods
     //
+
+    /**
+     * Converts the public size to internal size.
+     *
+     * @param size The size to convert.
+     */
+    protected PDRectangle getPageFormat() {
+        return pageSizes[this.pageSize]
+    }
 
     /**
      * The color to render text with.
@@ -75,8 +179,9 @@ class PDFDoc {
      * @param foregroundColor The foreground color to set.
      */
     void applyForegroundColor(@NotNull MSSColor foregroundColor) {
-        ensureInitialized()
-        this.contentStream.setNonStrokingColor(foregroundColor.red, foregroundColor.green, foregroundColor.blue)
+        notNull("foregroundColor", foregroundColor)
+        this.colors.foreground = foregroundColor
+        this.genDoc.docStream.setNonStrokingColor(foregroundColor.red, foregroundColor.green, foregroundColor.blue)
     }
 
     /**
@@ -85,8 +190,9 @@ class PDFDoc {
      * @apram backgroundColor The background color to set.
      */
     void applyBackgroundColor(@NotNull MSSColor backgroundColor) {
-        ensureInitialized()
-        this.contentStream.setStrokingColor(backgroundColor.red, backgroundColor.green, backgroundColor.blue)
+        notNull("backgroundColor", backgroundColor)
+        this.colors.background = backgroundColor
+        this.genDoc.docStream.setStrokingColor(backgroundColor.red, backgroundColor.green, backgroundColor.blue)
     }
 
     /**
@@ -95,6 +201,8 @@ class PDFDoc {
      * @param colorPair The color pair to set.
      */
     void applyColorPair(@NotNull MSSColorPair colorPair) {
+        notNull("colorPair", colorPair)
+        this.colors = colorPair
         applyForegroundColor(colorPair.foreground)
         applyBackgroundColor(colorPair.background)
     }
@@ -105,9 +213,10 @@ class PDFDoc {
      * @param fontMSSAdapter The PDFFontMSSAdapter to set.
      */
     void applyFont(@NotNull PDFFontMSSAdapter fontMSSAdapter) {
+        notNull("fontMSSAdapter", fontMSSAdapter)
         this.fontMSSAdapter = fontMSSAdapter
-        this.contentStream.leading = this.fontMSSAdapter.size + 2
-        this.fontMSSAdapter.applyFont(this.contentStream)
+        this.genDoc.docStream.leading = this.fontMSSAdapter.size + 2
+        this.fontMSSAdapter.applyFont(this.genDoc.docStream)
     }
 
     /**
@@ -116,15 +225,8 @@ class PDFDoc {
      * @param pageFormat The format to set.
      */
     void setPageFormat(@NotNull PDRectangle pageFormat) {
+        notNull("pageFormat", pageFormat)
         this.pageFormat = pageFormat
-    }
-
-    /**
-     * @return The size of the page.
-     */
-    @NotNull
-    public PDRectangle getPageFormat() {
-        return this.pageFormat
     }
 
     /**
@@ -134,24 +236,32 @@ class PDFDoc {
      *
      * @return The calculated width.
      */
-    float calcTextWidth(@NotNull String text) {
+    private float calcTextWidth(@NotNull String text) {
+        notNull("text", text)
         (this.fontMSSAdapter.font.getStringWidth(text) / 1000.0f * (float)this.fontMSSAdapter.size) as float
     }
 
     /**
      * Gets current y coordinate with delayed init.
      */
-    private float getY() {
+    private float getPageY() {
         if (this.pageLocation.y < 0.0f) {
             this.pageLocation.y = pageFormat.height - (this.fontMSSAdapter.size as float) - this.topMargin
         }
-        this.y
+        this._pageLocation.y
     }
+
+    /**
+     * Sets current y coordinate.
+     *
+     * @param y The coordinate to set.
+     */
+    private void setPageY(float y) { this.pageLocation.y = y }
 
     /**
      * Gets the current x coordinate.
      */
-    private float getX() {
+    private float getPageX() {
         if (this.pageLocation.x < this.leftMargin) {
             this.pageLocation.x = this.leftMargin
         }
@@ -159,20 +269,31 @@ class PDFDoc {
     }
 
     /**
-     * Writes text to the document using the current font, colors, etc.
+     * Sets the current X coordinate.
      *
-     * @param text The text to write.
+     * @param x The coordinate to set.
      */
-    void writeText(@NotNull String text) {
-        writeText(new Line(text))
+    private void setPageX(float x) { this.pageLocation.x = x }
+
+    /**
+     * This keeps track of if the text document is in text mode or not,
+     * and ensures that it is in text mode.
+     */
+    private void ensureTextMode() {
+        if (!this.textMode) {
+            this.genDoc.docStream.beginText()
+            this.textMode = true
+        }
     }
 
     /**
-     * This ensures all vital fields/properties are initialized.
+     * This keeps track of if the text document is in text mode or not,
+     * and ensures that it isn't in text mode.
      */
-    private void ensureInitialized() {
-        if (this.document == null || this.currentPage == null || this.contentStream == null) {
-            newPage()
+    private void ensureTextModeOff() {
+        if (this.textMode) {
+            this.genDoc.docStream.endText()
+            this.textMode = false
         }
     }
 
@@ -181,69 +302,123 @@ class PDFDoc {
      *
      * @param text The text to write.
      */
-    void writeText(@NotNull Line text) {
-        ensureInitialized()
-
-        if (text == null) {
-            // The @NotNull does not inhibit from actually passing null!
-            this.contentStream.showText("[NULL]")
-            return
-        }
+    void text(@NotNull String text) {
+        notNull("text", text)
+        ensureTextMode()
 
         float rightMarginPos = this.pageFormat.width - this.rightMargin
-        float lineSize = calcTextWidth(text.toString())
-        if ((this.x + lineSize) > rightMarginPos) {
-            int words = text.numberOfWords
-            while ((this.x + lineSize) > rightMarginPos && words > 0) {
-                lineSize = calcTextWidth(text.getTextUpToWord(--words))
-            }
-            this.contentStream.showText(text.getTextUpToWord(words))
-            this.contentStream.newLine()
-            this.pageLocation.y -= (this.fontMSSAdapter.size + 2)
 
-            if (this.pageLocation.y < this.bottomMargin) {
-                newPage()
-            }
-
-            String nextLinePart = text.getTextFromWord(words)
-            this.contentStream.showText(nextLinePart)
-            this.pageLocation.x += calcTextWidth(nextLinePart)
-
+        List<String> wordList = new LinkedList<>()
+        String space = ""
+        text.split(" ").each {String word ->
+            wordList.add(space + word)
+            space = " "
         }
-        else {
-            EL buggadero: This of course does not handle that the rest of the text might be too long!
-                          This needs to loop under the text left will fit on one line.
-            this.contentStream.showText(text.toString())
-            this.pageLocation.x += lineSize
+
+        wordList.each { String word ->
+            float wordSize = calcTextWidth(word)
+            if (this.pageX + wordSize > rightMarginPos) {
+                this.pageX = this.leftMargin
+                this.pageY -= (this.fontMSSAdapter.size + 2)
+                if (this.pageY < this.bottomMargin) {
+                    newPage()
+                }
+                else {
+                    // Note: newLineAtOffset(...) does not work here!
+                    this.genDoc.docStream.newLine()
+                    if (!this.preFormatted) {
+                        word = word.trim()
+                    }
+                }
+            }
+            this.genDoc.docStream.showText(word)
+            this.pageX += wordSize
         }
+    }
+
+    /**
+     * Starts a boxed text block. Call endBox() to end it.
+     *
+     * @param boxColor The background color of the box.
+     */
+    void startBox(String boxColor) {
+        this.box = new Box(startLocation: new Location(x: this.leftMargin, y: pageY + (this.fontMSSAdapter.size + 2)), color: boxColor)
+        this.leftMargin = this.leftMargin + 10.0f
+        this.rightMargin = this.rightMargin + 10.0f
+        ensureTextModeOff()
+
+        this.pageX = this.leftMargin
+        ensureTextMode()
+        this.genDoc.docStream.newLineAtOffset(pageX, pageY)
+    }
+
+    /**
+     * Ends a previously started box.
+     */
+    void endBox() {
+        ensureTextModeOff()
+        this.leftMargin = this.leftMargin - 10.0f
+        this.rightMargin = this.rightMargin - 10.0f
+        this.box.endLocation = new Location(x: this.rightMargin, y: this.pageY - 4.0f)
+
+        MSSColor color = new MSSColor(color: this.box.color)
+        this.genDoc.bgDocStream.setStrokingColor(color.red, color.green, color.blue)
+
+        this.genDoc.bgDocStream.addRect(
+                this.box.endLocation.x,
+                this.box.endLocation.y,
+                this.pageFormat.width - this.leftMargin - this.rightMargin,
+                this.box.startLocation.y - this.box.endLocation.y
+        )
+        this.genDoc.bgDocStream.fillAndStroke()
+        this.genDoc.bgDocStream.closePath()
+
+        ensureTextMode()
+        pageX = this.leftMargin
+        this.genDoc.docStream.newLineAtOffset(pageX, pageY)
+        this.box = null
+    }
+
+    private boolean isBox() {
+        return this.box != null
     }
 
     /**
      * Writes a new line.
      */
-    void writeNL() {
-        ensureInitialized()
-        this.contentStream.newLine()
+    void newLine() {
+        this.genDoc.docStream.newLine()
+        this.pageX = this.leftMargin
+        this.pageY -= (this.fontMSSAdapter.size + 2)
+    }
+
+    /**
+     * Makes an empty line for a new paragraph.
+     */
+    void newParagraph() {
+        newLine()
+        newLine()
     }
 
     /**
      * Creates a new page.
      */
     void newPage() {
-        if (this.document == null) {
-            this.document = new PDDocument()
+        String boxColor = null
+        if (isBox()) {
+            boxColor = this.box.color
+            endBox()
         }
-        this.currentPage = new PDPage()
-        this.currentPage.setMediaBox(this.pageFormat)
-        this.document.addPage(this.currentPage)
-        if (this.contentStream != null) {
-            this.contentStream.endText()
-            this.contentStream.close()
+
+        this.genDoc.newPage()
+
+        ensureTextMode()
+        this.genDoc.docStream.newLineAtOffset(this.pageLocation.x, this.pageLocation.y)
+
+        ++this.pageNo
+        if (boxColor != null) {
+            startBox(boxColor)
         }
-        this.contentStream = new PDPageContentStream(this.document, this.currentPage)
-        this.pageLocation = new Location(x: this.leftMargin, y: this.pageFormat.height - this.topMargin)
-        this.contentStream.beginText()
-        this.contentStream.newLineAtOffset(this.pageLocation.x, this.pageLocation.y)
     }
 
     /**
@@ -254,8 +429,7 @@ class PDFDoc {
      * @throws IOException on failure to save
      */
     void save(String path) throws IOException {
-        this.contentStream.close()
-        this.document.save(path)
+        save(new File(path))
     }
 
     /**
@@ -266,8 +440,13 @@ class PDFDoc {
      * @throws IOException on failure to save
      */
     void save(File file) throws IOException {
-        this.contentStream.close()
-        this.document.save(file)
+        OutputStream saveStream = file.newOutputStream()
+        try {
+            save(saveStream)
+        }
+        finally {
+            saveStream.close()
+        }
     }
 
     /**
@@ -278,20 +457,31 @@ class PDFDoc {
      * @throws IOException on failure to save
      */
     void save(OutputStream stream) throws IOException {
-        this.contentStream.close()
-        this.document.save(stream)
+        this.genDoc.docStream.close()
+        this.genDoc.bgDocStream.close()
+
+        Overlay overlay = new Overlay(
+                inputPDF: this.genDoc.document,
+                allPagesOverlayPDF: this.genDoc.bgDocument,
+                overlayPosition: Overlay.Position.BACKGROUND
+        )
+        PDDocument finalDoc = overlay.overlay(new HashMap<Integer, String>())
+        overlay.close()
+
+        finalDoc.save(stream)
     }
 
     /**
      * Closes content stream and document.
      */
     void close() {
-        if (this.contentStream != null) {
-            this.contentStream.close()
-        }
-
-        if (this.document != null) {
-            this.document.close()
-        }
+//        if (this.contentStream != null) {
+//            this.contentStream.close()
+//        }
+//
+//        if (this.document != null) {
+//            this.document.close()
+//        }
     }
+
 }
