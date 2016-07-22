@@ -6,19 +6,20 @@ import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions
-
-import se.natusoft.doc.markdown.generator.pdf.PDFStylesMSSAdapter
+import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxDocRenderer
+import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxStylesMSSAdapter
 import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.model.Comment
 import se.natusoft.doc.markdown.model.Div
 import se.natusoft.doc.markdown.model.Doc
 import se.natusoft.doc.markdown.model.DocFormat
 import se.natusoft.doc.markdown.model.DocItem
+import se.natusoft.doc.markdown.model.Paragraph
 
 /**
  *
  */
-class PDFBoxGenerator implements Generator {
+abstract class PDFBoxGenerator implements Generator {
     //
     // Inner Classes
     //
@@ -48,7 +49,7 @@ class PDFBoxGenerator implements Generator {
         PDFGeneratorOptions options
 
         /** Adapter between MSS and iText fonts. */
-        PDFStylesMSSAdapter pdfStyles = new PDFStylesMSSAdapter()
+        PDFBoxStylesMSSAdapter pdfStyles = new PDFBoxStylesMSSAdapter()
 
         /** The table of contents. */
         java.util.List<TOC> toc
@@ -63,7 +64,7 @@ class PDFBoxGenerator implements Generator {
     // Private Members
     //
 
-
+    private PDFBoxDocRenderer doc
 
     //
     // Methods
@@ -127,14 +128,25 @@ class PDFBoxGenerator implements Generator {
             @Nullable File rootDir,
             @NotNull OutputStream resultStream
     ) throws IOException, GenerateException {
+
         final PDFGeneratorContext context = new PDFGeneratorContext(
-                options: opts as PDFGeneratorOptions,
+                options: options as PDFGeneratorOptions,
                 rootDir:  rootDir,
                 fileResource: new FileResource(rootDir: rootDir, optsRootDir: (opts as PDFGeneratorOptions).rootDir)
         )
 
+        // TODO: Add to MSS instead of hardcoding.
+        this.doc = new PDFBoxDocRenderer(
+                topMargin: 50,
+                bottomMargin: 50,
+                leftMargin: 50,
+                rightMargin: 50,
+                pageSize: context.options.pageSize
+        )
+
         context.pdfStyles.generatorContext = context
 
+        // Load MSS file if specified
         if (context.options.mss != null && !context.options.mss.isEmpty()) {
             final File mssFile = context.fileResource.getResourceFile(context.options.mss)
             final BufferedInputStream bis = new BufferedInputStream(new FileInputStream(mssFile))
@@ -150,20 +162,18 @@ class PDFBoxGenerator implements Generator {
             context.pdfStyles.mss = MSS.defaultMSS()
         }
 
-        context.initRun()
-
         final LinkedList<String> divs = new LinkedList<>()
 
         context.pdfStyles.mss.currentDivs = divs
 
-        doc.items.each { final DocItem docItem ->
+        document.items.each { final DocItem docItem ->
 
             switch (docItem.format) {
                 case DocFormat.Comment:
                     // We skip comments in general, but act on "@PB" within the comment for doing a page break.
                     final Comment comment = (Comment)docItem;
                     if (comment.text.indexOf("@PB") >= 0) {
-                        //context.documentItems.add(new NewPage())
+                        this.doc.newPage()
                     }
                     // and also act on @PDFTitle, @PDFSubject, @PDFKeywords, @PDFAuthor, @PDFVersion, and @PDFCopyright
                     // for overriding those settings in the options. This allows the document rather than the generate
@@ -172,7 +182,7 @@ class PDFBoxGenerator implements Generator {
                     break
 
                 case DocFormat.Paragraph:
-//                    writeParagraph(docItem as Paragraph, context)
+                    writeParagraph(doc, docItem as Paragraph, context)
                     break
 
                 case DocFormat.Header:
@@ -384,5 +394,56 @@ class PDFBoxGenerator implements Generator {
         }
 
         updated
+    }
+
+    void writeParagraph(PDFBoxDocRenderer docProducer, Paragraph paragraph, PDFGeneratorContext context) {
+
+        boolean first = true
+        paragraph.items.each { final DocItem docItem ->
+            if (docItem.renderPrefixedSpace && !first) {
+                docProducer.text("  ")
+            }
+            first = false
+
+            switch (docItem.format) {
+
+                case DocFormat.Code:
+//                    writeCode(docItem as Code, docProducer, context)
+                    break
+
+                case DocFormat.Emphasis:
+//                    writeEmphasis(docItem as Emphasis, docProducer, context)
+                    break
+
+                case DocFormat.Strong:
+//                    writeStrong(docItem as Strong, docProducer, context)
+                    break
+
+                case DocFormat.Image:
+//                    writeImage(docItem as Image, docProducer, context)
+                    break
+
+                case DocFormat.Link:
+//                    writeLink(docItem as Link, docProducer, context)
+                    break
+
+                case DocFormat.AutoLink:
+//                    writeLink(docItem as AutoLink, docProducer, context)
+                    break
+
+                case DocFormat.Space:
+//                    writePlainText(docItem as PlainText, docProducer, context)
+                    break;
+
+                case DocFormat.PlainText:
+//                    writePlainText(docItem as PlainText, docProducer, context)
+                    break
+
+                default:
+                    throw new GenerateException(message: "Unknown format model in Doc! [" +
+                            docItem.getClass().getName() + "]")
+            }
+        }
+
     }
 }

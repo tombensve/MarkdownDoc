@@ -34,7 +34,7 @@
  *         2015-07-15: Created!
  *
  */
-package se.natusoft.doc.markdown.generator.pdf
+package se.natusoft.doc.markdown.generator.pdfbox
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
@@ -54,7 +54,7 @@ import se.natusoft.doc.markdown.generator.styles.MSSFont
  */
 @CompileStatic
 @TypeChecked
-class PDFStylesMSSAdapter {
+class PDFBoxStylesMSSAdapter {
 
     //
     // Properties
@@ -107,7 +107,7 @@ class PDFStylesMSSAdapter {
             loadFont(document, mssExtFont)
         }
         else {
-            new PDFFontMSSAdapter(mssFont, mssColorPair).font
+            new PDFBoxFontMSSAdapter(mssFont).font
         }
     }
 
@@ -132,7 +132,7 @@ class PDFStylesMSSAdapter {
 
         final BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(fontPath))
         try {
-            PDType0Font.load(document, inputStream);
+            return PDType0Font.load(document, inputStream);
         }
         finally {
             inputStream.close()

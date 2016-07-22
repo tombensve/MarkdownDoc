@@ -58,6 +58,8 @@ class MSSColor {
     static final MSSColor BLACK = new MSSColor(color: "0:0:0")
     static final MSSColor WHITE = new MSSColor(color: "255:255:255")
     static final MSSColor GREY = new MSSColor(color: "128:128:128")
+    static final MSSColor BLUE = new MSSColor(color: "0:0:255")
+    static final MSSColor LINK_BLUE = new MSSColor(color: "59:134:198")
 
     //
     // Properties
@@ -70,6 +72,10 @@ class MSSColor {
         this.red = getRed(color)
         this.green = getGreen(color)
         this.blue = getBlue(color)
+    }
+
+    void applyColor(Closure<Void> applyColorClosure) {
+        applyColorClosure.call(this.red, this.green, this.blue)
     }
 
     //

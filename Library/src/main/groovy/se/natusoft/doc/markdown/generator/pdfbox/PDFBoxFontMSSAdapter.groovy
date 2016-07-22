@@ -34,16 +34,16 @@
  *         2015-07-15: Created!
  *
  */
-package se.natusoft.doc.markdown.generator.pdf
+package se.natusoft.doc.markdown.generator.pdfbox
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.PDPageContentStream
 import org.apache.pdfbox.pdmodel.font.PDFont
 import org.apache.pdfbox.pdmodel.font.PDType1Font
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationTextMarkup
 import org.jetbrains.annotations.NotNull
-import se.natusoft.doc.markdown.generator.styles.MSSColorPair
 import se.natusoft.doc.markdown.generator.styles.MSSFont
 import se.natusoft.doc.markdown.generator.styles.MSSFontStyle
 
@@ -52,7 +52,7 @@ import se.natusoft.doc.markdown.generator.styles.MSSFontStyle
  */
 @CompileStatic
 @TypeChecked
-class PDFFontMSSAdapter {
+class PDFBoxFontMSSAdapter {
     //
     // Properties
     //
@@ -63,9 +63,6 @@ class PDFFontMSSAdapter {
     /** The size of the font */
     int size
 
-    /** The colors to use. */
-    MSSColorPair colorPair
-
     /** Additional markup if non null. */
     PDAnnotationTextMarkup markup = null
 
@@ -73,23 +70,18 @@ class PDFFontMSSAdapter {
     // Constructors
     //
 
-    PDFFontMSSAdapter(@NotNull final MSSFont mssFont,
-                      @NotNull final MSSColorPair mssColorPair) {
+    PDFBoxFontMSSAdapter(@NotNull final MSSFont mssFont) {
         this.font = toStdStyle(mssFont.family, mssFont.style)
         this.size = mssFont.size
-        this.colorPair = mssColorPair
         if (mssFont.style == MSSFontStyle.UNDERLINE) {
             this.markup = new PDAnnotationTextMarkup(PDAnnotationTextMarkup.SUB_TYPE_UNDERLINE)
         }
     }
 
-    PDFFontMSSAdapter(@NotNull PDFont font,
-                      @NotNull final MSSFont mssFont,
-                      @NotNull final MSSColorPair mssColorPair) {
+    protected PDFBoxFontMSSAdapter(@NotNull PDFont font, @NotNull final MSSFont mssFont) {
         this.font = font
         this.size = mssFont.size
         setStyle(font, mssFont.style)
-        this.colorPair = mssColorPair
         if (mssFont.style == MSSFontStyle.UNDERLINE) {
             this.markup = new PDAnnotationTextMarkup(PDAnnotationTextMarkup.SUB_TYPE_UNDERLINE)
         }
@@ -102,10 +94,14 @@ class PDFFontMSSAdapter {
     /**
      * Sets the font represented by this adapter on a  page content stream.
      *
-     * @param contentStream The content stream to set font on.
+     * @param contentStream The content stream to apply font to.
+     * @param page The current page to which the content stream writes to.
      */
-    public applyFont(PDPageContentStream contentStream) {
+    public void applyFont(PDPageContentStream contentStream, PDPage page) {
         contentStream.setFont(this.font, this.size)
+        if (page != null && this.markup != null) {
+            page.getAnnotations().add(this.markup)
+        }
     }
 
     /**
@@ -191,8 +187,6 @@ class PDFFontMSSAdapter {
     }
 
     private static final void setStyle(@NotNull PDFont font, @NotNull final MSSFontStyle fontStyle) {
-        final int result
-
         switch (fontStyle) {
             case MSSFontStyle.NORMAL:
                 break
