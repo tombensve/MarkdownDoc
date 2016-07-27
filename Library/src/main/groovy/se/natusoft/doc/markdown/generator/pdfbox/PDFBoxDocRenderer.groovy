@@ -13,7 +13,8 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
-import se.natusoft.doc.markdown.generator.DocProducer.Location
+import se.natusoft.doc.markdown.generator.pdfbox.internal.FrontPage
+import se.natusoft.doc.markdown.generator.pdfbox.internal.Outline
 import se.natusoft.doc.markdown.generator.pdfbox.internal.PageMargins
 import se.natusoft.doc.markdown.generator.styles.MSSColor
 import se.natusoft.doc.markdown.generator.styles.MSSColorPair
@@ -84,7 +85,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * This represents a location with an x and a y.
      */
-    static class PageLocation implements Location {
+    static class Location {
         float x = 0.0f, y = -1.0f
     }
 
@@ -136,7 +137,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         // Properties
         //
 
-        PDPage frontPage
+        FrontPage frontPage
 
 
         PDDocument document = new PDDocument()
@@ -147,11 +148,13 @@ class PDFBoxDocRenderer implements NotNullTrait {
         PDPage bgDocPage
         PDPageContentStream bgDocStream
 
+        /** The PDF outline. */
+        Outline outline = null
+
+
         //
         // Private Members
         //
-
-        private PDDocument tempDoc = new PDDocument()
 
         //
         // Methods
@@ -204,7 +207,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
     /** The current coordinates. */
     @NotNull
-    private Location _pageLocation = new PageLocation()
+    private Location _pageLocation = new Location()
     public Location getPageLocation(){ this._pageLocation }
     protected void setPageLocation(Location location) { this._pageLocation = location }
 
@@ -272,6 +275,14 @@ class PDFBoxDocRenderer implements NotNullTrait {
     //
     // Methods
     //
+
+    void addOutlineEntry(String number, String title) {
+        if (this.genDoc.outline == null) {
+            this.genDoc.outline = new Outline()
+            this.genDoc.outline.addToDocument(this.genDoc.document)
+        }
+        this.genDoc.outline.addEntry(number, title, this.genDoc.docPage)
+    }
 
     /**
      * The color to render text with.
@@ -347,7 +358,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * Applies the current font to the current page.
      */
-    private void applyFontInternal() {
+    protected void applyFontInternal() {
         if (this.fontMSSAdapter != null) {
             this.genDoc.docStream.leading = this.fontMSSAdapter.size + 2
             this.fontMSSAdapter.applyFont(this.genDoc.docStream, this.genDoc.docPage)
@@ -362,19 +373,48 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @return The calculated width.
      */
     protected float calcTextWidth(@NotNull String text) {
+        calcTextWidth(this.fontMSSAdapter, text)
+    }
+
+    /**
+     * Calculates the width of a text string.
+     *
+     * @param fontAdapter The fontAdapter to get font from.
+     * @param text The text to get the width of.
+     *
+     * @return The calculated width.
+     */
+    protected float calcTextWidth(@NotNull PDFBoxFontMSSAdapter fontAdapter, @NotNull String text) {
         notNull("text", text)
-        (this.fontMSSAdapter.font.getStringWidth(text) / 1000.0f * (float)this.fontMSSAdapter.size) as float
+        (fontAdapter.font.getStringWidth(text) / 1000.0f * (float)fontAdapter.size) as float
     }
 
     /**
      * This keeps track of if the text document is in text mode or not,
      * and ensures that it is in text mode.
+     *
+     * This is needed because you can only render text while in text mode, and it
+     * is only possible to set a position on the page directly after enabling text
+     * mode.
      */
     protected void ensureTextMode() {
         if (!this.textMode) {
             this.genDoc.docStream.beginText()
             this.textMode = true
         }
+    }
+
+    /**
+     * The same as ensureTextMode() but also positions rendering at x, y.
+     *
+     * Do note that this does not change the values of pageX and pageY!
+     *
+     * @param x The x coordinate to render text at.
+     * @param y The y coordinate to render text at.
+     */
+    protected void ensureTextMode(float x, float y) {
+        ensureTextMode()
+        this.genDoc.docStream.newLineAtOffset(x, y)
     }
 
     /**
@@ -388,6 +428,10 @@ class PDFBoxDocRenderer implements NotNullTrait {
         }
     }
 
+    //
+    // Document Content Methods
+    //
+
     /**
      * Writes a TOC entry.
      *
@@ -396,6 +440,18 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param page The page number of the entry.
      */
     void tocEntry(@Nullable String number, @NotNull String title, int page) {
+        tocEntry(number, title, page, true)
+    }
+
+    /**
+     * Writes a TOC entry.
+     *
+     * @param number The number of the entry if any. Can be null.
+     * @param title The title of the entry.
+     * @param pageNo The page number of the entry.
+     * @param useDots If true then dots will be drawn between title and page number.
+     */
+    void tocEntry(@Nullable String number, @NotNull String title, int pageNo, boolean useDots) {
         if (this.textMode) {
             ensureTextModeOff()
         }
@@ -405,26 +461,41 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         this.pageX = this.margins.leftMargin
 
+        // Section number if any
         if (number != null) {
-            ensureTextMode()
-            this.genDoc.docStream.newLineAtOffset(this.pageX, this.pageY)
+            ensureTextMode(this.pageX, this.pageY)
             text(number)
             ensureTextModeOff()
             this.pageX = this.margins.leftMargin + 60.0f
         }
 
-        ensureTextMode()
-        genDoc.docStream.newLineAtOffset(this.pageX, this.pageY)
+        // Section title
+        ensureTextMode(this.pageX, this.pageY)
+        float titleEnd = (this.pageX + calcTextWidth(TOC_FONT, title) - 20.0f) as float
         text(title)
         ensureTextModeOff()
 
-        ensureTextMode()
-        this.genDoc.docStream.newLineAtOffset(
-                (this.pageFormat.width - this.margins.rightMargin - calcTextWidth("${page}")) as float,
-                this.pageY
-        )
-        text("${page}")
+        // Page number
+        float pagePos = (this.pageFormat.width - this.margins.rightMargin - calcTextWidth(TOC_FONT, "${pageNo}")) as float
+        ensureTextMode(pagePos, this.pageY)
+        text("${pageNo}")
         ensureTextModeOff()
+
+        // Dots between title and page number.
+        if (useDots) {
+            float dotsSize = pagePos - titleEnd
+            // The magic number 50.0 was arrived at by playing with a calculator and testing :-) This works for font sizes 8 - 13.
+            // This code does not support larger font sizes since then the columns start overwriting each other.
+            float dotSize = calcTextWidth(TOC_FONT, ".") + (TOC_FONT.size / 50.0f as float)
+            int noDots = (dotsSize / dotSize) as int
+            StringBuilder sb = new StringBuilder()
+            noDots.times {
+                sb.append('.')
+            }
+            ensureTextMode((pagePos - calcTextWidth(TOC_FONT, sb.toString()) - 6.0f) as float, this.pageY)
+            this.genDoc.docStream.showText(sb.toString())
+            ensureTextModeOff()
+        }
 
         this.fontMSSAdapter.applyFont(this.genDoc.docStream, null)
         restoreForegroundColor()
@@ -498,13 +569,32 @@ class PDFBoxDocRenderer implements NotNullTrait {
     }
 
     /**
+     * Renders a text centered on the line and then moves to the next line.
+     *
+     * @param text The text to center.
+     */
+    void center(String text) {
+        ensureTextModeOff()
+        ensureTextMode() // Must do this for newLineAt(...) to work
+
+        float x = ((this.pageFormat.width / 2.0f) - (calcTextWidth(text) / 2.0f)) as float
+        this.genDoc.docStream.newLineAtOffset(x, this.pageY)
+        this.genDoc.docStream.showText(text)
+        this.pageX = this.margins.leftMargin
+        this.pageY -= (this.fontMSSAdapter.size + 2.0f)
+        if (this.pageY < this.margins.bottomMargin) {
+            newPage()
+        }
+    }
+
+    /**
      * Starts a boxed text block. Call endBox() to end it.
      *
      * @param A pair of colors to use for the box. Foreground is the non stroking color and the background is the stroking color.
      */
     void startBox(MSSColorPair boxColorPair) {
         this.box = new Box(
-                startLocation: new PageLocation(
+                startLocation: new Location(
                         x: this.margins.leftMargin,
                         y: pageY + (this.fontMSSAdapter.size + 2)
                 ),
@@ -526,7 +616,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         ensureTextModeOff()
         this.margins.leftMargin = this.margins.leftMargin - 10.0f
         this.margins.rightMargin = this.margins.rightMargin - 10.0f
-        this.box.endLocation = new PageLocation(x: this.margins.rightMargin, y: this.pageY - 4.0f)
+        this.box.endLocation = new Location(x: this.margins.rightMargin, y: this.pageY - 4.0f)
 
         this.box.colorPair.foreground.applyColor this.genDoc.BG_DOC_FG_COLOR
         this.box.colorPair.background.applyColor this.genDoc.BG_DOC_BG_COLOR
@@ -556,7 +646,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * Draws a horizontal ruler over the page, and moves the current line down.
      */
-    void hr() { hr(3.0f) }
+    void hr() { hr(1.5f) }
 
     /**
      * Draws a horizontal rules over the page, and moves the current line down.

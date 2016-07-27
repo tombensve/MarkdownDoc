@@ -33,10 +33,15 @@ class TestPDFDoc {
         doc.applyFont(fontMSSAdapter)
         doc.applyColorPair(mssColorPair)
 
+        doc.center("Table of Content")
         doc.tocEntry("1.2.3", "First toc entry", 1)
         doc.tocEntry("1.2.3.4.5.6", "Second toc entry", 2)
         doc.tocEntry(null, "Third toc entry", 5)
         doc.newPage()
+
+        doc.addOutlineEntry("1", "One")
+        doc.addOutlineEntry("1.1", "One-one")
+        doc.addOutlineEntry("2", "Two")
 
         doc.text("This is a test paragraph. It contains a bit of text that should be longer than one line to see if it breaks " +
                 "correctly. Thereby I need to write some more text in this. Just a little more text now. Well, this should at " +
