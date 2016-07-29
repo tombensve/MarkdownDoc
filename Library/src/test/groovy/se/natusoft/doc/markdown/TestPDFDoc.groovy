@@ -5,6 +5,7 @@ import groovy.transform.TypeChecked
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxDocRenderer
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxFontMSSAdapter
 import se.natusoft.doc.markdown.generator.pdfbox.internal.PageMargins
+import se.natusoft.doc.markdown.generator.pdfbox.internal.SectionNumber
 import se.natusoft.doc.markdown.generator.styles.MSSColor
 import se.natusoft.doc.markdown.generator.styles.MSSColorPair
 import se.natusoft.doc.markdown.generator.styles.MSSFont
@@ -38,10 +39,6 @@ class TestPDFDoc {
         doc.tocEntry("1.2.3.4.5.6", "Second toc entry", 2)
         doc.tocEntry(null, "Third toc entry", 5)
         doc.newPage()
-
-        doc.addOutlineEntry("1", "One")
-        doc.addOutlineEntry("1.1", "One-one")
-        doc.addOutlineEntry("2", "Two")
 
         doc.text("This is a test paragraph. It contains a bit of text that should be longer than one line to see if it breaks " +
                 "correctly. Thereby I need to write some more text in this. Just a little more text now. Well, this should at " +
@@ -189,6 +186,21 @@ class TestPDFDoc {
         doc.newLine()
         doc.newLine()
 
+
+        SectionNumber sn = new SectionNumber()
+
+        doc.addOutlineEntry(sn, sn.toString(), doc.getPage(1))
+        sn.sectionUp()
+        doc.addOutlineEntry(sn, sn.toString(), doc.getPage(1))
+        sn.sectionDown()
+        sn.incrementCurrentLevel()
+        doc.addOutlineEntry(sn, sn.toString(), doc.getPage(2))
+        sn.sectionUp()
+        doc.addOutlineEntry(sn, sn.toString(), doc.getPage(2))
+        sn.sectionAtLevel(5)
+        doc.addOutlineEntry(sn, sn.toString(), doc.getPage(2))
+        sn.sectionAtLevel(1).incrementCurrentLevel()
+        doc.addOutlineEntry(sn, sn.toString())
 
         doc.save("Library/target/TestPDFDoc.pdf")
 

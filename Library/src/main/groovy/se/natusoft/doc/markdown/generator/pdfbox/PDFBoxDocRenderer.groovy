@@ -276,12 +276,59 @@ class PDFBoxDocRenderer implements NotNullTrait {
     // Methods
     //
 
-    void addOutlineEntry(String number, String title) {
+    /**
+     * @return The current page.
+     */
+    PDPage getCurrentPage() {
+        return this.genDoc.docPage
+    }
+
+    /**
+     * @return The first page.
+     */
+    PDPage getFirstPage() {
+        this.genDoc.document.getPage(0)
+    }
+
+    /**
+     * @return The current total of pages.
+     */
+    int getNoOfPages() {
+        this.genDoc.document.getPages().count
+    }
+
+    /**
+     * Returns the page at the specified index.
+     *
+     * @param ix The index of the page to get.
+     */
+    PDPage getPage(int ix) {
+        return this.genDoc.document.getPage(ix)
+    }
+
+    /**
+     * Adds an outline entry for the current page.
+     *
+     * @param number The section number of the outline entry.
+     * @param title The title of the outline entry.
+     */
+    void addOutlineEntry(Object number, String title) {
+        addOutlineEntry(number, title, currentPage)
+    }
+
+    /**
+     * Adds an outline entry for the specified page.
+     *
+     * @param number The section number of the outline entry.
+     * @param title The title of the outline entry.
+     * @param page The page to point to.
+     */
+    void addOutlineEntry(Object number, String title, PDPage page) {
         if (this.genDoc.outline == null) {
             this.genDoc.outline = new Outline()
             this.genDoc.outline.addToDocument(this.genDoc.document)
         }
-        this.genDoc.outline.addEntry(number, title, this.genDoc.docPage)
+        this.genDoc.outline.addEntry(number.toString(), title, page)
     }
 
     /**
