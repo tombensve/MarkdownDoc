@@ -1,38 +1,38 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.5.0
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
  *         2016-07-29: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdown.generator.pdfbox
 
@@ -44,9 +44,13 @@ import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.PDPageContentStream
 import org.apache.pdfbox.pdmodel.common.PDRectangle
+import org.apache.pdfbox.pdmodel.graphics.image.JPEGFactory
+import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject
 import org.apache.pdfbox.pdmodel.interactive.action.PDActionURI
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary
+import org.apache.pdfbox.util.Matrix
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.generator.pdfbox.internal.FrontPage
@@ -56,7 +60,12 @@ import se.natusoft.doc.markdown.generator.styles.MSSColor
 import se.natusoft.doc.markdown.generator.styles.MSSColorPair
 import se.natusoft.doc.markdown.generator.styles.MSSFont
 import se.natusoft.doc.markdown.generator.styles.MSSFontStyle
+import se.natusoft.doc.markdown.generator.styles.MSSImage
 import se.natusoft.doc.markdown.util.NotNullTrait
+
+import javax.imageio.ImageIO
+import java.awt.geom.AffineTransform
+import java.awt.image.BufferedImage
 
 /**
  * This wraps a few PDFBox objects and uses these to generate PDF.
@@ -94,6 +103,15 @@ class PDFBoxDocRenderer implements NotNullTrait {
     public static final PDFBoxFontMSSAdapter TOC_FONT = new PDFBoxFontMSSAdapter(
             new MSSFont(size: 8, family: "HELVETICA", style: MSSFontStyle.NORMAL)
     )
+
+    /** Indicates that the image should be centered on the page X wise. This applies to xOffset. */
+    static final float X_OFFSET_CENTER = Float.MAX_VALUE
+
+    /** Indicates that image should be left aligned. */
+    static final float X_OFFSET_LEFT_ALIGNED = 0.0f
+
+    /** Indicates that image should be right aligned. */
+    static final float X_OFFSET_RIGHT_ALIGNED = 1000000.0f
 
     //
     // Static fields
@@ -837,11 +855,102 @@ class PDFBoxDocRenderer implements NotNullTrait {
         restoreForegroundColor()
     }
 
-    void image(String imageUrl, float xOffset) {
-        // todo
+    /**
+     * Renders an image on the page.
+     *
+     * @param imageUrl The url to the image.
+     * @param scale the scale factor to apply to image size.
+     */
+    void image(String imageUrl, float scale) {
+        image(imageUrl, 0.0f, 0.0f, 0.0f, scale, 0.0f)
     }
 
     /**
+     * Renders an image on the page.
+     *
+     * @param imageUrl The url to the image.
+     * @param xOffset The x offset to render at or 0 for left page margin.
+     * @param scale the scale factor to apply to image size.
+     */
+    void image(String imageUrl, float xOffset, float scale) {
+        image(imageUrl, xOffset, 0.0f, 0.0f, scale, 0.0f)
+    }
+
+    /**
+     * Renders an image on the page using information from an MSSImage instance.
+     *
+     * @param imageUrl The image url.
+     * @param mssImage The MSSImage instance to use for placement and scaling.
+     */
+    void image(String imageUrl, MSSImage mssImage) {
+        float xOffset = X_OFFSET_LEFT_ALIGNED
+        switch (mssImage.align) {
+            case MSSImage.Align.LEFT:
+                break
+            case MSSImage.Align.MIDDLE:
+                xOffset = X_OFFSET_CENTER
+                break
+            case MSSImage.Align.RIGHT:
+                xOffset = X_OFFSET_RIGHT_ALIGNED
+                break
+        }
+        image(imageUrl, xOffset, 0.0f, 0.0f, mssImage.scalePercent, mssImage.rotateDegrees)
+    }
+
+    /**
+     * Renders an image on the page.
+     *
+     * @param imageUrl The url to the image.
+     * @param xOffset The x offset to render at or 0 for left page margin. The X_OFFSET_* constants can also be used.
+     * @param scale the scale factor to apply to image size.
+     * @param rotate The number of degrees to rotate image. Note that image can become larger on all sides!!
+     */
+    void image(String imageUrl, float xOffset, float yOffset, float bottomAdd, float scale, float rotate) {
+        PDImageXObject image
+        URL url = new URL(imageUrl)
+
+        // The dumb PDImageXObject API only allows loading from local file!! Thereby we have to go a little lower
+        // than that. Since the TIFF support only loads from local file, TIFFs are not supported!
+        if (imageUrl.endsWith(".jpg") || imageUrl.endsWith(".jpeg")) {
+            image = JPEGFactory.createFromStream(this.genDoc.document, url.openStream())
+        }
+        else {
+            BufferedImage bufferedImage = ImageIO.read(url.openStream())
+            image = LosslessFactory.createFromImage(this.genDoc.document, bufferedImage)
+        }
+
+        float scaledWidth = image.width * scale
+        float scaledHeight = image.height * scale
+
+        if (xOffset == X_OFFSET_CENTER) {
+            xOffset = ((this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin) / 2.0f) - (scaledWidth / 2.0f) as float
+        }
+        else if (xOffset == X_OFFSET_RIGHT_ALIGNED) {
+            xOffset = this.pageFormat.width - this.margins.rightMargin - scaledWidth
+        }
+
+        if (pageY - yOffset - scaledHeight - bottomAdd - 8.0f < this.margins.bottomMargin) {
+            newPage()
+        }
+        ensureTextModeOff()
+
+        AffineTransform at = new AffineTransform(
+                scaledWidth,
+                0, 0,
+                scaledHeight,
+                (xOffset + this.margins.leftMargin) as float,
+                this.pageY - yOffset - scaledHeight - 2.0f as float
+        );
+        at.rotate(Math.toRadians(rotate));
+        this.genDoc.docStream.drawImage(image, new Matrix(at));
+
+        this.pageX = this.margins.leftMargin
+        this.pageY = this.pageY - yOffset - scaledHeight - bottomAdd - 8.0f
+        ensureTextMode(this.pageX, this.pageY)
+    }
+
+    /**
+     *
      * Forwards save to internal PDDocument.
      *
      * @param path The path of the file to save to.
