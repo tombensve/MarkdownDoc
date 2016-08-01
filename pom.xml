@@ -406,6 +406,58 @@
         </profile>
 
         <!--
+            Allow markdown javadoc
+        -->
+        <profile>
+            <id>java-doc</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.10.4</version>
+                        <configuration>
+                            <doclet>ch.raffael.doclets.pegdown.PegdownDoclet</doclet>
+                            <docletArtifact>
+                                <groupId>ch.raffael.pegdown-doclet</groupId>
+                                <artifactId>pegdown-doclet</artifactId>
+                                <version>1.2</version>
+                            </docletArtifact>
+                            <useStandardDocletOptions>true</useStandardDocletOptions>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <phase>deploy</phase>
+                            </execution>
+                            <execution>
+                                <id>gendocs</id>
+                                <goals>
+                                    <goal>javadoc</goal>
+                                </goals>
+                                <phase>deploy</phase>
+                            </execution>
+                            <execution>
+                                <id>jar-javadoc</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <phase>deploy</phase>
+                                <configuration>
+                                    <attach>true</attach>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+
+        <!--
             This changes the version of this pom and all module poms, including parent.
             ${projectVersion} must be defined in properties above! So to update version,
             set it above and run this profile.

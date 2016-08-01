@@ -5,7 +5,7 @@ import groovy.transform.TypeChecked
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxDocRenderer
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxFontMSSAdapter
 import se.natusoft.doc.markdown.generator.pdfbox.internal.PageMargins
-import se.natusoft.doc.markdown.generator.pdfbox.internal.SectionNumber
+import se.natusoft.doc.markdown.generator.pdfbox.internal.StructuredNumber
 import se.natusoft.doc.markdown.generator.styles.MSSColor
 import se.natusoft.doc.markdown.generator.styles.MSSColorPair
 import se.natusoft.doc.markdown.generator.styles.MSSFont
@@ -16,8 +16,8 @@ import se.natusoft.doc.markdown.generator.styles.MSSFontStyle
 class TestPDFDoc {
     public static void main(String... args) {
         MSSFont mssFont = new MSSFont(size: 12, family: "HELVETICA", style: MSSFontStyle.NORMAL)
-        MSSColorPair mssColorPair = new MSSColorPair(foreground: MSSColor.GREY, background: MSSColor.WHITE)
-        PDFBoxFontMSSAdapter fontMSSAdapter = new PDFBoxFontMSSAdapter(mssFont)
+        MSSColorPair textColor = new MSSColorPair(foreground: MSSColor.GREY, background: MSSColor.WHITE)
+        PDFBoxFontMSSAdapter textFont = new PDFBoxFontMSSAdapter(mssFont)
 
         PDFBoxDocRenderer doc = new PDFBoxDocRenderer(
                 margins: new PageMargins(
@@ -31,13 +31,19 @@ class TestPDFDoc {
 
         doc.newPage()
 
-        doc.applyFont(fontMSSAdapter)
-        doc.applyColorPair(mssColorPair)
+        doc.applyFont(textFont)
+        doc.applyColorPair(textColor)
 
         doc.center("Table of Content")
         doc.tocEntry("1.2.3", "First toc entry", 1)
-        doc.tocEntry("1.2.3.4.5.6", "Second toc entry", 2)
+        doc.tocEntry("1.2.3.4.5.6", "Second toc entry", 2,
+                new PDFBoxDocRenderer.TocSettings(sectionTitleColor: new MSSColorPair(
+                        foreground: MSSColor.BLUE,
+                        background: MSSColor.WHITE
+                ))
+        )
         doc.tocEntry(null, "Third toc entry", 5)
+        doc.pageNoActive = true
         doc.newPage()
 
         doc.text("This is a test paragraph. It contains a bit of text that should be longer than one line to see if it breaks " +
@@ -47,8 +53,7 @@ class TestPDFDoc {
         doc.newLine()
         doc.newLine()
 
-        MSSColor boxColor = new MSSColor(color: "240:240:240")
-        doc.startBox(new MSSColorPair(foreground: boxColor, background: boxColor))
+        doc.startBox(new MSSColor(color: "240:240:240"))
         doc.text("This text should hopefully be in a box!")
         doc.newParagraph()
         doc.text("Another line in the box.")
@@ -67,6 +72,14 @@ class TestPDFDoc {
         doc.text("This is a test paragraph. It contains a bit of text that should be longer than one line to see if it breaks " +
                 "correctly. Thereby I need to write some more text in this. Just a little more text now. Well, this should at " +
                 "least give me 2 lines.")
+
+        doc.newLine()
+        doc.newLine()
+        PDFBoxFontMSSAdapter dwerneck = doc.loadExternalFont("file:Docs/dwerneck.ttf", new MSSFont(size: 16, style: MSSFontStyle.NORMAL))
+        doc.applyFont(dwerneck)
+        doc.text("Some text in external ttf font.")
+
+        doc.applyFont(textFont)
 
         doc.newLine()
         doc.newLine()
@@ -189,19 +202,19 @@ class TestPDFDoc {
         doc.newLine()
 
 
-        SectionNumber sn = new SectionNumber()
+        StructuredNumber sn = new StructuredNumber(6)
 
-        doc.addOutlineEntry(sn, sn.toString(), doc.getPage(1))
-        sn.sectionUp()
-        doc.addOutlineEntry(sn, sn.toString(), doc.getPage(1))
-        sn.sectionDown()
+        doc.addOutlineEntry(sn, "${sn} First page", doc.getPage(1))
+        sn.downLevel()
+        doc.addOutlineEntry(sn, "${sn} Also on first page", doc.getPage(1))
+        sn.upLevel()
         sn.incrementCurrentLevel()
-        doc.addOutlineEntry(sn, sn.toString(), doc.getPage(2))
-        sn.sectionUp()
-        doc.addOutlineEntry(sn, sn.toString(), doc.getPage(2))
-        sn.sectionAtLevel(5)
-        doc.addOutlineEntry(sn, sn.toString(), doc.getPage(2))
-        sn.sectionAtLevel(1).incrementCurrentLevel()
+        doc.addOutlineEntry(sn, "${sn} Second page", doc.getPage(2))
+        sn.downLevel()
+        doc.addOutlineEntry(sn, "${sn} further down on second", doc.getPage(2))
+        sn.level = 5
+        doc.addOutlineEntry(sn, "${sn} Yes, still on second", doc.getPage(2))
+        sn.setLevel(1).incrementCurrentLevel()
         doc.addOutlineEntry(sn, sn.toString())
 
         doc.save("Library/target/TestPDFDoc.pdf")

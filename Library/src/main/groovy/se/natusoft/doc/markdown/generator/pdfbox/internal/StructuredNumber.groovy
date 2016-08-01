@@ -1,38 +1,38 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.5.0
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
  *         2016-07-29: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdown.generator.pdfbox.internal
 
@@ -44,24 +44,41 @@ import groovy.transform.TypeChecked
  */
 @CompileStatic
 @TypeChecked
-class SectionNumber {
+class StructuredNumber {
 
     //
     // Private Members
     //
 
-    /** The current section number. */
-    private Integer[] secNo = new Integer[6]
+    /** The current structured number. */
+    private Integer[] structNum = null
 
-    /** The current level of the section number to manipulate. */
-    private int sectionLevel = 0
+    /** The current level of the number to manipulate. */
+    private int level = 0
 
     //
     // Constructor
     //
 
-    SectionNumber() {
-        this.secNo[0] = 1
+    /**
+     * Creates a new StructuredNumber
+     *
+     * @param maxSize The maximum level of the number.
+     */
+    StructuredNumber(int maxSize) {
+        this.structNum = new Integer[maxSize]
+        this.structNum[0] = 1
+    }
+
+    /**
+     * The copy constructor.
+     *
+     * @param toCopy The StructuredNumber to copy.
+     */
+    StructuredNumber(StructuredNumber toCopy) {
+        this.structNum = new Integer[toCopy.structNum.length]
+        this.structNum = Arrays.copyOf(toCopy.structNum, this.structNum.length)
+        this.level = toCopy.level
     }
 
     //
@@ -69,41 +86,53 @@ class SectionNumber {
     //
 
     /**
-     * Moves up a section.
+     * Returns the max size of this number.
      */
-    void sectionUp() {
-        ++this.sectionLevel
-        if (this.sectionLevel > 5) {
-            this.sectionLevel = 5
+    int getMaxSize() {
+        this.structNum.length
+    }
+
+    /**
+     * Moves down a level. The new level will be initialized to 1.
+     */
+    void downLevel() {
+        ++this.level
+        if (this.level >= this.maxSize) {
+            this.level = this.maxSize - 1
         }
         else {
-            this.secNo[this.sectionLevel] = 1
+            this.structNum[this.level] = 1
         }
     }
 
     /**
-     * Moves a section down.
+     * Moves up a level. This will also increment the target level value.
      */
-    void sectionDown() {
-        if (this.sectionLevel > 0) {
-            this.secNo[this.sectionLevel] = null
-            --this.sectionLevel
+    void upLevel() {
+        if (this.level > 0) {
+            this.structNum[this.level] = null
+            --this.level
+            incrementCurrentLevel()
         }
     }
 
     /**
-     * Sets a section level.
+     * Returns the current level.
+     */
+    int getLevel() {
+        this.level + 1
+    }
+
+    /**
+     * Sets the current level.
      *
-     * @param sectionLevel The section level to set. Must be between 1 and 6.
+     * @param level The section level to set. Must be between 1 and maxSize + 1.
      */
-    SectionNumber sectionAtLevel(int sectionLevel) {
-        this.sectionLevel = sectionLevel - 1
-        (6 - (this.sectionLevel+1)).times { int it ->
-            this.secNo[this.sectionLevel + 1 + it] = null
-        }
-        int beg = this.sectionLevel
-        beg.times { int it ->
-            if (this.secNo[it] == null) this.secNo[it] = 1
+    StructuredNumber setLevel(int level) {
+        this.level = level - 1
+
+        (this.level + 1)..(this.maxSize - 1).each { int lvl ->
+            this.structNum[lvl] = null
         }
 
         this
@@ -113,7 +142,7 @@ class SectionNumber {
      * Increments the section number at the current level.
      */
     void incrementCurrentLevel() {
-        incrementLevel(this.sectionLevel)
+        incrementLevel(this.level)
     }
 
     /**
@@ -124,8 +153,8 @@ class SectionNumber {
     void incrementLevel(int sectionLevel) {
         if (sectionLevel < 0) sectionLevel = 0
         if (sectionLevel > 5) sectionLevel = 5
-        if (this.secNo[sectionLevel] == null) { this.secNo[sectionLevel] = 0 }
-        ++this.secNo[sectionLevel]
+        if (this.structNum[sectionLevel] == null) { this.structNum[sectionLevel] = 0 }
+        ++this.structNum[sectionLevel]
     }
 
     /**
@@ -135,9 +164,9 @@ class SectionNumber {
         StringBuilder sb = new StringBuilder()
         int i = 0
         String dot = ""
-        while (this.secNo[i] != null) {
+        while (this.structNum[i] != null) {
             sb.append(dot)
-            sb.append(this.secNo[i++])
+            sb.append(this.structNum[i++])
             dot = "."
         }
 

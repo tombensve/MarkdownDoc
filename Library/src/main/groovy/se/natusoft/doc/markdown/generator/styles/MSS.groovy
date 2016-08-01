@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.5.0
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
@@ -81,6 +81,16 @@ class MSS {
     }
 
     /**
+     * This represents values of the "document" section of the MSS that provides general page data.
+     */
+    static enum MSS_Page {
+        topMargin,
+        leftMargin,
+        rightMargin,
+        bottomMargin
+    }
+
+    /**
      * This represents style sections of the "pages" section.
      */
     static enum MSS_Pages {
@@ -94,6 +104,16 @@ class MSS {
         list_item,
         image,
         footer
+    }
+
+    /**
+     * This represents a rendering style for code blocks.
+     */
+    static enum MSS_Boxed {
+
+        /** This is true or false. */
+        boxed,
+        boxedColor
     }
 
     /**
@@ -574,6 +594,118 @@ class MSS {
         ensureImage(image)
     }
 
+    /**
+     * Returns the top margin of a page.
+     */
+    @NotNull float getTopMarginForDocument() {
+        JSONNumber margin = this.document?.getProperty(MSS_Page.topMargin.name()) as JSONNumber
+        margin != null ? margin.toFloat() : 50.0f
+    }
+
+    /**
+     * Returns the left margin of a page.
+     */
+    @NotNull float getLeftMarginForDocument() {
+        JSONNumber margin = this.document?.getProperty(MSS_Page.leftMargin.name()) as JSONNumber
+        margin != null ? margin.toFloat() : 50.0f
+    }
+
+    /**
+     * Returns the right margin of a page.
+     */
+    @NotNull float getRightMarginForDocument() {
+        JSONNumber margin = this.document?.getProperty(MSS_Page.rightMargin.name()) as JSONNumber
+        margin != null ? margin.toFloat() : 50.0f
+    }
+
+    /**
+     * Returns the bottom margin of a page.
+     */
+    @NotNull float getBottomMarginForDocument() {
+        JSONNumber margin = this.document?.getProperty(MSS_Page.bottomMargin.name()) as JSONNumber
+        margin != null ? margin.toFloat() : 50.0f
+    }
+
+    private JSONBoolean checkBoxed(JSONObject checkIn, MSS_Pages section) {
+        JSONBoolean bv = null
+        JSONObject codeObject = checkIn?.getProperty(section.name()) as JSONObject
+        if (codeObject != null) {
+            bv = codeObject.getProperty(MSS_Boxed.boxed.name()) as JSONBoolean
+        }
+
+        bv
+    }
+
+    @NotNull boolean isBoxedForDocument(MSS_Pages section) {
+        JSONBoolean boxed = null
+
+        if (this.currentDivs != null) {
+            this.currentDivs.each { String divName ->
+                JSONObject div = this.divs.getProperty(divName) as JSONObject
+                JSONBoolean bv = checkBoxed(div, section)
+                if (bv != null) {
+                    boxed = bv
+                }
+            }
+        }
+
+        if (boxed == null) {
+            JSONBoolean bv = checkBoxed(this.pages, section)
+            if (bv != null) {
+                boxed = bv
+            }
+        }
+
+        if (boxed == null) {
+            JSONBoolean bv = checkBoxed(this.document, section)
+            if (bv != null) {
+                boxed = bv
+            }
+        }
+
+        boxed != null ? boxed.asBoolean : false
+    }
+
+    private JSONString checkBoxedColor(JSONObject checkIn, MSS_Pages section) {
+        JSONString bvColor = null
+        JSONObject codeObject = checkIn?.getProperty(section.name()) as JSONObject
+        if (codeObject != null) {
+            bvColor = codeObject.getProperty(MSS_Boxed.boxedColor.name()) as JSONString
+        }
+
+        bvColor
+    }
+
+    @NotNull MSSColor getBoxColorForDocument(MSS_Pages section) {
+        JSONString boxedColor = null
+
+        if (this.currentDivs != null) {
+            this.currentDivs.each { String divName ->
+                JSONObject div = this.divs.getProperty(divName) as JSONObject
+                JSONString bvColor = checkBoxedColor(div, section)
+                if (bvColor != null) {
+                    boxedColor = bvColor
+                }
+            }
+        }
+
+        if (boxedColor == null) {
+            JSONString bvColor = checkBoxedColor(this.pages, section)
+            if (bvColor != null) {
+                boxedColor = bvColor
+            }
+        }
+
+        if (boxedColor == null) {
+            JSONString bvColor = checkBoxedColor(this.document, section)
+            if (bvColor != null) {
+                boxedColor = bvColor
+            }
+        }
+
+        boxedColor != null ? new MSSColor(color: boxedColor.toString()) : new MSSColor(color: "240:240:240")
+    }
+
     class ForDocument {
         @NotNull MSSColorPair getColorPair(@NotNull final MSS_Pages section) {
             getColorPairForDocument(section)
@@ -586,6 +718,31 @@ class MSS {
         @NotNull MSSImage getImageStyle() {
             getImageStyleForDocument()
         }
+
+        @NotNull float getTopMargin() {
+            getTopMarginForDocument()
+        }
+
+        @NotNull float getLeftMargin() {
+            getLeftMarginForDocument()
+        }
+
+        @NotNull float getRightMargin() {
+            getRightMarginForDocument()
+        }
+
+        @NotNull float getBottomMargin() {
+            getBottomMarginForDocument()
+        }
+
+        boolean isBoxed(@NotNull MSS_Pages section) {
+            isBoxedForDocument(section)
+        }
+
+        @NotNull MSSColor getBoxColor(@NotNull MSS_Pages section) {
+            getBoxColorForDocument(section)
+        }
+
     }
 
     private ForDocument forDocument = new ForDocument()
@@ -726,6 +883,10 @@ class MSS {
      *         "family": "HELVETICA",
      *         "size": 10,
      *         "style": "Normal",
+     *         "topMargin": 50,
+     *         "leftMargin": 50,
+     *         "rightMargin": 50,
+     *         "bottomMargin": 50,
      *
      *         "pages": {
      *            "block_quote": {
@@ -783,7 +944,8 @@ class MSS {
      *                "size": 9,
      *                "style": "NORMAL",
      *                "color": "64:64:64",
-     *                "background": "white"
+     *                "background": "white",
+     *                "boxed": true
      *            },
      *            "anchor": {
      *                "family": "HELVETICA",

@@ -1,82 +1,90 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.5.0
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
  *         2016-07-29: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdown.generator
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.exception.GenerateException
+import se.natusoft.doc.markdown.generator.models.TOC
 import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxDocRenderer
+import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxFontMSSAdapter
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxStylesMSSAdapter
+import se.natusoft.doc.markdown.generator.pdfbox.internal.PageMargins
+import se.natusoft.doc.markdown.generator.pdfbox.internal.StructuredNumber
 import se.natusoft.doc.markdown.generator.styles.MSS
+import se.natusoft.doc.markdown.generator.styles.MSS.MSS_Pages
+import se.natusoft.doc.markdown.model.AutoLink
+import se.natusoft.doc.markdown.model.BlockQuote
+import se.natusoft.doc.markdown.model.Code
+import se.natusoft.doc.markdown.model.CodeBlock
 import se.natusoft.doc.markdown.model.Comment
 import se.natusoft.doc.markdown.model.Div
 import se.natusoft.doc.markdown.model.Doc
 import se.natusoft.doc.markdown.model.DocFormat
 import se.natusoft.doc.markdown.model.DocItem
+import se.natusoft.doc.markdown.model.Emphasis
+import se.natusoft.doc.markdown.model.Header
+import se.natusoft.doc.markdown.model.Image
+import se.natusoft.doc.markdown.model.Link
 import se.natusoft.doc.markdown.model.Paragraph
+import se.natusoft.doc.markdown.model.PlainText
+import se.natusoft.doc.markdown.model.Strong
+import se.natusoft.doc.markdown.model.List
+import se.natusoft.doc.markdown.model.ListItem
 
 /**
- *
+ * Generates a PDF document using PDFBox to generate PDF.
  */
-abstract class PDFBoxGenerator implements Generator {
+@CompileStatic
+@TypeChecked
+class PDFBoxGenerator implements Generator, BoxedTrait {
     //
     // Inner Classes
     //
 
     /**
-     * Stores a table of content entry.
-     */
-    private static class TOC {
-        //
-        // Properties
-        //
-
-        String sectionTitle
-        int pageNumber
-        MSS.MSS_TOC level = MSS.MSS_TOC.h1
-    }
-
-    /**
      * A context for the generation process.
      */
-    private static class PDFGeneratorContext extends GeneratorContext {
+    static class PDFGeneratorContext extends GeneratorContext {
         //
         // Properties
         //
@@ -90,9 +98,6 @@ abstract class PDFBoxGenerator implements Generator {
         /** The table of contents. */
         java.util.List<TOC> toc
 
-        /** The current page number. */
-        int pageNumber
-
     }
 
 
@@ -100,7 +105,6 @@ abstract class PDFBoxGenerator implements Generator {
     // Private Members
     //
 
-    private PDFBoxDocRenderer doc
 
     //
     // Methods
@@ -168,16 +172,7 @@ abstract class PDFBoxGenerator implements Generator {
         final PDFGeneratorContext context = new PDFGeneratorContext(
                 options: options as PDFGeneratorOptions,
                 rootDir:  rootDir,
-                fileResource: new FileResource(rootDir: rootDir, optsRootDir: (opts as PDFGeneratorOptions).rootDir)
-        )
-
-        // TODO: Add to MSS instead of hardcoding.
-        this.doc = new PDFBoxDocRenderer(
-                topMargin: 50,
-                bottomMargin: 50,
-                leftMargin: 50,
-                rightMargin: 50,
-                pageSize: context.options.pageSize
+                fileResource: new FileResource(rootDir: rootDir, optsRootDir: (options as PDFGeneratorOptions).rootDir)
         )
 
         context.pdfStyles.generatorContext = context
@@ -198,6 +193,16 @@ abstract class PDFBoxGenerator implements Generator {
             context.pdfStyles.mss = MSS.defaultMSS()
         }
 
+        PDFBoxDocRenderer doc = new PDFBoxDocRenderer(
+                margins: new PageMargins(
+                        topMargin:    context.pdfStyles.mss.forDocument.topMargin,
+                        bottomMargin: context.pdfStyles.mss.forDocument.bottomMargin,
+                        leftMargin:   context.pdfStyles.mss.forDocument.leftMargin,
+                        rightMargin:  context.pdfStyles.mss.forDocument.rightMargin,
+                ),
+                pageSize: context.options.pageSize
+        )
+
         final LinkedList<String> divs = new LinkedList<>()
 
         context.pdfStyles.mss.currentDivs = divs
@@ -209,7 +214,7 @@ abstract class PDFBoxGenerator implements Generator {
                     // We skip comments in general, but act on "@PB" within the comment for doing a page break.
                     final Comment comment = (Comment)docItem;
                     if (comment.text.indexOf("@PB") >= 0) {
-                        this.doc.newPage()
+                        doc.newPage()
                     }
                     // and also act on @PDFTitle, @PDFSubject, @PDFKeywords, @PDFAuthor, @PDFVersion, and @PDFCopyright
                     // for overriding those settings in the options. This allows the document rather than the generate
@@ -218,27 +223,27 @@ abstract class PDFBoxGenerator implements Generator {
                     break
 
                 case DocFormat.Paragraph:
-                    writeParagraph(doc, docItem as Paragraph, context)
+                    writeParagraph(docItem as Paragraph, doc, context)
                     break
 
                 case DocFormat.Header:
-//                    writeHeader(docItem as Header, context)
+                    writeHeader(docItem as Header, doc, context)
                     break
 
                 case DocFormat.BlockQuote:
-//                    writeBlockQuote(docItem as BlockQuote, context)
+                    writeBlockQuote(docItem as BlockQuote, doc, context)
                     break;
 
                 case DocFormat.CodeBlock:
-//                    writeCodeBlock(docItem as CodeBlock, context)
+                    writeCodeBlock(docItem as CodeBlock, doc, context)
                     break
 
                 case DocFormat.HorizontalRule:
-//                    writeHorizontalRule(context)
+                    doc.hr()
                     break
 
                 case DocFormat.List:
-//                    writeList(docItem as List, context)
+                    writeList(docItem as List, doc, context)
                     break
 
                 case DocFormat.Div:
@@ -255,17 +260,6 @@ abstract class PDFBoxGenerator implements Generator {
                     throw new GenerateException(message: "Unknown format model in Doc! [" + docItem.class.name + "]")
             }
         }
-
-
-//        final Rectangle pageSize = new Rectangle(PageSize.getRectangle(context.options.pageSize))
-//        if (context.options.backgroundColor != null) {
-//            pageSize.backgroundColor = new PDFColorMSSAdapter(new MSSColor(color: context.options.backgroundColor))
-//        }
-//        else {
-//            pageSize.backgroundColor = new PDFColorMSSAdapter(context.pdfStyles.mss.forDocument.
-//                    getColorPair(MSS.MSS_Pages.standard).background)
-//        }
-
     }
 
     /**
@@ -432,47 +426,70 @@ abstract class PDFBoxGenerator implements Generator {
         updated
     }
 
-    void writeParagraph(PDFBoxDocRenderer docProducer, Paragraph paragraph, PDFGeneratorContext context) {
+    /**
+     * Handles writing of paragraphs taking care of in paragraph formatting.
+     *
+     * @param paragraph The paragraph to write.
+     * @param doc The PDF document renderer.
+     * @param context The generator context.
+     */
+    static void writeParagraph(@NotNull Paragraph paragraph, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
+        doc.newSection()
+        writeParagraphContent(paragraph, doc, context)
+    }
+
+    /**
+     * Handles writing of paragraphs taking care of in paragraph formatting.
+     *
+     * @param paragraph The paragraph to write.
+     * @param doc The PDF document renderer.
+     * @param context The generator context.
+     */
+    static void writeParagraphContent(@NotNull Paragraph paragraph, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
+
+        ParagraphWriter pw = new ParagraphWriter(doc: doc, context: context)
+        pw.doc = doc
+        pw.context = context
 
         boolean first = true
         paragraph.items.each { final DocItem docItem ->
             if (docItem.renderPrefixedSpace && !first) {
-                docProducer.text("  ")
+                doc.text("  ")
             }
             first = false
 
             switch (docItem.format) {
 
                 case DocFormat.Code:
-//                    writeCode(docItem as Code, docProducer, context)
+                    pw.writeCode(docItem as Code)
                     break
 
                 case DocFormat.Emphasis:
-//                    writeEmphasis(docItem as Emphasis, docProducer, context)
+                    pw.writeEmphasis(docItem as Emphasis)
                     break
 
                 case DocFormat.Strong:
-//                    writeStrong(docItem as Strong, docProducer, context)
+                    pw.writeStrong(docItem as Strong)
                     break
 
                 case DocFormat.Image:
-//                    writeImage(docItem as Image, docProducer, context)
+                    pw.writeImage(docItem as Image)
                     break
 
                 case DocFormat.Link:
-//                    writeLink(docItem as Link, docProducer, context)
+                    pw.writeLink(docItem as Link)
                     break
 
                 case DocFormat.AutoLink:
-//                    writeLink(docItem as AutoLink, docProducer, context)
+                    pw.writeAutoLink(docItem as AutoLink)
                     break
 
                 case DocFormat.Space:
-//                    writePlainText(docItem as PlainText, docProducer, context)
+                    pw.writePlainText(docItem as PlainText)
                     break;
 
                 case DocFormat.PlainText:
-//                    writePlainText(docItem as PlainText, docProducer, context)
+                    pw.writePlainText(docItem as PlainText)
                     break
 
                 default:
@@ -482,4 +499,312 @@ abstract class PDFBoxGenerator implements Generator {
         }
 
     }
+
+    /**
+     * Writes a header.
+     *
+     * @param header The header text to write and the header level.
+     * @param doc The PDF document renderer
+     * @param context The generator context.
+     */
+    static void writeHeader(@NotNull Header header, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
+        MSS_Pages section = MSS_Pages.valueOf("h" + header.level.level)
+
+        doc.applyFont(new PDFBoxFontMSSAdapter(context.pdfStyles.mss.forDocument.getFont(section)))
+        doc.applyColorPair(context.pdfStyles.mss.forDocument.getColorPair(section))
+
+        doc.newSection()
+        doc.text(header.text)
+        doc.newLine()
+    }
+
+    /**
+     * Writes a block quote.
+     *
+     * @param blockQuote The bock quote text to write.
+     * @param doc The PDF document renderer.
+     * @param context The generator context.
+     */
+    static void writeBlockQuote(@NotNull BlockQuote blockQuote, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
+        checkBoxed(MSS_Pages.block_quote, doc, context.pdfStyles.mss)
+
+        doc.applyFont(new PDFBoxFontMSSAdapter(context.pdfStyles.mss.forDocument.getFont(MSS_Pages.block_quote)))
+        doc.applyColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.block_quote))
+
+        doc.newSection()
+        blockQuote.items.each { final DocItem docItem ->
+            // There should only be plain texts here, but to be sure …
+            if (PlainText.class.isAssignableFrom(docItem.class)) {
+                doc.text((docItem as PlainText).text)
+            }
+        }
+
+        clearBoxed(doc)
+    }
+
+    /**
+     * Writes a code block.
+     *
+     * @param codeBlock The code block text to write.
+     * @param doc The PDF document renderer.
+     * @param context The generator context.
+     */
+    static void writeCodeBlock(@NotNull CodeBlock codeBlock, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
+        checkBoxed(MSS_Pages.code, doc, context.pdfStyles.mss)
+
+        doc.applyFont(new PDFBoxFontMSSAdapter(context.pdfStyles.mss.forDocument.getFont(MSS_Pages.code)))
+        doc.applyColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.code))
+
+        doc.newSection()
+        codeBlock.items.each { final DocItem docItem ->
+            // There should only be plain texts here, but to be sure …
+            if (PlainText.class.isAssignableFrom(docItem.class)) {
+                doc.text((docItem as PlainText).text)
+            }
+        }
+
+        clearBoxed(doc)
+    }
+
+    /**
+     * Writes a list.
+     *
+     * @param list The list to write.
+     * @param doc The PDF document renderer
+     * @param context The generator context.
+     */
+    static void writeList(@NotNull List list, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
+        StructuredNumber num
+        if (list.isOrdered()) {
+            num = new StructuredNumber(30)
+        }
+        writeListInt(list, "", num, doc, context)
+    }
+
+    Note that we need to support paragraph insets both left and right, to be able to handle list entries correctly when they
+    are longer than one line!
+
+    /**
+     * The internal version of writing a list. This is called recursively for each sublist.
+     *
+     * @param list The list to write.
+     * @param indent The indentation level.
+     * @param num The current number if ordered, null otherwise.
+     * @param doc The PDF document renderer
+     * @param context The generator context.
+     */
+    private static void writeListInt(
+            @NotNull List list,
+            @NotNull String indent,
+            @Nullable StructuredNumber num,
+            @NotNull PDFBoxDocRenderer doc,
+            @NotNull PDFGeneratorContext context
+    ) {
+        list.items.each { final DocItem item ->
+            if (item instanceof ListItem) {
+                doc.newLine()
+                doc.text(indent)
+                if (num != null) {
+                    doc.text("${num} ")
+                }
+                else {
+                    doc.text("• ")
+                }
+
+                item.items.each { final DocItem pg ->
+                    if (Paragraph.class.isAssignableFrom(pg.class)) {
+                        writeParagraphContent(pg as Paragraph, doc, context)
+                    }
+                }
+            }
+            else if (item instanceof List) {
+                StructuredNumber newNum = null
+                if (num != null) {
+                    newNum = new StructuredNumber(num)
+                    newNum.downLevel()
+                }
+                writeListInt(item as List, indent + "  ", newNum, doc, context)
+            }
+            else {
+                throw new GenerateException(message: "Non ListItem found in List: Bad model structure!")
+            }
+        }
+
+    }
+}
+
+/**
+ * Support for boxing sections.
+ */
+@CompileStatic
+@TypeChecked
+trait BoxedTrait {
+
+    //
+    // Private Members
+    //
+
+    /** To be thread safe we hold this value in a ThreadLocal. */
+    private static final ThreadLocal<Boolean> boxed = new ThreadLocal<>()
+
+    //
+    // Methods
+    //
+
+    /**
+     * Checks if a section should be boxed or not according to the MSS. If true
+     * then it starts the box tracking so the clearBoxed(…) method can render the box.
+     *
+     * @param section The section to check for if it is boxed.
+     * @param doc The PDF document renderer.
+     * @param mss Supplies style information.
+     */
+    static void checkBoxed(@NotNull MSS_Pages section, @NotNull PDFBoxDocRenderer doc, @NotNull MSS mss) {
+        boxed.set(mss.forDocument.isBoxed(section))
+        if (boxed.get()) {
+            doc.startBox(mss.forDocument.getBoxColor(section))
+        }
+
+    }
+
+    /**
+     * This terminates and renders the box if boxed is true.
+     *
+     * @param doc The PDF document renderer.
+     */
+    static void clearBoxed(@NotNull PDFBoxDocRenderer doc) {
+        if (boxed.get()) {
+            doc.endBox()
+        }
+
+        boxed.set(false)
+    }
+}
+
+/**
+ * Handles writing paragraph formats.
+ */
+@CompileStatic
+@TypeChecked
+class ParagraphWriter implements BoxedTrait {
+    //
+    // Properties
+    //
+
+    /** The PDF document renderer. */
+    @NotNull PDFBoxDocRenderer doc
+
+    /** The generator context. */
+    @NotNull PDFBoxGenerator.PDFGeneratorContext context
+
+    //
+    // Methods
+    //
+
+    /**
+     * Utility method to make path shorter for reference in other methods.
+s     */
+    private @NotNull MSS.ForDocument getForDocument() {
+        return this.context.pdfStyles.mss.forDocument
+    }
+
+    /**
+     * Writes pre formatted code.
+     *
+     * @param code The code to write.
+     */
+    void writeCode(@NotNull Code code) {
+        checkBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
+
+        doc.applyFont(new PDFBoxFontMSSAdapter(this.forDocument.getFont(MSS_Pages.code)))
+        doc.applyColorPair(this.forDocument.getColorPair(MSS_Pages.code))
+        doc.text(code.text)
+
+        clearBoxed(this.doc)
+    }
+
+    /**
+     * Writes emphasised text.
+     *
+     * @param emphasis The text to write.
+     */
+    void writeEmphasis(@NotNull Emphasis emphasis) {
+        checkBoxed(MSS_Pages.emphasis, this.doc, this.context.pdfStyles.mss)
+
+        doc.applyFont(new PDFBoxFontMSSAdapter(this.forDocument.getFont(MSS_Pages.emphasis)))
+        doc.applyColorPair(this.forDocument.getColorPair(MSS_Pages.emphasis))
+        doc.text(emphasis.text)
+
+        clearBoxed(this.doc)
+    }
+
+    /**
+     * Writes strong/bold text.
+     *
+     * @param strong The text to write.
+     */
+    void writeStrong(@NotNull Strong strong) {
+        checkBoxed(MSS_Pages.strong, this.doc, this.context.pdfStyles.mss)
+
+        doc.applyFont(new PDFBoxFontMSSAdapter(this.forDocument.getFont(MSS_Pages.strong)))
+        doc.applyColorPair(this.forDocument.getColorPair(MSS_Pages.strong))
+        doc.text(strong.text)
+
+        clearBoxed(this.doc)
+    }
+
+    /**
+     * Writes plain text.
+     *
+     * @param text The text to write.
+     */
+    void writePlainText(@NotNull PlainText text) {
+        checkBoxed(MSS_Pages.standard, this.doc, this.context.pdfStyles.mss)
+
+        doc.applyFont(new PDFBoxFontMSSAdapter(this.forDocument.getFont(MSS_Pages.standard)))
+        doc.applyColorPair(this.forDocument.getColorPair(MSS_Pages.standard))
+        doc.text(text.text)
+
+        clearBoxed(this.doc)
+    }
+
+    /**
+     * Writes an image.
+     *
+     * @param image The image to write.
+     */
+    void writeImage(@NotNull Image image) {
+        checkBoxed(MSS_Pages.image, this.doc, this.context.pdfStyles.mss)
+
+        doc.image(image.url, this.forDocument.imageStyle)
+
+        clearBoxed(this.doc)
+    }
+
+    /**
+     * Writes a link.
+     *
+     * @param link The link to write.
+     */
+    void writeLink(@NotNull Link link) {
+        checkBoxed(MSS_Pages.anchor, this.doc, this.context.pdfStyles.mss)
+
+        doc.link(link.title, link.url)
+
+        clearBoxed(this.doc)
+    }
+
+    /**
+     * Writes an auto link with text same as url.
+     *
+     * @param autoLink The link to write.
+     */
+    void writeAutoLink(@NotNull AutoLink autoLink) {
+        checkBoxed(MSS_Pages.anchor, this.doc, this.context.pdfStyles.mss)
+
+        doc.link(autoLink.url, autoLink.url)
+
+        clearBoxed(this.doc)
+    }
+
 }

@@ -160,6 +160,10 @@
     "family": "HELVETICA",
     "size": 10,
     "style": "Normal",
+    "topMargin": 40.0,
+    "leftMargin": 40.0,
+    "rightMargin": 40.0,
+    "bottomMargin": 40.0,
 
     "image": {
       "imgScalePercent": 60.0,
@@ -206,10 +210,13 @@
       "code": {
         "family": "COURIER",
         "size": 9,
-        "color": "64:64:64"
+        "color": "10:10:10",
+        "background": "white",
+        "boxed": true,
+        "boxColor": "240:240:240"
       },
       "anchor": {
-        "color": "128:128:128"
+        "color": "59:134:198"
       },
       "list_item": {
       },

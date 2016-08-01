@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.5.0
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
@@ -39,13 +39,11 @@ package se.natusoft.doc.markdown.generator.pdfbox
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.apache.pdfbox.pdmodel.PDDocument
-import org.apache.pdfbox.pdmodel.font.PDFont
 import org.apache.pdfbox.pdmodel.font.PDType0Font
 import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.GeneratorContext
 import se.natusoft.doc.markdown.generator.styles.MSS
-import se.natusoft.doc.markdown.generator.styles.MSSColorPair
 import se.natusoft.doc.markdown.generator.styles.MSSExtFont
 import se.natusoft.doc.markdown.generator.styles.MSSFont
 
@@ -88,13 +86,12 @@ class PDFBoxStylesMSSAdapter {
      *
      * @oaram document The pdf document being generatd.
      * @param mssFont The font reference to resolve.
-     * @param mssColorPair The color of the font.
      *
      * @return The resolved font.
      *
      * @throws GenerateException If not font is found.
      */
-    private @NotNull PDFont resolveFont(@NotNull final PDDocument document, @NotNull final MSSFont mssFont, @NotNull final MSSColorPair mssColorPair)
+    private @NotNull PDFBoxFontMSSAdapter resolveFont(@NotNull final PDDocument document, @NotNull final MSSFont mssFont)
             throws GenerateException {
 
         if (!isStandardFont(mssFont.family.toUpperCase())) {
@@ -104,10 +101,11 @@ class PDFBoxStylesMSSAdapter {
                 throw new GenerateException(message: "Font '${mssFont.family}' is not a standard font and an " +
                         "external font matching this name was not found either.")
             }
-            loadFont(document, mssExtFont)
+
+            loadFont(document, mssExtFont, mssFont)
         }
         else {
-            new PDFBoxFontMSSAdapter(mssFont).font
+            new PDFBoxFontMSSAdapter(mssFont)
         }
     }
 
@@ -121,21 +119,40 @@ class PDFBoxStylesMSSAdapter {
      *
      * @throws GenerateException on failure to load font.
      */
-    private @NotNull PDFont loadFont(@NotNull PDDocument document, @NotNull final MSSExtFont mssExtFont) throws GenerateException {
-        final File fontPath
-        try {
-            fontPath = this.generatorContext.fileResource.getResourceFile(mssExtFont.fontPath)
+    private @NotNull PDFBoxFontMSSAdapter loadFont(@NotNull PDDocument document, @NotNull final MSSExtFont mssExtFont, @NotNull final MSSFont mssFont) throws GenerateException {
+        InputStream fontStream
+        // @formatter:off
+        if (
+            mssExtFont.fontPath.startsWith("http:")  ||
+            mssExtFont.fontPath.startsWith("https:") ||
+            mssExtFont.fontPath.startsWith("file:")  ||
+            mssExtFont.fontPath.startsWith("jar:")
+        ) {
+            try {
+                fontStream = new URL(mssExtFont.fontPath).openStream()
+            }
+            catch (MalformedURLException mue) {
+                throw new GenerateException(message: "Bad URL specified as font path!", cause: mue)
+            }
         }
-        catch (final IOException ioe) {
-            throw new GenerateException(message: "Font '${mssExtFont.fontPath}' was not found!", cause: ioe)
+        // @formatter:on
+        else {
+            final File fontPath
+            try {
+                fontPath = this.generatorContext.fileResource.getResourceFile(mssExtFont.fontPath)
+            }
+            catch (final IOException ioe) {
+                throw new GenerateException(message: "Font '${mssExtFont.fontPath}' was not found!", cause: ioe)
+            }
+
+            fontStream = new BufferedInputStream(new FileInputStream(fontPath))
         }
 
-        final BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(fontPath))
         try {
-            return PDType0Font.load(document, inputStream);
+            new PDFBoxFontMSSAdapter(PDType0Font.load(document, fontStream), mssFont)
         }
         finally {
-            inputStream.close()
+            fontStream.close()
         }
     }
 
@@ -147,13 +164,12 @@ class PDFBoxStylesMSSAdapter {
      *
      * @throws GenerateException on problem with font.
      */
-    @NotNull PDFont getFont(@NotNull PDDocument document, @NotNull final MSS.MSS_Pages section) throws GenerateException {
+    @NotNull PDFBoxFontMSSAdapter getFont(@NotNull PDDocument document, @NotNull final MSS.MSS_Pages section) throws GenerateException {
         validate()
 
         final MSSFont mssFont = this.mss.forDocument.getFont(section)
-        final MSSColorPair mssColorPair = this.mss.forDocument.getColorPair(section)
 
-        resolveFont(document, mssFont, mssColorPair)
+        resolveFont(document, mssFont)
     }
 
     /**
@@ -162,13 +178,12 @@ class PDFBoxStylesMSSAdapter {
      * @param document The PDF document being generated.
      * @param section The TOC section to get font for.
      */
-    @NotNull PDFont getFont(@NotNull PDDocument document, @NotNull final MSS.MSS_TOC section) {
+    @NotNull PDFBoxFontMSSAdapter getFont(@NotNull PDDocument document, @NotNull final MSS.MSS_TOC section) {
         validate()
 
         final MSSFont mssFont = this.mss.forTOC.getFont(section)
-        final MSSColorPair mssColorPair = this.mss.forTOC.getColorPair(section)
 
-        resolveFont(document, mssFont, mssColorPair)
+        resolveFont(document, mssFont)
     }
 
     /**
@@ -177,12 +192,11 @@ class PDFBoxStylesMSSAdapter {
      * @param document The PDF document being generated.
      * @param section The front page section to get font for.
      */
-    @NotNull PDFont getFont(@NotNull PDDocument document, @NotNull final MSS.MSS_Front_Page section) {
+    @NotNull PDFBoxFontMSSAdapter getFont(@NotNull PDDocument document, @NotNull final MSS.MSS_Front_Page section) {
         validate()
 
         final MSSFont mssFont = this.mss.forFrontPage.getFont(section)
-        final MSSColorPair mssColorPair = this.mss.forFrontPage.getColorPair(section)
 
-        resolveFont(document, mssFont, mssColorPair)
+        resolveFont(document, mssFont)
     }
 }
