@@ -61,6 +61,8 @@ class MSS {
     // NOTE: These enums are also used to validate JSON object field names in addition to being used as input
     //       to several of the methods of this class.
 
+    static interface Section {}
+
     /**
      * This represents top level sections of the MSS
      */
@@ -93,7 +95,7 @@ class MSS {
     /**
      * This represents style sections of the "pages" section.
      */
-    static enum MSS_Pages {
+    static enum MSS_Pages implements Section {
         standard,
         h1, h2, h3, h4, h5, h6,
         block_quote,
@@ -119,7 +121,7 @@ class MSS {
     /**
      * This represents style sections of the "front_page" section.
      */
-    static enum MSS_Front_Page {
+    static enum MSS_Front_Page implements Section {
         title,
         subject,
         version,
@@ -131,7 +133,7 @@ class MSS {
     /**
      * This represents style sections of the "toc" section.
      */
-    static enum MSS_TOC {
+    static enum MSS_TOC implements Section {
         toc,
         h1,
         h2,

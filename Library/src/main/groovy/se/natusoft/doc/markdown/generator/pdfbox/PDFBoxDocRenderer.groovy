@@ -53,7 +53,7 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary
 import org.apache.pdfbox.util.Matrix
 import org.jetbrains.annotations.NotNull
-import org.jetbrains.annotations.Nullable
+import se.natusoft.doc.markdown.generator.models.TOC
 import se.natusoft.doc.markdown.generator.pdfbox.internal.FrontPage
 import se.natusoft.doc.markdown.generator.pdfbox.internal.Outline
 import se.natusoft.doc.markdown.generator.pdfbox.internal.PageMargins
@@ -187,11 +187,19 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         FrontPage frontPage
 
-
+        // The main "front" document.
         PDDocument document = new PDDocument()
         PDPage docPage
         PDPageContentStream docStream
+        PDPageContentStream getDocStream() {
+            if (this.docStream == null) {
+                newPage()
+            }
+            return this.docStream
+        }
 
+        // The "background" document. This and the "front" document will be merged with the "front" document in front of this
+        // document on save. Thereby any  background rendering should be done in this.
         PDDocument bgDocument = new PDDocument()
         PDPage bgDocPage
         PDPageContentStream bgDocStream
@@ -199,6 +207,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         /** The PDF outline. */
         Outline outline = null
 
+        int pageNumber = 0
 
         //
         // Private Members
@@ -209,6 +218,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         //
 
         void newPage() {
+            ++this.pageNumber
             docPage = new PDPage()
             docPage.setMediaBox(PDFBoxDocRenderer.this.pageFormat)
             document.addPage(docPage)
@@ -237,7 +247,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         MSSColorPair sectionTitleColor = DEFAULT_COLOR_PAIR
         MSSColorPair pageNumberColor = DEFAULT_COLOR_PAIR
         MSSColorPair dotsColor = DEFAULT_COLOR_PAIR
-        PDFBoxFontMSSAdapter font = PDFBoxFontMSSAdapter.DEFAULT_TOC_FONT
+        PDFBoxStylesMSSAdapter styles = null
     }
 
     //
@@ -247,6 +257,14 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /** The current font to use. */
     @NotNull
     protected PDFBoxFontMSSAdapter fontMSSAdapter
+
+    /** The current style to use. */
+    @NotNull
+    protected PDFBoxStylesMSSAdapter stylesMSSAdapter
+
+    /** The current section. */
+    @NotNull
+    protected MSS.Section section
 
     /** A boxed area in progress if not null. */
     private Box box
@@ -290,6 +308,13 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /** The current foreground and background colors.*/
     private MSSColorPair colors
     public MSSColorPair getColors() { this.colors }
+
+    /**
+     * @return The current page number.
+     */
+    public int getCurrentPageNumber() {
+        this.docMgr.pageNumber
+    }
 
     //
     // Internal Pseudo Properties
@@ -370,6 +395,37 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     PDPage getPage(int ix) {
         return this.docMgr.document.getPage(ix)
+    }
+
+    /**
+     *  Sets the left inset. Set to 0 to remove inset.
+     *
+     * @param inset The inset to set.
+     */
+    void setLeftInset(float inset) {
+        this.margins.leftInset = inset
+    }
+
+    /**
+     * @return The left inset.
+     */
+    float getLeftInset() {
+        return this.margins.leftInset
+    }
+
+    /**
+     * Sets the right inset. Set to 0 to remove inset.
+     * @param inset
+     */
+    void setRightInset(float inset) {
+        this.margins.rightInset = inset
+    }
+
+    /**
+     * @return The right inset.
+     */
+    float getRightInset() {
+        return this.margins.rightInset
     }
 
     /**
@@ -489,10 +545,54 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param fontMSSAdapter The PDFFontMSSAdapter to set.
      */
-    void applyFont(@NotNull PDFBoxFontMSSAdapter fontMSSAdapter) {
-        notNull("fontMSSAdapter", fontMSSAdapter)
+    void applyStyle(@NotNull PDFBoxStylesMSSAdapter stylesMSSAdapter, MSS.Section section) {
+        notNull("stylesMSSAdapter", stylesMSSAdapter)
+        this.stylesMSSAdapter = stylesMSSAdapter
+        this.section = section
+
+        applyFont(getFontAdapter(stylesMSSAdapter, section))
+    }
+
+    /**
+     * Applies only a font.
+     *
+     * @param fontMSSAdapter The adapter for the font to apply.
+     */
+    void applyFont(PDFBoxFontMSSAdapter fontMSSAdapter) {
         this.fontMSSAdapter = fontMSSAdapter
         applyFontInternal()
+    }
+
+    /**
+     * Gets a Font adapter from a styles adapter and a section.
+     *
+     * @param stylesMSSAdapter The styles adapter to use.
+     * @param section The section to get font adapter for. All of MSS.MSS_Pages.*, MSS.MSS_Front_Page.*, and MSS.MSS_TOC.*
+     *                are valid. These all implements MSS.Section.
+     *
+     * @return
+     */
+    protected PDFBoxFontMSSAdapter getFontAdapter(PDFBoxStylesMSSAdapter stylesMSSAdapter, MSS.Section section) {
+        PDFBoxFontMSSAdapter fontMSSAdapter = null
+
+        switch (section.class) {
+            case MSS.MSS_Pages.class:
+                fontMSSAdapter = stylesMSSAdapter.getFont(this.docMgr.document, section as MSS.MSS_Pages)
+                break
+
+            case MSS.MSS_Front_Page:
+                fontMSSAdapter = stylesMSSAdapter.getFont(this.docMgr.document, section as MSS.MSS_Front_Page)
+                break
+
+            case MSS.MSS_TOC:
+                fontMSSAdapter = stylesMSSAdapter.getFont(this.docMgr.document, section as MSS.MSS_TOC)
+                break
+
+            default:
+                throw new IllegalStateException("BUG: unknown MSS.Section!")
+        }
+
+        fontMSSAdapter
     }
 
     /**
@@ -506,14 +606,29 @@ class PDFBoxDocRenderer implements NotNullTrait {
     }
 
     /**
+     * Temporarily changes style, executes a closure, and then restores the current style again.
+     *
+     * @param style The temp style to use.
+     * @param section The style should be for this section.
+     * @param withFontCall The closure to call while font is active.
+     */
+    protected void withStyle(@NotNull PDFBoxStylesMSSAdapter style, MSS.Section section, Closure withStyleCall) {
+        PDFBoxStylesMSSAdapter origStyle = this.stylesMSSAdapter
+        MSS.Section origSection = this.section
+        applyStyle(style, section)
+        withStyleCall.call()
+        if (origStyle != null) applyStyle(origStyle, origSection)
+    }
+
+    /**
      * Temporarily changes font, executes a closure, and then restores the current font again.
      *
-     * @param font The temp font to use.
+     * @param style The temp style to use.
      * @param withFontCall The closure to call while font is active.
      */
     protected void withFont(@NotNull PDFBoxFontMSSAdapter font, Closure withFontCall) {
         PDFBoxFontMSSAdapter origFont = this.fontMSSAdapter
-        applyFont( font)
+        applyFont(font)
         withFontCall.call()
         if (origFont != null) applyFont(origFont)
     }
@@ -589,46 +704,43 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Writes a TOC entry.
      *
      * @param tocEntry The toc entry to render plus rendering info
+     * @param tocSettings Style settings for TOC.
      */
     @SuppressWarnings("UnnecessaryQualifiedReference")
     void tocEntry(
-            @Nullable String sectionNumber,
-            @NotNull String sectionTitle,
-            int pageNumber,
-            @NotNull TocSettings tocSettings = new TocSettings() // Groovy is groovy :-)
+            @NotNull TOC tocEntry,
+            @NotNull TocSettings tocSettings = new TocSettings()
     ) {
         MSSColorPair origColors = this.colors
-        PDFBoxFontMSSAdapter origFont = this.fontMSSAdapter
-
-        if (this.textMode) {
-            ensureTextModeOff()
-        }
+        PDFBoxStylesMSSAdapter origStyles = this.stylesMSSAdapter
+        MSS.Section origSection = this.section
+        ensureTextModeOff()
 
         this.pageX = this.margins.leftMargin
 
-        applyFont(tocSettings.font)
+        applyStyle(tocSettings.styles, tocEntry.section)
 
         // Section number if any
-        if (sectionNumber != null) {
+        if (tocEntry.sectionNumber != null) {
             applyColorPair(tocSettings.sectionNumberColor)
             ensureTextMode(this.pageX, this.pageY)
-            this.text(sectionNumber)
+            this.text(tocEntry.sectionNumber)
             ensureTextModeOff()
             this.pageX = this.margins.leftMargin + 60.0f
         }
 
         // Section title
         ensureTextMode(this.pageX, this.pageY)
-        float titleEnd = (this.pageX + calcTextWidth(sectionTitle) - 20.0f) as float
+        float titleEnd = (this.pageX + calcTextWidth(tocEntry.sectionTitle) - 20.0f) as float
         applyColorPair(tocSettings.sectionTitleColor)
-        this.text(sectionTitle)
+        this.text(tocEntry.sectionTitle)
         ensureTextModeOff()
 
         // Page number
         float pagePos = (this.pageFormat.width - this.margins.rightMargin - calcTextWidth(TOC_FONT, "${pageNo}")) as float
         ensureTextMode(pagePos, this.pageY)
         applyColorPair(tocSettings.pageNumberColor)
-        this.text("${pageNumber}")
+        this.text("${tocEntry.pageNumber}")
         ensureTextModeOff()
 
         // Dots between title and page number.
@@ -649,7 +761,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         }
 
         applyColorPair(origColors)
-        applyFont(origFont)
+        applyStyle(origStyles, origSection)
 
         this.pageY -= TOC_FONT.size + 2
         if (this.pageY <= this.margins.bottomMargin) {
@@ -674,7 +786,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         // Find trailing spaces
         StringBuilder trailingSpaces = new StringBuilder()
         int pos = _text.size() - 1
-        while (_text.charAt(pos) == ' ' as char && pos >= 0) {
+        while (pos >= 0 && _text.charAt(pos) == ' ' as char) {
             trailingSpaces.append(" ")
             --pos
         }
@@ -828,6 +940,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Writes a new line.
      */
     void newLine() {
+        ensureTextMode()
         this.docMgr.docStream.newLine()
         this.pageX = this.margins.leftMargin
         this.pageY -= (this.fontMSSAdapter.size + 2)
@@ -1021,6 +1134,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
     void pageNumber(int pageNumber) {
         String pgnStr = "${pageNumber}"
         ensureTextModeOff()
+
         withFont PDFBoxFontMSSAdapter.PAGE_NUMBER_FONT, {
             float width = calcTextWidth(pgnStr)
             ensureTextMode(this.pageFormat.width - this.margins.rightMargin - width as float, this.margins.bottomMargin - 10 as float)

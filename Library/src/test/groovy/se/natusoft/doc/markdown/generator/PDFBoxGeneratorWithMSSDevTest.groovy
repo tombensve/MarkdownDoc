@@ -1,6 +1,7 @@
 package se.natusoft.doc.markdown.generator
 
 import groovy.transform.CompileStatic
+import org.junit.Test
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.api.Parser
@@ -12,7 +13,7 @@ import se.natusoft.tools.optionsmgr.CommandLineOptionsManager
  * Test for MarkdownParser.
  */
 @CompileStatic
-class PDFITextGeneratorWithMSSDevTest extends GroovyTestCase {
+class PDFBoxGeneratorWithMSSDevTest extends GroovyTestCase {
 
     /*
      * Note that this test only tests that the parsing and result generation executes
@@ -22,17 +23,17 @@ class PDFITextGeneratorWithMSSDevTest extends GroovyTestCase {
 
         // Handle both IntelliJ and Maven who runs from different roots! (I see this as a bug in IntelliJ)
         File testFile = new File("src/test/resources/test.md") // Maven
-        File pdfFile = new File("src/test/resources/test.pdf")
+        File pdfFile = new File("target/test.pdf")
         if (!testFile.exists()) {
             testFile = new File("Library/src/test/resources/test.md") // IntelliJ
-            pdfFile = new File("Library/src/test/resources/test.pdf")
+            pdfFile = new File("Library/target/resources/test.pdf")
         }
 
         Parser parser = new MarkdownParser()
         Doc doc = new Doc()
         parser.parse(doc, testFile, new Properties())
 
-        Generator generator //= new PDFITextGenerator()
+        Generator generator = GeneratorProvider.getGeneratorByName("pdf")
 
         CommandLineOptionsManager<Options> optMgr = new CommandLineOptionsManager<Options>(generator.optionsClass)
         def args = [

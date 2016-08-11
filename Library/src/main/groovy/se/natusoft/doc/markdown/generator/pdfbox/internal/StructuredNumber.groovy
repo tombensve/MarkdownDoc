@@ -77,7 +77,7 @@ class StructuredNumber {
      */
     StructuredNumber(StructuredNumber toCopy) {
         this.structNum = new Integer[toCopy.structNum.length]
-        this.structNum = Arrays.copyOf(toCopy.structNum, this.structNum.length)
+        System.arraycopy(toCopy.structNum, 0, this.structNum, 0, toCopy.structNum.length)
         this.level = toCopy.level
     }
 

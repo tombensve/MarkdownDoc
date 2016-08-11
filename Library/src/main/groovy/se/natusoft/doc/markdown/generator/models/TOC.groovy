@@ -13,5 +13,5 @@ class TOC {
     String sectionNumber
     String sectionTitle
     int pageNumber = 0
-    MSS.MSS_TOC level = MSS.MSS_TOC.toc
+    MSS.MSS_TOC section = MSS.MSS_TOC.toc
 }

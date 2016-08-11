@@ -2,10 +2,14 @@ package se.natusoft.doc.markdown
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import se.natusoft.doc.markdown.generator.FileResource
+import se.natusoft.doc.markdown.generator.models.TOC
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxDocRenderer
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxFontMSSAdapter
+import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxStylesMSSAdapter
 import se.natusoft.doc.markdown.generator.pdfbox.internal.PageMargins
 import se.natusoft.doc.markdown.generator.pdfbox.internal.StructuredNumber
+import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.generator.styles.MSSColor
 import se.natusoft.doc.markdown.generator.styles.MSSColorPair
 import se.natusoft.doc.markdown.generator.styles.MSSFont
@@ -17,6 +21,8 @@ class TestPDFDoc {
     public static void main(String... args) {
         MSSFont mssFont = new MSSFont(size: 12, family: "HELVETICA", style: MSSFontStyle.NORMAL)
         MSSColorPair textColor = new MSSColorPair(foreground: MSSColor.GREY, background: MSSColor.WHITE)
+        MSS mss = MSS.defaultMSS()
+        PDFBoxStylesMSSAdapter styles = new PDFBoxStylesMSSAdapter(mss: mss, fileResource: new FileResource(rootDir: new File("..")))
         PDFBoxFontMSSAdapter textFont = new PDFBoxFontMSSAdapter(mssFont)
 
         PDFBoxDocRenderer doc = new PDFBoxDocRenderer(
@@ -31,18 +37,18 @@ class TestPDFDoc {
 
         doc.newPage()
 
-        doc.applyFont(textFont)
+        doc.applyStyle(styles, MSS.MSS_Pages.standard)
         doc.applyColorPair(textColor)
 
         doc.center("Table of Content")
-        doc.tocEntry("1.2.3", "First toc entry", 1)
-        doc.tocEntry("1.2.3.4.5.6", "Second toc entry", 2,
+        doc.tocEntry(new TOC(sectionNumber: "1.2.3", sectionTitle: "First toc entry", pageNumber: 1 ))
+        doc.tocEntry(new TOC(sectionNumber:  "1.2.3.4.5.6", sectionTitle:  "Second toc entry", pageNumber:  2),
                 new PDFBoxDocRenderer.TocSettings(sectionTitleColor: new MSSColorPair(
                         foreground: MSSColor.BLUE,
                         background: MSSColor.WHITE
                 ))
         )
-        doc.tocEntry(null, "Third toc entry", 5)
+        doc.tocEntry(new TOC(sectionTitle: "Thirds toc entry", pageNumber: 5))
         doc.pageNoActive = true
         doc.newPage()
 
@@ -76,10 +82,10 @@ class TestPDFDoc {
         doc.newLine()
         doc.newLine()
         PDFBoxFontMSSAdapter dwerneck = doc.loadExternalFont("file:Docs/dwerneck.ttf", new MSSFont(size: 16, style: MSSFontStyle.NORMAL))
-        doc.applyFont(dwerneck)
+        doc.applyStyle(dwerneck)
         doc.text("Some text in external ttf font.")
 
-        doc.applyFont(textFont)
+        doc.applyStyle(textFont)
 
         doc.newLine()
         doc.newLine()

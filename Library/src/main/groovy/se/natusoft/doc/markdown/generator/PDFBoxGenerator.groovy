@@ -96,7 +96,13 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
         PDFBoxStylesMSSAdapter pdfStyles = new PDFBoxStylesMSSAdapter()
 
         /** The table of contents. */
-        java.util.List<TOC> toc
+        java.util.List<TOC> toc = new LinkedList<>()
+
+        /** The current text structure level. */
+        MSS.MSS_TOC level = MSS.MSS_TOC.h1
+
+        /** The current section number. */
+        StructuredNumber sectionNumber = new StructuredNumber(6)
 
     }
 
@@ -104,7 +110,6 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
     //
     // Private Members
     //
-
 
     //
     // Methods
@@ -175,7 +180,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                 fileResource: new FileResource(rootDir: rootDir, optsRootDir: (options as PDFGeneratorOptions).rootDir)
         )
 
-        context.pdfStyles.generatorContext = context
+        context.pdfStyles.fileResource= context.fileResource
 
         // Load MSS file if specified
         if (context.options.mss != null && !context.options.mss.isEmpty()) {
@@ -202,6 +207,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                 ),
                 pageSize: context.options.pageSize
         )
+        doc.newPage()
 
         final LinkedList<String> divs = new LinkedList<>()
 
@@ -260,6 +266,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                     throw new GenerateException(message: "Unknown format model in Doc! [" + docItem.class.name + "]")
             }
         }
+
+        doc.save(resultStream)
     }
 
     /**
@@ -508,9 +516,12 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param context The generator context.
      */
     static void writeHeader(@NotNull Header header, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
+        context.toc.add(new TOC(section: context.level, sectionNumber: context.sectionNumber.toString(), pageNumber: doc.currentPageNumber))
+        doc.addOutlineEntry(context.sectionNumber, header.text, doc.currentPage)
+
         MSS_Pages section = MSS_Pages.valueOf("h" + header.level.level)
 
-        doc.applyFont(new PDFBoxFontMSSAdapter(context.pdfStyles.mss.forDocument.getFont(section)))
+        doc.applyStyle(context.pdfStyles, section)
         doc.applyColorPair(context.pdfStyles.mss.forDocument.getColorPair(section))
 
         doc.newSection()
@@ -526,9 +537,9 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param context The generator context.
      */
     static void writeBlockQuote(@NotNull BlockQuote blockQuote, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
-        checkBoxed(MSS_Pages.block_quote, doc, context.pdfStyles.mss)
+        checkAndSetBoxed(MSS_Pages.block_quote, doc, context.pdfStyles.mss)
 
-        doc.applyFont(new PDFBoxFontMSSAdapter(context.pdfStyles.mss.forDocument.getFont(MSS_Pages.block_quote)))
+        doc.applyStyle(context.pdfStyles, MSS_Pages.block_quote)
         doc.applyColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.block_quote))
 
         doc.newSection()
@@ -550,9 +561,9 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param context The generator context.
      */
     static void writeCodeBlock(@NotNull CodeBlock codeBlock, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
-        checkBoxed(MSS_Pages.code, doc, context.pdfStyles.mss)
+        checkAndSetBoxed(MSS_Pages.code, doc, context.pdfStyles.mss)
 
-        doc.applyFont(new PDFBoxFontMSSAdapter(context.pdfStyles.mss.forDocument.getFont(MSS_Pages.code)))
+        doc.applyStyle(context.pdfStyles, MSS_Pages.code)
         doc.applyColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.code))
 
         doc.newSection()
@@ -574,36 +585,34 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param context The generator context.
      */
     static void writeList(@NotNull List list, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
-        StructuredNumber num
+        StructuredNumber num = null
         if (list.isOrdered()) {
             num = new StructuredNumber(30)
         }
-        writeListInt(list, "", num, doc, context)
+        writeListPart(list, 0.0f, num, doc, context)
     }
-
-    Note that we need to support paragraph insets both left and right, to be able to handle list entries correctly when they
-    are longer than one line!
 
     /**
      * The internal version of writing a list. This is called recursively for each sublist.
      *
      * @param list The list to write.
-     * @param indent The indentation level.
+     * @param leftInset The current isnet ot the left.
      * @param num The current number if ordered, null otherwise.
      * @param doc The PDF document renderer
      * @param context The generator context.
      */
-    private static void writeListInt(
+    private static void writeListPart(
             @NotNull List list,
-            @NotNull String indent,
+            @NotNull float leftInset,
             @Nullable StructuredNumber num,
             @NotNull PDFBoxDocRenderer doc,
             @NotNull PDFGeneratorContext context
     ) {
         list.items.each { final DocItem item ->
             if (item instanceof ListItem) {
+                float oldInset = doc.leftInset
+                doc.leftInset = leftInset
                 doc.newLine()
-                doc.text(indent)
                 if (num != null) {
                     doc.text("${num} ")
                 }
@@ -616,6 +625,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                         writeParagraphContent(pg as Paragraph, doc, context)
                     }
                 }
+                doc.leftInset = oldInset
             }
             else if (item instanceof List) {
                 StructuredNumber newNum = null
@@ -623,13 +633,12 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                     newNum = new StructuredNumber(num)
                     newNum.downLevel()
                 }
-                writeListInt(item as List, indent + "  ", newNum, doc, context)
+                writeListPart(item as List, leftInset + 15.0f as float, newNum, doc, context)
             }
             else {
                 throw new GenerateException(message: "Non ListItem found in List: Bad model structure!")
             }
         }
-
     }
 }
 
@@ -659,7 +668,7 @@ trait BoxedTrait {
      * @param doc The PDF document renderer.
      * @param mss Supplies style information.
      */
-    static void checkBoxed(@NotNull MSS_Pages section, @NotNull PDFBoxDocRenderer doc, @NotNull MSS mss) {
+    static void checkAndSetBoxed(@NotNull MSS_Pages section, @NotNull PDFBoxDocRenderer doc, @NotNull MSS mss) {
         boxed.set(mss.forDocument.isBoxed(section))
         if (boxed.get()) {
             doc.startBox(mss.forDocument.getBoxColor(section))
@@ -703,7 +712,7 @@ class ParagraphWriter implements BoxedTrait {
 
     /**
      * Utility method to make path shorter for reference in other methods.
-s     */
+     */
     private @NotNull MSS.ForDocument getForDocument() {
         return this.context.pdfStyles.mss.forDocument
     }
@@ -714,9 +723,9 @@ s     */
      * @param code The code to write.
      */
     void writeCode(@NotNull Code code) {
-        checkBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
+        checkAndSetBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
 
-        doc.applyFont(new PDFBoxFontMSSAdapter(this.forDocument.getFont(MSS_Pages.code)))
+        doc.applyStyle(this.context.pdfStyles, MSS_Pages.code)
         doc.applyColorPair(this.forDocument.getColorPair(MSS_Pages.code))
         doc.text(code.text)
 
@@ -729,9 +738,9 @@ s     */
      * @param emphasis The text to write.
      */
     void writeEmphasis(@NotNull Emphasis emphasis) {
-        checkBoxed(MSS_Pages.emphasis, this.doc, this.context.pdfStyles.mss)
+        checkAndSetBoxed(MSS_Pages.emphasis, this.doc, this.context.pdfStyles.mss)
 
-        doc.applyFont(new PDFBoxFontMSSAdapter(this.forDocument.getFont(MSS_Pages.emphasis)))
+        doc.applyStyle(this.context.pdfStyles, MSS_Pages.emphasis)
         doc.applyColorPair(this.forDocument.getColorPair(MSS_Pages.emphasis))
         doc.text(emphasis.text)
 
@@ -744,9 +753,8 @@ s     */
      * @param strong The text to write.
      */
     void writeStrong(@NotNull Strong strong) {
-        checkBoxed(MSS_Pages.strong, this.doc, this.context.pdfStyles.mss)
-
-        doc.applyFont(new PDFBoxFontMSSAdapter(this.forDocument.getFont(MSS_Pages.strong)))
+        checkAndSetBoxed(MSS_Pages.strong, this.doc, this.context.pdfStyles.mss)
+        doc.applyStyle(this.context.pdfStyles, MSS_Pages.strong)
         doc.applyColorPair(this.forDocument.getColorPair(MSS_Pages.strong))
         doc.text(strong.text)
 
@@ -759,9 +767,9 @@ s     */
      * @param text The text to write.
      */
     void writePlainText(@NotNull PlainText text) {
-        checkBoxed(MSS_Pages.standard, this.doc, this.context.pdfStyles.mss)
+        checkAndSetBoxed(MSS_Pages.standard, this.doc, this.context.pdfStyles.mss)
 
-        doc.applyFont(new PDFBoxFontMSSAdapter(this.forDocument.getFont(MSS_Pages.standard)))
+        doc.applyStyle(this.context.pdfStyles, MSS_Pages.standard)
         doc.applyColorPair(this.forDocument.getColorPair(MSS_Pages.standard))
         doc.text(text.text)
 
@@ -774,7 +782,7 @@ s     */
      * @param image The image to write.
      */
     void writeImage(@NotNull Image image) {
-        checkBoxed(MSS_Pages.image, this.doc, this.context.pdfStyles.mss)
+        checkAndSetBoxed(MSS_Pages.image, this.doc, this.context.pdfStyles.mss)
 
         doc.image(image.url, this.forDocument.imageStyle)
 
@@ -787,7 +795,7 @@ s     */
      * @param link The link to write.
      */
     void writeLink(@NotNull Link link) {
-        checkBoxed(MSS_Pages.anchor, this.doc, this.context.pdfStyles.mss)
+        checkAndSetBoxed(MSS_Pages.anchor, this.doc, this.context.pdfStyles.mss)
 
         doc.link(link.title, link.url)
 
@@ -800,7 +808,7 @@ s     */
      * @param autoLink The link to write.
      */
     void writeAutoLink(@NotNull AutoLink autoLink) {
-        checkBoxed(MSS_Pages.anchor, this.doc, this.context.pdfStyles.mss)
+        checkAndSetBoxed(MSS_Pages.anchor, this.doc, this.context.pdfStyles.mss)
 
         doc.link(autoLink.url, autoLink.url)
 
