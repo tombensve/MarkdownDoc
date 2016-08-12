@@ -1,14 +1,14 @@
 <!--
     This is a comment!
-    
+
     @PDFTitle("Test of iText PDF generating")
     @PDFSubject("PDF generation")
     @PDFKeywords("Test inline")
     @PDFVersion(1.0)
-    @PDFAuthor("Tommy Bengt Svensson")
+    @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
     @PDFTitlePageImage("/tommy.jpg:260.0:400.0")
-    
+
 -->
 # Headers
 
@@ -122,7 +122,7 @@ tabs is considered blank.) Normal paragraphs should not be indented with spaces 
 </div>
 
 This is a _formatting_ __Paragraph__. Here is [a link](http://to.somewhere.net/). Another [link] to somewhere. This paragraph
-also contains a `simple code block`. And here is an 
+also contains a `simple code block`. And here is an
 
 ![image](https://raw.githubusercontent.com/dcurtis/markdown-mark/master/png/32x20-solid.png).
 

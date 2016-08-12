@@ -1153,6 +1153,9 @@ class MSS {
         if (!ok) {
             ok = safe { MSS_IMAGE.valueOf(name) != null }
         }
+        if (!ok) {
+            ok = safe { MSS_Page.valueOf(name) != null }
+        }
 
         ok
     }

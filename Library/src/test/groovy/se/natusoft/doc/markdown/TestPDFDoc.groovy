@@ -81,11 +81,12 @@ class TestPDFDoc {
 
         doc.newLine()
         doc.newLine()
+        PDFBoxStylesMSSAdapter sa
         PDFBoxFontMSSAdapter dwerneck = doc.loadExternalFont("file:Docs/dwerneck.ttf", new MSSFont(size: 16, style: MSSFontStyle.NORMAL))
-        doc.applyStyle(dwerneck)
+        doc.applyFont(dwerneck)
         doc.text("Some text in external ttf font.")
 
-        doc.applyStyle(textFont)
+        doc.applyFont(textFont)
 
         doc.newLine()
         doc.newLine()

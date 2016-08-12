@@ -54,7 +54,6 @@ import se.natusoft.doc.markdown.generator.styles.MSSFont
 @CompileStatic
 @TypeChecked
 class PDFBoxStylesMSSAdapter {
-
     //
     // Properties
     //
@@ -164,39 +163,26 @@ class PDFBoxStylesMSSAdapter {
      *
      * @throws GenerateException on problem with font.
      */
-    @NotNull PDFBoxFontMSSAdapter getFont(@NotNull PDDocument document, @NotNull final MSS.MSS_Pages section) throws GenerateException {
+    @NotNull PDFBoxFontMSSAdapter getFont(@NotNull PDDocument document, @NotNull final MSS.Section section) throws GenerateException {
         validate()
 
-        final MSSFont mssFont = this.mss.forDocument.getFont(section)
+        MSSFont mssFont = null
+
+        switch (section.class) {
+            case MSS.MSS_Pages:
+                mssFont = this.mss.forDocument.getFont(section as MSS.MSS_Pages)
+                break
+            case MSS.MSS_Front_Page:
+                mssFont = this.mss.forFrontPage.getFont(section as MSS.MSS_Front_Page)
+                break
+            case MSS.MSS_TOC:
+                mssFont = this.mss.forTOC.getFont(section as MSS.MSS_TOC)
+                break
+            default:
+                throw new IllegalArgumentException("BUG: Unknwon MSS.Section passed! (${section.class})")
+        }
 
         resolveFont(document, mssFont)
     }
 
-    /**
-     * Returns a PDFFont for the specified TOC section.
-     *
-     * @param document The PDF document being generated.
-     * @param section The TOC section to get font for.
-     */
-    @NotNull PDFBoxFontMSSAdapter getFont(@NotNull PDDocument document, @NotNull final MSS.MSS_TOC section) {
-        validate()
-
-        final MSSFont mssFont = this.mss.forTOC.getFont(section)
-
-        resolveFont(document, mssFont)
-    }
-
-    /**
-     * Returns a PDFFont for the specified front page section.
-     *
-     * @param document The PDF document being generated.
-     * @param section The front page section to get font for.
-     */
-    @NotNull PDFBoxFontMSSAdapter getFont(@NotNull PDDocument document, @NotNull final MSS.MSS_Front_Page section) {
-        validate()
-
-        final MSSFont mssFont = this.mss.forFrontPage.getFont(section)
-
-        resolveFont(document, mssFont)
-    }
 }

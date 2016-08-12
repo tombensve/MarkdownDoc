@@ -155,15 +155,16 @@
     "YellowGreen": "9ACD32"
   },
   "document": {
+    "leftMargin": 50.0,
+    "rightMargin": 50.0,
+    "topMargin": 40.0,
+    "bottomMargin": 40.0,
+
     "color": "black",
     "background": "white",
     "family": "HELVETICA",
     "size": 10,
     "style": "Normal",
-    "topMargin": 40.0,
-    "leftMargin": 40.0,
-    "rightMargin": 40.0,
-    "bottomMargin": 40.0,
 
     "image": {
       "imgScalePercent": 60.0,
