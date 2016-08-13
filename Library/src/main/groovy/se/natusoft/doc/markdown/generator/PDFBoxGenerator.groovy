@@ -46,9 +46,9 @@ import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.models.TOC
 import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxDocRenderer
-import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxFontMSSAdapter
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxStylesMSSAdapter
 import se.natusoft.doc.markdown.generator.pdfbox.internal.PageMargins
+import se.natusoft.doc.markdown.generator.pdfbox.internal.BadStructuredNumber
 import se.natusoft.doc.markdown.generator.pdfbox.internal.StructuredNumber
 import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.generator.styles.MSS.MSS_Pages
@@ -102,7 +102,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
         MSS.MSS_TOC level = MSS.MSS_TOC.h1
 
         /** The current section number. */
-        StructuredNumber sectionNumber = new StructuredNumber(6)
+        BadStructuredNumber sectionNumber = new BadStructuredNumber(6)
 
     }
 
@@ -561,20 +561,23 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param context The generator context.
      */
     static void writeCodeBlock(@NotNull CodeBlock codeBlock, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
-        checkAndSetBoxed(MSS_Pages.code, doc, context.pdfStyles.mss)
 
         doc.applyStyle(context.pdfStyles, MSS_Pages.code)
         doc.applyColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.code))
 
         doc.newSection()
+
+        checkAndSetBoxed(MSS_Pages.code, doc, context.pdfStyles.mss)
+
         codeBlock.items.each { final DocItem docItem ->
             // There should only be plain texts here, but to be sure …
             if (PlainText.class.isAssignableFrom(docItem.class)) {
-                doc.text((docItem as PlainText).text)
+                doc.preFormattedText((docItem as PlainText).text)
             }
         }
 
         clearBoxed(doc)
+        doc.newLine()
     }
 
     /**
@@ -585,9 +588,12 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param context The generator context.
      */
     static void writeList(@NotNull List list, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
+        doc.applyStyle(context.pdfStyles, MSS_Pages.list_item)
+        doc.applyColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.list_item))
+
         StructuredNumber num = null
         if (list.isOrdered()) {
-            num = new StructuredNumber(30)
+            num = new StructuredNumber(digit: 0, endWithDot: true)
         }
         writeListPart(list, 0.0f, num, doc, context)
     }
@@ -609,15 +615,17 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
             @NotNull PDFGeneratorContext context
     ) {
         list.items.each { final DocItem item ->
+
             if (item instanceof ListItem) {
                 float oldInset = doc.leftInset
                 doc.leftInset = leftInset
                 doc.newLine()
                 if (num != null) {
-                    doc.text("${num} ")
+                    num.increment()
+                    doc.text("${num.root} ")
                 }
                 else {
-                    doc.text("• ")
+                    doc.text("${context.options.unorderedListItemPrefix}")
                 }
 
                 item.items.each { final DocItem pg ->
@@ -628,16 +636,19 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                 doc.leftInset = oldInset
             }
             else if (item instanceof List) {
-                StructuredNumber newNum = null
+
                 if (num != null) {
-                    newNum = new StructuredNumber(num)
-                    newNum.downLevel()
+                    num = num.newDigit()
                 }
-                writeListPart(item as List, leftInset + 15.0f as float, newNum, doc, context)
+                writeListPart(item as List, leftInset + 15.0f as float, num, doc, context)
+                if (num != null) {
+                    num = num.deleteThisDigit()
+                }
             }
             else {
                 throw new GenerateException(message: "Non ListItem found in List: Bad model structure!")
             }
+
         }
     }
 }

@@ -88,11 +88,13 @@
         "style": "BOLD"
       },
       "code": {
-        "family": "HELVETICA",
-        "size": 9,
+        "family": "COURIER",
+        "size": 8,
         "style": "NORMAL",
         "color": "64:64:64",
-        "background": "white"
+        "background": "white",
+        "boxed": true,
+        "boxedColor": "#f8f8f8"
       },
       "anchor": {
         "family": "HELVETICA",

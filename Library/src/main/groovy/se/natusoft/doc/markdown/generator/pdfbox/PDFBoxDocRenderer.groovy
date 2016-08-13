@@ -770,6 +770,38 @@ class PDFBoxDocRenderer implements NotNullTrait {
     }
 
     /**
+     * Writes pre formatted text as is.
+     *
+     * @param text The pre formatted text
+     */
+    PDRectangle preFormattedText(@NotNull Object text) {
+        notNull("text", text)
+
+        ensureTextMode()
+
+        String[] lines = text.toString().split("\n|\r")
+        PDRectangle textArea = new PDRectangle(lowerLeftX: this.pageX, lowerLeftY: this.pageY)
+
+        lines.each { String line ->
+            this.docMgr.docStream.showText(line)
+            this.pageX = this.margins.leftMargin
+            this.pageY -= (this.fontMSSAdapter.size + 2)
+            if (this.pageY < this.margins.bottomMargin) {
+                newPage()
+            }
+            else {
+                // Note: newLineAtOffset(...) does not work here!
+                this.docMgr.docStream.newLine()
+            }
+        }
+
+        textArea.upperRightX = this.pageX
+        textArea.upperRightY = this.pageY + this.fontMSSAdapter.size
+
+        textArea
+    }
+
+    /**
      * Writes text to the document using the current font, colors, etc.
      *
      * @param text The text to write.
@@ -880,7 +912,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         ensureTextModeOff()
         this.margins.leftMargin = this.margins.leftMargin - 10.0f
         this.margins.rightMargin = this.margins.rightMargin - 10.0f
-        this.box.endLocation = new Location(x: this.margins.rightMargin, y: this.pageY - 4.0f)
+        this.box.endLocation = new Location(x: this.margins.rightMargin, y: this.pageY)
 
         this.box.color.applyColor this.docMgr.BG_DOC_FG_COLOR
         this.box.color.applyColor this.docMgr.BG_DOC_BG_COLOR
@@ -891,8 +923,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
                 this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin,
                 this.box.startLocation.y - this.box.endLocation.y
         )
-        this.docMgr.bgDocStream.fillAndStroke()
-        this.docMgr.bgDocStream.closePath()
+        this.docMgr.bgDocStream.closeAndFillAndStroke()
 
         ensureTextMode()
         pageX = this.margins.leftMargin
@@ -940,10 +971,12 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Writes a new line.
      */
     void newLine() {
+        ensureTextModeOff()
         ensureTextMode()
-        this.docMgr.docStream.newLine()
+
         this.pageX = this.margins.leftMargin
         this.pageY -= (this.fontMSSAdapter.size + 2)
+        this.docMgr.docStream.newLineAtOffset(this.pageX, this.pageY)
         if (this.pageY < this.margins.bottomMargin) {
             newPage()
         }

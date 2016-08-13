@@ -1156,6 +1156,9 @@ class MSS {
         if (!ok) {
             ok = safe { MSS_Page.valueOf(name) != null }
         }
+        if (!ok) {
+            ok = safe { MSS_Boxed.valueOf(name) != null }
+        }
 
         ok
     }

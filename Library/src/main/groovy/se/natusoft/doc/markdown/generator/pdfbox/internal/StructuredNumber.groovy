@@ -1,175 +1,74 @@
-/*
- *
- * PROJECT
- *     Name
- *         MarkdownDoc Library
- *
- *     Code Version
- *         1.5.0
- *
- *     Description
- *         Parses markdown and generates HTML and PDF.
- *
- * COPYRIGHTS
- *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *
- * LICENSE
- *     Apache 2.0 (Open Source)
- *
- *     Licensed under the Apache License, Version 2.0 (the "License");
- *     you may not use this file except in compliance with the License.
- *     You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *     Unless required by applicable law or agreed to in writing, software
- *     distributed under the License is distributed on an "AS IS" BASIS,
- *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *     See the License for the specific language governing permissions and
- *     limitations under the License.
- *
- * AUTHORS
- *     tommy ()
- *         Changes:
- *         2016-07-29: Created!
- *
- */
 package se.natusoft.doc.markdown.generator.pdfbox.internal
 
-import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
-
 /**
- * This represents a section number of 1 to 6 levels. All levels start at 1 and can only be incremented.
+ * Represents a Structured number of infinite levels.
  */
-@CompileStatic
-@TypeChecked
 class StructuredNumber {
 
-    //
-    // Private Members
-    //
+    /** The current digit of this instance */
+    long digit = 0
 
-    /** The current structured number. */
-    private Integer[] structNum = null
+    /** If true a dot will be appended in the end on toString() */
+    boolean endWithDot = false
 
-    /** The current level of the number to manipulate. */
-    private int level = 0
+    /** Not null if there is another digit efter us. */
+    StructuredNumber subDigit = null
 
-    //
-    // Constructor
-    //
+    /** If not null then the digit before us. */
+    StructuredNumber parentDigit = null
 
     /**
-     * Creates a new StructuredNumber
-     *
-     * @param maxSize The maximum level of the number.
+     * Increments this digit.
      */
-    StructuredNumber(int maxSize) {
-        this.structNum = new Integer[maxSize]
-        this.structNum[0] = 1
-    }
-
-    /**
-     * The copy constructor.
-     *
-     * @param toCopy The StructuredNumber to copy.
-     */
-    StructuredNumber(StructuredNumber toCopy) {
-        this.structNum = new Integer[toCopy.structNum.length]
-        System.arraycopy(toCopy.structNum, 0, this.structNum, 0, toCopy.structNum.length)
-        this.level = toCopy.level
-    }
-
-    //
-    // Methods
-    //
-
-    /**
-     * Returns the max size of this number.
-     */
-    int getMaxSize() {
-        this.structNum.length
-    }
-
-    /**
-     * Moves down a level. The new level will be initialized to 1.
-     */
-    void downLevel() {
-        ++this.level
-        if (this.level >= this.maxSize) {
-            this.level = this.maxSize - 1
-        }
-        else {
-            this.structNum[this.level] = 1
-        }
-    }
-
-    /**
-     * Moves up a level. This will also increment the target level value.
-     */
-    void upLevel() {
-        if (this.level > 0) {
-            this.structNum[this.level] = null
-            --this.level
-            incrementCurrentLevel()
-        }
-    }
-
-    /**
-     * Returns the current level.
-     */
-    int getLevel() {
-        this.level + 1
-    }
-
-    /**
-     * Sets the current level.
-     *
-     * @param level The section level to set. Must be between 1 and maxSize + 1.
-     */
-    StructuredNumber setLevel(int level) {
-        this.level = level - 1
-
-        (this.level + 1)..(this.maxSize - 1).each { int lvl ->
-            this.structNum[lvl] = null
-        }
-
+    StructuredNumber increment() {
+        ++this.digit
         this
     }
 
     /**
-     * Increments the section number at the current level.
+     * Creates a new digit after us and returns it.
      */
-    void incrementCurrentLevel() {
-        incrementLevel(this.level)
+    StructuredNumber newDigit() {
+        this.subDigit = new StructuredNumber(parentDigit: this, digit: -1)
     }
 
     /**
-     * Increments the section number.
+     * Deletes this specific digit and thereby also all subdigits.
      *
-     * @param sectionLevel The section level to increment.
+     * @return Our parent digit or null if current is root.
      */
-    void incrementLevel(int sectionLevel) {
-        if (sectionLevel < 0) sectionLevel = 0
-        if (sectionLevel > 5) sectionLevel = 5
-        if (this.structNum[sectionLevel] == null) { this.structNum[sectionLevel] = 0 }
-        ++this.structNum[sectionLevel]
+    StructuredNumber deleteThisDigit() {
+        this.parentDigit.subDigit = null
+        this.parentDigit
     }
 
     /**
-     * Returns the section number as a string.
+     * Returns the root digit.
+     */
+    StructuredNumber getRoot() {
+        StructuredNumber sn = this
+        while (sn.parentDigit != null) {
+            sn = sn.parentDigit
+        }
+
+        sn
+    }
+
+    /**
+     * Returns all digits ,'.' separated as a String.
      */
     String toString() {
         StringBuilder sb = new StringBuilder()
-        int i = 0
-        String dot = ""
-        while (this.structNum[i] != null) {
-            sb.append(dot)
-            sb.append(this.structNum[i++])
-            dot = "."
+        if (this.parentDigit != null) {
+            sb.append('.')
         }
-
-        return sb.toString()
+        sb.append(digit)
+        if (this.subDigit != null) {
+            sb.append(this.subDigit.toString())
+        }
+        if (endWithDot) {
+            sb.append('.')
+        }
+        sb.toString()
     }
 }

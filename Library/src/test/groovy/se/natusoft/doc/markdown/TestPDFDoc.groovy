@@ -8,7 +8,7 @@ import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxDocRenderer
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxFontMSSAdapter
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxStylesMSSAdapter
 import se.natusoft.doc.markdown.generator.pdfbox.internal.PageMargins
-import se.natusoft.doc.markdown.generator.pdfbox.internal.StructuredNumber
+import se.natusoft.doc.markdown.generator.pdfbox.internal.BadStructuredNumber
 import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.generator.styles.MSSColor
 import se.natusoft.doc.markdown.generator.styles.MSSColorPair
@@ -209,7 +209,7 @@ class TestPDFDoc {
         doc.newLine()
 
 
-        StructuredNumber sn = new StructuredNumber(6)
+        BadStructuredNumber sn = new BadStructuredNumber(6)
 
         doc.addOutlineEntry(sn, "${sn} First page", doc.getPage(1))
         sn.downLevel()
