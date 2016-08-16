@@ -94,7 +94,7 @@ End of code block.
   * Second entry sub list
 
 * Third entry orig list.
-  This entry has 2 lines.
+  This line is part of the same list entry.
 
 * Fourth entry orig list.
 
@@ -104,6 +104,7 @@ End of code block.
 
   * New sub list l2 uo
 
+&nbsp;
 
 1. Ordered list
 
@@ -137,9 +138,12 @@ tabs is considered blank.) Normal paragraphs should not be indented with spaces 
 
 </div>
 
-This is a _formatting_ __Paragraph__. Here is [a link](http://to.somewhere.net/). Another [link] to somewhere. This paragraph
+This is a _formatting_ __Paragraph__. Here is [a link](http://to.somewhere.net/).
+
+This paragraph
 also contains a `simple code block`. And here is an
 
+<!--
 ![image](https://raw.githubusercontent.com/dcurtis/markdown-mark/master/png/32x20-solid.png).
 
 Some more text in this paragraph. <www.somewhere.net> ends this paragraph.
@@ -152,4 +156,4 @@ Some more text in this paragraph. <www.somewhere.net> ends this paragraph.
 
 [imageref]: https://raw.githubusercontent.com/dcurtis/markdown-mark/master/png/32x20-solid.png
 
-
+-->

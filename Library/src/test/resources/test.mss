@@ -92,7 +92,7 @@
         "size": 8,
         "style": "NORMAL",
         "color": "64:64:64",
-        "background": "white",
+        "background": "#f8f8f8",
         "boxed": true,
         "boxedColor": "#f8f8f8"
       },

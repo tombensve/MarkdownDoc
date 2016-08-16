@@ -508,8 +508,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     private void applyColorsInternal() {
         if (this.colors != null) {
-            applyForegroundColor(this.colors.foreground)
             applyBackgroundColor(this.colors.background)
+            applyForegroundColor(this.colors.foreground)
         }
     }
 
@@ -665,7 +665,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * is only possible to set a position on the page directly after enabling text
      * mode.
      */
-    protected void ensureTextMode() {
+    void ensureTextMode() {
         if (!this.textMode) {
             this.docMgr.docStream.beginText()
             this.textMode = true
@@ -680,7 +680,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param x The x coordinate to render text at.
      * @param y The y coordinate to render text at.
      */
-    protected void ensureTextMode(float x, float y) {
+    void ensureTextMode(float x, float y) {
         ensureTextMode()
         this.docMgr.docStream.newLineAtOffset(x, y)
     }
@@ -689,7 +689,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * This keeps track of if the text document is in text mode or not,
      * and ensures that it isn't in text mode.
      */
-    protected void ensureTextModeOff() {
+    void ensureTextModeOff() {
         if (this.textMode) {
             this.docMgr.docStream.endText()
             this.textMode = false
@@ -949,21 +949,21 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param thickness The thickness of the line. Anything over half the font size is a not a good idea! 2.0 or 3.0 is suggested.
      */
     void hr(float thickness) {
-        if (this.pageY - (this.fontMSSAdapter.size * 2) < this.margins.bottomMargin) {
+        if (this.pageY - 8 < this.margins.bottomMargin) {
             newPage()
             // We intentionally do not draw the hr if it is on a page break.
         }
         else {
             newLine()
             ensureTextModeOff()
-            float hrY = this.pageY + 2.0f
+            float hrY = this.pageY + 1
             this.docMgr.docStream.addRect(
                     this.margins.leftMargin, hrY, this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin, thickness
             )
             this.docMgr.docStream.fillAndStroke()
             this.docMgr.docStream.closePath()
             ensureTextMode()
-            newLineAtPageLocation()
+            //newLineAtPageLocation()
         }
     }
 

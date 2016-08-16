@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.5.0
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -141,15 +141,15 @@ class MarkdownParser implements Parser {
                     def linkUrlCSpecCase = { final MDLine it -> it.isLinkURLSpec(this.links) }
 
                     switch (line) {
-                        case commentStartCase : docItem = parseComment    (line, lineReader); break
-                        case headerCase       : docItem = parseHeader     (line, lineReader); break
-                        case listCase         : docItem = parseList       (line, lineReader); break
-                        case codeBlockCase    : docItem = parseCodeBlock  (line, lineReader); break
-                        case blockQuoteCase   : docItem = parseBlockQuote (line, lineReader); break
-                        case horizRulerCase   : docItem = new HorizontalRule();               break
-                        case linkUrlCSpecCase : parseLinkUrlSpec(line);                       break
-                        case divStartCase     : docItem = parseStartDiv   (line);             break
-                        case divEndCase       : docItem = endDiv          ();                 break
+                        case commentStartCase : docItem = parseComment       (line, lineReader); break
+                        case headerCase       : docItem = parseHeader        (line, lineReader); break
+                        case listCase         : docItem = parseList          (line, lineReader); break
+                        case codeBlockCase    : docItem = parseCodeBlock     (line, lineReader); break
+                        case blockQuoteCase   : docItem = parseBlockQuote    (line, lineReader); break
+                        case horizRulerCase   : docItem = new HorizontalRule ();                 break
+                        case linkUrlCSpecCase : parseLinkUrlSpec             (line);             break
+                        case divStartCase     : docItem = parseStartDiv      (line);             break
+                        case divEndCase       : docItem = endDiv             ();                 break
 
                         // The annoying underline header format.
                         case { lineReader.hasLine() && (lineReader.peekNextLine().contains("----") ||
