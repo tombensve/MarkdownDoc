@@ -1,9 +1,13 @@
-package se.natusoft.doc.markdown.generator.pdfbox.internal
+package se.natusoft.doc.markdown.generator.pdfbox
 
 /**
  * Represents a Structured number of infinite levels.
  */
 class StructuredNumber {
+
+    //
+    // Properties
+    //
 
     /** The current digit of this instance */
     long digit = 0
@@ -17,6 +21,10 @@ class StructuredNumber {
     /** If not null then the digit before us. */
     StructuredNumber parentDigit = null
 
+    //
+    // Methods
+    //
+
     /**
      * Increments this digit.
      */
@@ -29,7 +37,7 @@ class StructuredNumber {
      * Creates a new digit after us and returns it.
      */
     StructuredNumber newDigit() {
-        this.subDigit = new StructuredNumber(parentDigit: this, digit: -1)
+        this.subDigit = new StructuredNumber(parentDigit: this, digit: 0)
     }
 
     /**

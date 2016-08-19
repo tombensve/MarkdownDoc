@@ -7,13 +7,9 @@ import se.natusoft.doc.markdown.generator.models.TOC
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxDocRenderer
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxFontMSSAdapter
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxStylesMSSAdapter
-import se.natusoft.doc.markdown.generator.pdfbox.internal.PageMargins
-import se.natusoft.doc.markdown.generator.pdfbox.internal.BadStructuredNumber
-import se.natusoft.doc.markdown.generator.styles.MSS
-import se.natusoft.doc.markdown.generator.styles.MSSColor
-import se.natusoft.doc.markdown.generator.styles.MSSColorPair
-import se.natusoft.doc.markdown.generator.styles.MSSFont
-import se.natusoft.doc.markdown.generator.styles.MSSFontStyle
+import se.natusoft.doc.markdown.generator.pdfbox.PageMargins
+import se.natusoft.doc.markdown.generator.pdfbox.StructuredNumber
+import se.natusoft.doc.markdown.generator.styles.*
 
 @CompileStatic
 @TypeChecked
@@ -37,8 +33,8 @@ class TestPDFDoc {
 
         doc.newPage()
 
-        doc.applyStyle(styles, MSS.MSS_Pages.standard)
-        doc.applyColorPair(textColor)
+        doc.setStyle(styles, MSS.MSS_Pages.standard)
+        doc.setColorPair(textColor)
 
         doc.center("Table of Content")
         doc.tocEntry(new TOC(sectionNumber: "1.2.3", sectionTitle: "First toc entry", pageNumber: 1 ))
@@ -83,10 +79,10 @@ class TestPDFDoc {
         doc.newLine()
         PDFBoxStylesMSSAdapter sa
         PDFBoxFontMSSAdapter dwerneck = doc.loadExternalFont("file:Docs/dwerneck.ttf", new MSSFont(size: 16, style: MSSFontStyle.NORMAL))
-        doc.applyFont(dwerneck)
+        doc.setFont(dwerneck)
         doc.text("Some text in external ttf font.")
 
-        doc.applyFont(textFont)
+        doc.setFont(textFont)
 
         doc.newLine()
         doc.newLine()
@@ -209,20 +205,20 @@ class TestPDFDoc {
         doc.newLine()
 
 
-        BadStructuredNumber sn = new BadStructuredNumber(6)
+        StructuredNumber sn = new StructuredNumber()
 
         doc.addOutlineEntry(sn, "${sn} First page", doc.getPage(1))
-        sn.downLevel()
-        doc.addOutlineEntry(sn, "${sn} Also on first page", doc.getPage(1))
-        sn.upLevel()
-        sn.incrementCurrentLevel()
-        doc.addOutlineEntry(sn, "${sn} Second page", doc.getPage(2))
-        sn.downLevel()
-        doc.addOutlineEntry(sn, "${sn} further down on second", doc.getPage(2))
-        sn.level = 5
-        doc.addOutlineEntry(sn, "${sn} Yes, still on second", doc.getPage(2))
-        sn.setLevel(1).incrementCurrentLevel()
-        doc.addOutlineEntry(sn, sn.toString())
+//        sn.downLevel()
+//        doc.addOutlineEntry(sn, "${sn} Also on first page", doc.getPage(1))
+//        sn.upLevel()
+//        sn.incrementCurrentLevel()
+//        doc.addOutlineEntry(sn, "${sn} Second page", doc.getPage(2))
+//        sn.downLevel()
+//        doc.addOutlineEntry(sn, "${sn} further down on second", doc.getPage(2))
+//        sn.level = 5
+//        doc.addOutlineEntry(sn, "${sn} Yes, still on second", doc.getPage(2))
+//        sn.setLevel(1).incrementCurrentLevel()
+//        doc.addOutlineEntry(sn, sn.toString())
 
         doc.save("Library/target/TestPDFDoc.pdf")
 

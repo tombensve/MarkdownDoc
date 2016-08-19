@@ -54,9 +54,6 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary
 import org.apache.pdfbox.util.Matrix
 import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.generator.models.TOC
-import se.natusoft.doc.markdown.generator.pdfbox.internal.FrontPage
-import se.natusoft.doc.markdown.generator.pdfbox.internal.Outline
-import se.natusoft.doc.markdown.generator.pdfbox.internal.PageMargins
 import se.natusoft.doc.markdown.generator.styles.*
 import se.natusoft.doc.markdown.util.NotNullTrait
 
@@ -82,14 +79,14 @@ class PDFBoxDocRenderer implements NotNullTrait {
     // Constants
     //
 
-    static final String A1 = "A1"
-    static final String A2 = "A2"
-    static final String A3 = "A3"
-    static final String A4 = "A4"
-    static final String A5 = "A5"
-    static final String A6 = "A6"
-    static final String LEGAL = "LEGAL"
-    static final String LETTER = "LETTER"
+    @SuppressWarnings("GroovyUnusedDeclaration") static final String A1 = "A1"
+    @SuppressWarnings("GroovyUnusedDeclaration") static final String A2 = "A2"
+    @SuppressWarnings("GroovyUnusedDeclaration") static final String A3 = "A3"
+    @SuppressWarnings("GroovyUnusedDeclaration") static final String A4 = "A4"
+    @SuppressWarnings("GroovyUnusedDeclaration") static final String A5 = "A5"
+    @SuppressWarnings("GroovyUnusedDeclaration") static final String A6 = "A6"
+    @SuppressWarnings("GroovyUnusedDeclaration") static final String LEGAL = "LEGAL"
+    @SuppressWarnings("GroovyUnusedDeclaration") static final String LETTER = "LETTER"
 
     static final PDFBoxFontMSSAdapter TOC_FONT = new PDFBoxFontMSSAdapter(
             new MSSFont(size: 8, family: "HELVETICA", style: MSSFontStyle.NORMAL)
@@ -166,19 +163,19 @@ class PDFBoxDocRenderer implements NotNullTrait {
         //
 
         @SuppressWarnings("GroovyMissingReturnStatement")
-        final Closure<Void> DOC_FG_COLOR = { int red, int green, int blue ->
+        final Closure<Void> DOC_TEXT_AND_FILL_COLOR = { int red, int green, int blue ->
             this.docStream.setNonStrokingColor(red, green, blue) }
 
         @SuppressWarnings("GroovyMissingReturnStatement")
-        final Closure<Void> DOC_BG_COLOR = { int red, int green, int blue ->
-            this.docStream.setStrokingColor(red, green, blue) }
+        final Closure<Void> DOC_LINES_ETC_COLOR = { int red, int green, int blue ->
+            this.docStream. setStrokingColor(red, green, blue) }
 
         @SuppressWarnings("GroovyMissingReturnStatement")
-        final Closure<Void> BG_DOC_FG_COLOR = { int red, int green, int blue ->
+        final Closure<Void> BG_DOC_TEXT_AND_FILL_COLOR = { int red, int green, int blue ->
             this.bgDocStream.setNonStrokingColor(red, green, blue) }
 
         @SuppressWarnings("GroovyMissingReturnStatement")
-        final Closure<Void> BG_DOC_BG_COLOR = { int red, int green, int blue ->
+        final Closure<Void> BG_DOC_LINES_ETC_COLOR = { int red, int green, int blue ->
             this.bgDocStream.setStrokingColor(red, green, blue) }
 
         //
@@ -191,12 +188,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         PDDocument document = new PDDocument()
         PDPage docPage
         PDPageContentStream docStream
-        PDPageContentStream getDocStream() {
-            if (this.docStream == null) {
-                newPage()
-            }
-            return this.docStream
-        }
+        PDPageContentStream getDocStream() { if (this.docStream == null) { newPage() }; return this.docStream }
 
         // The "background" document. This and the "front" document will be merged with the "front" document in front of this
         // document on save. Thereby any  background rendering should be done in this.
@@ -456,23 +448,23 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * The color to render text with.
      *
-     * @param foregroundColor The foreground color to set.
+     * @param textAndLinesColor The color for text and lines to set.
      */
-    void applyForegroundColor(@NotNull MSSColor foregroundColor) {
-        notNull("foregroundColor", foregroundColor)
-        this.colors.foreground = foregroundColor
-        this.colors.foreground.applyColor this.docMgr.DOC_FG_COLOR
+    void setTextAndLinesColor(@NotNull MSSColor textAndLinesColor) {
+        notNull("foregroundColor", textAndLinesColor)
+        this.colors.foreground = textAndLinesColor
+        this.colors.foreground.applyColor this.docMgr.DOC_TEXT_AND_FILL_COLOR
     }
 
     /**
-     * The background color.
+     * The color for background fills.
      *
      * @apram backgroundColor The background color to set.
      */
-    void applyBackgroundColor(@NotNull MSSColor backgroundColor) {
+    void setBackgroundFillColor(@NotNull MSSColor backgroundColor) {
         notNull("backgroundColor", backgroundColor)
         this.colors.background = backgroundColor
-        this.colors.background.applyColor this.docMgr.DOC_BG_COLOR
+        this.colors.background.applyColor this.docMgr.BG_DOC_TEXT_AND_FILL_COLOR
     }
 
     /**
@@ -480,16 +472,16 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param foregroundColor The color to set temporarily
      */
-    void applyTemporaryForegroundColor(@NotNull MSSColor foregroundColor) {
+    void setTemporaryForegroundColor(@NotNull MSSColor foregroundColor) {
         notNull("foregroundColor", foregroundColor)
-        foregroundColor.applyColor this.docMgr.DOC_FG_COLOR
+        foregroundColor.applyColor this.docMgr.DOC_TEXT_AND_FILL_COLOR
     }
 
     /**
      * This should be done after a call to applyTemporaryForegroundColor. It will restore the previous color.
      */
     void restoreForegroundColor() {
-        this.colors.foreground.applyColor this.docMgr.DOC_FG_COLOR
+        this.colors.foreground.applyColor this.docMgr.DOC_TEXT_AND_FILL_COLOR
     }
 
     /**
@@ -497,20 +489,11 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param colorPair The color pair to set.
      */
-    void applyColorPair(@NotNull MSSColorPair colorPair) {
+    void setColorPair(@NotNull MSSColorPair colorPair) {
         notNull("colorPair", colorPair)
         this.colors = colorPair
-        applyColorsInternal()
-    }
-
-    /**
-     * Applies the current colors to the current page.
-     */
-    private void applyColorsInternal() {
-        if (this.colors != null) {
-            applyBackgroundColor(this.colors.background)
-            applyForegroundColor(this.colors.foreground)
-        }
+        this.colors.foreground.applyColor this.docMgr.DOC_TEXT_AND_FILL_COLOR
+        this.colors.background.applyColor this.docMgr.BG_DOC_LINES_ETC_COLOR
     }
 
     /**
@@ -522,9 +505,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     void withColors(MSSColorPair colorPair, Closure<Void> withColorsCall) {
         MSSColorPair origColors = this.colors
-        applyColorPair(colorPair)
+        setColorPair(colorPair)
         withColorsCall.call()
-        applyColorPair(origColors)
+        setColorPair(origColors)
     }
 
     /**
@@ -545,12 +528,12 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param fontMSSAdapter The PDFFontMSSAdapter to set.
      */
-    void applyStyle(@NotNull PDFBoxStylesMSSAdapter stylesMSSAdapter, MSS.Section section) {
+    void setStyle(@NotNull PDFBoxStylesMSSAdapter stylesMSSAdapter, MSS.Section section) {
         notNull("stylesMSSAdapter", stylesMSSAdapter)
         this.stylesMSSAdapter = stylesMSSAdapter
         this.section = section
 
-        applyFont(getFontAdapter(stylesMSSAdapter, section))
+        setFont(getFontAdapter(stylesMSSAdapter, section))
     }
 
     /**
@@ -558,7 +541,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param fontMSSAdapter The adapter for the font to apply.
      */
-    void applyFont(PDFBoxFontMSSAdapter fontMSSAdapter) {
+    void setFont(PDFBoxFontMSSAdapter fontMSSAdapter) {
         this.fontMSSAdapter = fontMSSAdapter
         applyFontInternal()
     }
@@ -615,9 +598,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
     protected void withStyle(@NotNull PDFBoxStylesMSSAdapter style, MSS.Section section, Closure withStyleCall) {
         PDFBoxStylesMSSAdapter origStyle = this.stylesMSSAdapter
         MSS.Section origSection = this.section
-        applyStyle(style, section)
+        setStyle(style, section)
         withStyleCall.call()
-        if (origStyle != null) applyStyle(origStyle, origSection)
+        if (origStyle != null) setStyle(origStyle, origSection)
     }
 
     /**
@@ -628,9 +611,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     protected void withFont(@NotNull PDFBoxFontMSSAdapter font, Closure withFontCall) {
         PDFBoxFontMSSAdapter origFont = this.fontMSSAdapter
-        applyFont(font)
+        setFont(font)
         withFontCall.call()
-        if (origFont != null) applyFont(origFont)
+        if (origFont != null) setFont(origFont)
     }
 
     /**
@@ -718,11 +701,11 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         this.pageX = this.margins.leftMargin
 
-        applyStyle(tocSettings.styles, tocEntry.section)
+        setStyle(tocSettings.styles, tocEntry.section)
 
         // Section number if any
         if (tocEntry.sectionNumber != null) {
-            applyColorPair(tocSettings.sectionNumberColor)
+            setColorPair(tocSettings.sectionNumberColor)
             ensureTextMode(this.pageX, this.pageY)
             this.text(tocEntry.sectionNumber)
             ensureTextModeOff()
@@ -732,20 +715,20 @@ class PDFBoxDocRenderer implements NotNullTrait {
         // Section title
         ensureTextMode(this.pageX, this.pageY)
         float titleEnd = (this.pageX + calcTextWidth(tocEntry.sectionTitle) - 20.0f) as float
-        applyColorPair(tocSettings.sectionTitleColor)
+        setColorPair(tocSettings.sectionTitleColor)
         this.text(tocEntry.sectionTitle)
         ensureTextModeOff()
 
         // Page number
         float pagePos = (this.pageFormat.width - this.margins.rightMargin - calcTextWidth(TOC_FONT, "${pageNo}")) as float
         ensureTextMode(pagePos, this.pageY)
-        applyColorPair(tocSettings.pageNumberColor)
+        setColorPair(tocSettings.pageNumberColor)
         this.text("${tocEntry.pageNumber}")
         ensureTextModeOff()
 
         // Dots between title and page number.
         if (tocSettings.useDots) {
-            applyColorPair(tocSettings.dotsColor)
+            setColorPair(tocSettings.dotsColor)
             float dotsSize = pagePos - titleEnd
             // The magic number 50.0 was arrived at by playing with a calculator and testing :-) This works for font sizes 8 - 13.
             // This code does not support larger font sizes since then the columns start overwriting each other.
@@ -760,8 +743,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
             ensureTextModeOff()
         }
 
-        applyColorPair(origColors)
-        applyStyle(origStyles, origSection)
+        setColorPair(origColors)
+        setStyle(origStyles, origSection)
 
         this.pageY -= TOC_FONT.size + 2
         if (this.pageY <= this.margins.bottomMargin) {
@@ -804,14 +787,31 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * Writes text to the document using the current font, colors, etc.
      *
-     * @param text The text to write.
+     * @param txt The text to write.
      *
      * @return a PDRectangle enclosing the text just written. Useful when adding (PDF) annotations.
      */
-    PDRectangle text(@NotNull Object text) {
-        notNull("text", text)
+    PDRectangle text(@NotNull Object txt) {
+        text(txt, false)
+    }
+
+    /**
+     * Writes text to the document using the current font, colors, etc.
+     *
+     * @param txt The txt to write.
+     * @param pgBoxed If true then the text will be rendered with a background of the set background color.
+     *
+     * @return a PDRectangle enclosing the txt just written. Useful when adding (PDF) annotations.
+     */
+    PDRectangle text(@NotNull Object txt, boolean pgBoxed) {
+        notNull("txt", txt)
+
+        if (pgBoxed) {
+            startParagraphBox()
+        }
+
         ensureTextMode()
-        String _text = text.toString()
+        String _text = txt.toString()
 
         float rightMarginPos = this.pageFormat.width - this.margins.rightMargin
 
@@ -823,7 +823,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
             --pos
         }
 
-        // This will loose trailing spaces!
+        // This will loose trailing spaces, but keep spaces between words.
         List<String> wordList = new LinkedList<>()
         String space = ""
         _text.split(" ").each {String word ->
@@ -837,25 +837,32 @@ class PDFBoxDocRenderer implements NotNullTrait {
         }
 
         PDRectangle textArea = new PDRectangle(lowerLeftX: this.pageX, lowerLeftY: this.pageY)
+        PDRectangle boxedTextArea = new PDRectangle(lowerLeftX: this.pageX - 1, lowerLeftY: this.pageY)
 
         wordList.each { String word ->
             float wordSize = calcTextWidth(word)
             if (this.pageX + wordSize > rightMarginPos) {
+                if (pgBoxed) { endParagraphBox(boxedTextArea) }
+
                 this.pageX = this.margins.leftMargin
                 this.pageY -= (this.fontMSSAdapter.size + 2)
                 if (this.pageY < this.margins.bottomMargin) {
                     newPage()
+                    if (!this.preFormatted) { word = word.trim() }
                 }
                 else {
                     // Note: newLineAtOffset(...) does not work here!
                     this.docMgr.docStream.newLine()
-                    if (!this.preFormatted) {
-                        word = word.trim()
-                    }
+                    if (!this.preFormatted) { word = word.trim() }
                 }
+
+                if (pgBoxed) { boxedTextArea = new PDRectangle(lowerLeftX: this.pageX - 1, lowerLeftY: this.pageY) }
             }
             this.docMgr.docStream.showText(word)
             this.pageX += wordSize
+        }
+        if (pgBoxed) {
+            endParagraphBox(boxedTextArea)
         }
 
         textArea.upperRightX = this.pageX
@@ -884,6 +891,35 @@ class PDFBoxDocRenderer implements NotNullTrait {
     }
 
     /**
+     * Starts a paragraph boxing.
+     */
+    void startParagraphBox() {
+        // Placeholder for now.
+    }
+
+    /**
+     * Ends a paragraph boxing.
+     *
+     * @param textArea The beginning of the box to render.
+     */
+    void endParagraphBox(PDRectangle textArea) {
+        textArea.upperRightX = this.pageX + 1
+        textArea.upperRightY = this.pageY + this.fontMSSAdapter.size
+
+        // Since it does not seem possible to have other background color than white, the only way I found to have another
+        // background color on text is to render a rect behind the text of the desired background color. This is really
+        // annoying, but a google on setting background color for text in PDFBox does not give an answer. Maybe PDF as format
+        // does not support it.
+        this.docMgr.bgDocStream.addRect(
+                textArea.lowerLeftX,
+                textArea.lowerLeftY -2,
+                textArea.upperRightX - textArea.lowerLeftX,
+                this.fontMSSAdapter.size + 2
+        )
+        this.docMgr.bgDocStream.closeAndFillAndStroke()
+    }
+
+    /**
      * Starts a boxed text block. Call endBox() to end it.
      *
      * @param boxColor The color to render the box in.
@@ -909,13 +945,12 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Ends a previously started box.
      */
     void endBox() {
-        ensureTextModeOff()
         this.margins.leftMargin = this.margins.leftMargin - 10.0f
         this.margins.rightMargin = this.margins.rightMargin - 10.0f
         this.box.endLocation = new Location(x: this.margins.rightMargin, y: this.pageY)
 
-        this.box.color.applyColor this.docMgr.BG_DOC_FG_COLOR
-        this.box.color.applyColor this.docMgr.BG_DOC_BG_COLOR
+        this.box.color.applyColor this.docMgr.BG_DOC_TEXT_AND_FILL_COLOR
+        this.box.color.applyColor this.docMgr.BG_DOC_LINES_ETC_COLOR
 
         this.docMgr.bgDocStream.addRect(
                 this.box.endLocation.x,
@@ -925,6 +960,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         )
         this.docMgr.bgDocStream.closeAndFillAndStroke()
 
+        ensureTextModeOff()
         ensureTextMode()
         pageX = this.margins.leftMargin
         this.docMgr.docStream.newLineAtOffset(pageX, pageY)
@@ -1033,7 +1069,6 @@ class PDFBoxDocRenderer implements NotNullTrait {
         this.docMgr.docStream.newLineAtOffset(this.pageLocation.x, this.pageLocation.y)
 
         applyFontInternal()
-        applyColorsInternal()
 
         if (this.pageNoActive) {
             ++this.pageNo
@@ -1052,7 +1087,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param uri The uri of the link
      */
     void link(@NotNull String linkText, @NotNull String uri) {
-        applyTemporaryForegroundColor(MSSColor.LINK_BLUE)
+        setTemporaryForegroundColor(MSSColor.LINK_BLUE)
 
         // Ain't Groovy cool! :-)
         this.docMgr.docPage.annotations.add(

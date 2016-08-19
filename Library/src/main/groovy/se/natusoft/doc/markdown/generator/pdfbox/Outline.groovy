@@ -34,7 +34,7 @@
  *         2016-07-29: Created!
  *         
  */
-package se.natusoft.doc.markdown.generator.pdfbox.internal
+package se.natusoft.doc.markdown.generator.pdfbox
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked

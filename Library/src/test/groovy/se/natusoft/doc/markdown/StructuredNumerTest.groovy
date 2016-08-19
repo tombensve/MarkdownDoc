@@ -1,7 +1,7 @@
 package se.natusoft.doc.markdown
 
 import org.junit.Test
-import se.natusoft.doc.markdown.generator.pdfbox.internal.StructuredNumber
+import se.natusoft.doc.markdown.generator.pdfbox.StructuredNumber
 
 
 class StructuredNumerTest {

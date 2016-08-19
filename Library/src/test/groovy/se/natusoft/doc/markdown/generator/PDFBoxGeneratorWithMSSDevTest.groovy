@@ -26,7 +26,7 @@ class PDFBoxGeneratorWithMSSDevTest extends GroovyTestCase {
         File pdfFile = new File("target/test.pdf")
         if (!testFile.exists()) {
             testFile = new File("Library/src/test/resources/test.md") // IntelliJ
-            pdfFile = new File("Library/target/resources/test.pdf")
+            pdfFile = new File("Library/target/test.pdf")
         }
 
         Parser parser = new MarkdownParser()

@@ -21,7 +21,8 @@
   "colors": {
     "white": "255:255:255",
     "black": "0:0:0",
-    "grey": "128:128:128"
+    "grey": "128:128:128",
+    "blue": "0:0:180"
   },
   "document": {
     "leftMargin": 50,
@@ -49,9 +50,7 @@
       "h1": {
         "family": "HELVETICA",
         "size": 20,
-        "style": "BOLD",
-        "color": "black",
-        "background": "white"
+        "style": "BOLD"
       },
       "h2": {
         "family": "HELVETICA",

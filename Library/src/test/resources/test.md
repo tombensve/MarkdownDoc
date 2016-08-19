@@ -141,9 +141,10 @@ tabs is considered blank.) Normal paragraphs should not be indented with spaces 
 This is a _formatting_ __Paragraph__. Here is [a link](http://to.somewhere.net/).
 
 This paragraph
-also contains a `simple code block`. And here is an
+also contains a `simple code block`. This is some more text because I want `another code block` breaking line.
 
-<!--
+Here is an image:
+
 ![image](https://raw.githubusercontent.com/dcurtis/markdown-mark/master/png/32x20-solid.png).
 
 Some more text in this paragraph. <www.somewhere.net> ends this paragraph.
@@ -155,5 +156,7 @@ Some more text in this paragraph. <www.somewhere.net> ends this paragraph.
 [link]: http://to.somewhere.net/ "This links to somewhere on the net"
 
 [imageref]: https://raw.githubusercontent.com/dcurtis/markdown-mark/master/png/32x20-solid.png
+
+<!--
 
 -->

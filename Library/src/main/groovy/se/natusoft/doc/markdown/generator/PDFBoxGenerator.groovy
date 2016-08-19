@@ -47,30 +47,12 @@ import se.natusoft.doc.markdown.generator.models.TOC
 import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxDocRenderer
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxStylesMSSAdapter
-import se.natusoft.doc.markdown.generator.pdfbox.internal.PageMargins
-import se.natusoft.doc.markdown.generator.pdfbox.internal.BadStructuredNumber
-import se.natusoft.doc.markdown.generator.pdfbox.internal.StructuredNumber
+import se.natusoft.doc.markdown.generator.pdfbox.PageMargins
+import se.natusoft.doc.markdown.generator.pdfbox.StructuredNumber
 import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.generator.styles.MSS.MSS_Pages
 import se.natusoft.doc.markdown.generator.styles.MSSColor
-import se.natusoft.doc.markdown.model.AutoLink
-import se.natusoft.doc.markdown.model.BlockQuote
-import se.natusoft.doc.markdown.model.Code
-import se.natusoft.doc.markdown.model.CodeBlock
-import se.natusoft.doc.markdown.model.Comment
-import se.natusoft.doc.markdown.model.Div
-import se.natusoft.doc.markdown.model.Doc
-import se.natusoft.doc.markdown.model.DocFormat
-import se.natusoft.doc.markdown.model.DocItem
-import se.natusoft.doc.markdown.model.Emphasis
-import se.natusoft.doc.markdown.model.Header
-import se.natusoft.doc.markdown.model.Image
-import se.natusoft.doc.markdown.model.Link
-import se.natusoft.doc.markdown.model.Paragraph
-import se.natusoft.doc.markdown.model.PlainText
-import se.natusoft.doc.markdown.model.Strong
-import se.natusoft.doc.markdown.model.List
-import se.natusoft.doc.markdown.model.ListItem
+import se.natusoft.doc.markdown.model.*
 
 /**
  * Generates a PDF document using PDFBox to generate PDF.
@@ -103,7 +85,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
         MSS.MSS_TOC level = MSS.MSS_TOC.h1
 
         /** The current section number. */
-        BadStructuredNumber sectionNumber = new BadStructuredNumber(6)
+        StructuredNumber sectionNumber = new StructuredNumber()
 
     }
 
@@ -522,8 +504,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
         MSS_Pages section = MSS_Pages.valueOf("h" + header.level.level)
 
-        doc.applyStyle(context.pdfStyles, section)
-        doc.applyColorPair(context.pdfStyles.mss.forDocument.getColorPair(section))
+        doc.setStyle(context.pdfStyles, section)
+        doc.setColorPair(context.pdfStyles.mss.forDocument.getColorPair(section))
 
         doc.newSection()
         doc.text(header.text)
@@ -540,8 +522,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
     static void writeBlockQuote(@NotNull BlockQuote blockQuote, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
         checkAndSetBoxed(MSS_Pages.block_quote, doc, context.pdfStyles.mss)
 
-        doc.applyStyle(context.pdfStyles, MSS_Pages.block_quote)
-        doc.applyColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.block_quote))
+        doc.setStyle(context.pdfStyles, MSS_Pages.block_quote)
+        doc.setColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.block_quote))
 
         doc.newSection()
         blockQuote.items.each { final DocItem docItem ->
@@ -563,8 +545,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      */
     static void writeCodeBlock(@NotNull CodeBlock codeBlock, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
 
-        doc.applyStyle(context.pdfStyles, MSS_Pages.code)
-        doc.applyColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.code))
+        doc.setStyle(context.pdfStyles, MSS_Pages.code)
+        doc.setColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.code))
 
         doc.newSection()
 
@@ -589,8 +571,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param context The generator context.
      */
     static void writeList(@NotNull List list, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
-        doc.applyStyle(context.pdfStyles, MSS_Pages.list_item)
-        doc.applyColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.list_item))
+        doc.setStyle(context.pdfStyles, MSS_Pages.list_item)
+        doc.setColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.list_item))
 
         StructuredNumber num = null
         if (list.isOrdered()) {
@@ -710,11 +692,17 @@ trait BoxedTrait {
      * @param doc The PDF document renderer.
      * @param mss Supplies style information.
      */
-    static void checkAndSetParagraphBoxed(@NotNull MSS_Pages section, @NotNull PDFBoxDocRenderer doc, @NotNull MSS mss) {
+    static boolean checkAndSetParagraphBoxed(@NotNull MSS_Pages section, @NotNull PDFBoxDocRenderer doc, @NotNull MSS mss) {
         if (mss.forDocument.isBoxed(section)) {
             paragraphBgSaveColor.set(doc.colors.background)
-            doc.applyBackgroundColor(mss.forDocument.getBoxColor(section))
+
+            MSSColor boxColor = mss.forDocument.getBoxColor(section)
+            doc.backgroundFillColor = boxColor != null ? boxColor : doc.colors.background
+
+            return true
         }
+
+        return false
     }
 
     /**
@@ -726,7 +714,7 @@ trait BoxedTrait {
      */
     static void clearParagraphBoxed(@NotNull MSS_Pages section, @NotNull PDFBoxDocRenderer doc, @NotNull MSS mss) {
         if (mss.forDocument.isBoxed(section)) {
-            doc.applyBackgroundColor(paragraphBgSaveColor.get())
+            doc.setBackgroundFillColor(paragraphBgSaveColor.get())
         }
     }
 }
@@ -759,18 +747,27 @@ class ParagraphWriter implements BoxedTrait {
     }
 
     /**
+     * Internal text write method that also handles text backround boxing.
+     *
+     * @param text The text to write.
+     * @param section The styling section to apply.
+     */
+    private void writeText(String text, MSS_Pages section) {
+        MSSColor
+        doc.text(text, checkAndSetParagraphBoxed(section, this.doc, this.context.pdfStyles.mss))
+        clearParagraphBoxed(section, this.doc, this.context.pdfStyles.mss)
+    }
+
+    /**
      * Writes pre formatted code.
      *
      * @param code The code to write.
      */
     void writeCode(@NotNull Code code) {
-        doc.ensureTextModeOff()
-        doc.ensureTextMode()
-        doc.applyStyle(this.context.pdfStyles, MSS_Pages.code)
-        doc.applyColorPair(this.forDocument.getColorPair(MSS_Pages.code))
+        doc.setStyle(this.context.pdfStyles, MSS_Pages.code)
+        doc.setColorPair(this.forDocument.getColorPair(MSS_Pages.code))
 
-        doc.text(code.text)
-
+        writeText(code.text, MSS_Pages.code)
     }
 
     /**
@@ -779,13 +776,9 @@ class ParagraphWriter implements BoxedTrait {
      * @param emphasis The text to write.
      */
     void writeEmphasis(@NotNull Emphasis emphasis) {
-        checkAndSetParagraphBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
-
-        doc.applyStyle(this.context.pdfStyles, MSS_Pages.emphasis)
-        doc.applyColorPair(this.forDocument.getColorPair(MSS_Pages.emphasis))
-        doc.text(emphasis.text)
-
-        clearParagraphBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
+        doc.setStyle(this.context.pdfStyles, MSS_Pages.emphasis)
+        doc.setColorPair(this.forDocument.getColorPair(MSS_Pages.emphasis))
+        writeText(emphasis.text, MSS_Pages.emphasis)
     }
 
     /**
@@ -794,12 +787,9 @@ class ParagraphWriter implements BoxedTrait {
      * @param strong The text to write.
      */
     void writeStrong(@NotNull Strong strong) {
-        checkAndSetParagraphBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
-        doc.applyStyle(this.context.pdfStyles, MSS_Pages.strong)
-        doc.applyColorPair(this.forDocument.getColorPair(MSS_Pages.strong))
-        doc.text(strong.text)
-
-        clearParagraphBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
+        doc.setStyle(this.context.pdfStyles, MSS_Pages.strong)
+        doc.setColorPair(this.forDocument.getColorPair(MSS_Pages.strong))
+        writeText(strong.text, MSS_Pages.strong)
     }
 
     /**
@@ -808,13 +798,9 @@ class ParagraphWriter implements BoxedTrait {
      * @param text The text to write.
      */
     void writePlainText(@NotNull PlainText text) {
-        checkAndSetParagraphBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
-
-        doc.applyStyle(this.context.pdfStyles, MSS_Pages.standard)
-        doc.applyColorPair(this.forDocument.getColorPair(MSS_Pages.standard))
-        doc.text(text.text)
-
-        clearParagraphBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
+        doc.setStyle(this.context.pdfStyles, MSS_Pages.standard)
+        doc.setColorPair(this.forDocument.getColorPair(MSS_Pages.standard))
+        writeText(text.text, MSS_Pages.standard)
     }
 
     /**
