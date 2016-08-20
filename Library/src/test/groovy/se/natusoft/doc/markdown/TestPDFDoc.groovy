@@ -66,7 +66,7 @@ class TestPDFDoc {
         doc.text("Some more text under box. ")
         doc.link("MarkdownDoc on GitHub", "http://github.com/tombensve/MarkdownDoc")
 
-        doc.hr()
+        //doc.hr()
         doc.text("Some text under the horizontal ruler.")
 
         doc.image("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png", PDFBoxDocRenderer.X_OFFSET_CENTER, 0.2f)
@@ -145,7 +145,7 @@ class TestPDFDoc {
                 "correctly. Thereby I need to write some more text in this. Just a little more text now. Well, this should at " +
                 "least give me 2 lines.")
 
-        doc.hr() // Not rendered due to page break with font size 12! This is intentionally and thus correct behavior.
+        //doc.hr() // Not rendered due to page break with font size 12! This is intentionally and thus correct behavior.
 
         doc.newLine()
         doc.newLine()

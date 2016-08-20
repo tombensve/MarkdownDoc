@@ -105,7 +105,13 @@ class MSS {
         anchor,
         list_item,
         image,
+        horizontal_ruler,
         footer
+    }
+
+    static enum MSS_HR {
+        thickness,
+        color
     }
 
     /**
@@ -397,12 +403,12 @@ class MSS {
             if (name.contains(":") || name.startsWith("#")) {
                 color = new MSSColor(color: name)
             } else {
-                final JSONObject jssColors = this.mss.getProperty(MSS_Top.colors.name()) as JSONObject
-                if (jssColors == null) {
+                final JSONObject mssColors = this.mss.getProperty(MSS_Top.colors.name()) as JSONObject
+                if (mssColors == null) {
                     throw new MSSException(message: "No color names have been defined in the \"colors\" section of the MSS file! " +
                             "'${name}' was asked for!")
                 } else {
-                    final String colorValue = jssColors.getProperty(name)?.toString()
+                    final String colorValue = mssColors.getProperty(name)?.toString()
                     if (colorValue == null) throw new MSSException(message: "The color '${name}' has not been defined in the \"colors\" section " +
                             "of the MSS file!")
                     color = new MSSColor(color: colorValue)
@@ -705,8 +711,108 @@ class MSS {
             }
         }
 
-        boxedColor != null ? new MSSColor(color: boxedColor.toString()) : new MSSColor(color: "240:240:240")
+        boxedColor != null ? lookupColor(boxedColor.toString()) : new MSSColor(color: "240:240:240")
     }
+
+
+    float getHrThicknessForDocument() {
+        JSONNumber hrThickness = getValueForDocument(MSS_HR.thickness.name(), MSS_Pages.horizontal_ruler.name()) as JSONNumber
+//        JSONNumber mssHrThickness = null
+//        if (this.currentDivs != null) {
+//            this.currentDivs.each { String divName ->
+//                JSONObject div = this.divs.getProperty(divName) as JSONObject
+//                JSONNumber hrThickness = checkHrValue(div, MSS_HR.thickness.name()) as JSONNumber
+//                if (hrThickness != null) {
+//                    mssHrThickness = hrThickness
+//                }
+//            }
+//        }
+//
+//        if (mssHrThickness == null) {
+//            JSONNumber hrThickness = checkHrValue(this.pages, MSS_HR.thickness.name()) as JSONNumber
+//            if (hrThickness != null) {
+//                mssHrThickness = hrThickness
+//            }
+//        }
+//
+//        if (mssHrThickness == null) {
+//            JSONNumber hrThickness = checkHrValue(this.document, MSS_HR.thickness.name()) as JSONNumber
+//            if (hrThickness != null) {
+//                mssHrThickness = hrThickness
+//            }
+//        }
+
+        hrThickness != null ? hrThickness.toFloat() : 0.5f
+    }
+
+    String getHrColorForDocument() {
+        JSONString hrColor = getValueForDocument(MSS_HR.color.name(), MSS_Pages.horizontal_ruler.name()) as JSONString
+//        if (this.currentDivs != null) {
+//            this.currentDivs.each { String divName ->
+//                JSONObject div = this.divs.getProperty(divName) as JSONObject
+//                JSONString color = checkHrValue(div, MSS_HR.color.name()) as JSONString
+//                if (color != null) {
+//                    hrColor = color
+//                }
+//            }
+//        }
+//
+//        if (hrColor == null) {
+//            JSONString color = checkHrValue(this.pages, MSS_HR.color.name()) as JSONString
+//            if (color != null) {
+//                hrColor = color
+//            }
+//        }
+//
+//        if (hrColor == null) {
+//            JSONString color = checkHrValue(this.document, MSS_HR.color.name()) as JSONString
+//            if (color != null) {
+//                hrColor = color
+//            }
+//        }
+
+        hrColor != null ? hrColor : "0:0:0"
+    }
+
+    private JSONValue checkValue(JSONObject checkIn, String propName, String sectionName) {
+        JSONValue hrValue = null
+        JSONObject hrObject = checkIn?.getProperty(sectionName) as JSONObject
+        if (hrObject != null) {
+            hrValue = hrObject.getProperty(propName)
+        }
+
+        hrValue
+    }
+
+    JSONValue getValueForDocument(String valueName, String sectionName) {
+        JSONValue value = null
+        if (this.currentDivs != null) {
+            this.currentDivs.each { String divName ->
+                JSONObject div = this.divs.getProperty(divName) as JSONObject
+                JSONValue pValue = checkValue(div, valueName, sectionName)
+                if (pValue != null) {
+                    value = pValue
+                }
+            }
+        }
+
+        if (value == null) {
+            JSONValue pValue = checkValue(this.pages, valueName, sectionName)
+            if (pValue != null) {
+                value = pValue
+            }
+        }
+
+        if (value == null) {
+            JSONValue pValue = checkValue(this.document, valueName, sectionName)
+            if (pValue != null) {
+                value = pValue
+            }
+        }
+
+        value
+    }
+
 
     class ForDocument {
         @NotNull MSSColorPair getColorPair(@NotNull final MSS_Pages section) {
@@ -743,6 +849,14 @@ class MSS {
 
         @NotNull MSSColor getBoxColor(@NotNull MSS_Pages section) {
             getBoxColorForDocument(section)
+        }
+
+        float getHrThickness() {
+            getHrThicknessForDocument()
+        }
+
+        @NotNull MSSColor getHrColor() {
+            lookupColor(getHrColorForDocument())
         }
 
     }
@@ -1158,6 +1272,9 @@ class MSS {
         }
         if (!ok) {
             ok = safe { MSS_Boxed.valueOf(name) != null }
+        }
+        if (!ok) {
+            ok = safe { MSS_HR.valueOf(name) != null }
         }
 
         ok

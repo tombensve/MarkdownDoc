@@ -53,6 +53,7 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary
 import org.apache.pdfbox.util.Matrix
 import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.generator.models.TOC
 import se.natusoft.doc.markdown.generator.styles.*
 import se.natusoft.doc.markdown.util.NotNullTrait
@@ -756,11 +757,14 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Writes pre formatted text as is.
      *
      * @param text The pre formatted text
+     * @param styleText A closure that will be called to style text when needed.
      */
-    PDRectangle preFormattedText(@NotNull Object text) {
+    PDRectangle preFormattedText(@NotNull Object text, @Nullable Closure<Void> styleText) {
         notNull("text", text)
 
         ensureTextMode()
+
+        if (styleText != null) { styleText.call() }
 
         String[] lines = text.toString().split("\n|\r")
         PDRectangle textArea = new PDRectangle(lowerLeftX: this.pageX, lowerLeftY: this.pageY)
@@ -771,6 +775,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
             this.pageY -= (this.fontMSSAdapter.size + 2)
             if (this.pageY < this.margins.bottomMargin) {
                 newPage()
+                if (styleText != null) { styleText.call() }
             }
             else {
                 // Note: newLineAtOffset(...) does not work here!
@@ -788,22 +793,35 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Writes text to the document using the current font, colors, etc.
      *
      * @param txt The text to write.
+     * @param styleText A closure that will be called to style text when needed.
+     *
+     * @return a PDRectangle enclosing the text just written. Useful when adding (PDF) annotations.
+     */
+    PDRectangle text(@NotNull Object txt,  @Nullable Closure<Void> styleText) {
+        text(txt, styleText, false)
+    }
+
+    /**
+     * Writes text to the document using the current font, colors, etc.
+     *
+     * @param txt The text to write.
      *
      * @return a PDRectangle enclosing the text just written. Useful when adding (PDF) annotations.
      */
     PDRectangle text(@NotNull Object txt) {
-        text(txt, false)
+        text(txt, null, false)
     }
 
     /**
      * Writes text to the document using the current font, colors, etc.
      *
      * @param txt The txt to write.
+     * @param styleText A closure that will be called to style text when needed.
      * @param pgBoxed If true then the text will be rendered with a background of the set background color.
      *
      * @return a PDRectangle enclosing the txt just written. Useful when adding (PDF) annotations.
      */
-    PDRectangle text(@NotNull Object txt, boolean pgBoxed) {
+    PDRectangle text(@NotNull Object txt, @Nullable Closure<Void> styleText, boolean pgBoxed) {
         notNull("txt", txt)
 
         if (pgBoxed) {
@@ -811,6 +829,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
         }
 
         ensureTextMode()
+
+        if (styleText != null) { styleText.call() }
+
         String _text = txt.toString()
 
         float rightMarginPos = this.pageFormat.width - this.margins.rightMargin
@@ -848,6 +869,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
                 this.pageY -= (this.fontMSSAdapter.size + 2)
                 if (this.pageY < this.margins.bottomMargin) {
                     newPage()
+                    if (styleText != null) { styleText.call() }
                     if (!this.preFormatted) { word = word.trim() }
                 }
                 else {
@@ -975,16 +997,12 @@ class PDFBoxDocRenderer implements NotNullTrait {
     }
 
     /**
-     * Draws a horizontal ruler over the page, and moves the current line down.
-     */
-    void hr() { hr(1.5f) }
-
-    /**
      * Draws a horizontal rules over the page, and moves the current line down.
      *
      * @param thickness The thickness of the line. Anything over half the font size is a not a good idea! 2.0 or 3.0 is suggested.
+     * @param color The color to draw the hr in.
      */
-    void hr(float thickness) {
+    void hr(float thickness, @Nullable MSSColor color) {
         if (this.pageY - 8 < this.margins.bottomMargin) {
             newPage()
             // We intentionally do not draw the hr if it is on a page break.
@@ -993,11 +1011,16 @@ class PDFBoxDocRenderer implements NotNullTrait {
             newLine()
             ensureTextModeOff()
             float hrY = this.pageY + 1
+
+            if (color!= null) {
+                color.applyColor this.docMgr.DOC_TEXT_AND_FILL_COLOR
+                color.applyColor this.docMgr.DOC_LINES_ETC_COLOR
+            }
+
             this.docMgr.docStream.addRect(
                     this.margins.leftMargin, hrY, this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin, thickness
             )
-            this.docMgr.docStream.fillAndStroke()
-            this.docMgr.docStream.closePath()
+            this.docMgr.docStream.closeAndFillAndStroke()
             ensureTextMode()
             //newLineAtPageLocation()
         }

@@ -109,6 +109,10 @@
       "footer": {
         "family": "HELVETICA",
         "size": 8
+      },
+      "horizontal_ruler": {
+        "thickness": 0.5,
+        "color": "blue"
       }
     },
     "divs": {
