@@ -41,7 +41,7 @@ import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.exception.GenerateException
-import se.natusoft.doc.markdown.generator.PDFITextGenerator
+
 import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider

@@ -432,7 +432,7 @@ class MSS {
      */
     private void updateMSSColorPairIfNotSet(@NotNull final MSSColorPair colorPair, @Nullable final JSONObject section) {
         // If a null section is passed this code will not break, it will just not do anything at all in that case.
-        final JSONString color = section?.getProperty(MSS_Colors.color.name()) as JSONString
+        JSONString color = section?.getProperty(MSS_Colors.color.name()) as JSONString
         if (color != null) {
             colorPair.updateForegroundIfNotSet(lookupColor(color.toString()))
         }
@@ -1130,13 +1130,11 @@ class MSS {
      */
     private static void validateMSS(@NotNull final JSONObject jssPart, @NotNull final String path) throws IOException {
 
-        try (InputStream inputStream = getClass().getResourceAsStream("/path/to/your/schema.json")) {
-            JSONObject rawSchema = new JSONObject(new JSONTokener(inputStream));
-            Schema schema = SchemaLoader.load(rawSchema);
-            schema.validate(new JSONObject("{\"hello\" : \"world\"}")); // throws a ValidationException if this object is invalid
-        }
-
-
+//        try (InputStream inputStream = getClass().getResourceAsStream("/path/to/your/schema.json")) {
+//            JSONObject rawSchema = new JSONObject(new JSONTokener(inputStream));
+//            Schema schema = SchemaLoader.load(rawSchema);
+//            schema.validate(new JSONObject("{\"hello\" : \"world\"}")); // throws a ValidationException if this object is invalid
+//        }
 
         jssPart.propertyNames.each { final JSONString name ->
             if (!validName(name.toString())) {

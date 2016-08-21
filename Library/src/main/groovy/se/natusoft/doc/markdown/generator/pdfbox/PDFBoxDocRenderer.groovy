@@ -102,6 +102,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /** Indicates that image should be right aligned. */
     static final float X_OFFSET_RIGHT_ALIGNED = 1000002.0f
 
+    /** Indicates that the image should be rendererd at the current position. */
+    static final float X_OFFSET_CURRENT = 1000003.0f
+
     /** The default color pair to use if none other is provided. */
     static final MSSColorPair DEFAULT_COLOR_PAIR = new MSSColorPair( foreground: MSSColor.BLACK, background: MSSColor.WHITE)
 
@@ -320,7 +323,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         if (this.pageLocation.y < 0.0f) {
             this.pageLocation.y = pageFormat.height - (this.fontMSSAdapter.size as float) - this.margins.topMargin
         }
-        this._pageLocation.y
+        this.pageLocation.y
     }
 
     /**
@@ -345,7 +348,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param x The coordinate to set.
      */
-    void setPageX(float x) { this.pageLocation.x = x }
+    void setPageX(float x) {
+        this.pageLocation.x = x
+    }
 
     /**
      * Converts the public size to internal size.
@@ -1162,6 +1167,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
             case MSSImage.Align.RIGHT:
                 xOffset = X_OFFSET_RIGHT_ALIGNED
                 break
+            case MSSImage.Align.CURRENT:
+                xOffset = X_OFFSET_CURRENT
+                break
         }
         image(imageUrl, xOffset, 0.0f, 0.0f, mssImage.scalePercent, mssImage.rotateDegrees)
     }
@@ -1171,6 +1179,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param imageUrl The url to the image.
      * @param xOffset The x offset to render at or 0 for left page margin. The X_OFFSET_* constants can also be used.
+     * @param yOffset The y offset to render at. Usually 0.
+     * @param bottomAdd How much to add under image. Usually 0.
      * @param scale the scale factor to apply to image size.
      * @param rotate The number of degrees to rotate image. Note that image can become larger on all sides!!
      */
@@ -1195,11 +1205,21 @@ class PDFBoxDocRenderer implements NotNullTrait {
         float scaledWidth = image.width * scale
         float scaledHeight = image.height * scale
 
+        float imageX = this.pageX, imageY = this.pageY
+        float moveX = 0.0f, moveY = 0.0f
+
+        if (xOffset == X_OFFSET_LEFT_ALIGNED) {
+            imageX = this.margins.leftMargin
+            moveX = scaledWidth + 2
+        }
         if (xOffset == X_OFFSET_CENTER) {
-            xOffset = ((this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin) / 2.0f) - (scaledWidth / 2.0f) as float
+            imageX = this.margins.leftMargin + ((this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin) / 2.0f) -
+                    (scaledWidth / 2.0f) as float
+            moveY = yOffset + scaledHeight + bottomAdd
         }
         else if (xOffset == X_OFFSET_RIGHT_ALIGNED) {
-            xOffset = this.pageFormat.width - this.margins.rightMargin - scaledWidth
+            imageX = this.pageFormat.width - (this.margins.rightMargin + scaledWidth)
+            moveY = yOffset + scaledHeight + bottomAdd
         }
 
         if (pageY - yOffset - scaledHeight - bottomAdd - 8.0f < this.margins.bottomMargin) {
@@ -1211,14 +1231,19 @@ class PDFBoxDocRenderer implements NotNullTrait {
                 scaledWidth,
                 0, 0,
                 scaledHeight,
-                (xOffset + this.margins.leftMargin) as float,
-                this.pageY - yOffset - scaledHeight - 2.0f as float
+                imageX,
+                imageY
         );
         at.rotate(Math.toRadians(rotate));
         this.docMgr.docStream.drawImage(image, new Matrix(at));
 
-        this.pageX = this.margins.leftMargin
-        this.pageY = this.pageY - yOffset - scaledHeight - bottomAdd - 8.0f
+        if (moveX == 0.0f) {
+            this.pageX = this.margins.leftMargin
+        }
+        else {
+            this.pageX += moveX
+        }
+        this.pageY = this.pageY - moveY//(yOffset + scaledHeight + bottomAdd)
         ensureTextMode(this.pageX, this.pageY)
     }
 

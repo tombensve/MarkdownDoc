@@ -145,7 +145,7 @@ also contains a `simple code block`. This is some more text because I want `anot
 
 Here is an image:
 
-![image](https://raw.githubusercontent.com/dcurtis/markdown-mark/master/png/32x20-solid.png).
+![image](https://raw.githubusercontent.com/dcurtis/markdown-mark/master/png/32x20-solid.png). Some text after image.
 
 Some more text in this paragraph. <www.somewhere.net> ends this paragraph.
 
