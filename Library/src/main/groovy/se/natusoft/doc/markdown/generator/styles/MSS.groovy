@@ -38,8 +38,11 @@ package se.natusoft.doc.markdown.generator.styles
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.everit.json.schema.Schema
+import org.everit.json.schema.loader.SchemaLoader
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
+import org.json.JSONTokener
 import se.natusoft.doc.markdown.util.TestSafeResource
 import se.natusoft.json.JSON
 import se.natusoft.json.JSONArray
@@ -634,147 +637,50 @@ class MSS {
         margin != null ? margin.toFloat() : 50.0f
     }
 
-    private JSONBoolean checkBoxed(JSONObject checkIn, MSS_Pages section) {
-        JSONBoolean bv = null
-        JSONObject codeObject = checkIn?.getProperty(section.name()) as JSONObject
-        if (codeObject != null) {
-            bv = codeObject.getProperty(MSS_Boxed.boxed.name()) as JSONBoolean
-        }
-
-        bv
-    }
-
+    /**
+     * Returns true if the section should be boxed.
+     *
+     * @param section The section to check.
+     */
     @NotNull boolean isBoxedForDocument(MSS_Pages section) {
-        JSONBoolean boxed = null
-
-        if (this.currentDivs != null) {
-            this.currentDivs.each { String divName ->
-                JSONObject div = this.divs.getProperty(divName) as JSONObject
-                JSONBoolean bv = checkBoxed(div, section)
-                if (bv != null) {
-                    boxed = bv
-                }
-            }
-        }
-
-        if (boxed == null) {
-            JSONBoolean bv = checkBoxed(this.pages, section)
-            if (bv != null) {
-                boxed = bv
-            }
-        }
-
-        if (boxed == null) {
-            JSONBoolean bv = checkBoxed(this.document, section)
-            if (bv != null) {
-                boxed = bv
-            }
-        }
-
+        JSONBoolean boxed = getSingleValueForDocument(MSS_Boxed.boxed.name(), section.name()) as JSONBoolean
         boxed != null ? boxed.asBoolean : false
     }
 
-    private JSONString checkBoxedColor(JSONObject checkIn, MSS_Pages section) {
-        JSONString bvColor = null
-        JSONObject codeObject = checkIn?.getProperty(section.name()) as JSONObject
-        if (codeObject != null) {
-            bvColor = codeObject.getProperty(MSS_Boxed.boxedColor.name()) as JSONString
-        }
-
-        bvColor
-    }
-
+    /**
+     * Returns the box color for a boxed section.
+     *
+     * @param section The section to get box color for.
+     */
     @NotNull MSSColor getBoxColorForDocument(MSS_Pages section) {
-        JSONString boxedColor = null
-
-        if (this.currentDivs != null) {
-            this.currentDivs.each { String divName ->
-                JSONObject div = this.divs.getProperty(divName) as JSONObject
-                JSONString bvColor = checkBoxedColor(div, section)
-                if (bvColor != null) {
-                    boxedColor = bvColor
-                }
-            }
-        }
-
-        if (boxedColor == null) {
-            JSONString bvColor = checkBoxedColor(this.pages, section)
-            if (bvColor != null) {
-                boxedColor = bvColor
-            }
-        }
-
-        if (boxedColor == null) {
-            JSONString bvColor = checkBoxedColor(this.document, section)
-            if (bvColor != null) {
-                boxedColor = bvColor
-            }
-        }
-
+        JSONString boxedColor = getSingleValueForDocument(MSS_Boxed.boxedColor.name(), section.name()) as JSONString
         boxedColor != null ? lookupColor(boxedColor.toString()) : new MSSColor(color: "240:240:240")
     }
 
-
+    /**
+     * Returns the thickness of an hr.
+     */
     float getHrThicknessForDocument() {
-        JSONNumber hrThickness = getValueForDocument(MSS_HR.thickness.name(), MSS_Pages.horizontal_ruler.name()) as JSONNumber
-//        JSONNumber mssHrThickness = null
-//        if (this.currentDivs != null) {
-//            this.currentDivs.each { String divName ->
-//                JSONObject div = this.divs.getProperty(divName) as JSONObject
-//                JSONNumber hrThickness = checkHrValue(div, MSS_HR.thickness.name()) as JSONNumber
-//                if (hrThickness != null) {
-//                    mssHrThickness = hrThickness
-//                }
-//            }
-//        }
-//
-//        if (mssHrThickness == null) {
-//            JSONNumber hrThickness = checkHrValue(this.pages, MSS_HR.thickness.name()) as JSONNumber
-//            if (hrThickness != null) {
-//                mssHrThickness = hrThickness
-//            }
-//        }
-//
-//        if (mssHrThickness == null) {
-//            JSONNumber hrThickness = checkHrValue(this.document, MSS_HR.thickness.name()) as JSONNumber
-//            if (hrThickness != null) {
-//                mssHrThickness = hrThickness
-//            }
-//        }
-
+        JSONNumber hrThickness = getSingleValueForDocument(MSS_HR.thickness.name(), MSS_Pages.horizontal_ruler.name()) as JSONNumber
         hrThickness != null ? hrThickness.toFloat() : 0.5f
     }
 
+    /**
+     * Returns the color of an hr.
+     */
     String getHrColorForDocument() {
-        JSONString hrColor = getValueForDocument(MSS_HR.color.name(), MSS_Pages.horizontal_ruler.name()) as JSONString
-//        if (this.currentDivs != null) {
-//            this.currentDivs.each { String divName ->
-//                JSONObject div = this.divs.getProperty(divName) as JSONObject
-//                JSONString color = checkHrValue(div, MSS_HR.color.name()) as JSONString
-//                if (color != null) {
-//                    hrColor = color
-//                }
-//            }
-//        }
-//
-//        if (hrColor == null) {
-//            JSONString color = checkHrValue(this.pages, MSS_HR.color.name()) as JSONString
-//            if (color != null) {
-//                hrColor = color
-//            }
-//        }
-//
-//        if (hrColor == null) {
-//            JSONString color = checkHrValue(this.document, MSS_HR.color.name()) as JSONString
-//            if (color != null) {
-//                hrColor = color
-//            }
-//        }
-
+        JSONString hrColor = getSingleValueForDocument(MSS_HR.color.name(), MSS_Pages.horizontal_ruler.name()) as JSONString
         hrColor != null ? hrColor : "0:0:0"
     }
 
-    private JSONValue checkValue(JSONObject checkIn, String propName, String sectionName) {
+    /**
+     * Generic value fetch.
+     *
+     * @param checkIn The MSS JSON object to check in.
+     * @param propName The name of the JSON object value to fetch.
+     * @param sectionName The section to get the MSS JSON object for.
+     */
+    private static JSONValue checkSingleValue(JSONObject checkIn, String propName, String sectionName) {
         JSONValue hrValue = null
         JSONObject hrObject = checkIn?.getProperty(sectionName) as JSONObject
         if (hrObject != null) {
@@ -784,12 +690,18 @@ class MSS {
         hrValue
     }
 
-    JSONValue getValueForDocument(String valueName, String sectionName) {
+    /**
+     * Fetches a specified value from a specified section of the MSS JSON document.
+     *
+     * @param valueName The name of the value to fetch.
+     * @param sectionName The name of the section in which to look for the value.
+     */
+    private JSONValue getSingleValueForDocument(String valueName, String sectionName) {
         JSONValue value = null
         if (this.currentDivs != null) {
             this.currentDivs.each { String divName ->
                 JSONObject div = this.divs.getProperty(divName) as JSONObject
-                JSONValue pValue = checkValue(div, valueName, sectionName)
+                JSONValue pValue = checkSingleValue(div, valueName, sectionName)
                 if (pValue != null) {
                     value = pValue
                 }
@@ -797,14 +709,14 @@ class MSS {
         }
 
         if (value == null) {
-            JSONValue pValue = checkValue(this.pages, valueName, sectionName)
+            JSONValue pValue = checkSingleValue(this.pages, valueName, sectionName)
             if (pValue != null) {
                 value = pValue
             }
         }
 
         if (value == null) {
-            JSONValue pValue = checkValue(this.document, valueName, sectionName)
+            JSONValue pValue = checkSingleValue(this.document, valueName, sectionName)
             if (pValue != null) {
                 value = pValue
             }
@@ -1217,6 +1129,15 @@ class MSS {
      * @throws IOException On validation failures.
      */
     private static void validateMSS(@NotNull final JSONObject jssPart, @NotNull final String path) throws IOException {
+
+        try (InputStream inputStream = getClass().getResourceAsStream("/path/to/your/schema.json")) {
+            JSONObject rawSchema = new JSONObject(new JSONTokener(inputStream));
+            Schema schema = SchemaLoader.load(rawSchema);
+            schema.validate(new JSONObject("{\"hello\" : \"world\"}")); // throws a ValidationException if this object is invalid
+        }
+
+
+
         jssPart.propertyNames.each { final JSONString name ->
             if (!validName(name.toString())) {
                 if (!path.endsWith("divs/") && !path.endsWith("colors/")) {

@@ -1,0 +1,64 @@
+{
+  "title": "MSS stylesheet schema",
+  "type": "object",
+  "properties": {
+    "pdf": {
+      "type": "object",
+      "properties": {
+        "extFonts": {
+          "type": "array",
+          "minItems": 0,
+
+          "items": {
+            "type": "object",
+            "properties": {
+              "family": { "type": "string" },
+              "encoding": { "type": "string" },
+              "path": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "colors": {
+      "type": "object",
+      "properties": {}
+      "additionalProperties": true
+    },
+
+    "document": {
+      "type": "object",
+      "oneOf": [
+        { "$ref": "#/definitions/margins"},
+        { "$ref": "#/definitions/styleProps"}
+      ]
+    }
+  }
+
+  "defintions": {
+
+    "margins": {
+      "properties": {
+        "leftMargin": "number",
+        "rightMargin": "number",
+        "topMargin": "number",
+        "bottomMargin": "number"
+      }
+    },
+
+    "styleProps": {
+      "properties": {
+        "color": { "type": "string" },
+        "background": { "type": "string" },
+        "family": { "type": "string" },
+        "size": { "type": "number" },
+        "style": { "type": "string" },
+        "imgScalePercent": { "type": "number" },
+        "imgAlign": { "type": "string" },
+        "imgRotateDegrees": { "type": "number" }
+      }
+    }
+
+  }
+}
