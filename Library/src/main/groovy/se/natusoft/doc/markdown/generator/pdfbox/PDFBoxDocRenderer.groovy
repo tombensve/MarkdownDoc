@@ -275,6 +275,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     private boolean textMode = false
 
+    /** This is a cache of the last applied styles so that newPage() can apply the styles on the new page. */
+    private Closure<Void> stylesApplicator = null
+
     //
     // Properties
     //
@@ -364,6 +367,12 @@ class PDFBoxDocRenderer implements NotNullTrait {
     //
     // Methods
     //
+
+    void applyStyles() {
+        if (this.stylesApplicator != null) {
+            this.stylesApplicator.call()
+        }
+    }
 
     /**
      * @return The current page.
@@ -769,7 +778,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         ensureTextMode()
 
-        if (styleText != null) { styleText.call() }
+        this.stylesApplicator = styleText
+        applyStyles()
 
         String[] lines = text.toString().split("\n|\r")
         PDRectangle textArea = new PDRectangle(lowerLeftX: this.pageX, lowerLeftY: this.pageY)
@@ -835,7 +845,10 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         ensureTextMode()
 
-        if (styleText != null) { styleText.call() }
+        // styleText will be null every now and then, and apparently though not obviously clear why, the stylesApplicator
+        // needs to be set to null these times, or save will fail later on!
+        this.stylesApplicator = styleText
+        applyStyles()
 
         String _text = txt.toString()
 
@@ -874,14 +887,13 @@ class PDFBoxDocRenderer implements NotNullTrait {
                 this.pageY -= (this.fontMSSAdapter.size + 2)
                 if (this.pageY < this.margins.bottomMargin) {
                     newPage()
-                    if (styleText != null) { styleText.call() }
-                    if (!this.preFormatted) { word = word.trim() }
+//                    if (styleText != null) { styleText.call() }
                 }
                 else {
                     // Note: newLineAtOffset(...) does not work here!
                     this.docMgr.docStream.newLine()
-                    if (!this.preFormatted) { word = word.trim() }
                 }
+                if (!this.preFormatted) { word = word.trim() }
 
                 if (pgBoxed) { boxedTextArea = new PDRectangle(lowerLeftX: this.pageX - 1, lowerLeftY: this.pageY) }
             }
@@ -906,6 +918,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
     void center(String text) {
         ensureTextModeOff()
         ensureTextMode() // Must do this for newLineAt(...) to work
+
+        applyStyles()
 
         float x = ((this.pageFormat.width / 2.0f) - (calcTextWidth(text) / 2.0f)) as float
         this.docMgr.docStream.newLineAtOffset(x, this.pageY)
@@ -1106,6 +1120,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
         if (boxColor != null) {
             startBox(boxColor)
         }
+
+        applyStyles()
     }
 
     /**
