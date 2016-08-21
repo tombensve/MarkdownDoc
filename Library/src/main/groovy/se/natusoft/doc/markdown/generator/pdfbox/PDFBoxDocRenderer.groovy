@@ -59,6 +59,7 @@ import se.natusoft.doc.markdown.generator.styles.*
 import se.natusoft.doc.markdown.util.NotNullTrait
 
 import javax.imageio.ImageIO
+import java.awt.Rectangle
 import java.awt.geom.AffineTransform
 import java.awt.image.BufferedImage
 
@@ -314,6 +315,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
     public int getCurrentPageNumber() {
         this.docMgr.pageNumber
     }
+
+    /** A set of holes in the text rendering area that will be avoided by normal text paragraphs. */
+    List<TextHole> textHoles = new LinkedList<>()
 
     //
     // Internal Pseudo Properties
@@ -828,6 +832,20 @@ class PDFBoxDocRenderer implements NotNullTrait {
     }
 
     /**
+     * Returns the hole the specified coordinates are in if any, otherwise null is returned.
+     *
+     * @param x The x coordinate of the hole to check for.
+     * @param y The y coordinate of the hole to check for.
+     *
+     * @return A TextHole or null.
+     */
+    @Nullable private TextHole checkForHole(float x, float y) {
+        this.textHoles.find { TextHole hole ->
+            x >= hole.x && x <= (hole.x + hole.width) && y >= hole.y && y <= (hole.y + hole.height)
+        }
+    }
+
+    /**
      * Writes text to the document using the current font, colors, etc.
      *
      * @param txt The txt to write.
@@ -865,7 +883,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
         // This will loose trailing spaces, but keep spaces between words.
         List<String> wordList = new LinkedList<>()
         String space = ""
+        println "_text: [${_text}]"
         _text.split(" ").each {String word ->
+            println ">>${space}${word}<<"
             wordList.add(space + word)
             space = " "
         }
@@ -878,8 +898,19 @@ class PDFBoxDocRenderer implements NotNullTrait {
         PDRectangle textArea = new PDRectangle(lowerLeftX: this.pageX, lowerLeftY: this.pageY)
         PDRectangle boxedTextArea = new PDRectangle(lowerLeftX: this.pageX - 1, lowerLeftY: this.pageY)
 
+        final float holeMargin = 4.0f
+
         wordList.each { String word ->
             float wordSize = calcTextWidth(word)
+
+            TextHole hole = checkForHole(this.pageX, this.pageY + this.fontMSSAdapter.size*2)
+            if (hole == null) {
+                hole = checkForHole(this.pageX + holeMargin + wordSize as float, this.pageY + this.fontMSSAdapter.size*2)
+            }
+            if (hole != null) {
+                this.pageX = hole.x + hole.width + holeMargin
+            }
+
             if (this.pageX + wordSize > rightMarginPos) {
                 if (pgBoxed) { endParagraphBox(boxedTextArea) }
 
@@ -887,16 +918,22 @@ class PDFBoxDocRenderer implements NotNullTrait {
                 this.pageY -= (this.fontMSSAdapter.size + 2)
                 if (this.pageY < this.margins.bottomMargin) {
                     newPage()
-//                    if (styleText != null) { styleText.call() }
                 }
-                else {
-                    // Note: newLineAtOffset(...) does not work here!
-                    this.docMgr.docStream.newLine()
+
+                hole = checkForHole(this.pageX, this.pageY + this.fontMSSAdapter.size*2)
+                if (hole == null) {
+                    hole = checkForHole(this.pageX + holeMargin + wordSize as float, this.pageY + this.fontMSSAdapter.size*2)
                 }
-                if (!this.preFormatted) { word = word.trim() }
+                if (hole != null) {
+                    this.pageX = hole.x + hole.width + holeMargin
+                }
 
                 if (pgBoxed) { boxedTextArea = new PDRectangle(lowerLeftX: this.pageX - 1, lowerLeftY: this.pageY) }
             }
+
+            if (!this.preFormatted) { word = word.trim() }
+
+            positionTextAtPageLocation()
             this.docMgr.docStream.showText(word)
             this.pageX += wordSize
         }
@@ -1046,6 +1083,15 @@ class PDFBoxDocRenderer implements NotNullTrait {
     }
 
     /**
+     * Sets text at exact pageX and pageY.
+     */
+    void positionTextAtPageLocation() {
+        ensureTextModeOff()
+        ensureTextMode()
+        this.docMgr.docStream.newLineAtOffset(this.pageX, this.pageY)
+    }
+
+    /**
      * Writes a new line.
      */
     void newLine() {
@@ -1096,6 +1142,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Creates a new page.
      */
     void newPage() {
+        this.textHoles.clear()
+
         MSSColor boxColor = null
         if (isBox()) {
             boxColor = this.box.color
@@ -1221,8 +1269,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
         float scaledWidth = image.width * scale
         float scaledHeight = image.height * scale
 
-        float imageX = this.pageX, imageY = this.pageY
-        float moveX = 0.0f, moveY = 0.0f
+        float imageX = this.pageX, imageY = (this.pageY - scaledHeight) + 8.0f
+        float moveX = 0.0f
 
         if (xOffset == X_OFFSET_LEFT_ALIGNED) {
             imageX = this.margins.leftMargin
@@ -1231,18 +1279,17 @@ class PDFBoxDocRenderer implements NotNullTrait {
         if (xOffset == X_OFFSET_CENTER) {
             imageX = this.margins.leftMargin + ((this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin) / 2.0f) -
                     (scaledWidth / 2.0f) as float
-            moveY = yOffset + scaledHeight + bottomAdd
+//            moveY = yOffset + scaledHeight + bottomAdd
         }
         else if (xOffset == X_OFFSET_RIGHT_ALIGNED) {
             imageX = this.pageFormat.width - (this.margins.rightMargin + scaledWidth)
-            moveY = yOffset + scaledHeight + bottomAdd
+//            moveY = yOffset + scaledHeight + bottomAdd
         }
 
-        if (pageY - yOffset - scaledHeight - bottomAdd - 8.0f < this.margins.bottomMargin) {
+        if (imageY - (yOffset + bottomAdd + 8.0f) < this.margins.bottomMargin) {
             newPage()
         }
         ensureTextModeOff()
-
         AffineTransform at = new AffineTransform(
                 scaledWidth,
                 0, 0,
@@ -1253,13 +1300,15 @@ class PDFBoxDocRenderer implements NotNullTrait {
         at.rotate(Math.toRadians(rotate));
         this.docMgr.docStream.drawImage(image, new Matrix(at));
 
+        this.textHoles << new TextHole(x: imageX, y: imageY + this.fontMSSAdapter.size, width: scaledWidth, height: scaledHeight + this.fontMSSAdapter.size)
+
         if (moveX == 0.0f) {
             this.pageX = this.margins.leftMargin
         }
         else {
             this.pageX += moveX
         }
-        this.pageY = this.pageY - moveY//(yOffset + scaledHeight + bottomAdd)
+        //this.pageY = imageY - yOffset - bottomAdd
         ensureTextMode(this.pageX, this.pageY)
     }
 
