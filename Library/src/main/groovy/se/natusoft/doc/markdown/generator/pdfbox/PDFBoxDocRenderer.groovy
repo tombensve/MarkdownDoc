@@ -57,6 +57,8 @@ import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.generator.models.TOC
 import se.natusoft.doc.markdown.generator.styles.*
 import se.natusoft.doc.markdown.util.NotNullTrait
+import se.natusoft.doc.markdown.util.Text
+import se.natusoft.doc.markdown.util.Word
 
 import javax.imageio.ImageIO
 import java.awt.Rectangle
@@ -857,6 +859,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
     PDRectangle text(@NotNull Object txt, @Nullable Closure<Void> styleText, boolean pgBoxed) {
         notNull("txt", txt)
 
+        Text text = new Text(content: txt.toString())
+
         if (pgBoxed) {
             startParagraphBox()
         }
@@ -872,36 +876,13 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         float rightMarginPos = this.pageFormat.width - this.margins.rightMargin
 
-        // Find trailing spaces
-        StringBuilder trailingSpaces = new StringBuilder()
-        int pos = _text.size() - 1
-        while (pos >= 0 && _text.charAt(pos) == ' ' as char) {
-            trailingSpaces.append(" ")
-            --pos
-        }
-
-        // This will loose trailing spaces, but keep spaces between words.
-        List<String> wordList = new LinkedList<>()
-        String space = ""
-        println "_text: [${_text}]"
-        _text.split(" ").each {String word ->
-            println ">>${space}${word}<<"
-            wordList.add(space + word)
-            space = " "
-        }
-
-        // This will add trailing spaces again.
-        if (trailingSpaces.size() > 0) {
-            wordList.add(trailingSpaces.toString())
-        }
-
         PDRectangle textArea = new PDRectangle(lowerLeftX: this.pageX, lowerLeftY: this.pageY)
         PDRectangle boxedTextArea = new PDRectangle(lowerLeftX: this.pageX - 1, lowerLeftY: this.pageY)
 
         final float holeMargin = 4.0f
 
-        wordList.each { String word ->
-            float wordSize = calcTextWidth(word)
+        text.words.each { Word word ->
+            float wordSize = calcTextWidth(word.toString(this.preFormatted))
 
             TextHole hole = checkForHole(this.pageX, this.pageY + this.fontMSSAdapter.size*2)
             if (hole == null) {
@@ -931,10 +912,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
                 if (pgBoxed) { boxedTextArea = new PDRectangle(lowerLeftX: this.pageX - 1, lowerLeftY: this.pageY) }
             }
 
-            if (!this.preFormatted) { word = word.trim() }
-
             positionTextAtPageLocation()
-            this.docMgr.docStream.showText(word)
+            this.docMgr.docStream.showText(word.toString(this.preFormatted))
             this.pageX += wordSize
         }
         if (pgBoxed) {

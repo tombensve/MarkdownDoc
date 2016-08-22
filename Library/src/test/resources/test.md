@@ -134,7 +134,7 @@ A paragraph is simply one or more consecutive lines of text, separated by one or
 (A blank line is any line that looks like a blank line — a line containing nothing but spaces or
 tabs is considered blank.) Normal paragraphs should not be indented with spaces or tabs.
 
-> A little block quote within div.
+> A little block quote within a div.
 
 </div>
 
@@ -143,7 +143,7 @@ This is a _formatting_ __Paragraph__. Here is [a link](http://to.somewhere.net/)
 This paragraph
 also contains a `simple code block`. This is some more text because I want `another code block` breaking line.
 
-Here is an image:
+Here is a feature best illustrated with a rat and some latin:
 
 ![image](http://65.media.tumblr.com/07de24dd41bc31f53462f7e600c7418a/tumblr_inline_nupsstqiqk1ty84t8_500.png) Lorem ipsum dolor sit amet,
 consectetur adipiscing elit. Nulla non velit feugiat neque maximus ultricies. Aenean sed elit lectus. Donec fermentum dapibus dapibus.
