@@ -848,6 +848,25 @@ class PDFBoxDocRenderer implements NotNullTrait {
     }
 
     /**
+     * Checks if pageX is within a hole in the text and if so moves pageX to after the hole.
+     *
+     * @param adaptParams holeMargin and wordSize parameters.
+     */
+    private void adaptToTextHoles(AdaptParams adaptParams) {
+        TextHole hole = checkForHole(this.pageX, this.pageY + this.fontMSSAdapter.size*2)
+        if (hole == null) {
+            hole = checkForHole(
+                    this.pageX + adaptParams.holeMargin + adaptParams.wordSize,
+                    this.pageY + this.fontMSSAdapter.size*2
+            )
+        }
+        if (hole != null) {
+            this.pageX = hole.x + hole.width + adaptParams.holeMargin
+        }
+    }
+    private static class AdaptParams { float holeMargin, wordSize }
+
+    /**
      * Writes text to the document using the current font, colors, etc.
      *
      * @param txt The txt to write.
@@ -884,13 +903,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         text.words.each { Word word ->
             float wordSize = calcTextWidth(word.toString(this.preFormatted))
 
-            TextHole hole = checkForHole(this.pageX, this.pageY + this.fontMSSAdapter.size*2)
-            if (hole == null) {
-                hole = checkForHole(this.pageX + holeMargin + wordSize as float, this.pageY + this.fontMSSAdapter.size*2)
-            }
-            if (hole != null) {
-                this.pageX = hole.x + hole.width + holeMargin
-            }
+            adaptToTextHoles(new AdaptParams(holeMargin: holeMargin, wordSize: wordSize))
 
             if (this.pageX + wordSize > rightMarginPos) {
                 if (pgBoxed) { endParagraphBox(boxedTextArea) }
@@ -901,18 +914,13 @@ class PDFBoxDocRenderer implements NotNullTrait {
                     newPage()
                 }
 
-                hole = checkForHole(this.pageX, this.pageY + this.fontMSSAdapter.size*2)
-                if (hole == null) {
-                    hole = checkForHole(this.pageX + holeMargin + wordSize as float, this.pageY + this.fontMSSAdapter.size*2)
-                }
-                if (hole != null) {
-                    this.pageX = hole.x + hole.width + holeMargin
-                }
+                adaptToTextHoles(new AdaptParams(holeMargin: holeMargin, wordSize: wordSize))
 
                 if (pgBoxed) { boxedTextArea = new PDRectangle(lowerLeftX: this.pageX - 1, lowerLeftY: this.pageY) }
             }
 
             positionTextAtPageLocation()
+
             this.docMgr.docStream.showText(word.toString(this.preFormatted))
             this.pageX += wordSize
         }
@@ -1249,20 +1257,25 @@ class PDFBoxDocRenderer implements NotNullTrait {
         float scaledHeight = image.height * scale
 
         float imageX = this.pageX, imageY = (this.pageY - scaledHeight) + 8.0f
-        float moveX = 0.0f
 
         if (xOffset == X_OFFSET_LEFT_ALIGNED) {
             imageX = this.margins.leftMargin
-            moveX = scaledWidth + 2
+            if (this.pageX <= (this.margins.leftMargin + scaledWidth)) {
+                imageY -= (this.fontMSSAdapter.size + 2.0f)
+            }
         }
         if (xOffset == X_OFFSET_CENTER) {
             imageX = this.margins.leftMargin + ((this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin) / 2.0f) -
                     (scaledWidth / 2.0f) as float
-//            moveY = yOffset + scaledHeight + bottomAdd
+            if (this.pageX >= imageX) {
+                imageY -= (this.fontMSSAdapter.size + 2.0f)
+            }
         }
         else if (xOffset == X_OFFSET_RIGHT_ALIGNED) {
             imageX = this.pageFormat.width - (this.margins.rightMargin + scaledWidth)
-//            moveY = yOffset + scaledHeight + bottomAdd
+            if (this.pageX >= (this.pageFormat.width - this.margins.rightMargin - scaledWidth)) {
+                imageY -= (this.fontMSSAdapter.size + 2.0f)
+            }
         }
 
         if (imageY - (yOffset + bottomAdd + 8.0f) < this.margins.bottomMargin) {
@@ -1281,13 +1294,6 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         this.textHoles << new TextHole(x: imageX, y: imageY + this.fontMSSAdapter.size, width: scaledWidth, height: scaledHeight + this.fontMSSAdapter.size)
 
-        if (moveX == 0.0f) {
-            this.pageX = this.margins.leftMargin
-        }
-        else {
-            this.pageX += moveX
-        }
-        //this.pageY = imageY - yOffset - bottomAdd
         ensureTextMode(this.pageX, this.pageY)
     }
 

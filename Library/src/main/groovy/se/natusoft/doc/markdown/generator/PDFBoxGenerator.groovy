@@ -850,7 +850,11 @@ class ParagraphWriter implements BoxedTrait {
     void writeAutoLink(@NotNull AutoLink autoLink) {
         checkAndSetParagraphBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
 
-        doc.link(autoLink.url, autoLink.url)
+        String url = autoLink.url
+        if (!url.startsWith("http")) {
+            url = "http://" + url
+        }
+        doc.link(autoLink.url, url)
 
         clearParagraphBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
     }

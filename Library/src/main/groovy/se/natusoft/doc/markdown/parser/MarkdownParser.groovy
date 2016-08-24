@@ -602,13 +602,10 @@ class MarkdownParser implements Parser {
                     case { it == ',' && !(current instanceof Link)}:
                     case { it == '!' && n != '[' && !(current instanceof Link)} :
                     case { it == '?' && !(current instanceof Link)}:
+                        current << c
                         if (n == ' ') {
                             paragraph.addItem(current)
                             current = current.createNewWithSameConfig()
-                            paragraph.addItem(new PlainText(text: ("" + c), renderPrefixedSpace: false))
-                        }
-                        else {
-                            current << c
                         }
                         break
 
