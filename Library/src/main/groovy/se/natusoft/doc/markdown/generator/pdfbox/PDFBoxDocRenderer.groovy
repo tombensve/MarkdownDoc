@@ -208,13 +208,12 @@ class PDFBoxDocRenderer implements NotNullTrait {
         int pageNumber = 0
 
         //
-        // Private Members
-        //
-
-        //
         // Methods
         //
 
+        /**
+         * Creates a new page.
+         */
         void newPage() {
             ++this.pageNumber
             docPage = new PDPage()
@@ -348,9 +347,6 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Gets the current x coordinate.
      */
     float getPageX() {
-        if (this.pageLocation.x < this.margins.leftMargin) {
-            this.pageLocation.x = this.margins.leftMargin
-        }
         this.pageLocation.x
     }
 
@@ -935,6 +931,19 @@ class PDFBoxDocRenderer implements NotNullTrait {
     }
 
     /**
+     * This draws the specified text as is at the current pageX and pageY location.
+     *
+     * This does not handle new line nor page breaks!
+     *
+     * @param text The text to draw.
+     */
+    public void rawText(String text) {
+        positionTextAtPageLocation()
+        this.docMgr.docStream.showText(text)
+        this.pageX += calcTextWidth(text)
+    }
+
+    /**
      * Renders a text centered on the line and then moves to the next line.
      *
      * @param text The text to center.
@@ -1110,20 +1119,6 @@ class PDFBoxDocRenderer implements NotNullTrait {
             newLine()
         }
         newLine()
-    }
-
-    /**
-     * Creates a new line at page coordinates.
-     */
-    protected void newLineAtPageLocation() {
-        this.pageX = this.margins.leftMargin
-        this.pageY -= (this.fontMSSAdapter.size + 2)
-        if (this.pageY < this.margins.bottomMargin) {
-            newPage()
-        }
-        else {
-            this.docMgr.docStream.newLineAtOffset(this.pageX, this.pageY)
-        }
     }
 
     /**
@@ -1317,10 +1312,14 @@ class PDFBoxDocRenderer implements NotNullTrait {
         String pgnStr = "${pageNumber}"
         ensureTextModeOff()
 
-        withFont PDFBoxFontMSSAdapter.PAGE_NUMBER_FONT, {
+        PDFBoxFontMSSAdapter pageNoFont = PDFBoxFontMSSAdapter.PAGE_NUMBER_FONT
+
+        withFont (pageNoFont) {
             float width = calcTextWidth(pgnStr)
-            ensureTextMode(this.pageFormat.width - this.margins.rightMargin - width as float, this.margins.bottomMargin - 10 as float)
-            this.text(pgnStr)
+            ensureTextModeOff()
+            ensureTextMode(this.pageFormat.width - this.margins.rightMargin - width as float, this.margins.bottomMargin -
+                    ((pageNoFont.size * 2) + 6) as float)
+            this.docMgr.docStream.showText(pgnStr)
         }
         ensureTextModeOff()
         ensureTextMode(this.pageX, this.pageY)

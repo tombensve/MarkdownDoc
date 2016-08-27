@@ -168,6 +168,14 @@ class MSS {
     }
 
     /**
+     * Values for section number behavior.
+     */
+    static enum MSS_SectionNumber {
+        sectionNumberYOffset,
+        sectionNumberXOffset
+    }
+
+    /**
      * This represents values for the "pdf" section.
      */
     static enum MSS_PDF {
@@ -708,6 +716,26 @@ class MSS {
     }
 
     /**
+     * Returns the section number Y offset.
+     *
+     * @param section The section to get Y offset for.
+     */
+    float getSectionNumberYOffsetForDocument(MSS_Pages section) {
+        JSONNumber snYOff = getSingleValueForDocument(MSS_SectionNumber.sectionNumberYOffset.name(), section.name()) as JSONNumber
+        snYOff != null ? snYOff.toFloat() : 0.0f
+    }
+
+    /**
+     * Returns the section number X offset.
+     *
+     * @param section The section to get X offset for.
+     */
+    float getSectionNumberXOffsetForDocument(MSS_Pages section) {
+        JSONNumber snXOff = getSingleValueForDocument(MSS_SectionNumber.sectionNumberXOffset.name(), section.name()) as JSONNumber
+        snXOff != null ? snXOff.toFloat() : 0.0f
+    }
+
+    /**
      * Generic value fetch.
      *
      * @param checkIn The MSS JSON object to check in.
@@ -719,6 +747,10 @@ class MSS {
         JSONObject hrObject = checkIn?.getProperty(sectionName) as JSONObject
         if (hrObject != null) {
             hrValue = hrObject.getProperty(propName)
+        }
+
+        if (hrValue == null) {
+            hrValue = checkIn?.getProperty(propName)
         }
 
         hrValue
@@ -805,6 +837,13 @@ class MSS {
             lookupColor(getHrColorForDocument())
         }
 
+        float getSectionNumberYOffset(@NotNull MSS_Pages section) {
+            getSectionNumberYOffsetForDocument(section)
+        }
+
+        float getSectionNumberXOffset(@NotNull MSS_Pages section) {
+            getSectionNumberXOffsetForDocument(section)
+        }
     }
 
     private ForDocument forDocument = new ForDocument()
@@ -1228,6 +1267,12 @@ class MSS {
         }
         if (!ok) {
             ok = safe { MSS_HR.valueOf(name) != null }
+        }
+        if (!ok) {
+            ok = safe { MSS_SectionNumber.valueOf(name) != null }
+        }
+        if (!ok) {
+            if (name.startsWith("#") || name.startsWith("*")) ok = true
         }
 
         ok

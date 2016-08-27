@@ -48,7 +48,7 @@ import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxDocRenderer
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxStylesMSSAdapter
 import se.natusoft.doc.markdown.generator.pdfbox.PageMargins
-import se.natusoft.doc.markdown.generator.pdfbox.StructuredNumber
+import se.natusoft.doc.markdown.util.StructuredNumber
 import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.generator.styles.MSS.MSS_Pages
 import se.natusoft.doc.markdown.generator.styles.MSSColor
@@ -85,15 +85,18 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
         /** The current text structure level. */
         MSS.MSS_TOC level = MSS.MSS_TOC.h1
 
-        /** The current section number. */
-        StructuredNumber sectionNumber = new StructuredNumber()
-
     }
 
 
     //
     // Private Members
     //
+
+    /** This will get an instance if header numbering is enabled in the options. */
+    private StructuredNumber headerNumber = null
+
+    /** The current header level. */
+    private int currentHeaderLevel = 1
 
     //
     // Methods
@@ -131,6 +134,9 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
     void generate(@NotNull Doc document, @NotNull Options options, @Nullable File rootDir) throws IOException, GenerateException {
         final File resultFile = rootDir != null ? new File(rootDir, options.resultFile) : new File(options.resultFile)
         final FileOutputStream resultStream = new FileOutputStream(resultFile)
+        if (((PDFGeneratorOptions)options).generateSectionNumbers) {
+            this.headerNumber = new StructuredNumber(newDigitValue: 1)
+        }
         try {
             generate(document, options, rootDir, resultStream)
         }
@@ -189,7 +195,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                         leftMargin:   context.pdfStyles.mss.forDocument.leftMargin,
                         rightMargin:  context.pdfStyles.mss.forDocument.rightMargin,
                 ),
-                pageSize: context.options.pageSize
+                pageSize: context.options.pageSize,
+                pageNoActive: true
         )
         doc.newPage()
 
@@ -499,9 +506,16 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param doc The PDF document renderer
      * @param context The generator context.
      */
-    static void writeHeader(@NotNull Header header, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
-        context.toc.add(new TOC(section: context.level, sectionNumber: context.sectionNumber.toString(), pageNumber: doc.currentPageNumber))
-        doc.addOutlineEntry(context.sectionNumber, header.text, doc.currentPage)
+    void writeHeader(@NotNull Header header, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
+        String outlineTitle = ""
+        if (this.headerNumber != null) {
+            this.headerNumber = this.headerNumber.toLevelAndIncrement(header.level.level)
+            outlineTitle += this.headerNumber.root.toString() + ". "
+        }
+        outlineTitle += header.text
+
+        context.toc.add(new TOC(section: context.level, sectionNumber: this.headerNumber.root.toString(), pageNumber: doc.currentPageNumber))
+        doc.addOutlineEntry(this.headerNumber.root, outlineTitle, doc.currentPage)
 
         MSS_Pages section = MSS_Pages.valueOf("h" + header.level.level)
 
@@ -509,6 +523,18 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
         doc.setColorPair(context.pdfStyles.mss.forDocument.getColorPair(section))
 
         doc.newSection()
+
+        if (this.headerNumber != null) {
+            float sectionNumberYOffset = context.pdfStyles.mss.forDocument.getSectionNumberYOffset(section)
+            float sectionNumberXOffset = context.pdfStyles.mss.forDocument.getSectionNumberXOffset(section)
+
+            doc.pageY -= sectionNumberYOffset
+            doc.pageX += sectionNumberXOffset
+            doc.rawText(this.headerNumber.root.toString() + ". ")
+            doc.pageY += sectionNumberYOffset
+            //doc.pageX -= sectionNumberXOffset
+        }
+
         doc.text(header.text)
         doc.newLine()
     }

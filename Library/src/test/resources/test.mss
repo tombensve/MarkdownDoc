@@ -28,20 +28,28 @@
     "leftMargin": 50,
     "rightMargin": 50,
     "topMargin": 40,
-    "bottomMargin": 40,
+    "bottomMargin": 50,
 
     "color": "0:0:0",
     "background": "ff:ff:ff",
     "family": "HELVETICA",
     "size": 11,
     "style": "Normal",
-    "imgScalePercent": 60.0,
-    "imgAlign": "LEFT",
-    "imgRotateDegrees": 0.0,
-    "imgFlow": false,
-    "imgFlowMargin": 4.0,
+
+    "#": "Allows for the section number to be a little bit higher or lower than the rest of the line.",
+    "sectionNumberYOffset": 2.0,
+
+    "#": "Allows for the section number to have a different right margin than other text.",
+    "sectionNumberXOffset": -10.0,
 
     "pages": {
+      "image": {
+        "imgScalePercent": 60.0,
+        "imgAlign": "LEFT",
+        "imgRotateDegrees": 0.0,
+        "imgFlow": false,
+        "imgFlowMargin": 4.0
+      },
       "block_quote": {
         "family": "HELVETICA",
         "size": 11,

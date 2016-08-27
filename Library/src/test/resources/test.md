@@ -20,11 +20,19 @@ This is a paragraph in a level 2 section.
 
 ### In Raleway external ttf font
 
+Some text.
+
 #### In Tuffy external ttf font
+
+Some text.
 
 ##### Five
 
+Some text.
+
 ###### Six
+
+Some text.
 
 Test of underline header H1
 ===========================
@@ -33,14 +41,6 @@ Test of underline header H2
 ---------------------------
 
 Garbage since we want the code block to page break.
-
-werewrwe
-
-werweqrwqe
-
-qwerwerw
-
-werwer
 
 qwerweqrqwer
 
@@ -151,15 +151,15 @@ Lorem ipsum dolor sit amet,
 consectetur adipiscing elit. Nulla non velit feugiat neque maximus ultricies.
 ![image](http://65.media.tumblr.com/07de24dd41bc31f53462f7e600c7418a/tumblr_inline_nupsstqiqk1ty84t8_500.png)
 Aenean sed elit lectus. Donec fermentum dapibus dapibus.
-Cras facilisis odio at dolor ultricies, eu pharetra leo tristique. 
+Cras facilisis odio at dolor ultricies, eu pharetra leo tristique.
 
 Vivamus placerat, dui et fringilla vestibulum, libero velit dignissim
-orci, varius laoreet nunc arcu non enim. Vestibulum ornare justo ante, eu sodales metus congue vitae. 
+orci, varius laoreet nunc arcu non enim. Vestibulum ornare justo ante, eu sodales metus congue vitae.
 
 Nulla consectetur purus justo, nec
 finibus mi congue eget. Praesent ac dignissim ligula, sit amet pharetra ligula.
 
-Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam sit amet risus id augue 
+Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam sit amet risus id augue
 imperdiet ornare. Sed velit augue, laoreet.
 
 </div>
@@ -170,7 +170,7 @@ Some more text in new paragraph. <www.somewhere.net> ends this paragraph.
 
 ![imageref]
 
-Some other text between the image reference and the image declaration.
+Note that this text does not follow on the right of the image! This is because the 'imgFlow' MSS value is false here.
 
 [imageref]: https://raw.githubusercontent.com/dcurtis/markdown-mark/master/png/32x20-solid.png
 

@@ -8,7 +8,7 @@ import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxDocRenderer
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxFontMSSAdapter
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxStylesMSSAdapter
 import se.natusoft.doc.markdown.generator.pdfbox.PageMargins
-import se.natusoft.doc.markdown.generator.pdfbox.StructuredNumber
+import se.natusoft.doc.markdown.util.StructuredNumber
 import se.natusoft.doc.markdown.generator.styles.*
 
 @CompileStatic

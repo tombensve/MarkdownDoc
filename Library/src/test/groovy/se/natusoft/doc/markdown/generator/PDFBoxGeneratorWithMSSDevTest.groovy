@@ -42,6 +42,7 @@ class PDFBoxGeneratorWithMSSDevTest extends GroovyTestCase {
                 "--firstLineParagraphIndent", "false",
                 "--generateTOC", "true",
                 "--generateTitlePage", "true",
+                "--generateSectionNumbers", "true",
                 "--mss", "Library/src/test/resources/test.mss",
                 "--resultFile", pdfFile.toString()
         ] as String[]
