@@ -36,14 +36,22 @@
  */
 package se.natusoft.doc.markdown.generator.styles
 
+import groovy.transform.CompileStatic
+import groovy.transform.ToString
+import groovy.transform.TypeChecked
 import org.jetbrains.annotations.Nullable
+import se.natusoft.json.JSONBoolean
 import se.natusoft.json.JSONNumber
 import se.natusoft.json.JSONString
 
 /**
  * This holds image information.
  */
+@CompileStatic
+@TypeChecked
+@ToString(includeNames = true)
 class MSSImage {
+    @CompileStatic
     static enum Align {
         LEFT,
         MIDDLE,
@@ -64,30 +72,64 @@ class MSSImage {
     /** The degrees to rotate image. */
     Float rotateDegrees
 
+    /** If true then text will flow around image. If false text will continue below image. */
+    Boolean imgFlow
+
+    /** The margin to use between image and text when imgFlow is true. */
+    Float imgFlowMargin
+
+    /** Overridden X coordinate of image. */
+    Float imgX
+
+    /** Overridden Y coordinate of image. */
+    Float imgY
+
     //
     // Methods
     //
 
     void updateScaleIfNotSet(@Nullable final JSONNumber scale) {
-        if (this.scalePercent == null) {
-            this.scalePercent = scale?.toFloat()
+        if (scale != null && this.scalePercent == null) {
+            this.scalePercent = scale.toFloat()
         }
     }
 
     void updateAlignIfNotSet(@Nullable final JSONString align) {
-        if (this.align == null) {
-            if (align != null) {
-                this.align = Align.valueOf(align.toString().toUpperCase())
-                if (this.align == null) {
-                    throw new MSSException(message: "Bad alignment value! Must be one of LEFT, MIDDLE or RIGHT.")
-                }
+        if (align != null && this.align == null) {
+            this.align = Align.valueOf(align.toString().toUpperCase())
+            if (this.align == null) {
+                throw new MSSException(message: "Bad alignment value! Must be one of LEFT, MIDDLE or RIGHT.")
             }
         }
     }
 
     void updateRotateIfNotSet(@Nullable final JSONNumber degrees) {
-        if (this.rotateDegrees == null) {
-            this.rotateDegrees = degrees?.toFloat()
+        if (degrees != null && this.rotateDegrees == null) {
+            this.rotateDegrees = degrees.toFloat()
+        }
+    }
+
+    void updateImgFlowIfNotSet(@Nullable final JSONBoolean imgFlow) {
+        if (imgFlow != null && this.imgFlow == null) {
+            this.imgFlow = imgFlow.asBoolean
+        }
+    }
+
+    void updateImgFlowMarginIfNotSet(@Nullable final JSONNumber flowMargin) {
+        if (flowMargin != null && this.imgFlowMargin == null) {
+            this.imgFlowMargin = flowMargin.toFloat()
+        }
+    }
+
+    void updateImgXIfNotSet(@Nullable final JSONNumber imgX) {
+        if (imgX != null && this.imgX == null) {
+            this.imgX = imgX.toFloat()
+        }
+    }
+
+    void updateImgYIfNotSet(@Nullable final JSONNumber imgY) {
+        if (imgY != null && this.imgY == null) {
+            this.imgY = imgY.toFloat()
         }
     }
 

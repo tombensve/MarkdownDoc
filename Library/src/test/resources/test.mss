@@ -38,6 +38,8 @@
     "imgScalePercent": 60.0,
     "imgAlign": "LEFT",
     "imgRotateDegrees": 0.0,
+    "imgFlow": false,
+    "imgFlowMargin": 4.0,
 
     "pages": {
       "block_quote": {
@@ -125,6 +127,11 @@
           "family": "COURIER",
           "color": "120:120:120",
           "background": "10:11:12"
+        }
+      },
+      "rat": {
+        "image": {
+          "imgFlow": true
         }
       }
     }

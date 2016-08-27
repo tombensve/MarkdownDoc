@@ -69,7 +69,7 @@ class TestPDFDoc {
         //doc.hr()
         doc.text("Some text under the horizontal ruler.")
 
-        doc.image("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png", PDFBoxDocRenderer.X_OFFSET_CENTER, 0.2f)
+        //doc.image("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png", PDFBoxDocRenderer.X_OFFSET_CENTER, 0.2f)
 
         doc.text("This is a test paragraph. It contains a bit of text that should be longer than one line to see if it breaks " +
                 "correctly. Thereby I need to write some more text in this. Just a little more text now. Well, this should at " +

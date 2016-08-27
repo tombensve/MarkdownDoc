@@ -38,11 +38,8 @@ package se.natusoft.doc.markdown.generator.styles
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
-import org.everit.json.schema.Schema
-import org.everit.json.schema.loader.SchemaLoader
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
-import org.json.JSONTokener
 import se.natusoft.doc.markdown.util.TestSafeResource
 import se.natusoft.json.JSON
 import se.natusoft.json.JSONArray
@@ -180,10 +177,33 @@ class MSS {
         encoding
     }
 
+    /**
+     * Represents values for images.
+     */
     static enum MSS_IMAGE {
+        /** The percent to scale images. */
         imgScalePercent,
+
+        /** Image alignment. LEFT, MIDDLE, RIGHT */
         imgAlign,
-        imgRotateDegrees
+
+        /** The number of degrees to rotate image. */
+        imgRotateDegrees,
+
+        /**
+         * If true then text will flow around the image. If false the image will be its own paragraph and text will
+         * continue below it.
+         */
+        imgFlow,
+
+        /** When 'imgFlow' is true this is the margin around the image. */
+        imgFlowMargin,
+
+        /** Overriden X coordinate of image. */
+        imgX,
+
+        /** Overridden Y coordinate of image. */
+        imgY
     }
 
     //
@@ -483,6 +503,18 @@ class MSS {
 
         final JSONNumber rotate = section?.getProperty(MSS_IMAGE.imgRotateDegrees.name()) as JSONNumber
         image.updateRotateIfNotSet(rotate)
+
+        final JSONBoolean flow = section?.getProperty(MSS_IMAGE.imgFlow.name()) as JSONBoolean
+        image.updateImgFlowIfNotSet(flow)
+
+        final JSONNumber flowMargin = section?.getProperty(MSS_IMAGE.imgFlowMargin.name()) as JSONNumber
+        image.updateImgFlowMarginIfNotSet(flowMargin)
+
+        final JSONNumber imgX = section?.getProperty(MSS_IMAGE.imgX.name()) as JSONNumber
+        image.updateImgXIfNotSet(imgX)
+
+        final JSONNumber imgY = section?.getProperty(MSS_IMAGE.imgY.name()) as JSONNumber
+        image.updateImgYIfNotSet(imgY)
     }
 
     /**
@@ -519,7 +551,8 @@ class MSS {
         image.updateScaleIfNotSet(new JSONNumber(60.0f))
         image.updateAlignIfNotSet(new JSONString("LEFT"))
         image.updateRotateIfNotSet(new JSONNumber(0.0f))
-
+        image.updateImgFlowIfNotSet(new JSONBoolean(false))
+        image.updateImgFlowMarginIfNotSet(new JSONNumber(4.0f))
         image
     }
 
@@ -577,11 +610,13 @@ class MSS {
     @NotNull MSSImage getImageStyleForDocument() {
         final MSSImage image = new MSSImage()
 
+        JSONObject standard
+
         if (this.currentDivs != null) {
             this.currentDivs.each { final String divName ->
                 final JSONObject div = this.divs.getProperty(divName) as JSONObject
 
-                final JSONObject standard = div?.getProperty(MSS_Pages.standard.name()) as JSONObject
+                standard = div?.getProperty(MSS_Pages.standard.name()) as JSONObject
                 if (standard != null) {
                     updateMSSImageIfNotSet(image, standard.getProperty(MSS_Pages.image.name()) as JSONObject)
                 }
@@ -591,8 +626,7 @@ class MSS {
             }
         }
 
-
-        final JSONObject standard = this.pages.getProperty(MSS_Pages.standard.name()) as JSONObject
+        standard = this.pages.getProperty(MSS_Pages.standard.name()) as JSONObject
         if (standard != null) {
             updateMSSImageIfNotSet(image, standard.getProperty(MSS_Pages.image.name()) as JSONObject)
         }
