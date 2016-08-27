@@ -61,7 +61,6 @@ import se.natusoft.doc.markdown.util.Text
 import se.natusoft.doc.markdown.util.Word
 
 import javax.imageio.ImageIO
-import java.awt.Rectangle
 import java.awt.geom.AffineTransform
 import java.awt.image.BufferedImage
 
@@ -320,6 +319,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
     /** A set of holes in the text rendering area that will be avoided by normal text paragraphs. */
     List<TextHole> textHoles = new LinkedList<>()
+
+    /** A margin between a hole edge and rendered text. A hole is usually not emtpy ... */
+    float holeMargin
 
     //
     // Internal Pseudo Properties
@@ -898,12 +900,10 @@ class PDFBoxDocRenderer implements NotNullTrait {
         PDRectangle textArea = new PDRectangle(lowerLeftX: this.pageX, lowerLeftY: this.pageY)
         PDRectangle boxedTextArea = new PDRectangle(lowerLeftX: this.pageX - 1, lowerLeftY: this.pageY)
 
-        final float holeMargin = 4.0f
-
         text.words.each { Word word ->
             float wordSize = calcTextWidth(word.toString(this.preFormatted))
 
-            adaptToTextHoles(new AdaptParams(holeMargin: holeMargin, wordSize: wordSize))
+            adaptToTextHoles(new AdaptParams(holeMargin: this.holeMargin, wordSize: wordSize))
 
             if (this.pageX + wordSize > rightMarginPos) {
                 if (pgBoxed) { endParagraphBox(boxedTextArea) }
@@ -914,7 +914,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
                     newPage()
                 }
 
-                adaptToTextHoles(new AdaptParams(holeMargin: holeMargin, wordSize: wordSize))
+                adaptToTextHoles(new AdaptParams(holeMargin: this.holeMargin, wordSize: wordSize))
 
                 if (pgBoxed) { boxedTextArea = new PDRectangle(lowerLeftX: this.pageX - 1, lowerLeftY: this.pageY) }
             }
@@ -1082,11 +1082,20 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Writes a new line.
      */
     void newLine() {
+        newLine(0.0f)
+    }
+
+    /**
+     * Writes a new line.
+     *
+     * @paam yOffset an additional offset to add.
+     */
+    void newLine(float yOffset) {
         ensureTextModeOff()
         ensureTextMode()
 
         this.pageX = this.margins.leftMargin
-        this.pageY -= (this.fontMSSAdapter.size + 2)
+        this.pageY -= (yOffset + this.fontMSSAdapter.size + 2)
         this.docMgr.docStream.newLineAtOffset(this.pageX, this.pageY)
         if (this.pageY < this.margins.bottomMargin) {
             newPage()
@@ -1180,72 +1189,51 @@ class PDFBoxDocRenderer implements NotNullTrait {
         restoreForegroundColor()
     }
 
-    /**
-     * Renders an image on the page.
-     *
-     * @param imageUrl The url to the image.
-     * @param scale the scale factor to apply to image size.
-     */
-    void image(String imageUrl, float scale) {
-        image(imageUrl, 0.0f, 0.0f, 0.0f, scale, 0.0f)
+    static final class ImageParam {
+        /** The url to the image. */
+        @NotNull String imageUrl
+
+        /** The x offset to render at or 0 for left page margin. The X_OFFSET_* constants can also be used. */
+        float xOffset = 0
+
+        /** The y offset to render at. Usually 0. */
+        float yOffset = 0
+
+        /** How much to add under image. Usually 0. */
+        float bottomAdd = 0
+
+        /** The scale factor to apply to image size. */
+        float scale = 0.60f
+
+        /** The number of degrees to rotate image. Note that image can become larger on all sides!! */
+        float rotate = 0.0f
+
+        /** If true then a hole is created for the image which will mean that text will flow around it */
+        boolean createHole = false
+
+        /** The margin around holes. */
+        float holeMargin = 4.0f
     }
 
     /**
      * Renders an image on the page.
      *
-     * @param imageUrl The url to the image.
-     * @param xOffset The x offset to render at or 0 for left page margin.
-     * @param scale the scale factor to apply to image size.
+     * @param param The named parameters to this method. @See ImageParam.
      */
-    void image(String imageUrl, float xOffset, float scale) {
-        image(imageUrl, xOffset, 0.0f, 0.0f, scale, 0.0f)
-    }
+    void image(ImageParam param) {
 
-    /**
-     * Renders an image on the page using information from an MSSImage instance.
-     *
-     * @param imageUrl The image url.
-     * @param mssImage The MSSImage instance to use for placement and scaling.
-     */
-    void image(String imageUrl, MSSImage mssImage) {
-        float xOffset = X_OFFSET_LEFT_ALIGNED
-        switch (mssImage.align) {
-            case MSSImage.Align.LEFT:
-                break
-            case MSSImage.Align.MIDDLE:
-                xOffset = X_OFFSET_CENTER
-                break
-            case MSSImage.Align.RIGHT:
-                xOffset = X_OFFSET_RIGHT_ALIGNED
-                break
-            case MSSImage.Align.CURRENT:
-                xOffset = X_OFFSET_CURRENT
-                break
-        }
-        image(imageUrl, xOffset, 0.0f, 0.0f, mssImage.scalePercent, mssImage.rotateDegrees)
-    }
+        this.holeMargin = param.holeMargin
 
-    /**
-     * Renders an image on the page.
-     *
-     * @param imageUrl The url to the image.
-     * @param xOffset The x offset to render at or 0 for left page margin. The X_OFFSET_* constants can also be used.
-     * @param yOffset The y offset to render at. Usually 0.
-     * @param bottomAdd How much to add under image. Usually 0.
-     * @param scale the scale factor to apply to image size.
-     * @param rotate The number of degrees to rotate image. Note that image can become larger on all sides!!
-     */
-    void image(String imageUrl, float xOffset, float yOffset, float bottomAdd, float scale, float rotate) {
         PDImageXObject image
-        URL url = new URL(imageUrl)
+        URL url = new URL(param.imageUrl)
 
-        if (scale > 1.0f) {
-            scale = scale / 100.0f as float
+        if (param.scale > 1.0f) {
+            param.scale = param.scale / 100.0f as float
         }
 
         // The dumb PDImageXObject API only allows loading from local file!! Thereby we have to go a little lower
         // than that. Since the TIFF support only loads from local file, TIFFs are not supported!
-        if (imageUrl.endsWith(".jpg") || imageUrl.endsWith(".jpeg")) {
+        if (param.imageUrl.endsWith(".jpg") || param.imageUrl.endsWith(".jpeg")) {
             image = JPEGFactory.createFromStream(this.docMgr.document, url.openStream())
         }
         else {
@@ -1253,32 +1241,32 @@ class PDFBoxDocRenderer implements NotNullTrait {
             image = LosslessFactory.createFromImage(this.docMgr.document, bufferedImage)
         }
 
-        float scaledWidth = image.width * scale
-        float scaledHeight = image.height * scale
+        float scaledWidth = image.width * param.scale
+        float scaledHeight = image.height * param.scale
 
         float imageX = this.pageX, imageY = (this.pageY - scaledHeight) + 8.0f
 
-        if (xOffset == X_OFFSET_LEFT_ALIGNED) {
+        if (param.xOffset == X_OFFSET_LEFT_ALIGNED) {
             imageX = this.margins.leftMargin
             if (this.pageX <= (this.margins.leftMargin + scaledWidth)) {
                 imageY -= (this.fontMSSAdapter.size + 2.0f)
             }
         }
-        if (xOffset == X_OFFSET_CENTER) {
+        if (param.xOffset == X_OFFSET_CENTER) {
             imageX = this.margins.leftMargin + ((this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin) / 2.0f) -
                     (scaledWidth / 2.0f) as float
             if (this.pageX >= imageX) {
                 imageY -= (this.fontMSSAdapter.size + 2.0f)
             }
         }
-        else if (xOffset == X_OFFSET_RIGHT_ALIGNED) {
+        else if (param.xOffset == X_OFFSET_RIGHT_ALIGNED) {
             imageX = this.pageFormat.width - (this.margins.rightMargin + scaledWidth)
             if (this.pageX >= (this.pageFormat.width - this.margins.rightMargin - scaledWidth)) {
                 imageY -= (this.fontMSSAdapter.size + 2.0f)
             }
         }
 
-        if (imageY - (yOffset + bottomAdd + 8.0f) < this.margins.bottomMargin) {
+        if (imageY - (param.yOffset + param.bottomAdd + 8.0f) < this.margins.bottomMargin) {
             newPage()
         }
         ensureTextModeOff()
@@ -1289,14 +1277,29 @@ class PDFBoxDocRenderer implements NotNullTrait {
                 imageX,
                 imageY
         );
-        at.rotate(Math.toRadians(rotate));
+        at.rotate(Math.toRadians(param.rotate));
         this.docMgr.docStream.drawImage(image, new Matrix(at));
 
-        this.textHoles << new TextHole(x: imageX, y: imageY + this.fontMSSAdapter.size, width: scaledWidth, height: scaledHeight + this.fontMSSAdapter.size)
+        if (param.createHole) {
+            this.textHoles << new TextHole(
+                    x: imageX,
+                    y: imageY + this.fontMSSAdapter.size,
+                    width: scaledWidth,
+                    height: scaledHeight + this.fontMSSAdapter.size
+            )
+        }
+        else {
+            newLine(scaledHeight + 2.0f as float)
+        }
 
         ensureTextMode(this.pageX, this.pageY)
     }
 
+    /**
+     * Renders a page number.
+     *
+     * @param pageNumber The page number to render.
+     */
     void pageNumber(int pageNumber) {
         String pgnStr = "${pageNumber}"
         ensureTextModeOff()

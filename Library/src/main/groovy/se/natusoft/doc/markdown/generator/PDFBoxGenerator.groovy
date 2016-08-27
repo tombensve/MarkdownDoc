@@ -52,6 +52,7 @@ import se.natusoft.doc.markdown.generator.pdfbox.StructuredNumber
 import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.generator.styles.MSS.MSS_Pages
 import se.natusoft.doc.markdown.generator.styles.MSSColor
+import se.natusoft.doc.markdown.generator.styles.MSSImage
 import se.natusoft.doc.markdown.model.*
 
 /**
@@ -824,7 +825,28 @@ class ParagraphWriter implements BoxedTrait {
     void writeImage(@NotNull Image image) {
         checkAndSetParagraphBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
 
-        doc.image(image.url, this.forDocument.imageStyle)
+        MSSImage mssImage = this.forDocument.imageStyle
+        float xOffset = PDFBoxDocRenderer.X_OFFSET_LEFT_ALIGNED
+        switch (mssImage.align) {
+            case MSSImage.Align.LEFT:
+                break
+            case MSSImage.Align.MIDDLE:
+                xOffset = PDFBoxDocRenderer.X_OFFSET_CENTER
+                break
+            case MSSImage.Align.RIGHT:
+                xOffset = PDFBoxDocRenderer.X_OFFSET_RIGHT_ALIGNED
+                break
+            case MSSImage.Align.CURRENT:
+                xOffset = PDFBoxDocRenderer.X_OFFSET_CURRENT
+                break
+        }
+
+        doc.image(new PDFBoxDocRenderer.ImageParam(
+                imageUrl: image.url,
+                xOffset: xOffset,
+                holeMargin: mssImage.imgFlowMargin,
+                createHole: mssImage.imgFlow
+        ))
 
         clearParagraphBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
     }
