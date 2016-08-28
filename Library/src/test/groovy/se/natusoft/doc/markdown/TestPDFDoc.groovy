@@ -37,14 +37,14 @@ class TestPDFDoc {
         doc.setColorPair(textColor)
 
         doc.center("Table of Content")
-        doc.tocEntry(new TOC(sectionNumber: "1.2.3", sectionTitle: "First toc entry", pageNumber: 1 ))
-        doc.tocEntry(new TOC(sectionNumber:  "1.2.3.4.5.6", sectionTitle:  "Second toc entry", pageNumber:  2),
-                new PDFBoxDocRenderer.TocSettings(sectionTitleColor: new MSSColorPair(
-                        foreground: MSSColor.BLUE,
-                        background: MSSColor.WHITE
-                ))
-        )
-        doc.tocEntry(new TOC(sectionTitle: "Thirds toc entry", pageNumber: 5))
+//        doc.tocEntry(new TOC(sectionNumber: "1.2.3", sectionTitle: "First toc entry", pageNumber: 1 ))
+//        doc.tocEntry(new TOC(sectionNumber:  "1.2.3.4.5.6", sectionTitle:  "Second toc entry", pageNumber:  2),
+//                new PDFBoxDocRenderer.TocSettings(sectionTitleColor: new MSSColorPair(
+//                        foreground: MSSColor.BLUE,
+//                        background: MSSColor.WHITE
+//                ))
+//        )
+        //doc.tocEntry(new TOC(sectionTitle: "Thirds toc entry", pageNumber: 5))
         doc.pageNoActive = true
         doc.newPage()
 

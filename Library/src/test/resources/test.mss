@@ -183,31 +183,34 @@
     "size": 10,
     "style": "NORMAL",
     "h1": {
-      "family": "COURIER",
-      "size": 9,
-      "style": "BOLD"
+      "family": "HELVETICA",
+      "size": 10,
+      "style": "NORMAL"
     },
     "h2": {
       "family": "HELVETICA",
-      "size": 9,
+      "size": 10,
       "style": "NORMAL"
     },
     "h3": {
       "family": "HELVETICA",
-      "size": 9,
+      "size": 10,
       "style": "NORMAL"
     },
     "h4": {
       "family": "HELVETICA",
-      "size": 9,
+      "size": 10,
       "style": "NORMAL"
     },
     "h5": {
       "family": "HELVETICA",
-      "size": 9,
+      "size": 10,
       "style": "NORMAL"
     },
     "h6": {
+      "family": "HELVETICA",
+      "size": 10,
+      "style": "NORMAL"
     }
   }
 }

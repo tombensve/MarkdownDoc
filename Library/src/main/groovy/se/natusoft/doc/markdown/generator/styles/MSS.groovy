@@ -267,7 +267,7 @@ class MSS {
     //
 
     /**
-     * A null safe way to get the cached "document" section of the MSS.
+     * A null safeNameValidation way to get the cached "document" section of the MSS.
      */
     @NotNull private JSONObject getDocument() {
         if (this._document == null) {
@@ -281,7 +281,7 @@ class MSS {
     }
 
     /**
-     * A null safe way to get the "pages" section of the MSS.
+     * A null safeNameValidation way to get the "pages" section of the MSS.
      */
     @NotNull private JSONObject getPages() {
         if (this._pages == null) {
@@ -295,7 +295,7 @@ class MSS {
     }
 
     /**
-     * A null safe way to get the "divs" section of the MSS.
+     * A null safeNameValidation way to get the "divs" section of the MSS.
      */
     @NotNull private JSONObject getDivs() {
         if (this._divs == null) {
@@ -309,7 +309,7 @@ class MSS {
     }
 
     /**
-     * A null safe way to get the "front_page" section of the MSS.
+     * A null safeNameValidation way to get the "front_page" section of the MSS.
      */
     @NotNull private JSONObject getFrontPage() {
         if (this._frontPage == null) {
@@ -323,7 +323,7 @@ class MSS {
     }
 
     /**
-     * A null safe way to get the "toc" section of the MSS.
+     * A null safeNameValidation way to get the "toc" section of the MSS.
      */
     @NotNull private JSONObject getTOC() {
         if (this._toc == null) {
@@ -339,7 +339,7 @@ class MSS {
     /**
      * Gets a JSONObject value and handles null by throwing an IOException.
      * <p/>
-     * So why not use the null-safe operator in Groovy ? Because I don't just want to return a null back,
+     * So why not use the null-safeNameValidation operator in Groovy ? Because I don't just want to return a null back,
      * not providing any clue as to what went wrong! Any nulls here is probably because the user has done
      * something wrong in the MSS file, and the provided error message is to help the user find where.
      *
@@ -1203,12 +1203,6 @@ class MSS {
      */
     private static void validateMSS(@NotNull final JSONObject jssPart, @NotNull final String path) throws IOException {
 
-//        try (InputStream inputStream = getClass().getResourceAsStream("/path/to/your/schema.json")) {
-//            JSONObject rawSchema = new JSONObject(new JSONTokener(inputStream));
-//            Schema schema = SchemaLoader.load(rawSchema);
-//            schema.validate(new JSONObject("{\"hello\" : \"world\"}")); // throws a ValidationException if this object is invalid
-//        }
-
         jssPart.propertyNames.each { final JSONString name ->
             if (!validName(name.toString())) {
                 if (!path.endsWith("divs/") && !path.endsWith("colors/")) {
@@ -1233,43 +1227,43 @@ class MSS {
         boolean ok = false
 
         if (!ok) {
-            ok = safe { MSS_Top.valueOf(name) != null }
+            ok = safeNameValidation { MSS_Top.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe { MSS_Document.valueOf(name) != null }
+            ok = safeNameValidation { MSS_Document.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe { MSS_Pages.valueOf(name) != null }
+            ok = safeNameValidation { MSS_Pages.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe { MSS_Front_Page.valueOf(name) != null }
+            ok = safeNameValidation { MSS_Front_Page.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe { MSS_TOC.valueOf(name) != null }
+            ok = safeNameValidation { MSS_TOC.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe { MSS_Font.valueOf(name) != null }
+            ok = safeNameValidation { MSS_Font.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe { MSS_Colors.valueOf(name) != null }
+            ok = safeNameValidation { MSS_Colors.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe { MSS_PDF.valueOf(name) != null }
+            ok = safeNameValidation { MSS_PDF.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe { MSS_IMAGE.valueOf(name) != null }
+            ok = safeNameValidation { MSS_IMAGE.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe { MSS_Page.valueOf(name) != null }
+            ok = safeNameValidation { MSS_Page.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe { MSS_Boxed.valueOf(name) != null }
+            ok = safeNameValidation { MSS_Boxed.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe { MSS_HR.valueOf(name) != null }
+            ok = safeNameValidation { MSS_HR.valueOf(name) != null }
         }
         if (!ok) {
-            ok = safe { MSS_SectionNumber.valueOf(name) != null }
+            ok = safeNameValidation { MSS_SectionNumber.valueOf(name) != null }
         }
         if (!ok) {
             if (name.startsWith("#") || name.startsWith("*")) ok = true
@@ -1278,7 +1272,7 @@ class MSS {
         ok
     }
 
-    private static boolean safe(@NotNull final Closure<Boolean> enumCheck) {
+    private static boolean safeNameValidation(@NotNull final Closure<Boolean> enumCheck) {
         try {
             return enumCheck.call()
         }

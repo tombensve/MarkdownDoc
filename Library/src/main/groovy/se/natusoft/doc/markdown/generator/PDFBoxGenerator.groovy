@@ -38,6 +38,7 @@ package se.natusoft.doc.markdown.generator
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
+import org.apache.pdfbox.pdmodel.PDPage
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.api.Generator
@@ -46,8 +47,11 @@ import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.models.TOC
 import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxDocRenderer
+import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxFontMSSAdapter
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxStylesMSSAdapter
 import se.natusoft.doc.markdown.generator.pdfbox.PageMargins
+import se.natusoft.doc.markdown.generator.styles.MSSColorPair
+import se.natusoft.doc.markdown.generator.styles.MSSFont
 import se.natusoft.doc.markdown.util.StructuredNumber
 import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.generator.styles.MSS.MSS_Pages
@@ -188,7 +192,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
             context.pdfStyles.mss = MSS.defaultMSS()
         }
 
-        PDFBoxDocRenderer doc = new PDFBoxDocRenderer(
+        PDFBoxDocRenderer renderer = new PDFBoxDocRenderer(
                 margins: new PageMargins(
                         topMargin:    context.pdfStyles.mss.forDocument.topMargin,
                         bottomMargin: context.pdfStyles.mss.forDocument.bottomMargin,
@@ -198,7 +202,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                 pageSize: context.options.pageSize,
                 pageNoActive: true
         )
-        doc.newPage()
+        renderer.newPage()
 
         final LinkedList<String> divs = new LinkedList<>()
 
@@ -211,7 +215,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                     // We skip comments in general, but act on "@PB" within the comment for doing a page break.
                     final Comment comment = (Comment)docItem;
                     if (comment.text.indexOf("@PB") >= 0) {
-                        doc.newPage()
+                        renderer.newPage()
                     }
                     // and also act on @PDFTitle, @PDFSubject, @PDFKeywords, @PDFAuthor, @PDFVersion, and @PDFCopyright
                     // for overriding those settings in the options. This allows the document rather than the generate
@@ -220,27 +224,27 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                     break
 
                 case DocFormat.Paragraph:
-                    writeParagraph(docItem as Paragraph, doc, context)
+                    writeParagraph(docItem as Paragraph, renderer, context)
                     break
 
                 case DocFormat.Header:
-                    writeHeader(docItem as Header, doc, context)
+                    writeHeader(docItem as Header, renderer, context)
                     break
 
                 case DocFormat.BlockQuote:
-                    writeBlockQuote(docItem as BlockQuote, doc, context)
+                    writeBlockQuote(docItem as BlockQuote, renderer, context)
                     break;
 
                 case DocFormat.CodeBlock:
-                    writeCodeBlock(docItem as CodeBlock, doc, context)
+                    writeCodeBlock(docItem as CodeBlock, renderer, context)
                     break
 
                 case DocFormat.HorizontalRule:
-                    writeHr(doc, context)
+                    writeHr(renderer, context)
                     break
 
                 case DocFormat.List:
-                    writeList(docItem as List, doc, context)
+                    writeList(docItem as List, renderer, context)
                     break
 
                 case DocFormat.Div:
@@ -258,7 +262,11 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
             }
         }
 
-        doc.save(resultStream)
+        writeToc(renderer, context)
+
+        //writeTitlePage(doc, context)
+
+        renderer.save(resultStream)
     }
 
     /**
@@ -429,31 +437,31 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * Handles writing of paragraphs taking care of in paragraph formatting.
      *
      * @param paragraph The paragraph to write.
-     * @param doc The PDF document renderer.
+     * @param renderer The PDF document renderer.
      * @param context The generator context.
      */
-    static void writeParagraph(@NotNull Paragraph paragraph, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
-        doc.newSection()
-        writeParagraphContent(paragraph, doc, context)
+    static void writeParagraph(@NotNull Paragraph paragraph, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
+        renderer.newSection()
+        writeParagraphContent(paragraph, renderer, context)
     }
 
     /**
      * Handles writing of paragraphs taking care of in paragraph formatting.
      *
      * @param paragraph The paragraph to write.
-     * @param doc The PDF document renderer.
+     * @param renderer The PDF document renderer.
      * @param context The generator context.
      */
-    static void writeParagraphContent(@NotNull Paragraph paragraph, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
+    static void writeParagraphContent(@NotNull Paragraph paragraph, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
 
-        ParagraphWriter pw = new ParagraphWriter(doc: doc, context: context)
-        pw.doc = doc
+        ParagraphWriter pw = new ParagraphWriter(doc: renderer, context: context)
+        pw.doc = renderer
         pw.context = context
 
         boolean first = true
         paragraph.items.each { final DocItem docItem ->
             if (docItem.renderPrefixedSpace && !first) {
-                doc.text("  ")
+                renderer.text("  ")
             }
             first = false
 
@@ -503,119 +511,119 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * Writes a header.
      *
      * @param header The header text to write and the header level.
-     * @param doc The PDF document renderer
+     * @param renderer The PDF document renderer
      * @param context The generator context.
      */
-    void writeHeader(@NotNull Header header, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
+    void writeHeader(@NotNull Header header, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
         String outlineTitle = ""
         if (this.headerNumber != null) {
             this.headerNumber = this.headerNumber.toLevelAndIncrement(header.level.level)
             outlineTitle += this.headerNumber.root.toString() + ". "
         }
         outlineTitle += header.text
-
-        context.toc.add(new TOC(section: context.level, sectionNumber: this.headerNumber.root.toString(), pageNumber: doc.currentPageNumber))
-        doc.addOutlineEntry(this.headerNumber.root, outlineTitle, doc.currentPage)
+        MSS.MSS_TOC tocSection = MSS.MSS_TOC.valueOf("h" + header.level.level)
+        context.toc.add(new TOC(section: tocSection, sectionNumber: this.headerNumber.root.toString(), sectionTitle: header.text,
+                pageNumber: renderer.currentPageNumber))
+        renderer.addOutlineEntry(this.headerNumber.root, outlineTitle, renderer.currentPage)
 
         MSS_Pages section = MSS_Pages.valueOf("h" + header.level.level)
 
-        doc.setStyle(context.pdfStyles, section)
-        doc.setColorPair(context.pdfStyles.mss.forDocument.getColorPair(section))
+        renderer.setStyle(context.pdfStyles, section)
+        renderer.setColorPair(context.pdfStyles.mss.forDocument.getColorPair(section))
 
-        doc.newSection()
+        renderer.newSection()
 
         if (this.headerNumber != null) {
             float sectionNumberYOffset = context.pdfStyles.mss.forDocument.getSectionNumberYOffset(section)
             float sectionNumberXOffset = context.pdfStyles.mss.forDocument.getSectionNumberXOffset(section)
 
-            doc.pageY -= sectionNumberYOffset
-            doc.pageX += sectionNumberXOffset
-            doc.rawText(this.headerNumber.root.toString() + ". ")
-            doc.pageY += sectionNumberYOffset
-            //doc.pageX -= sectionNumberXOffset
+            renderer.pageY -= sectionNumberYOffset
+            renderer.pageX += sectionNumberXOffset
+            renderer.rawText(this.headerNumber.root.toString() + ". ")
+            renderer.pageY += sectionNumberYOffset
         }
 
-        doc.text(header.text)
-        doc.newLine()
+        renderer.text(header.text)
+        renderer.newLine()
     }
 
     /**
      * Writes a block quote.
      *
      * @param blockQuote The bock quote text to write.
-     * @param doc The PDF document renderer.
+     * @param renderer The PDF document renderer.
      * @param context The generator context.
      */
-    static void writeBlockQuote(@NotNull BlockQuote blockQuote, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
-        checkAndSetBoxed(MSS_Pages.block_quote, doc, context.pdfStyles.mss)
+    static void writeBlockQuote(@NotNull BlockQuote blockQuote, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
+        checkAndSetBoxed(MSS_Pages.block_quote, renderer, context.pdfStyles.mss)
 
-        doc.newSection()
+        renderer.newSection()
         blockQuote.items.each { final DocItem docItem ->
             // There should only be plain texts here, but to be sure …
             if (PlainText.class.isAssignableFrom(docItem.class)) {
-                doc.text((docItem as PlainText).text) {
-                    doc.setStyle(context.pdfStyles, MSS_Pages.block_quote)
-                    doc.setColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.block_quote))
+                renderer.text((docItem as PlainText).text) {
+                    renderer.setStyle(context.pdfStyles, MSS_Pages.block_quote)
+                    renderer.setColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.block_quote))
                 }
             }
         }
 
-        clearBoxed(doc)
+        clearBoxed(renderer)
     }
 
     /**
      * Writes a code block.
      *
      * @param codeBlock The code block text to write.
-     * @param doc The PDF document renderer.
+     * @param renderer The PDF document renderer.
      * @param context The generator context.
      */
-    static void writeCodeBlock(@NotNull CodeBlock codeBlock, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
-        doc.newSection()
+    static void writeCodeBlock(@NotNull CodeBlock codeBlock, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
+        renderer.newSection()
 
-        checkAndSetBoxed(MSS_Pages.code, doc, context.pdfStyles.mss)
+        checkAndSetBoxed(MSS_Pages.code, renderer, context.pdfStyles.mss)
 
         codeBlock.items.each { final DocItem docItem ->
             // There should only be plain texts here, but to be sure …
             if (PlainText.class.isAssignableFrom(docItem.class)) {
 
-                doc.preFormattedText((docItem as PlainText).text) {
-                    doc.setStyle(context.pdfStyles, MSS_Pages.code)
-                    doc.setColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.code))
+                renderer.preFormattedText((docItem as PlainText).text) {
+                    renderer.setStyle(context.pdfStyles, MSS_Pages.code)
+                    renderer.setColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.code))
                 }
             }
         }
 
-        clearBoxed(doc)
-        doc.newLine()
+        clearBoxed(renderer)
+        renderer.newLine()
     }
 
     /**
      * Writes a horizontal ruler.
      *
-     * @param doc The PDF document renderer
+     * @param renderer The PDF document renderer
      * @param context The generator context.
      */
-    static void writeHr( @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
-        doc.hr(context.pdfStyles.mss.forDocument.hrThickness, context.pdfStyles.mss.forDocument.hrColor)
+    static void writeHr( @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
+        renderer.hr(context.pdfStyles.mss.forDocument.hrThickness, context.pdfStyles.mss.forDocument.hrColor)
     }
 
     /**
      * Writes a list.
      *
      * @param list The list to write.
-     * @param doc The PDF document renderer
+     * @param renderer The PDF document renderer
      * @param context The generator context.
      */
-    static void writeList(@NotNull List list, @NotNull PDFBoxDocRenderer doc, @NotNull PDFGeneratorContext context) {
-        doc.setStyle(context.pdfStyles, MSS_Pages.list_item)
-        doc.setColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.list_item))
+    static void writeList(@NotNull List list, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
+        renderer.setStyle(context.pdfStyles, MSS_Pages.list_item)
+        renderer.setColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.list_item))
 
         StructuredNumber num = null
         if (list.isOrdered()) {
             num = new StructuredNumber(digit: 0, endWithDot: true)
         }
-        writeListPart(list, 0.0f, num, doc, context)
+        writeListPart(list, 0.0f, num, renderer, context)
     }
 
     /**
@@ -624,43 +632,43 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param list The list to write.
      * @param leftInset The current isnet ot the left.
      * @param num The current number if ordered, null otherwise.
-     * @param doc The PDF document renderer
+     * @param renderer The PDF document renderer
      * @param context The generator context.
      */
     private static void writeListPart(
             @NotNull List list,
             @NotNull float leftInset,
             @Nullable StructuredNumber num,
-            @NotNull PDFBoxDocRenderer doc,
+            @NotNull PDFBoxDocRenderer renderer,
             @NotNull PDFGeneratorContext context
     ) {
         list.items.each { final DocItem item ->
 
             if (item instanceof ListItem) {
-                float oldInset = doc.leftInset
-                doc.leftInset = leftInset
-                doc.newLine()
+                float oldInset = renderer.leftInset
+                renderer.leftInset = leftInset
+                renderer.newLine()
                 if (num != null) {
                     num.increment()
-                    doc.text("${num.root} ")
+                    renderer.text("${num.root} ")
                 }
                 else {
-                    doc.text("${context.options.unorderedListItemPrefix}")
+                    renderer.text("${context.options.unorderedListItemPrefix}")
                 }
 
                 item.items.each { final DocItem pg ->
                     if (Paragraph.class.isAssignableFrom(pg.class)) {
-                        writeParagraphContent(pg as Paragraph, doc, context)
+                        writeParagraphContent(pg as Paragraph, renderer, context)
                     }
                 }
-                doc.leftInset = oldInset
+                renderer.leftInset = oldInset
             }
             else if (item instanceof List) {
 
                 if (num != null) {
                     num = num.newDigit()
                 }
-                writeListPart(item as List, leftInset + 15.0f as float, num, doc, context)
+                writeListPart(item as List, leftInset + 15.0f as float, num, renderer, context)
                 if (num != null) {
                     num = num.deleteThisDigit()
                 }
@@ -671,6 +679,30 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
         }
     }
+
+    /**
+     * Writes a table of contents at the top of the document.
+     *
+     * @param renderer The PDF renderer.
+     * @param context The current generator context.
+     */
+    void writeToc(PDFBoxDocRenderer renderer, PDFGeneratorContext context) {
+        PDFBoxDocRenderer.TocPage tocPage = renderer.createTocPage()
+
+        context.toc.each { TOC toc ->
+
+            MSSColorPair colorPair = context.pdfStyles.mss.forTOC.getColorPair(toc.section)
+            renderer.setColorPair(colorPair)
+
+            MSSFont font = context.pdfStyles.mss.forTOC.getFont(toc.section)
+            renderer.setFont(new PDFBoxFontMSSAdapter(font))
+
+            renderer.tocEntry(toc, true) {
+                tocPage.newPage()
+            }
+        }
+    }
+
 }
 
 /**

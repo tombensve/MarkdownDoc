@@ -208,6 +208,16 @@ class PDFBoxDocRenderer implements NotNullTrait {
         int pageNumber = 0
 
         //
+        // Inner Classes
+        //
+
+        enum NewPagePosition {
+            FIRST,
+            LAST,
+            AFTER_CURRENT
+        }
+
+        //
         // Methods
         //
 
@@ -215,19 +225,58 @@ class PDFBoxDocRenderer implements NotNullTrait {
          * Creates a new page.
          */
         void newPage() {
+            newPage(NewPagePosition.LAST)
+        }
+
+        /**
+         * Creates a new page.
+         *
+         * @param newPagePosition Where to add the new page.
+         */
+        void newPage(NewPagePosition newPagePosition) {
             ++this.pageNumber
-            docPage = new PDPage()
-            docPage.setMediaBox(PDFBoxDocRenderer.this.pageFormat)
-            document.addPage(docPage)
+            PDPage page = new PDPage()
+            page.setMediaBox(PDFBoxDocRenderer.this.pageFormat)
+
+            switch (newPagePosition) {
+                case NewPagePosition.LAST:
+                    this.document.addPage(page)
+                    break
+
+                case NewPagePosition.FIRST:
+                    this.document.pages.insertBefore(page, this.document.pages.get(0))
+                    break
+
+                case NewPagePosition.AFTER_CURRENT:
+                    this.document.pages.insertAfter(page, this.docPage)
+                    break
+            }
+            this.docPage = page
+
             if (this.docStream != null) {
                 ensureTextModeOff()
                 this.docStream.close()
             }
             this.docStream = new PDPageContentStream(this.document, this.docPage)
 
-            bgDocPage = new PDPage()
-            bgDocPage.setMediaBox(PDFBoxDocRenderer.this.pageFormat)
-            bgDocument.addPage(bgDocPage)
+            PDPage bgPage = new PDPage()
+            bgPage.setMediaBox(PDFBoxDocRenderer.this.pageFormat)
+
+            switch (newPagePosition) {
+                case NewPagePosition.LAST:
+                    this.bgDocument.addPage(bgPage)
+                    break
+
+                case NewPagePosition.FIRST:
+                    this.bgDocument.pages.insertBefore(bgPage, this.bgDocument.pages.get(0))
+                    break
+
+                case NewPagePosition.AFTER_CURRENT:
+                    this.bgDocument.pages.insertAfter(bgPage, this.bgDocPage)
+                    break
+            }
+            this.bgDocPage = bgPage
+
             if (this.bgDocStream != null) {
                 this.bgDocStream.close()
             }
@@ -236,15 +285,18 @@ class PDFBoxDocRenderer implements NotNullTrait {
     }
 
     /**
-     * Settings for tocEntry(...).
+     * Support for writing TOC.
      */
-    static class TocSettings {
-        boolean useDots = true
-        MSSColorPair sectionNumberColor = DEFAULT_COLOR_PAIR
-        MSSColorPair sectionTitleColor = DEFAULT_COLOR_PAIR
-        MSSColorPair pageNumberColor = DEFAULT_COLOR_PAIR
-        MSSColorPair dotsColor = DEFAULT_COLOR_PAIR
-        PDFBoxStylesMSSAdapter styles = null
+    class TocPage {
+        TocPage() {
+            docMgr.newPage(DocMgr.NewPagePosition.FIRST)
+            PDFBoxDocRenderer.this.positionAtTopOfPage()
+        }
+
+        void newPage() {
+            docMgr.newPage(DocMgr.NewPagePosition.AFTER_CURRENT)
+            PDFBoxDocRenderer.this.positionAtTopOfPage()
+        }
     }
 
     //
@@ -706,69 +758,66 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Writes a TOC entry.
      *
      * @param tocEntry The toc entry to render plus rendering info
-     * @param tocSettings Style settings for TOC.
+     * @param useDots If true dots will be rendered between section title and page number.
+     * @param dotFactor The font size is divided by this value and the result is appended to the calculated width of a '.' char.
+     *                  What value to use depends on the font and also partly on the size of the font.
+     * @param newPage A closure to call to create a new page.
      */
     @SuppressWarnings("UnnecessaryQualifiedReference")
     void tocEntry(
             @NotNull TOC tocEntry,
-            @NotNull TocSettings tocSettings = new TocSettings()
+            boolean useDots = false,
+            //float dotFactor,
+            Closure<Void> newPage
     ) {
-        MSSColorPair origColors = this.colors
-        PDFBoxStylesMSSAdapter origStyles = this.stylesMSSAdapter
-        MSS.Section origSection = this.section
         ensureTextModeOff()
 
         this.pageX = this.margins.leftMargin
 
-        setStyle(tocSettings.styles, tocEntry.section)
-
         // Section number if any
         if (tocEntry.sectionNumber != null) {
-            setColorPair(tocSettings.sectionNumberColor)
-            ensureTextMode(this.pageX, this.pageY)
-            this.text(tocEntry.sectionNumber)
-            ensureTextModeOff()
-            this.pageX = this.margins.leftMargin + 60.0f
+            positionTextAtPageLocation()
+            rawText(tocEntry.sectionNumber)
+            this.pageX = this.margins.leftMargin + calcTextWidth("0.0.0.0.0.0   ")
         }
 
         // Section title
-        ensureTextMode(this.pageX, this.pageY)
-        float titleEnd = (this.pageX + calcTextWidth(tocEntry.sectionTitle) - 20.0f) as float
-        setColorPair(tocSettings.sectionTitleColor)
-        this.text(tocEntry.sectionTitle)
-        ensureTextModeOff()
+        positionTextAtPageLocation()
+        float titleEnd = (this.pageX + calcTextWidth(tocEntry.sectionTitle)) as float
+        rawText(tocEntry.sectionTitle)
 
         // Page number
-        float pagePos = (this.pageFormat.width - this.margins.rightMargin - calcTextWidth(TOC_FONT, "${pageNo}")) as float
-        ensureTextMode(pagePos, this.pageY)
-        setColorPair(tocSettings.pageNumberColor)
-        this.text("${tocEntry.pageNumber}")
-        ensureTextModeOff()
+        this.pageX = (this.pageFormat.width - this.margins.rightMargin - calcTextWidth(this.fontMSSAdapter, "${pageNo}")) as float
+
+        positionTextAtPageLocation()
+        rawText("${tocEntry.pageNumber}")
 
         // Dots between title and page number.
-        if (tocSettings.useDots) {
-            setColorPair(tocSettings.dotsColor)
-            float dotsSize = pagePos - titleEnd
-            // The magic number 50.0 was arrived at by playing with a calculator and testing :-) This works for font sizes 8 - 13.
-            // This code does not support larger font sizes since then the columns start overwriting each other.
-            float dotSize = calcTextWidth(TOC_FONT, ".") + (TOC_FONT.size / 50.0f as float)
-            int noDots = (dotsSize / dotSize) as int
+        if (useDots) {
+            // We subtract the size of 3 large characters (X) from the width to fill with dots to give a little space on both sides.
+            // This seems to work rather nicely for COURIER and HELVETICA fonts at least.
+            float dotsSize = this.pageX - titleEnd - calcTextWidth(this.fontMSSAdapter, "XXX")
+
             StringBuilder sb = new StringBuilder()
-            noDots.times {
+            while (calcTextWidth(this.fontMSSAdapter, sb.toString()) < dotsSize) {
                 sb.append('.')
             }
-            ensureTextMode((pagePos - calcTextWidth(TOC_FONT, sb.toString()) - 6.0f) as float, this.pageY)
-            this.docMgr.docStream.showText(sb.toString())
-            ensureTextModeOff()
+            this.pageX = (this.pageX - calcTextWidth(this.fontMSSAdapter, sb.toString()) - 10.0f) as float
+            positionTextAtPageLocation()
+            rawText(sb.toString())
         }
 
-        setColorPair(origColors)
-        setStyle(origStyles, origSection)
-
-        this.pageY -= TOC_FONT.size + 2
+        this.pageY -= this.fontMSSAdapter.size + 2
         if (this.pageY <= this.margins.bottomMargin) {
-            newPage()
+            newPage.call()
         }
+    }
+
+    /**
+     * @return a new TocPage.
+     */
+    TocPage createTocPage() {
+        new TocPage()
     }
 
     /**
@@ -1130,6 +1179,17 @@ class PDFBoxDocRenderer implements NotNullTrait {
     }
 
     /**
+     * Positions rendering at the top of the page.
+     */
+    void positionAtTopOfPage() {
+        this.pageX = this.margins.leftMargin
+        this.pageY = this.pageFormat.height - this.margins.topMargin
+
+        ensureTextMode()
+        this.docMgr.docStream.newLineAtOffset(this.pageLocation.x, this.pageLocation.y)
+    }
+
+    /**
      * Creates a new page.
      */
     void newPage() {
@@ -1143,11 +1203,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         this.docMgr.newPage()
 
-        this.pageX = this.margins.leftMargin
-        this.pageY = this.pageFormat.height - this.margins.topMargin
-
-        ensureTextMode()
-        this.docMgr.docStream.newLineAtOffset(this.pageLocation.x, this.pageLocation.y)
+        positionAtTopOfPage()
 
         applyFontInternal()
 

@@ -37,13 +37,13 @@
         -->
         <!--
             This one provides much better documentation and does not use Jackson. It claims to be twice as fast
-            as the above, and not using Jackson is probably the reason :-). I have used Jackson and is not impressed.
+            as the above, and not using Jackson is probably the reason :-). s
         -->
-        <dependency>
-            <groupId>org.everit.json</groupId>
-            <artifactId>org.everit.json.schema</artifactId>
-            <version>1.4.0</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.everit.json</groupId>-->
+            <!--<artifactId>org.everit.json.schema</artifactId>-->
+            <!--<version>1.4.0</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
