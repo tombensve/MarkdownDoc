@@ -38,7 +38,6 @@ package se.natusoft.doc.markdown.generator
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
-import org.apache.pdfbox.pdmodel.PDPage
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.api.Generator
@@ -50,14 +49,10 @@ import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxDocRenderer
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxFontMSSAdapter
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxStylesMSSAdapter
 import se.natusoft.doc.markdown.generator.pdfbox.PageMargins
-import se.natusoft.doc.markdown.generator.styles.MSSColorPair
-import se.natusoft.doc.markdown.generator.styles.MSSFont
-import se.natusoft.doc.markdown.util.StructuredNumber
-import se.natusoft.doc.markdown.generator.styles.MSS
+import se.natusoft.doc.markdown.generator.styles.*
 import se.natusoft.doc.markdown.generator.styles.MSS.MSS_Pages
-import se.natusoft.doc.markdown.generator.styles.MSSColor
-import se.natusoft.doc.markdown.generator.styles.MSSImage
 import se.natusoft.doc.markdown.model.*
+import se.natusoft.doc.markdown.util.StructuredNumber
 
 /**
  * Generates a PDF document using PDFBox to generate PDF.
@@ -192,6 +187,10 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
             context.pdfStyles.mss = MSS.defaultMSS()
         }
 
+        if (!"A0 A1 A2 A3 A4 A5 A6 LEGAL LETTER".contains(context.pdfStyles.mss.pageFormat)) {
+            throw new GenerateException(message: "Used MSS file declares bad 'pageFormat'! Valid values are A0-A6, LEGAL, LETTER.")
+        }
+
         PDFBoxDocRenderer renderer = new PDFBoxDocRenderer(
                 margins: new PageMargins(
                         topMargin:    context.pdfStyles.mss.forDocument.topMargin,
@@ -199,7 +198,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                         leftMargin:   context.pdfStyles.mss.forDocument.leftMargin,
                         rightMargin:  context.pdfStyles.mss.forDocument.rightMargin,
                 ),
-                pageSize: context.options.pageSize,
+                pageSize: context.pdfStyles.mss.pageFormat,
                 pageNoActive: true
         )
         renderer.newPage()
@@ -404,9 +403,6 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
         }
         updated |= updateOptsFromAnnotation("@PDFTableOfContentsLabel", comment) { final String text ->
             context.options.tableOfContentsLabel = text
-        }
-        updated |= updateOptsFromAnnotation("@PDFPageSize", comment) { final String text ->
-            context.options.pageSize = text
         }
         updated |= updateOptsFromAnnotation("@PDFHideLinks", comment) { final String text ->
             context.options.hideLinks = Boolean.valueOf(text)

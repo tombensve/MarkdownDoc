@@ -25,10 +25,11 @@
     "blue": "0:0:180"
   },
   "document": {
-    "leftMargin": 50,
-    "rightMargin": 50,
-    "topMargin": 40,
-    "bottomMargin": 50,
+    "pageFormat": "A4",
+    "leftMargin": "2.5cm",
+    "rightMargin": "2.5cm",
+    "topMargin": "2cm",
+    "bottomMargin": "2cm",
 
     "color": "0:0:0",
     "background": "ff:ff:ff",
@@ -44,7 +45,7 @@
 
     "pages": {
       "image": {
-        "imgScalePercent": 60.0,
+        "imgScalePercent": 50.0,
         "imgAlign": "LEFT",
         "imgRotateDegrees": 0.0,
         "imgFlow": false,

@@ -65,12 +65,6 @@ class PDFGeneratorOptions implements Options {
     String rootDir = null
 
     @Option
-    @Name("pageSize")
-    @Description("The pagesize name like LETTER or A4.")
-    @Optional
-    String pageSize = PDFBoxDocRenderer.A4
-
-    @Option
     @Name("title")
     @Description("The title of the document")
     @Optional

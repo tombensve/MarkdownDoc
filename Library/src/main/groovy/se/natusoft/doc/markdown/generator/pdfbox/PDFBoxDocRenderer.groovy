@@ -1332,6 +1332,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         if (imageY - (param.yOffset + param.bottomAdd + 8.0f) < this.margins.bottomMargin) {
             newPage()
+            imageY = this.pageY - scaledHeight
         }
         ensureTextModeOff()
         AffineTransform at = new AffineTransform(

@@ -82,10 +82,12 @@ class MSS {
         divs
     }
 
+
     /**
      * This represents values of the "document" section of the MSS that provides general page data.
      */
     static enum MSS_Page {
+        pageFormat,
         topMargin,
         leftMargin,
         rightMargin,
@@ -647,36 +649,94 @@ class MSS {
         ensureImage(image)
     }
 
+    private float cmToInch(float cm) { cm * (1.0f / 2.54f) }
+    private float inchToPt(float inch) { inch * 72.0f }
+
+    /**
+     * This converts a value into PDF points. If the value is a number points is assumed. If it is a string
+     * then one of the following 3 suffixes are required: pt, cm, or in.
+     *
+     * @param mVal The JSON value to convert.
+     *
+     * @return A float in points.
+     */
+    private float marginToFloat(@NotNull JSONValue mVal) {
+        if (mVal == null) throw new IllegalArgumentException("marginToFloat(val) cannot be null!")
+
+        float margin
+
+        switch (mVal) {
+            case { it instanceof JSONNumber }:
+                margin = (mVal as JSONNumber).toFloat()
+                break
+
+            case { it instanceof JSONString && it.toString().endsWith("pt") }:
+                def val = mVal.toString()[0..(mVal.toString().size()-3)].trim()
+                margin = Float.valueOf(val)
+                break
+
+            case { it instanceof JSONString && it.toString().endsWith("cm") }:
+                def val = mVal.toString()[0..(mVal.toString().size()-3)].trim()
+                margin = inchToPt(cmToInch(Float.valueOf(val)))
+                break
+
+            case { it instanceof JSONString && it.toString().endsWith("in") }:
+                def val = mVal.toString()[0..(mVal.toString().size()-3)].trim()
+                margin = inchToPt(Float.valueOf(val))
+                break
+            default:
+                throw new IllegalArgumentException("'${mVal}' as bad specification! Either specify points in numeric format or " +
+                        "a string with a size and a pt/cm/in suffix.")
+        }
+
+    }
+
+    /**
+     * Returns the passed value if non null other wise the default value.
+     *
+     * @param value The value to check for null.
+     * @param defaultValue The default value to use if value is null.
+     */
+    private static JSONValue nullToDefault(JSONValue value, JSONValue defaultValue) {
+        value != null ? value : defaultValue
+    }
+
+    /**
+     * Returns the page format.
+     */
+    @NotNull String getPageFormat() {
+        String value = this.document?.getProperty(MSS_Page.pageFormat.name())?.toString()?.toUpperCase()
+        if (value == null) value = "A4"
+
+        value
+    }
+
     /**
      * Returns the top margin of a page.
      */
     @NotNull float getTopMarginForDocument() {
-        JSONNumber margin = this.document?.getProperty(MSS_Page.topMargin.name()) as JSONNumber
-        margin != null ? margin.toFloat() : 50.0f
+        marginToFloat(nullToDefault(this.document?.getProperty(MSS_Page.topMargin.name()), new JSONString("2.5cm")))
     }
 
     /**
      * Returns the left margin of a page.
      */
     @NotNull float getLeftMarginForDocument() {
-        JSONNumber margin = this.document?.getProperty(MSS_Page.leftMargin.name()) as JSONNumber
-        margin != null ? margin.toFloat() : 50.0f
+        marginToFloat(nullToDefault(this.document?.getProperty(MSS_Page.leftMargin.name()), new JSONString("3cm")))
     }
 
     /**
      * Returns the right margin of a page.
      */
     @NotNull float getRightMarginForDocument() {
-        JSONNumber margin = this.document?.getProperty(MSS_Page.rightMargin.name()) as JSONNumber
-        margin != null ? margin.toFloat() : 50.0f
+        marginToFloat(nullToDefault(this.document?.getProperty(MSS_Page.rightMargin.name()), new JSONString("3cm")))
     }
 
     /**
      * Returns the bottom margin of a page.
      */
     @NotNull float getBottomMarginForDocument() {
-        JSONNumber margin = this.document?.getProperty(MSS_Page.bottomMargin.name()) as JSONNumber
-        margin != null ? margin.toFloat() : 50.0f
+        marginToFloat(nullToDefault(this.document?.getProperty(MSS_Page.bottomMargin.name()), new JSONString("2.5cm")))
     }
 
     /**
