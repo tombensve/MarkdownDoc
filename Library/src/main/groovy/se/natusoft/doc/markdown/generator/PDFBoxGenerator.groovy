@@ -686,13 +686,65 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
     }
 
     /**
+     * Writes an image to the current page. This variant for non paragraph images, like title page.
+     *
+     * @param imgUrl The url or local location of the image to write.
+     * @param x The x coordinate of the image.
+     * @param y The y coordinate of the image.
+     * @param mssImage The mss image information.
+     */
+    void writeImage(PDFBoxDocRenderer renderer, PDFGeneratorContext context, String imgUrl, float x, float y, MSSImage mssImage) {
+        // Image extends Url, but we allow the Image.url to be a local path also, even without file:
+        imgUrl = imgUrl.trim()
+        InputStream imageStream
+        try {
+            if (imgUrl.startsWith("http:") || imgUrl.startsWith("https:") || imgUrl.startsWith("ftp:")) {
+                URL url = new URL(imgUrl)
+                imageStream = url.openStream()
+            } else {
+                String imageRef = imgUrl
+                if (imageRef.startsWith("file:")) {
+                    imageRef = imageRef.substring(5)
+                }
+                try {
+                    File imageFile = context.fileResource.getResourceFile(imageRef, context.resultFile)
+                    imageStream = new BufferedInputStream(new FileInputStream(imageFile))
+                }
+                catch (FileNotFoundException ignore) {
+                    imageStream = ClassLoader.getSystemResourceAsStream(imageRef)
+                }
+            }
+
+            PDFBoxDocRenderer.ImageParam params = new PDFBoxDocRenderer.ImageParam(
+                    imageStream: imageStream,
+                    holeMargin: 0,
+                    createHole: false,
+                    xOverride: x,
+                    yOverride: y
+            )
+
+            if (imgUrl.endsWith(".jpg") || imgUrl.endsWith(".jpeg")) {
+                params.jpeg = true
+            }
+            renderer.image(params)
+        }
+        catch (IOException ioe) {
+            throw new GenerateException(message: "Failed to read image! (${imgUrl})", cause: ioe)
+        }
+        finally {
+            if (imageStream != null) imageStream.close()
+        }
+    }
+
+
+    /**
      * Writes a table of contents at the top of the document.
      *
      * @param renderer The PDF renderer.
      * @param context The current generator context.
      */
     void writeToc(PDFBoxDocRenderer renderer, PDFGeneratorContext context) {
-        PDFBoxDocRenderer.TocPage tocPage = renderer.createTocPage()
+        PDFBoxDocRenderer.TopPage tocPage = renderer.createTopPage()
 
         context.toc.each { TOC toc ->
 
@@ -714,24 +766,115 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param renderer The PDF renderer.
      * @param context The current generator context.
      */
-    void writeTitlePage(PDFBoxDocRenderer doc, PDFGeneratorContext context) {
-        // Title
+    void writeTitlePage(PDFBoxDocRenderer renderer, PDFGeneratorContext context) {
+
+        PDFBoxDocRenderer.TopPage titlePage = renderer.createTopPage()
+
+        final String title = context.options.title
+        final String subject = context.options.subject
+        final String author = context.options.author
+        final String version = context.options.version
+        final String copyRight = context.options.copyright
+
+        int topItems = 0
+        int bottomItems = 0
+        if (title != null) ++topItems
+        if (subject != null) ++topItems
+        if (version != null) ++topItems
+        if (author != null) ++bottomItems
+        if (copyRight != null) ++bottomItems
+
+        float pageSizeVert = renderer.pageFormat.height - renderer.margins.topMargin - renderer.margins.bottomMargin
+        float startOfPageV = renderer.pageFormat.height - renderer.margins.topMargin
+        float endOFPageV = renderer.margins.bottomMargin
+
+        final float yItemSizeTop = ((pageSizeVert / 2) / topItems) as float
+        final float yItemSizeBottom = ((pageSizeVert / 2) / bottomItems) as float
+
+        float yTop = startOfPageV - (float)(yItemSizeTop / 2) + 15
+        float yBottom = endOFPageV + (float)(yItemSizeBottom / 2)
+
+        // Rendered from top of page
+
+        if (title != null) {
+            renderer.pageY = yTop
+            renderer.center(title) {
+                MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair(MSS.MSS_Front_Page.title)
+                renderer.setColorPair(colorPair)
+
+                MSSFont font = context.pdfStyles.mss.forFrontPage.getFont(MSS.MSS_Front_Page.title)
+                renderer.setFont(new PDFBoxFontMSSAdapter(font))
+            }
+            yTop = (float)(yTop - (yItemSizeTop / 2.0f))
+        }
 
 
-        // Subject
+
+        if (subject != null) {
+            renderer.pageY = yTop
+            renderer.center(subject) {
+                MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair(MSS.MSS_Front_Page.subject)
+                renderer.setColorPair(colorPair)
+
+                MSSFont font = context.pdfStyles.mss.forFrontPage.getFont(MSS.MSS_Front_Page.subject)
+                renderer.setFont(new PDFBoxFontMSSAdapter(font))
+            }
+            yTop = (yTop - (yItemSizeTop / 2f)) as float
+        }
+
+        if (version != null) {
+            renderer.pageY = yTop
+            renderer.center(version) {
+                MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair(MSS.MSS_Front_Page.version)
+                renderer.setColorPair(colorPair)
+
+                MSSFont font = context.pdfStyles.mss.forFrontPage.getFont(MSS.MSS_Front_Page.version)
+                renderer.setFont(new PDFBoxFontMSSAdapter(font))
+            }
+        }
+
+        // Rendered from bottom of page
+
+        if (copyRight != null) {
+            renderer.pageY = yBottom
+            renderer.center(copyRight) {
+                MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair(MSS.MSS_Front_Page.copyright)
+                renderer.setColorPair(colorPair)
+
+                MSSFont font = context.pdfStyles.mss.forFrontPage.getFont(MSS.MSS_Front_Page.copyright)
+                renderer.setFont(new PDFBoxFontMSSAdapter(font))
+            }
+            yBottom = (yBottom + (yItemSizeBottom / 2)) as float
+        }
+
+        if (author != null) {
+            renderer.pageY = yBottom
+            renderer.center(author) {
+                MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair(MSS.MSS_Front_Page.author)
+                renderer.setColorPair(colorPair)
+
+                MSSFont font = context.pdfStyles.mss.forFrontPage.getFont(MSS.MSS_Front_Page.author)
+                renderer.setFont(new PDFBoxFontMSSAdapter(font))
+            }
+        }
+
+        if (context.options.titlePageImage != null && context.options.titlePageImage.trim().length() != 0) {
+            final MSSImage mssImage = context.pdfStyles.mss.forFrontPage.getImageData()
 
 
-        // Version
+            // Note that http:// does contain a ':'!
+            final String imageRef = context.options.titlePageImage.replace("http:", "http§").replace("https:", "https§").
+                    replace("ftp:", "ftp§")
+            final String[] parts = imageRef.split(":")
+            if (parts.length != 3) {
+                throw new GenerateException(message: "Bad image specification! Should be <path/URL>:x:y!")
+            }
+            final String imagePath = parts[0].replace('§', ':')
+            final float imgX = Float.valueOf(parts[1])
+            final float imgY = Float.valueOf(parts[2])
 
-
-        // Image
-
-
-        //Author
-
-
-        // Copyright
-
+            writeImage(renderer, context, imagePath, imgX, imgY, mssImage)
+        }
 
     }
 }
@@ -829,7 +972,7 @@ class ParagraphWriter implements BoxedTrait {
      * @param image The image to write.
      */
     void writeImage(@NotNull Image image) {
-        checkAndSetParagraphBoxed(MSS_Pages.code, this.renderer, this.context.pdfStyles.mss)
+        checkAndSetParagraphBoxed(MSS_Pages.image, this.renderer, this.context.pdfStyles.mss)
 
         MSSImage mssImage = this.forDocument.imageStyle
         float xOffset = PDFBoxDocRenderer.X_OFFSET_LEFT_ALIGNED
@@ -859,8 +1002,13 @@ class ParagraphWriter implements BoxedTrait {
                 if (imageRef.startsWith("file:")) {
                     imageRef = imageRef.substring(5)
                 }
-                File imageFile = this.context.fileResource.getResourceFile(imageRef, this.context.resultFile)
-                imageStream = new BufferedInputStream(new FileInputStream(imageFile))
+                try {
+                    File imageFile = context.fileResource.getResourceFile(imageRef, context.resultFile)
+                    imageStream = new BufferedInputStream(new FileInputStream(imageFile))
+                }
+                catch (FileNotFoundException ignore) {
+                    imageStream = ClassLoader.getSystemResourceAsStream(imageRef)
+                }
             }
 
             PDFBoxDocRenderer.ImageParam params = new PDFBoxDocRenderer.ImageParam(
@@ -874,6 +1022,9 @@ class ParagraphWriter implements BoxedTrait {
             }
             if (mssImage.imgY != null) {
                 params.yOverride = mssImage.imgY
+            }
+            if (image.url.endsWith(".jpg") || image.url.endsWith(".jpeg")) {
+                params.jpeg = true
             }
 
             renderer.image(params)
@@ -894,11 +1045,11 @@ class ParagraphWriter implements BoxedTrait {
      * @param link The link to write.
      */
     void writeLink(@NotNull Link link) {
-        checkAndSetParagraphBoxed(MSS_Pages.code, this.renderer, this.context.pdfStyles.mss)
+        checkAndSetParagraphBoxed(MSS_Pages.link, this.renderer, this.context.pdfStyles.mss)
 
         renderer.link(link.text, link.url)
 
-        clearParagraphBoxed(MSS_Pages.code, this.renderer, this.context.pdfStyles.mss)
+        clearParagraphBoxed(MSS_Pages.link, this.renderer, this.context.pdfStyles.mss)
     }
 
     /**
@@ -907,7 +1058,7 @@ class ParagraphWriter implements BoxedTrait {
      * @param autoLink The link to write.
      */
     void writeAutoLink(@NotNull AutoLink autoLink) {
-        checkAndSetParagraphBoxed(MSS_Pages.code, this.renderer, this.context.pdfStyles.mss)
+        checkAndSetParagraphBoxed(MSS_Pages.link, this.renderer, this.context.pdfStyles.mss)
 
         String url = autoLink.url
         if (!url.startsWith("http")) {
@@ -915,7 +1066,7 @@ class ParagraphWriter implements BoxedTrait {
         }
         renderer.link(autoLink.url, url)
 
-        clearParagraphBoxed(MSS_Pages.code, this.renderer, this.context.pdfStyles.mss)
+        clearParagraphBoxed(MSS_Pages.link, this.renderer, this.context.pdfStyles.mss)
     }
 
 }

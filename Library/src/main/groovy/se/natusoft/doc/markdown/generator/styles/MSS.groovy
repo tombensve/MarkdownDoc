@@ -108,7 +108,8 @@ class MSS {
         list_item,
         image,
         horizontal_ruler,
-        footer
+        footer,
+        link
     }
 
     static enum MSS_HR {

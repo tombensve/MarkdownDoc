@@ -54,7 +54,6 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary
 import org.apache.pdfbox.util.Matrix
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
-import se.natusoft.doc.markdown.generator.FileResource
 import se.natusoft.doc.markdown.generator.models.TOC
 import se.natusoft.doc.markdown.generator.styles.*
 import se.natusoft.doc.markdown.util.NotNullTrait
@@ -286,10 +285,11 @@ class PDFBoxDocRenderer implements NotNullTrait {
     }
 
     /**
-     * Support for writing TOC.
+     * Creates a new page at the top of the document, and provides for inserting more pages under the first, but over the
+     * test of the document. This allows for rendering TOC and title page after the content is rendered.
      */
-    class TocPage {
-        TocPage() {
+    class TopPage {
+        TopPage() {
             docMgr.newPage(DocMgr.NewPagePosition.FIRST)
             PDFBoxDocRenderer.this.positionAtTopOfPage()
         }
@@ -417,7 +417,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param size The size to convert.
      */
-    protected PDRectangle getPageFormat() {
+    PDRectangle getPageFormat() {
         return pageSizes[this.pageSize]
     }
 
@@ -609,6 +609,13 @@ class PDFBoxDocRenderer implements NotNullTrait {
     }
 
     /**
+     * Returns the current styles MSS adapter.
+     */
+    PDFBoxStylesMSSAdapter getStylesMSSAdapter() {
+        return this.stylesMSSAdapter
+    }
+
+    /**
      * Applies only a font.
      *
      * @param fontMSSAdapter The adapter for the font to apply.
@@ -621,13 +628,25 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * Gets a Font adapter from a styles adapter and a section.
      *
+     * @param section The section to get font adapter for. All of MSS.MSS_Pages.*, MSS.MSS_Front_Page.*, and MSS.MSS_TOC.*
+     *                are valid. These all implements MSS.Section.
+     *
+     * @return
+     */
+    PDFBoxFontMSSAdapter getFontAdapter(MSS.Section section) {
+        return getFontAdapter(this.stylesMSSAdapter, section)
+    }
+
+    /**
+     * Gets a Font adapter from a styles adapter and a section.
+     *
      * @param stylesMSSAdapter The styles adapter to use.
      * @param section The section to get font adapter for. All of MSS.MSS_Pages.*, MSS.MSS_Front_Page.*, and MSS.MSS_TOC.*
      *                are valid. These all implements MSS.Section.
      *
      * @return
      */
-    protected PDFBoxFontMSSAdapter getFontAdapter(PDFBoxStylesMSSAdapter stylesMSSAdapter, MSS.Section section) {
+    PDFBoxFontMSSAdapter getFontAdapter(PDFBoxStylesMSSAdapter stylesMSSAdapter, MSS.Section section) {
         PDFBoxFontMSSAdapter fontMSSAdapter = null
 
         switch (section.class) {
@@ -817,9 +836,11 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * @return a new TocPage.
      */
-    TocPage createTocPage() {
-        new TocPage()
+    TopPage createTopPage() {
+        new TopPage()
     }
+
+
 
     /**
      * Writes pre formatted text as is.
@@ -999,9 +1020,20 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param text The text to center.
      */
     void center(String text) {
+        center(text, null)
+    }
+
+    /**
+     * Renders a text centered on the line and then moves to the next line.
+     *
+     * @param text The text to center.
+     * @param styleText Callback that applies styles.
+     */
+    void center(String text, Closure<Void> styleText) {
         ensureTextModeOff()
         ensureTextMode() // Must do this for newLineAt(...) to work
 
+        this.stylesApplicator = styleText
         applyStyles()
 
         float x = ((this.pageFormat.width / 2.0f) - (calcTextWidth(text) / 2.0f)) as float
@@ -1319,7 +1351,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
                     imageY -= (this.fontMSSAdapter.size + 2.0f)
                 }
             }
-            if (param.xOffset == X_OFFSET_CENTER) {
+            else if (param.xOffset == X_OFFSET_CENTER) {
                 imageX = this.margins.leftMargin + ((this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin) / 2.0f) -
                         (scaledWidth / 2.0f) as float
                 if (this.pageX >= imageX) {
@@ -1330,6 +1362,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
                 if (this.pageX >= (this.pageFormat.width - this.margins.rightMargin - scaledWidth)) {
                     imageY -= (this.fontMSSAdapter.size + 2.0f)
                 }
+            }
+            else {
+                imageX += param.xOffset
             }
         }
 
