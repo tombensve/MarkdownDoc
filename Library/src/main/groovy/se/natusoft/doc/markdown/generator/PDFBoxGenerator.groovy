@@ -73,16 +73,19 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
         //
 
         /** The options for the PDF generator. */
-        PDFGeneratorOptions options
+        @NotNull PDFGeneratorOptions options
+
+        /** The file we are producing. This is used for searching for images relative to this. */
+        @NotNull File resultFile
 
         /** Adapter between MSS and iText fonts. */
-        PDFBoxStylesMSSAdapter pdfStyles = new PDFBoxStylesMSSAdapter()
+        @NotNull PDFBoxStylesMSSAdapter pdfStyles = new PDFBoxStylesMSSAdapter()
 
         /** The table of contents. */
-        java.util.List<TOC> toc = new LinkedList<>()
+        @NotNull java.util.List<TOC> toc = new LinkedList<>()
 
         /** The current text structure level. */
-        MSS.MSS_TOC level = MSS.MSS_TOC.h1
+        @NotNull MSS.MSS_TOC level = MSS.MSS_TOC.h1
 
     }
 
@@ -130,8 +133,12 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @throws GenerateException on other failures to generate target.
      */
     @Override
-    void generate(@NotNull Doc document, @NotNull Options options, @Nullable File rootDir) throws IOException, GenerateException {
-        final File resultFile = rootDir != null ? new File(rootDir, options.resultFile) : new File(options.resultFile)
+    void generate(
+            @NotNull Doc document,
+            @NotNull Options options,
+            @Nullable File rootDir
+    ) throws IOException, GenerateException {
+        File resultFile = rootDir != null ? new File(rootDir, options.resultFile) : new File(options.resultFile)
         final FileOutputStream resultStream = new FileOutputStream(resultFile)
         if (((PDFGeneratorOptions)options).generateSectionNumbers) {
             this.headerNumber = new StructuredNumber(newDigitValue: 1)
@@ -166,7 +173,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
         final PDFGeneratorContext context = new PDFGeneratorContext(
                 options: options as PDFGeneratorOptions,
                 rootDir:  rootDir,
-                fileResource: new FileResource(rootDir: rootDir, optsRootDir: (options as PDFGeneratorOptions).rootDir)
+                fileResource: new FileResource(rootDir: rootDir, optsRootDir: (options as PDFGeneratorOptions).rootDir),
+                resultFile: rootDir != null ? new File(rootDir, options.resultFile) : new File(options.resultFile)
         )
 
         context.pdfStyles.fileResource= context.fileResource
@@ -261,9 +269,13 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
             }
         }
 
-        writeToc(renderer, context)
+        if (context.options.generateTOC) {
+            writeToc(renderer, context)
+        }
 
-        //writeTitlePage(doc, context)
+        if (context.options.generateTitlePage) {
+            writeTitlePage(renderer, context)
+        }
 
         renderer.save(resultStream)
     }
@@ -380,9 +392,6 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
         updated |= updateOptsFromAnnotation("@PDFSubject", comment) { final String text ->
             context.options.subject = text
         }
-        updated |= updateOptsFromAnnotation("@PDFKeywords", comment) { final String text ->
-            context.options.keywords = text
-        }
         updated |= updateOptsFromAnnotation("@PDFAuthor", comment) { final String text ->
             context.options.author = text
         }
@@ -410,9 +419,9 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
         updated |= updateOptsFromAnnotation("@PDFUnorderedListItemPrefix", comment) { final String text ->
             context.options.unorderedListItemPrefix = text
         }
-        updated |= updateOptsFromAnnotation("@PDFFirstLineParagraphIndent", comment) { final String text ->
-            context.options.firstLineParagraphIndent = Boolean.valueOf(text)
-        }
+//        updated |= updateOptsFromAnnotation("@PDFFirstLineParagraphIndent", comment) { final String text ->
+//            context.options.firstLineParagraphIndent = Boolean.valueOf(text)
+//        }
         updated |= updateOptsFromAnnotation("@PDFGenerateSectionNumbers", comment) { final String text ->
             context.options.generateSectionNumbers = Boolean.valueOf(text)
         }
@@ -450,8 +459,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      */
     static void writeParagraphContent(@NotNull Paragraph paragraph, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
 
-        ParagraphWriter pw = new ParagraphWriter(doc: renderer, context: context)
-        pw.doc = renderer
+        ParagraphWriter pw = new ParagraphWriter(renderer: renderer, context: context)
+        pw.renderer = renderer
         pw.context = context
 
         boolean first = true
@@ -699,6 +708,216 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
         }
     }
 
+    /**
+     * Renders a front page.
+     *
+     * @param renderer The PDF renderer.
+     * @param context The current generator context.
+     */
+    void writeTitlePage(PDFBoxDocRenderer doc, PDFGeneratorContext context) {
+        // Title
+
+
+        // Subject
+
+
+        // Version
+
+
+        // Image
+
+
+        //Author
+
+
+        // Copyright
+
+
+    }
+}
+
+/**
+ * Handles writing paragraph formats.
+ */
+@CompileStatic
+@TypeChecked
+class ParagraphWriter implements BoxedTrait {
+    //
+    // Properties
+    //
+
+    /** The PDF document renderer. */
+    @NotNull PDFBoxDocRenderer renderer
+
+    /** The generator context. */
+    @NotNull PDFBoxGenerator.PDFGeneratorContext context
+
+    //
+    // Methods
+    //
+
+    /**
+     * Utility method to make path shorter for reference in other methods.
+     */
+    private @NotNull MSS.ForDocument getForDocument() {
+        return this.context.pdfStyles.mss.forDocument
+    }
+
+    /**
+     * Internal text write method that also handles text backround boxing.
+     *
+     * @param text The text to write.
+     * @param section The styling section to apply.
+     */
+    private void writeText(String text, MSS_Pages section, Closure<Void> styleText) {
+        MSSColor
+        renderer.text(text, styleText, checkAndSetParagraphBoxed(section, this.renderer, this.context.pdfStyles.mss))
+        clearParagraphBoxed(section, this.renderer, this.context.pdfStyles.mss)
+    }
+
+    /**
+     * Writes pre formatted code.
+     *
+     * @param code The code to write.
+     */
+    void writeCode(@NotNull Code code) {
+        writeText(code.text, MSS_Pages.code) {
+            renderer.setStyle(this.context.pdfStyles, MSS_Pages.code)
+            renderer.setColorPair(this.forDocument.getColorPair(MSS_Pages.code))
+        }
+    }
+
+    /**
+     * Writes emphasised text.
+     *
+     * @param emphasis The text to write.
+     */
+    void writeEmphasis(@NotNull Emphasis emphasis) {
+        writeText(emphasis.text, MSS_Pages.emphasis) {
+            renderer.setStyle(this.context.pdfStyles, MSS_Pages.emphasis)
+            renderer.setColorPair(this.forDocument.getColorPair(MSS_Pages.emphasis))
+        }
+    }
+
+    /**
+     * Writes strong/bold text.
+     *
+     * @param strong The text to write.
+     */
+    void writeStrong(@NotNull Strong strong) {
+        writeText(strong.text, MSS_Pages.strong) {
+            renderer.setStyle(this.context.pdfStyles, MSS_Pages.strong)
+            renderer.setColorPair(this.forDocument.getColorPair(MSS_Pages.strong))
+        }
+    }
+
+    /**
+     * Writes plain text.
+     *
+     * @param text The text to write.
+     */
+    void writePlainText(@NotNull PlainText text) {
+        writeText(text.text, MSS_Pages.standard) {
+            renderer.setStyle(this.context.pdfStyles, MSS_Pages.standard)
+            renderer.setColorPair(this.forDocument.getColorPair(MSS_Pages.standard))
+        }
+    }
+
+    /**
+     * Writes an image.
+     *
+     * @param image The image to write.
+     */
+    void writeImage(@NotNull Image image) {
+        checkAndSetParagraphBoxed(MSS_Pages.code, this.renderer, this.context.pdfStyles.mss)
+
+        MSSImage mssImage = this.forDocument.imageStyle
+        float xOffset = PDFBoxDocRenderer.X_OFFSET_LEFT_ALIGNED
+        switch (mssImage.align) {
+            case MSSImage.Align.LEFT:
+                break
+            case MSSImage.Align.MIDDLE:
+                xOffset = PDFBoxDocRenderer.X_OFFSET_CENTER
+                break
+            case MSSImage.Align.RIGHT:
+                xOffset = PDFBoxDocRenderer.X_OFFSET_RIGHT_ALIGNED
+                break
+            case MSSImage.Align.CURRENT:
+                xOffset = PDFBoxDocRenderer.X_OFFSET_CURRENT
+                break
+        }
+
+        // Image extends Url, but we allow the Image.url to be a local path also, even without file:
+        image.url = image.url.trim()
+        InputStream imageStream
+        try {
+            if (image.url.startsWith("http:") || image.url.startsWith("https:") || image.url.startsWith("ftp:")) {
+                URL url = new URL(image.url)
+                imageStream = url.openStream()
+            } else {
+                String imageRef = image.url
+                if (imageRef.startsWith("file:")) {
+                    imageRef = imageRef.substring(5)
+                }
+                File imageFile = this.context.fileResource.getResourceFile(imageRef, this.context.resultFile)
+                imageStream = new BufferedInputStream(new FileInputStream(imageFile))
+            }
+
+            PDFBoxDocRenderer.ImageParam params = new PDFBoxDocRenderer.ImageParam(
+                    imageStream: imageStream,
+                    xOffset: xOffset,
+                    holeMargin: mssImage.imgFlowMargin,
+                    createHole: mssImage.imgFlow
+            )
+            if (mssImage.imgX != null) {
+                params.xOverride = mssImage.imgX
+            }
+            if (mssImage.imgY != null) {
+                params.yOverride = mssImage.imgY
+            }
+
+            renderer.image(params)
+        }
+        catch (IOException ioe) {
+            throw new GenerateException(message: "Failed to read image! (${image.url})", cause: ioe)
+        }
+        finally {
+            if (imageStream != null) imageStream.close()
+        }
+
+        clearParagraphBoxed(MSS_Pages.code, this.renderer, this.context.pdfStyles.mss)
+    }
+
+    /**
+     * Writes a link.
+     *
+     * @param link The link to write.
+     */
+    void writeLink(@NotNull Link link) {
+        checkAndSetParagraphBoxed(MSS_Pages.code, this.renderer, this.context.pdfStyles.mss)
+
+        renderer.link(link.text, link.url)
+
+        clearParagraphBoxed(MSS_Pages.code, this.renderer, this.context.pdfStyles.mss)
+    }
+
+    /**
+     * Writes an auto link with text same as url.
+     *
+     * @param autoLink The link to write.
+     */
+    void writeAutoLink(@NotNull AutoLink autoLink) {
+        checkAndSetParagraphBoxed(MSS_Pages.code, this.renderer, this.context.pdfStyles.mss)
+
+        String url = autoLink.url
+        if (!url.startsWith("http")) {
+            url = "http://" + url
+        }
+        renderer.link(autoLink.url, url)
+
+        clearParagraphBoxed(MSS_Pages.code, this.renderer, this.context.pdfStyles.mss)
+    }
+
 }
 
 /**
@@ -784,163 +1003,3 @@ trait BoxedTrait {
     }
 }
 
-/**
- * Handles writing paragraph formats.
- */
-@CompileStatic
-@TypeChecked
-class ParagraphWriter implements BoxedTrait {
-    //
-    // Properties
-    //
-
-    /** The PDF document renderer. */
-    @NotNull PDFBoxDocRenderer doc
-
-    /** The generator context. */
-    @NotNull PDFBoxGenerator.PDFGeneratorContext context
-
-    //
-    // Methods
-    //
-
-    /**
-     * Utility method to make path shorter for reference in other methods.
-     */
-    private @NotNull MSS.ForDocument getForDocument() {
-        return this.context.pdfStyles.mss.forDocument
-    }
-
-    /**
-     * Internal text write method that also handles text backround boxing.
-     *
-     * @param text The text to write.
-     * @param section The styling section to apply.
-     */
-    private void writeText(String text, MSS_Pages section, Closure<Void> styleText) {
-        MSSColor
-        doc.text(text, styleText, checkAndSetParagraphBoxed(section, this.doc, this.context.pdfStyles.mss))
-        clearParagraphBoxed(section, this.doc, this.context.pdfStyles.mss)
-    }
-
-    /**
-     * Writes pre formatted code.
-     *
-     * @param code The code to write.
-     */
-    void writeCode(@NotNull Code code) {
-        writeText(code.text, MSS_Pages.code) {
-            doc.setStyle(this.context.pdfStyles, MSS_Pages.code)
-            doc.setColorPair(this.forDocument.getColorPair(MSS_Pages.code))
-        }
-    }
-
-    /**
-     * Writes emphasised text.
-     *
-     * @param emphasis The text to write.
-     */
-    void writeEmphasis(@NotNull Emphasis emphasis) {
-        writeText(emphasis.text, MSS_Pages.emphasis) {
-            doc.setStyle(this.context.pdfStyles, MSS_Pages.emphasis)
-            doc.setColorPair(this.forDocument.getColorPair(MSS_Pages.emphasis))
-        }
-    }
-
-    /**
-     * Writes strong/bold text.
-     *
-     * @param strong The text to write.
-     */
-    void writeStrong(@NotNull Strong strong) {
-        writeText(strong.text, MSS_Pages.strong) {
-            doc.setStyle(this.context.pdfStyles, MSS_Pages.strong)
-            doc.setColorPair(this.forDocument.getColorPair(MSS_Pages.strong))
-        }
-    }
-
-    /**
-     * Writes plain text.
-     *
-     * @param text The text to write.
-     */
-    void writePlainText(@NotNull PlainText text) {
-        writeText(text.text, MSS_Pages.standard) {
-            doc.setStyle(this.context.pdfStyles, MSS_Pages.standard)
-            doc.setColorPair(this.forDocument.getColorPair(MSS_Pages.standard))
-        }
-    }
-
-    /**
-     * Writes an image.
-     *
-     * @param image The image to write.
-     */
-    void writeImage(@NotNull Image image) {
-        checkAndSetParagraphBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
-
-        MSSImage mssImage = this.forDocument.imageStyle
-        float xOffset = PDFBoxDocRenderer.X_OFFSET_LEFT_ALIGNED
-        switch (mssImage.align) {
-            case MSSImage.Align.LEFT:
-                break
-            case MSSImage.Align.MIDDLE:
-                xOffset = PDFBoxDocRenderer.X_OFFSET_CENTER
-                break
-            case MSSImage.Align.RIGHT:
-                xOffset = PDFBoxDocRenderer.X_OFFSET_RIGHT_ALIGNED
-                break
-            case MSSImage.Align.CURRENT:
-                xOffset = PDFBoxDocRenderer.X_OFFSET_CURRENT
-                break
-        }
-
-        PDFBoxDocRenderer.ImageParam params = new PDFBoxDocRenderer.ImageParam(
-                imageUrl: image.url,
-                xOffset: xOffset,
-                holeMargin: mssImage.imgFlowMargin,
-                createHole: mssImage.imgFlow
-        )
-        if (mssImage.imgX != null) {
-            params.xOverride = mssImage.imgX
-        }
-        if (mssImage.imgY != null) {
-            params.yOverride = mssImage.imgY
-        }
-
-        doc.image(params)
-
-        clearParagraphBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
-    }
-
-    /**
-     * Writes a link.
-     *
-     * @param link The link to write.
-     */
-    void writeLink(@NotNull Link link) {
-        checkAndSetParagraphBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
-
-        doc.link(link.text, link.url)
-
-        clearParagraphBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
-    }
-
-    /**
-     * Writes an auto link with text same as url.
-     *
-     * @param autoLink The link to write.
-     */
-    void writeAutoLink(@NotNull AutoLink autoLink) {
-        checkAndSetParagraphBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
-
-        String url = autoLink.url
-        if (!url.startsWith("http")) {
-            url = "http://" + url
-        }
-        doc.link(autoLink.url, url)
-
-        clearParagraphBoxed(MSS_Pages.code, this.doc, this.context.pdfStyles.mss)
-    }
-
-}

@@ -82,11 +82,11 @@ class PDFGeneratorOptions implements Options {
     @Optional
     String titlePageImage
 
-    @Option
-    @Name("keywords")
-    @Description("Meta keywords")
-    @Optional
-    String keywords = null
+//    @Option
+//    @Name("keywords")
+//    @Description("Meta keywords")
+//    @Optional
+//    String keywords = null
 
     @Option
     @Name("author")
@@ -142,11 +142,11 @@ class PDFGeneratorOptions implements Options {
     @Optional
     String unorderedListItemPrefix = "• "
 
-    @Option
-    @Name("firstLineParagraphIndent")
-    @Description("If true then the first line of each paragraph is indented. Default is false.")
-    @Optional
-    boolean firstLineParagraphIndent = false
+//    @Option
+//    @Name("firstLineParagraphIndent")
+//    @Description("If true then the first line of each paragraph is indented. Default is false.")
+//    @Optional
+//    boolean firstLineParagraphIndent = false
 
     @Option
     @Name("mss")

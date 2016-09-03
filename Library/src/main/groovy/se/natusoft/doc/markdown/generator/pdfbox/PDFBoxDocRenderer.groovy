@@ -54,6 +54,7 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary
 import org.apache.pdfbox.util.Matrix
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
+import se.natusoft.doc.markdown.generator.FileResource
 import se.natusoft.doc.markdown.generator.models.TOC
 import se.natusoft.doc.markdown.generator.styles.*
 import se.natusoft.doc.markdown.util.NotNullTrait
@@ -1241,8 +1242,11 @@ class PDFBoxDocRenderer implements NotNullTrait {
     }
 
     static final class ImageParam {
-        /** The url to the image. */
-        @NotNull String imageUrl
+        /** If non null, the url to the image. */
+        @NotNull InputStream imageStream
+
+        /** Set to true if image stream contans a JPEG. */
+        boolean jpeg = false
 
         /** The x offset to render at or 0 for left page margin. The X_OFFSET_* constants can also be used. */
         float xOffset = 0
@@ -1282,7 +1286,6 @@ class PDFBoxDocRenderer implements NotNullTrait {
         this.holeMargin = param.holeMargin
 
         PDImageXObject image
-        URL url = new URL(param.imageUrl)
 
         if (param.scale > 1.0f) {
             param.scale = param.scale / 100.0f as float
@@ -1290,11 +1293,11 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         // The dumb PDImageXObject API only allows loading from local file!! Thereby we have to go a little lower
         // than that. Since the TIFF support only loads from local file, TIFFs are not supported!
-        if (param.imageUrl.endsWith(".jpg") || param.imageUrl.endsWith(".jpeg")) {
-            image = JPEGFactory.createFromStream(this.docMgr.document, url.openStream())
-        }
-        else {
-            BufferedImage bufferedImage = ImageIO.read(url.openStream())
+
+        if (param.jpeg) {
+            image = JPEGFactory.createFromStream(this.docMgr.document, param.imageStream)
+        } else {
+            BufferedImage bufferedImage = ImageIO.read(param.imageStream)
             image = LosslessFactory.createFromImage(this.docMgr.document, bufferedImage)
         }
 

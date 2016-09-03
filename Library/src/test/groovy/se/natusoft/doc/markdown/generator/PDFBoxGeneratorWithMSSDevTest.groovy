@@ -39,7 +39,6 @@ class PDFBoxGeneratorWithMSSDevTest extends GroovyTestCase {
         def args = [
                 "--hideLinks", "false",
                 "--unorderedListItemPrefix", "• ",
-                "--firstLineParagraphIndent", "false",
                 "--generateTOC", "true",
                 "--generateTitlePage", "true",
                 "--generateSectionNumbers", "true",
