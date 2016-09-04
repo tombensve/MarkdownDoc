@@ -147,8 +147,21 @@ class Line {
         Line line = this
         if (this.origLine.trim().startsWith(beg)) {
             final int ix = this.origLine.indexOf(beg);
-            final String nwLine = this.origLine.substring(ix + 1);
+            final String nwLine = this.origLine[(ix+1)..-1]
             line = newLine(nwLine)
+        }
+
+        line
+    }
+
+    /**
+     * Removes any number directly followed by a dot ('.') from the beginning of the string.
+     */
+    @NotNull Line removeBegNumberDot() {
+        Line line = this;
+        if (this.origLine.trim() =~ /^[0-9]+\..*/) {
+            final int ix = this.origLine.indexOf(".")
+            line = newLine(this.origLine[(ix+1)..-1])
         }
 
         line

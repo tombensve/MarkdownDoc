@@ -177,7 +177,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                 resultFile: rootDir != null ? new File(rootDir, options.resultFile) : new File(options.resultFile)
         )
 
-        context.pdfStyles.fileResource= context.fileResource
+        context.pdfStyles.fileResource = context.fileResource
 
         // Load MSS file if specified
         if (context.options.mss != null && !context.options.mss.isEmpty()) {
@@ -232,26 +232,39 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
                 case DocFormat.Paragraph:
                     writeParagraph(docItem as Paragraph, renderer, context)
+                    renderer.setFont(new PDFBoxFontMSSAdapter(context.pdfStyles.mss.forDocument.getFont(MSS_Pages.standard)))
+                    renderer.newSection()
                     break
 
                 case DocFormat.Header:
                     writeHeader(docItem as Header, renderer, context)
+                    renderer.setFont(new PDFBoxFontMSSAdapter(context.pdfStyles.mss.forDocument.getFont(MSS_Pages.standard)))
+                    renderer.newSection()
                     break
 
                 case DocFormat.BlockQuote:
                     writeBlockQuote(docItem as BlockQuote, renderer, context)
+                    renderer.setFont(new PDFBoxFontMSSAdapter(context.pdfStyles.mss.forDocument.getFont(MSS_Pages.standard)))
+                    renderer.newSection()
                     break;
 
                 case DocFormat.CodeBlock:
                     writeCodeBlock(docItem as CodeBlock, renderer, context)
+                    renderer.setFont(new PDFBoxFontMSSAdapter(context.pdfStyles.mss.forDocument.getFont(MSS_Pages.standard)))
+                    renderer.newSection()
+                    renderer.newLine()
                     break
 
                 case DocFormat.HorizontalRule:
+                    renderer.setFont(new PDFBoxFontMSSAdapter(context.pdfStyles.mss.forDocument.getFont(MSS_Pages.standard)))
                     writeHr(renderer, context)
+                    renderer.newLine()
                     break
 
                 case DocFormat.List:
                     writeList(docItem as List, renderer, context)
+                    renderer.setFont(new PDFBoxFontMSSAdapter(context.pdfStyles.mss.forDocument.getFont(MSS_Pages.standard)))
+                    renderer.newSection()
                     break
 
                 case DocFormat.Div:
@@ -446,7 +459,6 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param context The generator context.
      */
     static void writeParagraph(@NotNull Paragraph paragraph, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
-        renderer.newSection()
         writeParagraphContent(paragraph, renderer, context)
     }
 
@@ -533,10 +545,13 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
         MSS_Pages section = MSS_Pages.valueOf("h" + header.level.level)
 
-        renderer.setStyle(context.pdfStyles, section)
-        renderer.setColorPair(context.pdfStyles.mss.forDocument.getColorPair(section))
+        Closure<Void> styleApplicator = {
+            MSSColorPair colorPair = context.pdfStyles.mss.forDocument.getColorPair(section)
+            renderer.setColorPair(colorPair)
 
-        renderer.newSection()
+            MSSFont font = context.pdfStyles.mss.forDocument.getFont(section)
+            renderer.setFont(new PDFBoxFontMSSAdapter(font))
+        }
 
         if (this.headerNumber != null) {
             float sectionNumberYOffset = context.pdfStyles.mss.forDocument.getSectionNumberYOffset(section)
@@ -544,12 +559,11 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
             renderer.pageY -= sectionNumberYOffset
             renderer.pageX += sectionNumberXOffset
-            renderer.rawText(this.headerNumber.root.toString() + ". ")
+            renderer.rawText(this.headerNumber.root.toString() + ". ", styleApplicator)
             renderer.pageY += sectionNumberYOffset
         }
 
-        renderer.text(header.text)
-        renderer.newLine()
+        renderer.text(header.text, styleApplicator)
     }
 
     /**
@@ -562,7 +576,6 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
     static void writeBlockQuote(@NotNull BlockQuote blockQuote, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
         checkAndSetBoxed(MSS_Pages.block_quote, renderer, context.pdfStyles.mss)
 
-        renderer.newSection()
         blockQuote.items.each { final DocItem docItem ->
             // There should only be plain texts here, but to be sure …
             if (PlainText.class.isAssignableFrom(docItem.class)) {
@@ -584,8 +597,6 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param context The generator context.
      */
     static void writeCodeBlock(@NotNull CodeBlock codeBlock, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
-        renderer.newSection()
-
         checkAndSetBoxed(MSS_Pages.code, renderer, context.pdfStyles.mss)
 
         codeBlock.items.each { final DocItem docItem ->
@@ -600,7 +611,6 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
         }
 
         clearBoxed(renderer)
-        renderer.newLine()
     }
 
     /**
@@ -622,7 +632,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      */
     static void writeList(@NotNull List list, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
         renderer.setStyle(context.pdfStyles, MSS_Pages.list_item)
-        renderer.setColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.list_item))
+        renderer.setColorPair(context.pdfStyles, MSS_Pages.list_item)
 
         StructuredNumber num = null
         if (list.isOrdered()) {
@@ -693,7 +703,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param y The y coordinate of the image.
      * @param mssImage The mss image information.
      */
-    void writeImage(PDFBoxDocRenderer renderer, PDFGeneratorContext context, String imgUrl, float x, float y, MSSImage mssImage) {
+    static void writeImage(PDFBoxDocRenderer renderer, PDFGeneratorContext context, String imgUrl, float x, float y, MSSImage mssImage) {
         // Image extends Url, but we allow the Image.url to be a local path also, even without file:
         imgUrl = imgUrl.trim()
         InputStream imageStream
@@ -715,12 +725,21 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                 }
             }
 
+            if (mssImage.imgX != null) {
+                x = mssImage.imgX
+            }
+            if (mssImage.imgY != null) {
+                y = mssImage.imgY
+            }
+
             PDFBoxDocRenderer.ImageParam params = new PDFBoxDocRenderer.ImageParam(
                     imageStream: imageStream,
                     holeMargin: 0,
                     createHole: false,
                     xOverride: x,
-                    yOverride: y
+                    yOverride: y,
+                    scale: mssImage.scalePercent,
+                    rotate: mssImage.rotateDegrees
             )
 
             if (imgUrl.endsWith(".jpg") || imgUrl.endsWith(".jpeg")) {
@@ -907,14 +926,14 @@ class ParagraphWriter implements BoxedTrait {
     }
 
     /**
-     * Internal text write method that also handles text backround boxing.
+     * Internal text write method that also handles text background boxing.
      *
      * @param text The text to write.
      * @param section The styling section to apply.
+     * @param stylesApplicator This closure is run to apply styles.
      */
-    private void writeText(String text, MSS_Pages section, Closure<Void> styleText) {
-        MSSColor
-        renderer.text(text, styleText, checkAndSetParagraphBoxed(section, this.renderer, this.context.pdfStyles.mss))
+    private void writeText(String text, MSS_Pages section, Closure<Void> stylesApplicator) {
+        renderer.text(text, stylesApplicator, checkAndSetParagraphBoxed(section, this.renderer, this.context.pdfStyles.mss))
         clearParagraphBoxed(section, this.renderer, this.context.pdfStyles.mss)
     }
 
@@ -962,7 +981,9 @@ class ParagraphWriter implements BoxedTrait {
     void writePlainText(@NotNull PlainText text) {
         writeText(text.text, MSS_Pages.standard) {
             renderer.setStyle(this.context.pdfStyles, MSS_Pages.standard)
-            renderer.setColorPair(this.forDocument.getColorPair(MSS_Pages.standard))
+            MSSColorPair colorPair = this.forDocument.getColorPair(MSS_Pages.standard)
+            renderer.setColorPair(colorPair)
+            renderer.setLinesEtcColor(colorPair.foreground) // required for underlined text.
         }
     }
 

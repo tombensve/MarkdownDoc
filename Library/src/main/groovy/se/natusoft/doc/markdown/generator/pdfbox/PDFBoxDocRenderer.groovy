@@ -529,6 +529,15 @@ class PDFBoxDocRenderer implements NotNullTrait {
     }
 
     /**
+     * Sets the color to use for drawing lines, etc.
+     *
+     * @param color The color to set.
+     */
+    void setLinesEtcColor(@NotNull MSSColor color) {
+        color.applyColor this.docMgr.DOC_LINES_ETC_COLOR
+    }
+
+    /**
      * The color for background fills.
      *
      * @apram backgroundColor The background color to set.
@@ -554,6 +563,16 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     void restoreForegroundColor() {
         this.colors.foreground.applyColor this.docMgr.DOC_TEXT_AND_FILL_COLOR
+    }
+
+    /**
+     * Sets the color pair by styles adapter and section.
+     *
+     * @param stylesMSSAdapter The adapter to use for looking up style.
+     * @param section Lookup styles for this section.
+     */
+    void setColorPair(@NotNull PDFBoxStylesMSSAdapter stylesMSSAdapter, MSS.MSS_Pages section) {
+        setColorPair(stylesMSSAdapter.mss.forDocument.getColorPair(section))
     }
 
     /**
@@ -628,18 +647,6 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * Gets a Font adapter from a styles adapter and a section.
      *
-     * @param section The section to get font adapter for. All of MSS.MSS_Pages.*, MSS.MSS_Front_Page.*, and MSS.MSS_TOC.*
-     *                are valid. These all implements MSS.Section.
-     *
-     * @return
-     */
-    PDFBoxFontMSSAdapter getFontAdapter(MSS.Section section) {
-        return getFontAdapter(this.stylesMSSAdapter, section)
-    }
-
-    /**
-     * Gets a Font adapter from a styles adapter and a section.
-     *
      * @param stylesMSSAdapter The styles adapter to use.
      * @param section The section to get font adapter for. All of MSS.MSS_Pages.*, MSS.MSS_Front_Page.*, and MSS.MSS_TOC.*
      *                are valid. These all implements MSS.Section.
@@ -675,7 +682,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
     protected void applyFontInternal() {
         if (this.fontMSSAdapter != null) {
             this.docMgr.docStream.leading = this.fontMSSAdapter.size + 2
-            this.fontMSSAdapter.applyFont(this.docMgr.docStream, this.docMgr.docPage)
+            this.fontMSSAdapter.applyFont(this.docMgr.docStream)
         }
     }
 
@@ -846,14 +853,14 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Writes pre formatted text as is.
      *
      * @param text The pre formatted text
-     * @param styleText A closure that will be called to style text when needed.
+     * @param stylesApplicator A closure that will be called to style text when needed.
      */
-    PDRectangle preFormattedText(@NotNull Object text, @Nullable Closure<Void> styleText) {
+    PDRectangle preFormattedText(@NotNull Object text, @Nullable Closure<Void> stylesApplicator) {
         notNull("text", text)
 
         ensureTextMode()
 
-        this.stylesApplicator = styleText
+        this.stylesApplicator = stylesApplicator
         applyStyles()
 
         String[] lines = text.toString().split("\n|\r")
@@ -865,7 +872,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
             this.pageY -= (this.fontMSSAdapter.size + 2)
             if (this.pageY < this.margins.bottomMargin) {
                 newPage()
-                if (styleText != null) { styleText.call() }
+                if (stylesApplicator != null) { stylesApplicator.call() }
             }
             else {
                 // Note: newLineAtOffset(...) does not work here!
@@ -883,12 +890,12 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Writes text to the document using the current font, colors, etc.
      *
      * @param txt The text to write.
-     * @param styleText A closure that will be called to style text when needed.
+     * @param stylesApplicator A closure that will be called to style text when needed.
      *
      * @return a PDRectangle enclosing the text just written. Useful when adding (PDF) annotations.
      */
-    PDRectangle text(@NotNull Object txt,  @Nullable Closure<Void> styleText) {
-        text(txt, styleText, false)
+    PDRectangle text(@NotNull Object txt,  @Nullable Closure<Void> stylesApplicator) {
+        text(txt, stylesApplicator, false)
     }
 
     /**
@@ -939,12 +946,12 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Writes text to the document using the current font, colors, etc.
      *
      * @param txt The txt to write.
-     * @param styleText A closure that will be called to style text when needed.
+     * @param stylesApplicator A closure that will be called to style text when needed.
      * @param pgBoxed If true then the text will be rendered with a background of the set background color.
      *
      * @return a PDRectangle enclosing the txt just written. Useful when adding (PDF) annotations.
      */
-    PDRectangle text(@NotNull Object txt, @Nullable Closure<Void> styleText, boolean pgBoxed) {
+    PDRectangle text(@NotNull Object txt, @Nullable Closure<Void> stylesApplicator, boolean pgBoxed) {
         notNull("txt", txt)
 
         Text text = new Text(content: txt.toString())
@@ -955,9 +962,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         ensureTextMode()
 
-        // styleText will be null every now and then, and apparently though not obviously clear why, the stylesApplicator
-        // needs to be set to null these times, or save will fail later on!
-        this.stylesApplicator = styleText
+        this.stylesApplicator = stylesApplicator
         applyStyles()
 
         String _text = txt.toString()
@@ -989,11 +994,22 @@ class PDFBoxDocRenderer implements NotNullTrait {
             positionTextAtPageLocation()
 
             this.docMgr.docStream.showText(word.toString(this.preFormatted))
+            if (this.fontMSSAdapter.underlined) {
+                ensureTextModeOff()
+                applyStyles()
+                this.docMgr.docStream.addRect(this.pageX, this.pageY - 3, wordSize, 0.5f)
+                this.docMgr.docStream.closeAndFillAndStroke()
+                ensureTextMode()
+            }
             this.pageX += wordSize
         }
         if (pgBoxed) {
             endParagraphBox(boxedTextArea)
         }
+
+        // This is important! If not cleared, this text style could later be applied to a non text object, and PDFBox
+        // will not fail on this until save, and it fails with a very cryptic message!
+        this.stylesApplicator = null
 
         textArea.upperRightX = this.pageX
         textArea.upperRightY = this.pageY + this.fontMSSAdapter.size
@@ -1009,9 +1025,26 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param text The text to draw.
      */
     public void rawText(String text) {
+        rawText(text, null)
+    }
+
+    /**
+     * This draws the specified text as is at the current pageX and pageY location.
+     *
+     * This does not handle new line nor page breaks!
+     *
+     * @param text The text to draw.
+     * @param stylesApplicator This gets executed to apply styles when needed.
+     */
+    public void rawText(String text, Closure<Void> stylesApplicator) {
+        this.stylesApplicator = stylesApplicator
+        applyStyles()
+
         positionTextAtPageLocation()
         this.docMgr.docStream.showText(text)
         this.pageX += calcTextWidth(text)
+
+        this.stylesApplicator = null
     }
 
     /**
@@ -1026,14 +1059,17 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * Renders a text centered on the line and then moves to the next line.
      *
+     * __Note__: This is a much simpler rendering than text(...) does! For example, if the passed text here
+     * is wider than the page, it will not be split into multiple lines! It will break margin and page bounds!
+     *
      * @param text The text to center.
-     * @param styleText Callback that applies styles.
+     * @param stylesApplicator Callback that applies styles.
      */
-    void center(String text, Closure<Void> styleText) {
+    void center(String text, Closure<Void> stylesApplicator) {
         ensureTextModeOff()
         ensureTextMode() // Must do this for newLineAt(...) to work
 
-        this.stylesApplicator = styleText
+        this.stylesApplicator = stylesApplicator
         applyStyles()
 
         float x = ((this.pageFormat.width / 2.0f) - (calcTextWidth(text) / 2.0f)) as float
@@ -1137,14 +1173,14 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param color The color to draw the hr in.
      */
     void hr(float thickness, @Nullable MSSColor color) {
-        if (this.pageY - 8 < this.margins.bottomMargin) {
+        if (this.pageY - this.fontMSSAdapter.size < this.margins.bottomMargin) {
             newPage()
             // We intentionally do not draw the hr if it is on a page break.
         }
         else {
-            newLine()
+            //newLine()
             ensureTextModeOff()
-            float hrY = this.pageY + 1
+            float hrY = this.pageY + (this.fontMSSAdapter.size / 2) + 4
 
             if (color!= null) {
                 color.applyColor this.docMgr.DOC_TEXT_AND_FILL_COLOR
@@ -1155,8 +1191,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
                     this.margins.leftMargin, hrY, this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin, thickness
             )
             this.docMgr.docStream.closeAndFillAndStroke()
-            ensureTextMode()
-            //newLineAtPageLocation()
+            ensureTextMode(this.pageX, this.pageY)
+            //newLine()
         }
     }
 

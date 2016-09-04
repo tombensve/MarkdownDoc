@@ -1,7 +1,7 @@
 <!--
     This is a comment!
 
-    @PDFTitle("Test of iText PDF generating")
+    @PDFTitle("Test of PDFBox PDF generating")
     @PDFSubject("PDF generation")
     @PDFKeywords("Test inline")
     @PDFVersion(1.0)
@@ -98,13 +98,9 @@ End of code block.
 
 * Fourth entry orig list.
 
-  This entry has two paragraphs.
-
   * New sub list uo
 
   * New sub list l2 uo
-
-&nbsp;
 
 1. Ordered list
 

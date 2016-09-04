@@ -60,9 +60,6 @@ class PDFBoxFontMSSAdapter {
     static final PDFBoxFontMSSAdapter PAGE_NUMBER_FONT =
             new PDFBoxFontMSSAdapter(new MSSFont(family: "HELVETICA", style: MSSFontStyle.BOLD, size: 8))
 
-    static final PDFBoxFontMSSAdapter DEFAULT_TOC_FONT =
-            new PDFBoxFontMSSAdapter(new MSSFont(family: "HELVETICA", style: MSSFontStyle.NORMAL, size: 8))
-
     //
     // Properties
     //
@@ -73,8 +70,8 @@ class PDFBoxFontMSSAdapter {
     /** The size of the font */
     int size
 
-    /** Additional markup if non null. */
-    PDAnnotationTextMarkup markup = null
+    /** If underlined or not. */
+    boolean underlined = false
 
     //
     // Constructors
@@ -83,18 +80,14 @@ class PDFBoxFontMSSAdapter {
     PDFBoxFontMSSAdapter(@NotNull final MSSFont mssFont) {
         this.font = toStdStyle(mssFont.family, mssFont.style)
         this.size = mssFont.size
-        if (mssFont.style == MSSFontStyle.UNDERLINE) {
-            this.markup = new PDAnnotationTextMarkup(PDAnnotationTextMarkup.SUB_TYPE_UNDERLINE)
-        }
+        this.underlined = mssFont.underlined
     }
 
     protected PDFBoxFontMSSAdapter(@NotNull PDFont font, @NotNull final MSSFont mssFont) {
         this.font = font
         this.size = mssFont.size
+        this.underlined = mssFont.underlined
         setStyle(font, mssFont.style)
-        if (mssFont.style == MSSFontStyle.UNDERLINE) {
-            this.markup = new PDAnnotationTextMarkup(PDAnnotationTextMarkup.SUB_TYPE_UNDERLINE)
-        }
     }
 
     //
@@ -105,13 +98,9 @@ class PDFBoxFontMSSAdapter {
      * Sets the font represented by this adapter on a  page content stream.
      *
      * @param contentStream The content stream to apply font to.
-     * @param page The current page to which the content stream writes to.
      */
-    public void applyFont(PDPageContentStream contentStream, PDPage page) {
+    public void applyFont(PDPageContentStream contentStream) {
         contentStream.setFont(this.font, this.size)
-        if (page != null && this.markup != null) {
-            page.getAnnotations().add(this.markup)
-        }
     }
 
     /**

@@ -54,7 +54,7 @@
       "block_quote": {
         "family": "HELVETICA",
         "size": 11,
-        "style": "Italic",
+        "style": "ITALIC",
         "color": "128:128:128",
         "background": "white"
       },
@@ -66,7 +66,7 @@
       "h2": {
         "family": "HELVETICA",
         "size": 18,
-        "style": "BOLD"
+        "style": "BOLD,UNDERLINE"
       },
       "h3": {
         "family": "Raleway-Regular",
@@ -132,6 +132,7 @@
         "color": "20:30:40",
         "background": "110:111:112",
         "size": 15,
+        "style": "underline",
         "block_quote": {
           "family": "COURIER",
           "color": "120:120:120",

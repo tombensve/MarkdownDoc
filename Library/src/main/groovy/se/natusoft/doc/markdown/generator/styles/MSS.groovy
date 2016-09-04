@@ -484,18 +484,11 @@ class MSS {
         font.updateFamilyIfNotSet(family?.toString())
 
         final JSONNumber size = section?.getProperty(MSS_Font.size.name()) as JSONNumber
-        font.updateSizeIfNotSet(size != null ? size.toInt() : -1i)
+        font.updateSizeIfNotSet((size != null ? size.toInt() : -1i) as int)
 
         final JSONString style = section?.getProperty(MSS_Font.style.name()) as JSONString
         if (style != null) {
-            MSSFontStyle mssFontStyle = MSSFontStyle.valueOf(style.toString().toUpperCase())
-            if (mssFontStyle == null) { throw new MSSException(message: "'${style}' is not a valid font style!") }
-            font.updateStyleIfNotSet(mssFontStyle)
-        }
-
-        final JSONBoolean hr = section?.getProperty(MSS_Font.hr.name()) as JSONBoolean
-        if (hr != null) {
-            font.updateHrIfNotSet(hr.asBoolean)
+            font.updateStyleIfNotSet(style.toString().toUpperCase())
         }
     }
 
@@ -548,7 +541,7 @@ class MSS {
     private static @NotNull MSSFont ensureFont(@NotNull final MSSFont font) {
         font.updateFamilyIfNotSet("HELVETICA")
         font.updateSizeIfNotSet(10)
-        font.updateStyleIfNotSet(MSSFontStyle.NORMAL)
+        font.updateStyleIfNotSet(MSSFontStyle.NORMAL.name())
 
         font
     }

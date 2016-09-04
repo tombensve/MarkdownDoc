@@ -415,10 +415,11 @@ class MarkdownParser implements Parser {
         mdLine = (MDLine)mdLine.removeBeg("*")
         mdLine = (MDLine)mdLine.removeBeg("+")
         mdLine = (MDLine)mdLine.removeBeg("-")
+        mdLine = (MDLine)mdLine.removeBegNumberDot();
 
         final ListItem listItem = new ListItem()
         Paragraph liParagraph = new Paragraph()
-        parseParagraph(liParagraph, mdLine.removeFirstWord(), lineReader, isList)
+        parseParagraph(liParagraph, mdLine, lineReader, isList)
         listItem.addItem(liParagraph)
 
         MDLine peekLine = (MDLine)lineReader.peekNextLine()

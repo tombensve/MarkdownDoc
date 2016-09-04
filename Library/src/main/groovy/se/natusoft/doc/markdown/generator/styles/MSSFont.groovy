@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         1.5.0
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
@@ -58,11 +58,7 @@ class MSSFont {
     String family = null
     int size = -1
     MSSFontStyle style = null
-
-    Boolean hr = null
-    Boolean getHr() { // hr must be able to be null internally, but externally return false instead of null.
-        return this.hr != null ? this.hr : Boolean.FALSE
-    }
+    boolean underlined = false
 
     //
     // Methods
@@ -76,12 +72,20 @@ class MSSFont {
         if (this.size == -1) this.size = size
     }
 
-    void updateStyleIfNotSet(@Nullable final MSSFontStyle style) {
-        if (this.style == null) this.style = style
+    void updateStyleIfNotSet(@Nullable final String styles) {
+        if (this.style == null) {
+            styles.split(",").each { String strStyle ->
+                MSSFontStyle fontStyle = MSSFontStyle.valueOf(strStyle)
+                if (fontStyle == null) { throw new MSSException(message: "'${strStyle}' is not a valid font style!") }
+                if (fontStyle == MSSFontStyle.UNDERLINE) {
+                    this.underlined = true
+                }
+                else {
+                    this.style = fontStyle
+                }
+            }
+        }
     }
 
-    void updateHrIfNotSet(final boolean hr) {
-        if (this.hr == null) this.hr = hr
-    }
 
 }
