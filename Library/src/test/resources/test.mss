@@ -122,8 +122,8 @@
         "size": 8
       },
       "horizontal_ruler": {
-        "thickness": 0.5,
-        "color": "blue"
+        "thickness": 0.0001,
+        "color": "grey"
       }
     },
     "divs": {

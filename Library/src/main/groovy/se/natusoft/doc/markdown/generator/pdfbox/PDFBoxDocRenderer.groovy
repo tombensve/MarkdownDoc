@@ -733,7 +733,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @return The calculated width.
      */
-    protected float calcTextWidth(@NotNull PDFBoxFontMSSAdapter fontAdapter, @NotNull String text) {
+    static protected float calcTextWidth(@NotNull PDFBoxFontMSSAdapter fontAdapter, @NotNull String text) {
         notNull("text", text)
         (fontAdapter.font.getStringWidth(text) / 1000.0f * (float)fontAdapter.size) as float
     }
@@ -997,6 +997,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
             if (this.fontMSSAdapter.underlined) {
                 ensureTextModeOff()
                 applyStyles()
+                this.docMgr.docStream.setLineWidth(0.001f)
                 this.docMgr.docStream.addRect(this.pageX, this.pageY - 3, wordSize, 0.5f)
                 this.docMgr.docStream.closeAndFillAndStroke()
                 ensureTextMode()
@@ -1187,10 +1188,11 @@ class PDFBoxDocRenderer implements NotNullTrait {
                 color.applyColor this.docMgr.DOC_LINES_ETC_COLOR
             }
 
-            this.docMgr.docStream.addRect(
-                    this.margins.leftMargin, hrY, this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin, thickness
-            )
+            this.docMgr.docStream.setLineWidth(thickness)
+            this.docMgr.docStream.moveTo(this.margins.leftMargin, hrY)
+            this.docMgr.docStream.lineTo(this.pageFormat.width - this.margins.rightMargin, hrY)
             this.docMgr.docStream.closeAndFillAndStroke()
+
             ensureTextMode(this.pageX, this.pageY)
             //newLine()
         }
