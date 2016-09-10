@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Maven Plugin
- *     
+ *
  *     Code Version
  *         1.4.2
- *     
+ *
  *     Description
  *         A maven plugin for generating documentation from markdown.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -75,7 +75,7 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
      * @parameter
      * @optional
      */
-    private GeneratorOptions generatorOptions = new GeneratorOptions();
+    private GeneratorOptions generatorOptions;
 
     /**
      * Provides the options for the HTMLGenerator. These are only relevant if
@@ -84,7 +84,7 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
      * @parameter
      * @optional
      */
-    private HTMLGeneratorOptions htmlGeneratorOptions = new HTMLGeneratorOptions();
+    private HTMLGeneratorOptions htmlGeneratorOptions;
 
     /**
      * Provides the options for the MarkdownGenerator. These are only relevant if
@@ -93,7 +93,7 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
      * @parameter
      * @optional
      */
-    private MarkdownGeneratorOptions mdGeneratorOptions = new MarkdownGeneratorOptions();
+    private MarkdownGeneratorOptions mdGeneratorOptions;
 
     /**
      * Provides the options for the PDFGenerator. These are only relevant if
@@ -102,7 +102,7 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
      * @parameter
      * @optional
      */
-    private PDFGeneratorOptions pdfGeneratorOptions = new PDFGeneratorOptions();
+    private PDFGeneratorOptions pdfGeneratorOptions;
 
     /**
      * The projects base directory.
@@ -112,11 +112,68 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
     private String baseDir;
 
     /**
+     * Validates the inputs.
+     *
+     * @throws MojoExecutionException
+     *
+     * TODO: Validations should be delegated to each generator.
+     */
+    private void validate() throws MojoExecutionException {
+        if (this.generatorOptions == null) {
+           throw new MojoExecutionException("A <generalOptions>...</generalOptions> must be specified with a minimum of " +
+                   "<inputPaths>...</inputPaths> in it!");
+        }
+
+        if (this.generatorOptions.getInputPaths() == null || this.generatorOptions.getInputPaths().isEmpty()) {
+            throw new MojoExecutionException("<inputPaths>...</inputPaths> must be specified!");
+        }
+
+        if (this.generatorOptions.getGenerator() == null || this.generatorOptions.getGenerator().isEmpty()) {
+            throw new MojoExecutionException("Missing: <generalOptions><generator>...</generator></generalOptions>!");
+        }
+
+        if (this.generatorOptions.getGenerator().trim().toLowerCase().equals("pdf")) {
+            if (this.pdfGeneratorOptions == null) {
+                throw new MojoExecutionException("The PDF generator needs <pdfGeneratorOptions>...</pdfGeneratorOptions> configuration!");
+            }
+
+            if (this.pdfGeneratorOptions.getResultFile() == null || this.pdfGeneratorOptions.getResultFile().isEmpty()) {
+                throw new MojoExecutionException("'resultFile' missing: " +
+                        "<pdfGeneratorOptions><resultFile>...</resultFile></pdfGeneratorOptions>!");
+            }
+        }
+        if (this.generatorOptions.getGenerator().trim().toLowerCase().equals("html")) {
+            if (this.htmlGeneratorOptions == null) {
+                throw new MojoExecutionException("The PDF generator needs <htmlGeneratorOptions>...</htmlGeneratorOptions> configuration!");
+            }
+
+            if (this.htmlGeneratorOptions.getResultFile() == null || this.htmlGeneratorOptions.getResultFile().isEmpty()) {
+                throw new MojoExecutionException("'resultFile' missing: " +
+                        "<htmlGeneratorOptions><resultFile>...</resultFile></htmlGeneratorOptions>!");
+            }
+
+        }
+        if ((this.generatorOptions.getGenerator().trim().toLowerCase().equals("md") ||
+                this.generatorOptions.getGenerator().trim().toLowerCase().equals("markdown"))) {
+            if (this.mdGeneratorOptions == null) {
+                throw new MojoExecutionException("The PDF generator needs <mdGeneratorOptions>...</mdGeneratorOptions> configuration!");
+            }
+
+            if (this.mdGeneratorOptions.getResultFile() == null || this.mdGeneratorOptions.getResultFile().isEmpty()) {
+                throw new MojoExecutionException("'resultFile' missing: " +
+                        "<mdGeneratorOptions><resultFile>...</resultFile></mdGeneratorOptions>!");
+            }
+        }
+    }
+
+    /**
      * Executes this mojo.
      *
      * @throws MojoExecutionException on bad config and other failures.
      */
     public void execute() throws MojoExecutionException {
+        validate();
+
         String inputPaths = this.generatorOptions.getInputPaths();
         if (inputPaths != null && inputPaths.trim().length() > 0) {
             if (inputPaths.indexOf(',') == -1 && inputPaths.endsWith(".mddoc")) {
