@@ -180,7 +180,7 @@
         "size": 18,
         "style": "ITALIC",
         "color": "SaddleBrown",
-        "hr": true
+        "underlined": true
       },
       "h3": {
         "size": 16,

@@ -112,6 +112,10 @@ class MSS {
         link
     }
 
+    static enum MSS_Header {
+        underlined
+    }
+
     static enum MSS_HR {
         thickness,
         color
@@ -561,6 +565,55 @@ class MSS {
     }
 
     /**
+     * Checks if a header is underlined.
+     *
+     * @param section The header section to lookup underline status for.
+     */
+    boolean isHeaderUnderlinedForDocument(@NotNull final MSS_Pages section) {
+        if (!section.name().startsWith("h")) {
+            return false
+        }
+
+        Boolean isUnderlined = null
+        if (this.currentDivs != null) {
+            this.currentDivs.each { String divName ->
+                JSONObject div = this.divs.getProperty(divName) as JSONObject
+                JSONValue header = div.getProperty(section.name())
+                if (header != null && header instanceof JSONObject) {
+                    JSONValue val = header.getProperty(MSS_Header.underlined.name())
+                    if (val != null && val instanceof JSONBoolean) {
+                        isUnderlined = (val as JSONBoolean).asBoolean
+                    }
+                }
+            }
+        }
+
+        if (isUnderlined == null) {
+            JSONValue header = this.pages.getProperty(section.name())
+            if (header != null && header instanceof JSONObject) {
+                JSONValue val = header.getProperty(MSS_Header.underlined.name())
+                if (val != null && val instanceof JSONBoolean) {
+                    isUnderlined = (val as JSONBoolean).asBoolean
+                }
+            }
+        }
+
+        if (isUnderlined == null) {
+            JSONValue header = this.document.getProperty(section.name())
+            if (header != null && header instanceof JSONObject) {
+                JSONValue val = header.getProperty(MSS_Header.underlined.name())
+                if (val != null && val instanceof JSONBoolean) {
+                    isUnderlined = (val as JSONBoolean).asBoolean
+                }
+            }
+        }
+
+        if (isUnderlined == null) isUnderlined = false
+
+        isUnderlined
+    }
+
+    /**
      * Returns a MSSColorPair containing foreground color and background color to use for the section.
      *
      * @param section A section type like h1, blockquote, etc.
@@ -683,6 +736,7 @@ class MSS {
                         "a string with a size and a pt/cm/in suffix.")
         }
 
+        margin
     }
 
     /**
@@ -897,6 +951,10 @@ class MSS {
 
         float getSectionNumberXOffset(@NotNull MSS_Pages section) {
             getSectionNumberXOffsetForDocument(section)
+        }
+
+        boolean isHeaderUnderlined(@NotNull MSS_Pages section) {
+            isHeaderUnderlinedForDocument(section)
         }
     }
 
@@ -1315,6 +1373,9 @@ class MSS {
         }
         if (!ok) {
             ok = safeNameValidation { MSS_HR.valueOf(name) != null }
+        }
+        if (!ok) {
+            ok = safeNameValidation { MSS_Header.valueOf(name) != null }
         }
         if (!ok) {
             ok = safeNameValidation { MSS_SectionNumber.valueOf(name) != null }

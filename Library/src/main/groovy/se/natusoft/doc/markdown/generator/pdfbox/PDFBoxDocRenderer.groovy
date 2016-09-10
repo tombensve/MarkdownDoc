@@ -847,8 +847,6 @@ class PDFBoxDocRenderer implements NotNullTrait {
         new TopPage()
     }
 
-
-
     /**
      * Writes pre formatted text as is.
      *
@@ -1165,6 +1163,18 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     private boolean isBox() {
         return this.box != null
+    }
+
+    /**
+     * Draws a complete HR left to right under the current text.
+     */
+    void hrText() {
+        ensureTextModeOff()
+        this.docMgr.docStream.setLineWidth(0.001f)
+        this.docMgr.docStream.addRect(this.margins.leftMargin, this.pageY - 3, this.pageFormat.width - this.margins.leftMargin -
+                this.margins.rightMargin, 0.001f)
+        this.docMgr.docStream.closeAndFillAndStroke()
+        ensureTextMode()
     }
 
     /**

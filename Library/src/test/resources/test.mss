@@ -61,31 +61,32 @@
       "h1": {
         "family": "HELVETICA",
         "size": 20,
-        "style": "BOLD"
+        "style": "NORMAL"
       },
       "h2": {
         "family": "HELVETICA",
         "size": 18,
-        "style": "BOLD,UNDERLINE"
+        "style": "NORMAL",
+        "underlined": true
       },
       "h3": {
         "family": "Raleway-Regular",
         "size": 16,
-        "style": "BOLD"
+        "style": "NORMAL"
       },
       "h4": {
         "family": "Tuffy",
         "size": 14,
-        "style": "BOLD"
+        "style": "NORMAL"
       },
       "h5": {
         "family": "HELVETICA",
         "size": 12,
-        "style": "BOLD"
+        "style": "NORMAL"
       },
       "h6": {
         "family": "HELVETICA",
-        "style": "BOLD"
+        "style": "NORMAL"
       },
       "emphasis": {
         "family": "HELVETICA",
