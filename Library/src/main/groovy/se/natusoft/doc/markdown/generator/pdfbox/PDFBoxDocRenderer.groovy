@@ -618,7 +618,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
     }
 
     /**
-     * Sets and applies the font represented by the adapter.
+     * Sets and applies the font represented by the adapter. This will also resolve external fonts
+     * specified in the MSS file.
      *
      * @param fontMSSAdapter The PDFFontMSSAdapter to set.
      */
@@ -642,7 +643,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param fontMSSAdapter The adapter for the font to apply.
      */
-    void setFont(PDFBoxFontMSSAdapter fontMSSAdapter) {
+    private void setFont(PDFBoxFontMSSAdapter fontMSSAdapter) {
         this.fontMSSAdapter = fontMSSAdapter
         applyFontInternal()
     }

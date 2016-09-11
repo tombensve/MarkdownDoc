@@ -208,7 +208,10 @@
       "code": {
         "family": "COURIER",
         "size": 7,
-        "color": "64:64:64"
+        "color": "64:64:64",
+        "background": "#f8f8f8",
+        "boxed": true,
+        "boxedColor": "#f8f8f8"
       },
       "anchor": {
         "color": "27:143:248"

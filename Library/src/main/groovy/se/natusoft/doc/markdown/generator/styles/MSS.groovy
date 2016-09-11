@@ -1277,12 +1277,12 @@ class MSS {
         final JSONObject mss = (JSONObject) JSON.read(styleStream, new JSONErrorHandler() {
             @Override
             void warning(@NotNull final String message) {
-                System.err.println(message);
+                System.err.println("MSS: ${message}");
             }
 
             @Override
             void fail(@NotNull final String message, @Nullable final Throwable cause) throws RuntimeException {
-                throw new RuntimeException(message, cause)
+                throw new RuntimeException("MSS: ${message}", cause)
             }
         });
 

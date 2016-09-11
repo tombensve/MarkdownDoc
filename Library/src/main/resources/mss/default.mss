@@ -210,11 +210,11 @@
       },
       "code": {
         "family": "COURIER",
-        "size": 9,
+        "size": 7,
         "color": "10:10:10",
-        "background": "white",
+        "background": "#f8f8f8",
         "boxed": true,
-        "boxColor": "240:240:240"
+        "boxedColor": "#f8f8f8"
       },
       "anchor": {
         "color": "59:134:198"
@@ -275,7 +275,6 @@
     "toc": {
     },
     "h1": {
-      "style": "BOLD"
     },
     "h2": {
     },

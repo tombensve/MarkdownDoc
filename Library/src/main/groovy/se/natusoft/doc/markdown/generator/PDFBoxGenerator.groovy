@@ -229,38 +229,38 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
                 case DocFormat.Paragraph:
                     writeParagraph(docItem as Paragraph, renderer, context)
-                    renderer.setFont(new PDFBoxFontMSSAdapter(context.pdfStyles.mss.forDocument.getFont(MSS_Pages.standard)))
+                    renderer.setStyle(context.pdfStyles, MSS_Pages.standard)
                     renderer.newSection()
                     break
 
                 case DocFormat.Header:
                     writeHeader(docItem as Header, renderer, context)
-                    renderer.setFont(new PDFBoxFontMSSAdapter(context.pdfStyles.mss.forDocument.getFont(MSS_Pages.standard)))
+                    renderer.setStyle(context.pdfStyles, MSS_Pages.standard)
                     renderer.newSection()
                     break
 
                 case DocFormat.BlockQuote:
                     writeBlockQuote(docItem as BlockQuote, renderer, context)
-                    renderer.setFont(new PDFBoxFontMSSAdapter(context.pdfStyles.mss.forDocument.getFont(MSS_Pages.standard)))
+                    renderer.setStyle(context.pdfStyles, MSS_Pages.standard)
                     renderer.newSection()
                     break;
 
                 case DocFormat.CodeBlock:
                     writeCodeBlock(docItem as CodeBlock, renderer, context)
-                    renderer.setFont(new PDFBoxFontMSSAdapter(context.pdfStyles.mss.forDocument.getFont(MSS_Pages.standard)))
+                    renderer.setStyle(context.pdfStyles, MSS_Pages.standard)
                     renderer.newSection()
                     renderer.newLine()
                     break
 
                 case DocFormat.HorizontalRule:
-                    renderer.setFont(new PDFBoxFontMSSAdapter(context.pdfStyles.mss.forDocument.getFont(MSS_Pages.standard)))
+                    renderer.setStyle(context.pdfStyles, MSS_Pages.standard)
                     writeHr(renderer, context)
                     renderer.newLine()
                     break
 
                 case DocFormat.List:
                     writeList(docItem as List, renderer, context)
-                    renderer.setFont(new PDFBoxFontMSSAdapter(context.pdfStyles.mss.forDocument.getFont(MSS_Pages.standard)))
+                    renderer.setStyle(context.pdfStyles, MSS_Pages.standard)
                     renderer.newSection()
                     break
 
@@ -543,6 +543,10 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param context The generator context.
      */
     void writeHeader(@NotNull Header header, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
+        if (header.level.level == 1 && renderer.pageNo > 1) {
+            renderer.newPage()
+        }
+
         String outlineTitle = ""
         if (context.options.generateSectionNumbers) {
             if (this.headerNumber == null) {
@@ -563,8 +567,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
             MSSColorPair colorPair = context.pdfStyles.mss.forDocument.getColorPair(section)
             renderer.setColorPair(colorPair)
 
-            MSSFont font = context.pdfStyles.mss.forDocument.getFont(section)
-            renderer.setFont(new PDFBoxFontMSSAdapter(font))
+            renderer.setStyle(context.pdfStyles, section)
         }
 
         if (context.options.generateSectionNumbers) {
@@ -788,8 +791,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
             MSSColorPair colorPair = context.pdfStyles.mss.forTOC.getColorPair(toc.section)
             renderer.setColorPair(colorPair)
 
-            MSSFont font = context.pdfStyles.mss.forTOC.getFont(toc.section)
-            renderer.setFont(new PDFBoxFontMSSAdapter(font))
+            renderer.setStyle(context.pdfStyles, toc.section)
 
             renderer.tocEntry(toc, true) {
                 tocPage.newPage()
@@ -839,8 +841,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                 MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair(MSS.MSS_Front_Page.title)
                 renderer.setColorPair(colorPair)
 
-                MSSFont font = context.pdfStyles.mss.forFrontPage.getFont(MSS.MSS_Front_Page.title)
-                renderer.setFont(new PDFBoxFontMSSAdapter(font))
+                renderer.setStyle(context.pdfStyles, MSS.MSS_Front_Page.title)
             }
             yTop = (float)(yTop - (yItemSizeTop / 2.0f))
         }
@@ -853,8 +854,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                 MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair(MSS.MSS_Front_Page.subject)
                 renderer.setColorPair(colorPair)
 
-                MSSFont font = context.pdfStyles.mss.forFrontPage.getFont(MSS.MSS_Front_Page.subject)
-                renderer.setFont(new PDFBoxFontMSSAdapter(font))
+                renderer.setStyle(context.pdfStyles, MSS.MSS_Front_Page.subject)
             }
             yTop = (yTop - (yItemSizeTop / 2f)) as float
         }
@@ -865,8 +865,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                 MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair(MSS.MSS_Front_Page.version)
                 renderer.setColorPair(colorPair)
 
-                MSSFont font = context.pdfStyles.mss.forFrontPage.getFont(MSS.MSS_Front_Page.version)
-                renderer.setFont(new PDFBoxFontMSSAdapter(font))
+                renderer.setStyle(context.pdfStyles, MSS.MSS_Front_Page.version)
             }
         }
 
@@ -878,8 +877,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                 MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair(MSS.MSS_Front_Page.copyright)
                 renderer.setColorPair(colorPair)
 
-                MSSFont font = context.pdfStyles.mss.forFrontPage.getFont(MSS.MSS_Front_Page.copyright)
-                renderer.setFont(new PDFBoxFontMSSAdapter(font))
+                renderer.setStyle(context.pdfStyles, MSS.MSS_Front_Page.copyright)
             }
             yBottom = (yBottom + (yItemSizeBottom / 2)) as float
         }
@@ -890,8 +888,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                 MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair(MSS.MSS_Front_Page.author)
                 renderer.setColorPair(colorPair)
 
-                MSSFont font = context.pdfStyles.mss.forFrontPage.getFont(MSS.MSS_Front_Page.author)
-                renderer.setFont(new PDFBoxFontMSSAdapter(font))
+                renderer.setStyle(context.pdfStyles, MSS.MSS_Front_Page.author)
             }
         }
 
