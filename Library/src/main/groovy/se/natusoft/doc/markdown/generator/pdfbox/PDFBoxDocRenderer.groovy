@@ -481,6 +481,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Sets the right inset. Set to 0 to remove inset.
      * @param inset
      */
+    @SuppressWarnings("GroovyUnusedDeclaration")
     void setRightInset(float inset) {
         this.margins.rightInset = inset
     }
@@ -488,6 +489,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * @return The right inset.
      */
+    @SuppressWarnings("GroovyUnusedDeclaration")
     float getRightInset() {
         return this.margins.rightInset
     }
@@ -495,26 +497,26 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * Adds an outline entry for the current page.
      *
-     * @param number The section number of the outline entry.
+     * @param headerLevel The header level of the entry.
      * @param title The title of the outline entry.
      */
-    void addOutlineEntry(Object number, String title) {
-        addOutlineEntry(number, title, currentPage)
+    void addOutlineEntry(int headerLevel, String title) {
+        addOutlineEntry(headerLevel, title, currentPage)
     }
 
     /**
      * Adds an outline entry for the specified page.
      *
-     * @param number The section number of the outline entry.
+     * @param headerLevel The header level of the entry.
      * @param title The title of the outline entry.
      * @param page The page to point to.
      */
-    void addOutlineEntry(Object number, String title, PDPage page) {
+    void addOutlineEntry(int headerLevel, String title, PDPage page) {
         if (this.docMgr.outline == null) {
             this.docMgr.outline = new Outline()
             this.docMgr.outline.addToDocument(this.docMgr.document)
         }
-        this.docMgr.outline.addEntry(number.toString(), title, page)
+        this.docMgr.outline.addEntry(headerLevel, title, page)
     }
 
     /**
@@ -522,6 +524,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param textAndLinesColor The color for text and lines to set.
      */
+    @SuppressWarnings("GroovyUnusedDeclaration")
     void setTextAndLinesColor(@NotNull MSSColor textAndLinesColor) {
         notNull("foregroundColor", textAndLinesColor)
         this.colors.foreground = textAndLinesColor
@@ -735,7 +738,19 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     static protected float calcTextWidth(@NotNull PDFBoxFontMSSAdapter fontAdapter, @NotNull String text) {
         notNull("text", text)
-        (fontAdapter.font.getStringWidth(text) / 1000.0f * (float)fontAdapter.size) as float
+        float width = 0
+        try {
+            width = (fontAdapter.font.getStringWidth(text) / 1000.0f * (float) fontAdapter.size) as float
+        }
+        catch (IllegalArgumentException iae) { // PDFBox have problems with certain characters.
+            StringBuilder sb = new StringBuilder()
+            text.length().times {
+                sb.append('X')
+            }
+            width = (fontAdapter.font.getStringWidth(sb.toString()) / 1000.0f * (float) fontAdapter.size) as float
+        }
+
+        width
     }
 
     /**
@@ -814,22 +829,27 @@ class PDFBoxDocRenderer implements NotNullTrait {
         rawText(tocEntry.sectionTitle)
 
         // Page number
-        this.pageX = (this.pageFormat.width - this.margins.rightMargin - calcTextWidth(this.fontMSSAdapter, "${pageNo}")) as float
+        this.pageX = ((this.pageFormat.width - this.margins.rightMargin) -
+                calcTextWidth("${tocEntry.pageNumber}")) as float
 
         positionTextAtPageLocation()
         rawText("${tocEntry.pageNumber}")
 
         // Dots between title and page number.
         if (useDots) {
-            // We subtract the size of 3 large characters (X) from the width to fill with dots to give a little space on both sides.
-            // This seems to work rather nicely for COURIER and HELVETICA fonts at least.
-            float dotsSize = this.pageX - titleEnd - calcTextWidth(this.fontMSSAdapter, "XXX")
+            // Note that this.pageX is now the position of the page number at the right of the page! That minus titleEnd gives
+            // us the space between the end of the title to the beginning of the page number.
+
+            // Note that in the result there will be more non dotted space before the 1 digit page numbers than the 2 digit
+            // page numbers, and the dots are more or less aligned to the right! This should not be the result, and I fail
+            // to comprehend why it is!!
+            float dotsSize = ((this.pageX - titleEnd) - calcTextWidth("..0000")) as float
 
             StringBuilder sb = new StringBuilder()
-            while (calcTextWidth(this.fontMSSAdapter, sb.toString()) < dotsSize) {
+            while (calcTextWidth(sb.toString()) < dotsSize) {
                 sb.append('.')
             }
-            this.pageX = (this.pageX - calcTextWidth(this.fontMSSAdapter, sb.toString()) - 10.0f) as float
+            this.pageX = (titleEnd + calcTextWidth("..")) as float
             positionTextAtPageLocation()
             rawText(sb.toString())
         }
@@ -991,14 +1011,19 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
             positionTextAtPageLocation()
 
-            this.docMgr.docStream.showText(word.toString(this.preFormatted))
-            if (this.fontMSSAdapter.underlined) {
-                ensureTextModeOff()
-                applyStyles()
-                this.docMgr.docStream.setLineWidth(0.001f)
-                this.docMgr.docStream.addRect(this.pageX, this.pageY - 3, wordSize, 0.5f)
-                this.docMgr.docStream.closeAndFillAndStroke()
-                ensureTextMode()
+            try {
+                this.docMgr.docStream.showText(word.toString(this.preFormatted))
+                if (this.fontMSSAdapter.underlined) {
+                    ensureTextModeOff()
+                    applyStyles()
+                    this.docMgr.docStream.setLineWidth(0.001f)
+                    this.docMgr.docStream.addRect(this.pageX, this.pageY - 3, wordSize, 0.5f)
+                    this.docMgr.docStream.closeAndFillAndStroke()
+                    ensureTextMode()
+                }
+            }
+            catch (IllegalArgumentException iae) {
+                System.err.println("PDFBox failed to render word '${word}' due to \"${iae.message}\"")
             }
             this.pageX += wordSize
         }

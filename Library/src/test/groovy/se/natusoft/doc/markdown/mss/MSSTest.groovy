@@ -67,7 +67,8 @@ class MSSTest extends GroovyTestCase {
 
         assert forFrontPage.getFont(MSS.MSS_Front_Page.title).family == "COURIER"
         assert forFrontPage.getFont(MSS.MSS_Front_Page.title).size == 25
-        assert forFrontPage.getFont(MSS.MSS_Front_Page.title).style == MSSFontStyle.UNDERLINE
+        assert forFrontPage.getFont(MSS.MSS_Front_Page.title).style == MSSFontStyle.NORMAL
+        assert forFrontPage.getFont(MSS.MSS_Front_Page.title).underlined
         assert forFrontPage.getColorPair(MSS.MSS_Front_Page.title).foreground == MSSColor.BLACK
         assert forFrontPage.getColorPair(MSS.MSS_Front_Page.title).background == MSSColor.WHITE
 
@@ -82,9 +83,9 @@ class MSSTest extends GroovyTestCase {
         assert forTOC.getColorPair(MSS.MSS_TOC.h6).foreground == MSSColor.BLACK
         assert forTOC.getColorPair(MSS.MSS_TOC.h6).background == MSSColor.WHITE
 
-        assert forTOC.getFont(MSS.MSS_TOC.h1).family == "COURIER"
-        assert forTOC.getFont(MSS.MSS_TOC.h1).size == 9
-        assert forTOC.getFont(MSS.MSS_TOC.h1).style == MSSFontStyle.BOLD
+        assert forTOC.getFont(MSS.MSS_TOC.h1).family == "HELVETICA"
+        assert forTOC.getFont(MSS.MSS_TOC.h1).size == 10
+        assert forTOC.getFont(MSS.MSS_TOC.h1).style == MSSFontStyle.NORMAL
         assert forTOC.getColorPair(MSS.MSS_TOC.h1).foreground == MSSColor.BLACK
         assert forTOC.getColorPair(MSS.MSS_TOC.h1).background == MSSColor.WHITE
 

@@ -10,13 +10,13 @@
       
     This is a comment!
 
-    @PDFTitle("Test of iText PDF generating")
+    @PDFTitle("Test of PDFBox PDF generating")
     @PDFSubject("PDF generation")
     @PDFKeywords("Test inline")
     @PDFVersion(1.0)
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
-    @PDFTitlePageImage("/tommy.jpg:260.0:400.0")
+    @PDFTitlePageImage("tommy.jpg:260.0:400.0")
 
     -->
     <H1>Headers</H1>
@@ -28,25 +28,25 @@
       This is a paragraph in a level 2 section.      
     </p>
     <H3>In Raleway external ttf font</H3>
+    <p>
+      Some text.      
+    </p>
     <H4>In Tuffy external ttf font</H4>
+    <p>
+      Some text.      
+    </p>
     <H5>Five</H5>
+    <p>
+      Some text.      
+    </p>
     <H6>Six</H6>
+    <p>
+      Some text.      
+    </p>
     <H1>Test of underline header H1</H1>
     <H2>Test of underline header H2</H2>
     <p>
       Garbage since we want the code block to page break.      
-    </p>
-    <p>
-      werewrwe      
-    </p>
-    <p>
-      werweqrwqe      
-    </p>
-    <p>
-      qwerwerw      
-    </p>
-    <p>
-      werwer      
     </p>
     <p>
       qwerweqrqwer      
@@ -104,81 +104,75 @@
     <ul>
       <li>
         <p>
-          list          
+           Unordered list          
         </p>
       </li>
       <li>
         <p>
-          entry          
+           Second entry          
         </p>
       </li>
       <ul>
         <li>
           <p>
-            within list.            
+             List within list.            
           </p>
         </li>
         <li>
           <p>
-            entry sub list            
+             Second entry sub list            
           </p>
         </li>
       </ul>
       <li>
         <p>
-          entry orig list.  This line is part of the same list entry.          
+           Third entry orig list.  This line is part of the same list entry.          
         </p>
       </li>
       <li>
         <p>
-          entry orig list.          
+           Fourth entry orig list.          
         </p>
       </li>
+      <ul>
+        <li>
+          <p>
+             New sub list uo            
+          </p>
+        </li>
+        <li>
+          <p>
+             New sub list l2 uo            
+          </p>
+        </li>
+      </ul>
     </ul>
-    <p>
-       This entry has two paragraphs.      
-    </p>
-    <ul>
-      <li>
-        <p>
-          sub list uo          
-        </p>
-      </li>
-      <li>
-        <p>
-          sub list l2 uo          
-        </p>
-      </li>
-    </ul>
-    <p>
-      &nbsp;      
-    </p>
     <ol>
       <li>
         <p>
-          Ordered list          
+           Ordered list          
         </p>
       </li>
       <li>
         <p>
-          Second entry ol          
+           Second entry ol          
         </p>
       </li>
       <ol>
         <li>
           <p>
-            sub entry ol            
+             sub entry ol            
           </p>
         </li>
         <li>
           <p>
-            sub entry 2 ol            
+             sub entry 2 ol            
           </p>
         </li>
       </ol>
       <li>
         <p>
-          Third entry orig ol.          
+           Third entry orig ol.          
         </p>
       </li>
     </ol>
@@ -196,7 +190,7 @@
       </p>
       <blockquote>
         <p>
-          A little block quote within div.          
+          A little block quote within a div.          
         </p>
       </blockquote>
     </div>
@@ -204,21 +198,39 @@
       This is a <em>formatting</em> <strong>Paragraph</strong>. Here is <a href='http://to.somewhere.net/' title=''>a link</a>.      
     </p>
     <p>
-      This paragraph also contains a <code>simple code block</code>. And here is an      
+      This paragraph also contains a <code>simple code block</code>. This is some more text because I want <code>another code block</code> breaking line.      
+    </p>
+    <p>
+      Here is a feature best illustrated with a rat and some latin:      
+    </p>
+    <div class="rat">
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla non velit feugiat neque maximus ultricies.         <img src='http://65.media.tumblr.com/07de24dd41bc31f53462f7e600c7418a/tumblr_inline_nupsstqiqk1ty84t8_500.png' title='' alt='image'/> Aenean sed elit lectus. Donec fermentum dapibus dapibus. Cras facilisis odio at dolor ultricies, eu pharetra leo tristique.        
+      </p>
+      <p>
+        Vivamus placerat, dui et fringilla vestibulum, libero velit dignissim orci, varius laoreet nunc arcu non enim. Vestibulum ornare justo ante, eu sodales metus congue vitae.        
+      </p>
+      <p>
+        Nulla consectetur purus justo, nec finibus mi congue eget. Praesent ac dignissim ligula, sit amet pharetra ligula.        
+      </p>
+      <p>
+        Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam sit amet risus id augue imperdiet ornare. Sed velit augue, laoreet.        
+      </p>
+    </div>
+    <p>
+      Some more text in new paragraph. <a href='www.somewhere.net' title=''>www.somewhere.net</a> ends this paragraph.      
+    </p>
+    <p>
+      * This is not a list since the '*' is escaped!      
+    </p>
+    <p>
+            <img src='https://raw.githubusercontent.com/dcurtis/markdown-mark/master/png/32x20-solid.png' title='' alt='imageref'/>      
+    </p>
+    <p>
+      Note that this text does not follow on the right of the image! This is because the 'imgFlow' MSS value is false here.      
     </p>
     <!--
       
-![image](https://raw.githubusercontent.com/dcurtis/markdown-mark/master/png/32x20-solid.png).
-
-Some more text in this paragraph. <www.somewhere.net> ends this paragraph.
-
-\* This is not a list since the \'\*\' is escaped!
-
-![imageref]
-
-[link]: http://to.somewhere.net/ "This links to somewhere on the net"
-
-[imageref]: https://raw.githubusercontent.com/dcurtis/markdown-mark/master/png/32x20-solid.png
 
     -->
   </body>

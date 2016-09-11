@@ -37,7 +37,7 @@
         -->
         <!--
             This one provides much better documentation and does not use Jackson. It claims to be twice as fast
-            as the above, and not using Jackson is probably the reason :-). s
+            as the above, and not using Jackson is probably the reason :-).
         -->
         <!--<dependency>-->
             <!--<groupId>org.everit.json</groupId>-->

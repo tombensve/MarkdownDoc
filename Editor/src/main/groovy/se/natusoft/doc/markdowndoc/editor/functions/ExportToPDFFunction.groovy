@@ -41,7 +41,7 @@ import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.exception.GenerateException
-
+import se.natusoft.doc.markdown.generator.PDFBoxGenerator
 import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
@@ -129,10 +129,8 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
     @CompileStatic
     private class PDFData extends ExportData {
 
-        private ExportDataValue pageSize = new ExportDataTextValue("Page size:", "A4")
         private ExportDataValue title = new ExportDataTextValue("Title:")
         private ExportDataValue subject = new ExportDataTextValue("Subject:")
-        private ExportDataValue keywords = new ExportDataTextValue("Keywords:")
         private ExportDataValue author = new ExportDataTextValue("Author:")
         private ExportDataValue version = new ExportDataTextValue("Version:")
         private ExportDataValue copyrightYear = new ExportDataTextValue("Copyright year:")
@@ -243,17 +241,15 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
      * Actually performs the PDF generation using MarkdownDocs PDF generator.
      */
     private void _generatePDF() {
-        final Generator generator = new PDFITextGenerator()
+        final Generator generator = new PDFBoxGenerator()
         final PDFGeneratorOptions pdfOpts = new PDFGeneratorOptions()
         pdfOpts.setResultFile(this.exportFile.getAbsolutePath())
         pdfOpts.setAuthor(this.pdfData.author.getValue())
         pdfOpts.setTitle(this.pdfData.title.getValue())
         pdfOpts.setSubject(this.pdfData.subject.getValue())
-        pdfOpts.setKeywords(this.pdfData.keywords.getValue())
         pdfOpts.setVersion(this.pdfData.version.getValue())
         pdfOpts.setCopyright("Copyright © " + this.pdfData.copyrightYear.getValue() + " by " +
             this.pdfData.copyrightBy.getValue())
-        pdfOpts.setPageSize(this.pdfData.pageSize.getValue())
         pdfOpts.setGenerateSectionNumbers(Boolean.valueOf(this.pdfData.generateSectionNumbers.getValue()))
         pdfOpts.setGenerateTitlePage(Boolean.valueOf(this.pdfData.generateTitlePage.getValue()))
         pdfOpts.setGenerateTOC(Boolean.valueOf(this.pdfData.generateTOC.getValue()))
@@ -278,7 +274,7 @@ class ExportToPDFFunction extends AbstractExportFunction implements EditorFuncti
             this.pdfData.saveExportData(this.editor.editable.file)
         }
 
-        if (this.pdfData.openResult.getValue().equals("true")) {
+        if (this.pdfData.openResult.getValue() == "true") {
             final Desktop desktop = Desktop.getDesktop()
             try {
                 desktop.open(this.exportFile)

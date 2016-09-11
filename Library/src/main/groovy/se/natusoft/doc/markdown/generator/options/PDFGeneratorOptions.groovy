@@ -82,12 +82,6 @@ class PDFGeneratorOptions implements Options {
     @Optional
     String titlePageImage
 
-//    @Option
-//    @Name("keywords")
-//    @Description("Meta keywords")
-//    @Optional
-//    String keywords = null
-
     @Option
     @Name("author")
     @Description("The author of the document.")
@@ -142,12 +136,6 @@ class PDFGeneratorOptions implements Options {
     @Optional
     String unorderedListItemPrefix = "• "
 
-//    @Option
-//    @Name("firstLineParagraphIndent")
-//    @Description("If true then the first line of each paragraph is indented. Default is false.")
-//    @Optional
-//    boolean firstLineParagraphIndent = false
-
     @Option
     @Name("mss")
     @Description("This specifies the path to an .mss file to use for setting fonts and colors and image styling of the generated document.")
@@ -158,7 +146,7 @@ class PDFGeneratorOptions implements Options {
     @Name("generateSectionNumbers")
     @Description("If true all chapters and sections will be numbered. This was the only option before version 1.4.")
     @Optional
-    boolean generateSectionNumbers = true
+    boolean generateSectionNumbers = false
 
     @Option
     @Name("generateTOC")

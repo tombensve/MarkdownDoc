@@ -5,8 +5,7 @@
 
     @PDFTitle("MarkdownDoc")
     @PDFSubject("User Guide")
-    @PDFKeywords("markdown MarkdownDoc mdd_version_1.4.1")
-    @PDFVersion(1 . 4 . 3) Due to the font used I put a space between to make the dot more visible.
+    @PDFVersion(2 . 0 . 0) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
     @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
@@ -52,7 +51,7 @@ Binaries are made available at [Bintray](https://bintray.com/tommy/maven/Markdow
 
 ### Thanks
 
-Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdown](http://daringfireball.net/projects/markdown) document format, and to [iText Software Corp.](http://itextpdf.com) for making an excellent easy to use PDF library and making it available as open source.
+Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdown](http://daringfireball.net/projects/markdown) document format, and to [PDFBox Apache Project](https://pdfbox.apache.org) for making a completely open source PDF renderer under the sensible Apache 2.0 license.
 
 ### How markdown is MarkdownDoc ?
 

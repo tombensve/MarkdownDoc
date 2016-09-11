@@ -70,7 +70,6 @@
                                 <!--
                                 These are now specified as annotations in MarkdownDocUserGuideStart.md!
 
-                                <pageSize>A4</pageSize>
                                 <title>MarkdownDoc</title>
                                 <subject>User Guide</subject>
                                 <version>${project.parent.version}</version>

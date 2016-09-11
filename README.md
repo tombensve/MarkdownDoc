@@ -48,17 +48,9 @@ Editor [[MarkdownDocEditor-1.4.4.App.jar](http://dl.bintray.com/tommy/maven/se/n
 
 The following third party products are using this license:
 
-* [OptionsManager-2.0.3](http://github.com/tombensve/OptionsManager)
+*  [OptionsManager-2.0.3](http://github.com/tombensve/OptionsManager)
 
-* [annotations-13.0](http://www.jetbrains.org)
-
-* [groovy-all-2.4.4](http://groovy-lang.org)
-
-[GNU Affero General Public License version v3](http://www.fsf.org/licensing/licenses/agpl-3.0.html)
-
-The following third party products are using this license:
-
-* [itext-pdfa-5.5.6-1](http://itextpdf.com)
+*  [annotations-13.0](http://www.jetbrains.org)
 
 <!--
   CLM
@@ -87,51 +79,51 @@ Added information about options for referencing images in _MarkdowndDoc_ under t
 
 The editor has been updated:
 
-* The popup window of all open files is no longer accessable by moving the mouse pointer to the left side of the window. This was a really bad idea! It was very easy to unintentionally trigger this popup. This function has now gotten an icon and been added to the toolbar instead. It already had a keyboard shortcut before and still does.
+*  The popup window of all open files is no longer accessable by moving the mouse pointer to the left side of the window. This was a really bad idea! It was very easy to unintentionally trigger this popup. This function has now gotten an icon and been added to the toolbar instead. It already had a keyboard shortcut before and still does.
 
-* All toolbar icons have been redone.
+*  All toolbar icons have been redone.
 
-* It is now also possible to open the same .fs files as supported by the maven plugin. All markdown documents referenced in the .fs file will be opened in the editor. If an .fs file also points out a java source file for javadoc parsing it will be ignored. Only markdown documents are opened.
+*  It is now also possible to open the same .fs files as supported by the maven plugin. All markdown documents referenced in the .fs file will be opened in the editor. If an .fs file also points out a java source file for javadoc parsing it will be ignored. Only markdown documents are opened.
 
 ## 1.4.1
 
 Only fixes in editor!
 
-* The popup windows now only popup over the editor window. The fullscreen popups worked badly on different platforms which reserves different parts of the screen.
+*  The popup windows now only popup over the editor window. The fullscreen popups worked badly on different platforms which reserves different parts of the screen.
 
-* Disabled rounded corner popup windows since they also worked with different quality on different platforms.
+*  Disabled rounded corner popup windows since they also worked with different quality on different platforms.
 
-* Added editor function to _Alt-Tab or something_ around opened files in the editor. For this to work at all you need to open configuration and set a keyboard compination that triggers this. There is no failsafe default that works on all platforms. The config is called "content switch keyboard shortcut".
+*  Added editor function to _Alt-Tab or something_ around opened files in the editor. For this to work at all you need to open configuration and set a keyboard compination that triggers this. There is no failsafe default that works on all platforms. The config is called "content switch keyboard shortcut".
 
 ## 1.4
 
-* Added support for what I call _Markdown Style Sheet_ or MSS for short. This is only applicable to PDF generation. For HTML there is CSS, and generating CSS from the MSS is a bad idea. The MSS is relatively simple and JSON based.
+*  Added support for what I call _Markdown Style Sheet_ or MSS for short. This is only applicable to PDF generation. For HTML there is CSS, and generating CSS from the MSS is a bad idea. The MSS is relatively simple and JSON based.
 
-   * It supports ttf, otf, and any other format supported by iText for external fonts.
+   *  It supports ttf, otf, and any other format supported by iText for external fonts.
 
-   * It allows for image configuration like scaling, rotating, and alignment. Before all images were alinged to the left. Now they can be alingned to the left, middle, or right. In previous versions all images was scaled to 60 percent due to iText rendering images very much bigger than any other image viewer (that I have at least). This scaling can now be set with MSS.
+   *  It allows for image configuration like scaling, rotating, and alignment. Before all images were alinged to the left. Now they can be alingned to the left, middle, or right. In previous versions all images was scaled to 60 percent due to iText rendering images very much bigger than any other image viewer (that I have at least). This scaling can now be set with MSS.
 
-* Added support for `<div class="..">...</div>`. This tool is mainly for writing documentation and generating PDF, but I wanted to add more flexibility for generating HTML pages also. Even though you probably want to keep a common style throughout a document, I did add div support to MSS. Divs within divs inherit styles upward. This was relatively simple to do. Note that the "Options / Settings" section uses a div with slightly different formatting than the rest of the document. Each option is a level 3 heading (H3) which is why it is part of the TOC, but styled with a smaller font with a different color.
+*  Added support for `<div class="..">...</div>`. This tool is mainly for writing documentation and generating PDF, but I wanted to add more flexibility for generating HTML pages also. Even though you probably want to keep a common style throughout a document, I did add div support to MSS. Divs within divs inherit styles upward. This was relatively simple to do. Note that the "Options / Settings" section uses a div with slightly different formatting than the rest of the document. Each option is a level 3 heading (H3) which is why it is part of the TOC, but styled with a smaller font with a different color.
 
-* Added possibility to also have an image on the title page.
+*  Added possibility to also have an image on the title page.
 
-* Added annotations within a comment block. Most of the options for the PDF generator can now be specified with annotations in the document. For example `@PDFPageSize("A4")`. This means for example that the title page can be part of the document. This comment with annotations should preferrably be the first thing in the document. The reason for the very Javaish format of the annotation is that it is explicit enough to not be accidentally and unwantedly matched.
+*  Added annotations within a comment block. Most of the options for the PDF generator can now be specified with annotations in the document. For example `@PDFPageSize("A4")`. This means for example that the title page can be part of the document. This comment with annotations should preferrably be the first thing in the document. The reason for the very Javaish format of the annotation is that it is explicit enough to not be accidentally and unwantedly matched.
 
-* Added labels in options for all previously hardcoded text strings in PDFGenerator. It should now be possible to completely generate a document in a different language than English. These can also be set with comment annotations as mentioned above.
+*  Added labels in options for all previously hardcoded text strings in PDFGenerator. It should now be possible to completely generate a document in a different language than English. These can also be set with comment annotations as mentioned above.
 
-* Added Undo / Redo to editor. Swing apparently provides support for this for a JTextPane/JEditorPane, you just have to register an UndoManager. __However__, it reacts on all changes, including styling. Since styling is applied afterward, and on the whole paragraph since it is not only about the current character, this is also registered as a change in the undo manager. So undos will undo styling also. So after undoing what you wanted to undo, do a Ctrl/Cmd+R to fix styling again.
+*  Added Undo / Redo to editor. Swing apparently provides support for this for a JTextPane/JEditorPane, you just have to register an UndoManager. __However__, it reacts on all changes, including styling. Since styling is applied afterward, and on the whole paragraph since it is not only about the current character, this is also registered as a change in the undo manager. So undos will undo styling also. So after undoing what you wanted to undo, do a Ctrl/Cmd+R to fix styling again.
 
-* Editor updated quite a lot!
+*  Editor updated quite a lot!
 
-   * All _known_ bugs fixed.
+   *  All _known_ bugs fixed.
 
-   * Now handles multipe files in one editor window. It actually only supports one window now, but you switch between the open files by moving mouse to the left window egde which will popup a list of all open files and you just click on the one you want to work on.
+   *  Now handles multipe files in one editor window. It actually only supports one window now, but you switch between the open files by moving mouse to the left window egde which will popup a list of all open files and you just click on the one you want to work on.
 
-   * It is possible to specify a directory as input to editor. In this case it will scan the directory for markdown files and open all found. It is actually possible to specify multiple directories just as it is possible to specify multiple files.
+   *  It is possible to specify a directory as input to editor. In this case it will scan the directory for markdown files and open all found. It is actually possible to specify multiple directories just as it is possible to specify multiple files.
 
-   * When the toolbar is shown at the top of the window, the name of the current file is also shown att the bottom of the window.
+   *  When the toolbar is shown at the top of the window, the name of the current file is also shown att the bottom of the window.
 
-   * The editor GUI has gone though some cosmetics.
+   *  The editor GUI has gone though some cosmetics.
 
 The addition of MSS made huge changes to the code. To be as backwards compatible as possible, the defaults for the MSS settings are as things looked before. There is also a _default.mss_ file that gets used if you don't supply your own. This has settings that mimics the previous styles.
 
@@ -149,19 +141,19 @@ Very sorry for this!
 
 ## 1.3.7
 
-* Bugfixes in the maven plugin.
+*  Bugfixes in the maven plugin.
 
-* The maven plugin also no longer has any runtime dependency on CodeLicenseManager which is a build only plugin, something maven does not really distinguish.
+*  The maven plugin also no longer has any runtime dependency on CodeLicenseManager which is a build only plugin, something maven does not really distinguish.
 
-* Includes a pull request submitted by both komarevsky and iorixxx that fixes an XML error in an example in the user guide. Thanks for seeing that and submitting pull requests!
+*  Includes a pull request submitted by both komarevsky and iorixxx that fixes an XML error in an example in the user guide. Thanks for seeing that and submitting pull requests!
 
 ## 1.3.6
 
 Bug fixes in MarkdownDocEditor:
 
-* Preformatted styling should now behave correctly.
+*  Preformatted styling should now behave correctly.
 
-* Preformatted font (monospace) settings now work. Also defaulted font size of monospace to 14 rather than 16.
+*  Preformatted font (monospace) settings now work. Also defaulted font size of monospace to 14 rather than 16.
 
 ## 1.3.5
 
@@ -173,15 +165,15 @@ This affected only generating of PDF and HTML. The error occured after writing g
 
 Fixed a bug with relative path for images using _PDFGenerator_ reported by Maher Gamal. There are now 5 ways to specifiy paths to images for PDF:
 
-1. Absolute path
+1.  Absolute path
 
-2. Relative to current directory.
+2.  Relative to current directory.
 
-3. Relative to markdown document.
+3.  Relative to markdown document.
 
-4. Relative to resulting PDF document.
+4.  Relative to resulting PDF document.
 
-5. Relative to a supplied root dir. This can now be specified in the PDF generator options. If using the library, passing rootDir will override the options rootDir.
+5.  Relative to a supplied root dir. This can now be specified in the PDF generator options. If using the library, passing rootDir will override the options rootDir.
 
 These paths will be automatically resolved.
 

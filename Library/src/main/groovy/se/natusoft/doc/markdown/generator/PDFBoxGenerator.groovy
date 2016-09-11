@@ -140,9 +140,6 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
     ) throws IOException, GenerateException {
         File resultFile = rootDir != null ? new File(rootDir, options.resultFile) : new File(options.resultFile)
         final FileOutputStream resultStream = new FileOutputStream(resultFile)
-        if (((PDFGeneratorOptions)options).generateSectionNumbers) {
-            this.headerNumber = new StructuredNumber(newDigitValue: 1)
-        }
         try {
             generate(document, options, rootDir, resultStream)
         }
@@ -399,53 +396,67 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                                                             @NotNull final PDFGeneratorContext context) {
         boolean updated = false
 
+        println("Document override of options:")
+
         updated |= updateOptsFromAnnotation("@PDFTitle", comment) { final String text ->
             context.options.title = text
+            println "  PDFTitle: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFSubject", comment) { final String text ->
             context.options.subject = text
+            println "  PDFSubject: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFAuthor", comment) { final String text ->
             context.options.author = text
+            println "  PDFAuthor: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFVersion", comment) { final String text ->
             context.options.version = text
+            println "  PDFVersion: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFCopyright", comment) { final String text ->
             context.options.copyright = text
+            println "  PDFCopyright: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFAuthorLabel", comment) { final String text ->
             context.options.authorLabel = text
+            println "  PDFAuthorLabel: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFVersionLabel", comment) { final String text ->
             context.options.versionLabel = text
+            println "  PDFVersionLabel: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFPageLabel", comment) { final String text ->
             context.options.pageLabel = text
+            println "  PDFPageLabel: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFTableOfContentsLabel", comment) { final String text ->
             context.options.tableOfContentsLabel = text
+            println "  PDFTableOfContentsLabel: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFHideLinks", comment) { final String text ->
             context.options.hideLinks = Boolean.valueOf(text)
+            println "  PDFHideLinks: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFUnorderedListItemPrefix", comment) { final String text ->
             context.options.unorderedListItemPrefix = text
+            println "  PDFUnorderedListItemPrefix: ${text}"
         }
-//        updated |= updateOptsFromAnnotation("@PDFFirstLineParagraphIndent", comment) { final String text ->
-//            context.options.firstLineParagraphIndent = Boolean.valueOf(text)
-//        }
         updated |= updateOptsFromAnnotation("@PDFGenerateSectionNumbers", comment) { final String text ->
             context.options.generateSectionNumbers = Boolean.valueOf(text)
+            println "  PDFGenerateSectionNumbers: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFGenerateTOC", comment) { final String text ->
             context.options.generateTOC = Boolean.valueOf(text)
+            println "  PDFGenerateTOC: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFGenerateTitlePage", comment) { final String text ->
             context.options.generateTitlePage = Boolean.valueOf(text)
+            println "  PDFGenerateTitlePage: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFTitlePageImage", comment) { final String text ->
             context.options.titlePageImage = text
+            println "  PDFTitlePageImage: ${text}"
         }
 
         updated
@@ -533,15 +544,18 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      */
     void writeHeader(@NotNull Header header, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
         String outlineTitle = ""
-        if (this.headerNumber != null) {
+        if (context.options.generateSectionNumbers) {
+            if (this.headerNumber == null) {
+                this.headerNumber = new StructuredNumber(newDigitValue: 1);
+            }
             this.headerNumber = this.headerNumber.toLevelAndIncrement(header.level.level)
             outlineTitle += this.headerNumber.root.toString() + ". "
         }
         outlineTitle += header.text
         MSS.MSS_TOC tocSection = MSS.MSS_TOC.valueOf("h" + header.level.level)
-        context.toc.add(new TOC(section: tocSection, sectionNumber: this.headerNumber.root.toString(), sectionTitle: header.text,
+        context.toc.add(new TOC(section: tocSection, sectionNumber: this.headerNumber?.root?.toString(), sectionTitle: header.text,
                 pageNumber: renderer.currentPageNumber))
-        renderer.addOutlineEntry(this.headerNumber.root, outlineTitle, renderer.currentPage)
+        renderer.addOutlineEntry(header.level.level, outlineTitle, renderer.currentPage)
 
         MSS_Pages section = MSS_Pages.valueOf("h" + header.level.level)
 
@@ -553,7 +567,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
             renderer.setFont(new PDFBoxFontMSSAdapter(font))
         }
 
-        if (this.headerNumber != null) {
+        if (context.options.generateSectionNumbers) {
             float sectionNumberYOffset = context.pdfStyles.mss.forDocument.getSectionNumberYOffset(section)
             float sectionNumberXOffset = context.pdfStyles.mss.forDocument.getSectionNumberXOffset(section)
 

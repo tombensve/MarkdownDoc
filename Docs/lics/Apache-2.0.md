@@ -173,387 +173,108 @@
 
 
 
+  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
     
       
         
-        The Apache Software Foundation
-        Apache License, Version 2.0
+          Toggle navigation
+          
+          
+          
+        
+        
       
       
-        
-          Home -->
-          Foundation
-          Projects
-          People
-          Get Involved
-          Download
-          Support Apache
-        
         Home&nbsp;&raquo&nbsp;Licenses
         
           
+          	About 
+          	
+      				Overview
+      				Members
+      				Process
+      				Sponsorship
+      				Glossary
+      				FAQ
+      				Contact      				
+          	
           
+			Projects
+  				
+	        	People 
+	        	
+  						Overview
+  						Committers
+  						Meritocracy
+  						Roles
+  						Planet Apache
+	        	
+	        
+          
+            Get Involved 
+            
+              Overview
+      				Community Development
+      				ApacheCon
+            
+  				
+          Download
+          
+          	Support Apache 
+          	
+      				Sponsorship
+      				Donations
+      				Buy Stuff
+      				Thanks
+          	
           
         
       
+    
+  
+
+
+
+  
+    
       
-      Apache LicenseVersion 2.0, January 2004
+    
+    
+      
+				
+  (function() {
+    var cx = '005703438322411770421:5mgshgrgx2u';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+		  
+			
+			The Apache Way
+			Contribute
+			ASF Sponsors
+    
+  
+
+
+/* The following code is added by mdx_elementid.py
+   It was originally lifted from http://subversion.apache.org/style/site.css */
+/*
+ * Hide class="elementid-permalink", except when an enclosing heading
+ * has the :hover property.
+ */
+.headerlink, .elementid-permalink {
+  visibility: hidden;
+}
+h2:hover > .headerlink, h3:hover > .headerlink, h1:hover > .headerlink, h6:hover > .headerlink, h4:hover > .headerlink, h5:hover > .headerlink, dt:hover > .elementid-permalink { visibility: visible }
+Apache LicenseVersion 2.0, January 2004
 http://www.apache.org/licenses/ 
 TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 1. Definitions.
@@ -628,20 +349,16 @@ distribute copies of the Work or Derivative Works thereof in any medium,
 with or without modifications, and in Source or Object form, provided that
 You meet the following conditions:
 
-
 You must give any other recipients of the Work or Derivative Works a
 copy of this License; and
 
-
 You must cause any modified files to carry prominent notices stating
 that You changed the files; and
-
 
 You must retain, in the Source form of any Derivative Works that You
 distribute, all copyright, patent, trademark, and attribution notices from
 the Source form of the Work, excluding those notices that do not pertain to
 any part of the Derivative Works; and
-
 
 If the Work includes a "NOTICE" text file as part of its distribution,
 then any Derivative Works that You distribute must include a readable copy
@@ -656,12 +373,16 @@ and do not modify the License. You may add Your own attribution notices
 within Derivative Works that You distribute, alongside or as an addendum to
 the NOTICE text from the Work, provided that such additional attribution
 notices cannot be construed as modifying the License.
+
+
 You may add Your own copyright statement to Your modifications and may
 provide additional or different license terms and conditions for use,
 reproduction, or distribution of Your modifications, or for any such
 Derivative Works as a whole, provided Your use, reproduction, and
 distribution of the Work otherwise complies with the conditions stated in
 this License.
+
+
 
 
 5. Submission of Contributions. Unless You
@@ -707,7 +428,7 @@ harmless for any liability incurred by, or claims asserted against, such
 Contributor by reason of your accepting any such warranty or additional
 liability.
 END OF TERMS AND CONDITIONS
-APPENDIX: How to apply the Apache License to your work
+APPENDIX: How to apply the Apache License to your work&para;
 To apply the Apache License to your work, attach the following boilerplate
 notice, with the fields enclosed by brackets "[]" replaced with your own
 identifying information. (Don't include the brackets!) The text should be
@@ -715,205 +436,110 @@ enclosed in the appropriate comment syntax for the file format. We also
 recommend that a file or class name and description of purpose be included
 on the same "printed page" as the copyright notice for easier
 identification within third-party archives.
-   Copyright [yyyy] [name of copyright owner]
+Copyright [yyyy] [name of copyright owner]
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
-      
-    
-    
-      
-      
-        Projects
-        
-HTTP Server
-Abdera
-Accumulo
-ACE
-ActiveMQ
-Airavata
-Ant
-APR
-Archiva
-Aries
-Avro
-Axis
-Buildr
-BVal
-Camel
-Cassandra
-Cayenne
-Chemistry
-Click
-Cocoon
-Commons
-Continuum
-CouchDB
-Creadur
-CXF
-DB
-Deltacloud
-Directory
-Empire-db
-ESME
-Etch
-Felix
-Flex
-Flume
-Forrest
-Geronimo
-Gora
-Gump
-Hadoop
-Hama
-HBase
-Hive
-HttpComponents
-Jackrabbit
-James
-Jena
-JMeter
-jUDDI
-Karaf
-Lenya
-Libcloud
-Logging
-Lucene
-Lucy
-Mahout
-ManifoldCF
-Maven
-MINA
-MRUnit
-MyFaces
-Nutch
-ODE
-OFBiz
-Oltu
-OODT
-Oozie
-OpenJPA
-OpenMeetings
-OpenNLP
-OpenOffice
-OpenWebBeans
-PDFBox
-Perl
-Pig
-Pivot
-POI
-Portals
-Qpid
-Rave
-River
-Roller
-Santuario
-ServiceMix
-Shindig
-Shiro
-Sling
-SpamAssassin
-STDCXX
-Sqoop
-Struts
-Subversion
-Synapse
-Syncope
-Tapestry
-Tcl
-Thrift
-Tika
-Tiles
-Tomcat
-TomEE
-Traffic Server
-Turbine
-Tuscany
-UIMA
-Velocity
-Web Services
-Whirr
-Wicket
-Xalan
-Xerces
-XMLBeans
-XML Graphics
-ZooKeeper
 
-      
-      
-        Foundation
-        
-          FAQ 
-          Licenses 
-          Trademarks  
-          News 
-          Press Inquiries 
-          Public Records 
-          Mailing Lists 
-          Sponsorship 
-          Donations 
-          Buy Stuff 
-          Thanks 
-          Contact 
-        
-      
-      
-        Foundation Projects
-        
-          Attic 
-          Conferences 
-          Community Development 
-          Incubator 
-          Infrastructure 
-          Labs 
-          Legal Affairs 
-          Public Relations 
-          Security 
-          Travel Assistance 
-        
-      
-      
-      
-        Community
-        
-          People 
-          Memorials 
-          Feathercast 
-          Project Blogs 
-          PlanetApache 
-        
-      
-      
-        How It Works
-        
-          Introduction 
-          Meritocracy 
-          Structure 
-          Roles 
-          Collaboration 
-          Incubator 
-          Other entities 
-          Glossary 
-          Voting 
-        
-      
-    
-    
-    
-    
-    
-      Copyright &#169; 2012 The Apache Software Foundation, Licensed under the Apache License, Version 2.0.Apache and the Apache feather logo are trademarks of The Apache Software Foundation.
-    
+
+
+
   
+			
+				
+				
+					
+				
+				
+		        	Community
+		        	
+						Overview
+						Conferences
+						Summer of Code
+						Getting Started
+						The Apache Way
+						Travel Assistance
+						Get Involved
+						Community FAQ
+		        	
+				
+				
+				
+					Innovation
+		        	
+						Incubator
+						Labs
+						Licensing
+						Licensing FAQ
+						Trademark Policy
+						Contacts
+		        	
+				
+
+				
+					Tech Operations
+		        
+  						Developer Information
+  						Infrastructure
+  						Security
+  						Status
+  						Contacts
+		        
+				
+
+				
+					Press
+        	
+						Overview
+						ASF News
+						Announcements
+						Twitter Feed
+						Contacts
+        	
+				
+				
+				
+					Legal
+        	
+						Legal Affairs
+						Licenses
+						Trademark Policy
+						Public Records
+            Privacy Policy
+						Export Information
+						License/Distribution FAQ
+						Contacts
+        	
+				
+
+				
+				
+
+			
+			
+			
+				
+					Copyright &#169; 2015 The Apache Software Foundation, Licensed under the Apache License, Version 2.0.
+					Apache and the Apache feather logo are trademarks of The Apache Software Foundation.
+				
+			
+		
+
+
+
+
+
+
+
+
 

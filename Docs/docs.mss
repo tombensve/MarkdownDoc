@@ -155,6 +155,7 @@
     "YellowGreen": "9ACD32"
   },
   "document": {
+    "pageFormat": "A4",
     "color": "black",
     "background": "white",
     "family": "HELVETICA",
