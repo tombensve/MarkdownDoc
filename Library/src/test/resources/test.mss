@@ -26,10 +26,10 @@
   },
   "document": {
     "pageFormat": "A4",
-    "leftMargin": "2.5cm",
-    "rightMargin": "2.5cm",
-    "topMargin": "2cm",
-    "bottomMargin": "2cm",
+    "leftMargin": "2.54cm",
+    "rightMargin": "2.54cm",
+    "topMargin": "2.54cm",
+    "bottomMargin": "2.54cm",
 
     "color": "0:0:0",
     "background": "ff:ff:ff",

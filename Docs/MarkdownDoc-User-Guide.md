@@ -8,7 +8,7 @@
     @PDFSubject("User Guide")
     @PDFVersion(2 . 0 . 0) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
-    @PDFCopyright("Copyright (C) 2012 Natusoft AB")
+    @PDFCopyright("Copyright (C) 2016 Natusoft AB")
     @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
     
     @PDFPageSize("A4")
@@ -1717,6 +1717,10 @@ The following third party products are using this license:
 *  [OptionsManager-2.0.3](http://github.com/tombensve/OptionsManager)
 
 *  [annotations-13.0](http://www.jetbrains.org)
+
+*  [pdfbox-2.0.2](http://pdfbox.apache.org)
+
+*  [groovy-all-2.4.4](http://groovy-lang.org)
 
 <!--
   CLM

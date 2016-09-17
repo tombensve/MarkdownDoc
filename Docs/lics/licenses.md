@@ -11,5 +11,7 @@ The following third party products are using this license:
 
 * [OptionsManager-2.0.3](http://github.com/tombensve/OptionsManager)
 * [annotations-13.0](http://www.jetbrains.org)
+* [pdfbox-2.0.2](http://pdfbox.apache.org)
+* [groovy-all-2.4.4](http://groovy-lang.org)
 
 <!-- CLM -->

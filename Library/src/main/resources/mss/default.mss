@@ -155,10 +155,11 @@
     "YellowGreen": "9ACD32"
   },
   "document": {
-    "leftMargin": 50.0,
-    "rightMargin": 50.0,
-    "topMargin": 40.0,
-    "bottomMargin": 40.0,
+    "pageFormat": "A4",
+    "leftMargin": "2.54cm",
+    "rightMargin": "2.54cm",
+    "topMargin": "2.54cm",
+    "bottomMargin": "2.54cm",
 
     "color": "black",
     "background": "white",
