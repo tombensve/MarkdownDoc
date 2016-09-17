@@ -10,7 +10,6 @@
     @PDFCopyright("Copyright (C) 2016 Natusoft AB")
     @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
     
-    @PDFPageSize("A4")
     @PDFGenerateTitlePage(true)
     @PDFGenerateTOC(true)
     @PDFGenerateSectionNumbers(false)

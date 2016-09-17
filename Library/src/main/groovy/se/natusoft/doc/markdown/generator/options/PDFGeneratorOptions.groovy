@@ -134,7 +134,7 @@ class PDFGeneratorOptions implements Options {
     @Name("unorderedListItemPrefix")
     @Description("What item marking to use for unordered lists. Default is '- '.")
     @Optional
-    String unorderedListItemPrefix = "• "
+    String unorderedListItemPrefix = "•"
 
     @Option
     @Name("mss")

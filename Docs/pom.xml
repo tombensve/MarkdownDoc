@@ -67,18 +67,6 @@
                             <pdfGeneratorOptions>
                                 <resultFile>Docs/MarkdownDoc-User-Guide.pdf</resultFile>
                                 <mss>Docs/docs.mss</mss>
-                                <!--
-                                These are now specified as annotations in MarkdownDocUserGuideStart.md!
-
-                                <title>MarkdownDoc</title>
-                                <subject>User Guide</subject>
-                                <version>${project.parent.version}</version>
-                                <author>Tommy Svensson</author>
-                                <copyright>Copyright © 2012 Natusoft AB</copyright>
-                                <generateTitlePage>true</generateTitlePage>
-                                <generateTOC>true</generateTOC>
-                                <generateSectionNumbers>false</generateSectionNumbers>
-                                -->
                             </pdfGeneratorOptions>
 
                         </configuration>

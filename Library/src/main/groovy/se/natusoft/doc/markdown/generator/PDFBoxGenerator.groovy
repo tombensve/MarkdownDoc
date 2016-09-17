@@ -654,7 +654,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * The internal version of writing a list. This is called recursively for each sublist.
      *
      * @param list The list to write.
-     * @param leftInset The current isnet ot the left.
+     * @param leftInset The current inset to the left.
      * @param num The current number if ordered, null otherwise.
      * @param renderer The PDF document renderer
      * @param context The generator context.
@@ -675,9 +675,16 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                 if (num != null) {
                     num.increment()
                     renderer.text("${num.root} ")
+                    renderer.leftInset += renderer.calcTextWidth("${num.root} ")
                 }
                 else {
+                    // Note that renderer.text(...) parses the string into separate words,so that it can wrap to new line
+                    // on word boundaries. This have the side effect of loosing spaces between words, so when not rendered
+                    // as "as is", spaces will be added. Thereby even if no space is passed to rendered.text(...) below
+                    // this comment, which does not include a space, a space will still be rendered! This is why we have
+                    // to add an additional space when calculating the inset.
                     renderer.text("${context.options.unorderedListItemPrefix}")
+                    renderer.leftInset += renderer.calcTextWidth("${context.options.unorderedListItemPrefix} ")
                 }
 
                 item.items.each { final DocItem pg ->

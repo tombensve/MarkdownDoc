@@ -725,7 +725,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @return The calculated width.
      */
-    protected float calcTextWidth(@NotNull String text) {
+    float calcTextWidth(@NotNull String text) {
         calcTextWidth(this.fontMSSAdapter, text)
     }
 
@@ -984,8 +984,6 @@ class PDFBoxDocRenderer implements NotNullTrait {
         this.stylesApplicator = stylesApplicator
         applyStyles()
 
-        String _text = txt.toString()
-
         float rightMarginPos = this.pageFormat.width - this.margins.rightMargin
 
         PDRectangle textArea = new PDRectangle(lowerLeftX: this.pageX, lowerLeftY: this.pageY)
@@ -1015,6 +1013,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
             try {
                 this.docMgr.docStream.showText(word.toString(this.preFormatted))
                 if (this.fontMSSAdapter.underlined) {
+                    // I did spend some hours on trying to do this the officially correct way, but
+                    // finally gave up since nothing seemed to work.
                     ensureTextModeOff()
                     applyStyles()
                     this.docMgr.docStream.setLineWidth(0.001f)
