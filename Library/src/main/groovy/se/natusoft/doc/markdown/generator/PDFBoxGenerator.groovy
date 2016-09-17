@@ -46,11 +46,13 @@ import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.models.TOC
 import se.natusoft.doc.markdown.generator.options.PDFGeneratorOptions
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxDocRenderer
-import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxFontMSSAdapter
 import se.natusoft.doc.markdown.generator.pdfbox.PDFBoxStylesMSSAdapter
 import se.natusoft.doc.markdown.generator.pdfbox.PageMargins
-import se.natusoft.doc.markdown.generator.styles.*
+import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.generator.styles.MSS.MSS_Pages
+import se.natusoft.doc.markdown.generator.styles.MSSColor
+import se.natusoft.doc.markdown.generator.styles.MSSColorPair
+import se.natusoft.doc.markdown.generator.styles.MSSImage
 import se.natusoft.doc.markdown.model.*
 import se.natusoft.doc.markdown.util.StructuredNumber
 
@@ -98,7 +100,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
     private StructuredNumber headerNumber = null
 
     /** The current header level. */
-    private int currentHeaderLevel = 1
+//    private int currentHeaderLevel = 1
 
     //
     // Methods
@@ -400,63 +402,48 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
         updated |= updateOptsFromAnnotation("@PDFTitle", comment) { final String text ->
             context.options.title = text
-            println "  PDFTitle: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFSubject", comment) { final String text ->
             context.options.subject = text
-            println "  PDFSubject: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFAuthor", comment) { final String text ->
             context.options.author = text
-            println "  PDFAuthor: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFVersion", comment) { final String text ->
             context.options.version = text
-            println "  PDFVersion: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFCopyright", comment) { final String text ->
             context.options.copyright = text
-            println "  PDFCopyright: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFAuthorLabel", comment) { final String text ->
             context.options.authorLabel = text
-            println "  PDFAuthorLabel: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFVersionLabel", comment) { final String text ->
             context.options.versionLabel = text
-            println "  PDFVersionLabel: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFPageLabel", comment) { final String text ->
             context.options.pageLabel = text
-            println "  PDFPageLabel: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFTableOfContentsLabel", comment) { final String text ->
             context.options.tableOfContentsLabel = text
-            println "  PDFTableOfContentsLabel: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFHideLinks", comment) { final String text ->
             context.options.hideLinks = Boolean.valueOf(text)
-            println "  PDFHideLinks: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFUnorderedListItemPrefix", comment) { final String text ->
             context.options.unorderedListItemPrefix = text
-            println "  PDFUnorderedListItemPrefix: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFGenerateSectionNumbers", comment) { final String text ->
             context.options.generateSectionNumbers = Boolean.valueOf(text)
-            println "  PDFGenerateSectionNumbers: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFGenerateTOC", comment) { final String text ->
             context.options.generateTOC = Boolean.valueOf(text)
-            println "  PDFGenerateTOC: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFGenerateTitlePage", comment) { final String text ->
             context.options.generateTitlePage = Boolean.valueOf(text)
-            println "  PDFGenerateTitlePage: ${text}"
         }
         updated |= updateOptsFromAnnotation("@PDFTitlePageImage", comment) { final String text ->
             context.options.titlePageImage = text
-            println "  PDFTitlePageImage: ${text}"
         }
 
         updated
@@ -563,6 +550,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
         MSS_Pages section = MSS_Pages.valueOf("h" + header.level.level)
 
+        //noinspection GroovyMissingReturnStatement
         Closure<Void> styleApplicator = {
             MSSColorPair colorPair = context.pdfStyles.mss.forDocument.getColorPair(section)
             renderer.setColorPair(colorPair)
@@ -599,7 +587,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
         blockQuote.items.each { final DocItem docItem ->
             // There should only be plain texts here, but to be sure …
-            if (PlainText.class.isAssignableFrom(docItem.class)) {
+            if (PlainText.class.isAssignableFrom(docItem.class)) { //noinspection GroovyMissingReturnStatement
                 renderer.text((docItem as PlainText).text) {
                     renderer.setStyle(context.pdfStyles, MSS_Pages.block_quote)
                     renderer.setColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.block_quote))
@@ -623,7 +611,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
         codeBlock.items.each { final DocItem docItem ->
             // There should only be plain texts here, but to be sure …
             if (PlainText.class.isAssignableFrom(docItem.class)) {
-
+                //noinspection GroovyMissingReturnStatement
                 renderer.preFormattedText((docItem as PlainText).text) {
                     renderer.setStyle(context.pdfStyles, MSS_Pages.code)
                     renderer.setColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.code))
@@ -793,6 +781,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
             renderer.setStyle(context.pdfStyles, toc.section)
 
+            //noinspection GroovyMissingReturnStatement
             renderer.tocEntry(toc, true) {
                 tocPage.newPage()
             }
@@ -807,6 +796,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      */
     void writeTitlePage(PDFBoxDocRenderer renderer, PDFGeneratorContext context) {
 
+        //noinspection GroovyUnusedAssignment
         PDFBoxDocRenderer.TopPage titlePage = renderer.createTopPage()
 
         final String title = context.options.title
@@ -837,6 +827,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
         if (title != null) {
             renderer.pageY = yTop
+            //noinspection GroovyMissingReturnStatement
             renderer.center(title) {
                 MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair(MSS.MSS_Front_Page.title)
                 renderer.setColorPair(colorPair)
@@ -850,6 +841,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
         if (subject != null) {
             renderer.pageY = yTop
+            //noinspection GroovyMissingReturnStatement
             renderer.center(subject) {
                 MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair(MSS.MSS_Front_Page.subject)
                 renderer.setColorPair(colorPair)
@@ -861,6 +853,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
         if (version != null) {
             renderer.pageY = yTop
+            //noinspection GroovyMissingReturnStatement
             renderer.center(version) {
                 MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair(MSS.MSS_Front_Page.version)
                 renderer.setColorPair(colorPair)
@@ -873,6 +866,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
         if (copyRight != null) {
             renderer.pageY = yBottom
+            //noinspection GroovyMissingReturnStatement
             renderer.center(copyRight) {
                 MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair(MSS.MSS_Front_Page.copyright)
                 renderer.setColorPair(colorPair)
@@ -884,6 +878,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
         if (author != null) {
             renderer.pageY = yBottom
+            //noinspection GroovyMissingReturnStatement
             renderer.center(author) {
                 MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair(MSS.MSS_Front_Page.author)
                 renderer.setColorPair(colorPair)
@@ -958,6 +953,7 @@ class ParagraphWriter implements BoxedTrait {
      * @param code The code to write.
      */
     void writeCode(@NotNull Code code) {
+        //noinspection GroovyMissingReturnStatement
         writeText(code.text, MSS_Pages.code) {
             renderer.setStyle(this.context.pdfStyles, MSS_Pages.code)
             renderer.setColorPair(this.forDocument.getColorPair(MSS_Pages.code))
@@ -970,6 +966,7 @@ class ParagraphWriter implements BoxedTrait {
      * @param emphasis The text to write.
      */
     void writeEmphasis(@NotNull Emphasis emphasis) {
+        //noinspection GroovyMissingReturnStatement
         writeText(emphasis.text, MSS_Pages.emphasis) {
             renderer.setStyle(this.context.pdfStyles, MSS_Pages.emphasis)
             renderer.setColorPair(this.forDocument.getColorPair(MSS_Pages.emphasis))
@@ -982,6 +979,7 @@ class ParagraphWriter implements BoxedTrait {
      * @param strong The text to write.
      */
     void writeStrong(@NotNull Strong strong) {
+        //noinspection GroovyMissingReturnStatement
         writeText(strong.text, MSS_Pages.strong) {
             renderer.setStyle(this.context.pdfStyles, MSS_Pages.strong)
             renderer.setColorPair(this.forDocument.getColorPair(MSS_Pages.strong))
@@ -994,6 +992,7 @@ class ParagraphWriter implements BoxedTrait {
      * @param text The text to write.
      */
     void writePlainText(@NotNull PlainText text) {
+        //noinspection GroovyMissingReturnStatement
         writeText(text.text, MSS_Pages.standard) {
             renderer.setStyle(this.context.pdfStyles, MSS_Pages.standard)
             MSSColorPair colorPair = this.forDocument.getColorPair(MSS_Pages.standard)
