@@ -883,6 +883,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         applyStyles()
 
         String[] lines = text.toString().split("\n|\r")
+
         PDRectangle textArea = new PDRectangle(lowerLeftX: this.pageX, lowerLeftY: this.pageY)
 
         lines.each { String line ->
@@ -903,6 +904,50 @@ class PDFBoxDocRenderer implements NotNullTrait {
         textArea.upperRightY = this.pageY + this.fontMSSAdapter.size
 
         textArea
+    }
+
+    /**
+     * This word wraps a pre formatted text. If a line is too long it will be broken at a word boundary
+     * and a new line inserted. __Note__ that this is done only once for each line!! If new new line is
+     * also too long, nothing will be done with it! We are still dealing with pre formatted text! This
+     * is just a little convenience help if it gets a little bit too long to fit within margins. This
+     * is also only called if "preformattedWordWrap" is set to true in MSS!
+     *
+     * @param text The pre formatted text to word wrap slightly.
+     *
+     * @return A possibly wrapped text.
+     */
+    @NotNull String wordWrapPreformattedText(@NotNull String text) {
+        String result = ""
+        String cr = ""
+
+        text.split("\n|\r").each { String origLine ->
+            String line = origLine
+            boolean needWrap = false
+            float width = calcTextWidth(line)
+            while ((this.margins.leftMargin + this.leftInset + width) > (this.pageFormat.width - this.margins.rightMargin)) {
+                needWrap = true
+                line = line[0..(line.size()-2)]
+                width = calcTextWidth(line)
+            }
+            result += cr
+            if (needWrap) {
+                while (![' ', '\t'].contains(line[line.size()-1]) && line.size() > 0) {
+                    line = line[0..(line.size()-2)]
+                }
+                line = line[0..(line.size()-2)]
+
+                result += line
+                result += "\n       "
+                result += origLine[line.size()..origLine.size()-1]
+            }
+            else {
+                result += line
+            }
+            cr = "\n"
+        }
+
+        result
     }
 
     /**

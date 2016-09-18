@@ -52,6 +52,8 @@ qwerweqr
 
 Here is a code Block:
 
+    Here is a really long preformatted text that should be wrapped according to settings in MSS. Somewhere here should wrap over to a new line. 
+    
     class Paragraph extends DocItem {
 
         /**
