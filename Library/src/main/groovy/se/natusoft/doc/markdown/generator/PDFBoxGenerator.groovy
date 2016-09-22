@@ -612,7 +612,12 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
             // There should only be plain texts here, but to be sure …
             if (PlainText.class.isAssignableFrom(docItem.class)) {
                 //noinspection GroovyMissingReturnStatement
-                renderer.preFormattedText((docItem as PlainText).text) {
+
+                String text = (docItem as PlainText).text
+                if (context.pdfStyles.mss.forDocument.isPreformattedWordWrap(MSS_Pages.code)) {
+                    text = renderer.wordWrapPreformattedText(text)
+                }
+                renderer.preFormattedText(text) {
                     renderer.setStyle(context.pdfStyles, MSS_Pages.code)
                     renderer.setColorPair(context.pdfStyles.mss.forDocument.getColorPair(MSS_Pages.code))
                 }

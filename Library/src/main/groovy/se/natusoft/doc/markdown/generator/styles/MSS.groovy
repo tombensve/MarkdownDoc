@@ -121,6 +121,10 @@ class MSS {
         color
     }
 
+    static enum MSS_Preformatted {
+        preformattedWordWrap
+    }
+
     /**
      * This represents a rendering style for code blocks.
      */
@@ -792,7 +796,7 @@ class MSS {
      *
      * @param section The section to check.
      */
-    @NotNull boolean isBoxedForDocument(MSS_Pages section) {
+    @NotNull boolean isBoxedForDocument(@NotNull MSS_Pages section) {
         JSONBoolean boxed = getSingleValueForDocument(MSS_Boxed.boxed.name(), section.name()) as JSONBoolean
         boxed != null ? boxed.asBoolean : false
     }
@@ -802,7 +806,7 @@ class MSS {
      *
      * @param section The section to get box color for.
      */
-    @NotNull MSSColor getBoxColorForDocument(MSS_Pages section) {
+    @NotNull MSSColor getBoxColorForDocument(@NotNull MSS_Pages section) {
         JSONString boxedColor = getSingleValueForDocument(MSS_Boxed.boxedColor.name(), section.name()) as JSONString
         boxedColor != null ? lookupColor(boxedColor.toString()) : new MSSColor(color: "240:240:240")
     }
@@ -828,7 +832,7 @@ class MSS {
      *
      * @param section The section to get Y offset for.
      */
-    float getSectionNumberYOffsetForDocument(MSS_Pages section) {
+    float getSectionNumberYOffsetForDocument(@NotNull MSS_Pages section) {
         JSONNumber snYOff = getSingleValueForDocument(MSS_SectionNumber.sectionNumberYOffset.name(), section.name()) as JSONNumber
         snYOff != null ? snYOff.toFloat() : 0.0f
     }
@@ -838,9 +842,19 @@ class MSS {
      *
      * @param section The section to get X offset for.
      */
-    float getSectionNumberXOffsetForDocument(MSS_Pages section) {
+    float getSectionNumberXOffsetForDocument(@NotNull MSS_Pages section) {
         JSONNumber snXOff = getSingleValueForDocument(MSS_SectionNumber.sectionNumberXOffset.name(), section.name()) as JSONNumber
         snXOff != null ? snXOff.toFloat() : 0.0f
+    }
+
+    /**
+     * Returns true or false for if preformatted text should be word wrapped.
+     *
+     * @param section The section to get preformatted word wrap setting for.
+     */
+    boolean isPreformattedWordWrapForDocument(@NotNull MSS_Pages section) {
+        JSONBoolean preWordWrap = getSingleValueForDocument(MSS_Preformatted.preformattedWordWrap.name(), section.name()) as JSONBoolean
+        preWordWrap != null ? preWordWrap.asBoolean : false
     }
 
     /**
@@ -956,6 +970,10 @@ class MSS {
         boolean isHeaderUnderlined(@NotNull MSS_Pages section) {
             isHeaderUnderlinedForDocument(section)
         }
+
+        boolean isPreformattedWordWrap(@NotNull MSS_Pages section) {
+            isPreformattedWordWrapForDocument(section)
+        }
     }
 
     private ForDocument forDocument = new ForDocument()
@@ -1069,208 +1087,10 @@ class MSS {
     //
 
     /**
-     * Loads styles from JSON looking like this:
-     *
-     * <pre>
-     *   {
-     *      "pdf": {
-     *         "extFonts": [
-     *            {
-     *                "family": "<name>",
-     *                "encoding": "<encoding>",
-     *                "path": "<path>/font.ttf"
-     *            },
-     *            ...
-     *         ]
-     *      },
-     *
-     *      "colors": {
-     *         "white": "255:255:255",
-     *         "black": "0:0:0",
-     *         ...
-     *      },
-     *
-     *      "document": {
-     *         "color": "0:0:0",
-     *         "background": "ff:ff:ff",
-     *         "family": "HELVETICA",
-     *         "size": 10,
-     *         "style": "Normal",
-     *         "topMargin": 50,
-     *         "leftMargin": 50,
-     *         "rightMargin": 50,
-     *         "bottomMargin": 50,
-     *
-     *         "pages": {
-     *            "block_quote": {
-     *                "family": "HELVETICA",
-     *                "size": 10,
-     *                "style": "Italic",
-     *                "color": "128:128:128",
-     *                "background": "white"
-     *            },
-     *            "h1": {
-     *                "family": "HELVETICA",
-     *                "size": 20,
-     *                "style": "BOLD",
-     *                "color": "black",
-     *                "background": "white"
-     *            },
-     *            "h2": {
-     *                "family": "HELVETICA",
-     *                "size": 18,
-     *                "style": "BOLD",
-     *                "hr": true
-     *            },
-     *            "h3": {
-     *                "family": "HELVETICA",
-     *                "size": 16,
-     *                "style": "BOLD"
-     *            },
-     *            "h4": {
-     *                "family": "HELVETICA",
-     *                "size": 14,
-     *                "style": "BOLD"
-     *            },
-     *            "h5": {
-     *                "family": "HELVETICA",
-     *                "size": 12,
-     *                "style": "BOLD"
-     *            },
-     *            "h6": {
-     *                "family": "HELVETICA",
-     *                "size": 10,
-     *                "style": "BOLD"
-     *            },
-     *            "emphasis": {
-     *                "family": "HELVETICA",
-     *                "size": 10,
-     *                "style": "ITALIC"
-     *            },
-     *            "strong": {
-     *                "family": "HELVETICA",
-     *                "size": 10,
-     *                "style": "BOLD"
-     *            },
-     *            "code": {
-     *                "family": "HELVETICA",
-     *                "size": 9,
-     *                "style": "NORMAL",
-     *                "color": "64:64:64",
-     *                "background": "white",
-     *                "boxed": true
-     *            },
-     *            "anchor": {
-     *                "family": "HELVETICA",
-     *                "size": 10,
-     *                "style": "NORMAL",
-     *                "color": "128:128:128",
-     *                "background": "white"
-     *            },
-     *            "list_item": {
-     *                "family": "HELVETICA",
-     *                "size": 10
-     *            },
-     *            "footer": {
-     *                "family": "HELVETICA",
-     *                "size": 8
-     *            },
-     *            "image": {
-     *                "scalePercent": 60.0,
-     *                "align": "LEFT/MIDDLE/RIGHT",
-     *                "rotateDegrees": 45.0
-     *            }
-     *         },
-     *
-     *         "divs": {
-     *            "testdiv": {
-     *               "block_quote": {
-     *                  "family": "COURIER",
-     *                   "color": "120:120:120",
-     *                   "background": "10:11:12"
-     *               }
-     *            }
-     *         },
-     *      },
-     *
-     *      "front_page": {
-     *         "color": "0:0:0",
-     *         "background": "255:255:255",
-     *         "family": "HELVETICA",
-     *         "size": 10,
-     *         "style": "NORMAL",
-     *
-     *         "title": {
-     *             "family": "HELVETICA",
-     *             "size": 25,
-     *             "style": "NORMAL"
-     *         },
-     *         "subject": {
-     *             "family": "HELVETICA",
-     *             "size": 15,
-     *             "style": "NORMAL"
-     *         },
-     *         "version": {
-     *             "family": "HELVETICA",
-     *             "size": 12,
-     *             "style": "NORMAL",
-     *         },
-     *         "copyright": {
-     *             "family": "HELVETICA",
-     *             "size": 12,
-     *             "style": "NORMAL"
-     *         },
-     *         "author": {
-     *             "family": "HELVETICA",
-     *             "size": 12,
-     *             "style": "NORMAL",
-     *         }
-     *      },
-     *
-     *      "toc": {
-     *         "color": "0:0:0",
-     *         "background": "255:255:255",
-     *         "family": "HELVETICA",
-     *         "size": 10,
-     *         "style": "NORMAL",
-     *
-     *         "h1": {
-     *             "family": "HELVETICA",
-     *             "size": 9,
-     *             "style": "BOLD"
-     *         },
-     *         "h2": {
-     *             "family": "HELVETICA",
-     *             "size": 9,
-     *             "style": "NORMAL"
-     *         },
-     *         "h3": {
-     *             "family": "HELVETICA",
-     *             "size": 9,
-     *             "style": "NORMAL"
-     *         },
-     *         "h4": {
-     *             "family": "HELVETICA",
-     *             "size": 9,
-     *             "style": "NORMAL"
-     *         },
-     *         "h5": {
-     *             "family": "HELVETICA",
-     *             "size": 9,
-     *             "style": "NORMAL"
-     *         },
-     *         "h6": {
-     *             "family": "HELVETICA",
-     *             "size": 9,
-     *             "style": "NORMAL"
-     *         }
-     *      }
-     *   }
-     * }
-     * </pre>
+     * Loads styles from JSON .mss document. See src/main/resources/mss/default.mss for an example.
      *
      * @param styleStream
-     * @return
+     *
      * @throws IOException
      */
     static @NotNull MSS fromInputStream(@NotNull final InputStream styleStream) throws IOException {
@@ -1376,6 +1196,9 @@ class MSS {
         }
         if (!ok) {
             ok = safeNameValidation { MSS_Header.valueOf(name) != null }
+        }
+        if (!ok) {
+            ok = safeNameValidation { MSS_Preformatted.valueOf(name) != null }
         }
         if (!ok) {
             ok = safeNameValidation { MSS_SectionNumber.valueOf(name) != null }

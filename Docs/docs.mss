@@ -208,6 +208,7 @@
       "code": {
         "family": "COURIER",
         "size": 7,
+        "preformattedWordWrap": true,
         "color": "64:64:64",
         "background": "#f8f8f8",
         "boxed": true,

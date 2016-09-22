@@ -110,9 +110,11 @@ MarkdownDoc can be run using `java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar`. 
 
         Usage: java -jar markdowndoc-cmd-line-n.n[.n].exec.jar <generator> --help
                or
-               java -jar markdowndoc-cmd-line-n.n[.n].exec.jar <generator> <fileSpec> --<generator option> ...
+               java -jar markdowndoc-cmd-line-n.n[.n].exec.jar <generator> <fileSpec>
+                   --<generator option> ...
                or
-               java -jar markdowndoc-cmd-line-n.n[.n].exec.jar <generator> <fileSpec> parserOptions:<parserOptions> —-<generator option> ...
+               java -jar markdowndoc-cmd-line-n.n[.n].exec.jar <generator> <fileSpec> 
+                   parserOptions:<parserOptions> —-<generator option> ...
                or
                java -jar markdowndoc-cmd-line-n.n[.n].exec.jar <path to a .mddoc file>
 
