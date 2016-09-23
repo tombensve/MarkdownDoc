@@ -1237,13 +1237,13 @@ class PDFBoxDocRenderer implements NotNullTrait {
     }
 
     /**
-     * Draws a complete HR left to right under the current text.
+     * Draws a underline left to right under the current text.
      */
-    void hrText() {
+    void underlineText(float underlineOffset) {
         ensureTextModeOff()
         this.docMgr.docStream.setLineWidth(0.001f)
-        this.docMgr.docStream.addRect(this.margins.leftMargin, this.pageY - 3, this.pageFormat.width - this.margins.leftMargin -
-                this.margins.rightMargin, 0.001f)
+        this.docMgr.docStream.addRect(this.margins.leftMargin, (this.pageY - underlineOffset) as float,
+                this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin, 0.001f)
         this.docMgr.docStream.closeAndFillAndStroke()
         ensureTextMode()
     }

@@ -113,7 +113,8 @@ class MSS {
     }
 
     static enum MSS_Header {
-        underlined
+        underlined,
+        underline_offset
     }
 
     static enum MSS_HR {
@@ -618,6 +619,55 @@ class MSS {
     }
 
     /**
+     * Returns the header underline offset.
+     *
+     * @param section The header section to lookup underline offset for.
+     */
+    float getHeaderUnderlineOffsetForDocument(@NotNull final MSS_Pages section) {
+        if (!section.name().startsWith("h")) {
+            throw new IllegalArgumentException("Only valid for headers!!")
+        }
+
+        Float underlineOffset = null
+        if (this.currentDivs != null) {
+            this.currentDivs.each { String divName ->
+                JSONObject div = this.divs.getProperty(divName) as JSONObject
+                JSONValue header = div.getProperty(section.name())
+                if (header != null && header instanceof JSONObject) {
+                    JSONValue val = header.getProperty(MSS_Header.underline_offset.name())
+                    if (val != null && val instanceof JSONBoolean) {
+                        underlineOffset = (val as JSONNumber).toFloat()
+                    }
+                }
+            }
+        }
+
+        if (underlineOffset == null) {
+            JSONValue header = this.pages.getProperty(section.name())
+            if (header != null && header instanceof JSONObject) {
+                JSONValue val = header.getProperty(MSS_Header.underline_offset.name())
+                if (val != null && val instanceof JSONBoolean) {
+                    underlineOffset = (val as JSONNumber).toFloat()
+                }
+            }
+        }
+
+        if (underlineOffset == null) {
+            JSONValue header = this.document.getProperty(section.name())
+            if (header != null && header instanceof JSONObject) {
+                JSONValue val = header.getProperty(MSS_Header.underline_offset.name())
+                if (val != null && val instanceof JSONBoolean) {
+                    underlineOffset = (val as JSONNumber).toFloat()
+                }
+            }
+        }
+
+        if (underlineOffset == null) underlineOffset = 3.0f
+
+        underlineOffset
+    }
+
+    /**
      * Returns a MSSColorPair containing foreground color and background color to use for the section.
      *
      * @param section A section type like h1, blockquote, etc.
@@ -969,6 +1019,10 @@ class MSS {
 
         boolean isHeaderUnderlined(@NotNull MSS_Pages section) {
             isHeaderUnderlinedForDocument(section)
+        }
+
+        float getHeaderUnderlineOffset(@NotNull MSS_Pages section) {
+            getHeaderUnderlineOffsetForDocument(section)
         }
 
         boolean isPreformattedWordWrap(@NotNull MSS_Pages section) {

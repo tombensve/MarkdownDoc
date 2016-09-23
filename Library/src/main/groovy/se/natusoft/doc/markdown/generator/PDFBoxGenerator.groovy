@@ -571,7 +571,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
         renderer.text(header.text, styleApplicator)
 
         if (context.pdfStyles.mss.forDocument.isHeaderUnderlined(section)) {
-            renderer.hrText()
+            renderer.underlineText(context.pdfStyles.mss.forDocument.getHeaderUnderlineOffset(section))
         }
     }
 
