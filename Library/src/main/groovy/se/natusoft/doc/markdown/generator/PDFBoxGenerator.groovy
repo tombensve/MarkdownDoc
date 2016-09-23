@@ -219,8 +219,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
             switch (docItem.format) {
                 case DocFormat.Comment:
                     // We skip comments in general, but act on "@PB" within the comment for doing a page break.
-                    final Comment comment = (Comment)docItem;
-                    if (comment.text.indexOf("@PB") >= 0) {
+                    final Comment comment = docItem as Comment
+                    if (comment.text.indexOf("@PB") >= 0 || comment.text.indexOf("@PageBreak") >= 0) {
                         renderer.newPage()
                     }
                     // and also act on @PDFTitle, @PDFSubject, @PDFKeywords, @PDFAuthor, @PDFVersion, and @PDFCopyright
