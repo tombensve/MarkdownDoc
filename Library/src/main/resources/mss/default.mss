@@ -222,8 +222,9 @@
       },
       "list_item": {
       },
-      "footer": {
-        "size": 8
+      "horizontal_ruler": {
+        "thickness": 0.5,
+        "color": "grey"
       }
     },
 

@@ -75,10 +75,6 @@ The subject of the document.
 
 Put an image on the title page. Format: \<path/URL\>:x:y
 
-### keywords : String (O)
-
-Meta keywords
-
 ### author : String (O)
 
 The author of the document.
@@ -99,10 +95,6 @@ The label text for 'Author:'.
 
 The label text for 'Version:'.
 
-### pageLabel : String (O)
-
-The label text for 'Page'.
-
 ### tableOfContentsLabel : String (O)
 
 The text for 'Table of Contents'.
@@ -118,18 +110,6 @@ What item marking to use for unordered lists. Default is '- '.
 ### firstLineParagraphIndent : Boolean (O)
 
 If true then the first line of each paragraph is indented. Default is false.
-
-### backgroundColor : String (O)
-
-__DEPRECATED__! Use an .mss file instead! The background color of the document in "R:G:B" format where each R, G, and B are a number 0 - 255.
-
-### blockQuoteColor : String (O)
-
-__DEPRECATED__! Use an .mss file instead! The blockquote color to use in this document in "R:G:B" format where each R, G, and B are a number 0 - 255.
-
-### codeColor : String (O)
-
-__DEPRECATED__! Use an .mss file instead! The code color to use in this document in "R:G:B" format where each R, G, and B are a number 0 - 255.
 
 ### mss : String (O)
 

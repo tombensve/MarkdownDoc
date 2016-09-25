@@ -239,10 +239,6 @@ Press the "Generate" button to actually generate the PDF document.
 
 The choices are:
 
-##### Page size
-
-This is one of the standard paper sizes like A4 or Letter. 
-
 ##### Title
 
 This is the title of the document. This will be shown on the front page.
@@ -250,10 +246,6 @@ This is the title of the document. This will be shown on the front page.
 ##### Subject
 
 This is an optional subject / subtitle. This will be shown on the front page.
-
-##### Keywords
-
-A space separated set of keywords. These will not be shown anywhere, but will be added as meta data to the PDF document.
 
 ##### Author
 

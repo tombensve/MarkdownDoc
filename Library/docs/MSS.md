@@ -1,10 +1,12 @@
-# MSS (Markdown Style Sheet)
+# MSS (Markdown(Doc) Style Sheet)
 
-The MSS format is a JSON document describing the styles (colors and fonts) to use for different sections of a markdown document (standard text, heading, bold, code, etc). It contains 3 main sections: front page, TOC, pages. There is a _default.mss_ embedded in the jar that is used if no external mss files is provided. The default MSS should be compatible with styles used in previous versions. 
+The MSS format is a JSON document describing the styles (colors and fonts) to use for different sections of a markdown document (standard text, heading, bold, code, etc). It contains 3 main sections: front page, TOC, pages. There is a _default.mss_ embedded in the jar that is used if no external mss files is provided. The default MSS have changed in version 2.0.0 and now produces output that looks different than previous versions. Not only different, but better IMHO :-). It still defaults to A4 page size, but now also have correct margins according to standards. Maybe iText also did that, but it feels like the margins are larger now (2.54 cm).
+
+Note that page size is now set in the MSS file and not provided as an option when generating. The margins are of course also set in MSS.
 
 Currently the MSS file is only used by the PDF generator. But it could also be relevant for other formats, like word if I ever add such a generator. I gladly take a pull request if anybody wants to do that :-). 
 
-The best way to describe the MSS file is to show the _default.mss_ file:
+Here is an example of an MSS file with descriptions:
 
     {
 
@@ -174,21 +176,54 @@ The "colors" section just provide names for colors. This list was taken from the
 This section deals with document styles. It has 3 sections: "pages", "front\_page", and "toc". If a style is not set in a specific section it will fall back to what is specified in a more general section. For example, if a subsection of "document" does not specify "color" then it will fall back to the "color": "black" directly under "document". 
 
       "document": {
+        "pageFormat": "A4",
+    
+For the margins the suffix can be "cm" for centimeters, "in" for inches or "pt" for points. This value can also be specified as a JSON number in which case it is in points. 
+    
+        "leftMargin": "2.54cm",
+        "rightMargin": "2.54cm",
+        "topMargin": "2.54cm",
+        "bottomMargin": "2.54cm",
+        
         "color": "black",
         "background": "white",
         "family": "HELVETICA",
         "size": 10,
         "style": "Normal",
     
+The section number offsets allows for changeing the position slightly for the section numbers when they are enabled.
+    
+        "sectionNumberYOffset": 2.0,
+        "sectionNumberXOffset": -10.0,
+    
         "image": {
            "imgScalePercent": 60.0,
+    
+The alignment can be either "LEFT", "MIDDLE" or "RIGHT". Note that if "imgX" and "imgY" is set, then this does not apply.
+    
            "imgAlign": "LEFT",
-           "imgRotateDegrees": 0.0
+           "imgRotateDegrees": 0.0,
+    
+If "imgFlow" is set to true then text will flow around the image. Basically what happens is that when text is about to overwrite the image then it is moved right to after the image and continues from there. To get this effect you can place an image in the middle of a paragraph and it will flow around the image.     
+    
+           "imgFlow": false,
+    
+This margin is always in points and determins the space to reserve to the left and right of an image when "imgFlow" is set to true. This to avoid having text and image exactly side by side with no space, since that tends to look strange. 
+    
+           "imgFlowMargin": 4.0,
+    
+These 2 allows you to override the position of an image on the page. This works best in conjunction with "imgFlow". Also note that this does not specify a specific image! If you specify this directly under "document" then all images on the page will be rendered over each other at this coordinate! So it makes much more sense to use this feature in conjunction with a div, in which you also place the image. I'm only putting it here now to show its association with "imgFlow".
+    
+           "imgX": 127.0,
+           "imgY": 430.0
         },
     
         "pages": {
+    
+The style value can be any of NORMAL, BOLD, ITALIC, and UNDERLINE. UNDERLINE can be used in conjunction with the other, comma separated. Example ITALIC,UNDERLINE. 
+    
           "block_quote": {
-            "style": "Italic",
+            "style": "ITALIC",
             "color": "mddgrey"
           },
           "h1": {
@@ -198,7 +233,11 @@ This section deals with document styles. It has 3 sections: "pages", "front\_pag
           "h2": {
             "size": 18,
             "style": "BOLD",
-            "hr": true
+    
+"underlined" draws and underline under the heading from left margin to right margin. The "underline_offset" is how many point below the text to draw the line. In previous versions this was called "hr".    
+    
+            "underlined": true,
+            "underline_offset": 3.0
           },
           "h3": {
             "size": 16,
@@ -225,15 +264,28 @@ This section deals with document styles. It has 3 sections: "pages", "front\_pag
           "code": {
             "family": "COURIER",
             "size": 9,
-            "color": "64:64:64"
+            "color": "64:64:64",
+    
+If "preformattedWordWrap" is set to true then "code" style text will not entirely be left as is, but will wrap around to a new line if the text does not fit within the margins, and this will be with an indent matching the "code" text plus some more indent to show that it is a continuation of the previous line. Depending on the text this sometimes works well, sometimes less than well. 
+    
+            "preformattedWordWrap": false,
+    
+When "boxed" is set to true then a filled box is drawn below the text. It ranges from the left margin to the right margin for multiline (indented) "code" text. For `text` variant only the text is boxed. 
+    
+            "boxed": true,
+            "boxedColor": "#f8f8f8"
           },
           "anchor": {
             "color": "128:128:128"
           },
           "list_item": {
           },
-          "footer": {
-            "size": 8
+    
+This is also new in 2.0.0 and sets the thicknes and color of a hroizontal ruler. 
+    
+          "horizontal_ruler": {
+            "thickness": 0.5,
+            "color": "grey"
           }
         },
     
@@ -246,6 +298,10 @@ This section deals with document styles. It has 3 sections: "pages", "front\_pag
               "color": "120:120:120",
               "background": "10:11:12"
             }
+          },
+          "center-page5-image": {
+            "imgX": 127.0,
+            "imgY": 430.0
           }
         }
       },

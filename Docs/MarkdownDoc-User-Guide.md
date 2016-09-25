@@ -333,7 +333,7 @@ Example usage:
         
             ... parsing of document.
         
-             Generator generator = new [PDF|HTML|Markdown]Generator();
+             Generator generator = new [PDFBox|HTML|Markdown]Generator();
         
              // I'm using OptionsManager to load the options in this example.
              // If you use maven or ant then those tools will have loaded
@@ -353,7 +353,7 @@ Example usage:
 
 Please note that the CommandLineOptionsMangager used in the example is part of the OptionsManager tool also by me. Available at [github.com/tombensve/OptionsManager](https://github.com/tombensve/OptionsManager).
 
-#### se.natusoft.doc.markdown.generator.PDFGenerator
+#### se.natusoft.doc.markdown.generator.PDFBoxGenerator
 
 This generator produces a PDF document.
 
@@ -379,37 +379,17 @@ See the "The mddoc file type" section for more information on the .mdddoc format
 
 ## Bugs
 
-### By me
-
 Nothing currenty known by me.
 
-### By IText (PDF generating)
+# MSS (Markdown(Doc) Style Sheet)
 
-The position of images on the page gets somewhat off when text and image is mixed in the same paragraph (or section in IText language). IText also seem to have problems calculating the size of a paragraph that has an image in it, making text go beyond the bottom of a page. As long as images are on their own with no other text the PDF result will be as expected.
+The MSS format is a JSON document describing the styles (colors and fonts) to use for different sections of a markdown document (standard text, heading, bold, code, etc). It contains 3 main sections: front page, TOC, pages. There is a _default.mss_ embedded in the jar that is used if no external mss files is provided. The default MSS have changed in version 2.0.0 and now produces output that looks different than previous versions. Not only different, but better IMHO :-). It still defaults to A4 page size, but now also have correct margins according to standards. Maybe iText also did that, but it feels like the margins are larger now (2.54 cm).
 
-For example, this will cause problems:
-
-        Toolbar icon: ![](images/saveicon.png)
-        
-        Bla bla ...
-
-Also note that the first might look more or less OK, but the more of these in the document it will get more and more off. After around 6 such the image appears in the paragraph above!
-
-This will not cause a problem:
-
-        Toolbar icon:
-        
-        ![](images/saveicon.png)
-        
-        Bla bla ...
-
-# MSS (Markdown Style Sheet)
-
-The MSS format is a JSON document describing the styles (colors and fonts) to use for different sections of a markdown document (standard text, heading, bold, code, etc). It contains 3 main sections: front page, TOC, pages. There is a _default.mss_ embedded in the jar that is used if no external mss files is provided. The default MSS should be compatible with styles used in previous versions.
+Note that page size is now set in the MSS file and not provided as an option when generating. The margins are of course also set in MSS.
 
 Currently the MSS file is only used by the PDF generator. But it could also be relevant for other formats, like word if I ever add such a generator. I gladly take a pull request if anybody wants to do that :-).
 
-The best way to describe the MSS file is to show the _default.mss_ file:
+Here is an example of an MSS file with descriptions:
 
         {
 
@@ -579,21 +559,61 @@ The "colors" section just provide names for colors. This list was taken from the
 This section deals with document styles. It has 3 sections: "pages", "front_page", and "toc". If a style is not set in a specific section it will fall back to what is specified in a more general section. For example, if a subsection of "document" does not specify "color" then it will fall back to the "color": "black" directly under "document".
 
           "document": {
+            "pageFormat": "A4",
+        
+
+For the margins the suffix can be "cm" for centimeters, "in" for inches or "pt" for points. This value can also be specified as a JSON number in which case it is in points.
+
+            "leftMargin": "2.54cm",
+            "rightMargin": "2.54cm",
+            "topMargin": "2.54cm",
+            "bottomMargin": "2.54cm",
+            
             "color": "black",
             "background": "white",
             "family": "HELVETICA",
             "size": 10,
             "style": "Normal",
         
+
+The section number offsets allows for changeing the position slightly for the section numbers when they are enabled.
+
+            "sectionNumberYOffset": 2.0,
+            "sectionNumberXOffset": -10.0,
+        
             "image": {
                "imgScalePercent": 60.0,
+        
+
+The alignment can be either "LEFT", "MIDDLE" or "RIGHT". Note that if "imgX" and "imgY" is set, then this does not apply.
+
                "imgAlign": "LEFT",
-               "imgRotateDegrees": 0.0
+               "imgRotateDegrees": 0.0,
+        
+
+If "imgFlow" is set to true then text will flow around the image. Basically what happens is that when text is about to overwrite the image then it is moved right to after the image and continues from there. To get this effect you can place an image in the middle of a paragraph and it will flow around the image.
+
+               "imgFlow": false,
+        
+
+This margin is always in points and determins the space to reserve to the left and right of an image when "imgFlow" is set to true. This to avoid having text and image exactly side by side with no space, since that tends to look strange.
+
+               "imgFlowMargin": 4.0,
+        
+
+These 2 allows you to override the position of an image on the page. This works best in conjunction with "imgFlow". Also note that this does not specify a specific image! If you specify this directly under "document" then all images on the page will be rendered over each other at this coordinate! So it makes much more sense to use this feature in conjunction with a div, in which you also place the image. I'm only putting it here now to show its association with "imgFlow".
+
+               "imgX": 127.0,
+               "imgY": 430.0
             },
         
             "pages": {
+        
+
+The style value can be any of NORMAL, BOLD, ITALIC, and UNDERLINE. UNDERLINE can be used in conjunction with the other, comma separated. Example ITALIC,UNDERLINE.
+
               "block_quote": {
-                "style": "Italic",
+                "style": "ITALIC",
                 "color": "mddgrey"
               },
               "h1": {
@@ -603,7 +623,12 @@ This section deals with document styles. It has 3 sections: "pages", "front_page
               "h2": {
                 "size": 18,
                 "style": "BOLD",
-                "hr": true
+        
+
+"underlined" draws and underline under the heading from left margin to right margin. The "underline_offset" is how many point below the text to draw the line. In previous versions this was called "hr".
+
+                "underlined": true,
+                "underline_offset": 3.0
               },
               "h3": {
                 "size": 16,
@@ -630,15 +655,31 @@ This section deals with document styles. It has 3 sections: "pages", "front_page
               "code": {
                 "family": "COURIER",
                 "size": 9,
-                "color": "64:64:64"
+                "color": "64:64:64",
+        
+
+If "preformattedWordWrap" is set to true then "code" style text will not entirely be left as is, but will wrap around to a new line if the text does not fit within the margins, and this will be with an indent matching the "code" text plus some more indent to show that it is a continuation of the previous line. Depending on the text this sometimes works well, sometimes less than well.
+
+                "preformattedWordWrap": false,
+        
+
+When "boxed" is set to true then a filled box is drawn below the text. It ranges from the left margin to the right margin for multiline (indented) "code" text. For `text` variant only the text is boxed.
+
+                "boxed": true,
+                "boxedColor": "#f8f8f8"
               },
               "anchor": {
                 "color": "128:128:128"
               },
               "list_item": {
               },
-              "footer": {
-                "size": 8
+        
+
+This is also new in 2.0.0 and sets the thicknes and color of a hroizontal ruler.
+
+              "horizontal_ruler": {
+                "thickness": 0.5,
+                "color": "grey"
               }
             },
         
@@ -651,6 +692,10 @@ This section deals with document styles. It has 3 sections: "pages", "front_page
                   "color": "120:120:120",
                   "background": "10:11:12"
                 }
+              },
+              "center-page5-image": {
+                "imgX": 127.0,
+                "imgY": 430.0
               }
             }
           },
@@ -790,10 +835,6 @@ The subject of the document.
 
 Put an image on the title page. Format: <path/URL>:x:y
 
-### keywords : String (O)
-
-Meta keywords
-
 ### author : String (O)
 
 The author of the document.
@@ -814,10 +855,6 @@ The label text for 'Author:'.
 
 The label text for 'Version:'.
 
-### pageLabel : String (O)
-
-The label text for 'Page'.
-
 ### tableOfContentsLabel : String (O)
 
 The text for 'Table of Contents'.
@@ -833,18 +870,6 @@ What item marking to use for unordered lists. Default is '- '.
 ### firstLineParagraphIndent : Boolean (O)
 
 If true then the first line of each paragraph is indented. Default is false.
-
-### backgroundColor : String (O)
-
-__DEPRECATED__! Use an .mss file instead! The background color of the document in "R:G:B" format where each R, G, and B are a number 0 - 255.
-
-### blockQuoteColor : String (O)
-
-__DEPRECATED__! Use an .mss file instead! The blockquote color to use in this document in "R:G:B" format where each R, G, and B are a number 0 - 255.
-
-### codeColor : String (O)
-
-__DEPRECATED__! Use an .mss file instead! The code color to use in this document in "R:G:B" format where each R, G, and B are a number 0 - 255.
 
 ### mss : String (O)
 
@@ -1206,10 +1231,6 @@ Press the "Generate" button to actually generate the PDF document.
 
 The choices are:
 
-##### Page size
-
-This is one of the standard paper sizes like A4 or Letter.
-
 ##### Title
 
 This is the title of the document. This will be shown on the front page.
@@ -1217,10 +1238,6 @@ This is the title of the document. This will be shown on the front page.
 ##### Subject
 
 This is an optional subject / subtitle. This will be shown on the front page.
-
-##### Keywords
-
-A space separated set of keywords. These will not be shown anywhere, but will be added as meta data to the PDF document.
 
 ##### Author
 
@@ -1392,6 +1409,54 @@ As you can see pdf options are prefixed with "pdf.", html options are prefixed w
 # Version history
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
+
+## 2.0.0
+
+PDFBox is now used instead of iText to generate PDF. This required some non backwards compatible changes so thereby the version is bumped to 2.0.0. Note that the incompatibilities are small, and most likely this version will work without changes for many.
+
+*  Keywords are gone.
+
+*  Footer is no longer supported. Can be added if enough wants it. I have had no use for it myself.
+
+*  pageSize is no longer an option, but an MSS setting. This was a decision I made due now being responsible for all rendering on the page and thus having more control over things like margins, which are now also settable in MSS.
+
+*  There is a difference in image types handled. iText supports JPEG, JPEG2000, GIF, PNG, BMP, WMF, TIFF, CCITT and JBIG2 images. I can't find a clear list of image types supported by PDFBox (which in general is bady documented, I had to use Stack Exchange a lot!), but from MarkdownDoc:s perspective those image types supported by AWT are supported. The image types supported by PDFBox, not using AWT, like TIFF are not supported since that API only allows loading images from disk! This works badly together with URLs. Yes, it would be possible to download an image to disk first, then pass it to the API, and then delete it locally or cache it for later reuse. But I decided agains that now.
+
+*  The "hr" MSS value for headings have been renamed "underlined", which is by far more clear. This has nothing to do with anything else, just a decision I made since other things have been changed, why not fix this also. I also added an "underline_offset" to set how many points below the text to draw the underline.
+
+The reason for this change is that I discovered that iText is using a GPL license!! Now you might think, "What the heck is he talking about, the GPL license text have been included in the docs all the time!". Well, that information is generated automatically by another of my tools: CodeLicenseManager. It finds all licence information in pom:s and include license texts. I haven't looked that closely at what licenses are included. Obvioulsy I should have. It however hit me this summer and I decided to go looking for antother Java PDF library, and found Apache PDFBox. PDFBox is of course under the very sensible "Apache Software License 2.0", the same license I'm releasing MarkdownDoc under. I suspect that the way the GPL is used today was not the intention of Mr Stallman. The GPL nowmore tends to make non free software look free, and that is exactly how iText is using it.
+
+Page size is no longer supplied as an option! This is now set in the MSS file used. Default is A4. Margins now defaults to what I can determine from googling is the default for A4: 2.5 cm. These can also be set in MSS.
+
+I added some features in MSS:
+
+*  Boxed. Current default.mss uses this for _code_ style. A box of choosen color is rendered below text.
+
+*  Positioning of images on page.
+
+*  Allowing text to flow around images. When an image is added to a page a "hole" the size of the image is defined in the page, and any text rendering will skip the hole and continue after it. This is optional behavior.
+
+*  Setting page size (A4, LETTER, etc).
+
+*  Overriding default page margins.
+
+See the MSS section of the documentation for more info.
+
+PDBox however have some pluses and some minuses:
+
+### +
+
+Lower level, closed to PDF. This gave me much more flexibility and I can now generate everything only once since I now can insert the table of contents at the top of the document after generating the contents, which is needed to get the page numbers for the table of contents. With iText I had to make a dummy generation to a null stream first, just to get page numbers.
+
+Since it is so low level it does not have the type of bugs that iText have. Now all bugs should be mine :-). That is good since then I can do something about them.
+
+It was now easy to render boxed backgrounds for preformatted text. I always wanted to do that, but I could not figure out how to do it with iText since iText never gave me the coordinates of the text. Now I have full control over the coordinates of everything.
+
+### -
+
+PDFBox is slower than iText.
+
+PDFBox unfortunately uses AWT for handling most images! This has consequences! Whenever PDFBox is dealing with a PNG, JPG, etc a small window is opened. It is of course closed again when it is done with the image handling. But if run on a server to generate som PDF report then the server process needs access to an X server if running on a unix system! This is however only if images are used.
 
 ## 1.4.4
 

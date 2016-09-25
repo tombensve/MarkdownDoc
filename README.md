@@ -2,7 +2,7 @@
 
 Copyright (C) 2012 Natusoft AB
 
-__Version:__ 1.4.4
+__Version:__ 2.0.0
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
@@ -62,6 +62,54 @@ The following third party products are using this license:
 # Version history
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
+
+## 2.0.0
+
+PDFBox is now used instead of iText to generate PDF. This required some non backwards compatible changes so thereby the version is bumped to 2.0.0. Note that the incompatibilities are small, and most likely this version will work without changes for many.
+
+*  Keywords are gone.
+
+*  Footer is no longer supported. Can be added if enough wants it. I have had no use for it myself.
+
+*  pageSize is no longer an option, but an MSS setting. This was a decision I made due now being responsible for all rendering on the page and thus having more control over things like margins, which are now also settable in MSS.
+
+*  There is a difference in image types handled. iText supports JPEG, JPEG2000, GIF, PNG, BMP, WMF, TIFF, CCITT and JBIG2 images. I can't find a clear list of image types supported by PDFBox (which in general is bady documented, I had to use Stack Exchange a lot!), but from MarkdownDoc:s perspective those image types supported by AWT are supported. The image types supported by PDFBox, not using AWT, like TIFF are not supported since that API only allows loading images from disk! This works badly together with URLs. Yes, it would be possible to download an image to disk first, then pass it to the API, and then delete it locally or cache it for later reuse. But I decided agains that now.
+
+*  The "hr" MSS value for headings have been renamed "underlined", which is by far more clear. This has nothing to do with anything else, just a decision I made since other things have been changed, why not fix this also. I also added an "underline_offset" to set how many points below the text to draw the underline.
+
+The reason for this change is that I discovered that iText is using a GPL license!! Now you might think, "What the heck is he talking about, the GPL license text have been included in the docs all the time!". Well, that information is generated automatically by another of my tools: CodeLicenseManager. It finds all licence information in pom:s and include license texts. I haven't looked that closely at what licenses are included. Obvioulsy I should have. It however hit me this summer and I decided to go looking for antother Java PDF library, and found Apache PDFBox. PDFBox is of course under the very sensible "Apache Software License 2.0", the same license I'm releasing MarkdownDoc under. I suspect that the way the GPL is used today was not the intention of Mr Stallman. The GPL nowmore tends to make non free software look free, and that is exactly how iText is using it.
+
+Page size is no longer supplied as an option! This is now set in the MSS file used. Default is A4. Margins now defaults to what I can determine from googling is the default for A4: 2.5 cm. These can also be set in MSS.
+
+I added some features in MSS:
+
+*  Boxed. Current default.mss uses this for _code_ style. A box of choosen color is rendered below text.
+
+*  Positioning of images on page.
+
+*  Allowing text to flow around images. When an image is added to a page a "hole" the size of the image is defined in the page, and any text rendering will skip the hole and continue after it. This is optional behavior.
+
+*  Setting page size (A4, LETTER, etc).
+
+*  Overriding default page margins.
+
+See the MSS section of the documentation for more info.
+
+PDBox however have some pluses and some minuses:
+
+### +
+
+Lower level, closed to PDF. This gave me much more flexibility and I can now generate everything only once since I now can insert the table of contents at the top of the document after generating the contents, which is needed to get the page numbers for the table of contents. With iText I had to make a dummy generation to a null stream first, just to get page numbers.
+
+Since it is so low level it does not have the type of bugs that iText have. Now all bugs should be mine :-). That is good since then I can do something about them.
+
+It was now easy to render boxed backgrounds for preformatted text. I always wanted to do that, but I could not figure out how to do it with iText since iText never gave me the coordinates of the text. Now I have full control over the coordinates of everything.
+
+### -
+
+PDFBox is slower than iText.
+
+PDFBox unfortunately uses AWT for handling most images! This has consequences! Whenever PDFBox is dealing with a PNG, JPG, etc a small window is opened. It is of course closed again when it is done with the image handling. But if run on a server to generate som PDF report then the server process needs access to an X server if running on a unix system! This is however only if images are used.
 
 ## 1.4.4
 

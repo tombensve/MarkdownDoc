@@ -97,7 +97,7 @@ Example usage:
 
         ... parsing of document.
 
-         Generator generator = new [PDF|HTML|Markdown]Generator();
+         Generator generator = new [PDFBox|HTML|Markdown]Generator();
 
          // I'm using OptionsManager to load the options in this example.
          // If you use maven or ant then those tools will have loaded
@@ -118,7 +118,7 @@ Example usage:
 Please note that the CommandLineOptionsMangager used in the example is part of the OptionsManager
 tool also by me. Available at [github.com/tombensve/OptionsManager](https://github.com/tombensve/OptionsManager).
 
-#### se.natusoft.doc.markdown.generator.PDFGenerator
+#### se.natusoft.doc.markdown.generator.PDFBoxGenerator
 
 This generator produces a PDF document. 
 
@@ -144,26 +144,4 @@ See the "The mddoc file type" section for more information on the .mdddoc format
 
 ## Bugs
 
-### By me
-
 Nothing currenty known by me.
-
-### By IText (PDF generating)
-
-The position of images on the page gets somewhat off when text and image is mixed in the same paragraph (or section in IText language). IText also seem to have problems calculating the size of a paragraph that has an image in it, making text go beyond the bottom of a page. As long as images are on their own with no other text the PDF result will be as expected.
-
-For example, this will cause problems:
-
-    Toolbar icon: ![](images/saveicon.png)
-    
-    Bla bla ...
-
-Also note that the first might look more or less OK, but the more of these in the document it will get more and more off. After around 6 such the image appears in the paragraph above! 
-
-This will not cause a problem:
-
-    Toolbar icon:
-    
-    ![](images/saveicon.png)
-    
-    Bla bla ...

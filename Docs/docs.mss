@@ -165,7 +165,7 @@
     "image": {
       "imgScalePercent": 60.0,
       "imgAlign": "MIDDLE",
-      "imgRotateDegrees": 0.0
+      "imgRotateDegrees": 5.0
     },
 
     "pages": {
@@ -219,8 +219,9 @@
       },
       "list_item": {
       },
-      "footer": {
-        "size": 8
+      "horizontal_ruler": {
+        "thickness": 0.5,
+        "color": "grey"
       }
     },
 
