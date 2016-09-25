@@ -1070,6 +1070,13 @@ class ParagraphWriter implements BoxedTrait {
             if (mssImage.imgY != null) {
                 params.yOverride = mssImage.imgY
             }
+            if (mssImage.scalePercent != null) {
+                params.scale = mssImage.scalePercent
+            }
+            if (mssImage.rotateDegrees != null) {
+                params.rotate = mssImage.rotateDegrees
+            }
+
             if (image.url.endsWith(".jpg") || image.url.endsWith(".jpeg")) {
                 params.jpeg = true
             }
