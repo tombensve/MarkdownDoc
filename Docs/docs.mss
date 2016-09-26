@@ -229,7 +229,7 @@
       "editorImage": {
         "imgScalePercent": 50.0,
         "imgAlign": "MIDDLE",
-        "imgRotateDegrees": -4.0
+        "imgRotateDegrees": -1.0
       },
 
       "options": {
