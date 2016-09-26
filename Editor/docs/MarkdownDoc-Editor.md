@@ -85,12 +85,6 @@ The editor is also available in MarkdownDocEditor.app format. The build plugin t
 Also note that since this .app is not signed, Mac OS X Mavericks and upp will not allow you to run the app if you do not open upp for running all types of apps in the security settings.   
 
 Due to GUI bugs in the editor component of earlier versions of Java, Java 1.8 or higher is required to be installed on your system for the app to be able to run, assuming you are using the version I'm providing for download in the README.md document. If you checkout the source and build yourself then it will require Java 1.6 and upp. But be warned: You will be annoyed if you use Java lower than 1.8!
-
-### Version 1.4 usage changes
-
-In prevous versions there were only one file per window and you could open multiple windows. Now there is only one window and you can open multiple files and select which file to work with in the editor window. It is like a tabbed window, but instead of tabs there is a popup list of all open files and you click on the one you want to edit. The reason for this is to have editing distraction free. When you are writing, you only have the text you are working on and nothing else in the window. This works even better with full screen. 
-
-Since the editor now has become very file oriented you can no longer edit an unknown file that you specify a file for later when you save. So when you press the "+" toolbar icon or start the editor without any files specified then a file chooser will popup. In this case you can either navigate to a directory and then enter a name for a new file and it will be created or you can specify existing files and they will be opened. Do note that since you can open multiple files at the same time, the opened files does not necessarily become the current edited file visible in the window! But if you open the files poup you will get the newly opened files in the file list. 
   
 ## Running
 
@@ -103,7 +97,7 @@ One or more files or directories can be specified as arguments. For a directory 
 
 ## Requirements
 
-This requires Java 7+!
+This requires Java 1.8+!
 
 <div class="imageLeft">
 
@@ -119,17 +113,13 @@ Move the mouse to the top of the editor window and the toolbar will automaticall
 
 ### Save file(s)
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2save.png) 
-
-Default key: Ctrl+S. This is changeable in the settings. 
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2save.png)Default key: Ctrl+S. This is changeable in the settings. 
 
 This saves all open files that have been modified and not saved. A small pupup appears for a short while in the upper left corner of the window to indicate how many files were saved. If it the number is 0 then there were no modified files needing save.
 
 ### Open file
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2open.png)
-
-Default key: Ctrl+O. This is changeable in the settings.
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2open.png)Default key: Ctrl+O. This is changeable in the settings.
 
 This opens a file chooser to select one markdown file to open. The opened file will be selected for editing in the window.
 
@@ -139,9 +129,7 @@ In addition to markdown files the open function will also allow opening the same
 
 ### Open / Create
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2new.png)
-
-Default key: Ctrl+N. This is changeable in the settings.
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2new.png)Default key: Ctrl+N. This is changeable in the settings.
 
 This opens a file chooser where you can also enter a filename in the chooser dialog. Here you can navigate to a directory, and then enter the name of a new file that will then be created and opened. In this file chooser you can alternatively navigate to a directory and then select one or more existing files and have all selected files being opened. 
 
@@ -153,73 +141,55 @@ In addition to markdown files the open function will also allow opening the same
 
 ### List of open files popup
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2openfiles.png)
-
-Default key: Ctrl+1. This is changeable in the settings.
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2openfiles.png)Default key: Ctrl+1. This is changeable in the settings.
 
 This is new in version 1.4.2. This opens the popup window that allows for selecting which open file to work on. This was previously triggered by moving the mouse to the left window edge. 
 
 ### Insert heading
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2heading.png)
-
-Default key: Ctrl+T. This is changeable in the settings.
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2heading.png)Default key: Ctrl+T. This is changeable in the settings.
 
 This just adds a # character which is the markdown heading character. Insert as many as the heading level you want, max 6.
 
 ### Insert bold
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2bold.png)
-
-Default key: Ctrl+B. This is changeable in the settings.
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2bold.png)Default key: Ctrl+B. This is changeable in the settings.
 
 This adds 4 '\_' characters with the cursor placed between the first 2 and the last 2. 2 underscores before and after makes bold text in markdown. 2 asterisks before and after does the same thing, but the editor uses underscores for this specific help function. 
 
 ### Insert italics
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2italics.png) 
-
-Default key: Ctrl+I. This is changeable in the settings.
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2italics.png) Default key: Ctrl+I. This is changeable in the settings.
 
 This adds 2 '\_' characters with the cursor placed between them. 1 underscore before and after makes italic text in markdown. 1 asterisk before and after does the same thing, but the editor uses underscores for this specific help funciton. Asterisks also means other things in markdown so underscores in this case is less confusing. 
 
 ### Insert list
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2list.png)
-
-Default key: Ctrl+L. This is changeable in the settings.
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2list.png)Default key: Ctrl+L. This is changeable in the settings.
 
 This adds and asterisk and a space which is how you make a list entry for an unordered list in markdown. Do note that it is also possible to make a numbered list, in which case you replace the asterisk with a number like 1. See the markdown reference section of this document for more information.
 
 ### Insert quote
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2quote.png)
-
-Default key: Ctrl+Q. This is changeable in the settings.
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2quote.png)Default key: Ctrl+Q. This is changeable in the settings.
 
 This inserts a '>' character and a space which is how you make quoted text in markdown.
 
 ### Insert image
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2image.png)
- 
-Default key: Ctrl+M. This is changeable in the settings.
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2image.png)Default key: Ctrl+M. This is changeable in the settings.
 
 This function will open a small popup window where you can enter 3 pieces of information: 1) An alt text. 2) A URL to the image. 3) An image title. Only the URL is required. When you press the "Insert" button in the popup window, then the image reference will be inserted into the text in markdown format:  `![Alt text](url "title")` .
 
 ### Insert link
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2link.png)
-
-Default key: Ctrl+N. This is changeable in the settings.
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2link.png)Default key: Ctrl+N. This is changeable in the settings.
 
 This function will open a small popup window where you can enter 3 pieces of information: 1) The link text. 2) The link URL. 3) A link title. You should provide a link text and an URL as minimum. When you press the "Insert" button in the popup window, then the link will be inserted into the text in markdown format: `[link text](url "title")`. 
 
 ### Preview
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2preview.png)
-
-Default key: Ctrl+F. This is changeable in the settings.
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2preview.png)Default key: Ctrl+F. This is changeable in the settings.
 
 This will format the markdown in the editor into HTML and show it in readonly mode instead of the editable content. To go back to editing again do a Ctrl+F again or use the toolbar button. Do note that while in preview mode it is possible to drag and drop markdown files into the window to have them previewed. This does not affect what you are editing in any way. When you go back to edit mode again your edited text will be there and a new preview will preview that text. 
 
@@ -227,17 +197,13 @@ _Please also note that the preview HTML rendering is done by the Java GUI librar
 
 ### Generate PDF
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2pdf.png)
-
-Default key: Ctrl+P. This is changeable in the settings.
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2pdf.png)Default key: Ctrl+P. This is changeable in the settings.
 
 This will first open a file chooser to select target PDF file to generate to. Then a popup window with meta data for the PDF generation will open. 
 
 Press the "Generate" button to actually generate the PDF document. 
 
-![](http://download.natusoft.se/Images/MarkdownDoc/PDFOptions.png)
-
-The choices are:
+![](http://download.natusoft.se/Images/MarkdownDoc/PDFOptions.png)The choices are:
 
 ##### Title
 
@@ -281,9 +247,7 @@ If this is selected then the generated PDF will be opened by the system default 
 
 ### Generate HTML
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2html.png)
-
-Default key: Ctrl+H. This is changeable in the settings.
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2html.png)Default key: Ctrl+H. This is changeable in the settings.
 
 This will first open a file chooser to select HTML file to generate to. Then a popup window will be opened containing meta data for generation of the HTML.
 
@@ -307,9 +271,7 @@ If this is selected then the generated HTML will be opened by the system default
 
 ### Setting
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2settings.png)
-
-Default key: Ctrl+E. This is changeable in the settings.
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2settings.png)Default key: Ctrl+E. This is changeable in the settings.
 
 This opens the settings popup window where you can configure keys, margins, colors, etc. 
 
@@ -355,9 +317,11 @@ All _known_ bugs have been fixed.
 
 ### By Oracle
 
-This editor uses the standard Swing component JTextPane. This is unfortunately not an optimal component. Specially for styling it gets slow for large documents. In earlier versions of Java 7 this component had a word wrap problem when deleting text either using backspace or cutting text. In that case it rerendered the text screwing up the format until new text was entered again. _As of Java 8 this bug is fixed_, but other new bugs have been added. They are however smaller and don't occur so often.
+This editor uses the standard Swing component JTextPane. This is unfortunately not an optimal component. Specially for styling it gets slow for large documents. In earlier versions of Java 7 this component had a word wrap problem when deleting text either using backspace or cutting text. In that case it rerendered the text screwing up the format until new text was entered again. _As of Java 8 this bug is fixed_, but other new bugs have been added. They are however smaller and don't occur so often. 
 
-Sometimes when the JTextPane is opened the pane will not render at all! Just increase the width of the window util text appears. Then save so that the window size for that file will be remembered. I have one and only one document for which this happens and I cannot tell what it is that causes the problem. This could be a mac only problem. 
+Unfortuneately 1.8_u92+ is really screwed and old bugs are back in JTextPane. Anything can happen, most often text below where you are currently writing will be screwed formatwise, even the line you are writing on. Words no longer wrap and text is lost to the right. A Ctrl/Cmd-R fixes this until you start typing again. The whole document from top to bottom needs to be restyled in one go for things to be correct, but only for the moment since adding text in the editor makes it screw up again. MarkdownDoc Editor only restyles the paragraph you are writing in as you are writing. This because restyling the whole document is far to slow.  
+
+sometimes when the JTextPane is opened the pane will not render at all! Just increase the width of the window util text appears. Then save so that the window size for that file will be remembered. I have one and only one document for which this happens and I cannot tell what it is that causes the problem. This could be a mac only problem. 
 
 ### Other
 

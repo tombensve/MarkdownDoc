@@ -1090,7 +1090,7 @@ class ParagraphWriter implements BoxedTrait {
             if (imageStream != null) imageStream.close()
         }
 
-        clearParagraphBoxed(MSS_Pages.code, this.renderer, this.context.pdfStyles.mss)
+        clearParagraphBoxed(MSS_Pages.image, this.renderer, this.context.pdfStyles.mss)
     }
 
     /**

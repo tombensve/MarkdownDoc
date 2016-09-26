@@ -163,9 +163,9 @@
     "style": "Normal",
 
     "image": {
-      "imgScalePercent": 60.0,
+      "imgScalePercent": 50.0,
       "imgAlign": "MIDDLE",
-      "imgRotateDegrees": 5.0
+      "imgRotateDegrees": -1.0
     },
 
     "pages": {
@@ -240,7 +240,10 @@
       },
 
       "imageLeft": {
-        "imgAlign": "LEFT"
+        "imgAlign": "LEFT",
+        "imgFlow": true,
+        "imgFlowMargin": 4.0,
+        "imgRotateDegrees": 0.0
       }
     }
   },

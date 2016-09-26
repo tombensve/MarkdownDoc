@@ -240,9 +240,10 @@
       },
 
       "imageLeft": {
-        "imgAlign": "MIDDLE",
+        "imgAlign": "LEFT",
         "imgFlow": true,
-        "imgFlowMargin": 4.0
+        "imgFlowMargin": 4.0,
+        "imgRotateDegrees": 0.0
       }
     }
   },

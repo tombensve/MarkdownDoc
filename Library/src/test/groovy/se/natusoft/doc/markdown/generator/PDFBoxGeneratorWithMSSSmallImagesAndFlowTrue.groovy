@@ -1,7 +1,6 @@
 package se.natusoft.doc.markdown.generator
 
 import groovy.transform.CompileStatic
-import org.junit.Test
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.api.Parser
@@ -13,7 +12,7 @@ import se.natusoft.tools.optionsmgr.CommandLineOptionsManager
  * Test for MarkdownParser.
  */
 @CompileStatic
-class PDFBoxGeneratorWithMSSDevTest extends GroovyTestCase {
+class PDFBoxGeneratorWithMSSSmallImagesAndFlowTrue extends GroovyTestCase {
 
     /*
      * Note that this test only tests that the parsing and result generation executes
@@ -22,11 +21,11 @@ class PDFBoxGeneratorWithMSSDevTest extends GroovyTestCase {
     public void testParser() throws Exception {
 
         // Handle both IntelliJ and Maven who runs from different roots! (I see this as a bug in IntelliJ)
-        File testFile = new File("src/test/resources/test.md") // Maven
-        File pdfFile = new File("target/test.pdf")
+        File testFile = new File("../Editor/docs/MarkdownDoc-Editor.md") // Maven
+        File pdfFile = new File("target/test-editor.pdf")
         if (!testFile.exists()) {
-            testFile = new File("Library/src/test/resources/test.md") // IntelliJ
-            pdfFile = new File("Library/target/test.pdf")
+            testFile = new File("Editor/docs/MarkdownDoc-Editor.md") // IntelliJ
+            pdfFile = new File("Library/target/test-editor.pdf")
         }
 
         Parser parser = new MarkdownParser()
@@ -39,10 +38,10 @@ class PDFBoxGeneratorWithMSSDevTest extends GroovyTestCase {
         def args = [
                 "--hideLinks", "false",
                 "--unorderedListItemPrefix", "• ",
-                "--generateTOC", "true",
-                "--generateTitlePage", "true",
+                "--generateTOC", "false",
+                "--generateTitlePage", "false",
                 "--generateSectionNumbers", "false",
-                "--mss", "Library/src/test/resources/test.mss",
+                "--mss", "./src/test/resources/test2.mss",
                 "--resultFile", pdfFile.toString()
         ] as String[]
         Options options = optMgr.loadOptions("--", args)

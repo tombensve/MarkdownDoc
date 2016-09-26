@@ -1497,17 +1497,21 @@ class PDFBoxDocRenderer implements NotNullTrait {
                 0, 0,
                 scaledHeight,
                 imageX,
-                imageY
+                imageY + scaledHeight
         );
         at.rotate(Math.toRadians(param.rotate));
         this.docMgr.docStream.drawImage(image, new Matrix(at));
 
+        // The image X & Y is left & bottom. The hole X & Y is left & top. Yes, I have a serious problem with the upsidedown Y!
+        // I should probably have made the hole coordinates the same as the image, but it is just too difficult for my brain
+        // to handle :-).
+
         if (param.createHole) {
             this.textHoles << new TextHole(
                     x: imageX,
-                    y: imageY + this.fontMSSAdapter.size,
+                    y: imageY + scaledHeight + scaledHeight,
                     width: scaledWidth,
-                    height: scaledHeight + this.fontMSSAdapter.size
+                    height: scaledHeight
             )
         }
         else {
