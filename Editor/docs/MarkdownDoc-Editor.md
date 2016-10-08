@@ -33,7 +33,7 @@ Do note however that if you enable styling as you type in settings, then the sty
 Can generate both PDF and HTML from the editor window. Use toolbar button or keyboard shortcut.
 
 ### Configurable
-
+Ω
 The settings dialog allows you to configure almost anything/everything:
 
 - All keyboard shortcuts. 
