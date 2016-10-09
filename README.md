@@ -81,6 +81,8 @@ PDFBox is now used instead of iText to generate PDF. This required some non back
 
 *  I no longer use labels like "Author:" (on front page) or "Page" before page number, etc. I don't miss them, and it does not look strange without them IMHO. This also means the "label" settings for these texts are not needed.
 
+*  `<!-- @PageBreak -->` now works! Previously when using iText, iText ignored all my tries to force a page break!
+
 I added some features in MSS:
 
 *  Boxed. Current default.mss uses this for _code_ style. A box of choosen color is rendered below text.
@@ -97,9 +99,6 @@ See the MSS section of the documentation for more info.
 
 The reason for this change is that I discovered that iText is using a GPL license! Now you might think, "What the heck is he talking about ?, the GPL license text have been included in the docs all the time!". Well, that information is generated automatically by another of my tools: CodeLicenseManager. It finds all licence information in pom:s and include license texts. I haven't looked that closely at what licenses are included. Obvioulsy I should have. It however hit me this summer and I decided to go looking for antother Java PDF library, and found Apache PDFBox. PDFBox is of course under the very sensible "Apache Software License 2.0", the same license I'm releasing MarkdownDoc under. I suspect that the way the GPL is used today was not the intention of Mr Stallman. The GPL nowmore tends to make non free software look free, and that is exactly how iText is using it.
 
-<!--
-  @PageBreak
--->
 PDBox however have some pluses and some minuses:
 
 ### +
@@ -118,7 +117,7 @@ PDFBox unfortunately uses AWT for handling most images! This has consequences! W
 
 ### JDK Level
 
-This version is built with JDK 1.8! The Groovy code might still produce 1.5 compatible bytecode, but the maven plugin is written in Java and thus requires 1.8+ to run. The editor also have less bugs when run with 1.8. 1.7 went 6 feet under over a year ago, so you shouldn't be using antything lower than 1.8 anyhow.
+This version is built with JDK 1.8! The Groovy code might still produce 1.5 compatible bytecode, but the maven plugin is written in Java and thus requires 1.8+ to run. The editor also have less bugs when run with 1.8. 1.7 went 6 feet under over a year ago, so you shouldn't be using anything lower than 1.8 anyhow.
 
 ## 1.4.4
 

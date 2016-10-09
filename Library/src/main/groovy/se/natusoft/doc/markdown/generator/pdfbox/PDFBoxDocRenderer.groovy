@@ -396,9 +396,32 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /** A margin between a hole edge and rendered text. A hole is usually not emtpy ... */
     float holeMargin
 
+    /**
+     * This is so that formats like small code blocks within a line/paragraph can override the font size to use for newLine.
+     * Since code block can and does have a smaller font size in the default MSS when a newline occurs within such being part
+     * of a paragraph the smaller font size were used before, but now this is called by paragraph code renderer to set the
+     * font size of default text while rendering the code block, and then restores it to whatever it was before by setting
+     * this to null again.
+     */
+    @Nullable private Integer _newLineFontSize = null
+    public Integer getNewLineFontSize() {
+        if (this._newLineFontSize != null) return this._newLineFontSize
+        return this.fontMSSAdapter.size
+    }
+    public void setNewLineFontSize(Integer fontSize) {
+        this._newLineFontSize = fontSize
+    }
+
     //
     // Internal Pseudo Properties
     //
+
+    /**
+     * Returns the standard text font size.
+     */
+    public int getStandardTextFontSize() {
+        return this.stylesMSSAdapter.mss.forDocument.getFont(MSS.MSS_Pages.standard).size
+    }
 
     /**
      * Gets current y coordinate with delayed init.
@@ -1065,7 +1088,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
                 if (pgBoxed) { endParagraphBox(boxedTextArea) }
 
                 this.pageX = this.margins.leftMargin
-                this.pageY -= (this.fontMSSAdapter.size + 2)
+                this.pageY -= (this.newLineFontSize + 2)
                 if (this.pageY < this.margins.bottomMargin) {
                     newPage()
                 }
@@ -1327,7 +1350,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         ensureTextMode()
 
         this.pageX = this.margins.leftMargin
-        this.pageY -= (yOffset + this.fontMSSAdapter.size + 2)
+        this.pageY -= (yOffset + this.newLineFontSize + 2)
         this.docMgr.docStream.newLineAtOffset(this.pageX, this.pageY)
         if (this.pageY < this.margins.bottomMargin) {
             newPage()

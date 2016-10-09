@@ -127,7 +127,6 @@ This function is kind of unneccesarry in this version, but I decided to leave it
 
 In addition to markdown files the open function will also allow opening the same .fs files as the maven plugin can use. In this case all references to markdown files in the .fs file will be opened.
 
-<!-- @PageBreak -->
 ### Open / Create
 
 ![](http://download.natusoft.se/Images/MarkdownDoc/mdd2new.png)Default key: Ctrl+N. This is changeable in the settings.
@@ -327,7 +326,7 @@ All _known_ bugs have been fixed.
 
 This editor uses the standard Swing component JTextPane. This is unfortunately not an optimal component. Specially for styling it gets slow for large documents. In earlier versions of Java 7 this component had a word wrap problem when deleting text either using backspace or cutting text. In that case it rerendered the text screwing up the format until new text was entered again. _As of Java 8 this bug is fixed_, but other new bugs have been added. They are however smaller and don't occur so often. 
 
-Unfortuneately 1.8_u92+ is really screwed and old bugs are back in JTextPane. Anything can happen, most often text below where you are currently writing will be screwed formatwise, even the line you are writing on. Words no longer wrap and text is lost to the right. A Ctrl/Cmd-R fixes this until you start typing again. The whole document from top to bottom needs to be restyled in one go for things to be correct, but only for the moment since adding text in the editor makes it screw up again. MarkdownDoc Editor only restyles the paragraph you are writing in as you are writing. This because restyling the whole document is far to slow.  
+Unfortuneately 1.8_u92+ is really screwed and old bugs are back in JTextPane. Anything can happen, most often text below where you are currently writing will be screwed formatwise, even the line you are writing on. Words no longer wrap and text is lost to the right. A Ctrl/Cmd-R fixes this until you start typing again. The whole document from top to bottom needs to be restyled in one go for things to be correct. MarkdownDoc Editor however only restyles the paragraph you are writing in as you are writing. This because restyling the whole document is far too slow!  
 
 sometimes when the JTextPane is opened the pane will not render at all! Just increase the width of the window util text appears. Then save so that the window size for that file will be remembered. I have one and only one document for which this happens and I cannot tell what it is that causes the problem. This could be a mac only problem. 
 

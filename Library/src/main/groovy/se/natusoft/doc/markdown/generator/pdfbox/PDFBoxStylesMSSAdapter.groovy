@@ -43,7 +43,6 @@ import org.apache.pdfbox.pdmodel.font.PDType0Font
 import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.FileResource
-import se.natusoft.doc.markdown.generator.GeneratorContext
 import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.generator.styles.MSSExtFont
 import se.natusoft.doc.markdown.generator.styles.MSSFont

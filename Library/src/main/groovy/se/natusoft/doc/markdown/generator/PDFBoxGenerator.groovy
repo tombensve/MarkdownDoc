@@ -394,6 +394,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      *
      * @return true if anything was updated, false otherwise.
      */
+    @SuppressWarnings("GroovyMissingReturnStatement") // This is obviously bullshit from IDEA!
     private static boolean extractCommentOptionsAnnotations(@NotNull final Comment comment,
                                                             @NotNull final PDFGeneratorContext context) {
         boolean updated = false
@@ -453,7 +454,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param renderer The PDF document renderer.
      * @param context The generator context.
      */
-    static void writeParagraph(@NotNull Paragraph paragraph, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
+    private static void writeParagraph(@NotNull Paragraph paragraph, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
         writeParagraphContent(paragraph, renderer, context)
     }
 
@@ -464,7 +465,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param renderer The PDF document renderer.
      * @param context The generator context.
      */
-    static void writeParagraphContent(@NotNull Paragraph paragraph, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
+    private static void writeParagraphContent(@NotNull Paragraph paragraph, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
 
         ParagraphWriter pw = new ParagraphWriter(renderer: renderer, context: context)
         pw.renderer = renderer
@@ -526,7 +527,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param renderer The PDF document renderer
      * @param context The generator context.
      */
-    void writeHeader(@NotNull Header header, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
+    private void writeHeader(@NotNull Header header, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
         if (header.level.level == 1 && renderer.pageNo > 1) {
             renderer.newPage()
         }
@@ -579,7 +580,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param renderer The PDF document renderer.
      * @param context The generator context.
      */
-    static void writeBlockQuote(@NotNull BlockQuote blockQuote, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
+    private static void writeBlockQuote(@NotNull BlockQuote blockQuote, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
         checkAndSetBoxed(MSS_Pages.block_quote, renderer, context.pdfStyles.mss)
 
         blockQuote.items.each { final DocItem docItem ->
@@ -602,7 +603,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param renderer The PDF document renderer.
      * @param context The generator context.
      */
-    static void writeCodeBlock(@NotNull CodeBlock codeBlock, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
+    @SuppressWarnings("GroovyMissingReturnStatement") // IDEA bullshit! Note that method is void :-).
+    private static void writeCodeBlock(@NotNull CodeBlock codeBlock, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
         checkAndSetBoxed(MSS_Pages.code, renderer, context.pdfStyles.mss)
 
         codeBlock.items.each { final DocItem docItem ->
@@ -630,7 +632,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param renderer The PDF document renderer
      * @param context The generator context.
      */
-    static void writeHr( @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
+    private static void writeHr( @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
         renderer.hr(context.pdfStyles.mss.forDocument.hrThickness, context.pdfStyles.mss.forDocument.hrColor)
     }
 
@@ -641,7 +643,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param renderer The PDF document renderer
      * @param context The generator context.
      */
-    static void writeList(@NotNull List list, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
+    private static void writeList(@NotNull List list, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context) {
         renderer.setStyle(context.pdfStyles, MSS_Pages.list_item)
         renderer.setColorPair(context.pdfStyles, MSS_Pages.list_item)
 
@@ -722,7 +724,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param y The y coordinate of the image.
      * @param mssImage The mss image information.
      */
-    static void writeImage(PDFBoxDocRenderer renderer, PDFGeneratorContext context, String imgUrl, float x, float y, MSSImage mssImage) {
+    private static void writeImage(PDFBoxDocRenderer renderer, PDFGeneratorContext context, String imgUrl, float x, float y, MSSImage mssImage) {
         // Image extends Url, but we allow the Image.url to be a local path also, even without file:
         imgUrl = imgUrl.trim()
         InputStream imageStream
@@ -781,7 +783,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param renderer The PDF renderer.
      * @param context The current generator context.
      */
-    void writeToc(PDFBoxDocRenderer renderer, PDFGeneratorContext context) {
+    private static void writeToc(PDFBoxDocRenderer renderer, PDFGeneratorContext context) {
         PDFBoxDocRenderer.TopPage tocPage = renderer.createTopPage()
 
         context.toc.each { TOC toc ->
@@ -804,7 +806,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param renderer The PDF renderer.
      * @param context The current generator context.
      */
-    void writeTitlePage(PDFBoxDocRenderer renderer, PDFGeneratorContext context) {
+    private static void writeTitlePage(PDFBoxDocRenderer renderer, PDFGeneratorContext context) {
 
         //noinspection GroovyUnusedAssignment
         PDFBoxDocRenderer.TopPage titlePage = renderer.createTopPage()
@@ -952,7 +954,7 @@ class ParagraphWriter implements BoxedTrait {
      * @param section The styling section to apply.
      * @param stylesApplicator This closure is run to apply styles.
      */
-    private void writeText(String text, MSS_Pages section, Closure<Void> stylesApplicator) {
+    void writeText(String text, MSS_Pages section, Closure<Void> stylesApplicator) {
         renderer.text(text, stylesApplicator, checkAndSetParagraphBoxed(section, this.renderer, this.context.pdfStyles.mss))
         clearParagraphBoxed(section, this.renderer, this.context.pdfStyles.mss)
     }
@@ -964,10 +966,12 @@ class ParagraphWriter implements BoxedTrait {
      */
     void writeCode(@NotNull Code code) {
         //noinspection GroovyMissingReturnStatement
+        this.renderer.newLineFontSize = this.renderer.standardTextFontSize
         writeText(code.text, MSS_Pages.code) {
             renderer.setStyle(this.context.pdfStyles, MSS_Pages.code)
             renderer.setColorPair(this.forDocument.getColorPair(MSS_Pages.code))
         }
+        this.renderer.newLineFontSize = null
     }
 
     /**
