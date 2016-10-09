@@ -1,6 +1,5 @@
 <!--
   
-
     As of version 1.4 it is possible to specify a lot of the PDFGenerator options as annotations
     within a comment block. This should be at the top of the document or it can have side effects.
 
@@ -8,13 +7,12 @@
     @PDFSubject("User Guide")
     @PDFVersion(2 . 0 . 0) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
-    @PDFCopyright("Copyright (C) 2016 Natusoft AB")
+    @PDFCopyright("Copyright (C) 2012 Natusoft AB")
     @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
     
     @PDFGenerateTitlePage(true)
     @PDFGenerateTOC(true)
     @PDFGenerateSectionNumbers(false)
-
 -->
 # MarkdownDoc User Guide
 
@@ -625,7 +623,7 @@ The style value can be any of NORMAL, BOLD, ITALIC, and UNDERLINE. UNDERLINE can
                 "style": "BOLD",
         
 
-"underlined" draws and underline under the heading from left margin to right margin. The "underline_offset" is how many point below the text to draw the line. In previous versions this was called "hr".
+"underlined" draws and underline under the heading from left margin to right margin. The "underline_offset" is how many points below the text to draw the line. In previous versions this was called "hr".
 
                 "underlined": true,
                 "underline_offset": 3.0
@@ -658,7 +656,7 @@ The style value can be any of NORMAL, BOLD, ITALIC, and UNDERLINE. UNDERLINE can
                 "color": "64:64:64",
         
 
-If "preformattedWordWrap" is set to true then "code" style text will not entirely be left as is, but will wrap around to a new line if the text does not fit within the margins, and this will be with an indent matching the "code" text plus some more indent to show that it is a continuation of the previous line. Depending on the text this sometimes works well, sometimes less than well.
+If "preformattedWordWrap" is set to true, then "code" style text will not entirely be left as is, but will wrap around to a new line if the text does not fit within the margins, and this will be with an indent matching the "code" text plus some more indent to show that it is a continuation of the previous line. Depending on the text this sometimes works well, sometimes less than well.
 
                 "preformattedWordWrap": false,
         
@@ -675,7 +673,7 @@ When "boxed" is set to true then a filled box is drawn below the text. It ranges
               },
         
 
-This is also new in 2.0.0 and sets the thicknes and color of a hroizontal ruler.
+This is also new in 2.0.0 and sets the thickness and color of a horizontal ruler.
 
               "horizontal_ruler": {
                 "thickness": 0.5,
@@ -735,8 +733,6 @@ This is also new in 2.0.0 and sets the thicknes and color of a hroizontal ruler.
             "family": "HELVETICA",
             "size": 9,
             "style": "NORMAL",
-            "toc": {
-            },
             "h1": {
               "style": "BOLD"
             },
@@ -819,10 +815,6 @@ The path to the PDF file to write.
 
 A root dir to make image paths relative to.
 
-### pageSize : String (O)
-
-The pagesize name like LETTER or A4. Default is A4.
-
 ### title : String (O)
 
 The title of the document. This is used if __generateTitlePage__ is set to true.
@@ -847,18 +839,6 @@ The version to put on the title page. Must be specified to be rendered!
 
 The copyright message to put on the title page. Must be specified to be rendered!
 
-### authorLabel : String (O)
-
-The label text for 'Author:'.
-
-### versionLabel : String (O)
-
-The label text for 'Version:'.
-
-### tableOfContentsLabel : String (O)
-
-The text for 'Table of Contents'.
-
 ### hideLinks : Boolean (O)
 
 If true then links are not rendered as link the link text will be rendered as plain text.
@@ -866,10 +846,6 @@ If true then links are not rendered as link the link text will be rendered as pl
 ### unorderedListItemPrefix : String (O)
 
 What item marking to use for unordered lists. Default is '- '.
-
-### firstLineParagraphIndent : Boolean (O)
-
-If true then the first line of each paragraph is indented. Default is false.
 
 ### mss : String (O)
 
@@ -919,21 +895,11 @@ The following annotation options are available:
 
 *  @PDFCopyright(copyright line)
 
-*  @PDFAuthorLabel(label)
-
-*  @PDFVersionLabel(label)
-
-*  @PDFPageLabel(label)
-
-*  @PDFTableOfContentsLabel(label)
-
 *  @PDFPageSize(size)
 
 *  @PDFHideLinks(true/false)
 
 *  @PDFUnorderedListItemPrefix(prefix)
-
-*  @PDFFirstLineParagraphIndent(true/false)
 
 *  @PDFGenerateSectionNumbers(true/false)
 
@@ -974,6 +940,9 @@ The path file links should be relative to.
 
 Shows help.
 
+<!--
+  @PageBreak
+-->
 ## MarkdownGenerator options
 
 ### resultFile : String (R)
@@ -1119,6 +1088,9 @@ This function is kind of unneccesarry in this version, but I decided to leave it
 
 In addition to markdown files the open function will also allow opening the same .fs files as the maven plugin can use. In this case all references to markdown files in the .fs file will be opened.
 
+<!--
+  @PageBreak
+-->
 ### Open / Create
 
 ![](http://download.natusoft.se/Images/MarkdownDoc/mdd2new.png)Default key: Ctrl+N. This is changeable in the settings.
@@ -1155,6 +1127,9 @@ This adds 4 '_' characters with the cursor placed between the first 2 and the la
 
 This adds 2 '_' characters with the cursor placed between them. 1 underscore before and after makes italic text in markdown. 1 asterisk before and after does the same thing, but the editor uses underscores for this specific help funciton. Asterisks also means other things in markdown so underscores in this case is less confusing.
 
+<!--
+  @PageBreak
+-->
 ### Insert list
 
 ![](http://download.natusoft.se/Images/MarkdownDoc/mdd2list.png)Default key: Ctrl+L. This is changeable in the settings.
@@ -1187,6 +1162,9 @@ This will format the markdown in the editor into HTML and show it in readonly mo
 
 _Please also note that the preview HTML rendering is done by the Java GUI library (Swing) component JEditorPane.__This is far from an optimal HTML renderer!__It can make things look strange sometimes.__It also insists on indenting the beginning of every code block.__If anyone knows of a free,__open source,__swing compatible HTML renderer,__that is better please let me know._
 
+<!--
+  @PageBreak
+-->
 ### Generate PDF
 
 ![](http://download.natusoft.se/Images/MarkdownDoc/mdd2pdf.png)Default key: Ctrl+P. This is changeable in the settings.
@@ -1195,7 +1173,9 @@ This will first open a file chooser to select target PDF file to generate to. Th
 
 Press the "Generate" button to actually generate the PDF document.
 
-![](http://download.natusoft.se/Images/MarkdownDoc/PDFOptions.png)The choices are:
+The choices are: (Note that pic is old, keywords no longer exists!)
+
+![](http://download.natusoft.se/Images/MarkdownDoc/PDFOptions.png)
 
 ##### Title
 
@@ -1208,6 +1188,8 @@ This is an optional subject / subtitle. This will be shown on the front page.
 ##### Author
 
 The author of the document. This will be shown on the front page.
+
+&nbsp;
 
 ##### Version
 
@@ -1382,15 +1364,15 @@ PDFBox is now used instead of iText to generate PDF. This required some non back
 
 *  Footer is no longer supported. Can be added if enough wants it. I have had no use for it myself.
 
-*  pageSize is no longer an option, but an MSS setting. This was a decision I made due now being responsible for all rendering on the page and thus having more control over things like margins, which are now also settable in MSS.
+*  pageSize is no longer an option, but an MSS setting. This was a decision I made due to now being responsible for all rendering on the page and thus having more control over things like margins (now also settable in MSS), etc.
 
 *  There is a difference in image types handled. iText supports JPEG, JPEG2000, GIF, PNG, BMP, WMF, TIFF, CCITT and JBIG2 images. I can't find a clear list of image types supported by PDFBox (which in general is bady documented, I had to use Stack Exchange a lot!), but from MarkdownDoc:s perspective those image types supported by AWT are supported. The image types supported by PDFBox, not using AWT, like TIFF are not supported since that API only allows loading images from disk! This works badly together with URLs. Yes, it would be possible to download an image to disk first, then pass it to the API, and then delete it locally or cache it for later reuse. But I decided agains that now.
 
 *  The "hr" MSS value for headings have been renamed "underlined", which is by far more clear. This has nothing to do with anything else, just a decision I made since other things have been changed, why not fix this also. I also added an "underline_offset" to set how many points below the text to draw the underline.
 
-The reason for this change is that I discovered that iText is using a GPL license!! Now you might think, "What the heck is he talking about, the GPL license text have been included in the docs all the time!". Well, that information is generated automatically by another of my tools: CodeLicenseManager. It finds all licence information in pom:s and include license texts. I haven't looked that closely at what licenses are included. Obvioulsy I should have. It however hit me this summer and I decided to go looking for antother Java PDF library, and found Apache PDFBox. PDFBox is of course under the very sensible "Apache Software License 2.0", the same license I'm releasing MarkdownDoc under. I suspect that the way the GPL is used today was not the intention of Mr Stallman. The GPL nowmore tends to make non free software look free, and that is exactly how iText is using it.
+*  Page size is no longer supplied as an option! This is now set in the MSS file used. Default is A4. Margins now defaults to what I can determine from googling is the default for A4: 2.54 cm. These can also be set in MSS.
 
-Page size is no longer supplied as an option! This is now set in the MSS file used. Default is A4. Margins now defaults to what I can determine from googling is the default for A4: 2.5 cm. These can also be set in MSS.
+*  I no longer use labels like "Author:" (on front page) or "Page" before page number, etc. I don't miss them, and it does not look strange without them IMHO. This also means the "label" settings for these texts are not needed.
 
 I added some features in MSS:
 
@@ -1406,11 +1388,16 @@ I added some features in MSS:
 
 See the MSS section of the documentation for more info.
 
+The reason for this change is that I discovered that iText is using a GPL license! Now you might think, "What the heck is he talking about ?, the GPL license text have been included in the docs all the time!". Well, that information is generated automatically by another of my tools: CodeLicenseManager. It finds all licence information in pom:s and include license texts. I haven't looked that closely at what licenses are included. Obvioulsy I should have. It however hit me this summer and I decided to go looking for antother Java PDF library, and found Apache PDFBox. PDFBox is of course under the very sensible "Apache Software License 2.0", the same license I'm releasing MarkdownDoc under. I suspect that the way the GPL is used today was not the intention of Mr Stallman. The GPL nowmore tends to make non free software look free, and that is exactly how iText is using it.
+
+<!--
+  @PageBreak
+-->
 PDBox however have some pluses and some minuses:
 
 ### +
 
-Lower level, closed to PDF. This gave me much more flexibility and I can now generate everything only once since I now can insert the table of contents at the top of the document after generating the contents, which is needed to get the page numbers for the table of contents. With iText I had to make a dummy generation to a null stream first, just to get page numbers.
+Lower level, closer to PDF. This gave me much more flexibility and I can now generate everything only once since I now can insert the table of contents at the top of the document after generating the contents, which is needed to get the page numbers for the table of contents. With iText I had to make a dummy generation to a null stream first, just to get page numbers.
 
 Since it is so low level it does not have the type of bugs that iText have. Now all bugs should be mine :-). That is good since then I can do something about them.
 
@@ -1418,9 +1405,13 @@ It was now easy to render boxed backgrounds for preformatted text. I always want
 
 ### -
 
-PDFBox is slower than iText.
+PDFBox is slower than iText especially when images are used.
 
 PDFBox unfortunately uses AWT for handling most images! This has consequences! Whenever PDFBox is dealing with a PNG, JPG, etc a small window is opened. It is of course closed again when it is done with the image handling. But if run on a server to generate som PDF report then the server process needs access to an X server if running on a unix system! This is however only if images are used.
+
+### JDK Level
+
+This version is built with JDK 1.8! The Groovy code might still produce 1.5 compatible bytecode, but the maven plugin is written in Java and thus requires 1.8+ to run. The editor also have less bugs when run with 1.8. 1.7 went 6 feet under over a year ago, so you shouldn't be using antything lower than 1.8 anyhow.
 
 ## 1.4.4
 
@@ -1736,11 +1727,11 @@ The \ character can be used to escape characters that have markdown meaning. \\ 
 -->
 ## Project License
 
-[Apache version 2.0](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/licsApache-2.0.md)
+[Apache Software License version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 ## Third Party Licenses
 
-[Apache version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+[Apache Software License version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 The following third party products are using this license:
 
@@ -1757,756 +1748,77 @@ The following third party products are using this license:
 -->
 # License Texts
 
-<!--
-  
-  This was created by CodeLicenseManager
--->
-## Apache License version 2.0
+## Apache License version 2.0, January 2004
 
-        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-        <html lang="en">
-          <head>
-            <title>Apache License, Version 2.0</title>
-        
-            <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-            <meta property="og:image" content="http://www.apache.org/images/asf_logo.gif" />
-        
-            <link rel="stylesheet" type="text/css" media="screen" href="/css/style.css">
-            <link rel="stylesheet" type="text/css" media="screen" href="/css/code.css">
-        
-            <script type="text/javascript" src="/js/jquery.js"></script>
-            <script type="text/javascript" src="/js/apache_boot.js"></script>
-        
-            
-        
-            
-            <!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements.  See the NOTICE file distributed with this work for additional information regarding copyright ownership.  The ASF licenses this file to you under the Apache License, Version 2.0 (the &quot;License&quot;); you may not use this file except in compliance with the License.  You may obtain a copy of the License at . http://www.apache.org/licenses/LICENSE-2.0 . Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License. -->
-          </head>
-        
-          <body>
-            <div id="page" class="container_16">
-              <div id="header" class="grid_8">
-                <img src="/images/feather-small.gif" alt="The Apache Software Foundation">
-                <h1>The Apache Software Foundation</h1>
-                <h2>Apache License, Version 2.0</h2>
-              </div>
-              <div id="nav" class="grid_8">
-                <ul>
-                  <!-- <li><a href="/" title="Welcome!">Home</a></li> -->
-                  <li><a href="/foundation/" title="The Foundation">Foundation</a></li>
-                  <li><a href="http://projects.apache.org" title="The Projects">Projects</a></li>
-                  <li><a href="http://people.apache.org" title="The People">People</a></li>
-                  <li><a href="/foundation/getinvolved.html" title="Get Involved">Get Involved</a></li>
-                  <li><a href="/dyn/closer.cgi" title="Download">Download</a></li>
-                  <li><a href="/foundation/sponsorship.html" title="Support Apache">Support Apache</a></li>
-                </ul>
-                <p><a href="/">Home</a>&nbsp;&raquo&nbsp;<a href="/licenses/">Licenses</a></p>
-                <form name="search" id="search" action="http://www.google.com/search" method="get">
-                  <input value="*.apache.org" name="sitesearch" type="hidden"/>
-                  <input type="text" name="q" id="query">
-                  <input type="submit" id="submit" value="Search">
-                </form>
-              </div>
-              <div class="clear"></div>
-              <div id="content" class="grid_16"><div class="section-content"><p>Apache License<br></br>Version 2.0, January 2004<br></br>
-        <a href="http://www.apache.org/licenses/">http://www.apache.org/licenses/</a> </p>
-        <p>TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION</p>
-        <p><strong><a name="definitions">1. Definitions</a></strong>.</p>
-        <p>"License" shall mean the terms and conditions for use, reproduction, and
-        distribution as defined by Sections 1 through 9 of this document.</p>
-        <p>"Licensor" shall mean the copyright owner or entity authorized by the
-        copyright owner that is granting the License.</p>
-        <p>"Legal Entity" shall mean the union of the acting entity and all other
-        entities that control, are controlled by, or are under common control with
-        that entity. For the purposes of this definition, "control" means (i) the
-        power, direct or indirect, to cause the direction or management of such
-        entity, whether by contract or otherwise, or (ii) ownership of fifty
-        percent (50%) or more of the outstanding shares, or (iii) beneficial
-        ownership of such entity.</p>
-        <p>"You" (or "Your") shall mean an individual or Legal Entity exercising
-        permissions granted by this License.</p>
-        <p>"Source" form shall mean the preferred form for making modifications,
-        including but not limited to software source code, documentation source,
-        and configuration files.</p>
-        <p>"Object" form shall mean any form resulting from mechanical transformation
-        or translation of a Source form, including but not limited to compiled
-        object code, generated documentation, and conversions to other media types.</p>
-        <p>"Work" shall mean the work of authorship, whether in Source or Object form,
-        made available under the License, as indicated by a copyright notice that
-        is included in or attached to the work (an example is provided in the
-        Appendix below).</p>
-        <p>"Derivative Works" shall mean any work, whether in Source or Object form,
-        that is based on (or derived from) the Work and for which the editorial
-        revisions, annotations, elaborations, or other modifications represent, as
-        a whole, an original work of authorship. For the purposes of this License,
-        Derivative Works shall not include works that remain separable from, or
-        merely link (or bind by name) to the interfaces of, the Work and Derivative
-        Works thereof.</p>
-        <p>"Contribution" shall mean any work of authorship, including the original
-        version of the Work and any modifications or additions to that Work or
-        Derivative Works thereof, that is intentionally submitted to Licensor for
-        inclusion in the Work by the copyright owner or by an individual or Legal
-        Entity authorized to submit on behalf of the copyright owner. For the
-        purposes of this definition, "submitted" means any form of electronic,
-        verbal, or written communication sent to the Licensor or its
-        representatives, including but not limited to communication on electronic
-        mailing lists, source code control systems, and issue tracking systems that
-        are managed by, or on behalf of, the Licensor for the purpose of discussing
-        and improving the Work, but excluding communication that is conspicuously
-        marked or otherwise designated in writing by the copyright owner as "Not a
-        Contribution."</p>
-        <p>"Contributor" shall mean Licensor and any individual or Legal Entity on
-        behalf of whom a Contribution has been received by Licensor and
-        subsequently incorporated within the Work.</p>
-        <p><strong><a name="copyright">2. Grant of Copyright License</a></strong>. Subject to the
-        terms and conditions of this License, each Contributor hereby grants to You
-        a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-        copyright license to reproduce, prepare Derivative Works of, publicly
-        display, publicly perform, sublicense, and distribute the Work and such
-        Derivative Works in Source or Object form.</p>
-        <p><strong><a name="patent">3. Grant of Patent License</a></strong>. Subject to the terms
-        and conditions of this License, each Contributor hereby grants to You a
-        perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-        (except as stated in this section) patent license to make, have made, use,
-        offer to sell, sell, import, and otherwise transfer the Work, where such
-        license applies only to those patent claims licensable by such Contributor
-        that are necessarily infringed by their Contribution(s) alone or by
-        combination of their Contribution(s) with the Work to which such
-        Contribution(s) was submitted. If You institute patent litigation against
-        any entity (including a cross-claim or counterclaim in a lawsuit) alleging
-        that the Work or a Contribution incorporated within the Work constitutes
-        direct or contributory patent infringement, then any patent licenses
-        granted to You under this License for that Work shall terminate as of the
-        date such litigation is filed.</p>
-        <p><strong><a name="redistribution">4. Redistribution</a></strong>. You may reproduce and
-        distribute copies of the Work or Derivative Works thereof in any medium,
-        with or without modifications, and in Source or Object form, provided that
-        You meet the following conditions:</p>
-        <ol>
-        <li>
-        <p>You must give any other recipients of the Work or Derivative Works a
-        copy of this License; and</p>
-        </li>
-        <li>
-        <p>You must cause any modified files to carry prominent notices stating
-        that You changed the files; and</p>
-        </li>
-        <li>
-        <p>You must retain, in the Source form of any Derivative Works that You
-        distribute, all copyright, patent, trademark, and attribution notices from
-        the Source form of the Work, excluding those notices that do not pertain to
-        any part of the Derivative Works; and</p>
-        </li>
-        <li>
-        <p>If the Work includes a "NOTICE" text file as part of its distribution,
-        then any Derivative Works that You distribute must include a readable copy
-        of the attribution notices contained within such NOTICE file, excluding
-        those notices that do not pertain to any part of the Derivative Works, in
-        at least one of the following places: within a NOTICE text file distributed
-        as part of the Derivative Works; within the Source form or documentation,
-        if provided along with the Derivative Works; or, within a display generated
-        by the Derivative Works, if and wherever such third-party notices normally
-        appear. The contents of the NOTICE file are for informational purposes only
-        and do not modify the License. You may add Your own attribution notices
-        within Derivative Works that You distribute, alongside or as an addendum to
-        the NOTICE text from the Work, provided that such additional attribution
-        notices cannot be construed as modifying the License.
-        You may add Your own copyright statement to Your modifications and may
-        provide additional or different license terms and conditions for use,
-        reproduction, or distribution of Your modifications, or for any such
-        Derivative Works as a whole, provided Your use, reproduction, and
-        distribution of the Work otherwise complies with the conditions stated in
-        this License.</p>
-        </li>
-        </ol>
-        <p><strong><a name="contributions">5. Submission of Contributions</a></strong>. Unless You
-        explicitly state otherwise, any Contribution intentionally submitted for
-        inclusion in the Work by You to the Licensor shall be under the terms and
-        conditions of this License, without any additional terms or conditions.
-        Notwithstanding the above, nothing herein shall supersede or modify the
-        terms of any separate license agreement you may have executed with Licensor
-        regarding such Contributions.</p>
-        <p><strong><a name="trademarks">6. Trademarks</a></strong>. This License does not grant
-        permission to use the trade names, trademarks, service marks, or product
-        names of the Licensor, except as required for reasonable and customary use
-        in describing the origin of the Work and reproducing the content of the
-        NOTICE file.</p>
-        <p><strong><a name="no-warranty">7. Disclaimer of Warranty</a></strong>. Unless required by
-        applicable law or agreed to in writing, Licensor provides the Work (and
-        each Contributor provides its Contributions) on an "AS IS" BASIS, WITHOUT
-        WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including,
-        without limitation, any warranties or conditions of TITLE,
-        NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You
-        are solely responsible for determining the appropriateness of using or
-        redistributing the Work and assume any risks associated with Your exercise
-        of permissions under this License.</p>
-        <p><strong><a name="no-liability">8. Limitation of Liability</a></strong>. In no event and
-        under no legal theory, whether in tort (including negligence), contract, or
-        otherwise, unless required by applicable law (such as deliberate and
-        grossly negligent acts) or agreed to in writing, shall any Contributor be
-        liable to You for damages, including any direct, indirect, special,
-        incidental, or consequential damages of any character arising as a result
-        of this License or out of the use or inability to use the Work (including
-        but not limited to damages for loss of goodwill, work stoppage, computer
-        failure or malfunction, or any and all other commercial damages or losses),
-        even if such Contributor has been advised of the possibility of such
-        damages.</p>
-        <p><strong><a name="additional">9. Accepting Warranty or Additional Liability</a></strong>.
-        While redistributing the Work or Derivative Works thereof, You may choose
-        to offer, and charge a fee for, acceptance of support, warranty, indemnity,
-        or other liability obligations and/or rights consistent with this License.
-        However, in accepting such obligations, You may act only on Your own behalf
-        and on Your sole responsibility, not on behalf of any other Contributor,
-        and only if You agree to indemnify, defend, and hold each Contributor
-        harmless for any liability incurred by, or claims asserted against, such
-        Contributor by reason of your accepting any such warranty or additional
-        liability.</p>
-        <p>END OF TERMS AND CONDITIONS</p>
-        <h1 id="apply">APPENDIX: How to apply the Apache License to your work</h1>
-        <p>To apply the Apache License to your work, attach the following boilerplate
-        notice, with the fields enclosed by brackets "[]" replaced with your own
-        identifying information. (Don't include the brackets!) The text should be
-        enclosed in the appropriate comment syntax for the file format. We also
-        recommend that a file or class name and description of purpose be included
-        on the same "printed page" as the copyright notice for easier
-        identification within third-party archives.</p>
-        <div class="codehilite"><pre>   Copyright [yyyy] [name of copyright owner]
-        
-           Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
-           you may not use this file except in compliance with the License.
-           You may obtain a copy of the License at
-        
-               http://www.apache.org/licenses/LICENSE-2.0
-        
-           Unless required by applicable law or agreed to in writing, software
-           distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
-           WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-           See the License for the specific language governing permissions and
-           limitations under the License.
-        </pre></div></div></div>
-              <div class="clear"></div>
-            </div>
-            <div id="footer" class="container_16">
-              <div class="links grid_16">
-              <div class="grid_3">
-                <h4>Projects</h4>
-                <ul>
-        <li><a href="http://httpd.apache.org/" title="Apache Web Server (httpd)">HTTP Server</a></li>
-        <li><a href="http://abdera.apache.org/" title="Atom Publishing Protocol Implementation">Abdera</a></li>
-        <li><a href="http://accumulo.apache.org/" title="Sorted, distributed key/value store">Accumulo</a></li>
-        <li><a href="http://ace.apache.org/" title="Centralized life cycle management and deployment of OSGi based and related modular software artifacts for distribution.">ACE</a></li>
-        <li><a href="http://activemq.apache.org/" title="Distributed Messaging System">ActiveMQ</a></li>
-        <li><a href="http://ant.apache.org/" title="Java-based build tool">Ant</a></li>
-        <li><a href="http://apr.apache.org/" title="Apache Portable Runtime libraries">APR</a></li>
-        <li><a href="http://archiva.apache.org/" title="Build Artifact Repository Manager">Archiva</a></li>
-        <li><a href="http://aries.apache.org/" title="Enterprise OSGi application programming model">Aries</a></li>
-        <li><a href="http://avro.apache.org/" title="A Serialization System">Avro</a></li>
-        <li><a href="http://axis.apache.org/" title="Java SOAP Engine">Axis</a></li>
-        <li><a href="http://buildr.apache.org/" title="Simple and intuitive build system for Java applications">Buildr</a></li>
-        <li><a href="http://bval.apache.org/" title="Apache BVal: JSR-303 Bean Validation Implementation and Extensions">BVal</a></li>
-        <li><a href="http://camel.apache.org/" title="Spring based Integration Framework which implements the Enterprise Integration Patterns">Camel</a></li>
-        <li><a href="http://cassandra.apache.org/" title="Highly scalable second-generation distributed database">Cassandra</a></li>
-        <li><a href="http://cayenne.apache.org/" title="User-friendly Java ORM with Tools">Cayenne</a></li>
-        <li><a href="http://chemistry.apache.org/" title="CMIS (Content Managment Interoperability Services) Clients and Servers">Chemistry</a></li>
-        <li><a href="http://click.apache.org/" title="User-friendly page and component oriented web framework">Click</a></li>
-        <li><a href="http://cocoon.apache.org/" title="Web development framework: separation of concerns, component-based">Cocoon</a></li>
-        <li><a href="http://commons.apache.org/" title="Reusable Java components">Commons</a></li>
-        <li><a href="http://continuum.apache.org/" title="Continuous Integration and Build Server">Continuum</a></li>
-        <li><a href="http://couchdb.apache.org/" title="RESTful document database">CouchDB</a></li>
-        <li><a href="http://creadur.apache.org/" title="Comprehension and auditing of software distributions">Creadur</a></li>
-        <li><a href="http://cxf.apache.org/" title="Service Framework">CXF</a></li>
-        <li><a href="http://db.apache.org/" title="Database access">DB</a></li>
-        <li><a href="http://deltacloud.apache.org/" title="RESTful cloud management interface">Deltacloud</a></li>
-        <li><a href="http://directory.apache.org/" title="Apache Directory Server">Directory</a></li>
-        <li><a href="http://empire-db.apache.org/" title="Relational Data Persistence">Empire-db</a></li>
-        <li><a href="http://esme.apache.org/" title="Enterprise Social Messaging Environment">ESME</a></li>
-        <li><a href="http://felix.apache.org/" title="OSGi Framework and components.">Felix</a></li>
-        <li><a href="http://forrest.apache.org/" title="Aggregated multi-channel documentation, separation of concerns">Forrest</a></li>
-        <li><a href="http://geronimo.apache.org/" title="Java2, Enterprise Edition (J2EE) container">Geronimo</a></li>
-        <li><a href="http://gora.apache.org/" title="ORM framework for column stores such as Apache HBase and Apache Cassandra with a specific focus on Hadoop">Gora</a></li>
-        <li><a href="http://gump.apache.org/" title="Continuous integration of open source projects">Gump</a></li>
-        <li><a href="http://hadoop.apache.org/" title="Distributed computing platform">Hadoop</a></li>
-        <li><a href="http://hbase.apache.org/" title="Hadoop Database">HBase</a></li>
-        <li><a href="http://hive.apache.org/" title="Data warehouse infrastructure using the Hadoop Database">Hive</a></li>
-        <li><a href="http://hc.apache.org/" title="Java toolset of low level HTTP components">HttpComponents</a></li>
-        <li><a href="http://jackrabbit.apache.org/" title="Content Repository for Java">Jackrabbit</a></li>
-        <li><a href="http://james.apache.org/" title="Java Apache Mail Enterprise Server">James</a></li>
-        <li><a href="http://jmeter.apache.org/" title="Java performance and functional testing">JMeter</a></li>
-        <li><a href="http://juddi.apache.org/" title="Java implementation of the Universal Description, Discovery, and Integration specification">jUDDI</a></li>
-        <li><a href="http://karaf.apache.org/" title="Server-side OSGi distribution">Karaf</a></li>
-        <li><a href="http://lenya.apache.org/" title="Content Management System">Lenya</a></li>
-        <li><a href="http://libcloud.apache.org/" title="Unified interface to the cloud">Libcloud</a></li>
-        <li><a href="http://logging.apache.org/" title="Cross-language logging services">Logging</a></li>
-        <li><a href="http://lucene.apache.org/" title="Search engine library">Lucene</a></li>
-        <li><a href="http://lucy.apache.org/" title="Search engine library for dynamic languages">Lucy</a></li>
-        <li><a href="http://mahout.apache.org/" title="Scalable machine learning library">Mahout</a></li>
-        <li><a href="http://maven.apache.org/" title="Java project management and comprehension tools">Maven</a></li>
-        <li><a href="http://mina.apache.org/" title="Multipurpose Infrastructure for Network Application">MINA</a></li>
-        <li><a href="http://myfaces.apache.org/" title="JavaServer(tm) Faces implementation and components">MyFaces</a></li>
-        <li><a href="http://nutch.apache.org/" title="Open Source Web Search Software">Nutch</a></li>
-        <li><a href="http://ode.apache.org/" title="Orchestration Director Engine: Business Process Management (BPM), Process Orchestration and Workflow through service composition.">ODE</a></li>
-        <li><a href="http://oodt.apache.org/" title="Object Oriented Data Technology (middleware metadata)">OODT</a></li>
-        <li><a href="http://ofbiz.apache.org/" title="Open for Business: enterprise automation software">OFBiz</a></li>
-        <li><a href="http://openejb.apache.org/" title="OpenEJB: a modular, configurable, and extendable EJB Container System and Server">OpenEJB</a></li>
-        <li><a href="http://openjpa.apache.org/" title="OpenJPA: Object Relational Mapping for Java">OpenJPA</a></li>
-        <li><a href="http://opennlp.apache.org/" title="Machine learning based toolkit for the processing of natural language text">OpenNLP</a></li>
-        <li><a href="http://openwebbeans.apache.org/" title="OpenWebBeans: JSR-299 Context and Dependency Injection for Java EE Platform Implementation">OpenWebBeans</a></li>
-        <li><a href="http://pdfbox.apache.org/" title="Java library for working with PDF documents">PDFBox</a></li>
-        <li><a href="http://perl.apache.org/" title="Dynamic websites using Perl">Perl</a></li>
-        <li><a href="http://pig.apache.org/" title="Platform for analyzing large data sets">Pig</a></li>
-        <li><a href="http://pivot.apache.org/" title="Rich Internet applications in Java">Pivot</a></li>
-        <li><a href="http://poi.apache.org/" title="Java API for OLE 2 Compound and OOXML Documents">POI</a></li>
-        <li><a href="http://portals.apache.org/" title="Portal technology">Portals</a></li>
-        <li><a href="http://qpid.apache.org/" title="Multiple language implementation of the latest Advanced Message Queuing Protocol (AMQP)">Qpid</a></li>
-        <li><a href="http://rave.apache.org/" title="Web and social mashup engine">Rave</a></li>
-        <li><a href="http://river.apache.org/" title="Jini service oriented architecture">River</a></li>
-        <li><a href="http://roller.apache.org/" title="Java blog server">Roller</a></li>
-        <li><a href="http://santuario.apache.org/" title="XML Security in Java and C++">Santuario</a></li>
-        <li><a href="http://servicemix.apache.org/" title="Enterprise Service Bus">ServiceMix</a></li>
-        <li><a href="http://shindig.apache.org/" title="Opensocial Reference Implementation">Shindig</a></li>
-        <li><a href="http://shiro.apache.org/" title="Powerful and easy-to-use application security framework">Shiro</a></li>
-        <li><a href="http://sling.apache.org/" title="Web Framework for JCR Content Repositories">Sling</a></li>
-        <li><a href="http://spamassassin.apache.org/" title="Mail filter to identify spam">SpamAssassin</a></li>
-        <li><a href="http://stdcxx.apache.org/" title="Apache C++ Standard Library">STDCXX</a></li>
-        <li><a href="http://sqoop.apache.org/" title="Bulk Data Transfer for Hadoop and Structured Datastores">Sqoop</a></li>
-        <li><a href="http://struts.apache.org/" title="Model 2 framework for building Java web applications">Struts</a></li>
-        <li><a href="http://subversion.apache.org/" title="Version Control">Subversion</a></li>
-        <li><a href="http://synapse.apache.org/" title="Enterprise Service Bus and Mediation Framework">Synapse</a></li>
-        <li><a href="http://tapestry.apache.org/" title="Component-based Java Web Application Framework">Tapestry</a></li>
-        <li><a href="http://tcl.apache.org/" title="Dynamic websites using TCL">Tcl</a></li>
-        <li><a href="http://thrift.apache.org/" title="Framework for scalable cross-language services development">Thrift</a></li>
-        <li><a href="http://tika.apache.org" title="Content Analysis and Detection Toolkit">Tika</a></li>
-        <li><a href="http://tiles.apache.org/" title="A templating framework for web application user interfaces">Tiles</a></li>
-        <li><a href="http://tomcat.apache.org/" title="A Java Servlet and JSP Container">Tomcat</a></li>
-        <li><a href="http://trafficserver.apache.org/" title="A fast, scalable and extensible HTTP/1.1 compliant caching proxy server">Traffic Server</a></li>
-        <li><a href="http://turbine.apache.org/" title="A Java Servlet Web Application Framework and associated component library">Turbine</a></li>
-        <li><a href="http://tuscany.apache.org/" title="An SCA based Service Composition Framework">Tuscany</a></li>
-        <li><a href="http://uima.apache.org/" title="Framework and annotators for unstructured information analysis">UIMA</a></li>
-        <li><a href="http://velocity.apache.org/" title="A Java Templating Engine">Velocity</a></li>
-        <li><a href="http://ws.apache.org/">Web Services</a></li>
-        <li><a href="http://whirr.apache.org/" title="Libraries for running Cloud Services">Whirr</a></li>
-        <li><a href="http://wicket.apache.org/" title="Component-based Java Web Application Framework.">Wicket</a></li>
-        <li><a href="http://xalan.apache.org/" title="XSLT processors in Java and C++">Xalan</a></li>
-        <li><a href="http://xerces.apache.org/" title="XML parsers in Java, C++ and Perl">Xerces</a></li>
-        <li><a href="http://xml.apache.org/" title="XML solutions focused on the web">XML</a></li>
-        <li><a href="http://xmlbeans.apache.org/" title="XML-Java binding tool">XMLBeans</a></li>
-        <li><a href="http://xmlgraphics.apache.org/" title="Conversion from XML to graphical output">XML Graphics</a></li>
-        <li><a href="http://zookeeper.apache.org/" title="Centralized service for maintaining configuration information">ZooKeeper</a></li>
-        </ul>
-              </div>
-              <div class="grid_3">
-                <h4>Foundation</h4>
-                <ul>
-                  <li><a href="/foundation/faq.html">FAQ</a></li> 
-                  <li><a href="/licenses/" title="Overview of the Apache Licenese">Licenses</a></li> 
-                  <li><a href="/foundation/marks/" title="Apache marks policies and listing">Trademarks</a></li>  
-                  <li><a href="/foundation/news.html" title="Official news feed of Foundation announcements">News</a></li> 
-                  <li><a href="/press/" title="Press, Media, and Analyst contact">Press Inquiries</a></li> 
-                  <li><a href="/foundation/records/" title="Formal corporate records and board meeting minutes">Public Records</a></li> 
-                  <li><a href="/foundation/mailinglists.html" title="Mailing lists and Apache">Mailing Lists</a></li> 
-                  <li><a href="/foundation/sponsorship.html" title="Sponsor the Foundation">Sponsorship</a></li> 
-                  <li><a href="/foundation/contributing.html" title="Donate to the Foundation">Donations</a></li> 
-                  <li><a href="/foundation/buy_stuff.html" title="Buy Apache branded merchandise">Buy Stuff</a></li> 
-                  <li><a href="/foundation/thanks.html" title="Thank you to our Sponsors">Thanks</a></li> 
-                  <li><a href="/foundation/contact.html" title="Contact Us">Contact</a></li> 
-                </ul>
-              </div>
-              <div class="grid_3 suffix_1">
-                <h4>Foundation Projects</h4>
-                <ul>
-                  <li><a href="http://attic.apache.org/" title="Inactive projects repository">Attic</a></li> 
-                  <li><a href="/foundation/conferences.html" title="Meetings of developers and users">Conferences</a></li> 
-                  <li><a href="http://community.apache.org/" title="Helping newcomers to the ASF">Community Development</a></li> 
-                  <li><a href="http://incubator.apache.org/" title="Shepherd for new projects">Incubator</a></li> 
-                  <li><a href="/dev/" title="ASF Infrastructure: Operations and howto documents for PMCs and contributors">Infrastructure</a></li> 
-                  <li><a href="http://labs.apache.org/" title="The Innovation Laboratories of the Apache Software Foundation">Labs</a></li> 
-                  <li><a href="/legal/" title="Legal Affairs">Legal Affairs</a></li> 
-                  <li><a href="/press/" title="Public Relations">Public Relations</a></li> 
-                  <li><a href="/security/" title="Security">Security</a></li> 
-                  <li><a href="/travel/" title="Travel Assistance">Travel Assistance</a></li> 
-                </ul>
-              </div>
-              
-              <div class="grid_3">
-                <h4>Community</h4>
-                <ul>
-                  <li><a href="http://people.apache.org/" title="Apache committer homepages">People</a></li> 
-                  <li><a href="/memorials/" title="In memoriam of past committers">Memorials</a></li> 
-                  <li><a href="http://feathercast.org/" title="Apache Podcasts">Feathercast</a></li> 
-                  <li><a href="http://blogs.apache.org/" title="Apache Project Blogs">Project Blogs</a></li> 
-                  <li><a href="http://planet.apache.org/committers/" title="Apache Committers' Blogs">PlanetApache</a></li> 
-                </ul>
-              </div>
-              <div class="grid_3">
-                <h4>How It Works</h4>
-                <ul>
-                  <li><a href="/foundation/how-it-works.html">Introduction</a></li> 
-                  <li><a href="/foundation/how-it-works.html#meritocracy">Meritocracy</a></li> 
-                  <li><a href="/foundation/how-it-works.html#structure">Structure</a></li> 
-                  <li><a href="/foundation/how-it-works.html#roles">Roles</a></li> 
-                  <li><a href="/foundation/how-it-works.html#management">Collaboration</a></li> 
-                  <li><a href="/foundation/how-it-works.html#incubator">Incubator</a></li> 
-                  <li><a href="/foundation/how-it-works.html#other">Other entities</a></li> 
-                  <li><a href="/foundation/glossary.html">Glossary</a></li> 
-                  <li><a href="/foundation/voting.html">Voting</a></li> 
-                </ul>
-              </div>
-            </div>
-            <div class="clear"></div>
-            
-            </div>
-            <div id="copyright" class="container_16">
-              <p>Copyright &#169; 2012 The Apache Software Foundation, Licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.<br/>Apache and the Apache feather logo are trademarks of The Apache Software Foundation.</p>
-            </div>
-          </body>
-        </html>
+[http://www.apache.org/licenses/](http://www.apache.org/licenses/)
 
-<!--
-  
-  This was created by CodeLicenseManager
--->
-## Apache Software License version 2.0
+__TERMS AND CONDITIONS FOR USE,____REPRODUCTION,____AND DISTRIBUTION__
 
-                                         Apache License
-                                   Version 2.0, January 2004
-                                http://www.apache.org/licenses/
-        
-           TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
-        
-           1. Definitions.
-        
-              "License" shall mean the terms and conditions for use, reproduction,
-              and distribution as defined by Sections 1 through 9 of this document.
-        
-              "Licensor" shall mean the copyright owner or entity authorized by
-              the copyright owner that is granting the License.
-        
-              "Legal Entity" shall mean the union of the acting entity and all
-              other entities that control, are controlled by, or are under common
-              control with that entity. For the purposes of this definition,
-              "control" means (i) the power, direct or indirect, to cause the
-              direction or management of such entity, whether by contract or
-              otherwise, or (ii) ownership of fifty percent (50%) or more of the
-              outstanding shares, or (iii) beneficial ownership of such entity.
-        
-              "You" (or "Your") shall mean an individual or Legal Entity
-              exercising permissions granted by this License.
-        
-              "Source" form shall mean the preferred form for making modifications,
-              including but not limited to software source code, documentation
-              source, and configuration files.
-        
-              "Object" form shall mean any form resulting from mechanical
-              transformation or translation of a Source form, including but
-              not limited to compiled object code, generated documentation,
-              and conversions to other media types.
-        
-              "Work" shall mean the work of authorship, whether in Source or
-              Object form, made available under the License, as indicated by a
-              copyright notice that is included in or attached to the work
-              (an example is provided in the Appendix below).
-        
-              "Derivative Works" shall mean any work, whether in Source or Object
-              form, that is based on (or derived from) the Work and for which the
-              editorial revisions, annotations, elaborations, or other modifications
-              represent, as a whole, an original work of authorship. For the purposes
-              of this License, Derivative Works shall not include works that remain
-              separable from, or merely link (or bind by name) to the interfaces of,
-              the Work and Derivative Works thereof.
-        
-              "Contribution" shall mean any work of authorship, including
-              the original version of the Work and any modifications or additions
-              to that Work or Derivative Works thereof, that is intentionally
-              submitted to Licensor for inclusion in the Work by the copyright owner
-              or by an individual or Legal Entity authorized to submit on behalf of
-              the copyright owner. For the purposes of this definition, "submitted"
-              means any form of electronic, verbal, or written communication sent
-              to the Licensor or its representatives, including but not limited to
-              communication on electronic mailing lists, source code control systems,
-              and issue tracking systems that are managed by, or on behalf of, the
-              Licensor for the purpose of discussing and improving the Work, but
-              excluding communication that is conspicuously marked or otherwise
-              designated in writing by the copyright owner as "Not a Contribution."
-        
-              "Contributor" shall mean Licensor and any individual or Legal Entity
-              on behalf of whom a Contribution has been received by Licensor and
-              subsequently incorporated within the Work.
-        
-           2. Grant of Copyright License. Subject to the terms and conditions of
-              this License, each Contributor hereby grants to You a perpetual,
-              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-              copyright license to reproduce, prepare Derivative Works of,
-              publicly display, publicly perform, sublicense, and distribute the
-              Work and such Derivative Works in Source or Object form.
-        
-           3. Grant of Patent License. Subject to the terms and conditions of
-              this License, each Contributor hereby grants to You a perpetual,
-              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-              (except as stated in this section) patent license to make, have made,
-              use, offer to sell, sell, import, and otherwise transfer the Work,
-              where such license applies only to those patent claims licensable
-              by such Contributor that are necessarily infringed by their
-              Contribution(s) alone or by combination of their Contribution(s)
-              with the Work to which such Contribution(s) was submitted. If You
-              institute patent litigation against any entity (including a
-              cross-claim or counterclaim in a lawsuit) alleging that the Work
-              or a Contribution incorporated within the Work constitutes direct
-              or contributory patent infringement, then any patent licenses
-              granted to You under this License for that Work shall terminate
-              as of the date such litigation is filed.
-        
-           4. Redistribution. You may reproduce and distribute copies of the
-              Work or Derivative Works thereof in any medium, with or without
-              modifications, and in Source or Object form, provided that You
-              meet the following conditions:
-        
-              (a) You must give any other recipients of the Work or
-                  Derivative Works a copy of this License; and
-        
-              (b) You must cause any modified files to carry prominent notices
-                  stating that You changed the files; and
-        
-              (c) You must retain, in the Source form of any Derivative Works
-                  that You distribute, all copyright, patent, trademark, and
-                  attribution notices from the Source form of the Work,
-                  excluding those notices that do not pertain to any part of
-                  the Derivative Works; and
-        
-              (d) If the Work includes a "NOTICE" text file as part of its
-                  distribution, then any Derivative Works that You distribute must
-                  include a readable copy of the attribution notices contained
-                  within such NOTICE file, excluding those notices that do not
-                  pertain to any part of the Derivative Works, in at least one
-                  of the following places: within a NOTICE text file distributed
-                  as part of the Derivative Works; within the Source form or
-                  documentation, if provided along with the Derivative Works; or,
-                  within a display generated by the Derivative Works, if and
-                  wherever such third-party notices normally appear. The contents
-                  of the NOTICE file are for informational purposes only and
-                  do not modify the License. You may add Your own attribution
-                  notices within Derivative Works that You distribute, alongside
-                  or as an addendum to the NOTICE text from the Work, provided
-                  that such additional attribution notices cannot be construed
-                  as modifying the License.
-        
-              You may add Your own copyright statement to Your modifications and
-              may provide additional or different license terms and conditions
-              for use, reproduction, or distribution of Your modifications, or
-              for any such Derivative Works as a whole, provided Your use,
-              reproduction, and distribution of the Work otherwise complies with
-              the conditions stated in this License.
-        
-           5. Submission of Contributions. Unless You explicitly state otherwise,
-              any Contribution intentionally submitted for inclusion in the Work
-              by You to the Licensor shall be under the terms and conditions of
-              this License, without any additional terms or conditions.
-              Notwithstanding the above, nothing herein shall supersede or modify
-              the terms of any separate license agreement you may have executed
-              with Licensor regarding such Contributions.
-        
-           6. Trademarks. This License does not grant permission to use the trade
-              names, trademarks, service marks, or product names of the Licensor,
-              except as required for reasonable and customary use in describing the
-              origin of the Work and reproducing the content of the NOTICE file.
-        
-           7. Disclaimer of Warranty. Unless required by applicable law or
-              agreed to in writing, Licensor provides the Work (and each
-              Contributor provides its Contributions) on an "AS IS" BASIS,
-              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-              implied, including, without limitation, any warranties or conditions
-              of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
-              PARTICULAR PURPOSE. You are solely responsible for determining the
-              appropriateness of using or redistributing the Work and assume any
-              risks associated with Your exercise of permissions under this License.
-        
-           8. Limitation of Liability. In no event and under no legal theory,
-              whether in tort (including negligence), contract, or otherwise,
-              unless required by applicable law (such as deliberate and grossly
-              negligent acts) or agreed to in writing, shall any Contributor be
-              liable to You for damages, including any direct, indirect, special,
-              incidental, or consequential damages of any character arising as a
-              result of this License or out of the use or inability to use the
-              Work (including but not limited to damages for loss of goodwill,
-              work stoppage, computer failure or malfunction, or any and all
-              other commercial damages or losses), even if such Contributor
-              has been advised of the possibility of such damages.
-        
-           9. Accepting Warranty or Additional Liability. While redistributing
-              the Work or Derivative Works thereof, You may choose to offer,
-              and charge a fee for, acceptance of support, warranty, indemnity,
-              or other liability obligations and/or rights consistent with this
-              License. However, in accepting such obligations, You may act only
-              on Your own behalf and on Your sole responsibility, not on behalf
-              of any other Contributor, and only if You agree to indemnify,
-              defend, and hold each Contributor harmless for any liability
-              incurred by, or claims asserted against, such Contributor by reason
-              of your accepting any such warranty or additional liability.
-        
-           END OF TERMS AND CONDITIONS
-        
-           APPENDIX: How to apply the Apache License to your work.
-        
-              To apply the Apache License to your work, attach the following
-              boilerplate notice, with the fields enclosed by brackets "[]"
-              replaced with your own identifying information. (Don't include
-              the brackets!)  The text should be enclosed in the appropriate
-              comment syntax for the file format. We also recommend that a
-              file or class name and description of purpose be included on the
-              same "printed page" as the copyright notice for easier
-              identification within third-party archives.
-        
-           Copyright [yyyy] [name of copyright owner]
-        
-           Licensed under the Apache License, Version 2.0 (the "License");
-           you may not use this file except in compliance with the License.
-           You may obtain a copy of the License at
-        
-               http://www.apache.org/licenses/LICENSE-2.0
-        
-           Unless required by applicable law or agreed to in writing, software
-           distributed under the License is distributed on an "AS IS" BASIS,
-           WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-           See the License for the specific language governing permissions and
-           limitations under the License.
+1.  Definitions.
 
-<!--
-  
-  This was created by CodeLicenseManager
--->
-## Apache version 2.0
+ "License" shall mean the terms and conditions for use, reproduction,  and distribution as defined by Sections 1 through 9 of this document.
 
-            The Apache Software Foundation
-            Apache License, Version 2.0
-          
-          
-            
-              Home -->
-              Foundation
-              Projects
-              People
-              Get Involved
-              Download
-              Support Apache
-            
-            Home&nbsp;&raquo&nbsp;Licenses
-            
-              
-              
-              
-            
-          
-          
-          Apache LicenseVersion 2.0, January 2004
+ "Licensor" shall mean the copyright owner or entity authorized by  the copyright owner that is granting the License.
 
-http://www.apache.org/licenses/ TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+ "Legal Entity" shall mean the union of the acting entity and all  other entities that control, are controlled by, or are under common  control with that entity. For the purposes of this definition,  "control" means (i) the power, direct or indirect, to cause the  direction or management of such entity, whether by contract or  otherwise, or (ii) ownership of fifty percent (50%) or more of the  outstanding shares, or (iii) beneficial ownership of such entity.
 
-1.  Definitions. "License" shall mean the terms and conditions for use, reproduction, and distribution as defined by Sections 1 through 9 of this document. "Licensor" shall mean the copyright owner or entity authorized by the copyright owner that is granting the License. "Legal Entity" shall mean the union of the acting entity and all other entities that control, are controlled by, or are under common control with that entity. For the purposes of this definition, "control" means (i) the power, direct or indirect, to cause the direction or management of such entity, whether by contract or otherwise, or (ii) ownership of fifty percent (50%) or more of the outstanding shares, or (iii) beneficial ownership of such entity. "You" (or "Your") shall mean an individual or Legal Entity exercising permissions granted by this License. "Source" form shall mean the preferred form for making modifications, including but not limited to software source code, documentation source, and configuration files. "Object" form shall mean any form resulting from mechanical transformation or translation of a Source form, including but not limited to compiled object code, generated documentation, and conversions to other media types. "Work" shall mean the work of authorship, whether in Source or Object form, made available under the License, as indicated by a copyright notice that is included in or attached to the work (an example is provided in the Appendix below). "Derivative Works" shall mean any work, whether in Source or Object form, that is based on (or derived from) the Work and for which the editorial revisions, annotations, elaborations, or other modifications represent, as a whole, an original work of authorship. For the purposes of this License, Derivative Works shall not include works that remain separable from, or merely link (or bind by name) to the interfaces of, the Work and Derivative Works thereof. "Contribution" shall mean any work of authorship, including the original version of the Work and any modifications or additions to that Work or Derivative Works thereof, that is intentionally submitted to Licensor for inclusion in the Work by the copyright owner or by an individual or Legal Entity authorized to submit on behalf of the copyright owner. For the purposes of this definition, "submitted" means any form of electronic, verbal, or written communication sent to the Licensor or its representatives, including but not limited to communication on electronic mailing lists, source code control systems, and issue tracking systems that are managed by, or on behalf of, the Licensor for the purpose of discussing and improving the Work, but excluding communication that is conspicuously marked or otherwise designated in writing by the copyright owner as "Not a Contribution." "Contributor" shall mean Licensor and any individual or Legal Entity on behalf of whom a Contribution has been received by Licensor and subsequently incorporated within the Work.
+ "You" (or "Your") shall mean an individual or Legal Entity  exercising permissions granted by this License.
 
-2.  Grant of Copyright License. Subject to the terms and conditions of this License, each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to reproduce, prepare Derivative Works of, publicly display, publicly perform, sublicense, and distribute the Work and such Derivative Works in Source or Object form.
+ "Source" form shall mean the preferred form for making modifications,  including but not limited to software source code, documentation  source, and configuration files.
 
-3.  Grant of Patent License. Subject to the terms and conditions of this License, each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable (except as stated in this section) patent license to make, have made, use, offer to sell, sell, import, and otherwise transfer the Work, where such license applies only to those patent claims licensable by such Contributor that are necessarily infringed by their Contribution(s) alone or by combination of their Contribution(s) with the Work to which such Contribution(s) was submitted. If You institute patent litigation against any entity (including a cross-claim or counterclaim in a lawsuit) alleging that the Work or a Contribution incorporated within the Work constitutes direct or contributory patent infringement, then any patent licenses granted to You under this License for that Work shall terminate as of the date such litigation is filed.
+ "Object" form shall mean any form resulting from mechanical  transformation or translation of a Source form, including but  not limited to compiled object code, generated documentation,  and conversions to other media types.
 
-4.  Redistribution. You may reproduce and distribute copies of the Work or Derivative Works thereof in any medium, with or without modifications, and in Source or Object form, provided that You meet the following conditions:
+ "Work" shall mean the work of authorship, whether in Source or  Object form, made available under the License, as indicated by a  copyright notice that is included in or attached to the work  (an example is provided in the Appendix below).
 
-You must give any other recipients of the Work or Derivative Works a copy of this License; and
+ "Derivative Works" shall mean any work, whether in Source or Object  form, that is based on (or derived from) the Work and for which the  editorial revisions, annotations, elaborations, or other modifications  represent, as a whole, an original work of authorship. For the purposes  of this License, Derivative Works shall not include works that remain  separable from, or merely link (or bind by name) to the interfaces of,  the Work and Derivative Works thereof.
 
-You must cause any modified files to carry prominent notices stating that You changed the files; and
+ "Contribution" shall mean any work of authorship, including  the original version of the Work and any modifications or additions  to that Work or Derivative Works thereof, that is intentionally  submitted to Licensor for inclusion in the Work by the copyright owner  or by an individual or Legal Entity authorized to submit on behalf of  the copyright owner. For the purposes of this definition, "submitted"  means any form of electronic, verbal, or written communication sent  to the Licensor or its representatives, including but not limited to  communication on electronic mailing lists, source code control systems,  and issue tracking systems that are managed by, or on behalf of, the  Licensor for the purpose of discussing and improving the Work, but  excluding communication that is conspicuously marked or otherwise  designated in writing by the copyright owner as "Not a Contribution."
 
-You must retain, in the Source form of any Derivative Works that You distribute, all copyright, patent, trademark, and attribution notices from the Source form of the Work, excluding those notices that do not pertain to any part of the Derivative Works; and
+ "Contributor" shall mean Licensor and any individual or Legal Entity  on behalf of whom a Contribution has been received by Licensor and  subsequently incorporated within the Work.
 
-If the Work includes a "NOTICE" text file as part of its distribution, then any Derivative Works that You distribute must include a readable copy of the attribution notices contained within such NOTICE file, excluding those notices that do not pertain to any part of the Derivative Works, in at least one of the following places: within a NOTICE text file distributed as part of the Derivative Works; within the Source form or documentation, if provided along with the Derivative Works; or, within a display generated by the Derivative Works, if and wherever such third-party notices normally appear. The contents of the NOTICE file are for informational purposes only and do not modify the License. You may add Your own attribution notices within Derivative Works that You distribute, alongside or as an addendum to the NOTICE text from the Work, provided that such additional attribution notices cannot be construed as modifying the License. You may add Your own copyright statement to Your modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of Your modifications, or for any such Derivative Works as a whole, provided Your use, reproduction, and distribution of the Work otherwise complies with the conditions stated in this License.
+1.  Grant of Copyright License. Subject to the terms and conditions of  this License, each Contributor hereby grants to You a perpetual,  worldwide, non-exclusive, no-charge, royalty-free, irrevocable  copyright license to reproduce, prepare Derivative Works of,  publicly display, publicly perform, sublicense, and distribute the  Work and such Derivative Works in Source or Object form.
 
-1.  Submission of Contributions. Unless You explicitly state otherwise, any Contribution intentionally submitted for inclusion in the Work by You to the Licensor shall be under the terms and conditions of this License, without any additional terms or conditions. Notwithstanding the above, nothing herein shall supersede or modify the terms of any separate license agreement you may have executed with Licensor regarding such Contributions.
+2.  Grant of Patent License. Subject to the terms and conditions of  this License, each Contributor hereby grants to You a perpetual,  worldwide, non-exclusive, no-charge, royalty-free, irrevocable  (except as stated in this section) patent license to make, have made,  use, offer to sell, sell, import, and otherwise transfer the Work,  where such license applies only to those patent claims licensable  by such Contributor that are necessarily infringed by their  Contribution(s) alone or by combination of their Contribution(s)  with the Work to which such Contribution(s) was submitted. If You  institute patent litigation against any entity (including a  cross-claim or counterclaim in a lawsuit) alleging that the Work  or a Contribution incorporated within the Work constitutes direct  or contributory patent infringement, then any patent licenses  granted to You under this License for that Work shall terminate  as of the date such litigation is filed.
 
-2.  Trademarks. This License does not grant permission to use the trade names, trademarks, service marks, or product names of the Licensor, except as required for reasonable and customary use in describing the origin of the Work and reproducing the content of the NOTICE file.
+3.  Redistribution. You may reproduce and distribute copies of the  Work or Derivative Works thereof in any medium, with or without  modifications, and in Source or Object form, provided that You  meet the following conditions:
 
-3.  Disclaimer of Warranty. Unless required by applicable law or agreed to in writing, Licensor provides the Work (and each Contributor provides its Contributions) on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including, without limitation, any warranties or conditions of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You are solely responsible for determining the appropriateness of using or redistributing the Work and assume any risks associated with Your exercise of permissions under this License.
+   1.  You must give any other recipients of the Work or  Derivative Works a copy of this License; and
 
-4.  Limitation of Liability. In no event and under no legal theory, whether in tort (including negligence), contract, or otherwise, unless required by applicable law (such as deliberate and grossly negligent acts) or agreed to in writing, shall any Contributor be liable to You for damages, including any direct, indirect, special, incidental, or consequential damages of any character arising as a result of this License or out of the use or inability to use the Work (including but not limited to damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other commercial damages or losses), even if such Contributor has been advised of the possibility of such damages.
+   2.  You must cause any modified files to carry prominent notices  stating that You changed the files; and
 
-5.  Accepting Warranty or Additional Liability. While redistributing the Work or Derivative Works thereof, You may choose to offer, and charge a fee for, acceptance of support, warranty, indemnity, or other liability obligations and/or rights consistent with this License. However, in accepting such obligations, You may act only on Your own behalf and on Your sole responsibility, not on behalf of any other Contributor, and only if You agree to indemnify, defend, and hold each Contributor harmless for any liability incurred by, or claims asserted against, such Contributor by reason of your accepting any such warranty or additional liability. END OF TERMS AND CONDITIONS APPENDIX: How to apply the Apache License to your work To apply the Apache License to your work, attach the following boilerplate notice, with the fields enclosed by brackets "[]()" replaced with your own identifying information. (Don't include the brackets!) The text should be enclosed in the appropriate comment syntax for the file format. We also recommend that a file or class name and description of purpose be included on the same "printed page" as the copyright notice for easier identification within third-party archives.  Copyright [yyyy]() [name of copyright owner]()
+   3.  You must retain, in the Source form of any Derivative Works  that You distribute, all copyright, patent, trademark, and  attribution notices from the Source form of the Work,  excluding those notices that do not pertain to any part of  the Derivative Works; and
 
- Licensed under the Apache License, Version 2.0 (the "License");  you may not use this file except in compliance with the License.  You may obtain a copy of the License at
+   4.  If the Work includes a "NOTICE" text file as part of its  distribution, then any Derivative Works that You distribute must  include a readable copy of the attribution notices contained  within such NOTICE file, excluding those notices that do not  pertain to any part of the Derivative Works, in at least one  of the following places: within a NOTICE text file distributed  as part of the Derivative Works; within the Source form or  documentation, if provided along with the Derivative Works; or,  within a display generated by the Derivative Works, if and  wherever such third-party notices normally appear. The contents  of the NOTICE file are for informational purposes only and  do not modify the License. You may add Your own attribution  notices within Derivative Works that You distribute, alongside  or as an addendum to the NOTICE text from the Work, provided  that such additional attribution notices cannot be construed  as modifying the License.
 
- http://www.apache.org/licenses/LICENSE-2.0
+ You may add Your own copyright statement to Your modifications and  may provide additional or different license terms and conditions  for use, reproduction, or distribution of Your modifications, or  for any such Derivative Works as a whole, provided Your use,  reproduction, and distribution of the Work otherwise complies with  the conditions stated in this License.
 
- Unless required by applicable law or agreed to in writing, software  distributed under the License is distributed on an "AS IS" BASIS,  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and  limitations under the License.
+4.  Submission of Contributions. Unless You explicitly state otherwise,  any Contribution intentionally submitted for inclusion in the Work  by You to the Licensor shall be under the terms and conditions of  this License, without any additional terms or conditions.  Notwithstanding the above, nothing herein shall supersede or modify  the terms of any separate license agreement you may have executed  with Licensor regarding such Contributions.
 
+5.  Trademarks. This License does not grant permission to use the trade  names, trademarks, service marks, or product names of the Licensor,  except as required for reasonable and customary use in describing the  origin of the Work and reproducing the content of the NOTICE file.
 
+6.  Disclaimer of Warranty. Unless required by applicable law or  agreed to in writing, Licensor provides the Work (and each  Contributor provides its Contributions) on an "AS IS" BASIS,  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or  implied, including, without limitation, any warranties or conditions  of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A  PARTICULAR PURPOSE. You are solely responsible for determining the  appropriateness of using or redistributing the Work and assume any  risks associated with Your exercise of permissions under this License.
 
+7.  Limitation of Liability. In no event and under no legal theory,  whether in tort (including negligence), contract, or otherwise,  unless required by applicable law (such as deliberate and grossly  negligent acts) or agreed to in writing, shall any Contributor be  liable to You for damages, including any direct, indirect, special,  incidental, or consequential damages of any character arising as a  result of this License or out of the use or inability to use the  Work (including but not limited to damages for loss of goodwill,  work stoppage, computer failure or malfunction, or any and all  other commercial damages or losses), even if such Contributor  has been advised of the possibility of such damages.
 
+8.  Accepting Warranty or Additional Liability. While redistributing  the Work or Derivative Works thereof, You may choose to offer,  and charge a fee for, acceptance of support, warranty, indemnity,  or other liability obligations and/or rights consistent with this  License. However, in accepting such obligations, You may act only  on Your own behalf and on Your sole responsibility, not on behalf  of any other Contributor, and only if You agree to indemnify,  defend, and hold each Contributor harmless for any liability  incurred by, or claims asserted against, such Contributor by reason  of your accepting any such warranty or additional liability.
 
- Projects
+__END OF TERMS AND CONDITIONS__
 
-HTTP Server Abdera Accumulo ACE ActiveMQ Airavata Ant APR Archiva Aries Avro Axis Buildr BVal Camel Cassandra Cayenne Chemistry Click Cocoon Commons Continuum CouchDB Creadur CXF DB Deltacloud Directory Empire-db ESME Etch Felix Flex Flume Forrest Geronimo Gora Gump Hadoop Hama HBase Hive HttpComponents Jackrabbit James Jena JMeter jUDDI Karaf Lenya Libcloud Logging Lucene Lucy Mahout ManifoldCF Maven MINA MRUnit MyFaces Nutch ODE OFBiz Oltu OODT Oozie OpenJPA OpenMeetings OpenNLP OpenOffice OpenWebBeans PDFBox Perl Pig Pivot POI Portals Qpid Rave River Roller Santuario ServiceMix Shindig Shiro Sling SpamAssassin STDCXX Sqoop Struts Subversion Synapse Syncope Tapestry Tcl Thrift Tika Tiles Tomcat TomEE Traffic Server Turbine Tuscany UIMA Velocity Web Services Whirr Wicket Xalan Xerces XMLBeans XML Graphics ZooKeeper
+### APPENDIX: How to apply the Apache License to your work.
 
-            Foundation
-            
-              FAQ 
-              Licenses 
-              Trademarks  
-              News 
-              Press Inquiries 
-              Public Records 
-              Mailing Lists 
-              Sponsorship 
-              Donations 
-              Buy Stuff 
-              Thanks 
-              Contact 
-            
-          
-          
-            Foundation Projects
-            
-              Attic 
-              Conferences 
-              Community Development 
-              Incubator 
-              Infrastructure 
-              Labs 
-              Legal Affairs 
-              Public Relations 
-              Security 
-              Travel Assistance 
-            
-          
-          
-          
-            Community
-            
-              People 
-              Memorials 
-              Feathercast 
-              Project Blogs 
-              PlanetApache 
-            
-          
-          
-            How It Works
-            
-              Introduction 
-              Meritocracy 
-              Structure 
-              Roles 
-              Collaboration 
-              Incubator 
-              Other entities 
-              Glossary 
-              Voting 
-            
-          
+To apply the Apache License to your work, attach the following boilerplate notice, with the fields enclosed by brackets "[]" replaced with your own identifying information. (Don't include the brackets!) The text should be enclosed in the appropriate comment syntax for the file format. We also recommend that a file or class name and description of purpose be included on the same "printed page" as the copyright notice for easier identification within third-party archives.
+
+        Copyright [yyyy] [name of copyright owner]
         
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
         
+            http://www.apache.org/licenses/LICENSE-2.0
         
-        
-        
-          Copyright &#169; 2012 The Apache Software Foundation, Licensed under the Apache License, Version 2.0.Apache and the Apache feather logo are trademarks of The Apache Software Foundation.
-        
-
-<!--
-  
-  This was created by CodeLicenseManager
--->
-## GNU Affero General Public License version 3.0
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
 

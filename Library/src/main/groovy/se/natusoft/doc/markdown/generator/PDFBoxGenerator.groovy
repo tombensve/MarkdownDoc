@@ -398,52 +398,49 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                                                             @NotNull final PDFGeneratorContext context) {
         boolean updated = false
 
-        println("Document override of options:")
-
         updated |= updateOptsFromAnnotation("@PDFTitle", comment) { final String text ->
             context.options.title = text
+            println("Document override of options: title=${text}")
         }
         updated |= updateOptsFromAnnotation("@PDFSubject", comment) { final String text ->
             context.options.subject = text
+            println("Document override of options: subject=${text}")
         }
         updated |= updateOptsFromAnnotation("@PDFAuthor", comment) { final String text ->
             context.options.author = text
+            println("Document override of options: author=${text}")
         }
         updated |= updateOptsFromAnnotation("@PDFVersion", comment) { final String text ->
             context.options.version = text
+            println("Document override of options: version=${text}")
         }
         updated |= updateOptsFromAnnotation("@PDFCopyright", comment) { final String text ->
             context.options.copyright = text
-        }
-        updated |= updateOptsFromAnnotation("@PDFAuthorLabel", comment) { final String text ->
-            context.options.authorLabel = text
-        }
-        updated |= updateOptsFromAnnotation("@PDFVersionLabel", comment) { final String text ->
-            context.options.versionLabel = text
-        }
-        updated |= updateOptsFromAnnotation("@PDFPageLabel", comment) { final String text ->
-            context.options.pageLabel = text
-        }
-        updated |= updateOptsFromAnnotation("@PDFTableOfContentsLabel", comment) { final String text ->
-            context.options.tableOfContentsLabel = text
+            println("Document override of options: copyright=${text}")
         }
         updated |= updateOptsFromAnnotation("@PDFHideLinks", comment) { final String text ->
             context.options.hideLinks = Boolean.valueOf(text)
+            println("Document override of options: hideLinks=${text}")
         }
         updated |= updateOptsFromAnnotation("@PDFUnorderedListItemPrefix", comment) { final String text ->
             context.options.unorderedListItemPrefix = text
+            println("Document override of options: unorderedListItemPrefix=${text}")
         }
         updated |= updateOptsFromAnnotation("@PDFGenerateSectionNumbers", comment) { final String text ->
             context.options.generateSectionNumbers = Boolean.valueOf(text)
+            println("Document override of options: generateSectionNumbers=${text}")
         }
         updated |= updateOptsFromAnnotation("@PDFGenerateTOC", comment) { final String text ->
             context.options.generateTOC = Boolean.valueOf(text)
+            println("Document override of options: generateToc=${text}")
         }
         updated |= updateOptsFromAnnotation("@PDFGenerateTitlePage", comment) { final String text ->
             context.options.generateTitlePage = Boolean.valueOf(text)
+            println("Document override of options: generateTitlePage=${text}")
         }
         updated |= updateOptsFromAnnotation("@PDFTitlePageImage", comment) { final String text ->
             context.options.titlePageImage = text
+            println("Document override of options: titlePageImage=${text}")
         }
 
         updated
@@ -671,12 +668,13 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
             @NotNull PDFBoxDocRenderer renderer,
             @NotNull PDFGeneratorContext context
     ) {
+        DocItem first = !list.items.isEmpty() ? list.items.get(0) : null
         list.items.each { final DocItem item ->
 
             if (item instanceof ListItem) {
                 float oldInset = renderer.leftInset
                 renderer.leftInset = leftInset
-                renderer.newLine()
+                if (first != null && item != first) renderer.newLine()
                 if (num != null) {
                     num.increment()
                     renderer.text("${num.root} ")
@@ -755,7 +753,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
             PDFBoxDocRenderer.ImageParam params = new PDFBoxDocRenderer.ImageParam(
                     imageStream: imageStream,
-                    holeMargin: 0,
+                    holeMargin: mssImage.imgFlowMargin,
                     createHole: false,
                     xOverride: x,
                     yOverride: y,

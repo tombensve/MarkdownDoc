@@ -234,7 +234,7 @@ The style value can be any of NORMAL, BOLD, ITALIC, and UNDERLINE. UNDERLINE can
             "size": 18,
             "style": "BOLD",
     
-"underlined" draws and underline under the heading from left margin to right margin. The "underline_offset" is how many point below the text to draw the line. In previous versions this was called "hr".    
+"underlined" draws and underline under the heading from left margin to right margin. The "underline_offset" is how many points below the text to draw the line. In previous versions this was called "hr".    
     
             "underlined": true,
             "underline_offset": 3.0
@@ -266,7 +266,7 @@ The style value can be any of NORMAL, BOLD, ITALIC, and UNDERLINE. UNDERLINE can
             "size": 9,
             "color": "64:64:64",
     
-If "preformattedWordWrap" is set to true then "code" style text will not entirely be left as is, but will wrap around to a new line if the text does not fit within the margins, and this will be with an indent matching the "code" text plus some more indent to show that it is a continuation of the previous line. Depending on the text this sometimes works well, sometimes less than well. 
+If "preformattedWordWrap" is set to true, then "code" style text will not entirely be left as is, but will wrap around to a new line if the text does not fit within the margins, and this will be with an indent matching the "code" text plus some more indent to show that it is a continuation of the previous line. Depending on the text this sometimes works well, sometimes less than well. 
     
             "preformattedWordWrap": false,
     
@@ -281,7 +281,7 @@ When "boxed" is set to true then a filled box is drawn below the text. It ranges
           "list_item": {
           },
     
-This is also new in 2.0.0 and sets the thicknes and color of a hroizontal ruler. 
+This is also new in 2.0.0 and sets the thickness and color of a horizontal ruler. 
     
           "horizontal_ruler": {
             "thickness": 0.5,
@@ -341,8 +341,6 @@ This is also new in 2.0.0 and sets the thicknes and color of a hroizontal ruler.
         "family": "HELVETICA",
         "size": 9,
         "style": "NORMAL",
-        "toc": {
-        },
         "h1": {
           "style": "BOLD"
         },

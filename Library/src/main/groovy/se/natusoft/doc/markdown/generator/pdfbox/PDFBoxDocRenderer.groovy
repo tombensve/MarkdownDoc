@@ -188,29 +188,50 @@ class PDFBoxDocRenderer implements NotNullTrait {
         // Properties
         //
 
-        FrontPage frontPage
+        // NOTE: If you have A and B and A is rendered before B at the same coordinates then B would be on top of A. The latest
+        //       rendered is always on top of previous things. This in conjunction with that we don't know the end coordinates of
+        //       a text until after rendering it makes it difficult to do things like colored boxed behind text. This could have
+        //       been solved with just one document, but a bit messier. I decided to use 2 documents in parallel. One front
+        //       document where text is rendered. One background document where drawing like boxes are done. These are then
+        //       overlayed on save with anything in the background document being behind anything in the front document.
+        //       These 2 documents are kept in sync when it comes to pages in it.
 
-        // The main "front" document.
+
+        /** The main "front" document. */
         PDDocument document = new PDDocument()
+
+        /** The current page of the "front" document. */
         PDPage docPage
+
+        /** The current stream of the current page of the "front" document. */
         PDPageContentStream docStream
         PDPageContentStream getDocStream() { if (this.docStream == null) { newPage() }; return this.docStream }
 
-        // The "background" document. This and the "front" document will be merged with the "front" document in front of this
-        // document on save. Thereby any  background rendering should be done in this.
+        /**
+         * The "background" document. This and the "front" document will be merged with the "front" document in front of this
+         * document on save. Thereby any  background rendering should be done in this.
+         */
         PDDocument bgDocument = new PDDocument()
+
+        /** The current page of the "background" document. */
         PDPage bgDocPage
+
+        /** The current stream of the current page of the "background" document. */
         PDPageContentStream bgDocStream
 
         /** The PDF outline. */
         Outline outline = null
 
+        /** Current page number. */
         int pageNumber = 0
 
         //
         // Inner Classes
         //
 
+        /**
+         * This is input to newPage(...) and is used to position the page within the document.
+         */
         enum NewPagePosition {
             FIRST,
             LAST,
@@ -992,13 +1013,14 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param adaptParams holeMargin and wordSize parameters.
      */
+    @SuppressWarnings("GroovyAssignabilityCheck") // The need for this is an IDEA bug (2016.2.4)
     private void adaptToTextHoles(AdaptParams adaptParams) {
-        TextHole hole = checkForHole(this.pageX, this.pageY + this.fontMSSAdapter.size*2)
+        float x = this.pageX
+        float y = this.pageY + (this.fontMSSAdapter.size * 2)
+        TextHole hole = checkForHole(x, y)
         if (hole == null) {
-            hole = checkForHole(
-                    this.pageX + adaptParams.holeMargin + adaptParams.wordSize,
-                    this.pageY + this.fontMSSAdapter.size*2
-            )
+            x = this.pageX + adaptParams.holeMargin + adaptParams.wordSize
+            hole = checkForHole(x, y)
         }
         if (hole != null) {
             this.pageX = hole.x + hole.width + adaptParams.holeMargin
@@ -1009,7 +1031,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * Writes text to the document using the current font, colors, etc.
      *
-     * @param txt The txt to write.
+     * @param txt The txt to write
      * @param stylesApplicator A closure that will be called to style text when needed.
      * @param pgBoxed If true then the text will be rendered with a background of the set background color.
      *
@@ -1455,7 +1477,14 @@ class PDFBoxDocRenderer implements NotNullTrait {
         float scaledWidth = image.width * param.scale
         float scaledHeight = image.height * param.scale
 
-        float imageX = this.pageX, imageY = (this.pageY - scaledHeight) + 8.0f
+        float imageX = this.pageX, imageY = (this.pageY - scaledHeight) + this.fontMSSAdapter.size
+
+        // TODO: A better formula for calculating how many font sizes to add to Y and how many for the hole.
+
+        if (Math.abs(scaledHeight - this.fontMSSAdapter.size) < 20) {
+            imageY += this.fontMSSAdapter.size
+        }
+
         if (param.xOverride != null) {
             imageX = param.xOverride
         }
@@ -1492,26 +1521,26 @@ class PDFBoxDocRenderer implements NotNullTrait {
             imageY = this.pageY - scaledHeight
         }
         ensureTextModeOff()
+
+        // Image X & Y seem to be left, top while pdf page have 0,0 at left, bottom ...
         AffineTransform at = new AffineTransform(
                 scaledWidth,
-                0, 0,
+                0.0f, 0.0f,
                 scaledHeight,
                 imageX,
-                imageY + scaledHeight
+                imageY
         );
         at.rotate(Math.toRadians(param.rotate));
         this.docMgr.docStream.drawImage(image, new Matrix(at));
 
-        // The image X & Y is left & bottom. The hole X & Y is left & top. Yes, I have a serious problem with the upsidedown Y!
-        // I should probably have made the hole coordinates the same as the image, but it is just too difficult for my brain
-        // to handle :-).
-
         if (param.createHole) {
             this.textHoles << new TextHole(
-                    x: imageX,
-                    y: imageY + scaledHeight + scaledHeight,
-                    width: scaledWidth,
-                    height: scaledHeight
+                    x: imageX - holeMargin,
+                    // Adding (font-size * 2) was achieved by trial and error, but I'm failing to understand why this is needed!
+                    // It feels like an offset between image and text coordinates!
+                    y: imageY + holeMargin + this.fontMSSAdapter.size,
+                    width: scaledWidth + (holeMargin * 2.0f),
+                    height: scaledHeight + ((holeMargin * 2.0f) as float) + (this.fontMSSAdapter.size as float)
             )
         }
         else {

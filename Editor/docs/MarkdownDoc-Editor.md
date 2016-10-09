@@ -33,7 +33,7 @@ Do note however that if you enable styling as you type in settings, then the sty
 Can generate both PDF and HTML from the editor window. Use toolbar button or keyboard shortcut.
 
 ### Configurable
-Ω
+
 The settings dialog allows you to configure almost anything/everything:
 
 - All keyboard shortcuts. 
@@ -112,8 +112,8 @@ The images are the toolbar icon for the function. Not all functions install them
 Move the mouse to the top of the editor window and the toolbar will automatically popup. Move the mouse down again and it will go away. 
 
 ### Save file(s)
-
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2save.png)Default key: Ctrl+S. This is changeable in the settings. 
+ 
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2save.png)Default key: Ctrl+S. This is changeable in the settings.
 
 This saves all open files that have been modified and not saved. A small pupup appears for a short while in the upper left corner of the window to indicate how many files were saved. If it the number is 0 then there were no modified files needing save.
 
@@ -127,6 +127,7 @@ This function is kind of unneccesarry in this version, but I decided to leave it
 
 In addition to markdown files the open function will also allow opening the same .fs files as the maven plugin can use. In this case all references to markdown files in the .fs file will be opened.
 
+<!-- @PageBreak -->
 ### Open / Create
 
 ![](http://download.natusoft.se/Images/MarkdownDoc/mdd2new.png)Default key: Ctrl+N. This is changeable in the settings.
@@ -163,6 +164,7 @@ This adds 4 '\_' characters with the cursor placed between the first 2 and the l
 
 This adds 2 '\_' characters with the cursor placed between them. 1 underscore before and after makes italic text in markdown. 1 asterisk before and after does the same thing, but the editor uses underscores for this specific help funciton. Asterisks also means other things in markdown so underscores in this case is less confusing. 
 
+<!-- @PageBreak -->
 ### Insert list
 
 ![](http://download.natusoft.se/Images/MarkdownDoc/mdd2list.png)Default key: Ctrl+L. This is changeable in the settings.
@@ -195,6 +197,7 @@ This will format the markdown in the editor into HTML and show it in readonly mo
 
 _Please also note that the preview HTML rendering is done by the Java GUI library (Swing) component JEditorPane. This is far from an optimal HTML renderer! It can make things look strange sometimes. It also insists on indenting the beginning of every code block. If anyone knows of a free, open source, swing compatible HTML renderer, that is better please let me know._
 
+<!-- @PageBreak -->
 ### Generate PDF
 
 ![](http://download.natusoft.se/Images/MarkdownDoc/mdd2pdf.png)Default key: Ctrl+P. This is changeable in the settings.
@@ -203,7 +206,9 @@ This will first open a file chooser to select target PDF file to generate to. Th
 
 Press the "Generate" button to actually generate the PDF document. 
 
-![](http://download.natusoft.se/Images/MarkdownDoc/PDFOptions.png)The choices are:
+The choices are: (Note that pic is old, keywords no longer exists!)
+
+![](http://download.natusoft.se/Images/MarkdownDoc/PDFOptions.png)
 
 ##### Title
 
@@ -216,6 +221,8 @@ This is an optional subject / subtitle. This will be shown on the front page.
 ##### Author
 
 The author of the document. This will be shown on the front page.
+
+&nbsp;
 
 #####  Version
 
@@ -247,7 +254,8 @@ If this is selected then the generated PDF will be opened by the system default 
 
 ### Generate HTML
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2html.png)Default key: Ctrl+H. This is changeable in the settings.
+![](http://download.natusoft.se/Images/MarkdownDoc/mdd2html.png)Default key: Ctrl+H. This is changeable in the settings. 
+
 
 This will first open a file chooser to select HTML file to generate to. Then a popup window will be opened containing meta data for generation of the HTML.
 

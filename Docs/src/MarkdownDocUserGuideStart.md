@@ -1,5 +1,4 @@
 <!--
-
     As of version 1.4 it is possible to specify a lot of the PDFGenerator options as annotations
     within a comment block. This should be at the top of the document or it can have side effects.
 
@@ -7,13 +6,12 @@
     @PDFSubject("User Guide")
     @PDFVersion(2 . 0 . 0) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
-    @PDFCopyright("Copyright (C) 2016 Natusoft AB")
+    @PDFCopyright("Copyright (C) 2012 Natusoft AB")
     @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
     
     @PDFGenerateTitlePage(true)
     @PDFGenerateTOC(true)
     @PDFGenerateSectionNumbers(false)
-
 -->
 
 # MarkdownDoc User Guide

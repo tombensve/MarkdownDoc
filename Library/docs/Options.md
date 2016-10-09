@@ -59,10 +59,6 @@ The path to the PDF file to write.
 
 A root dir to make image paths relative to.
 
-### pageSize : String (O)
-
-The pagesize name like LETTER or A4. Default is A4.
-
 ### title : String (O)
 
 The title of the document. This is used if __generateTitlePage__ is set to true.
@@ -87,18 +83,6 @@ The version to put on the title page. Must be specified to be rendered!
 
 The copyright message to put on the title page. Must be specified to be rendered!
 
-### authorLabel : String (O)
-
-The label text for 'Author:'. 
-
-### versionLabel : String (O)
-
-The label text for 'Version:'.
-
-### tableOfContentsLabel : String (O)
-
-The text for 'Table of Contents'.
-
 ### hideLinks : Boolean (O)
 
 If true then links are not rendered as link the link text will be rendered as plain text.
@@ -106,10 +90,6 @@ If true then links are not rendered as link the link text will be rendered as pl
 ### unorderedListItemPrefix : String (O)
 
 What item marking to use for unordered lists. Default is '- '.
-
-### firstLineParagraphIndent : Boolean (O)
-
-If true then the first line of each paragraph is indented. Default is false.
 
 ### mss : String (O)
 
@@ -152,14 +132,9 @@ The following annotation options are available:
 - @PDFAuthor(author)
 - @PDFVersion(version)
 - @PDFCopyright(copyright line)
-- @PDFAuthorLabel(label)
-- @PDFVersionLabel(label)
-- @PDFPageLabel(label)
-- @PDFTableOfContentsLabel(label)
 - @PDFPageSize(size)
 - @PDFHideLinks(true/false)
 - @PDFUnorderedListItemPrefix(prefix)
-- @PDFFirstLineParagraphIndent(true/false)
 - @PDFGenerateSectionNumbers(true/false)
 - @PDFGenerateTOC(true/false)
 - @PDFGenerateTitlePage(true/false)
@@ -195,7 +170,7 @@ The path file links should be relative to.
 
 Shows help.
 
-
+<!-- @PageBreak -->
 ## MarkdownGenerator options
 
 ### resultFile : String (R)
