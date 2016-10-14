@@ -28,23 +28,6 @@
             <artifactId>basic-json-lib</artifactId>
         </dependency>
 
-        <!--
-        <dependency>
-            <groupId>com.github.fge</groupId>
-            <artifactId>json-schema-validator</artifactId>
-            <version>2.2.6</version>
-        </dependency>
-        -->
-        <!--
-            This one provides much better documentation and does not use Jackson. It claims to be twice as fast
-            as the above, and not using Jackson is probably the reason :-).
-        -->
-        <!--<dependency>-->
-            <!--<groupId>org.everit.json</groupId>-->
-            <!--<artifactId>org.everit.json.schema</artifactId>-->
-            <!--<version>1.4.0</version>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>${groovy.artifact}</artifactId>
@@ -90,39 +73,16 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
+                <groupId>com.bluetrainsoftware.maven</groupId>
+                <artifactId>groovydoc-maven-plugin</artifactId>
+                <version>1.3</version>
                 <executions>
                     <execution>
-                        <id>groovydoc</id>
-                        <phase>deploy</phase>
+                        <id>attach-docs</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>run</goal>
+                            <goal>attach-docs</goal>
                         </goals>
-                        <configuration>
-                            <target>
-                                <taskdef name="groovydoc"
-                                         classname="org.codehaus.groovy.ant.Groovydoc"
-                                         classpathref="maven.compile.classpath"
-                                        />
-                                <groovydoc destdir="${project.reporting.outputDirectory}/groovydoc"
-                                           sourcepath="${basedir}/src/main/groovy" use="true"
-                                           windowtitle="${project.name}"
-                                           doctitle="${project.name}"
-                                        >
-                                    <link packages="java.,org.xml.,javax.,org.xml."
-                                          href="http://download.oracle.com/javase/6/docs/api" />
-                                    <link packages="org.apache.tools.ant."
-                                          href="http://evgeny-goldin.org/javadoc/ant/api" />
-                                    <link packages="org.junit.,junit.framework."
-                                          href="http://kentbeck.github.com/junit/javadoc/latest" />
-                                    <link packages="groovy.,org.codehaus.groovy."
-                                          href="http://groovy.codehaus.org/api/" />
-                                    <link packages="org.codehaus.gmaven."
-                                          href="http://evgeny-goldin.org/javadoc/gmaven" />
-                                </groovydoc>
-                            </target>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -146,7 +106,7 @@
                                     <goal>upload</goal>
                                 </goals>
                                 <configuration>
-                                    <baseDir>${basedir}/target/site/groovydoc</baseDir>
+                                    <baseDir>${basedir}/target/groovydoc</baseDir>
                                     <files>**/.*</files>
                                     <targetHost>${maven.repo.upload}</targetHost>
                                     <targetPort>21</targetPort>
