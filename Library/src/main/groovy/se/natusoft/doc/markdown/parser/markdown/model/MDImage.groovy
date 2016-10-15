@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         1.5.0
+ *         2.0.0
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
