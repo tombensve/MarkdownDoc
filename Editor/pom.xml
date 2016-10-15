@@ -36,7 +36,7 @@
 
             This jar in not available in a maven repository and using "system" packaging and pointing
             out the jar in lib/filedrop.jar works fine when run from IntelliJ Idea, but both the
-            maven-assembly-plugin and osxappbundle-maven-plugin refused to include that jar then.
+            maven-assembly-plugin and appbundle-maven-plugin refused to include that jar then.
             Therefor you must install it in your local maven repository before this can be build.
 
             Do this:
@@ -99,6 +99,7 @@
                         <version>1.0.4</version>
                         <configuration>
                             <mainClass>se.natusoft.doc.markdowndoc.editor.MarkdownDocEditor</mainClass>
+                            <generateDiskImageFile>true</generateDiskImageFile>
                         </configuration>
                         <executions>
                             <execution>
