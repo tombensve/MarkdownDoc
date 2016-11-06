@@ -39,6 +39,7 @@ package se.natusoft.doc.markdowndoc.editor.functions
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
@@ -85,7 +86,7 @@ class InsertImageFunction implements EditorFunction, Configurable, GuiEnvToolsTr
     //
 
     /** The editor to which this function is bound. */
-    Editor editor
+    @Nullable Editor editor
 
     //
     // Config

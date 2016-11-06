@@ -65,7 +65,7 @@ abstract class AbstractExportFunction implements EditorFunction {
     //
 
     /** The editor instance we provide function for. */
-    @NotNull Editor editor
+    @Nullable Editor editor
 
     /** The property key for saving and loading defaults. */
     @NotNull String defaultsPropKey

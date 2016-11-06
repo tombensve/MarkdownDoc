@@ -39,6 +39,7 @@ package se.natusoft.doc.markdowndoc.editor.functions
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.Editor
@@ -99,7 +100,7 @@ class DisplayFileNameFunction implements EditorFunction, Configurable, GuiEnvToo
     //
 
     /** The function triggering edtior. */
-    Editor editor
+    @Nullable Editor editor
 
     //
     // Methods
@@ -154,21 +155,22 @@ class DisplayFileNameFunction implements EditorFunction, Configurable, GuiEnvToo
      * @param editor The editorPane to set.
      */
     @Override
-    void setEditor(@NotNull final Editor editor) {
+    void setEditor(@Nullable final Editor editor) {
         this.editor = editor
-        this.fileNamePopup.parent = this.editor.GUI.windowFrame
+        if (this.editor != null) {
+            this.fileNamePopup.parent = this.editor.GUI.windowFrame
 
-        this.mouseMotionListener = new MouseMotionListener() {
-            @Override
-            void mouseDragged(final MouseEvent e) {}
+            this.mouseMotionListener = new MouseMotionListener() {
+                @Override
+                void mouseDragged(final MouseEvent e) {}
 
-            @Override
-            void mouseMoved(final MouseEvent e) {
-                mouseMovedHandler(e)
+                @Override
+                void mouseMoved(final MouseEvent e) {
+                    mouseMovedHandler(e)
+                }
             }
+            this.editor.addMouseMotionListener(this.mouseMotionListener)
         }
-        this.editor.addMouseMotionListener(this.mouseMotionListener)
-
     }
 
     /**

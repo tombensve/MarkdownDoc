@@ -65,7 +65,7 @@ class RestyleDocumentFunction implements EditorFunction, Configurable {
     //
 
     /** The editor this function is bound to. */
-    Editor editor
+    @Nullable Editor editor
 
     //
     // Config

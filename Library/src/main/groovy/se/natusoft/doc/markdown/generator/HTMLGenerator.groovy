@@ -394,9 +394,10 @@ class HTMLGenerator implements Generator {
      * - If file: then resolved to full path if not found with relative path.
      *
      * @param url The DocItem item provided url.
-     * @param parseFile The source file of the DocItem item.
+     * @param parseFile The source file of the DocItem item. Can be null.
+     * @param context The generators context.
      */
-    private static @NotNull String resolveUrl(@NotNull final String url, @NotNull final File parseFile,
+    private static @NotNull String resolveUrl(@NotNull final String url, @Nullable final File parseFile,
                                        @NotNull final HTMLGeneratorContext context) {
         String resolvedUrl = url
         if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http")) {

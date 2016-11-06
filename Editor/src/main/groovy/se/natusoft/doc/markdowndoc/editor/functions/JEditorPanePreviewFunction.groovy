@@ -40,6 +40,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import net.iharder.dnd.FileDrop
 import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Parser
 import se.natusoft.doc.markdown.exception.GenerateException
@@ -82,7 +83,7 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
     //
 
     /** The editor this function is bound to. */
-    Editor editor
+    @Nullable Editor editor
 
     //
     // Config

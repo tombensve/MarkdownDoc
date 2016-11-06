@@ -42,7 +42,6 @@ import groovy.transform.TypeChecked
 import net.iharder.dnd.FileDrop
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
-import se.natusoft.doc.markdown.util.SourcePath
 import se.natusoft.doc.markdown.util.SourcePaths
 import se.natusoft.doc.markdowndoc.editor.adapters.WindowListenerAdapter
 import se.natusoft.doc.markdowndoc.editor.api.*
@@ -59,11 +58,7 @@ import javax.swing.filechooser.FileNameExtensionFilter
 import javax.swing.text.BadLocationException
 import javax.swing.text.Caret
 import java.awt.*
-import java.awt.event.KeyEvent
-import java.awt.event.KeyListener
-import java.awt.event.MouseEvent
-import java.awt.event.MouseMotionListener
-import java.awt.event.WindowEvent
+import java.awt.event.*
 import java.lang.reflect.Method
 import java.util.List
 
@@ -389,6 +384,9 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
             configurable.unregisterConfigs(cp)
         }
         setVisible(false)
+        this.componentLoader.each { final EditorComponent component ->
+            component.editor = null
+        }
         editorClosed()
     }
 
@@ -687,7 +685,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
             final KeyboardKey keyboardKey = new KeyboardKey(e)
 
             this.functions.find { final EditorFunction function ->
-                function.getKeyboardShortcut() != null && function.getKeyboardShortcut().equals(keyboardKey)
+                function.keyboardShortcut != null && function.keyboardShortcut == keyboardKey
             }?.perform()
         }
 //        updateScrollbar()
@@ -1348,15 +1346,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
      * @param args The arguments to the invocation.
      */
     static void main(final String... args) {
-        SwingUtilities.invokeLater(
-            new Runnable() {
-                @Override void run()
-                {
-                    startup(args)
-                }
-            }
-        )
-
+        SwingUtilities.invokeLater({ startup(args) })
     }
 
 }

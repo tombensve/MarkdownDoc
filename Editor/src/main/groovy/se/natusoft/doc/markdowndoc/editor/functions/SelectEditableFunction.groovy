@@ -39,6 +39,7 @@ package se.natusoft.doc.markdowndoc.editor.functions
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
@@ -188,7 +189,7 @@ class SelectEditableFunction implements EditorFunction, Configurable {
      * @param editor The editorPane to set.
      */
     @Override
-    void setEditor(@NotNull final Editor editor) {
+    void setEditor(@Nullable final Editor editor) {
         this.editor = editor
     }
 

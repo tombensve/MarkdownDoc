@@ -39,6 +39,7 @@ package se.natusoft.doc.markdowndoc.editor.functions
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
@@ -72,7 +73,7 @@ class InsertListFunction implements EditorFunction, Configurable {
     //
 
     /** The editor this function is bound to. */
-    Editor editor
+    @Nullable Editor editor
 
     //
     // Config

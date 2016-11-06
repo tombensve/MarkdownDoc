@@ -39,6 +39,7 @@ package se.natusoft.doc.markdowndoc.editor.functions
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.OSTrait
 import se.natusoft.doc.markdowndoc.editor.Services
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
@@ -99,7 +100,7 @@ class SettingsFunction implements EditorFunction, Configurable, DelayedInitializ
      * The editor this function is bound to. With the exception of (un)registerConfigs() this should
      * be set before any other method is called.
      */
-    Editor editor = null
+    @Nullable Editor editor = null
 
     //
     // Config

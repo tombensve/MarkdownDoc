@@ -58,7 +58,7 @@ class CutSelectionFunction implements EditorFunction {
     //
 
     /** The editor the function is attached to. */
-    @NotNull Editor editor
+    @Nullable Editor editor
 
     //
     // Methods
