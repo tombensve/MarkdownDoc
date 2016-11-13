@@ -39,6 +39,7 @@ package se.natusoft.doc.markdowndoc.editor.gui
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 
+import java.awt.Component
 import java.awt.event.MouseEvent
 import java.awt.event.MouseListener
 import java.awt.event.MouseMotionListener
@@ -49,6 +50,61 @@ import java.awt.event.MouseMotionListener
 @CompileStatic
 @TypeChecked
 trait MouseListenersTrait implements MouseListener, MouseMotionListener {
+
+    private List<MouseListener> mouseListeners = new LinkedList<>()
+
+    public void mltAddMouseListener(MouseListener mouseListener) {
+        this.mouseListeners.add(mouseListener)
+    }
+
+    public void mltRemoveMouseListener(MouseListener mouseListener) {
+        this.mouseListeners.remove(mouseListener)
+    }
+
+    public void forwardMouseClicked(MouseEvent mouseEvent, Component source) {
+        MouseEvent mouseEvent2 = new MouseEvent(source, mouseEvent.ID, mouseEvent.when, mouseEvent.modifiers, mouseEvent.x, mouseEvent.y,
+                mouseEvent.clickCount, mouseEvent.popupTrigger, mouseEvent.button)
+        this.mouseListeners.each { MouseListener listener ->
+            listener.mouseClicked(mouseEvent2)
+        }
+    }
+
+    public void forwardMouseEntered(MouseEvent mouseEvent, Component source) {
+        MouseEvent mouseEvent2 = new MouseEvent(source, mouseEvent.ID, mouseEvent.when, mouseEvent.modifiers, mouseEvent.x, mouseEvent.y,
+                mouseEvent.clickCount, mouseEvent.popupTrigger, mouseEvent.button)
+        this.mouseListeners.each { MouseListener listener ->
+            listener.mouseEntered(mouseEvent2)
+        }
+    }
+
+    public void forwardMouseExited(MouseEvent mouseEvent, Component source) {
+        MouseEvent mouseEvent2 = new MouseEvent(source, mouseEvent.ID, mouseEvent.when, mouseEvent.modifiers, mouseEvent.x, mouseEvent.y,
+                mouseEvent.clickCount, mouseEvent.popupTrigger, mouseEvent.button)
+        this.mouseListeners.each { MouseListener listener ->
+            listener.mouseExited(mouseEvent2)
+        }
+    }
+
+    public void forwardMousePressed(MouseEvent mouseEvent, Component source) {
+        MouseEvent mouseEvent2 = new MouseEvent(source, mouseEvent.ID, mouseEvent.when, mouseEvent.modifiers, mouseEvent.x, mouseEvent.y,
+                mouseEvent.clickCount, mouseEvent.popupTrigger, mouseEvent.button)
+        this.mouseListeners.each { MouseListener listener ->
+            listener.mousePressed(mouseEvent2)
+        }
+    }
+
+    public void forwardMouseReleased(MouseEvent mouseEvent, Component source) {
+        MouseEvent mouseEvent2 = new MouseEvent(source, mouseEvent.ID, mouseEvent.when, mouseEvent.modifiers, mouseEvent.x, mouseEvent.y,
+                mouseEvent.clickCount, mouseEvent.popupTrigger, mouseEvent.button)
+        this.mouseListeners.each { MouseListener listener ->
+            listener.mouseReleased(mouseEvent2)
+        }
+    }
+
+    //
+    // Dummy implementations to override.
+    //
+
     /**
      * Invoked when the mouse button has been clicked (pressed
      * and released) on a component.
