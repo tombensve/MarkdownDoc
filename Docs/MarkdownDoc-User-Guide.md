@@ -5,7 +5,7 @@
 
     @PDFTitle("MarkdownDoc")
     @PDFSubject("User Guide")
-    @PDFVersion(2 . 0 . 0) Due to the font used I put a space between to make the dot more visible.
+    @PDFVersion(2 . 0 . 1) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
     @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
@@ -1104,7 +1104,9 @@ In addition to markdown files the open function will also allow opening the same
 
 ![](http://download.natusoft.se/Images/MarkdownDoc/mdd2openfiles.png)Default key: Ctrl+1. This is changeable in the settings.
 
-This is new in version 1.4.2. This opens the popup window that allows for selecting which open file to work on. This was previously triggered by moving the mouse to the left window edge.
+This will popup a window to the left of the editor window, or to the left on top of the edtitor window if fullscreen. It will list all open files with filename, and some starting file content to make it easier to identify. This idea was borrowed from other tools. If there are more open files than fits vertically the popup is scrollable vertically. Click on any file to set that file as the currently edited. The popup window till not close until you click in the editor window.
+
+Keyboard use in the popup are currently not supported.
 
 ### Insert heading
 
@@ -1352,6 +1354,10 @@ As you can see pdf options are prefixed with "pdf.", html options are prefixed w
 # Version history
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
+
+## 2.0.1
+
+This is yet another editor only update. The popup window for selecting loaded/open file to edit were quite bad. This have now been completely redone. Now a popup window pops upp to the left of the editor window and lists all open files, and some starting text from the file to make it easier to identify. An idea I borrowed from other tools.
 
 ## 2.0.0
 

@@ -64,6 +64,37 @@ class EditableSelectorLeftPopup extends PopupWindow implements MouseListenersTra
 
     private JPanel popupContentPane = null
 
+    /** This is kept as a member so that we can remove it again on close. */
+    private ComponentListener parentMovedListener = new ComponentAdapter() {
+        /**
+         * Invoked when the component's position changes.
+         */
+        @Override
+        void componentMoved(ComponentEvent e) {
+            super.componentMoved(e)
+            updateBounds()
+        }
+
+        /**
+         * Invoked when the component's size changes.
+         */
+        @Override
+        public void componentResized(ComponentEvent e) {
+            super.componentResized(e)
+            updateBounds()
+        }
+
+    }
+
+    private ColumnTopDownLeftRightLayout contentLayout = new ColumnTopDownLeftRightLayout(
+            vgap: 4,
+            hgap: 4,
+            leftMargin: 5,
+            rightMargin: 5,
+            topMargin: 10,
+            bottomMargin: 30 // We need to reserve space for save and cancel button.
+    )
+
     //
     // Properties
     //
@@ -73,6 +104,7 @@ class EditableSelectorLeftPopup extends PopupWindow implements MouseListenersTra
         this.editor = editor
         this.parentWindow = this.editor.GUI.windowFrame
         this.editor.addCancelCallback(cancelCallback)
+        this.editor.GUI.windowFrame.addComponentListener(this.parentMovedListener)
     }
 
     /** Called on close. */
@@ -107,8 +139,8 @@ class EditableSelectorLeftPopup extends PopupWindow implements MouseListenersTra
         // Sort files according to their directories.
         Editables.inst.files.each { final File file ->
             String groupTitle = file.parentFile.absolutePath
-            if (groupTitle.length() > 25) {
-                groupTitle = "..." + groupTitle.substring(groupTitle.length() - 25)
+            if (groupTitle.length() > 36) {
+                groupTitle = "..." + groupTitle.substring(groupTitle.length() - 36)
             }
             List<JComponent> groupList = groups.get(groupTitle)
 
@@ -126,12 +158,11 @@ class EditableSelectorLeftPopup extends PopupWindow implements MouseListenersTra
                 groups.put groupTitle, groupList
             }
 
-            // This fails compiling for some strange reason. I have done this more times than I can remember without
-            // any problems before, but here it is impossible!!!
             EditableEntry editableEntry = new EditableEntry(
-                    Editables.inst.getEditable(file),
-                    file.name
-            )
+                    editable: Editables.inst.getEditable(file),
+                    fileName: file.name
+            ).init()
+
             editableEntry.addMouseListener(this)
             groupList.add(editableEntry)
         }
@@ -184,19 +215,25 @@ class EditableSelectorLeftPopup extends PopupWindow implements MouseListenersTra
     }
 
     /**
+     * Upodates the bounds of this window.
+     */
+    private void updateBounds() {
+        final boolean fullScreen = isFullScreenWindow(this.editor.GUI.windowFrame)
+
+        this.bounds = new Rectangle(
+                this.parentWindow.x - (!fullScreen ? 321 : 0),
+                this.parentWindow.y,
+                320,
+                this.parentWindow.height
+        )
+    }
+
+    /**
      * Updates the size of the window after being opened.
      */
     private void updatePopupSize() {
-        final boolean fullScreen = isFullScreenWindow(this.editor.GUI.windowFrame)
-
-            this.bounds = new Rectangle(
-                    this.parentWindow.x - (!fullScreen ? 321 : 0),
-                    this.parentWindow.y,
-                    320,
-                    this.parentWindow.height
-            )
-
-//        moveMouse(new Point(this.moveToOnOpen.x + this.x + 20, this.moveToOnOpen.y + this.y + 10))
+        updateBounds()
+        moveMouse(new Point(this.parentWindow.x - 100, this.parentWindow.y + 10))
     }
 
     //
@@ -212,10 +249,6 @@ class EditableSelectorLeftPopup extends PopupWindow implements MouseListenersTra
         if (e.source instanceof EditableEntry) {
             final EditableEntry ee = e.source as EditableEntry
             editor.editable = ee.editable
-
-//            close()
-//            final JFrame wf = this.editor.GUI.windowFrame
-//            moveMouse(new Point(wf.x + (wf.width / 2) as int, wf.y + (wf.height / 2) as int))
         }
     }
 
@@ -261,43 +294,39 @@ class EditableSelectorLeftPopup extends PopupWindow implements MouseListenersTra
         }
     }
 
+    /**
+     * This represents one file entry in the editor when selecting which file to work with.
+     */
     @CompileStatic
     @TypeChecked
-    private class EditableEntry extends JPanel implements MouseListenersTrait {
+    private static class EditableEntry extends JPanel implements MouseListenersTrait {
 
         public static final Color TEXT_COLOR = new Color(20,20,20)
         public static final Color BG_COLOR = new Color(240, 240, 230)
 
         //
-        // Private Members
+        // Properties
         //
 
         private String fileName
         private Editable editable
+
+        //
+        // Private Members
+        //
 
         private JLabel fileLabel
         private JLabel startTextLabel1
         private JLabel startTextLabel2
 
         //
-        // Constructor
+        // Post Constructor
         //
 
-        EditableEntry(Editable editable, String fileName) {
-            this.editable = editable
-            this.fileName = fileName
-
-            setup()
-        }
-
-        //
-        // Methods
-        //
-
-        private final void setup() {
+        final EditableEntry init() {
             this.layout = new BoxLayout(this, BoxLayout.Y_AXIS)
             this.setBackground(BG_COLOR)
-            this.setBorder(new EtchedBorder(EtchedBorder.RAISED))
+            this.setBorder(new EtchedBorder(EtchedBorder.LOWERED))
 
             this.fileLabel = new JLabel(this.fileName, JLabel.LEFT)
             this.fileLabel.setHorizontalTextPosition(SwingConstants.LEFT)
@@ -321,7 +350,13 @@ class EditableSelectorLeftPopup extends PopupWindow implements MouseListenersTra
                 this.startTextLabel2.foreground = TEXT_COLOR
                 this.add(startTextLabel2)
             }
+
+            this
         }
+
+        //
+        // Methods
+        //
 
         @Override
         Dimension getMinimumSize() {
