@@ -60,7 +60,7 @@
                                     Docs/src/H1Licenses.md,
                                     Docs/lics/licenses.md,
                                     Docs/src/H1LicenseTexts.md,
-                                    Docs/lics/.*-.*.md
+                                    Docs/lics/.*-.*.md,
                                     Docs/lics/filedrop.md
                                 </inputPaths>
                             </generatorOptions>
@@ -95,7 +95,7 @@
                                     Docs/src/H1Licenses.md,
                                     Docs/lics/licenses.md,
                                     Docs/src/H1LicenseTexts.md,
-                                    Docs/lics/.*-.*.md
+                                    Docs/lics/.*-.*.md,
                                     Docs/lics/filedrop.md
                                 </inputPaths>
                             </generatorOptions>
@@ -119,8 +119,8 @@
                                 <generator>md</generator>
                                 <inputPaths>
                                     Docs/readme/README.md,
-                                    Docs/lics/licenses.md,
-                                    Docs/lics/filedrop.md,
+                                    Docs/lics/static/licenses.md,
+                                    Docs/lics/static/filedrop.md,
                                     Docs/src/VersionHistory.md
                                 </inputPaths>
                             </generatorOptions>

@@ -383,13 +383,13 @@
                                     Update the displayed version in MarkdownEditor window title.
                                 -->
                                 <script>
-                                    <fileFilter>.*MarkdownEditor.groovy</fileFilter>
+                                    <fileFilter>.*MarkdownDocEditor.groovy</fileFilter>
                                     <code>
                                         editor.moveToTopOfFile();
-                                        if (editor.find("this.setTitle\\(\"MarkdownDoc Editor")) {
+                                        if (editor.find("WINDOW_TITLE = \"MarkdownDoc Editor ")) {
                                             display("Updating displayed version in MarkdownEditor!");
                                             editor.deleteCurrentLine();
-                                            editor.insertLine("        this.setTitle(\"MarkdownDoc Editor ${project.version}\");");
+                                            editor.insertLine("    private static final String WINDOW_TITLE = \"MarkdownDoc Editor ${project.version}\"");
                                         }
                                     </code>
                                 </script>
