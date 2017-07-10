@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         2.0.1
+ *         2.0.2
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -78,7 +78,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
     // Constants
     //
 
-    private static final String WINDOW_TITLE = "MarkdownDoc Editor 2.0.1"
+    private static final String WINDOW_TITLE = "MarkdownDoc Editor 2.0.2"
 
     //
     // Static members
