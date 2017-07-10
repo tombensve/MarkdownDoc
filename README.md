@@ -6,11 +6,7 @@ __Version:__ 2.0.2
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
-[font size="+1"](font size="+1")
-
 [Interested in joining me develop MarkdownDoc ?](https://github.com/tombensve/MarkdownDoc/issues/21)
-
-[/font](/font)
 
 ----
 
@@ -31,6 +27,34 @@ Editor [[MarkdownDocEditor-2.0.2.App.jar](http://dl.bintray.com/tommy/maven/se/n
 [Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md)
 
 # Licenses
+
+<!--
+  Created by CodeLicenseManager
+-->
+## Project License
+
+[Apache Software License version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+
+## Third Party Licenses
+
+[Apache Software License version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+
+The following third party products are using this license:
+
+*  [OptionsManager-2.0.3](http://github.com/tombensve/OptionsManager)
+
+*  [annotations-13.0](http://www.jetbrains.org)
+
+*  [pdfbox-2.0.6](http://pdfbox.apache.org)
+
+*  [groovy-all-2.4.4](http://groovy-lang.org)
+
+<!--
+  CLM
+-->
+## filedrop.jar
+
+The editor is also using filedrop.jar from [http://iharder.sourceforge.net/current/java/filedrop/](http://iharder.sourceforge.net/current/java/filedrop/). This is open source not under any license.
 
 # Version history
 

@@ -119,8 +119,8 @@
                                 <generator>md</generator>
                                 <inputPaths>
                                     Docs/readme/README.md,
-                                    Docs/lics/static/licenses.md,
-                                    Docs/lics/static/filedrop.md,
+                                    Docs/lics/licenses.md,
+                                    Docs/lics/filedrop.md,
                                     Docs/src/VersionHistory.md
                                 </inputPaths>
                             </generatorOptions>
