@@ -1,6 +1,6 @@
 /target
 */target
-.idea/*
+.idea/
 MarkdownDocEditor.iml
 markdown-doc-docs.iml
 markdowndoc-cmd-line.iml
@@ -9,3 +9,5 @@ markdowndoc-maven-plugin.iml
 markdown-doc.iml
 Library/docs/api/*
 macapp/MarkdownDocEditor.app/*
+test-generated.md
+

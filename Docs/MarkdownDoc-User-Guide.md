@@ -5,7 +5,7 @@
 
     @PDFTitle("MarkdownDoc")
     @PDFSubject("User Guide")
-    @PDFVersion(2 . 0 . 1) Due to the font used I put a space between to make the dot more visible.
+    @PDFVersion(2 . 0 . 2) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
     @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
@@ -1355,6 +1355,10 @@ As you can see pdf options are prefixed with "pdf.", html options are prefixed w
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
 
+## 2.0.2
+
+Upgrade of PDFBox from 2.0.2 to 2.0.6 which fixes the latest problem in the "Special language characters not rendered to PDF" issue. It now only warns for "INFO: font subset is empty" instead of throwing an exception, and produces a result. This was a problem for some external ttf fonts.
+
 ## 2.0.1
 
 This is yet another editor only update. The popup window for selecting loaded/open file to edit were quite bad. This have now been completely redone. Now a popup window pops upp to the left of the editor window and lists all open files, and some starting text from the file to make it easier to identify. An idea I borrowed from other tools.
@@ -1741,7 +1745,7 @@ The following third party products are using this license:
 
 *  [annotations-13.0](http://www.jetbrains.org)
 
-*  [pdfbox-2.0.2](http://pdfbox.apache.org)
+*  [pdfbox-2.0.6](http://pdfbox.apache.org)
 
 *  [groovy-all-2.4.4](http://groovy-lang.org)
 
