@@ -2,7 +2,7 @@
 
 Copyright (C) 2012 Natusoft AB
 
-__Version:__ 2.0.2
+__Version:__ 2.0.3
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
@@ -21,10 +21,10 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 Available through maven at bintray JCentral: [http://jcenter.bintray.com/](http://jcenter.bintray.com/).
 MarkdownDoc on [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/).
 
-Command line \[[markdowndoc-cmd-line-2.0.2.exec.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/2.0.2/markdowndoc-cmd-line-2.0.2.exec.jar)\]
+Command line \[[markdowndoc-cmd-line-2.0.3.exec.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/2.0.3/markdowndoc-cmd-line-2.0.3.exec.jar)\]
 
 
-Editor \[[MarkdownDocEditor-2.0.2.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/2.0.2/MarkdownDocEditor-2.0.2.App.jar)\].
+Editor \[[MarkdownDocEditor-2.0.3.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/2.0.3/MarkdownDocEditor-2.0.3.App.jar)\].
 
 [Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md)
 

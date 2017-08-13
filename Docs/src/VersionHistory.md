@@ -3,33 +3,37 @@
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
 
+## 2.0.3
+
+Fix of clumsy NPE bug in editor open files dialog.
+
 ## 2.0.2
 
 Upgrade of PDFBox from 2.0.2 to 2.0.6 which fixes the latest problem in the "Special language characters not rendered to PDF" issue. It now only warns for "INFO: font subset is empty" instead of throwing an exception, and produces a result. This was a problem for some external ttf fonts.
 
 ## 2.0.1
 
-This is yet another editor only update. The popup window for selecting loaded/open file to edit were quite bad. This have now been completely redone. Now a popup window pops upp to the left of the editor window and lists all open files, and some starting text from the file to make it easier to identify. An idea I borrowed from other tools. 
+This is yet another editor only update. The popup window for selecting loaded/open file to edit were quite bad. This have now been completely redone. Now a popup window pops upp to the left of the editor window and lists all open files, and some starting text from the file to make it easier to identify. An idea I borrowed from other tools.
 
 ## 2.0.0
 
 PDFBox is now used instead of iText to generate PDF. This required some non backwards compatible changes so thereby the version is bumped to 2.0.0. Note that the incompatibilities are small, and most likely this version will work without changes for many.
 
-- Keywords are gone. 
+- Keywords are gone.
 
 - Footer is no longer supported. Can be added if enough wants it. I have had no use for it myself.
 
 - pageSize is no longer an option, but an MSS setting. This was a decision I made due to now being responsible for all rendering on the page and thus having more control over things like margins (now also settable in MSS), etc.
 
-- There is a difference in image types handled.  iText supports JPEG, JPEG2000, GIF, PNG, BMP, WMF, TIFF, CCITT and JBIG2 images. I can't find a clear list of image types supported by PDFBox (which in general is bady documented, I had to use Stack Exchange a lot!), but from MarkdownDoc:s perspective those image types supported by AWT are supported. The image types supported by PDFBox, not using AWT, like TIFF are not supported since that API only allows loading images from disk! This works badly together with URLs. Yes, it would be possible to download an image to disk first, then pass it to the API, and then delete it locally or cache it for later reuse. But I decided agains that now. 
+- There is a difference in image types handled.  iText supports JPEG, JPEG2000, GIF, PNG, BMP, WMF, TIFF, CCITT and JBIG2 images. I can't find a clear list of image types supported by PDFBox (which in general is bady documented, I had to use Stack Exchange a lot!), but from MarkdownDoc:s perspective those image types supported by AWT are supported. The image types supported by PDFBox, not using AWT, like TIFF are not supported since that API only allows loading images from disk! This works badly together with URLs. Yes, it would be possible to download an image to disk first, then pass it to the API, and then delete it locally or cache it for later reuse. But I decided agains that now.
 
-- The "hr" MSS value for headings have been renamed "underlined", which is by far more clear. This has nothing to do with anything else, just a decision I made since other things have been changed, why not fix this also. I also added an "underline\_offset" to set how many points below the text to draw the underline. 
+- The "hr" MSS value for headings have been renamed "underlined", which is by far more clear. This has nothing to do with anything else, just a decision I made since other things have been changed, why not fix this also. I also added an "underline\_offset" to set how many points below the text to draw the underline.
 
 - Page size is no longer supplied as an option! This is now set in the MSS file used. Default is A4. Margins now defaults to what I can determine from googling is the default for A4: 2.54 cm. These can also be set in MSS.
 
 - I no longer use labels like "Author:" (on front page) or "Page" before page number, etc. I don't miss them, and it does not look strange without them IMHO. This also means the "label" settings for these texts are not needed.
 
-- `<!-- @PageBreak -->` now works! Previously when using iText, iText ignored all my tries to force a page break! 
+- `<!-- @PageBreak -->` now works! Previously when using iText, iText ignored all my tries to force a page break!
 
 I added some features in MSS:
 
@@ -37,11 +41,11 @@ I added some features in MSS:
 
 - Positioning of images on page.
 
-- Allowing text to flow around images. When an image is added to a page a "hole" the size of the image is defined in the page, and any text rendering will skip the hole and continue after it. This is optional behavior. 
+- Allowing text to flow around images. When an image is added to a page a "hole" the size of the image is defined in the page, and any text rendering will skip the hole and continue after it. This is optional behavior.
 
 - Setting page size (A4, LETTER, etc).
 
-- Overriding default page margins. 
+- Overriding default page margins.
 
 See the MSS section of the documentation for more info.
 
@@ -52,17 +56,17 @@ PDBox however have some pluses and some minuses:
 
 ### +
 
-Lower level, closer to PDF. This gave me much more flexibility and I can now generate everything only once since I now can insert the table of contents at the top of the document after generating the contents, which is needed to get the page numbers for the table of contents. With iText I had to make a dummy generation to a null stream first, just to get page numbers. 
+Lower level, closer to PDF. This gave me much more flexibility and I can now generate everything only once since I now can insert the table of contents at the top of the document after generating the contents, which is needed to get the page numbers for the table of contents. With iText I had to make a dummy generation to a null stream first, just to get page numbers.
 
-Since it is so low level it does not have the type of bugs that iText have. Now all bugs should be mine :-). That is good since then I can do something about them. 
+Since it is so low level it does not have the type of bugs that iText have. Now all bugs should be mine :-). That is good since then I can do something about them.
 
-It was now easy to render boxed backgrounds for preformatted text. I always wanted to do that, but I could not figure out how to do it with iText since iText never gave me the coordinates of the text. Now I have full control over the coordinates of everything. 
+It was now easy to render boxed backgrounds for preformatted text. I always wanted to do that, but I could not figure out how to do it with iText since iText never gave me the coordinates of the text. Now I have full control over the coordinates of everything.
 
 ### -
 
 PDFBox is slower than iText especially when images are used.
 
-PDFBox unfortunately uses AWT for handling most images! This has consequences! Whenever PDFBox is dealing with a PNG, JPG, etc a small window is opened. It is of course closed again when it is done with the image handling. But if run on a server to generate som PDF report then the server process needs access to an X server if running on a unix system! This is however only if images are used.  
+PDFBox unfortunately uses AWT for handling most images! This has consequences! Whenever PDFBox is dealing with a PNG, JPG, etc a small window is opened. It is of course closed again when it is done with the image handling. But if run on a server to generate som PDF report then the server process needs access to an X server if running on a unix system! This is however only if images are used.
 
 ### JDK Level
 
