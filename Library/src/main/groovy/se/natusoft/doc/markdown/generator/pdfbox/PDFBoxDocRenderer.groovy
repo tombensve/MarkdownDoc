@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         2.0.2
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
@@ -56,6 +56,10 @@ import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.generator.models.TOC
 import se.natusoft.doc.markdown.generator.styles.*
+import se.natusoft.doc.markdown.generator.styles.MSS.MSS_Front_Page
+import se.natusoft.doc.markdown.generator.styles.MSS.MSS_Pages
+import se.natusoft.doc.markdown.generator.styles.MSS.MSS_TOC
+import se.natusoft.doc.markdown.generator.utils.RequiresWithSection
 import se.natusoft.doc.markdown.util.NotNullTrait
 import se.natusoft.doc.markdown.util.Text
 import se.natusoft.doc.markdown.util.Word
@@ -63,6 +67,8 @@ import se.natusoft.doc.markdown.util.Word
 import javax.imageio.ImageIO
 import java.awt.geom.AffineTransform
 import java.awt.image.BufferedImage
+
+import static se.natusoft.doc.markdown.generator.utils.Sectionizer.withSection
 
 /**
  * This wraps a few PDFBox objects and uses these to generate PDF.
@@ -82,18 +88,25 @@ class PDFBoxDocRenderer implements NotNullTrait {
     // Constants
     //
 
-    @SuppressWarnings("GroovyUnusedDeclaration") static final String A1 = "A1"
-    @SuppressWarnings("GroovyUnusedDeclaration") static final String A2 = "A2"
-    @SuppressWarnings("GroovyUnusedDeclaration") static final String A3 = "A3"
-    @SuppressWarnings("GroovyUnusedDeclaration") static final String A4 = "A4"
-    @SuppressWarnings("GroovyUnusedDeclaration") static final String A5 = "A5"
-    @SuppressWarnings("GroovyUnusedDeclaration") static final String A6 = "A6"
-    @SuppressWarnings("GroovyUnusedDeclaration") static final String LEGAL = "LEGAL"
-    @SuppressWarnings("GroovyUnusedDeclaration") static final String LETTER = "LETTER"
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
+    static final String A1 = "A1"
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
+    static final String A2 = "A2"
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
+    static final String A3 = "A3"
+    static final String A4 = "A4"
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
+    static final String A5 = "A5"
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
+    static final String A6 = "A6"
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
+    static final String LEGAL = "LEGAL"
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
+    static final String LETTER = "LETTER"
 
-    static final PDFBoxFontMSSAdapter TOC_FONT = new PDFBoxFontMSSAdapter(
-            new MSSFont(size: 8, family: "HELVETICA", style: MSSFontStyle.NORMAL)
-    )
+//    static final PDFBoxFontMSSAdapter TOC_FONT = new PDFBoxFontMSSAdapter(
+//            new MSSFont( size: 8, family: "HELVETICA", style: MSSFontStyle.NORMAL )
+//    )
 
     /** Indicates that image should be left aligned. */
     static final float X_OFFSET_LEFT_ALIGNED = 1000000.0f
@@ -108,7 +121,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
     static final float X_OFFSET_CURRENT = 1000003.0f
 
     /** The default color pair to use if none other is provided. */
-    static final MSSColorPair DEFAULT_COLOR_PAIR = new MSSColorPair( foreground: MSSColor.BLACK, background: MSSColor.WHITE)
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
+    static final MSSColorPair DEFAULT_COLOR_PAIR =
+            new MSSColorPair( foreground: MSSColor.BLACK, background: MSSColor.WHITE )
 
     //
     // Static fields
@@ -118,14 +133,14 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Maps model page sizes to PDFBox page sizes.
      */
     private static Map<String, PDRectangle> pageSizes = [
-            A0: PDRectangle.A0,
-            A1: PDRectangle.A1,
-            A2: PDRectangle.A2,
-            A3: PDRectangle.A3,
-            A4: PDRectangle.A4,
-            A5: PDRectangle.A5,
-            A6: PDRectangle.A6,
-            LEGAL: PDRectangle.LEGAL,
+            A0    : PDRectangle.A0,
+            A1    : PDRectangle.A1,
+            A2    : PDRectangle.A2,
+            A3    : PDRectangle.A3,
+            A4    : PDRectangle.A4,
+            A5    : PDRectangle.A5,
+            A6    : PDRectangle.A6,
+            LEGAL : PDRectangle.LEGAL,
             LETTER: PDRectangle.LETTER
     ]
 
@@ -149,8 +164,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
         MSSColor color
 
         Box validate() {
-            if (this.startLocation == null) throw new MissingPropertyException("startLocation", Location.class)
-            if (this.color == null) throw new MissingPropertyException("color", MSSColor.class)
+            if ( this.startLocation == null ) throw new MissingPropertyException( "startLocation", Location.class )
+            if ( this.color == null ) throw new MissingPropertyException( "color", MSSColor.class )
             this
         }
     }
@@ -168,21 +183,25 @@ class PDFBoxDocRenderer implements NotNullTrait {
         // Constants
         //
 
-        @SuppressWarnings("GroovyMissingReturnStatement")
+        @SuppressWarnings( "GroovyMissingReturnStatement" )
         final Closure<Void> DOC_TEXT_AND_FILL_COLOR = { int red, int green, int blue ->
-            this.docStream.setNonStrokingColor(red, green, blue) }
+            this.docStream.setNonStrokingColor( red, green, blue )
+        }
 
-        @SuppressWarnings("GroovyMissingReturnStatement")
+        @SuppressWarnings( "GroovyMissingReturnStatement" )
         final Closure<Void> DOC_LINES_ETC_COLOR = { int red, int green, int blue ->
-            this.docStream. setStrokingColor(red, green, blue) }
+            this.docStream.setStrokingColor( red, green, blue )
+        }
 
-        @SuppressWarnings("GroovyMissingReturnStatement")
+        @SuppressWarnings( "GroovyMissingReturnStatement" )
         final Closure<Void> BG_DOC_TEXT_AND_FILL_COLOR = { int red, int green, int blue ->
-            this.bgDocStream.setNonStrokingColor(red, green, blue) }
+            this.bgDocStream.setNonStrokingColor( red, green, blue )
+        }
 
-        @SuppressWarnings("GroovyMissingReturnStatement")
+        @SuppressWarnings( "GroovyMissingReturnStatement" )
         final Closure<Void> BG_DOC_LINES_ETC_COLOR = { int red, int green, int blue ->
-            this.bgDocStream.setStrokingColor(red, green, blue) }
+            this.bgDocStream.setStrokingColor( red, green, blue )
+        }
 
         //
         // Properties
@@ -196,7 +215,6 @@ class PDFBoxDocRenderer implements NotNullTrait {
         //       overlayed on save with anything in the background document being behind anything in the front document.
         //       These 2 documents are kept in sync when it comes to pages in it.
 
-
         /** The main "front" document. */
         PDDocument document = new PDDocument()
 
@@ -205,7 +223,12 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         /** The current stream of the current page of the "front" document. */
         PDPageContentStream docStream
-        PDPageContentStream getDocStream() { if (this.docStream == null) { newPage() }; return this.docStream }
+
+        PDPageContentStream getDocStream() {
+            if ( this.docStream == null ) {
+                newPage()
+            }; return this.docStream
+        }
 
         /**
          * The "background" document. This and the "front" document will be merged with the "front" document in front of this
@@ -246,7 +269,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
          * Creates a new page.
          */
         void newPage() {
-            newPage(NewPagePosition.LAST)
+            newPage( NewPagePosition.LAST )
         }
 
         /**
@@ -254,54 +277,54 @@ class PDFBoxDocRenderer implements NotNullTrait {
          *
          * @param newPagePosition Where to add the new page.
          */
-        void newPage(NewPagePosition newPagePosition) {
+        void newPage( NewPagePosition newPagePosition ) {
             ++this.pageNumber
             PDPage page = new PDPage()
-            page.setMediaBox(PDFBoxDocRenderer.this.pageFormat)
+            page.setMediaBox( PDFBoxDocRenderer.this.pageFormat )
 
-            switch (newPagePosition) {
+            switch ( newPagePosition ) {
                 case NewPagePosition.LAST:
-                    this.document.addPage(page)
+                    this.document.addPage( page )
                     break
 
                 case NewPagePosition.FIRST:
-                    this.document.pages.insertBefore(page, this.document.pages.get(0))
+                    this.document.pages.insertBefore( page, this.document.pages.get( 0 ) )
                     break
 
                 case NewPagePosition.AFTER_CURRENT:
-                    this.document.pages.insertAfter(page, this.docPage)
+                    this.document.pages.insertAfter( page, this.docPage )
                     break
             }
             this.docPage = page
 
-            if (this.docStream != null) {
+            if ( this.docStream != null ) {
                 ensureTextModeOff()
                 this.docStream.close()
             }
-            this.docStream = new PDPageContentStream(this.document, this.docPage)
+            this.docStream = new PDPageContentStream( this.document, this.docPage )
 
             PDPage bgPage = new PDPage()
-            bgPage.setMediaBox(PDFBoxDocRenderer.this.pageFormat)
+            bgPage.setMediaBox( PDFBoxDocRenderer.this.pageFormat )
 
-            switch (newPagePosition) {
+            switch ( newPagePosition ) {
                 case NewPagePosition.LAST:
-                    this.bgDocument.addPage(bgPage)
+                    this.bgDocument.addPage( bgPage )
                     break
 
                 case NewPagePosition.FIRST:
-                    this.bgDocument.pages.insertBefore(bgPage, this.bgDocument.pages.get(0))
+                    this.bgDocument.pages.insertBefore( bgPage, this.bgDocument.pages.get( 0 ) )
                     break
 
                 case NewPagePosition.AFTER_CURRENT:
-                    this.bgDocument.pages.insertAfter(bgPage, this.bgDocPage)
+                    this.bgDocument.pages.insertAfter( bgPage, this.bgDocPage )
                     break
             }
             this.bgDocPage = bgPage
 
-            if (this.bgDocStream != null) {
+            if ( this.bgDocStream != null ) {
                 this.bgDocStream.close()
             }
-            this.bgDocStream = new PDPageContentStream(this.bgDocument, this.bgDocPage)
+            this.bgDocStream = new PDPageContentStream( this.bgDocument, this.bgDocPage )
         }
     }
 
@@ -311,12 +334,12 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     class TopPage {
         TopPage() {
-            docMgr.newPage(DocMgr.NewPagePosition.FIRST)
+            docMgr.newPage( DocMgr.NewPagePosition.FIRST )
             PDFBoxDocRenderer.this.positionAtTopOfPage()
         }
 
         void newPage() {
-            docMgr.newPage(DocMgr.NewPagePosition.AFTER_CURRENT)
+            docMgr.newPage( DocMgr.NewPagePosition.AFTER_CURRENT )
             PDFBoxDocRenderer.this.positionAtTopOfPage()
         }
     }
@@ -366,27 +389,32 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /** The current coordinates. */
     @NotNull
     private Location _pageLocation = new Location()
-    public Location getPageLocation(){ this._pageLocation }
-    protected void setPageLocation(Location location) { this._pageLocation = location }
+
+    Location getPageLocation() { this._pageLocation }
+
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
+    protected void setPageLocation( Location location ) { this._pageLocation = location }
 
     /** The page margins. */
     PageMargins margins
 
     /** The current page number. When the whole document is rendered this will be the last page number. */
     private int pageNo = 0
-    public int getPageNo() { this.pageNo }
+
+    int getPageNo() { this.pageNo }
 
     /** Should be set to true when rendering pre formatted text. */
     boolean preFormatted = false
 
     /** The current foreground and background colors.*/
     private MSSColorPair colors
-    public MSSColorPair getColors() { this.colors }
+
+    MSSColorPair getColors() { this.colors }
 
     /**
      * @return The current page number.
      */
-    public int getCurrentPageNumber() {
+    int getCurrentPageNumber() {
         this.docMgr.pageNumber
     }
 
@@ -403,12 +431,15 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * font size of default text while rendering the code block, and then restores it to whatever it was before by setting
      * this to null again.
      */
-    @Nullable private Integer _newLineFontSize = null
-    public Integer getNewLineFontSize() {
-        if (this._newLineFontSize != null) return this._newLineFontSize
+    @Nullable
+    private Integer _newLineFontSize = null
+
+    Integer getNewLineFontSize() {
+        if ( this._newLineFontSize != null ) return this._newLineFontSize
         return this.fontMSSAdapter.size
     }
-    public void setNewLineFontSize(Integer fontSize) {
+
+    void setNewLineFontSize( Integer fontSize ) {
         this._newLineFontSize = fontSize
     }
 
@@ -419,16 +450,17 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * Returns the standard text font size.
      */
-    public int getStandardTextFontSize() {
-        return this.stylesMSSAdapter.mss.forDocument.getFont(MSS.MSS_Pages.standard).size
+    int getStandardTextFontSize() {
+        return this.stylesMSSAdapter.mss.forDocument.getFont( MSS_Pages.standard ).size
     }
 
     /**
      * Gets current y coordinate with delayed init.
      */
     float getPageY() {
-        if (this.pageLocation.y < 0.0f) {
-            this.pageLocation.y = pageFormat.height - (this.fontMSSAdapter.size as float) - this.margins.topMargin
+        if ( this.pageLocation.y < 0.0f ) {
+            this.pageLocation.y = pageFormat.height - ( this.fontMSSAdapter.size as float ) -
+                    this.margins.topMargin
         }
         this.pageLocation.y
     }
@@ -438,7 +470,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param y The coordinate to set.
      */
-    void setPageY(float y) { this.pageLocation.y = y }
+    void setPageY( float y ) { this.pageLocation.y = y }
 
     /**
      * Gets the current x coordinate.
@@ -452,7 +484,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param x The coordinate to set.
      */
-    void setPageX(float x) {
+    void setPageX( float x ) {
         this.pageLocation.x = x
     }
 
@@ -462,15 +494,22 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param size The size to convert.
      */
     PDRectangle getPageFormat() {
-        return pageSizes[this.pageSize]
+        return pageSizes[ this.pageSize ]
     }
 
     //
     // Methods
     //
 
+    /**
+     * Resets page X at left margin for new paragraph
+     */
+    void resetXForNewParagraph() {
+        this.pageX = this.margins.leftMargin
+    }
+
     void applyStyles() {
-        if (this.stylesApplicator != null) {
+        if ( this.stylesApplicator != null ) {
             this.stylesApplicator.call()
         }
     }
@@ -485,13 +524,15 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * @return The first page.
      */
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
     PDPage getFirstPage() {
-        this.docMgr.document.getPage(0)
+        this.docMgr.document.getPage( 0 )
     }
 
     /**
      * @return The current total of pages.
      */
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
     int getNoOfPages() {
         this.docMgr.document.getPages().count
     }
@@ -501,8 +542,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param ix The index of the page to get.
      */
-    PDPage getPage(int ix) {
-        return this.docMgr.document.getPage(ix)
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
+    PDPage getPage( int ix ) {
+        return this.docMgr.document.getPage( ix )
     }
 
     /**
@@ -510,7 +552,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param inset The inset to set.
      */
-    void setLeftInset(float inset) {
+    void setLeftInset( float inset ) {
         this.margins.leftInset = inset
     }
 
@@ -525,15 +567,15 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Sets the right inset. Set to 0 to remove inset.
      * @param inset
      */
-    @SuppressWarnings("GroovyUnusedDeclaration")
-    void setRightInset(float inset) {
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
+    void setRightInset( float inset ) {
         this.margins.rightInset = inset
     }
 
     /**
      * @return The right inset.
      */
-    @SuppressWarnings("GroovyUnusedDeclaration")
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
     float getRightInset() {
         return this.margins.rightInset
     }
@@ -544,8 +586,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param headerLevel The header level of the entry.
      * @param title The title of the outline entry.
      */
-    void addOutlineEntry(int headerLevel, String title) {
-        addOutlineEntry(headerLevel, title, currentPage)
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
+    void addOutlineEntry( int headerLevel, String title ) {
+        addOutlineEntry( headerLevel, title, currentPage )
     }
 
     /**
@@ -555,12 +598,12 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param title The title of the outline entry.
      * @param page The page to point to.
      */
-    void addOutlineEntry(int headerLevel, String title, PDPage page) {
-        if (this.docMgr.outline == null) {
+    void addOutlineEntry( int headerLevel, String title, PDPage page ) {
+        if ( this.docMgr.outline == null ) {
             this.docMgr.outline = new Outline()
-            this.docMgr.outline.addToDocument(this.docMgr.document)
+            this.docMgr.outline.addToDocument( this.docMgr.document )
         }
-        this.docMgr.outline.addEntry(headerLevel, title, page)
+        this.docMgr.outline.addEntry( headerLevel, title, page )
     }
 
     /**
@@ -568,9 +611,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param textAndLinesColor The color for text and lines to set.
      */
-    @SuppressWarnings("GroovyUnusedDeclaration")
-    void setTextAndLinesColor(@NotNull MSSColor textAndLinesColor) {
-        notNull("foregroundColor", textAndLinesColor)
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
+    void setTextAndLinesColor( @NotNull MSSColor textAndLinesColor ) {
+        notNull( "foregroundColor", textAndLinesColor )
         this.colors.foreground = textAndLinesColor
         this.colors.foreground.applyColor this.docMgr.DOC_TEXT_AND_FILL_COLOR
     }
@@ -580,7 +623,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param color The color to set.
      */
-    void setLinesEtcColor(@NotNull MSSColor color) {
+    void setLinesEtcColor( @NotNull MSSColor color ) {
         color.applyColor this.docMgr.DOC_LINES_ETC_COLOR
     }
 
@@ -589,8 +632,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @apram backgroundColor The background color to set.
      */
-    void setBackgroundFillColor(@NotNull MSSColor backgroundColor) {
-        notNull("backgroundColor", backgroundColor)
+    void setBackgroundFillColor( @NotNull MSSColor backgroundColor ) {
+        notNull( "backgroundColor", backgroundColor )
         this.colors.background = backgroundColor
         this.colors.background.applyColor this.docMgr.BG_DOC_TEXT_AND_FILL_COLOR
     }
@@ -600,8 +643,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param foregroundColor The color to set temporarily
      */
-    void setTemporaryForegroundColor(@NotNull MSSColor foregroundColor) {
-        notNull("foregroundColor", foregroundColor)
+    void setTemporaryForegroundColor( @NotNull MSSColor foregroundColor ) {
+        notNull( "foregroundColor", foregroundColor )
         foregroundColor.applyColor this.docMgr.DOC_TEXT_AND_FILL_COLOR
     }
 
@@ -618,8 +661,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param stylesMSSAdapter The adapter to use for looking up style.
      * @param section Lookup styles for this section.
      */
-    void setColorPair(@NotNull PDFBoxStylesMSSAdapter stylesMSSAdapter, MSS.MSS_Pages section) {
-        setColorPair(stylesMSSAdapter.mss.forDocument.getColorPair(section))
+    void setColorPair( @NotNull PDFBoxStylesMSSAdapter stylesMSSAdapter, MSS_Pages section ) {
+        setColorPair( stylesMSSAdapter.mss.forDocument.getColorPair( section ) )
     }
 
     /**
@@ -627,8 +670,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param colorPair The color pair to set.
      */
-    void setColorPair(@NotNull MSSColorPair colorPair) {
-        notNull("colorPair", colorPair)
+    void setColorPair( @NotNull MSSColorPair colorPair ) {
+        notNull( "colorPair", colorPair )
         this.colors = colorPair
         this.colors.foreground.applyColor this.docMgr.DOC_TEXT_AND_FILL_COLOR
         this.colors.background.applyColor this.docMgr.BG_DOC_LINES_ETC_COLOR
@@ -641,11 +684,12 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param colorPair The color pair to apply during the closure.
      * @param withColorsCall The closure to call.
      */
-    void withColors(MSSColorPair colorPair, Closure<Void> withColorsCall) {
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
+    void withColors( MSSColorPair colorPair, Closure<Void> withColorsCall ) {
         MSSColorPair origColors = this.colors
-        setColorPair(colorPair)
+        setColorPair( colorPair )
         withColorsCall.call()
-        setColorPair(origColors)
+        setColorPair( origColors )
     }
 
     /**
@@ -655,10 +699,11 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param mssFont An MSSFont defining size and style.
      * @return
      */
-    PDFBoxFontMSSAdapter loadExternalFont(String url, MSSFont mssFont) {
-        URL fontURL = new URL(url)
-        PDFont font = PDType0Font.load(this.docMgr.document, fontURL.openStream())
-        return new PDFBoxFontMSSAdapter(font, mssFont)
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
+    PDFBoxFontMSSAdapter loadExternalFont( String url, MSSFont mssFont ) {
+        URL fontURL = new URL( url )
+        PDFont font = PDType0Font.load( this.docMgr.document, fontURL.openStream() )
+        return new PDFBoxFontMSSAdapter( font, mssFont )
     }
 
     /**
@@ -667,17 +712,18 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param fontMSSAdapter The PDFFontMSSAdapter to set.
      */
-    void setStyle(@NotNull PDFBoxStylesMSSAdapter stylesMSSAdapter, MSS.Section section) {
-        notNull("stylesMSSAdapter", stylesMSSAdapter)
+    void setStyle( @NotNull PDFBoxStylesMSSAdapter stylesMSSAdapter, MSS.Section section ) {
+        notNull( "stylesMSSAdapter", stylesMSSAdapter )
         this.stylesMSSAdapter = stylesMSSAdapter
         this.section = section
 
-        setFont(getFontAdapter(stylesMSSAdapter, section))
+        setFont( getFontAdapter( stylesMSSAdapter, section ) )
     }
 
     /**
      * Returns the current styles MSS adapter.
      */
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
     PDFBoxStylesMSSAdapter getStylesMSSAdapter() {
         return this.stylesMSSAdapter
     }
@@ -687,7 +733,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param fontMSSAdapter The adapter for the font to apply.
      */
-    private void setFont(PDFBoxFontMSSAdapter fontMSSAdapter) {
+    private void setFont( PDFBoxFontMSSAdapter fontMSSAdapter ) {
         this.fontMSSAdapter = fontMSSAdapter
         applyFontInternal()
     }
@@ -701,24 +747,24 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @return
      */
-    PDFBoxFontMSSAdapter getFontAdapter(PDFBoxStylesMSSAdapter stylesMSSAdapter, MSS.Section section) {
-        PDFBoxFontMSSAdapter fontMSSAdapter = null
+    PDFBoxFontMSSAdapter getFontAdapter( PDFBoxStylesMSSAdapter stylesMSSAdapter, MSS.Section section ) {
+        PDFBoxFontMSSAdapter fontMSSAdapter
 
-        switch (section.class) {
-            case MSS.MSS_Pages.class:
-                fontMSSAdapter = stylesMSSAdapter.getFont(this.docMgr.document, section as MSS.MSS_Pages)
+        switch ( section.class ) {
+            case MSS_Pages.class:
+                fontMSSAdapter = stylesMSSAdapter.getFont( this.docMgr.document, section as MSS_Pages )
                 break
 
-            case MSS.MSS_Front_Page:
-                fontMSSAdapter = stylesMSSAdapter.getFont(this.docMgr.document, section as MSS.MSS_Front_Page)
+            case MSS_Front_Page:
+                fontMSSAdapter = stylesMSSAdapter.getFont( this.docMgr.document, section as MSS_Front_Page )
                 break
 
-            case MSS.MSS_TOC:
-                fontMSSAdapter = stylesMSSAdapter.getFont(this.docMgr.document, section as MSS.MSS_TOC)
+            case MSS_TOC:
+                fontMSSAdapter = stylesMSSAdapter.getFont( this.docMgr.document, section as MSS_TOC )
                 break
 
             default:
-                throw new IllegalStateException("BUG: unknown MSS.Section!")
+                throw new IllegalStateException( "BUG: unknown MSS.Section!" )
         }
 
         fontMSSAdapter
@@ -728,9 +774,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Applies the current font to the current page.
      */
     protected void applyFontInternal() {
-        if (this.fontMSSAdapter != null) {
+        if ( this.fontMSSAdapter != null ) {
             this.docMgr.docStream.leading = this.fontMSSAdapter.size + 2
-            this.fontMSSAdapter.applyFont(this.docMgr.docStream)
+            this.fontMSSAdapter.applyFont( this.docMgr.docStream )
         }
     }
 
@@ -739,14 +785,15 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param style The temp style to use.
      * @param section The style should be for this section.
-     * @param withFontCall The closure to call while font is active.
+     * @param withStyleCall The closure to call while font is active.
      */
-    protected void withStyle(@NotNull PDFBoxStylesMSSAdapter style, MSS.Section section, Closure withStyleCall) {
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
+    protected void withStyle( @NotNull PDFBoxStylesMSSAdapter style, MSS.Section section, Closure withStyleCall ) {
         PDFBoxStylesMSSAdapter origStyle = this.stylesMSSAdapter
         MSS.Section origSection = this.section
-        setStyle(style, section)
+        setStyle( style, section )
         withStyleCall.call()
-        if (origStyle != null) setStyle(origStyle, origSection)
+        if ( origStyle != null ) setStyle( origStyle, origSection )
     }
 
     /**
@@ -755,11 +802,11 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param style The temp style to use.
      * @param withFontCall The closure to call while font is active.
      */
-    protected void withFont(@NotNull PDFBoxFontMSSAdapter font, Closure withFontCall) {
+    protected void withFont( @NotNull PDFBoxFontMSSAdapter font, Closure withFontCall ) {
         PDFBoxFontMSSAdapter origFont = this.fontMSSAdapter
-        setFont(font)
+        setFont( font )
         withFontCall.call()
-        if (origFont != null) setFont(origFont)
+        if ( origFont != null ) setFont( origFont )
     }
 
     /**
@@ -769,8 +816,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @return The calculated width.
      */
-    float calcTextWidth(@NotNull String text) {
-        calcTextWidth(this.fontMSSAdapter, text)
+    float calcTextWidth( @NotNull String text ) {
+        calcTextWidth( this.fontMSSAdapter, text )
     }
 
     /**
@@ -781,18 +828,18 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @return The calculated width.
      */
-    static protected float calcTextWidth(@NotNull PDFBoxFontMSSAdapter fontAdapter, @NotNull String text) {
-        notNull("text", text)
-        float width = 0
+    static protected float calcTextWidth( @NotNull PDFBoxFontMSSAdapter fontAdapter, @NotNull String text ) {
+        notNull( "text", text )
+        float width
         try {
-            width = (fontAdapter.font.getStringWidth(text) / 1000.0f * (float) fontAdapter.size) as float
+            width = ( fontAdapter.font.getStringWidth( text ) / 1000.0f * ( float ) fontAdapter.size ) as float
         }
-        catch (IllegalArgumentException iae) { // PDFBox have problems with certain characters.
+        catch ( IllegalArgumentException ignore ) { // PDFBox have problems with certain characters.
             StringBuilder sb = new StringBuilder()
             text.length().times {
-                sb.append('X')
+                sb.append( 'X' )
             }
-            width = (fontAdapter.font.getStringWidth(sb.toString()) / 1000.0f * (float) fontAdapter.size) as float
+            width = ( fontAdapter.font.getStringWidth( sb.toString() ) / 1000.0f * ( float ) fontAdapter.size ) as float
         }
 
         width
@@ -807,7 +854,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * mode.
      */
     void ensureTextMode() {
-        if (!this.textMode) {
+        if ( !this.textMode ) {
             this.docMgr.docStream.beginText()
             this.textMode = true
         }
@@ -821,9 +868,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param x The x coordinate to render text at.
      * @param y The y coordinate to render text at.
      */
-    void ensureTextMode(float x, float y) {
+    void ensureTextMode( float x, float y ) {
         ensureTextMode()
-        this.docMgr.docStream.newLineAtOffset(x, y)
+        this.docMgr.docStream.newLineAtOffset( x, y )
     }
 
     /**
@@ -831,7 +878,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * and ensures that it isn't in text mode.
      */
     void ensureTextModeOff() {
-        if (this.textMode) {
+        if ( this.textMode ) {
             this.docMgr.docStream.endText()
             this.textMode = false
         }
@@ -850,58 +897,60 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *                  What value to use depends on the font and also partly on the size of the font.
      * @param newPage A closure to call to create a new page.
      */
-    @SuppressWarnings("UnnecessaryQualifiedReference")
+    @SuppressWarnings( "UnnecessaryQualifiedReference" )
     void tocEntry(
             @NotNull TOC tocEntry,
             boolean useDots = false,
             //float dotFactor,
             Closure<Void> newPage
     ) {
-        ensureTextModeOff()
+        withSection( MSS_Pages.standard ) {
+            ensureTextModeOff()
 
-        this.pageX = this.margins.leftMargin
+            this.pageX = this.margins.leftMargin
 
-        // Section number if any
-        if (tocEntry.sectionNumber != null) {
-            positionTextAtPageLocation()
-            rawText(tocEntry.sectionNumber)
-            this.pageX = this.margins.leftMargin + calcTextWidth("0.0.0.0.0.0   ")
-        }
-
-        // Section title
-        positionTextAtPageLocation()
-        float titleEnd = (this.pageX + calcTextWidth(tocEntry.sectionTitle)) as float
-        rawText(tocEntry.sectionTitle)
-
-        // Page number
-        this.pageX = ((this.pageFormat.width - this.margins.rightMargin) -
-                calcTextWidth("${tocEntry.pageNumber}")) as float
-
-        positionTextAtPageLocation()
-        rawText("${tocEntry.pageNumber}")
-
-        // Dots between title and page number.
-        if (useDots) {
-            // Note that this.pageX is now the position of the page number at the right of the page! That minus titleEnd gives
-            // us the space between the end of the title to the beginning of the page number.
-
-            // Note that in the result there will be more non dotted space before the 1 digit page numbers than the 2 digit
-            // page numbers, and the dots are more or less aligned to the right! This should not be the result, and I fail
-            // to comprehend why it is!!
-            float dotsSize = ((this.pageX - titleEnd) - calcTextWidth("..0000")) as float
-
-            StringBuilder sb = new StringBuilder()
-            while (calcTextWidth(sb.toString()) < dotsSize) {
-                sb.append('.')
+            // Section number if any
+            if ( tocEntry.sectionNumber != null ) {
+                positionTextAtPageLocation()
+                rawText( tocEntry.sectionNumber )
+                this.pageX = this.margins.leftMargin + calcTextWidth( "0.0.0.0.0.0   " )
             }
-            this.pageX = (titleEnd + calcTextWidth("..")) as float
-            positionTextAtPageLocation()
-            rawText(sb.toString())
-        }
 
-        this.pageY -= this.fontMSSAdapter.size + 2
-        if (this.pageY <= this.margins.bottomMargin) {
-            newPage.call()
+            // Section title
+            positionTextAtPageLocation()
+            float titleEnd = ( this.pageX + calcTextWidth( tocEntry.sectionTitle ) ) as float
+            rawText( tocEntry.sectionTitle )
+
+            // Page number
+            this.pageX = ( ( this.pageFormat.width - this.margins.rightMargin ) -
+                    calcTextWidth( "${ tocEntry.pageNumber }" ) ) as float
+
+            positionTextAtPageLocation()
+            rawText( "${ tocEntry.pageNumber }" )
+
+            // Dots between title and page number.
+            if ( useDots ) {
+                // Note that this.pageX is now the position of the page number at the right of the page! That minus titleEnd gives
+                // us the space between the end of the title to the beginning of the page number.
+
+                // Note that in the result there will be more non dotted space before the 1 digit page numbers than the 2 digit
+                // page numbers, and the dots are more or less aligned to the right! This should not be the result, and I fail
+                // to comprehend why it is!!
+                float dotsSize = ( ( this.pageX - titleEnd ) - calcTextWidth( "..0000" ) ) as float
+
+                StringBuilder sb = new StringBuilder()
+                while ( calcTextWidth( sb.toString() ) < dotsSize ) {
+                    sb.append( '.' )
+                }
+                this.pageX = ( titleEnd + calcTextWidth( ".." ) ) as float
+                positionTextAtPageLocation()
+                rawText( sb.toString() )
+            }
+
+            this.pageY -= this.fontMSSAdapter.size + 2
+            if ( this.getPageY() <= this.margins.bottomMargin ) {
+                newPage.call()
+            }
         }
     }
 
@@ -918,25 +967,32 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param text The pre formatted text
      * @param stylesApplicator A closure that will be called to style text when needed.
      */
-    PDRectangle preFormattedText(@NotNull Object text, @Nullable Closure<Void> stylesApplicator) {
-        notNull("text", text)
+    @RequiresWithSection
+    @NotNull
+    PDRectangle preFormattedText( @NotNull Object text, @Nullable Closure<Void> stylesApplicator ) {
+        notNull( "text", text )
 
         ensureTextMode()
 
         this.stylesApplicator = stylesApplicator
         applyStyles()
 
-        String[] lines = text.toString().split("\n|\r")
+        float s_pageY = this.pageY
+        float s_bottomMargin = this.margins.bottomMargin
 
-        PDRectangle textArea = new PDRectangle(lowerLeftX: this.pageX, lowerLeftY: this.pageY)
+        String[] lines = text.toString().split( "[\n\r]" )
+
+        PDRectangle textArea = new PDRectangle( lowerLeftX: this.pageX, lowerLeftY: s_pageY )
 
         lines.each { String line ->
-            this.docMgr.docStream.showText(line)
+            this.docMgr.docStream.showText( line )
             this.pageX = this.margins.leftMargin
-            this.pageY -= (this.fontMSSAdapter.size + 2)
-            if (this.pageY < this.margins.bottomMargin) {
+            this.pageY -= ( this.fontMSSAdapter.size + 2 )
+            if ( this.pageY < s_bottomMargin ) {
                 newPage()
-                if (stylesApplicator != null) { stylesApplicator.call() }
+                if ( stylesApplicator != null ) {
+                    stylesApplicator.call()
+                }
             }
             else {
                 // Note: newLineAtOffset(...) does not work here!
@@ -945,7 +1001,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         }
 
         textArea.upperRightX = this.pageX
-        textArea.upperRightY = this.pageY + this.fontMSSAdapter.size
+        textArea.upperRightY = s_pageY + this.fontMSSAdapter.size
 
         textArea
     }
@@ -961,29 +1017,30 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @return A possibly wrapped text.
      */
-    @NotNull String wordWrapPreformattedText(@NotNull String text) {
+    @NotNull
+    String wordWrapPreformattedText( @NotNull String text ) {
         String result = ""
         String cr = ""
 
-        text.split("\n|\r").each { String origLine ->
+        text.split( "[\n\r]" ).each { String origLine ->
             String line = origLine
             boolean needWrap = false
-            float width = calcTextWidth(line)
-            while ((this.margins.leftMargin + this.leftInset + width) > (this.pageFormat.width - this.margins.rightMargin)) {
+            float width = calcTextWidth( line )
+            while ( ( this.margins.leftMargin + this.leftInset + width ) > ( this.pageFormat.width - this.margins.rightMargin ) ) {
                 needWrap = true
-                line = line[0..(line.size()-2)]
-                width = calcTextWidth(line)
+                line = line[ 0..( line.size() - 2 ) ]
+                width = calcTextWidth( line )
             }
             result += cr
-            if (needWrap) {
-                while (![' ', '\t'].contains(line[line.size()-1]) && line.size() > 0) {
-                    line = line[0..(line.size()-2)]
+            if ( needWrap ) {
+                while ( ![' ', '\t'].contains( line[ line.size() - 1 ] ) && line.size() > 0 ) {
+                    line = line[ 0..( line.size() - 2 ) ]
                 }
-                line = line[0..(line.size()-2)]
+                line = line[ 0..( line.size() - 2 ) ]
 
                 result += line
                 result += "\n       "
-                result += origLine[line.size()..origLine.size()-1]
+                result += origLine[ line.size()..origLine.size() - 1 ]
             }
             else {
                 result += line
@@ -1002,8 +1059,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @return a PDRectangle enclosing the text just written. Useful when adding (PDF) annotations.
      */
-    PDRectangle text(@NotNull Object txt,  @Nullable Closure<Void> stylesApplicator) {
-        text(txt, stylesApplicator, false)
+    @RequiresWithSection
+    PDRectangle text( @NotNull Object txt, @Nullable Closure<Void> stylesApplicator ) {
+        text( txt, stylesApplicator, false )
     }
 
     /**
@@ -1013,8 +1071,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @return a PDRectangle enclosing the text just written. Useful when adding (PDF) annotations.
      */
-    PDRectangle text(@NotNull Object txt) {
-        text(txt, null, false)
+    @RequiresWithSection
+    PDRectangle text( @NotNull Object txt ) {
+        text( txt, null, false )
     }
 
     /**
@@ -1025,9 +1084,10 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @return A TextHole or null.
      */
-    @Nullable private TextHole checkForHole(float x, float y) {
+    @Nullable
+    private TextHole checkForHole( float x, float y ) {
         this.textHoles.find { TextHole hole ->
-            x >= hole.x && x <= (hole.x + hole.width) && y >= hole.y && y <= (hole.y + hole.height)
+            x >= hole.x && x <= ( hole.x + hole.width ) && y >= hole.y && y <= ( hole.y + hole.height )
         }
     }
 
@@ -1036,20 +1096,22 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param adaptParams holeMargin and wordSize parameters.
      */
-    @SuppressWarnings("GroovyAssignabilityCheck") // The need for this is an IDEA bug (2016.2.4)
-    private void adaptToTextHoles(AdaptParams adaptParams) {
+    private void adaptToTextHoles( AdaptParams adaptParams ) {
         float x = this.pageX
-        float y = this.pageY + (this.fontMSSAdapter.size * 2)
-        TextHole hole = checkForHole(x, y)
-        if (hole == null) {
+        float y = this.pageY + ( this.fontMSSAdapter.size * 2 )
+        TextHole hole = checkForHole( x, y )
+        if ( hole == null ) {
             x = this.pageX + adaptParams.holeMargin + adaptParams.wordSize
-            hole = checkForHole(x, y)
+            hole = checkForHole( x, y )
         }
-        if (hole != null) {
+        if ( hole != null ) {
             this.pageX = hole.x + hole.width + adaptParams.holeMargin
         }
     }
-    private static class AdaptParams { float holeMargin, wordSize }
+
+    private static class AdaptParams {
+        float holeMargin, wordSize
+    }
 
     /**
      * Writes text to the document using the current font, colors, etc.
@@ -1060,12 +1122,16 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @return a PDRectangle enclosing the txt just written. Useful when adding (PDF) annotations.
      */
-    PDRectangle text(@NotNull Object txt, @Nullable Closure<Void> stylesApplicator, boolean pgBoxed) {
-        notNull("txt", txt)
+    @RequiresWithSection
+    PDRectangle text(
+            @NotNull Object txt, @Nullable Closure<Void> stylesApplicator,
+            boolean pgBoxed ) {
 
-        Text text = new Text(content: txt.toString())
+        notNull( "txt", txt )
 
-        if (pgBoxed) {
+        Text text = new Text( content: txt.toString() )
+
+        if ( pgBoxed ) {
             startParagraphBox()
         }
 
@@ -1076,50 +1142,54 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         float rightMarginPos = this.pageFormat.width - this.margins.rightMargin
 
-        PDRectangle textArea = new PDRectangle(lowerLeftX: this.pageX, lowerLeftY: this.pageY)
-        PDRectangle boxedTextArea = new PDRectangle(lowerLeftX: this.pageX - 1, lowerLeftY: this.pageY)
+        PDRectangle textArea = new PDRectangle( lowerLeftX: this.pageX, lowerLeftY: this.pageY )
+        PDRectangle boxedTextArea = new PDRectangle( lowerLeftX: this.pageX - 1, lowerLeftY: this.pageY )
 
         text.words.each { Word word ->
-            float wordSize = calcTextWidth(word.toString(this.preFormatted))
+            float wordSize = calcTextWidth( word.toString( this.preFormatted ) )
 
-            adaptToTextHoles(new AdaptParams(holeMargin: this.holeMargin, wordSize: wordSize))
+            adaptToTextHoles( new AdaptParams( holeMargin: this.holeMargin, wordSize: wordSize ) )
 
-            if (this.pageX + wordSize > rightMarginPos) {
-                if (pgBoxed) { endParagraphBox(boxedTextArea) }
+            if ( this.pageX + wordSize > rightMarginPos ) {
+                if ( pgBoxed ) {
+                    endParagraphBox( boxedTextArea )
+                }
 
                 this.pageX = this.margins.leftMargin
-                this.pageY -= (this.newLineFontSize + 2)
-                if (this.pageY < this.margins.bottomMargin) {
+                this.pageY -= ( this.newLineFontSize + 2 )
+                if ( this.pageY < this.margins.bottomMargin ) {
                     newPage()
                 }
 
-                adaptToTextHoles(new AdaptParams(holeMargin: this.holeMargin, wordSize: wordSize))
+                adaptToTextHoles( new AdaptParams( holeMargin: this.holeMargin, wordSize: wordSize ) )
 
-                if (pgBoxed) { boxedTextArea = new PDRectangle(lowerLeftX: this.pageX - 1, lowerLeftY: this.pageY) }
+                if ( pgBoxed ) {
+                    boxedTextArea = new PDRectangle( lowerLeftX: this.pageX - 1, lowerLeftY: this.pageY )
+                }
             }
 
             positionTextAtPageLocation()
 
             try {
-                this.docMgr.docStream.showText(word.toString(this.preFormatted))
-                if (this.fontMSSAdapter.underlined) {
+                this.docMgr.docStream.showText( word.toString( this.preFormatted ) )
+                if ( this.fontMSSAdapter.underlined ) {
                     // I did spend some hours on trying to do this the officially correct way, but
                     // finally gave up since nothing seemed to work.
                     ensureTextModeOff()
                     applyStyles()
-                    this.docMgr.docStream.setLineWidth(0.001f)
-                    this.docMgr.docStream.addRect(this.pageX, this.pageY - 3, wordSize, 0.5f)
+                    this.docMgr.docStream.setLineWidth( 0.001f )
+                    this.docMgr.docStream.addRect( this.pageX, this.pageY - 3 as float, wordSize, 0.5f )
                     this.docMgr.docStream.closeAndFillAndStroke()
                     ensureTextMode()
                 }
             }
-            catch (IllegalArgumentException iae) {
-                System.err.println("PDFBox failed to render word '${word}' due to \"${iae.message}\"")
+            catch ( IllegalArgumentException iae ) {
+                System.err.println( "PDFBox failed to render word '${ word }' due to \"${ iae.message }\"" )
             }
             this.pageX += wordSize
         }
-        if (pgBoxed) {
-            endParagraphBox(boxedTextArea)
+        if ( pgBoxed ) {
+            endParagraphBox( boxedTextArea )
         }
 
         // This is important! If not cleared, this text style could later be applied to a non text object, and PDFBox
@@ -1139,8 +1209,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param text The text to draw.
      */
-    public void rawText(String text) {
-        rawText(text, null)
+    void rawText( String text ) {
+        rawText( text, null )
     }
 
     /**
@@ -1151,13 +1221,13 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param text The text to draw.
      * @param stylesApplicator This gets executed to apply styles when needed.
      */
-    public void rawText(String text, Closure<Void> stylesApplicator) {
+    void rawText( String text, Closure<Void> stylesApplicator ) {
         this.stylesApplicator = stylesApplicator
         applyStyles()
 
         positionTextAtPageLocation()
-        this.docMgr.docStream.showText(text)
-        this.pageX += calcTextWidth(text)
+        this.docMgr.docStream.showText( text )
+        this.pageX += calcTextWidth( text )
 
         this.stylesApplicator = null
     }
@@ -1167,8 +1237,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param text The text to center.
      */
-    void center(String text) {
-        center(text, null)
+    void center( String text ) {
+        center( text, null )
     }
 
     /**
@@ -1180,19 +1250,19 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param text The text to center.
      * @param stylesApplicator Callback that applies styles.
      */
-    void center(String text, Closure<Void> stylesApplicator) {
+    void center( String text, Closure<Void> stylesApplicator ) {
         ensureTextModeOff()
         ensureTextMode() // Must do this for newLineAt(...) to work
 
         this.stylesApplicator = stylesApplicator
         applyStyles()
 
-        float x = ((this.pageFormat.width / 2.0f) - (calcTextWidth(text) / 2.0f)) as float
-        this.docMgr.docStream.newLineAtOffset(x, this.pageY)
-        this.docMgr.docStream.showText(text)
+        float x = ( ( this.pageFormat.width / 2.0f ) - ( calcTextWidth( text ) / 2.0f ) ) as float
+        this.docMgr.docStream.newLineAtOffset( x, this.pageY )
+        this.docMgr.docStream.showText( text )
         this.pageX = this.margins.leftMargin
-        this.pageY -= (this.fontMSSAdapter.size + 2.0f)
-        if (this.pageY < this.margins.bottomMargin) {
+        this.pageY -= ( this.fontMSSAdapter.size + 2.0f )
+        if ( this.pageY < this.margins.bottomMargin ) {
             newPage()
         }
     }
@@ -1209,7 +1279,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param textArea The beginning of the box to render.
      */
-    void endParagraphBox(PDRectangle textArea) {
+    @RequiresWithSection
+    void endParagraphBox( PDRectangle textArea ) {
         textArea.upperRightX = this.pageX + 1
         textArea.upperRightY = this.pageY + this.fontMSSAdapter.size
 
@@ -1219,9 +1290,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
         // does not support it.
         this.docMgr.bgDocStream.addRect(
                 textArea.lowerLeftX,
-                textArea.lowerLeftY -2,
-                textArea.upperRightX - textArea.lowerLeftX,
-                this.fontMSSAdapter.size + 2
+                textArea.lowerLeftY - 2.0f as float,
+                textArea.upperRightX - textArea.lowerLeftX as float,
+                this.fontMSSAdapter.size + 2.0f as float
         )
         this.docMgr.bgDocStream.closeAndFillAndStroke()
     }
@@ -1231,11 +1302,12 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param boxColor The color to render the box in.
      */
-    void startBox(MSSColor boxColor) {
+    @RequiresWithSection
+    void startBox( MSSColor boxColor ) {
         this.box = new Box(
                 startLocation: new Location(
                         x: this.margins.leftMargin,
-                        y: pageY + (this.fontMSSAdapter.size + 2)
+                        y: pageY + ( this.fontMSSAdapter.size + 2 )
                 ),
                 color: boxColor
         ).validate()
@@ -1245,16 +1317,15 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         this.pageX = this.margins.leftMargin
         ensureTextMode()
-        this.docMgr.docStream.newLineAtOffset(pageX, pageY)
+        this.docMgr.docStream.newLineAtOffset( pageX, pageY )
     }
 
     /**
      * Ends a previously started box.
      */
     void endBox() {
-        this.margins.leftMargin = this.margins.leftMargin - 10.0f
-        this.margins.rightMargin = this.margins.rightMargin - 10.0f
-        this.box.endLocation = new Location(x: this.margins.rightMargin, y: this.pageY)
+        this.margins.clearTemps()
+        this.box.endLocation = new Location( x: this.margins.rightMargin, y: this.pageY )
 
         this.box.color.applyColor this.docMgr.BG_DOC_TEXT_AND_FILL_COLOR
         this.box.color.applyColor this.docMgr.BG_DOC_LINES_ETC_COLOR
@@ -1262,15 +1333,15 @@ class PDFBoxDocRenderer implements NotNullTrait {
         this.docMgr.bgDocStream.addRect(
                 this.box.endLocation.x,
                 this.box.endLocation.y,
-                this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin,
-                this.box.startLocation.y - this.box.endLocation.y
+                this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin as float,
+                this.box.startLocation.y - this.box.endLocation.y as float
         )
         this.docMgr.bgDocStream.closeAndFillAndStroke()
 
         ensureTextModeOff()
         ensureTextMode()
         pageX = this.margins.leftMargin
-        this.docMgr.docStream.newLineAtOffset(pageX, pageY)
+        this.docMgr.docStream.newLineAtOffset( pageX, pageY )
         this.box = null
     }
 
@@ -1284,11 +1355,12 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * Draws a underline left to right under the current text.
      */
-    void underlineText(float underlineOffset) {
+    @RequiresWithSection
+    void underlineText( float underlineOffset ) {
         ensureTextModeOff()
-        this.docMgr.docStream.setLineWidth(0.001f)
-        this.docMgr.docStream.addRect(this.margins.leftMargin, (this.pageY - underlineOffset) as float,
-                this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin, 0.001f)
+        this.docMgr.docStream.setLineWidth( 0.001f )
+        this.docMgr.docStream.addRect( this.margins.leftMargin, ( this.pageY - underlineOffset ) as float,
+                this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin as float, 0.001f )
         this.docMgr.docStream.closeAndFillAndStroke()
         ensureTextMode()
     }
@@ -1299,27 +1371,28 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param thickness The thickness of the line. Anything over half the font size is a not a good idea! 2.0 or 3.0 is suggested.
      * @param color The color to draw the hr in.
      */
-    void hr(float thickness, @Nullable MSSColor color) {
-        if (this.pageY - this.fontMSSAdapter.size < this.margins.bottomMargin) {
+    @RequiresWithSection
+    void hr( float thickness, @Nullable MSSColor color ) {
+        if ( this.pageY - this.fontMSSAdapter.size < this.margins.bottomMargin ) {
             newPage()
             // We intentionally do not draw the hr if it is on a page break.
         }
         else {
             //newLine()
             ensureTextModeOff()
-            float hrY = this.pageY + (this.fontMSSAdapter.size / 2) + 4
+            float hrY = this.pageY + ( this.fontMSSAdapter.size / 2 ) + 4
 
-            if (color!= null) {
+            if ( color != null ) {
                 color.applyColor this.docMgr.DOC_TEXT_AND_FILL_COLOR
                 color.applyColor this.docMgr.DOC_LINES_ETC_COLOR
             }
 
-            this.docMgr.docStream.setLineWidth(thickness)
-            this.docMgr.docStream.moveTo(this.margins.leftMargin, hrY)
-            this.docMgr.docStream.lineTo(this.pageFormat.width - this.margins.rightMargin, hrY)
+            this.docMgr.docStream.setLineWidth( thickness )
+            this.docMgr.docStream.moveTo( this.margins.leftMargin, hrY )
+            this.docMgr.docStream.lineTo( this.pageFormat.width - this.margins.rightMargin as float, hrY )
             this.docMgr.docStream.closeAndFillAndStroke()
 
-            ensureTextMode(this.pageX, this.pageY)
+            ensureTextMode( this.pageX, this.pageY )
             //newLine()
         }
     }
@@ -1330,14 +1403,14 @@ class PDFBoxDocRenderer implements NotNullTrait {
     void positionTextAtPageLocation() {
         ensureTextModeOff()
         ensureTextMode()
-        this.docMgr.docStream.newLineAtOffset(this.pageX, this.pageY)
+        this.docMgr.docStream.newLineAtOffset( this.pageX, this.pageY )
     }
 
     /**
      * Writes a new line.
      */
     void newLine() {
-        newLine(0.0f)
+        newLine( 0.0f )
     }
 
     /**
@@ -1345,14 +1418,15 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @paam yOffset an additional offset to add.
      */
-    void newLine(float yOffset) {
+    @RequiresWithSection
+    void newLine( float yOffset ) {
         ensureTextModeOff()
         ensureTextMode()
 
         this.pageX = this.margins.leftMargin
-        this.pageY -= (yOffset + this.newLineFontSize + 2)
-        this.docMgr.docStream.newLineAtOffset(this.pageX, this.pageY)
-        if (this.pageY < this.margins.bottomMargin) {
+        this.pageY -= ( yOffset + this.newLineFontSize + 2 )
+        this.docMgr.docStream.newLineAtOffset( this.pageX, this.pageY )
+        if ( this.pageY < this.margins.bottomMargin ) {
             newPage()
         }
     }
@@ -1361,7 +1435,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Writes a new line if not already at a new line and then writes one more new line to create an empty line.
      */
     void newSection() {
-        if (this.pageX != this.margins.leftMargin) {
+        if ( this.pageX != this.margins.leftMargin ) {
             newLine()
         }
         newLine()
@@ -1370,6 +1444,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * Makes an empty line for a new paragraph.
      */
+    @SuppressWarnings( "GroovyUnusedDeclaration" )
     void newParagraph() {
         newLine()
         newLine()
@@ -1378,22 +1453,24 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * Positions rendering at the top of the page.
      */
+    @RequiresWithSection
     void positionAtTopOfPage() {
         this.pageX = this.margins.leftMargin
         this.pageY = this.pageFormat.height - this.margins.topMargin
 
         ensureTextMode()
-        this.docMgr.docStream.newLineAtOffset(this.pageLocation.x, this.pageLocation.y)
+        this.docMgr.docStream.newLineAtOffset( this.pageLocation.x, this.pageLocation.y )
     }
 
     /**
      * Creates a new page.
      */
+    @RequiresWithSection
     void newPage() {
         this.textHoles.clear()
 
         MSSColor boxColor = null
-        if (isBox()) {
+        if ( isBox() ) {
             boxColor = this.box.color
             endBox()
         }
@@ -1404,13 +1481,13 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         applyFontInternal()
 
-        if (this.pageNoActive) {
+        if ( this.pageNoActive ) {
             ++this.pageNo
-            pageNumber(this.pageNo)
+            pageNumber( this.pageNo )
         }
 
-        if (boxColor != null) {
-            startBox(boxColor)
+        if ( boxColor != null ) {
+            startBox( boxColor )
         }
 
         applyStyles()
@@ -1422,16 +1499,16 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @param linkText The text of the link.
      * @param uri The uri of the link
      */
-    void link(@NotNull String linkText, @NotNull String uri) {
-        setTemporaryForegroundColor(MSSColor.LINK_BLUE)
+    void link( @NotNull String linkText, @NotNull String uri ) {
+        setTemporaryForegroundColor( MSSColor.LINK_BLUE )
 
         // Ain't Groovy cool! :-)
         this.docMgr.docPage.annotations.add(
-            new PDAnnotationLink(
-                    borderStyle: new PDBorderStyleDictionary(style: PDBorderStyleDictionary.STYLE_UNDERLINE, width: 0),
-                    rectangle: this.text(linkText),
-                    action: new PDActionURI(URI: uri)
-            )
+                new PDAnnotationLink(
+                        borderStyle: new PDBorderStyleDictionary( style: PDBorderStyleDictionary.STYLE_UNDERLINE, width: 0 ),
+                        rectangle: this.text( linkText ),
+                        action: new PDActionURI( URI: uri )
+                )
         )
 
         restoreForegroundColor()
@@ -1439,7 +1516,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
     static final class ImageParam {
         /** If non null, the url to the image. */
-        @NotNull InputStream imageStream
+        @NotNull
+        InputStream imageStream
 
         /** Set to true if image stream contans a JPEG. */
         boolean jpeg = false
@@ -1477,61 +1555,63 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param param The named parameters to this method. @See ImageParam.
      */
-    void image(ImageParam param) {
+    void image( ImageParam param ) {
 
         this.holeMargin = param.holeMargin
 
         PDImageXObject image
 
-        if (param.scale > 1.0f) {
+        if ( param.scale > 1.0f ) {
             param.scale = param.scale / 100.0f as float
         }
 
         // The dumb PDImageXObject API only allows loading from local file!! Thereby we have to go a little lower
         // than that. Since the TIFF support only loads from local file, TIFFs are not supported!
 
-        if (param.jpeg) {
-            image = JPEGFactory.createFromStream(this.docMgr.document, param.imageStream)
-        } else {
-            BufferedImage bufferedImage = ImageIO.read(param.imageStream)
-            image = LosslessFactory.createFromImage(this.docMgr.document, bufferedImage)
+        if ( param.jpeg ) {
+            image = JPEGFactory.createFromStream( this.docMgr.document, param.imageStream )
+        }
+        else {
+            BufferedImage bufferedImage = ImageIO.read( param.imageStream )
+            image = LosslessFactory.createFromImage( this.docMgr.document, bufferedImage )
         }
 
         float scaledWidth = image.width * param.scale
         float scaledHeight = image.height * param.scale
 
-        float imageX = this.pageX, imageY = (this.pageY - scaledHeight) + this.fontMSSAdapter.size
+        float imageX = this.pageX, imageY = ( this.pageY - scaledHeight ) + this.fontMSSAdapter.size
 
         // TODO: A better formula for calculating how many font sizes to add to Y and how many for the hole.
 
-        if (Math.abs(scaledHeight - this.fontMSSAdapter.size) < 20) {
+        if ( Math.abs( scaledHeight - this.fontMSSAdapter.size ) < 20 ) {
             imageY += this.fontMSSAdapter.size
         }
 
-        if (param.xOverride != null) {
+        if ( param.xOverride != null ) {
             imageX = param.xOverride
         }
-        if (param.yOverride != null) {
+        if ( param.yOverride != null ) {
             imageY = param.yOverride
         }
 
-        if (param.xOverride == null) {
-            if (param.xOffset == X_OFFSET_LEFT_ALIGNED) {
+        if ( param.xOverride == null ) {
+            if ( param.xOffset == X_OFFSET_LEFT_ALIGNED ) {
                 imageX = this.margins.leftMargin
-                if (this.pageX <= (this.margins.leftMargin + scaledWidth)) {
-                    imageY -= (this.fontMSSAdapter.size + 2.0f)
+                if ( this.pageX <= ( this.margins.leftMargin + scaledWidth ) ) {
+                    imageY -= ( this.fontMSSAdapter.size + 2.0f )
                 }
             }
-            else if (param.xOffset == X_OFFSET_CENTER) {
-                imageX = this.margins.leftMargin + ((this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin) / 2.0f) -
-                        (scaledWidth / 2.0f) as float
-                if (this.pageX >= imageX) {
-                    imageY -= (this.fontMSSAdapter.size + 2.0f)
+            else if ( param.xOffset == X_OFFSET_CENTER ) {
+                imageX = this.margins.leftMargin + ( ( this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin ) / 2.0f ) -
+                        ( scaledWidth / 2.0f ) as float
+                if ( this.pageX >= imageX ) {
+                    imageY -= ( this.fontMSSAdapter.size + 2.0f )
                 }
-            } else if (param.xOffset == X_OFFSET_RIGHT_ALIGNED) {
-                imageX = this.pageFormat.width - (this.margins.rightMargin + scaledWidth)
-                if (this.pageX >= (this.pageFormat.width - this.margins.rightMargin - scaledWidth)) {
-                    imageY -= (this.fontMSSAdapter.size + 2.0f)
+            }
+            else if ( param.xOffset == X_OFFSET_RIGHT_ALIGNED ) {
+                imageX = this.pageFormat.width - ( this.margins.rightMargin + scaledWidth )
+                if ( this.pageX >= ( this.pageFormat.width - this.margins.rightMargin - scaledWidth ) ) {
+                    imageY -= ( this.fontMSSAdapter.size + 2.0f )
                 }
             }
             else {
@@ -1539,7 +1619,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
             }
         }
 
-        if (imageY - (param.yOffset + param.bottomAdd + 8.0f) < this.margins.bottomMargin) {
+        if ( imageY - ( param.yOffset + param.bottomAdd + 8.0f ) < this.margins.bottomMargin ) {
             newPage()
             imageY = this.pageY - scaledHeight
         }
@@ -1552,25 +1632,25 @@ class PDFBoxDocRenderer implements NotNullTrait {
                 scaledHeight,
                 imageX,
                 imageY
-        );
-        at.rotate(Math.toRadians(param.rotate));
-        this.docMgr.docStream.drawImage(image, new Matrix(at));
+        )
+        at.rotate( Math.toRadians( param.rotate ) )
+        this.docMgr.docStream.drawImage( image, new Matrix( at ) )
 
-        if (param.createHole) {
+        if ( param.createHole ) {
             this.textHoles << new TextHole(
                     x: imageX - holeMargin,
                     // Adding (font-size * 2) was achieved by trial and error, but I'm failing to understand why this is needed!
                     // It feels like an offset between image and text coordinates!
                     y: imageY + holeMargin + this.fontMSSAdapter.size,
-                    width: scaledWidth + (holeMargin * 2.0f),
-                    height: scaledHeight + ((holeMargin * 2.0f) as float) + (this.fontMSSAdapter.size as float)
+                    width: scaledWidth + ( holeMargin * 2.0f ),
+                    height: scaledHeight + ( ( holeMargin * 2.0f ) as float ) + ( this.fontMSSAdapter.size as float )
             )
         }
         else {
-            newLine(scaledHeight + 2.0f as float)
+            newLine( scaledHeight + 2.0f as float )
         }
 
-        ensureTextMode(this.pageX, this.pageY)
+        ensureTextMode( this.pageX, this.pageY )
     }
 
     /**
@@ -1578,21 +1658,21 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @param pageNumber The page number to render.
      */
-    void pageNumber(int pageNumber) {
-        String pgnStr = "${pageNumber}"
+    void pageNumber( int pageNumber ) {
+        String pgnStr = "${ pageNumber }"
         ensureTextModeOff()
 
         PDFBoxFontMSSAdapter pageNoFont = PDFBoxFontMSSAdapter.PAGE_NUMBER_FONT
 
-        withFont (pageNoFont) {
-            float width = calcTextWidth(pgnStr)
+        withFont( pageNoFont ) {
+            float width = calcTextWidth( pgnStr )
             ensureTextModeOff()
-            ensureTextMode(this.pageFormat.width - this.margins.rightMargin - width as float, this.margins.bottomMargin -
-                    ((pageNoFont.size * 2) + 6) as float)
-            this.docMgr.docStream.showText(pgnStr)
+            ensureTextMode( this.pageFormat.width - this.margins.rightMargin - width as float, this.margins.bottomMargin -
+                    ( ( pageNoFont.size * 2 ) + 6 ) as float )
+            this.docMgr.docStream.showText( pgnStr )
         }
         ensureTextModeOff()
-        ensureTextMode(this.pageX, this.pageY)
+        ensureTextMode( this.pageX, this.pageY )
     }
 
     /**
@@ -1603,8 +1683,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @throws IOException on failure to save
      */
-    void save(String path) throws IOException {
-        save(new File(path))
+    void save( String path ) throws IOException {
+        save( new File( path ) )
     }
 
     /**
@@ -1614,10 +1694,10 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @throws IOException on failure to save
      */
-    void save(File file) throws IOException {
+    void save( File file ) throws IOException {
         OutputStream saveStream = file.newOutputStream()
         try {
-            save(saveStream)
+            save( saveStream )
         }
         finally {
             saveStream.close()
@@ -1631,7 +1711,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @throws IOException on failure to save
      */
-    void save(OutputStream stream) throws IOException {
+    void save( OutputStream stream ) throws IOException {
 
         this.docMgr.docStream.close()
         this.docMgr.bgDocStream.close()
@@ -1641,10 +1721,10 @@ class PDFBoxDocRenderer implements NotNullTrait {
                 allPagesOverlayPDF: this.docMgr.bgDocument,
                 overlayPosition: Overlay.Position.BACKGROUND
         )
-        PDDocument finalDoc = overlay.overlay(new HashMap<Integer, String>())
+        PDDocument finalDoc = overlay.overlay( new HashMap<Integer, String>() )
         overlay.close()
 
-        finalDoc.save(stream)
+        finalDoc.save( stream )
     }
 
     /**

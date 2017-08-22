@@ -3,31 +3,31 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Code Version
  *         2.0.2
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
@@ -81,7 +81,6 @@ class MSS {
         pages,
         divs
     }
-
 
     /**
      * This represents values of the "document" section of the MSS that provides general page data.
@@ -270,7 +269,7 @@ class MSS {
      *
      * @param mss The top level MSS JSON object.
      */
-    private MSS(@NotNull final JSONObject mss) {
+    private MSS( @NotNull final JSONObject mss ) {
         this.mss = mss
     }
 
@@ -281,10 +280,11 @@ class MSS {
     /**
      * A null safeNameValidation way to get the cached "document" section of the MSS.
      */
-    @NotNull private JSONObject getDocument() {
-        if (this._document == null) {
-            this._document = this.mss.getProperty(MSS_Top.document.name()) as JSONObject
-            if (this._document == null) {
+    @NotNull
+    private JSONObject getDocument() {
+        if ( this._document == null ) {
+            this._document = this.mss.getProperty( MSS_Top.document.name() ) as JSONObject
+            if ( this._document == null ) {
                 this._document = new JSONObject()
             }
         }
@@ -295,10 +295,11 @@ class MSS {
     /**
      * A null safeNameValidation way to get the "pages" section of the MSS.
      */
-    @NotNull private JSONObject getPages() {
-        if (this._pages == null) {
-            this._pages = this.document.getProperty(MSS_Document.pages.name()) as JSONObject
-            if (this._pages == null) {
+    @NotNull
+    private JSONObject getPages() {
+        if ( this._pages == null ) {
+            this._pages = this.document.getProperty( MSS_Document.pages.name() ) as JSONObject
+            if ( this._pages == null ) {
                 this._pages = new JSONObject()
             }
         }
@@ -309,10 +310,11 @@ class MSS {
     /**
      * A null safeNameValidation way to get the "divs" section of the MSS.
      */
-    @NotNull private JSONObject getDivs() {
-        if (this._divs == null) {
-            this._divs = this.document.getProperty(MSS_Document.divs.name()) as JSONObject
-            if (this._divs == null) {
+    @NotNull
+    private JSONObject getDivs() {
+        if ( this._divs == null ) {
+            this._divs = this.document.getProperty( MSS_Document.divs.name() ) as JSONObject
+            if ( this._divs == null ) {
                 this._divs = new JSONObject()
             }
         }
@@ -323,10 +325,11 @@ class MSS {
     /**
      * A null safeNameValidation way to get the "front_page" section of the MSS.
      */
-    @NotNull private JSONObject getFrontPage() {
-        if (this._frontPage == null) {
-            this._frontPage = this.mss.getProperty(MSS_Top.front_page.name()) as JSONObject
-            if (this._frontPage == null) {
+    @NotNull
+    private JSONObject getFrontPage() {
+        if ( this._frontPage == null ) {
+            this._frontPage = this.mss.getProperty( MSS_Top.front_page.name() ) as JSONObject
+            if ( this._frontPage == null ) {
                 this._frontPage = new JSONObject()
             }
         }
@@ -337,10 +340,11 @@ class MSS {
     /**
      * A null safeNameValidation way to get the "toc" section of the MSS.
      */
-    @NotNull private JSONObject getTOC() {
-        if (this._toc == null) {
-            this._toc = this.mss.getProperty(MSS_Top.toc.name()) as JSONObject
-            if (this._toc == null) {
+    @NotNull
+    private JSONObject getTOC() {
+        if ( this._toc == null ) {
+            this._toc = this.mss.getProperty( MSS_Top.toc.name() ) as JSONObject
+            if ( this._toc == null ) {
                 this._toc = new JSONObject()
             }
         }
@@ -363,11 +367,11 @@ class MSS {
      *
      * @throws IOException on null result.
      */
-    private static JSONValue getJSONValue(@NotNull final JSONObject object, @NotNull final String field,
-                                         @NotNull final String errorMessage)
+    private static JSONValue getJSONValue( @NotNull final JSONObject object, @NotNull final String field,
+                                           @NotNull final String errorMessage )
             throws MSSException {
-        JSONValue result = object.getProperty(field)
-        if (result == null) throw new MSSException(message: errorMessage)
+        JSONValue result = object.getProperty( field )
+        if ( result == null ) throw new MSSException( message: errorMessage )
 
         result
     }
@@ -381,50 +385,51 @@ class MSS {
      *
      * @throws MSSException on failure to resolve name.
      */
-    @NotNull MSSExtFont getPdfExternalFontPath(@NotNull String name) throws MSSException {
+    @NotNull
+    MSSExtFont getPdfExternalFontPath( @NotNull String name ) throws MSSException {
         MSSExtFont result = null
 
-        JSONObject pdf = (JSONObject) this.mss.getProperty(MSS_Top.pdf.name())
-        if (pdf == null) {
-            throw new MSSException(message: "No TTF fonts specified under 'pdf' section in MSS file!")
+        JSONObject pdf = ( JSONObject ) this.mss.getProperty( MSS_Top.pdf.name() )
+        if ( pdf == null ) {
+            throw new MSSException( message: "No TTF fonts specified under 'pdf' section in MSS file!" )
         }
 
-        JSONArray extFontsArray = (JSONArray) pdf.getProperty(MSS_PDF.extFonts.name());
-        if (extFontsArray == null) {
-            throw new MSSException(message: "No external fonts specified under 'pdf/extFonts' seciton in MSS file!")
+        JSONArray extFontsArray = ( JSONArray ) pdf.getProperty( MSS_PDF.extFonts.name() )
+        if ( extFontsArray == null ) {
+            throw new MSSException( message: "No external fonts specified under 'pdf/extFonts' seciton in MSS file!" )
         }
 
         extFontsArray.asList.each { JSONValue entry ->
-            if (!(entry instanceof JSONObject)) {
-                throw new MSSException(message: "Bad MSS: pdf/extFonts does not contain a list of objects!")
+            if ( !( entry instanceof JSONObject ) ) {
+                throw new MSSException( message: "Bad MSS: pdf/extFonts does not contain a list of objects!" )
             }
 
-            if (getJSONValue(
+            if ( getJSONValue(
                     entry as JSONObject,
                     MSS_PDF.family.name(),
                     "Error: extFonts entry without 'family' field!"
-               ).toString() == name
+            ).toString() == name
             ) {
 
                 result = new MSSExtFont(
-                    fontPath: getJSONValue(
-                            entry as JSONObject,
-                            MSS_PDF.path.name(),
-                            "Error: extFonts entry without 'path' field!"
-                    ).toString(),
-                    encoding: getJSONValue(
-                            entry as JSONObject,
-                            MSS_PDF.encoding.name(),
-                            "Error ectFonts entry without 'encoding' field!"
-                    ).toString()
+                        fontPath: getJSONValue(
+                                entry as JSONObject,
+                                MSS_PDF.path.name(),
+                                "Error: extFonts entry without 'path' field!"
+                        ).toString(),
+                        encoding: getJSONValue(
+                                entry as JSONObject,
+                                MSS_PDF.encoding.name(),
+                                "Error ectFonts entry without 'encoding' field!"
+                        ).toString()
                 )
 
                 return // from each closure!
             }
         }
 
-        if (result == null) {
-            throw new MSSException(message: "Error: Asked for extFonts font '${name}' was not defined in MSS!")
+        if ( result == null ) {
+            throw new MSSException( message: "Error: Asked for extFonts font '${ name }' was not defined in MSS!" )
         }
 
         result
@@ -439,26 +444,29 @@ class MSS {
      *
      * @throws MSSException On reference to non defined color.
      */
-    private @NotNull MSSColor lookupColor(@NotNull final String name) throws MSSException {
-        MSSColor color = this.colorMap.get(name)
+    private @NotNull
+    MSSColor lookupColor( @NotNull final String name ) throws MSSException {
+        MSSColor color = this.colorMap.get( name )
 
-        if (color == null) {
-            if (name.contains(":") || name.startsWith("#")) {
-                color = new MSSColor(color: name)
-            } else {
-                final JSONObject mssColors = this.mss.getProperty(MSS_Top.colors.name()) as JSONObject
-                if (mssColors == null) {
-                    throw new MSSException(message: "No color names have been defined in the \"colors\" section of the MSS file! " +
-                            "'${name}' was asked for!")
-                } else {
-                    final String colorValue = mssColors.getProperty(name)?.toString()
-                    if (colorValue == null) throw new MSSException(message: "The color '${name}' has not been defined in the \"colors\" section " +
-                            "of the MSS file!")
-                    color = new MSSColor(color: colorValue)
+        if ( color == null ) {
+            if ( name.contains( ":" ) || name.startsWith( "#" ) ) {
+                color = new MSSColor( color: name )
+            }
+            else {
+                final JSONObject mssColors = this.mss.getProperty( MSS_Top.colors.name() ) as JSONObject
+                if ( mssColors == null ) {
+                    throw new MSSException( message: "No color names have been defined in the \"colors\" section of the MSS file! " +
+                            "'${ name }' was asked for!" )
+                }
+                else {
+                    final String colorValue = mssColors.getProperty( name )?.toString()
+                    if ( colorValue == null ) throw new MSSException( message: "The color '${ name }' has not been defined in the \"colors\" section " +
+                            "of the MSS file!" )
+                    color = new MSSColor( color: colorValue )
                 }
             }
 
-            this.colorMap.put(name, color)
+            this.colorMap.put( name, color )
         }
 
         color
@@ -470,15 +478,16 @@ class MSS {
      * @param colorPair The color pair to update.
      * @param section The section to update from.
      */
-    private void updateMSSColorPairIfNotSet(@NotNull final MSSColorPair colorPair, @Nullable final JSONObject section) {
+    private void updateMSSColorPairIfNotSet(
+            @NotNull final MSSColorPair colorPair, @Nullable final JSONObject section ) {
         // If a null section is passed this code will not break, it will just not do anything at all in that case.
-        JSONString color = section?.getProperty(MSS_Colors.color.name()) as JSONString
-        if (color != null) {
-            colorPair.updateForegroundIfNotSet(lookupColor(color.toString()))
+        JSONString color = section?.getProperty( MSS_Colors.color.name() ) as JSONString
+        if ( color != null ) {
+            colorPair.updateForegroundIfNotSet( lookupColor( color.toString() ) )
         }
-        color = section?.getProperty(MSS_Colors.background.name()) as JSONString
-        if (color != null) {
-            colorPair.updateBackgroundIfNotSet(lookupColor(color.toString()))
+        color = section?.getProperty( MSS_Colors.background.name() ) as JSONString
+        if ( color != null ) {
+            colorPair.updateBackgroundIfNotSet( lookupColor( color.toString() ) )
         }
     }
 
@@ -488,16 +497,16 @@ class MSS {
      * @param font The font to update.
      * @param section The section to update from.
      */
-    private static void updateMSSFontIfNotSet(@NotNull final MSSFont font, @Nullable final JSONObject section) {
-        final JSONString family = section?.getProperty(MSS_Font.family.name()) as JSONString
-        font.updateFamilyIfNotSet(family?.toString())
+    private static void updateMSSFontIfNotSet( @NotNull final MSSFont font, @Nullable final JSONObject section ) {
+        final JSONString family = section?.getProperty( MSS_Font.family.name() ) as JSONString
+        font.updateFamilyIfNotSet( family?.toString() )
 
-        final JSONNumber size = section?.getProperty(MSS_Font.size.name()) as JSONNumber
-        font.updateSizeIfNotSet((size != null ? size.toInt() : -1i) as int)
+        final JSONNumber size = section?.getProperty( MSS_Font.size.name() ) as JSONNumber
+        font.updateSizeIfNotSet( ( size != null ? size.toInt() : -1i ) as int )
 
-        final JSONString style = section?.getProperty(MSS_Font.style.name()) as JSONString
-        if (style != null) {
-            font.updateStyleIfNotSet(style.toString().toUpperCase())
+        final JSONString style = section?.getProperty( MSS_Font.style.name() ) as JSONString
+        if ( style != null ) {
+            font.updateStyleIfNotSet( style.toString().toUpperCase() )
         }
     }
 
@@ -507,27 +516,27 @@ class MSS {
      * @param image The image properties to update.
      * @param section The section to update from.
      */
-    private static void updateMSSImageIfNotSet(@NotNull final MSSImage image, @Nullable final JSONObject section) {
-        final JSONNumber scale = section?.getProperty(MSS_IMAGE.imgScalePercent.name()) as JSONNumber
-        image.updateScaleIfNotSet(scale)
+    private static void updateMSSImageIfNotSet( @NotNull final MSSImage image, @Nullable final JSONObject section ) {
+        final JSONNumber scale = section?.getProperty( MSS_IMAGE.imgScalePercent.name() ) as JSONNumber
+        image.updateScaleIfNotSet( scale )
 
-        final JSONString align = section?.getProperty(MSS_IMAGE.imgAlign.name()) as JSONString
-        image.updateAlignIfNotSet(align)
+        final JSONString align = section?.getProperty( MSS_IMAGE.imgAlign.name() ) as JSONString
+        image.updateAlignIfNotSet( align )
 
-        final JSONNumber rotate = section?.getProperty(MSS_IMAGE.imgRotateDegrees.name()) as JSONNumber
-        image.updateRotateIfNotSet(rotate)
+        final JSONNumber rotate = section?.getProperty( MSS_IMAGE.imgRotateDegrees.name() ) as JSONNumber
+        image.updateRotateIfNotSet( rotate )
 
-        final JSONBoolean flow = section?.getProperty(MSS_IMAGE.imgFlow.name()) as JSONBoolean
-        image.updateImgFlowIfNotSet(flow)
+        final JSONBoolean flow = section?.getProperty( MSS_IMAGE.imgFlow.name() ) as JSONBoolean
+        image.updateImgFlowIfNotSet( flow )
 
-        final JSONNumber flowMargin = section?.getProperty(MSS_IMAGE.imgFlowMargin.name()) as JSONNumber
-        image.updateImgFlowMarginIfNotSet(flowMargin)
+        final JSONNumber flowMargin = section?.getProperty( MSS_IMAGE.imgFlowMargin.name() ) as JSONNumber
+        image.updateImgFlowMarginIfNotSet( flowMargin )
 
-        final JSONNumber imgX = section?.getProperty(MSS_IMAGE.imgX.name()) as JSONNumber
-        image.updateImgXIfNotSet(imgX)
+        final JSONNumber imgX = section?.getProperty( MSS_IMAGE.imgX.name() ) as JSONNumber
+        image.updateImgXIfNotSet( imgX )
 
-        final JSONNumber imgY = section?.getProperty(MSS_IMAGE.imgY.name()) as JSONNumber
-        image.updateImgYIfNotSet(imgY)
+        final JSONNumber imgY = section?.getProperty( MSS_IMAGE.imgY.name() ) as JSONNumber
+        image.updateImgYIfNotSet( imgY )
     }
 
     /**
@@ -535,9 +544,10 @@ class MSS {
      *
      * @param colorPair The color pair to ensure.
      */
-    private static @NotNull MSSColorPair ensureColorPair(@NotNull final MSSColorPair colorPair) {
-        colorPair.updateForegroundIfNotSet(MSSColor.BLACK)
-        colorPair.updateBackgroundIfNotSet(MSSColor.WHITE)
+    private static @NotNull
+    MSSColorPair ensureColorPair( @NotNull final MSSColorPair colorPair ) {
+        colorPair.updateForegroundIfNotSet( MSSColor.BLACK )
+        colorPair.updateBackgroundIfNotSet( MSSColor.WHITE )
 
         colorPair
     }
@@ -547,10 +557,11 @@ class MSS {
      *
      * @param font The font to ensure.
      */
-    private static @NotNull MSSFont ensureFont(@NotNull final MSSFont font) {
-        font.updateFamilyIfNotSet("HELVETICA")
-        font.updateSizeIfNotSet(10)
-        font.updateStyleIfNotSet(MSSFontStyle.NORMAL.name())
+    private static @NotNull
+    MSSFont ensureFont( @NotNull final MSSFont font ) {
+        font.updateFamilyIfNotSet( "HELVETICA" )
+        font.updateSizeIfNotSet( 10 )
+        font.updateStyleIfNotSet( MSSFontStyle.NORMAL.name() )
 
         font
     }
@@ -560,12 +571,13 @@ class MSS {
      *
      * @param image The image data to ensure.
      */
-    private static @NotNull MSSImage ensureImage(@NotNull final MSSImage image) {
-        image.updateScaleIfNotSet(new JSONNumber(60.0f))
-        image.updateAlignIfNotSet(new JSONString("LEFT"))
-        image.updateRotateIfNotSet(new JSONNumber(0.0f))
-        image.updateImgFlowIfNotSet(new JSONBoolean(false))
-        image.updateImgFlowMarginIfNotSet(new JSONNumber(4.0f))
+    private static @NotNull
+    MSSImage ensureImage( @NotNull final MSSImage image ) {
+        image.updateScaleIfNotSet( new JSONNumber( 60.0f ) )
+        image.updateAlignIfNotSet( new JSONString( "LEFT" ) )
+        image.updateRotateIfNotSet( new JSONNumber( 0.0f ) )
+        image.updateImgFlowIfNotSet( new JSONBoolean( false ) )
+        image.updateImgFlowMarginIfNotSet( new JSONNumber( 4.0f ) )
         image
     }
 
@@ -574,46 +586,46 @@ class MSS {
      *
      * @param section The header section to lookup underline status for.
      */
-    boolean isHeaderUnderlinedForDocument(@NotNull final MSS_Pages section) {
-        if (!section.name().startsWith("h")) {
+    boolean isHeaderUnderlinedForDocument( @NotNull final MSS_Pages section ) {
+        if ( !section.name().startsWith( "h" ) ) {
             return false
         }
 
         Boolean isUnderlined = null
-        if (this.currentDivs != null) {
+        if ( this.currentDivs != null ) {
             this.currentDivs.each { String divName ->
-                JSONObject div = this.divs.getProperty(divName) as JSONObject
-                JSONValue header = div.getProperty(section.name())
-                if (header != null && header instanceof JSONObject) {
-                    JSONValue val = header.getProperty(MSS_Header.underlined.name())
-                    if (val != null && val instanceof JSONBoolean) {
-                        isUnderlined = (val as JSONBoolean).asBoolean
+                JSONObject div = this.divs.getProperty( divName ) as JSONObject
+                JSONValue header = div.getProperty( section.name() )
+                if ( header != null && header instanceof JSONObject ) {
+                    JSONValue val = ( header as JSONObject ).getProperty( MSS_Header.underlined.name() )
+                    if ( val != null && val instanceof JSONBoolean ) {
+                        isUnderlined = ( val as JSONBoolean ).asBoolean
                     }
                 }
             }
         }
 
-        if (isUnderlined == null) {
-            JSONValue header = this.pages.getProperty(section.name())
-            if (header != null && header instanceof JSONObject) {
-                JSONValue val = header.getProperty(MSS_Header.underlined.name())
-                if (val != null && val instanceof JSONBoolean) {
-                    isUnderlined = (val as JSONBoolean).asBoolean
+        if ( isUnderlined == null ) {
+            JSONValue header = this.pages.getProperty( section.name() )
+            if ( header != null && header instanceof JSONObject ) {
+                JSONValue val = ( header as JSONObject ).getProperty( MSS_Header.underlined.name() )
+                if ( val != null && val instanceof JSONBoolean ) {
+                    isUnderlined = ( val as JSONBoolean ).asBoolean
                 }
             }
         }
 
-        if (isUnderlined == null) {
-            JSONValue header = this.document.getProperty(section.name())
-            if (header != null && header instanceof JSONObject) {
-                JSONValue val = header.getProperty(MSS_Header.underlined.name())
-                if (val != null && val instanceof JSONBoolean) {
-                    isUnderlined = (val as JSONBoolean).asBoolean
+        if ( isUnderlined == null ) {
+            JSONValue header = this.document.getProperty( section.name() )
+            if ( header != null && header instanceof JSONObject ) {
+                JSONValue val = ( header as JSONObject ).getProperty( MSS_Header.underlined.name() )
+                if ( val != null && val instanceof JSONBoolean ) {
+                    isUnderlined = ( val as JSONBoolean ).asBoolean
                 }
             }
         }
 
-        if (isUnderlined == null) isUnderlined = false
+        if ( isUnderlined == null ) isUnderlined = false
 
         isUnderlined
     }
@@ -623,46 +635,46 @@ class MSS {
      *
      * @param section The header section to lookup underline offset for.
      */
-    float getHeaderUnderlineOffsetForDocument(@NotNull final MSS_Pages section) {
-        if (!section.name().startsWith("h")) {
-            throw new IllegalArgumentException("Only valid for headers!!")
+    float getHeaderUnderlineOffsetForDocument( @NotNull final MSS_Pages section ) {
+        if ( !section.name().startsWith( "h" ) ) {
+            throw new IllegalArgumentException( "Only valid for headers!!" )
         }
 
         Float underlineOffset = null
-        if (this.currentDivs != null) {
+        if ( this.currentDivs != null ) {
             this.currentDivs.each { String divName ->
-                JSONObject div = this.divs.getProperty(divName) as JSONObject
-                JSONValue header = div.getProperty(section.name())
-                if (header != null && header instanceof JSONObject) {
-                    JSONValue val = header.getProperty(MSS_Header.underline_offset.name())
-                    if (val != null && val instanceof JSONBoolean) {
-                        underlineOffset = (val as JSONNumber).toFloat()
+                JSONObject div = this.divs.getProperty( divName ) as JSONObject
+                JSONValue header = div.getProperty( section.name() )
+                if ( header != null && header instanceof JSONObject ) {
+                    JSONValue val = ( header as JSONObject ).getProperty( MSS_Header.underline_offset.name() )
+                    if ( val != null && val instanceof JSONBoolean ) {
+                        underlineOffset = ( val as JSONNumber ).toFloat()
                     }
                 }
             }
         }
 
-        if (underlineOffset == null) {
-            JSONValue header = this.pages.getProperty(section.name())
-            if (header != null && header instanceof JSONObject) {
-                JSONValue val = header.getProperty(MSS_Header.underline_offset.name())
-                if (val != null && val instanceof JSONBoolean) {
-                    underlineOffset = (val as JSONNumber).toFloat()
+        if ( underlineOffset == null ) {
+            JSONValue header = this.pages.getProperty( section.name() )
+            if ( header != null && header instanceof JSONObject ) {
+                JSONValue val = ( header as JSONObject ).getProperty( MSS_Header.underline_offset.name() )
+                if ( val != null && val instanceof JSONBoolean ) {
+                    underlineOffset = ( val as JSONNumber ).toFloat()
                 }
             }
         }
 
-        if (underlineOffset == null) {
-            JSONValue header = this.document.getProperty(section.name())
-            if (header != null && header instanceof JSONObject) {
-                JSONValue val = header.getProperty(MSS_Header.underline_offset.name())
-                if (val != null && val instanceof JSONBoolean) {
-                    underlineOffset = (val as JSONNumber).toFloat()
+        if ( underlineOffset == null ) {
+            JSONValue header = this.document.getProperty( section.name() )
+            if ( header != null && header instanceof JSONObject ) {
+                JSONValue val = ( header as JSONObject ).getProperty( MSS_Header.underline_offset.name() )
+                if ( val != null && val instanceof JSONBoolean ) {
+                    underlineOffset = ( val as JSONNumber ).toFloat()
                 }
             }
         }
 
-        if (underlineOffset == null) underlineOffset = 3.0f
+        if ( underlineOffset == null ) underlineOffset = 3.0f
 
         underlineOffset
     }
@@ -672,23 +684,24 @@ class MSS {
      *
      * @param section A section type like h1, blockquote, etc.
      */
-    @NotNull MSSColorPair getColorPairForDocument(@NotNull final MSS_Pages section) {
+    @NotNull
+    MSSColorPair getColorPairForDocument( @NotNull final MSS_Pages section ) {
         MSSColorPair colorPair = new MSSColorPair()
 
-        if (this.currentDivs != null) {
+        if ( this.currentDivs != null ) {
             this.currentDivs.each { String divName ->
-                JSONObject div = this.divs.getProperty(divName) as JSONObject
-                updateMSSColorPairIfNotSet(colorPair, div?.getProperty(section.name()) as JSONObject)
-                updateMSSColorPairIfNotSet(colorPair, div)
+                JSONObject div = this.divs.getProperty( divName ) as JSONObject
+                updateMSSColorPairIfNotSet( colorPair, div?.getProperty( section.name() ) as JSONObject )
+                updateMSSColorPairIfNotSet( colorPair, div )
             }
         }
 
-        updateMSSColorPairIfNotSet(colorPair, this.pages.getProperty(section.name()) as JSONObject)
-        updateMSSColorPairIfNotSet(colorPair, this.pages)
+        updateMSSColorPairIfNotSet( colorPair, this.pages.getProperty( section.name() ) as JSONObject )
+        updateMSSColorPairIfNotSet( colorPair, this.pages )
 
-        updateMSSColorPairIfNotSet(colorPair, this.document)
+        updateMSSColorPairIfNotSet( colorPair, this.document )
 
-        ensureColorPair(colorPair)
+        ensureColorPair( colorPair )
     }
 
     /**
@@ -696,62 +709,65 @@ class MSS {
      *
      * @param section A section type like h1, blockquote, etc.
      */
-    @NotNull MSSFont getFontForDocument(@NotNull final MSS_Pages section) {
+    @NotNull
+    MSSFont getFontForDocument( @NotNull final MSS_Pages section ) {
         MSSFont font = new MSSFont()
 
-        if (this.currentDivs != null) {
+        if ( this.currentDivs != null ) {
             this.currentDivs.each { String divName ->
-                JSONObject div = this.divs.getProperty(divName) as JSONObject
-                updateMSSFontIfNotSet(font, div?.getProperty(section.name()) as JSONObject)
-                updateMSSFontIfNotSet(font, div)
+                JSONObject div = this.divs.getProperty( divName ) as JSONObject
+                updateMSSFontIfNotSet( font, div?.getProperty( section.name() ) as JSONObject )
+                updateMSSFontIfNotSet( font, div )
             }
         }
 
-        updateMSSFontIfNotSet(font, this.pages.getProperty(section.name()) as JSONObject)
-        updateMSSFontIfNotSet(font, this.pages)
+        updateMSSFontIfNotSet( font, this.pages.getProperty( section.name() ) as JSONObject )
+        updateMSSFontIfNotSet( font, this.pages )
 
-        updateMSSFontIfNotSet(font, this.document)
+        updateMSSFontIfNotSet( font, this.document )
 
-        ensureFont(font)
+        ensureFont( font )
     }
 
     /**
      * Returns a MSSImage containing image format information.
      */
-    @NotNull MSSImage getImageStyleForDocument() {
+    @NotNull
+    MSSImage getImageStyleForDocument() {
         final MSSImage image = new MSSImage()
 
         JSONObject standard
 
-        if (this.currentDivs != null) {
+        if ( this.currentDivs != null ) {
             this.currentDivs.each { final String divName ->
-                final JSONObject div = this.divs.getProperty(divName) as JSONObject
+                final JSONObject div = this.divs.getProperty( divName ) as JSONObject
 
-                standard = div?.getProperty(MSS_Pages.standard.name()) as JSONObject
-                if (standard != null) {
-                    updateMSSImageIfNotSet(image, standard.getProperty(MSS_Pages.image.name()) as JSONObject)
+                standard = div?.getProperty( MSS_Pages.standard.name() ) as JSONObject
+                if ( standard != null ) {
+                    updateMSSImageIfNotSet( image, standard.getProperty( MSS_Pages.image.name() ) as JSONObject )
                 }
-                updateMSSImageIfNotSet(image, standard)
-                updateMSSImageIfNotSet(image, div?.getProperty(MSS_Pages.image.name()) as JSONObject)
-                updateMSSImageIfNotSet(image, div)
+                updateMSSImageIfNotSet( image, standard )
+                updateMSSImageIfNotSet( image, div?.getProperty( MSS_Pages.image.name() ) as JSONObject )
+                updateMSSImageIfNotSet( image, div )
             }
         }
 
-        standard = this.pages.getProperty(MSS_Pages.standard.name()) as JSONObject
-        if (standard != null) {
-            updateMSSImageIfNotSet(image, standard.getProperty(MSS_Pages.image.name()) as JSONObject)
+        standard = this.pages.getProperty( MSS_Pages.standard.name() ) as JSONObject
+        if ( standard != null ) {
+            updateMSSImageIfNotSet( image, standard.getProperty( MSS_Pages.image.name() ) as JSONObject )
         }
-        updateMSSImageIfNotSet(image, standard)
-        updateMSSImageIfNotSet(image, this.pages?.getProperty(MSS_Pages.image.name()) as JSONObject)
-        updateMSSImageIfNotSet(image, this.pages)
-        updateMSSImageIfNotSet(image, this.document?.getProperty(MSS_Pages.image.name()) as JSONObject)
-        updateMSSImageIfNotSet(image, this.document)
+        updateMSSImageIfNotSet( image, standard )
+        updateMSSImageIfNotSet( image, this.pages?.getProperty( MSS_Pages.image.name() ) as JSONObject )
+        updateMSSImageIfNotSet( image, this.pages )
+        updateMSSImageIfNotSet( image, this.document?.getProperty( MSS_Pages.image.name() ) as JSONObject )
+        updateMSSImageIfNotSet( image, this.document )
 
-        ensureImage(image)
+        ensureImage( image )
     }
 
-    private static float cmToInch(float cm) { cm * (1.0f / 2.54f) }
-    private static float inchToPt(float inch) { inch * 72.0f }
+    private static float cmToInch( float cm ) { cm * ( 1.0f / 2.54f ) }
+
+    private static float inchToPt( float inch ) { inch * 72.0f }
 
     /**
      * This converts a value into PDF points. If the value is a number points is assumed. If it is a string
@@ -761,33 +777,33 @@ class MSS {
      *
      * @return A float in points.
      */
-    private static float marginToFloat(@NotNull JSONValue mVal) {
-        if (mVal == null) throw new IllegalArgumentException("marginToFloat(val) cannot be null!")
+    private static float marginToFloat( @NotNull JSONValue mVal ) {
+        if ( mVal == null ) throw new IllegalArgumentException( "marginToFloat(val) cannot be null!" )
 
         float margin
 
-        switch (mVal) {
+        switch ( mVal ) {
             case { it instanceof JSONNumber }:
-                margin = (mVal as JSONNumber).toFloat()
+                margin = ( mVal as JSONNumber ).toFloat()
                 break
 
-            case { it instanceof JSONString && it.toString().endsWith("pt") }:
-                def val = mVal.toString()[0..(mVal.toString().size()-3)].trim()
-                margin = Float.valueOf(val)
+            case { it instanceof JSONString && it.toString().endsWith( "pt" ) }:
+                def val = mVal.toString()[ 0..( mVal.toString().size() - 3 ) ].trim()
+                margin = Float.valueOf( val )
                 break
 
-            case { it instanceof JSONString && it.toString().endsWith("cm") }:
-                def val = mVal.toString()[0..(mVal.toString().size()-3)].trim()
-                margin = inchToPt(cmToInch(Float.valueOf(val)))
+            case { it instanceof JSONString && it.toString().endsWith( "cm" ) }:
+                def val = mVal.toString()[ 0..( mVal.toString().size() - 3 ) ].trim()
+                margin = inchToPt( cmToInch( Float.valueOf( val ) ) )
                 break
 
-            case { it instanceof JSONString && it.toString().endsWith("in") }:
-                def val = mVal.toString()[0..(mVal.toString().size()-3)].trim()
-                margin = inchToPt(Float.valueOf(val))
+            case { it instanceof JSONString && it.toString().endsWith( "in" ) }:
+                def val = mVal.toString()[ 0..( mVal.toString().size() - 3 ) ].trim()
+                margin = inchToPt( Float.valueOf( val ) )
                 break
             default:
-                throw new IllegalArgumentException("'${mVal}' as bad specification! Either specify points in numeric format or " +
-                        "a string with a size and a pt/cm/in suffix.")
+                throw new IllegalArgumentException( "'${ mVal }' as bad specification! Either specify points in numeric format or " +
+                        "a string with a size and a pt/cm/in suffix." )
         }
 
         margin
@@ -799,16 +815,17 @@ class MSS {
      * @param value The value to check for null.
      * @param defaultValue The default value to use if value is null.
      */
-    private static JSONValue nullToDefault(JSONValue value, JSONValue defaultValue) {
+    private static JSONValue nullToDefault( JSONValue value, JSONValue defaultValue ) {
         value != null ? value : defaultValue
     }
 
     /**
      * Returns the page format.
      */
-    @NotNull String getPageFormat() {
-        String value = this.document?.getProperty(MSS_Page.pageFormat.name())?.toString()?.toUpperCase()
-        if (value == null) value = "A4"
+    @NotNull
+    String getPageFormat() {
+        String value = this.document?.getProperty( MSS_Page.pageFormat.name() )?.toString()?.toUpperCase()
+        if ( value == null ) value = "A4"
 
         value
     }
@@ -816,29 +833,37 @@ class MSS {
     /**
      * Returns the top margin of a page.
      */
-    @NotNull float getTopMarginForDocument() {
-        marginToFloat(nullToDefault(this.document?.getProperty(MSS_Page.topMargin.name()), new JSONString("2.54cm")))
+    @NotNull
+    float getTopMarginForDocument( MSS_Pages section ) {
+        JSONValue marginValue = getSingleValueForDocument( MSS_Page.topMargin.name(), section.name() )
+        marginToFloat( nullToDefault( marginValue, new JSONString( "2.54cm" ) ) )
     }
 
     /**
      * Returns the left margin of a page.
      */
-    @NotNull float getLeftMarginForDocument() {
-        marginToFloat(nullToDefault(this.document?.getProperty(MSS_Page.leftMargin.name()), new JSONString("2.54cm")))
+    @NotNull
+    float getLeftMarginForDocument( MSS_Pages section ) {
+        JSONValue marginValue = getSingleValueForDocument( MSS_Page.leftMargin.name(), section.name() )
+        marginToFloat( nullToDefault( marginValue, new JSONString( "2.54cm" ) ) )
     }
 
     /**
      * Returns the right margin of a page.
      */
-    @NotNull float getRightMarginForDocument() {
-        marginToFloat(nullToDefault(this.document?.getProperty(MSS_Page.rightMargin.name()), new JSONString("2.54cm")))
+    @NotNull
+    float getRightMarginForDocument( MSS_Pages section ) {
+        JSONValue marginValue = getSingleValueForDocument( MSS_Page.rightMargin.name(), section.name() )
+        marginToFloat( nullToDefault( marginValue, new JSONString( "2.54cm" ) ) )
     }
 
     /**
      * Returns the bottom margin of a page.
      */
-    @NotNull float getBottomMarginForDocument() {
-        marginToFloat(nullToDefault(this.document?.getProperty(MSS_Page.bottomMargin.name()), new JSONString("2.54cm")))
+    @NotNull
+    float getBottomMarginForDocument( MSS_Pages section ) {
+        JSONValue marginValue = getSingleValueForDocument( MSS_Page.bottomMargin.name(), section.name() )
+        marginToFloat( nullToDefault( marginValue, new JSONString( "2.54cm" ) ) )
     }
 
     /**
@@ -846,8 +871,9 @@ class MSS {
      *
      * @param section The section to check.
      */
-    @NotNull boolean isBoxedForDocument(@NotNull MSS_Pages section) {
-        JSONBoolean boxed = getSingleValueForDocument(MSS_Boxed.boxed.name(), section.name()) as JSONBoolean
+    @NotNull
+    boolean isBoxedForDocument( @NotNull MSS_Pages section ) {
+        JSONBoolean boxed = getSingleValueForDocument( MSS_Boxed.boxed.name(), section.name() ) as JSONBoolean
         boxed != null ? boxed.asBoolean : false
     }
 
@@ -856,16 +882,17 @@ class MSS {
      *
      * @param section The section to get box color for.
      */
-    @NotNull MSSColor getBoxColorForDocument(@NotNull MSS_Pages section) {
-        JSONString boxedColor = getSingleValueForDocument(MSS_Boxed.boxedColor.name(), section.name()) as JSONString
-        boxedColor != null ? lookupColor(boxedColor.toString()) : new MSSColor(color: "240:240:240")
+    @NotNull
+    MSSColor getBoxColorForDocument( @NotNull MSS_Pages section ) {
+        JSONString boxedColor = getSingleValueForDocument( MSS_Boxed.boxedColor.name(), section.name() ) as JSONString
+        boxedColor != null ? lookupColor( boxedColor.toString() ) : new MSSColor( color: "240:240:240" )
     }
 
     /**
      * Returns the thickness of an hr.
      */
     float getHrThicknessForDocument() {
-        JSONNumber hrThickness = getSingleValueForDocument(MSS_HR.thickness.name(), MSS_Pages.horizontal_ruler.name()) as JSONNumber
+        JSONNumber hrThickness = getSingleValueForDocument( MSS_HR.thickness.name(), MSS_Pages.horizontal_ruler.name() ) as JSONNumber
         hrThickness != null ? hrThickness.toFloat() : 0.5f
     }
 
@@ -873,7 +900,7 @@ class MSS {
      * Returns the color of an hr.
      */
     String getHrColorForDocument() {
-        JSONString hrColor = getSingleValueForDocument(MSS_HR.color.name(), MSS_Pages.horizontal_ruler.name()) as JSONString
+        JSONString hrColor = getSingleValueForDocument( MSS_HR.color.name(), MSS_Pages.horizontal_ruler.name() ) as JSONString
         hrColor != null ? hrColor : "0:0:0"
     }
 
@@ -882,8 +909,8 @@ class MSS {
      *
      * @param section The section to get Y offset for.
      */
-    float getSectionNumberYOffsetForDocument(@NotNull MSS_Pages section) {
-        JSONNumber snYOff = getSingleValueForDocument(MSS_SectionNumber.sectionNumberYOffset.name(), section.name()) as JSONNumber
+    float getSectionNumberYOffsetForDocument( @NotNull MSS_Pages section ) {
+        JSONNumber snYOff = getSingleValueForDocument( MSS_SectionNumber.sectionNumberYOffset.name(), section.name() ) as JSONNumber
         snYOff != null ? snYOff.toFloat() : 0.0f
     }
 
@@ -892,8 +919,8 @@ class MSS {
      *
      * @param section The section to get X offset for.
      */
-    float getSectionNumberXOffsetForDocument(@NotNull MSS_Pages section) {
-        JSONNumber snXOff = getSingleValueForDocument(MSS_SectionNumber.sectionNumberXOffset.name(), section.name()) as JSONNumber
+    float getSectionNumberXOffsetForDocument( @NotNull MSS_Pages section ) {
+        JSONNumber snXOff = getSingleValueForDocument( MSS_SectionNumber.sectionNumberXOffset.name(), section.name() ) as JSONNumber
         snXOff != null ? snXOff.toFloat() : 0.0f
     }
 
@@ -902,8 +929,8 @@ class MSS {
      *
      * @param section The section to get preformatted word wrap setting for.
      */
-    boolean isPreformattedWordWrapForDocument(@NotNull MSS_Pages section) {
-        JSONBoolean preWordWrap = getSingleValueForDocument(MSS_Preformatted.preformattedWordWrap.name(), section.name()) as JSONBoolean
+    boolean isPreformattedWordWrapForDocument( @NotNull MSS_Pages section ) {
+        JSONBoolean preWordWrap = getSingleValueForDocument( MSS_Preformatted.preformattedWordWrap.name(), section.name() ) as JSONBoolean
         preWordWrap != null ? preWordWrap.asBoolean : false
     }
 
@@ -914,15 +941,15 @@ class MSS {
      * @param propName The name of the JSON object value to fetch.
      * @param sectionName The section to get the MSS JSON object for.
      */
-    private static JSONValue checkSingleValue(JSONObject checkIn, String propName, String sectionName) {
+    private static JSONValue checkSingleValue( JSONObject checkIn, String propName, String sectionName ) {
         JSONValue hrValue = null
-        JSONObject hrObject = checkIn?.getProperty(sectionName) as JSONObject
-        if (hrObject != null) {
-            hrValue = hrObject.getProperty(propName)
+        JSONObject hrObject = checkIn?.getProperty( sectionName ) as JSONObject
+        if ( hrObject != null ) {
+            hrValue = hrObject.getProperty( propName )
         }
 
-        if (hrValue == null) {
-            hrValue = checkIn?.getProperty(propName)
+        if ( hrValue == null ) {
+            hrValue = checkIn?.getProperty( propName )
         }
 
         hrValue
@@ -934,28 +961,28 @@ class MSS {
      * @param valueName The name of the value to fetch.
      * @param sectionName The name of the section in which to look for the value.
      */
-    private JSONValue getSingleValueForDocument(String valueName, String sectionName) {
+    private JSONValue getSingleValueForDocument( String valueName, String sectionName ) {
         JSONValue value = null
-        if (this.currentDivs != null) {
+        if ( this.currentDivs != null ) {
             this.currentDivs.each { String divName ->
-                JSONObject div = this.divs.getProperty(divName) as JSONObject
-                JSONValue pValue = checkSingleValue(div, valueName, sectionName)
-                if (pValue != null) {
+                JSONObject div = this.divs.getProperty( divName ) as JSONObject
+                JSONValue pValue = checkSingleValue( div, valueName, sectionName )
+                if ( pValue != null ) {
                     value = pValue
                 }
             }
         }
 
-        if (value == null) {
-            JSONValue pValue = checkSingleValue(this.pages, valueName, sectionName)
-            if (pValue != null) {
+        if ( value == null ) {
+            JSONValue pValue = checkSingleValue( this.pages, valueName, sectionName )
+            if ( pValue != null ) {
                 value = pValue
             }
         }
 
-        if (value == null) {
-            JSONValue pValue = checkSingleValue(this.document, valueName, sectionName)
-            if (pValue != null) {
+        if ( value == null ) {
+            JSONValue pValue = checkSingleValue( this.document, valueName, sectionName )
+            if ( pValue != null ) {
                 value = pValue
             }
         }
@@ -965,68 +992,77 @@ class MSS {
 
 
     class ForDocument {
-        @NotNull MSSColorPair getColorPair(@NotNull final MSS_Pages section) {
-            getColorPairForDocument(section)
+        @NotNull
+        MSSColorPair getColorPair( @NotNull final MSS_Pages section ) {
+            getColorPairForDocument( section )
         }
 
-        @NotNull MSSFont getFont(@NotNull final MSS_Pages section) {
-            getFontForDocument(section)
+        @NotNull
+        MSSFont getFont( @NotNull final MSS_Pages section ) {
+            getFontForDocument( section )
         }
 
-        @NotNull MSSImage getImageStyle() {
+        @NotNull
+        MSSImage getImageStyle() {
             getImageStyleForDocument()
         }
 
-        @NotNull float getTopMargin() {
-            getTopMarginForDocument()
+        @NotNull
+        float getTopMargin( MSS_Pages section ) {
+            getTopMarginForDocument( section )
         }
 
-        @NotNull float getLeftMargin() {
-            getLeftMarginForDocument()
+        @NotNull
+        float getLeftMargin( MSS_Pages section ) {
+            getLeftMarginForDocument( section )
         }
 
-        @NotNull float getRightMargin() {
-            getRightMarginForDocument()
+        @NotNull
+        float getRightMargin( MSS_Pages section ) {
+            getRightMarginForDocument( section )
         }
 
-        @NotNull float getBottomMargin() {
-            getBottomMarginForDocument()
+        @NotNull
+        float getBottomMargin( MSS_Pages section ) {
+            getBottomMarginForDocument( section )
         }
 
-        boolean isBoxed(@NotNull MSS_Pages section) {
-            isBoxedForDocument(section)
+        boolean isBoxed( @NotNull MSS_Pages section ) {
+            isBoxedForDocument( section )
         }
 
-        @NotNull MSSColor getBoxColor(@NotNull MSS_Pages section) {
-            getBoxColorForDocument(section)
+        @NotNull
+        MSSColor getBoxColor( @NotNull MSS_Pages section ) {
+            getBoxColorForDocument( section )
         }
 
         float getHrThickness() {
             getHrThicknessForDocument()
         }
 
-        @NotNull MSSColor getHrColor() {
-            lookupColor(getHrColorForDocument())
+        @NotNull
+        MSSColor getHrColor() {
+            lookupColor( getHrColorForDocument() )
         }
 
-        float getSectionNumberYOffset(@NotNull MSS_Pages section) {
-            getSectionNumberYOffsetForDocument(section)
+        float getSectionNumberYOffset( @NotNull MSS_Pages section ) {
+            getSectionNumberYOffsetForDocument( section )
         }
 
-        float getSectionNumberXOffset(@NotNull MSS_Pages section) {
-            getSectionNumberXOffsetForDocument(section)
+        float getSectionNumberXOffset( @NotNull MSS_Pages section ) {
+            getSectionNumberXOffsetForDocument( section )
         }
 
-        boolean isHeaderUnderlined(@NotNull MSS_Pages section) {
-            isHeaderUnderlinedForDocument(section)
+        boolean isHeaderUnderlined( @NotNull MSS_Pages section ) {
+            isHeaderUnderlinedForDocument( section )
         }
 
-        float getHeaderUnderlineOffset(@NotNull MSS_Pages section) {
-            getHeaderUnderlineOffsetForDocument(section)
+        float getHeaderUnderlineOffset( @NotNull MSS_Pages section ) {
+            getHeaderUnderlineOffsetForDocument( section )
         }
 
-        boolean isPreformattedWordWrap(@NotNull MSS_Pages section) {
-            isPreformattedWordWrapForDocument(section)
+        boolean isPreformattedWordWrap( @NotNull MSS_Pages section ) {
+            isPreformattedWordWrapForDocument( section )
         }
     }
 
@@ -1039,13 +1075,14 @@ class MSS {
      *
      * @param section The front page section to get color pair for.
      */
-    @NotNull MSSColorPair getColorPairForFrontPage(@NotNull final MSS_Front_Page section) {
+    @NotNull
+    MSSColorPair getColorPairForFrontPage( @NotNull final MSS_Front_Page section ) {
         MSSColorPair colorPair = new MSSColorPair()
 
-        updateMSSColorPairIfNotSet(colorPair, this.frontPage.getProperty(section.name()) as JSONObject)
-        updateMSSColorPairIfNotSet(colorPair, this.frontPage)
+        updateMSSColorPairIfNotSet( colorPair, this.frontPage.getProperty( section.name() ) as JSONObject )
+        updateMSSColorPairIfNotSet( colorPair, this.frontPage )
 
-        ensureColorPair(colorPair)
+        ensureColorPair( colorPair )
     }
 
     /**
@@ -1053,37 +1090,42 @@ class MSS {
      *
      * @param section The front page section to get font for.
      */
-    @NotNull MSSFont getFontForFrontPage(@NotNull final MSS_Front_Page section) {
+    @NotNull
+    MSSFont getFontForFrontPage( @NotNull final MSS_Front_Page section ) {
         MSSFont font = new MSSFont()
 
-        updateMSSFontIfNotSet(font, this.frontPage.getProperty(section.name()) as JSONObject)
-        updateMSSFontIfNotSet(font, this.frontPage)
+        updateMSSFontIfNotSet( font, this.frontPage.getProperty( section.name() ) as JSONObject )
+        updateMSSFontIfNotSet( font, this.frontPage )
 
-        ensureFont(font)
+        ensureFont( font )
     }
 
     /**
      * Returns an MSSImage with image info.
      */
-    @NotNull MSSImage getImageDataForFrontPage() {
+    @NotNull
+    MSSImage getImageDataForFrontPage() {
         MSSImage image = new MSSImage()
 
-        updateMSSImageIfNotSet(image, this.frontPage.getProperty(MSS_Front_Page.image.name()) as JSONObject)
-        updateMSSImageIfNotSet(image, this.frontPage)
+        updateMSSImageIfNotSet( image, this.frontPage.getProperty( MSS_Front_Page.image.name() ) as JSONObject )
+        updateMSSImageIfNotSet( image, this.frontPage )
 
-        ensureImage(image)
+        ensureImage( image )
     }
 
     class ForFrontPage {
-        @NotNull MSSColorPair getColorPair(@NotNull final MSS_Front_Page section) {
-            getColorPairForFrontPage(section)
+        @NotNull
+        MSSColorPair getColorPair( @NotNull final MSS_Front_Page section ) {
+            getColorPairForFrontPage( section )
         }
 
-        @NotNull MSSFont getFont(@NotNull final MSS_Front_Page section) {
-            getFontForFrontPage(section)
+        @NotNull
+        MSSFont getFont( @NotNull final MSS_Front_Page section ) {
+            getFontForFrontPage( section )
         }
 
-        @NotNull MSSImage getImageData() {
+        @NotNull
+        MSSImage getImageData() {
             getImageDataForFrontPage()
         }
     }
@@ -1092,19 +1134,19 @@ class MSS {
 
     ForFrontPage getForFrontPage() { this.forFrontPage }
 
-
     /**
      * Returns a MSSColorPair containing foreground and background color to use for the TOC section.
      *
      * @param section The TOC section to use the color pair for.
      */
-    @NotNull MSSColorPair getColorPairForTOC(@NotNull final MSS_TOC section) {
+    @NotNull
+    MSSColorPair getColorPairForTOC( @NotNull final MSS_TOC section ) {
         MSSColorPair colorPair = new MSSColorPair()
 
-        updateMSSColorPairIfNotSet(colorPair, this.TOC.getProperty(section.name()) as JSONObject)
-        updateMSSColorPairIfNotSet(colorPair, this.TOC)
+        updateMSSColorPairIfNotSet( colorPair, this.TOC.getProperty( section.name() ) as JSONObject )
+        updateMSSColorPairIfNotSet( colorPair, this.TOC )
 
-        ensureColorPair(colorPair)
+        ensureColorPair( colorPair )
     }
 
     /**
@@ -1112,29 +1154,31 @@ class MSS {
      *
      * @param section The TOC section to use the font for.
      */
-    @NotNull MSSFont getFontForTOC(@NotNull final MSS_TOC section) {
+    @NotNull
+    MSSFont getFontForTOC( @NotNull final MSS_TOC section ) {
         MSSFont font = new MSSFont()
 
-        updateMSSFontIfNotSet(font, this.TOC.getProperty(section.name()) as JSONObject)
-        updateMSSFontIfNotSet(font, this.TOC)
+        updateMSSFontIfNotSet( font, this.TOC.getProperty( section.name() ) as JSONObject )
+        updateMSSFontIfNotSet( font, this.TOC )
 
-        ensureFont(font)
+        ensureFont( font )
     }
 
     class ForTOC {
-        @NotNull MSSColorPair getColorPair(@NotNull final MSS_TOC section) {
-            getColorPairForTOC(section)
+        @NotNull
+        MSSColorPair getColorPair( @NotNull final MSS_TOC section ) {
+            getColorPairForTOC( section )
         }
 
-        @NotNull MSSFont getFont(@NotNull final MSS_TOC section) {
-            getFontForTOC(section)
+        @NotNull
+        MSSFont getFont( @NotNull final MSS_TOC section ) {
+            getFontForTOC( section )
         }
     }
 
     private ForTOC forTOC = new ForTOC()
 
     ForTOC getForTOC() { this.forTOC }
-
 
     //
     // Static Methods
@@ -1147,22 +1191,23 @@ class MSS {
      *
      * @throws IOException
      */
-    static @NotNull MSS fromInputStream(@NotNull final InputStream styleStream) throws IOException {
-        final JSONObject mss = (JSONObject) JSON.read(styleStream, new JSONErrorHandler() {
+    static @NotNull
+    MSS fromInputStream( @NotNull final InputStream styleStream ) throws IOException {
+        final JSONObject mss = ( JSONObject ) JSON.read( styleStream, new JSONErrorHandler() {
             @Override
-            void warning(@NotNull final String message) {
-                System.err.println("MSS: ${message}");
+            void warning( @NotNull final String message ) {
+                System.err.println( "MSS: ${ message }" )
             }
 
             @Override
-            void fail(@NotNull final String message, @Nullable final Throwable cause) throws RuntimeException {
-                throw new RuntimeException("MSS: ${message}", cause)
+            void fail( @NotNull final String message, @Nullable final Throwable cause ) throws RuntimeException {
+                throw new RuntimeException( "MSS: ${ message }", cause )
             }
-        });
+        } )
 
-        validateMSS(mss, "/")
+        validateMSS( mss, "/" )
 
-        new MSS(mss)
+        new MSS( mss )
     }
 
     /**
@@ -1170,10 +1215,11 @@ class MSS {
      *
      * @throws IOException Theoretically this should never happen ...
      */
-    static @NotNull MSS defaultMSS() throws IOException {
-        final InputStream mssStream = TestSafeResource.getResource("mss/default.mss")
+    static @NotNull
+    MSS defaultMSS() throws IOException {
+        final InputStream mssStream = TestSafeResource.getResource( "mss/default.mss" )
         try {
-            fromInputStream(mssStream)
+            fromInputStream( mssStream )
         }
         finally {
             mssStream.close()
@@ -1187,17 +1233,18 @@ class MSS {
      * @param path The current path (to help provide a better error message).
      * @throws IOException On validation failures.
      */
-    private static void validateMSS(@NotNull final JSONObject jssPart, @NotNull final String path) throws IOException {
+    private static void validateMSS(
+            @NotNull final JSONObject jssPart, @NotNull final String path ) throws IOException {
 
         jssPart.propertyNames.each { final JSONString name ->
-            if (!validName(name.toString())) {
-                if (!path.endsWith("divs/") && !path.endsWith("colors/")) {
-                    throw new IOException("Bad MSS field name: '${name}' in path '${path}'!")
+            if ( !validName( name.toString() ) ) {
+                if ( !path.endsWith( "divs/" ) && !path.endsWith( "colors/" ) ) {
+                    throw new IOException( "Bad MSS field name: '${ name }' in path '${ path }'!" )
                 }
             }
-            final JSONValue value = jssPart.getProperty(name)
-            if (value instanceof JSONObject) {
-                validateMSS((JSONObject) value, "${path}${name}/")
+            final JSONValue value = jssPart.getProperty( name )
+            if ( value instanceof JSONObject ) {
+                validateMSS( ( JSONObject ) value, "${ path }${ name }/" )
             }
         }
     }
@@ -1209,66 +1256,67 @@ class MSS {
      *
      * @return true on OK name, false otherwise.
      */
-    private static boolean validName(@NotNull final String name) {
+    private static boolean validName( @NotNull final String name ) {
         boolean ok = false
 
-        if (!ok) {
-            ok = safeNameValidation { MSS_Top.valueOf(name) != null }
+        if ( !ok ) {
+            ok = safeNameValidation { MSS_Top.valueOf( name ) != null }
         }
-        if (!ok) {
-            ok = safeNameValidation { MSS_Document.valueOf(name) != null }
+        if ( !ok ) {
+            ok = safeNameValidation { MSS_Document.valueOf( name ) != null }
         }
-        if (!ok) {
-            ok = safeNameValidation { MSS_Pages.valueOf(name) != null }
+        if ( !ok ) {
+            ok = safeNameValidation { MSS_Pages.valueOf( name ) != null }
         }
-        if (!ok) {
-            ok = safeNameValidation { MSS_Front_Page.valueOf(name) != null }
+        if ( !ok ) {
+            ok = safeNameValidation { MSS_Front_Page.valueOf( name ) != null }
         }
-        if (!ok) {
-            ok = safeNameValidation { MSS_TOC.valueOf(name) != null }
+        if ( !ok ) {
+            ok = safeNameValidation { MSS_TOC.valueOf( name ) != null }
         }
-        if (!ok) {
-            ok = safeNameValidation { MSS_Font.valueOf(name) != null }
+        if ( !ok ) {
+            ok = safeNameValidation { MSS_Font.valueOf( name ) != null }
         }
-        if (!ok) {
-            ok = safeNameValidation { MSS_Colors.valueOf(name) != null }
+        if ( !ok ) {
+            ok = safeNameValidation { MSS_Colors.valueOf( name ) != null }
         }
-        if (!ok) {
-            ok = safeNameValidation { MSS_PDF.valueOf(name) != null }
+        if ( !ok ) {
+            ok = safeNameValidation { MSS_PDF.valueOf( name ) != null }
         }
-        if (!ok) {
-            ok = safeNameValidation { MSS_IMAGE.valueOf(name) != null }
+        if ( !ok ) {
+            ok = safeNameValidation { MSS_IMAGE.valueOf( name ) != null }
         }
-        if (!ok) {
-            ok = safeNameValidation { MSS_Page.valueOf(name) != null }
+        if ( !ok ) {
+            ok = safeNameValidation { MSS_Page.valueOf( name ) != null }
         }
-        if (!ok) {
-            ok = safeNameValidation { MSS_Boxed.valueOf(name) != null }
+        if ( !ok ) {
+            ok = safeNameValidation { MSS_Boxed.valueOf( name ) != null }
         }
-        if (!ok) {
-            ok = safeNameValidation { MSS_HR.valueOf(name) != null }
+        if ( !ok ) {
+            ok = safeNameValidation { MSS_HR.valueOf( name ) != null }
         }
-        if (!ok) {
-            ok = safeNameValidation { MSS_Header.valueOf(name) != null }
+        if ( !ok ) {
+            ok = safeNameValidation { MSS_Header.valueOf( name ) != null }
         }
-        if (!ok) {
-            ok = safeNameValidation { MSS_Preformatted.valueOf(name) != null }
+        if ( !ok ) {
+            ok = safeNameValidation { MSS_Preformatted.valueOf( name ) != null }
         }
-        if (!ok) {
-            ok = safeNameValidation { MSS_SectionNumber.valueOf(name) != null }
+        if ( !ok ) {
+            ok = safeNameValidation { MSS_SectionNumber.valueOf( name ) != null }
         }
-        if (!ok) {
-            if (name.startsWith("#") || name.startsWith("*")) ok = true
+        if ( !ok ) {
+            if ( name.startsWith( "#" ) || name.startsWith( "*" ) ) ok = true
         }
 
         ok
     }
 
-    private static boolean safeNameValidation(@NotNull final Closure<Boolean> enumCheck) {
+    private static boolean safeNameValidation( @NotNull final Closure<Boolean> enumCheck ) {
         try {
             return enumCheck.call()
         }
-        catch (final IllegalArgumentException ignored) { }
+        catch ( final IllegalArgumentException ignored ) {
+        }
 
         false
     }

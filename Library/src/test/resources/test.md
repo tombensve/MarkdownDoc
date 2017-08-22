@@ -52,8 +52,8 @@ qwerweqr
 
 Here is a code Block:
 
-    Here is a really long preformatted text that should be wrapped according to settings in MSS. Somewhere here should wrap over to a new line. 
-    
+    Here is a really long preformatted text that should be wrapped according to settings in MSS. Somewhere here should wrap over to a new line.
+
     class Paragraph extends DocItem {
 
         /**
@@ -91,9 +91,11 @@ End of code block.
 
 * Second entry
 
-  * List within list.
+   * Sub entry
 
-  * Second entry sub list
+   * Second entry sub list
+
+   * Third sub entry
 
 * Third entry orig list.
   This line is part of the same list entry.
@@ -161,6 +163,8 @@ Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
 imperdiet ornare. Sed velit augue, laoreet.
 
 </div>
+
+__Note__ that the above paragraph has a different left margin!
 
 Some more text in new paragraph. <www.somewhere.net> ends this paragraph.
 

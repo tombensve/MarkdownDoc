@@ -138,6 +138,7 @@
         }
       },
       "rat": {
+        "leftMargin": "4.0cm",
         "image": {
           "imgFlow": true
         }
