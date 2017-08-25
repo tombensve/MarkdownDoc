@@ -176,14 +176,16 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
             @Nullable File rootDir,
             @NotNull OutputStream resultStream
     ) throws IOException, GenerateException {
-        Sectionizer.setup(  )
+        Sectionizer.setup()
 
         try {
             final PDFGeneratorContext context = new PDFGeneratorContext(
                     options: options as PDFGeneratorOptions,
                     rootDir: rootDir,
-                    fileResource: new FileResource( rootDir: rootDir, optsRootDir: ( options as PDFGeneratorOptions ).rootDir ),
-                    resultFile: rootDir != null ? new File( rootDir, options.resultFile ) : new File( options.resultFile )
+                    fileResource:
+                            new FileResource( rootDir: rootDir, optsRootDir: ( options as PDFGeneratorOptions ).rootDir ),
+                    resultFile:
+                            rootDir != null ? new File( rootDir, options.resultFile ) : new File( options.resultFile )
             )
 
             context.pdfStyles.fileResource = context.fileResource
@@ -486,7 +488,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
             @NotNull Paragraph paragraph, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context,
             boolean xReset ) {
 
-        if (xReset) renderer.resetXForNewParagraph(  )
+        if ( xReset ) renderer.resetXForNewParagraph()
 
         ParagraphWriter pw = new ParagraphWriter( renderer: renderer, context: context )
 
@@ -713,7 +715,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
                 if ( item instanceof ListItem ) {
                     if ( first != null && item != first ) renderer.newLine()
-                    renderer.resetXForNewParagraph(  )
+                    renderer.resetXForNewParagraph()
                     if ( num != null ) {
                         num.increment()
                         renderer.text( "${ num.root } " )
@@ -732,12 +734,12 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
                     item.items.each { final DocItem pg ->
                         if ( Paragraph.class.isAssignableFrom( pg.class ) ) {
-                            writeParagraphContent( pg as Paragraph, renderer, context , false)
+                            writeParagraphContent( pg as Paragraph, renderer, context, false )
                         }
                     }
                 }
                 else if ( item instanceof List ) {
-                    renderer.newLine(  )
+                    renderer.newLine()
 
                     if ( num != null ) {
                         num = num.newDigit()
@@ -1019,7 +1021,8 @@ class ParagraphWriter implements BoxedTrait {
      *
      * @param code The code to write.
      */
-    @SuppressWarnings( "GroovyMissingReturnStatement" ) // JetBrains, how do you propose to return a void ?
+    @SuppressWarnings( "GroovyMissingReturnStatement" )
+    // JetBrains, how do you propose to return a void ?
     void writeCode( @NotNull Code code ) {
         this.renderer.newLineFontSize = this.renderer.standardTextFontSize
         writeText( code.text, MSS_Pages.code ) {

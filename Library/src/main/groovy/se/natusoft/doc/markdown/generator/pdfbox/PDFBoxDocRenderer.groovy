@@ -104,10 +104,6 @@ class PDFBoxDocRenderer implements NotNullTrait {
     @SuppressWarnings( "GroovyUnusedDeclaration" )
     static final String LETTER = "LETTER"
 
-//    static final PDFBoxFontMSSAdapter TOC_FONT = new PDFBoxFontMSSAdapter(
-//            new MSSFont( size: 8, family: "HELVETICA", style: MSSFontStyle.NORMAL )
-//    )
-
     /** Indicates that image should be left aligned. */
     static final float X_OFFSET_LEFT_ALIGNED = 1000000.0f
 
@@ -170,6 +166,30 @@ class PDFBoxDocRenderer implements NotNullTrait {
         }
     }
 
+    class MDPDFDocument {
+
+        /** Represents the whole document. */
+        PDDocument document = new PDDocument()
+
+        /** The current page of the document. */
+        PDPage docPage
+
+        /** The current stream of the current page of the document. */
+        PDPageContentStream docStream
+
+        boolean isDocStreamAvailable() {
+            return this.docStream != null
+        }
+
+        PDPageContentStream getDocStream() {
+            if ( this.docStream == null ) {
+                newPage()
+            }
+            return this.docStream
+        }
+
+    }
+
     //
     //  Inner Classes
     //
@@ -185,12 +205,12 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         @SuppressWarnings( "GroovyMissingReturnStatement" )
         final Closure<Void> DOC_TEXT_AND_FILL_COLOR = { int red, int green, int blue ->
-            this.docStream.setNonStrokingColor( red, green, blue )
+            this.mainDoc.docStream.setNonStrokingColor( red, green, blue )
         }
 
         @SuppressWarnings( "GroovyMissingReturnStatement" )
         final Closure<Void> DOC_LINES_ETC_COLOR = { int red, int green, int blue ->
-            this.docStream.setStrokingColor( red, green, blue )
+            this.mainDoc.docStream.setStrokingColor( red, green, blue )
         }
 
         @SuppressWarnings( "GroovyMissingReturnStatement" )
@@ -215,20 +235,23 @@ class PDFBoxDocRenderer implements NotNullTrait {
         //       overlayed on save with anything in the background document being behind anything in the front document.
         //       These 2 documents are kept in sync when it comes to pages in it.
 
-        /** The main "front" document. */
-        PDDocument document = new PDDocument()
+        MDPDFDocument mainDoc = new MDPDFDocument()
 
-        /** The current page of the "front" document. */
-        PDPage docPage
+//        /** The main "front" document. */
+//        PDDocument document = new PDDocument()
+//
+//        /** The current page of the "front" document. */
+//        PDPage docPage
+//
+//        /** The current stream of the current page of the "front" document. */
+//        PDPageContentStream docStream
 
-        /** The current stream of the current page of the "front" document. */
-        PDPageContentStream docStream
 
-        PDPageContentStream getDocStream() {
-            if ( this.docStream == null ) {
-                newPage()
-            }; return this.docStream
-        }
+        /**
+         * The "background" document. This and the main document will be merged with the main document in front of this
+         * document on save. Thereby any  background rendering should be done in this.
+         */
+        MDPDFDocument bgDoc = new MDPDFDocument()
 
         /**
          * The "background" document. This and the "front" document will be merged with the "front" document in front of this
@@ -284,24 +307,24 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
             switch ( newPagePosition ) {
                 case NewPagePosition.LAST:
-                    this.document.addPage( page )
+                    this.mainDoc.document.addPage( page )
                     break
 
                 case NewPagePosition.FIRST:
-                    this.document.pages.insertBefore( page, this.document.pages.get( 0 ) )
+                    this.mainDoc.document.pages.insertBefore( page, this.mainDoc.document.pages.get( 0 ) )
                     break
 
                 case NewPagePosition.AFTER_CURRENT:
-                    this.document.pages.insertAfter( page, this.docPage )
+                    this.mainDoc.document.pages.insertAfter( page, this.mainDoc.docPage )
                     break
             }
-            this.docPage = page
+            this.mainDoc.docPage = page
 
-            if ( this.docStream != null ) {
+            if ( this.mainDoc.docStreamAvailable ) {
                 ensureTextModeOff()
-                this.docStream.close()
+                this.mainDoc.docStream.close()
             }
-            this.docStream = new PDPageContentStream( this.document, this.docPage )
+            this.mainDoc.docStream = new PDPageContentStream( this.mainDoc.document, this.mainDoc.docPage )
 
             PDPage bgPage = new PDPage()
             bgPage.setMediaBox( PDFBoxDocRenderer.this.pageFormat )
@@ -518,7 +541,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * @return The current page.
      */
     PDPage getCurrentPage() {
-        return this.docMgr.docPage
+        return this.docMgr.mainDoc.docPage
     }
 
     /**
@@ -526,7 +549,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     @SuppressWarnings( "GroovyUnusedDeclaration" )
     PDPage getFirstPage() {
-        this.docMgr.document.getPage( 0 )
+        this.docMgr.mainDoc.document.getPage( 0 )
     }
 
     /**
@@ -534,7 +557,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     @SuppressWarnings( "GroovyUnusedDeclaration" )
     int getNoOfPages() {
-        this.docMgr.document.getPages().count
+        this.docMgr.mainDoc.document.getPages().count
     }
 
     /**
@@ -544,7 +567,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     @SuppressWarnings( "GroovyUnusedDeclaration" )
     PDPage getPage( int ix ) {
-        return this.docMgr.document.getPage( ix )
+        return this.docMgr.mainDoc.document.getPage( ix )
     }
 
     /**
@@ -601,7 +624,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
     void addOutlineEntry( int headerLevel, String title, PDPage page ) {
         if ( this.docMgr.outline == null ) {
             this.docMgr.outline = new Outline()
-            this.docMgr.outline.addToDocument( this.docMgr.document )
+            this.docMgr.outline.addToDocument( this.docMgr.mainDoc.document )
         }
         this.docMgr.outline.addEntry( headerLevel, title, page )
     }
@@ -702,7 +725,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
     @SuppressWarnings( "GroovyUnusedDeclaration" )
     PDFBoxFontMSSAdapter loadExternalFont( String url, MSSFont mssFont ) {
         URL fontURL = new URL( url )
-        PDFont font = PDType0Font.load( this.docMgr.document, fontURL.openStream() )
+        PDFont font = PDType0Font.load( this.docMgr.mainDoc.document, fontURL.openStream() )
         return new PDFBoxFontMSSAdapter( font, mssFont )
     }
 
@@ -752,15 +775,15 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         switch ( section.class ) {
             case MSS_Pages.class:
-                fontMSSAdapter = stylesMSSAdapter.getFont( this.docMgr.document, section as MSS_Pages )
+                fontMSSAdapter = stylesMSSAdapter.getFont( this.docMgr.mainDoc.document, section as MSS_Pages )
                 break
 
             case MSS_Front_Page:
-                fontMSSAdapter = stylesMSSAdapter.getFont( this.docMgr.document, section as MSS_Front_Page )
+                fontMSSAdapter = stylesMSSAdapter.getFont( this.docMgr.mainDoc.document, section as MSS_Front_Page )
                 break
 
             case MSS_TOC:
-                fontMSSAdapter = stylesMSSAdapter.getFont( this.docMgr.document, section as MSS_TOC )
+                fontMSSAdapter = stylesMSSAdapter.getFont( this.docMgr.mainDoc.document, section as MSS_TOC )
                 break
 
             default:
@@ -775,8 +798,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     protected void applyFontInternal() {
         if ( this.fontMSSAdapter != null ) {
-            this.docMgr.docStream.leading = this.fontMSSAdapter.size + 2
-            this.fontMSSAdapter.applyFont( this.docMgr.docStream )
+            this.docMgr.mainDoc.docStream.leading = this.fontMSSAdapter.size + 2
+            this.fontMSSAdapter.applyFont( this.docMgr.mainDoc.docStream )
         }
     }
 
@@ -855,7 +878,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     void ensureTextMode() {
         if ( !this.textMode ) {
-            this.docMgr.docStream.beginText()
+            this.docMgr.mainDoc.docStream.beginText()
             this.textMode = true
         }
     }
@@ -870,7 +893,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     void ensureTextMode( float x, float y ) {
         ensureTextMode()
-        this.docMgr.docStream.newLineAtOffset( x, y )
+        this.docMgr.mainDoc.docStream.newLineAtOffset( x, y )
     }
 
     /**
@@ -879,7 +902,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     void ensureTextModeOff() {
         if ( this.textMode ) {
-            this.docMgr.docStream.endText()
+            this.docMgr.mainDoc.docStream.endText()
             this.textMode = false
         }
     }
@@ -985,7 +1008,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         PDRectangle textArea = new PDRectangle( lowerLeftX: this.pageX, lowerLeftY: s_pageY )
 
         lines.each { String line ->
-            this.docMgr.docStream.showText( line )
+            this.docMgr.mainDoc.docStream.showText( line )
             this.pageX = this.margins.leftMargin
             this.pageY -= ( this.fontMSSAdapter.size + 2 )
             if ( this.pageY < s_bottomMargin ) {
@@ -996,7 +1019,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
             }
             else {
                 // Note: newLineAtOffset(...) does not work here!
-                this.docMgr.docStream.newLine()
+                this.docMgr.mainDoc.docStream.newLine()
             }
         }
 
@@ -1171,15 +1194,15 @@ class PDFBoxDocRenderer implements NotNullTrait {
             positionTextAtPageLocation()
 
             try {
-                this.docMgr.docStream.showText( word.toString( this.preFormatted ) )
+                this.docMgr.mainDoc.docStream.showText( word.toString( this.preFormatted ) )
                 if ( this.fontMSSAdapter.underlined ) {
                     // I did spend some hours on trying to do this the officially correct way, but
                     // finally gave up since nothing seemed to work.
                     ensureTextModeOff()
                     applyStyles()
-                    this.docMgr.docStream.setLineWidth( 0.001f )
-                    this.docMgr.docStream.addRect( this.pageX, this.pageY - 3 as float, wordSize, 0.5f )
-                    this.docMgr.docStream.closeAndFillAndStroke()
+                    this.docMgr.mainDoc.docStream.setLineWidth( 0.001f )
+                    this.docMgr.mainDoc.docStream.addRect( this.pageX, this.pageY - 3 as float, wordSize, 0.5f )
+                    this.docMgr.mainDoc.docStream.closeAndFillAndStroke()
                     ensureTextMode()
                 }
             }
@@ -1226,7 +1249,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         applyStyles()
 
         positionTextAtPageLocation()
-        this.docMgr.docStream.showText( text )
+        this.docMgr.mainDoc.docStream.showText( text )
         this.pageX += calcTextWidth( text )
 
         this.stylesApplicator = null
@@ -1258,8 +1281,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
         applyStyles()
 
         float x = ( ( this.pageFormat.width / 2.0f ) - ( calcTextWidth( text ) / 2.0f ) ) as float
-        this.docMgr.docStream.newLineAtOffset( x, this.pageY )
-        this.docMgr.docStream.showText( text )
+        this.docMgr.mainDoc.docStream.newLineAtOffset( x, this.pageY )
+        this.docMgr.mainDoc.docStream.showText( text )
         this.pageX = this.margins.leftMargin
         this.pageY -= ( this.fontMSSAdapter.size + 2.0f )
         if ( this.pageY < this.margins.bottomMargin ) {
@@ -1317,7 +1340,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         this.pageX = this.margins.leftMargin
         ensureTextMode()
-        this.docMgr.docStream.newLineAtOffset( pageX, pageY )
+        this.docMgr.mainDoc.docStream.newLineAtOffset( pageX, pageY )
     }
 
     /**
@@ -1341,7 +1364,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         ensureTextModeOff()
         ensureTextMode()
         pageX = this.margins.leftMargin
-        this.docMgr.docStream.newLineAtOffset( pageX, pageY )
+        this.docMgr.mainDoc.docStream.newLineAtOffset( pageX, pageY )
         this.box = null
     }
 
@@ -1358,10 +1381,10 @@ class PDFBoxDocRenderer implements NotNullTrait {
     @RequiresWithSection
     void underlineText( float underlineOffset ) {
         ensureTextModeOff()
-        this.docMgr.docStream.setLineWidth( 0.001f )
-        this.docMgr.docStream.addRect( this.margins.leftMargin, ( this.pageY - underlineOffset ) as float,
+        this.docMgr.mainDoc.docStream.setLineWidth( 0.001f )
+        this.docMgr.mainDoc.docStream.addRect( this.margins.leftMargin, ( this.pageY - underlineOffset ) as float,
                 this.pageFormat.width - this.margins.leftMargin - this.margins.rightMargin as float, 0.001f )
-        this.docMgr.docStream.closeAndFillAndStroke()
+        this.docMgr.mainDoc.docStream.closeAndFillAndStroke()
         ensureTextMode()
     }
 
@@ -1387,10 +1410,10 @@ class PDFBoxDocRenderer implements NotNullTrait {
                 color.applyColor this.docMgr.DOC_LINES_ETC_COLOR
             }
 
-            this.docMgr.docStream.setLineWidth( thickness )
-            this.docMgr.docStream.moveTo( this.margins.leftMargin, hrY )
-            this.docMgr.docStream.lineTo( this.pageFormat.width - this.margins.rightMargin as float, hrY )
-            this.docMgr.docStream.closeAndFillAndStroke()
+            this.docMgr.mainDoc.docStream.setLineWidth( thickness )
+            this.docMgr.mainDoc.docStream.moveTo( this.margins.leftMargin, hrY )
+            this.docMgr.mainDoc.docStream.lineTo( this.pageFormat.width - this.margins.rightMargin as float, hrY )
+            this.docMgr.mainDoc.docStream.closeAndFillAndStroke()
 
             ensureTextMode( this.pageX, this.pageY )
             //newLine()
@@ -1403,7 +1426,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
     void positionTextAtPageLocation() {
         ensureTextModeOff()
         ensureTextMode()
-        this.docMgr.docStream.newLineAtOffset( this.pageX, this.pageY )
+        this.docMgr.mainDoc.docStream.newLineAtOffset( this.pageX, this.pageY )
     }
 
     /**
@@ -1425,7 +1448,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         this.pageX = this.margins.leftMargin
         this.pageY -= ( yOffset + this.newLineFontSize + 2 )
-        this.docMgr.docStream.newLineAtOffset( this.pageX, this.pageY )
+        this.docMgr.mainDoc.docStream.newLineAtOffset( this.pageX, this.pageY )
         if ( this.pageY < this.margins.bottomMargin ) {
             newPage()
         }
@@ -1459,7 +1482,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         this.pageY = this.pageFormat.height - this.margins.topMargin
 
         ensureTextMode()
-        this.docMgr.docStream.newLineAtOffset( this.pageLocation.x, this.pageLocation.y )
+        this.docMgr.mainDoc.docStream.newLineAtOffset( this.pageLocation.x, this.pageLocation.y )
     }
 
     /**
@@ -1503,7 +1526,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         setTemporaryForegroundColor( MSSColor.LINK_BLUE )
 
         // Ain't Groovy cool! :-)
-        this.docMgr.docPage.annotations.add(
+        this.docMgr.mainDoc.docPage.annotations.add(
                 new PDAnnotationLink(
                         borderStyle: new PDBorderStyleDictionary( style: PDBorderStyleDictionary.STYLE_UNDERLINE, width: 0 ),
                         rectangle: this.text( linkText ),
@@ -1569,11 +1592,11 @@ class PDFBoxDocRenderer implements NotNullTrait {
         // than that. Since the TIFF support only loads from local file, TIFFs are not supported!
 
         if ( param.jpeg ) {
-            image = JPEGFactory.createFromStream( this.docMgr.document, param.imageStream )
+            image = JPEGFactory.createFromStream( this.docMgr.mainDoc.document, param.imageStream )
         }
         else {
             BufferedImage bufferedImage = ImageIO.read( param.imageStream )
-            image = LosslessFactory.createFromImage( this.docMgr.document, bufferedImage )
+            image = LosslessFactory.createFromImage( this.docMgr.mainDoc.document, bufferedImage )
         }
 
         float scaledWidth = image.width * param.scale
@@ -1634,7 +1657,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
                 imageY
         )
         at.rotate( Math.toRadians( param.rotate ) )
-        this.docMgr.docStream.drawImage( image, new Matrix( at ) )
+        this.docMgr.mainDoc.docStream.drawImage( image, new Matrix( at ) )
 
         if ( param.createHole ) {
             this.textHoles << new TextHole(
@@ -1669,7 +1692,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
             ensureTextModeOff()
             ensureTextMode( this.pageFormat.width - this.margins.rightMargin - width as float, this.margins.bottomMargin -
                     ( ( pageNoFont.size * 2 ) + 6 ) as float )
-            this.docMgr.docStream.showText( pgnStr )
+            this.docMgr.mainDoc.docStream.showText( pgnStr )
         }
         ensureTextModeOff()
         ensureTextMode( this.pageX, this.pageY )
@@ -1713,11 +1736,11 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     void save( OutputStream stream ) throws IOException {
 
-        this.docMgr.docStream.close()
+        this.docMgr.mainDoc.docStream.close()
         this.docMgr.bgDocStream.close()
 
         Overlay overlay = new Overlay(
-                inputPDF: this.docMgr.document,
+                inputPDF: this.docMgr.mainDoc.document,
                 allPagesOverlayPDF: this.docMgr.bgDocument,
                 overlayPosition: Overlay.Position.BACKGROUND
         )
@@ -1731,7 +1754,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Closes content stream and document.
      */
     void close() {
-        this.docMgr.document.close()
+        this.docMgr.mainDoc.document.close()
         this.docMgr.bgDocument.close()
     }
 

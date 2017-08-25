@@ -37,6 +37,7 @@
 package se.natusoft.doc.markdown.generator.styles
 
 import groovy.transform.CompileStatic
+import groovy.transform.ToString
 import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
@@ -56,6 +57,7 @@ import se.natusoft.json.JSONValue
  */
 @CompileStatic
 @TypeChecked
+@ToString(includeNames = true)
 class MSS {
 
     // NOTE: These enums are also used to validate JSON object field names in addition to being used as input

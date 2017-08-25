@@ -60,6 +60,16 @@ The editor is also using filedrop.jar from [http://iharder.sourceforge.net/curre
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
 
+## 2.1.0
+
+### New feature
+
+Page margins are now allowed anywhere in the document section of an MSS, not just for the top part. So now page margins can be changed for different formats and for divs. The left and right margins are of course the most useful here. Changeing top and bottom will only have an effect on the next page.
+
+### Bug fix
+
+For sublist the first sublist entry had same indentation as parent list, and the second entry and down had the correct indentation. This must have been for a while, I'm not sure how I missed it. Anyhow, this is now fixed.
+
 ## 2.0.3
 
 Fix of clumsy NPE bug in editor open files dialog.
