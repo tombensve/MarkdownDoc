@@ -30,6 +30,9 @@
     "rightMargin": "2.54cm",
     "topMargin": "2.54cm",
     "bottomMargin": "2.54cm",
+    "pageX": 10.0,
+    "pageY": 20.0,
+    "freeFloating": false,
 
     "color": "0:0:0",
     "background": "ff:ff:ff",
@@ -136,6 +139,13 @@
           "color": "120:120:120",
           "background": "10:11:12"
         }
+      },
+      "ff": {
+        "freeFloating": true,
+        "pageX": 220.0,
+        "pageY": 400.0,
+        "leftMargin": "220pt",
+        "rightMargin": "100pt"
       },
       "rat": {
         "leftMargin": "4.0cm",

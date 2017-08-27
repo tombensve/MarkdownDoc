@@ -153,6 +153,13 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
         try {
             generate( document, options, rootDir, resultStream )
         }
+        catch ( IOException | GenerateException oke ) {
+            throw oke
+        }
+        catch ( Exception e ) {
+            e.printStackTrace( System.err )
+            throw e
+        }
         finally {
             resultStream.close()
         }
@@ -359,7 +366,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @return true if and update was made, false otherwise.
      */
     private static boolean updateOptsFromAnnotation( @NotNull final String ann, @NotNull final Comment comment,
-                                                     @NotNull final Closure<Object> update ) {
+                                                     @NotNull final Closure update ) {
         boolean updated = false
         final String text = extractCommentAnnotation( ann, comment )
         if ( text != null ) {
@@ -410,8 +417,6 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      *
      * @return true if anything was updated, false otherwise.
      */
-    @SuppressWarnings( "GroovyMissingReturnStatement" )
-    // This is obviously bullshit from IDEA!
     private static boolean extractCommentOptionsAnnotations( @NotNull final Comment comment,
                                                              @NotNull final PDFGeneratorContext context ) {
         boolean updated = false
@@ -487,6 +492,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
     private static void writeParagraphContent(
             @NotNull Paragraph paragraph, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context,
             boolean xReset ) {
+
+        renderer.handleFreeFloating()
 
         if ( xReset ) renderer.resetXForNewParagraph()
 
@@ -564,8 +571,14 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
         }
         outlineTitle += header.text
         MSS.MSS_TOC tocSection = MSS.MSS_TOC.valueOf( "h" + header.level.level )
-        context.toc.add( new TOC( section: tocSection, sectionNumber: this.headerNumber?.root?.toString(), sectionTitle: header.text,
-                pageNumber: renderer.currentPageNumber ) )
+        context.toc.add(
+                new TOC(
+                        section: tocSection,
+                        sectionNumber: this.headerNumber?.root?.toString(),
+                        sectionTitle: header.text,
+                        pageNumber: renderer.currentPageNumber
+                )
+        )
         renderer.addOutlineEntry( header.level.level, outlineTitle, renderer.currentPage )
 
         MSS_Pages section = MSS_Pages.valueOf( "h" + header.level.level )
@@ -612,7 +625,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
         withSection( MSS_Pages.block_quote ) {
             blockQuote.items.each { final DocItem docItem ->
                 // There should only be plain texts here, but to be sure …
-                if ( PlainText.class.isAssignableFrom( docItem.class ) ) { //noinspection GroovyMissingReturnStatement
+                if ( PlainText.class.isAssignableFrom( docItem.class ) ) {
                     renderer.text( ( docItem as PlainText ).text ) {
                         renderer.setStyle( context.pdfStyles, MSS_Pages.block_quote )
                         renderer.setColorPair( context.pdfStyles.mss.forDocument.getColorPair( MSS_Pages.block_quote ) )
@@ -631,8 +644,6 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param renderer The PDF document renderer.
      * @param context The generator context.
      */
-    @SuppressWarnings( "GroovyMissingReturnStatement" )
-    // IDEA bullshit! Note that method is void :-).
     private static void writeCodeBlock(
             @NotNull CodeBlock codeBlock, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context ) {
         checkAndSetBoxed( MSS_Pages.code, renderer, context.pdfStyles.mss )
@@ -642,7 +653,6 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
             codeBlock.items.each { final DocItem docItem ->
                 // There should only be plain texts here, but to be sure …
                 if ( PlainText.class.isAssignableFrom( docItem.class ) ) {
-                    //noinspection GroovyMissingReturnStatement
 
                     String text = ( docItem as PlainText ).text
                     if ( context.pdfStyles.mss.forDocument.isPreformattedWordWrap( MSS_Pages.code ) ) {
@@ -679,7 +689,10 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param context The generator context.
      */
     private static void writeList(
-            @NotNull List list, @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context ) {
+            @NotNull List list,
+            @NotNull PDFBoxDocRenderer renderer,
+            @NotNull PDFGeneratorContext context
+    ) {
         renderer.setStyle( context.pdfStyles, MSS_Pages.list_item )
         renderer.setColorPair( context.pdfStyles, MSS_Pages.list_item )
 
@@ -769,7 +782,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param mssImage The mss image information.
      */
     private
-    static void writeImage( PDFBoxDocRenderer renderer, PDFGeneratorContext context, String imgUrl, float x, float y, MSSImage mssImage ) {
+    static void writeImage( @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context,
+                            @NotNull String imgUrl, float x, float y, @NotNull MSSImage mssImage ) {
         // Image extends Url, but we allow the Image.url to be a local path also, even without file:
         imgUrl = imgUrl.trim()
         InputStream imageStream
@@ -831,7 +845,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param renderer The PDF renderer.
      * @param context The current generator context.
      */
-    private static void writeToc( PDFBoxDocRenderer renderer, PDFGeneratorContext context ) {
+    private static void writeToc( @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context ) {
         PDFBoxDocRenderer.TopPage tocPage = renderer.createTopPage()
 
         withSection( MSS.MSS_TOC.toc ) {
@@ -856,7 +870,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
      * @param renderer The PDF renderer.
      * @param context The current generator context.
      */
-    private static void writeTitlePage( PDFBoxDocRenderer renderer, PDFGeneratorContext context ) {
+    private static void writeTitlePage( @NotNull PDFBoxDocRenderer renderer, @NotNull PDFGeneratorContext context ) {
 
         withSection( MSS_Pages.standard ) {
             //noinspection GroovyUnusedAssignment
@@ -1007,7 +1021,7 @@ class ParagraphWriter implements BoxedTrait {
      * @param section The styling section to apply.
      * @param stylesApplicator This closure is run to apply styles.
      */
-    void writeText( String text, MSS_Pages section, Closure<Void> stylesApplicator ) {
+    void writeText( @NotNull String text, @NotNull MSS_Pages section, @Nullable Closure<Void> stylesApplicator ) {
         withSection( section ) {
             renderer.text( text, stylesApplicator,
                     checkAndSetParagraphBoxed( section, this.renderer, this.context.pdfStyles.mss )

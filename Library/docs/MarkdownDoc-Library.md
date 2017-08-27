@@ -105,7 +105,9 @@ Example usage:
          // in that case.
         CommandLineOptionsManager<Options> optMgr =
             new CommandLineOptionsManager<Options>(generator.getOptionsClass());
+    
         Options options = optMgr.loadOptions("--", args);
+        
         if (options.isHelp()) {
             optMgr.printHelpText("--","", System.out);
         }
@@ -115,12 +117,12 @@ Example usage:
         }
     }
 
-Please note that the CommandLineOptionsMangager used in the example is part of the OptionsManager
+Please note that the _CommandLineOptionsMangager_ used in the example is part of the OptionsManager
 tool also by me. Available at [github.com/tombensve/OptionsManager](https://github.com/tombensve/OptionsManager).
 
 #### se.natusoft.doc.markdown.generator.PDFBoxGenerator
 
-This generator produces a PDF document. 
+This generator produces a PDF document. `
 
 #### se.natusoft.doc.markdown.generator.HTMLGenerator
 
@@ -144,4 +146,6 @@ See the "The mddoc file type" section for more information on the .mdddoc format
 
 ## Bugs
 
-Nothing currenty known by me.
+### "freeFloating" MSS feature bug
+
+When the _freeFloating_ MSS setting is used, boxed text like preformatted renders boxes incorrect X wise. I can't currently see where this problem comes from. Looking at this at a later time might help. _freeFloating_ is a new feature so this will not affect any existing code using MarkdownDoc.
