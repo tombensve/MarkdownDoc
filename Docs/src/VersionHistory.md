@@ -5,13 +5,27 @@ About versions, they are hell! After personal experience of having different ver
 
 ## 2.1.0
 
-### New feature
+### New features
+
+#### Page margins anywhere in document section.
 
 Page margins are now allowed anywhere in the document section of an MSS, not just for the top part. So now page margins can be changed for different formats and for divs. The left and right margins are of course the most useful here. Changeing top and bottom will only have an effect on the next page.
+
+#### "freeFloating" MSS style.
+
+This is a very special (and use at your own risk) feature that needs to be used with great care! It allows for placing text anywhere on a page. 
+
+The only sensible use of this is within a div. It allows for changeing X & Y on the page and page margins (see above) can also be changed in same div. It makes sense to set leftMargin to X coordinate.
+
+Read the docs for more information about this feature.
 
 ### Bug fix
 
 For sublist the first sublist entry had same indentation as parent list, and the second entry and down had the correct indentation. This must have been for a while, I'm not sure how I missed it. Anyhow, this is now fixed. 
+
+### Update to documentation
+
+There has been a feature to do `<!-- @PB -->` or `<!-- @PageBreak -->` (on their own line) since a while back. This has not been mentioned in the documentation. This is now documented under the "Markdown Reference" section as MarkdownDoc special feature.
 
 ## 2.0.3
 

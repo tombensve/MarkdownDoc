@@ -129,3 +129,14 @@ Note that for __MarkdownDoc__ "/path/to/img.png" can be one of the following:
 ## backslash (\)
 
 The \\ character can be used to escape characters that have markdown meaning. \\\\ will for example produce \\. \\\* will produce \*.
+
+## MarkdownDoc special features
+
+    <!-- @PB -->
+    
+or
+
+    <!-- @PageBreak -->
+    
+will cause a page break. They are enclosed within HTLM comments since this is non standard and only works with MarkdownDoc and with the PDF generator. The markdown generator will include them and the HTML generator will ignore them.
+

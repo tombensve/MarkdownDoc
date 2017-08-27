@@ -1,4 +1,4 @@
-# MSS (Markdown(Doc) Style Sheet)
+# MSS (MarkdownDoc Style Sheet)
 
 The MSS format is a JSON document describing the styles (colors and fonts) to use for different sections of a markdown document (standard text, heading, bold, code, etc). It contains 3 main sections: front page, TOC, pages. There is a _default.mss_ embedded in the jar that is used if no external mss files is provided. The default MSS have changed in version 2.0.0 and now produces output that looks different than previous versions. Not only different, but better IMHO :-). It still defaults to A4 page size, but now also have correct margins according to standards. Maybe iText also did that, but it feels like the margins are larger now (2.54 cm).
 
@@ -302,7 +302,15 @@ This is also new in 2.0.0 and sets the thickness and color of a horizontal ruler
           "center-page5-image": {
             "imgX": 127.0,
             "imgY": 430.0
-          }
+          },
+    
+This is a new feature as of 2.1.0. Setting "freeFloating" to true also allows you to change page X & Y coordinates, and also changeing margins is useful in combination. This basically lets you put text at a very specific place on the page. This really only makes sense to use within a div. The previous position on page is remembered and when the div is exited the X & Y is restored to the previous location. Yes, this make it possible to make text overwrite each other! You have to be veruy careful when this is used. Also note that if the placement on page is rather low and the text triggers a page break, things will get very weird! Use this feature very carefully! You can really mess things up if you are not careful! You have been warned!    
+    
+          "freeFloating-Example": {
+            "freeFloating": true,
+            "pageX": 220.0,
+            "pageY": 380.0,
+            "leftMargin": 220.0
         }
       },
     

@@ -92,7 +92,10 @@ class MSS {
         topMargin,
         leftMargin,
         rightMargin,
-        bottomMargin
+        bottomMargin,
+        pageX,
+        pageY,
+        freeFloating
     }
 
     /**
@@ -866,6 +869,24 @@ class MSS {
     float getBottomMarginForDocument( MSS_Pages section ) {
         JSONValue marginValue = getSingleValueForDocument( MSS_Page.bottomMargin.name(), section.name() )
         marginToFloat( nullToDefault( marginValue, new JSONString( "2.54cm" ) ) )
+    }
+
+    @NotNull
+    float getPageXForDocument(MSS_Pages section) {
+        JSONValue pageXValue = getSingleValueForDocument( MSS_Page.pageX.name(  ), section.name(  ) )
+        (pageXValue as JSONNumber).toFloat(  )
+    }
+
+    @NotNull
+    float getPageYForDocument(MSS_Pages section) {
+        JSONValue pageYValue = getSingleValueForDocument( MSS_Page.pageY.name(  ), section.name(  ) )
+        (pageYValue as JSONNumber).toFloat(  )
+    }
+
+    @NotNull
+    boolean isFreeFloating(MSS_Pages section) {
+        JSONValue freeFloatingValue = getSingleValueForDocument( MSS_Page.freeFloating.name(  ), section.name(  ) )
+        freeFloatingValue != null ? (freeFloatingValue as JSONBoolean).asBoolean : false
     }
 
     /**

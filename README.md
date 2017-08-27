@@ -2,7 +2,7 @@
 
 Copyright (C) 2012 Natusoft AB
 
-__Version:__ 2.0.3
+__Version:__ 2.1.0
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
@@ -20,9 +20,9 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 Available through maven at bintray JCentral: [http://jcenter.bintray.com/](http://jcenter.bintray.com/). MarkdownDoc on [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/).
 
-Command line [[markdowndoc-cmd-line-2.0.3.exec.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/2.0.3/markdowndoc-cmd-line-2.0.3.exec.jar)]
+Command line [[markdowndoc-cmd-line-2.1.0.exec.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/2.1.0/markdowndoc-cmd-line-2.1.0.exec.jar)]
 
-Editor [[MarkdownDocEditor-2.0.3.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/2.0.3/MarkdownDocEditor-2.0.3.App.jar)].
+Editor [[MarkdownDocEditor-2.1.0.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/2.1.0/MarkdownDocEditor-2.1.0.App.jar)].
 
 [Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md)
 
@@ -62,9 +62,19 @@ About versions, they are hell! After personal experience of having different ver
 
 ## 2.1.0
 
-### New feature
+### New features
+
+#### Page margins anywhere in document section.
 
 Page margins are now allowed anywhere in the document section of an MSS, not just for the top part. So now page margins can be changed for different formats and for divs. The left and right margins are of course the most useful here. Changeing top and bottom will only have an effect on the next page.
+
+#### "freeFloating" MSS style.
+
+This is a very special (and use at your own risk) feature that needs to be used with great care! It allows for placing text anywhere on a page.
+
+The only sensible use of this is within a div. It allows for changeing X & Y on the page and page margins (see above) can also be changed in same div. It makes sense to set leftMargin to X coordinate.
+
+Read the docs for more information about this feature.
 
 ### Bug fix
 

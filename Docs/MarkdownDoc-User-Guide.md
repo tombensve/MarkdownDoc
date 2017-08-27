@@ -9,7 +9,7 @@
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
     @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
-    
+
     @PDFGenerateTitlePage(true)
     @PDFGenerateTOC(true)
     @PDFGenerateSectionNumbers(false)
@@ -339,7 +339,9 @@ Example usage:
              // in that case.
             CommandLineOptionsManager<Options> optMgr =
                 new CommandLineOptionsManager<Options>(generator.getOptionsClass());
+        
             Options options = optMgr.loadOptions("--", args);
+            
             if (options.isHelp()) {
                 optMgr.printHelpText("--","", System.out);
             }
@@ -349,11 +351,11 @@ Example usage:
             }
         }
 
-Please note that the CommandLineOptionsMangager used in the example is part of the OptionsManager tool also by me. Available at [github.com/tombensve/OptionsManager](https://github.com/tombensve/OptionsManager).
+Please note that the _CommandLineOptionsMangager_ used in the example is part of the OptionsManager tool also by me. Available at [github.com/tombensve/OptionsManager](https://github.com/tombensve/OptionsManager).
 
 #### se.natusoft.doc.markdown.generator.PDFBoxGenerator
 
-This generator produces a PDF document.
+This generator produces a PDF document. 
 
 #### se.natusoft.doc.markdown.generator.HTMLGenerator
 
@@ -377,9 +379,11 @@ See the "The mddoc file type" section for more information on the .mdddoc format
 
 ## Bugs
 
-Nothing currenty known by me.
+### "freeFloating" MSS feature bug
 
-# MSS (Markdown(Doc) Style Sheet)
+When the _freeFloating_ MSS setting is used, boxed text like preformatted renders boxes incorrect X wise. I can't currently see where this problem comes from. Looking at this at a later time might help. _freeFloating_ is a new feature so this will not affect any existing code using MarkdownDoc.
+
+# MSS (MarkdownDoc Style Sheet)
 
 The MSS format is a JSON document describing the styles (colors and fonts) to use for different sections of a markdown document (standard text, heading, bold, code, etc). It contains 3 main sections: front page, TOC, pages. There is a _default.mss_ embedded in the jar that is used if no external mss files is provided. The default MSS have changed in version 2.0.0 and now produces output that looks different than previous versions. Not only different, but better IMHO :-). It still defaults to A4 page size, but now also have correct margins according to standards. Maybe iText also did that, but it feels like the margins are larger now (2.54 cm).
 
@@ -694,7 +698,16 @@ This is also new in 2.0.0 and sets the thickness and color of a horizontal ruler
               "center-page5-image": {
                 "imgX": 127.0,
                 "imgY": 430.0
-              }
+              },
+        
+
+This is a new feature as of 2.1.0. Setting "freeFloating" to true also allows you to change page X & Y coordinates, and also changeing margins is useful in combination. This basically lets you put text at a very specific place on the page. This really only makes sense to use within a div. The previous position on page is remembered and when the div is exited the X & Y is restored to the previous location. Yes, this make it possible to make text overwrite each other! You have to be veruy careful when this is used. Also note that if the placement on page is rather low and the text triggers a page break, things will get very weird! Use this feature very carefully! You can really mess things up if you are not careful! You have been warned!
+
+              "freeFloating-Example": {
+                "freeFloating": true,
+                "pageX": 220.0,
+                "pageY": 380.0,
+                "leftMargin": 220.0
             }
           },
         
@@ -1357,9 +1370,19 @@ About versions, they are hell! After personal experience of having different ver
 
 ## 2.1.0
 
-### New feature
+### New features
+
+#### Page margins anywhere in document section.
 
 Page margins are now allowed anywhere in the document section of an MSS, not just for the top part. So now page margins can be changed for different formats and for divs. The left and right margins are of course the most useful here. Changeing top and bottom will only have an effect on the next page.
+
+#### "freeFloating" MSS style.
+
+This is a very special (and use at your own risk) feature that needs to be used with great care! It allows for placing text anywhere on a page.
+
+The only sensible use of this is within a div. It allows for changeing X & Y on the page and page margins (see above) can also be changed in same div. It makes sense to set leftMargin to X coordinate.
+
+Read the docs for more information about this feature.
 
 ### Bug fix
 
@@ -1739,6 +1762,18 @@ Note that for __MarkdownDoc__ "/path/to/img.png" can be one of the following:
 ## backslash (\)
 
 The \ character can be used to escape characters that have markdown meaning. \\ will for example produce \. \* will produce *.
+
+## MarkdownDoc special features
+
+        <!-- @PB -->
+        
+
+or
+
+        <!-- @PageBreak -->
+        
+
+will cause a page break. They are enclosing within HTLM comments since this is non standard and only works with MarkdownDoc and with the PDF generator. The markdown generator will include them and the HTML generator will ignore them.
 
 # Licenses
 

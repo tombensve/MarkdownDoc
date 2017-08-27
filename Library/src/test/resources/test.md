@@ -124,6 +124,19 @@ This is a paragraph between 2 horizontal rulers.
 
 ---
 
+<div class="ff">
+This is some _freefloating_ text.
+
+### This is an h3 in a free floating text
+
+bla bla bla
+
+    Some code!
+
+Some more text
+
+</div>
+
 # Paragraphs
 
 This is a simple one line paragraph.

@@ -8,7 +8,7 @@
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
     @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
-    
+
     @PDFGenerateTitlePage(true)
     @PDFGenerateTOC(true)
     @PDFGenerateSectionNumbers(false)
@@ -63,11 +63,11 @@ The known (and intentional) differences are:
 
 * No entity encoding of email addresses.
 
-* No multiple block quote levels (as of now). I've never personally missed having multiple quote levels, which is why I haven't done something about that yet. No one has contacted me asking for it either :-). 
+* No multiple block quote levels (as of now). I've never personally missed having multiple quote levels, which is why I haven't done something about that yet. No one has contacted me asking for it either :-).
 
-* Does not support any other formatting within strong, emphasized, or header. I personally don't see enough of a problem with this, that I'll prioritize it. 
+* Does not support any other formatting within strong, emphasized, or header. I personally don't see enough of a problem with this, that I'll prioritize it.
 
-If you find any of the missing features a problem, I'll happily accept pull requests. :-) Seriously, it is OK to contact me with functionality wishes. Do note however that I work on this and other projects entirely in my spare time. 
+If you find any of the missing features a problem, I'll happily accept pull requests. :-) Seriously, it is OK to contact me with functionality wishes. Do note however that I work on this and other projects entirely in my spare time.
 
 ## File specifications
 
