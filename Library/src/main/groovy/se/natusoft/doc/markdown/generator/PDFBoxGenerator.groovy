@@ -224,8 +224,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                     pageSize: context.pdfStyles.mss.pageFormat,
                     pageNoActive: true
             )
-
-            withSection( MSS_Pages.standard ) { renderer.newPage() }
+            renderer.setStyle( context.pdfStyles, MSS_Pages.standard )
 
             final LinkedList<String> divs = new LinkedList<>()
 
@@ -1021,7 +1020,7 @@ class ParagraphWriter implements BoxedTrait {
      * @param section The styling section to apply.
      * @param stylesApplicator This closure is run to apply styles.
      */
-    void writeText( @NotNull String text, @NotNull MSS_Pages section, @Nullable Closure<Void> stylesApplicator ) {
+    void writeText( @NotNull String text, @NotNull MSS_Pages section, @Nullable Closure stylesApplicator ) {
         withSection( section ) {
             renderer.text( text, stylesApplicator,
                     checkAndSetParagraphBoxed( section, this.renderer, this.context.pdfStyles.mss )
@@ -1035,8 +1034,6 @@ class ParagraphWriter implements BoxedTrait {
      *
      * @param code The code to write.
      */
-    @SuppressWarnings( "GroovyMissingReturnStatement" )
-    // JetBrains, how do you propose to return a void ?
     void writeCode( @NotNull Code code ) {
         this.renderer.newLineFontSize = this.renderer.standardTextFontSize
         writeText( code.text, MSS_Pages.code ) {
