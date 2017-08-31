@@ -60,6 +60,7 @@ import se.natusoft.doc.markdown.generator.styles.MSS.MSS_Front_Page
 import se.natusoft.doc.markdown.generator.styles.MSS.MSS_Pages
 import se.natusoft.doc.markdown.generator.styles.MSS.MSS_TOC
 import se.natusoft.doc.markdown.generator.utils.RequiresWithSection
+import se.natusoft.doc.markdown.generator.utils.Sectionizer
 import se.natusoft.doc.markdown.util.NotNullTrait
 import se.natusoft.doc.markdown.util.Text
 import se.natusoft.doc.markdown.util.Word
@@ -563,7 +564,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
     }
 
     void restoreState() {
-        if (this.savedState.restoreLocation) {
+        if ( this.savedState.restoreLocation ) {
             this._pageLocation = this.savedState.pageLocation
         }
         this.docMgr.pageNumber = this.savedState.pageNumber
@@ -638,7 +639,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Checks for "freeFloating" MSS setting and enables / disables free floating mode.
      */
     void handleFreeFloating() {
-        boolean currentFreeFloating = this.stylesMSSAdapter.mss.isFreeFloating( this.section as MSS_Pages )
+        boolean currentFreeFloating = this.stylesMSSAdapter.mss.isFreeFloatingForDocument( this.section as MSS_Pages )
         if ( currentFreeFloating && !this.freeFloating ) {
             this.freeFloating = true
             saveState()
@@ -898,7 +899,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
      *
      * @return
      */
-    @NotNull PDFBoxFontMSSAdapter getFontAdapter( @NotNull PDFBoxStylesMSSAdapter stylesMSSAdapter,
+    @NotNull
+    PDFBoxFontMSSAdapter getFontAdapter( @NotNull PDFBoxStylesMSSAdapter stylesMSSAdapter,
                                          @NotNull MSS.Section section ) {
         PDFBoxFontMSSAdapter fontMSSAdapter
 
@@ -1594,16 +1596,11 @@ class PDFBoxDocRenderer implements NotNullTrait {
         if ( this.pageX != this.margins.leftMargin ) {
             newLine()
         }
-        newLine()
-    }
+        ensureTextModeOff()
+        ensureTextMode()
 
-    /**
-     * Makes an empty line for a new paragraph.
-     */
-    @SuppressWarnings( "GroovyUnusedDeclaration" )
-    void newParagraph() {
-        newLine()
-        newLine()
+        this.pageX = this.margins.leftMargin
+        this.pageY -= this.stylesMSSAdapter.mss.getParagraphSpaceForDocument( Sectionizer.section as MSS_Pages )
     }
 
     /**

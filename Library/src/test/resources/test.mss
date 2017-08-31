@@ -33,6 +33,7 @@
     "pageX": 10.0,
     "pageY": 20.0,
     "freeFloating": false,
+    "paragraphSpace": 10.0,
 
     "color": "0:0:0",
     "background": "ff:ff:ff",

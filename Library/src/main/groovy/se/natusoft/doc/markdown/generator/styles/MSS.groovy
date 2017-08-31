@@ -57,7 +57,7 @@ import se.natusoft.json.JSONValue
  */
 @CompileStatic
 @TypeChecked
-@ToString(includeNames = true)
+@ToString( includeNames = true )
 class MSS {
 
     // NOTE: These enums are also used to validate JSON object field names in addition to being used as input
@@ -95,7 +95,8 @@ class MSS {
         bottomMargin,
         pageX,
         pageY,
-        freeFloating
+        freeFloating,
+        paragraphSpace
     }
 
     /**
@@ -778,40 +779,40 @@ class MSS {
      * This converts a value into PDF points. If the value is a number points is assumed. If it is a string
      * then one of the following 3 suffixes are required: pt, cm, or in.
      *
-     * @param mVal The JSON value to convert.
+     * @param cipfVal The JSON value to convert.
      *
      * @return A float in points.
      */
-    private static float marginToFloat( @NotNull JSONValue mVal ) {
-        if ( mVal == null ) throw new IllegalArgumentException( "marginToFloat(val) cannot be null!" )
+    private static float cmInPtFloatToFloat( @NotNull JSONValue cipfVal ) {
+        if ( cipfVal == null ) throw new IllegalArgumentException( "cmInPtFloatToFloat(val) cannot be null!" )
 
-        float margin
+        float cipfValue
 
-        switch ( mVal ) {
+        switch ( cipfVal ) {
             case { it instanceof JSONNumber }:
-                margin = ( mVal as JSONNumber ).toFloat()
+                cipfValue = ( cipfVal as JSONNumber ).toFloat()
                 break
 
             case { it instanceof JSONString && it.toString().endsWith( "pt" ) }:
-                def val = mVal.toString()[ 0..( mVal.toString().size() - 3 ) ].trim()
-                margin = Float.valueOf( val )
+                def val = cipfVal.toString()[ 0..( cipfVal.toString().size() - 3 ) ].trim()
+                cipfValue = Float.valueOf( val )
                 break
 
             case { it instanceof JSONString && it.toString().endsWith( "cm" ) }:
-                def val = mVal.toString()[ 0..( mVal.toString().size() - 3 ) ].trim()
-                margin = inchToPt( cmToInch( Float.valueOf( val ) ) )
+                def val = cipfVal.toString()[ 0..( cipfVal.toString().size() - 3 ) ].trim()
+                cipfValue = inchToPt( cmToInch( Float.valueOf( val ) ) )
                 break
 
             case { it instanceof JSONString && it.toString().endsWith( "in" ) }:
-                def val = mVal.toString()[ 0..( mVal.toString().size() - 3 ) ].trim()
-                margin = inchToPt( Float.valueOf( val ) )
+                def val = cipfVal.toString()[ 0..( cipfVal.toString().size() - 3 ) ].trim()
+                cipfValue = inchToPt( Float.valueOf( val ) )
                 break
             default:
-                throw new IllegalArgumentException( "'${ mVal }' as bad specification! Either specify points in numeric format or " +
+                throw new IllegalArgumentException( "'${ cipfVal }' as bad specification! Either specify points in numeric format or " +
                         "a string with a size and a pt/cm/in suffix." )
         }
 
-        margin
+        cipfValue
     }
 
     /**
@@ -841,7 +842,7 @@ class MSS {
     @NotNull
     float getTopMarginForDocument( MSS_Pages section ) {
         JSONValue marginValue = getSingleValueForDocument( MSS_Page.topMargin.name(), section.name() )
-        marginToFloat( nullToDefault( marginValue, new JSONString( "2.54cm" ) ) )
+        cmInPtFloatToFloat( nullToDefault( marginValue, new JSONString( "2.54cm" ) ) )
     }
 
     /**
@@ -850,7 +851,7 @@ class MSS {
     @NotNull
     float getLeftMarginForDocument( MSS_Pages section ) {
         JSONValue marginValue = getSingleValueForDocument( MSS_Page.leftMargin.name(), section.name() )
-        marginToFloat( nullToDefault( marginValue, new JSONString( "2.54cm" ) ) )
+        cmInPtFloatToFloat( nullToDefault( marginValue, new JSONString( "2.54cm" ) ) )
     }
 
     /**
@@ -859,7 +860,7 @@ class MSS {
     @NotNull
     float getRightMarginForDocument( MSS_Pages section ) {
         JSONValue marginValue = getSingleValueForDocument( MSS_Page.rightMargin.name(), section.name() )
-        marginToFloat( nullToDefault( marginValue, new JSONString( "2.54cm" ) ) )
+        cmInPtFloatToFloat( nullToDefault( marginValue, new JSONString( "2.54cm" ) ) )
     }
 
     /**
@@ -868,25 +869,31 @@ class MSS {
     @NotNull
     float getBottomMarginForDocument( MSS_Pages section ) {
         JSONValue marginValue = getSingleValueForDocument( MSS_Page.bottomMargin.name(), section.name() )
-        marginToFloat( nullToDefault( marginValue, new JSONString( "2.54cm" ) ) )
+        cmInPtFloatToFloat( nullToDefault( marginValue, new JSONString( "2.54cm" ) ) )
     }
 
     @NotNull
-    float getPageXForDocument(MSS_Pages section) {
-        JSONValue pageXValue = getSingleValueForDocument( MSS_Page.pageX.name(  ), section.name(  ) )
-        (pageXValue as JSONNumber).toFloat(  )
+    float getPageXForDocument( MSS_Pages section ) {
+        JSONValue pageXValue = getSingleValueForDocument( MSS_Page.pageX.name(), section.name() )
+        ( pageXValue as JSONNumber ).toFloat()
     }
 
     @NotNull
-    float getPageYForDocument(MSS_Pages section) {
-        JSONValue pageYValue = getSingleValueForDocument( MSS_Page.pageY.name(  ), section.name(  ) )
-        (pageYValue as JSONNumber).toFloat(  )
+    float getPageYForDocument( MSS_Pages section ) {
+        JSONValue pageYValue = getSingleValueForDocument( MSS_Page.pageY.name(), section.name() )
+        ( pageYValue as JSONNumber ).toFloat()
     }
 
     @NotNull
-    boolean isFreeFloating(MSS_Pages section) {
-        JSONValue freeFloatingValue = getSingleValueForDocument( MSS_Page.freeFloating.name(  ), section.name(  ) )
-        freeFloatingValue != null ? (freeFloatingValue as JSONBoolean).asBoolean : false
+    boolean isFreeFloatingForDocument( MSS_Pages section ) {
+        JSONValue freeFloatingValue = getSingleValueForDocument( MSS_Page.freeFloating.name(), section.name() )
+        freeFloatingValue != null ? ( freeFloatingValue as JSONBoolean ).asBoolean : false
+    }
+
+    @NotNull
+    float getParagraphSpaceForDocument( MSS_Pages section ) {
+        JSONValue paragraphSpaceValue = getSingleValueForDocument( MSS_Page.paragraphSpace.name(), section.name() )
+        cmInPtFloatToFloat( nullToDefault( paragraphSpaceValue , new JSONNumber(10.0f)) )
     }
 
     /**
@@ -1052,6 +1059,14 @@ class MSS {
 
         boolean isBoxed( @NotNull MSS_Pages section ) {
             isBoxedForDocument( section )
+        }
+
+        boolean isFreeFloating( @NotNull MSS_Pages section ) {
+            isFreeFloatingForDocument( section )
+        }
+
+        float getParagraphSpace( @NotNull MSS_Pages section ) {
+            getParagraphSpaceForDocument( section )
         }
 
         @NotNull

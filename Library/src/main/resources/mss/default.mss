@@ -161,6 +161,8 @@
     "topMargin": "2.54cm",
     "bottomMargin": "2.54cm",
 
+    "paragraphSpace": 10.0,
+
     "color": "black",
     "background": "white",
     "family": "HELVETICA",
