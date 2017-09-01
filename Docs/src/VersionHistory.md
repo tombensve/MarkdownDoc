@@ -7,17 +7,25 @@ About versions, they are hell! After personal experience of having different ver
 
 ### New features
 
-#### Page margins anywhere in document section.
+I recently had to deal with rather bad PDF generating code to produce letters at work. I thought, "woudn't it be nice if I could produce such with just easy markdown text and some MSS settings!". This tool was made to write and generate documentation. Letters and reports have different layout requirements that MDD did not support. But I realized that 3 rather easy small changes could improve this. They are listed below. It is too late to do anyting with the work code, but I already suspect that others are using MDD for such purposes, so these small features might help produce non documentation layouts. That also goes for the `<!-- @PB -->` described below.
+
+##### Page margins anywhere in document section.
 
 Page margins are now allowed anywhere in the document section of an MSS, not just for the top part. So now page margins can be changed for different formats and for divs. The left and right margins are of course the most useful here. Changeing top and bottom will only have an effect on the next page.
 
-#### "freeFloating" MSS style.
+##### "freeFloating" MSS style.
 
 This is a very special (and use at your own risk) feature that needs to be used with great care! It allows for placing text anywhere on a page. 
 
 The only sensible use of this is within a div. It allows for changeing X & Y on the page and page margins (see above) can also be changed in same div. It makes sense to set leftMargin to X coordinate.
 
 Read the docs for more information about this feature.
+
+##### "paragraphSpace" MSS attribute.
+
+This sets the space between paragraphs. Defaults to 10pt. Previously the space between paragraphs where created by doing an extra _newline_. The space created by a _newline_ is affected by the current font size. That is no longer the case. Thereby there can be slight differences when generating with this version. 
+
+If generating report or letters where short texts are wanted under each other without empty lines between them, like an address to be shown in an envelope window for example, this can be set to 0.0pt within a div. In the markdown you have to have each line as a separate paragraph, but when generating PDF they will be as expected.
 
 ### Bug fix
 

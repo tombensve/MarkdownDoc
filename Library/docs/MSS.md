@@ -184,6 +184,10 @@ For the margins the suffix can be "cm" for centimeters, "in" for inches or "pt" 
         "rightMargin": "2.54cm",
         "topMargin": "2.54cm",
         "bottomMargin": "2.54cm",
+
+The _paragraphSpace_ MSS attribute is new since 2.1.0. Previously an extra _newline_ were made, but that space were affected by the font size. This is not, and can be changed independently of font size. The default is 10pt. Just as for margins _cm_ and _in_ and _pt_ can be used when value is a string. It can also be specified as a number in which case it is in _pt_. 
+    
+        "paragraphSpace": "10pt",
         
         "color": "black",
         "background": "white",
