@@ -16,6 +16,8 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 [User Guide PDF](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.pdf)
 
+YouTrack read only board: https://natusoft.myjetbrains.com/youtrack/agiles/90-5/94-7  (ytguest / salamiPizza)
+
 # Binaries
 
 Available through maven at bintray JCentral: [http://jcenter.bintray.com/](http://jcenter.bintray.com/).
