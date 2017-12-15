@@ -120,7 +120,7 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
      */
     private void validate() throws MojoExecutionException {
         if (this.generatorOptions == null) {
-           throw new MojoExecutionException("A <generalOptions>...</generalOptions> must be specified with a minimum of " +
+           throw new MojoExecutionException("A <generatorOptions>...</generatorOptions> must be specified with a minimum of " +
                    "<inputPaths>...</inputPaths> in it!");
         }
 
@@ -129,7 +129,7 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
         }
 
         if (this.generatorOptions.getGenerator() == null || this.generatorOptions.getGenerator().isEmpty()) {
-            throw new MojoExecutionException("Missing: <generalOptions><generator>...</generator></generalOptions>!");
+            throw new MojoExecutionException("Missing: <generatorOptions><generator>...</generator></generatorOptions>!");
         }
 
         if (this.generatorOptions.getGenerator().trim().toLowerCase().equals("pdf")) {
