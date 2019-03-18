@@ -346,7 +346,7 @@
                         <configuration>
 
                             <project>
-                                <codeVersion>${project.version}</codeVersion>
+                                <!--<codeVersion>${project.version}</codeVersion>-->
                             </project>
 
                             <!-- All options are optional. -->
