@@ -5,7 +5,7 @@
  *         MarkdownDocEditor
  *     
  *     Code Version
- *         2.0.2
+ *         2.1.1
  *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
@@ -65,6 +65,11 @@ import java.util.List
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_EDITING
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_TOOL
 
+/*
+ * Any redmarkings in the code means that you are using Intelllij IDEA. Different things get red marked
+ * for different versions of IDEA. The code is however 100% correct and compiles without problems.
+ */
+
 /**
  * This is an editorPane for editing markdown documents.
  */
@@ -78,7 +83,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
     // Constants
     //
 
-    private static final String WINDOW_TITLE = "MarkdownDoc Editor 2.0.2"
+    private static final String WINDOW_TITLE = "MarkdownDoc Editor 2.1.1"
 
     //
     // Static members
@@ -1043,6 +1048,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
         )
         this.editable.editorPane.setMargin(margins)
 
+        // If the arguments to FileDrop is red marked, then you are using IDEA.
         //noinspection GroovyResultOfObjectAllocationIgnored
         new FileDrop(this.editable.editorPane, new  FileDrop.Listener() {
             void filesDropped(final File[] files) {

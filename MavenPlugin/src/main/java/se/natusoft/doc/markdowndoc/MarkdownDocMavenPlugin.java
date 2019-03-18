@@ -5,7 +5,7 @@
  *         MarkdownDoc Maven Plugin
  *     
  *     Code Version
- *         2.0.2
+ *         2.1.1
  *     
  *     Description
  *         A maven plugin for generating documentation from markdown.

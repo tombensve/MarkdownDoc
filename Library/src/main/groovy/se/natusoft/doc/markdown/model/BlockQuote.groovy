@@ -5,7 +5,7 @@
  *         MarkdownDoc Library
  *     
  *     Code Version
- *         2.0.2
+ *         2.1.1
  *     
  *     Description
  *         Parses markdown and generates HTML and PDF.
@@ -45,7 +45,7 @@ import org.jetbrains.annotations.NotNull
  */
 @CompileStatic
 @TypeChecked
-public class BlockQuote extends Paragraph {
+class BlockQuote extends Paragraph {
 
     /**
      * Returns a String representation of this for debugging purposes.
