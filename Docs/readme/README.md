@@ -2,7 +2,7 @@
 
 Copyright (C) 2012 Natusoft AB
 
-__Version:__ 2.1.0
+__Version:__ 2.1.1
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
@@ -15,8 +15,6 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 [User Guide](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.md)
 
 [User Guide PDF](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.pdf)
-
-YouTrack read only board: https://natusoft.myjetbrains.com/youtrack/agiles/90-5/94-7  (ytguest / salamiPizza)
 
 # Binaries
 

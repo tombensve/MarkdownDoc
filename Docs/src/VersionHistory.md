@@ -3,6 +3,10 @@
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
 
+## 2.1.1
+
+GitHub security warning fix on dependency. No functionality changes!!
+
 ## 2.1.0
 
 ### New features
@@ -15,7 +19,7 @@ Page margins are now allowed anywhere in the document section of an MSS, not jus
 
 ##### "freeFloating" MSS style.
 
-This is a very special (and use at your own risk) feature that needs to be used with great care! It allows for placing text anywhere on a page. 
+This is a very special (and use at your own risk) feature that needs to be used with great care! It allows for placing text anywhere on a page.
 
 The only sensible use of this is within a div. It allows for changeing X & Y on the page and page margins (see above) can also be changed in same div. It makes sense to set leftMargin to X coordinate.
 
@@ -23,13 +27,13 @@ Read the docs for more information about this feature.
 
 ##### "paragraphSpace" MSS attribute.
 
-This sets the space between paragraphs. Defaults to 10pt. Previously the space between paragraphs where created by doing an extra _newline_. The space created by a _newline_ is affected by the current font size. That is no longer the case. Thereby there can be slight differences when generating with this version. 
+This sets the space between paragraphs. Defaults to 10pt. Previously the space between paragraphs where created by doing an extra _newline_. The space created by a _newline_ is affected by the current font size. That is no longer the case. Thereby there can be slight differences when generating with this version.
 
 If generating report or letters where short texts are wanted under each other without empty lines between them, like an address to be shown in an envelope window for example, this can be set to 0.0pt within a div. In the markdown you have to have each line as a separate paragraph, but when generating PDF they will be as expected.
 
 ### Bug fix
 
-For sublist the first sublist entry had same indentation as parent list, and the second entry and down had the correct indentation. This must have been for a while, I'm not sure how I missed it. Anyhow, this is now fixed. 
+For sublist the first sublist entry had same indentation as parent list, and the second entry and down had the correct indentation. This must have been for a while, I'm not sure how I missed it. Anyhow, this is now fixed.
 
 ### Update to documentation
 

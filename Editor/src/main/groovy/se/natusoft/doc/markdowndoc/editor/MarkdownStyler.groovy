@@ -4,9 +4,6 @@
  *     Name
  *         MarkdownDocEditor
  *     
- *     Code Version
- *         2.0.2
- *     
  *     Description
  *         An editor that supports editing markdown with formatting preview.
  *         
@@ -43,7 +40,6 @@ import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.JTextComponentStyler
-import se.natusoft.doc.markdowndoc.editor.api.JTextComponentStyler.ParagraphBounds
 import se.natusoft.doc.markdowndoc.editor.config.BooleanConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.IntegerConfigEntry

@@ -5,7 +5,7 @@
 
     @PDFTitle("MarkdownDoc")
     @PDFSubject("User Guide")
-    @PDFVersion(2 . 1 . 0) Due to the font used I put a space between to make the dot more visible.
+    @PDFVersion(2 . 1 . 1) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
     @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
@@ -1372,6 +1372,10 @@ As you can see pdf options are prefixed with "pdf.", html options are prefixed w
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
 
+## 2.1.1
+
+GitHub security warning fix on dependency. No functionality changes!!
+
 ## 2.1.0
 
 ### New features
@@ -1810,7 +1814,7 @@ The following third party products are using this license:
 
 *  [annotations-13.0](http://www.jetbrains.org)
 
-*  [pdfbox-2.0.6](http://pdfbox.apache.org)
+*  [pdfbox-2.0.13](https://issues.apache.org/jira/secure/attachment/12784025/PDFBOX-3208-L33MUTT2SVCWGCS6UIYL5TH3PNPXHIS6.pdf)
 
 *  [groovy-all-2.4.4](http://groovy-lang.org)
 
