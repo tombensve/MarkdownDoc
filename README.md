@@ -10,6 +10,10 @@ __Author:__ Tommy Svensson (tommy@natusoft.se)
 
 ----
 
+**NOTE:** I just discovered that I still have been using maven 3.0.5 as maven version in IDEA for this project and that the maven plugin fails building with later versions. I don't have time to fix this now so to build this maven 3.0.5 is required. There are however binaries available on bintray/jcenter.
+
+----
+
 _A tool for generating HTML and PDF from markdown for the purpose of documentation._
 
 [User Guide](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.md)
