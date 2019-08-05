@@ -3,6 +3,10 @@
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
 
+## 2.1.1
+
+Github security alert fix for PDFBox version. 2.0.6 -> [2.0.15,). Maven have downloaded 2.0.16 so I guess that is the latest version at this moment. This of course puts me and any other user of this in the hands of Apache PDFBox to not release something non backwards compatible on the 2.0.* version branch. As a longtime software professional I've learned the hard way, to not trust, but Apache projects in general are very professional, and what I've seem of PDFBox so far I do give them this trust. 
+
 ## 2.1.0
 
 ### New features
