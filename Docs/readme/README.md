@@ -2,11 +2,9 @@
 
 Copyright (C) 2012 Natusoft AB
 
-__Version:__ 2.1.1
+__Version:__ 2.1.2
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
-
-[Interested in joining me develop MarkdownDoc ?](https://github.com/tombensve/MarkdownDoc/issues/21)
 
 ----
 

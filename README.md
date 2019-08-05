@@ -2,7 +2,7 @@
 
 Copyright (C) 2012 Natusoft AB
 
-__Version:__ 2.1.1
+__Version:__ 2.1.2
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
@@ -62,7 +62,7 @@ About versions, they are hell! After personal experience of having different ver
 
 ## 2.1.2
 
-Github security alert fix for PDFBox version 2.0.6 -> [2.0.15,](). Maven have downloaded 2.0.16 so I guess that is the latest version at this moment. This of course puts me and any other user of this in the hands of Apache PDFBox to not release something non backwards compatible on the 2.0.* version branch. As a longtime software professional I've learned the hard way, to not trust, but Apache projects in general are very professional, and what I've seem of PDFBox so far I do give them this trust.
+Github security alert fix for PDFBox version 2.0.6 -> [2.0.15,](). Maven have downloaded 2.0.16 so I guess that is the latest version at this moment.
 
 ## 2.1.1
 
