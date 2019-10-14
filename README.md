@@ -14,7 +14,7 @@ __Note:__ If run with JDK 11 you will get warnings about reflective access that 
 
 Also note that on JDK 9+ this will only work if your code is not using JPMS! This is due to the bad design of JPMS! There is a project called moditect that allows you to download and repackage non JPMS jars adding a Module-info.java to them. Not a very good solution, but the best one (actually only one) I've found so far. If I stick a Module-info.java into it, it can no longer be used with JDK < 9, and that is worse compatibility wise. 
 
-I'm hoping some people get togheter and branch off JDK 8 making something far better and that JPMS will die out.
+I'm hoping some people get togheter and branch off JDK 8 making something far better, backwards compatible and that JPMS will die out.
 
 ----
 
