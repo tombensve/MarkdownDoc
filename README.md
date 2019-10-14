@@ -10,6 +10,14 @@ __Author:__ Tommy Svensson (tommy@natusoft.se)
 
 ----
 
+__Note:__ If run with JDK 11 you will get warnings about reflective access that will stop working in JDK 12. This is due to Groovy, which are currently working on Groovy 3.0.0 which will fix these warnings. But until that is finished and released I will not move up to that Groovy version. Current version works fine upp to Java 8 (and possible 9 & 10, think warnings are new since 11). Note that even if you get warnings on 11, it does work! This version will definately fail on JDK 12. 
+
+Also note that on JDK 9+ this will only work if your code is not using JPMS! This is due to the bad design of JPMS! There is a project called moditect that allows you to download and repackage non JPMS jars adding a Module-info.java to them. Not a very good solution, but the best one (actually only one) I've found so far. If I stick a Module-info.java into it, it can no longer be used with JDK < 9, and that is worse compatibility wise. 
+
+I'm hoping some people get togheter and branch off JDK 8 making something far better and that JPMS will die out.
+
+----
+
 _A tool for generating HTML and PDF from markdown for the purpose of documentation._
 
 [User Guide](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.md)
