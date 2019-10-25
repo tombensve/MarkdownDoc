@@ -16,29 +16,12 @@
     <description>A maven plugin for generating documentation from markdown.</description>
 
     <dependencies>
+
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
-            <version>3.0.5</version>
+            <version>3.3.3</version>
         </dependency>
-        <!--
-            I love maven and version 3.0.5 is very old and very stable! That can unfortunately not be
-            said for newer versions of maven. I've always had problems with 3.2, it got a little better
-            with 3.3, but still not close to the 3.0 stability. With 3.3 compiling this plugin results
-            in an IndexOutOfBoundsException entirely in maven code. I did go through the documentation
-            and updated the code using the latest real java annotations. That didn't help, still got
-            an IndexOutOfBoundsException.
-
-            I really, really hate JIRA which is a truly crappy piece of software. Usability is a concept
-            they never heard of. I'm forced to torture myself with JIRA professionally, but I refuse to do
-            so on my personal time. I'm thereby not going to file an issue on this. I'll just stick
-            to trusty 3.0.5 which does everything I need it to do.
-
-            About issue handling I can strongly recommend YouTrack. It is everything that JIRA isn't!
-            It is a joy to work with. Clearly made by people who knows what they are doing. The JetBrains
-            have very clearly thought about how users interact with it, while the Atlassians realized
-            far too late "Shit, are we going to have users actually using this ?!!".
-        -->
         <!--<dependency>-->
             <!--<groupId>org.apache.maven.plugin-tools</groupId>-->
             <!--<artifactId>maven-plugin-annotations</artifactId>-->
