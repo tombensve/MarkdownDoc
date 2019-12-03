@@ -14,8 +14,6 @@ __Note:__ If run with JDK 11 you will get warnings about reflective access that 
 
 Also note that on JDK 9+ this will only work if your code is not using JPMS! You have to ask the people behind JPMS about that. There is a project called moditect that allows you to download and repackage non JPMS jars adding a Module-info.java to them. Not a very good solution, but the best one (actually only one) I've found so far. If I stick a Module-info.java into it, it can no longer be used with JDK < 9, and that is worse compatibility wise. 
 
-I'm hoping some people get together and branch off JDK 8 making something far better, backwards compatible. Modularity is a very nice thing to have. OSGi manage to provide that in a way that requires some MANIFEST.MF values to be able to be dropped into an OSGi container, without having any effect if the jar is used outside of OSGi. It is the big incompatibility problems with JPMS I don't like. I also think that the re-use of ServiceLoader (came in Java 6) was a rather lazy decision. OSGis service model is far more flexible.  
-
 ----
 
 _A tool for generating HTML and PDF from markdown for the purpose of documentation._
