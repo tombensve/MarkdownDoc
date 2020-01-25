@@ -63,6 +63,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
@@ -89,32 +90,6 @@
     </build>
 
     <profiles>
-        <profile>
-            <id>mac-app-bundle</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>sh.tak.appbundler</groupId>
-                        <artifactId>appbundle-maven-plugin</artifactId>
-                        <version>1.0.4</version>
-                        <configuration>
-                            <mainClass>se.natusoft.doc.markdowndoc.editor.MarkdownDocEditor</mainClass>
-                            <generateDiskImageFile>true</generateDiskImageFile>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>bundle</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-
-        </profile>
-
         <profile>
             <id>assemble-exec</id>
             <build>

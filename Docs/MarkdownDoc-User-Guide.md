@@ -3,7 +3,7 @@
     As of version 1.4 it is possible to specify a lot of the PDFGenerator options as annotations
     within a comment block. This should be at the top of the document or it can have side effects.
 
-    @PDFTitle("MarkdownDoc")
+    @PDFTitle("MarkdownDoc åäö ÅÄÖ")
     @PDFSubject("User Guide")
     @PDFVersion(2 . 1 . 2) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
@@ -14,7 +14,7 @@
     @PDFGenerateTOC(true)
     @PDFGenerateSectionNumbers(false)
 -->
-# MarkdownDoc User Guide
+# MarkdownDoc User Guide åäö ÅÄÖ
 
 ## Introduction
 
