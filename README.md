@@ -12,9 +12,9 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 [User Guide](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.md)
 
-[User Guide PDF](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.pdf) (Generated with MarkdownDoc)
-
 ----
+
+[User Guide PDF](https://github.com/tombensve/MarkdownDoc/blob/master/Docs/MarkdownDoc-User-Guide.pdf) (Generated with MarkdownDoc)
 
 Note that GitHub no longer supports PDF files on GitHub!!! To read a PDF you need to checkout the repo. I'm leaving the link to the PDF version of the user guide just to show how crazy this is. Clicking on the PDF link will make the browser freeze for quite some time, and I have a fast machine! When the PDF finally renders it looks so horribly bad that it is simnply not readable, characters are merged into each other! Imagine taking a news paper page and then crumbling it into a little ball, and then opening it up again and then try to read it. That is far easier than a GitHub rendered PDF! There is also no way to download the PDF and let the browser render it. Even if I save it to disk, it is the GitHub render it tries to save!! I only have one question: WTF GitHub ?
 
