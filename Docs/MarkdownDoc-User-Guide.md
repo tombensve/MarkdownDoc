@@ -3,9 +3,9 @@
     As of version 1.4 it is possible to specify a lot of the PDFGenerator options as annotations
     within a comment block. This should be at the top of the document or it can have side effects.
 
-    @PDFTitle("MarkdownDoc åäö ÅÄÖ")
+    @PDFTitle("MarkdownDoc")
     @PDFSubject("User Guide")
-    @PDFVersion(2 . 1 . 2) Due to the font used I put a space between to make the dot more visible.
+    @PDFVersion(2 . 1 . 3) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
     @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
@@ -14,7 +14,7 @@
     @PDFGenerateTOC(true)
     @PDFGenerateSectionNumbers(false)
 -->
-# MarkdownDoc User Guide åäö ÅÄÖ
+# MarkdownDoc User Guide
 
 ## Introduction
 
@@ -1371,6 +1371,18 @@ As you can see pdf options are prefixed with "pdf.", html options are prefixed w
 # Version history
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
+
+# (2.2)
+
+I have been away from this tool for quite some time playing with Vert.x and React. But I feel it is time to give this project some time again. I will look at implementing table support. This might however require a rewrite of the markdown parser, it is nothing that will be done over a weekend!
+
+## 2.1.3
+
+The colors in the default.mss file are copied from the X11 color names, which starts with capitals. I then screwed up by specifying color "grey" for "horizontal_ruler" in default.mss. My bad!
+
+I considered making color names case-insensitive, but when looking at it realized that it can have more side effects than what this did.
+
+Anyhow, this version only fixes this!
 
 ## 2.1.2
 

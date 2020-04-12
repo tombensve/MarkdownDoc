@@ -221,7 +221,7 @@
       },
       "horizontal_ruler": {
         "thickness": 0.5,
-        "color": "grey"
+        "color": "Grey"
       }
     },
 

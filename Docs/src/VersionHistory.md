@@ -3,6 +3,18 @@
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
 
+# (2.2)
+
+I have been away from this tool for quite some time playing with Vert.x and React. But I feel it is time to give this project some time again. I will look at implementing table support. This might however require a rewrite of the markdown parser, it is nothing that will be done over a weekend!
+
+## 2.1.3
+
+The colors in the default.mss file are copied from the X11 color names, which starts with capitals. I then screwed up by specifying color "grey" for "horizontal\_ruler" in default.mss. My bad!
+
+I considered making color names case-insensitive, but when looking at it realized that it can have more side effects than what this did. 
+
+Anyhow, this version only fixes this! 
+
 ## 2.1.2
 
 Github security alert fix for PDFBox version 2.0.6 -> [2.0.15,). Maven have downloaded 2.0.16 so I guess that is the latest version at this moment. 
