@@ -58,7 +58,7 @@ The editor is also using filedrop.jar from [http://iharder.sourceforge.net/curre
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
 
-# (2.2)
+## (2.2.0)
 
 I have been away from this tool for quite some time playing with Vert.x and React. But I feel it is time to give this project some time again. I will look at implementing table support. This might however require a rewrite of the markdown parser, it is nothing that will be done over a weekend!
 
