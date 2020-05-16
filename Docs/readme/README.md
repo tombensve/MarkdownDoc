@@ -32,6 +32,8 @@ MarkdownDoc is written in Groovy 2.5 which produces JDK 5 compatible bytecode. I
 
 I have found a project that does an attempt at some form of remedy for this: <https://github.com/moditect/moditect>. It requires a lot of config and intimate knowledge of all 3rd party libs you need to convert to 9+ modules.
 
+There is a catch to Moditect: It updates 3rd party jars with a module-info! Note that dependency jars contain compiled code! So if it is JDK 8 compiled code ? If so even with a module-info it is likely to crash due to bytecode not supported on 12+. 
+
 Personally I'm a bit scared for the future of Java. In Sweden I have still not seen any company using anything higher than 8. There probably are, but the majority is still sticking to 8.
 
 # Licenses
