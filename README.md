@@ -32,7 +32,13 @@ I have found a project that does an attempt at some form of remedy for this: [ht
 
 There is a catch to Moditect: It updates 3rd party jars with a module-info! Note that dependency jars contain compiled code! So if it is JDK 8 compiled code ? If so even with a module-info it is likely to crash due to bytecode not supported on 12+.
 
+Maybe it is possible to avoid code that differs in [12 & 12+, but since you don't have control over 3rd party libraries you have to write all code your self, and not use third party libraries. There seem to be only stupid/annoying solutions to the problem.](12 & 12+, but since you don't have control over 3rd party libraries you have to write all code your self, and not use third party libraries. There seem to be only stupid/annoying solutions to the problem.)
+
+As I said above, MarkdownDoc is written in Groovy! The current version produces Java 5 bytecode. If I bring Groovy version up to 3.0 then it will produce Java 8 bytecode. It is Groovy (org.codehaus.groovy.reflectionCachedClass) that produces a warning in Java 11. It will not work on Java 12, and there is nothing I can do about that until Groovy has a Java 12 supporting version. Or I need to port it to Java, but that does not of course automatically solve everything. There is a reason I have chosen Groovy as language, and it wasn't just for the heck of it!
+
 Personally I'm a bit scared for the future of Java. In Sweden I have still not seen any company using anything higher than 8. There probably are, but the majority is still sticking to 8.
+
+[https://dzone.com/articles/java-8-bastion-of-long-term-support](https://dzone.com/articles/java-8-bastion-of-long-term-support)
 
 # Licenses
 
