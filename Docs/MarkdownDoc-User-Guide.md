@@ -5,7 +5,7 @@
 
     @PDFTitle("MarkdownDoc")
     @PDFSubject("User Guide")
-    @PDFVersion(2 . 1 . 3) Due to the font used I put a space between to make the dot more visible.
+    @PDFVersion(2 . 1 . 4) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
     @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
@@ -505,6 +505,8 @@ The following annotation options are available:
 *  @PDFGenerateTitlePage(true/false)
 
 *  @PDFTitlePageImage(imageref)
+
+*  @PDFMSS(path)
 
 Put this comment block at the top of the document! The optoins provided this way will not have an effect until the comment block have been processed by the generator, and the annotations found. Thereby it is also theoretically possible to change options further down the document. This should be seen as a side effect rather than a feature!!
 
@@ -1372,9 +1374,11 @@ As you can see pdf options are prefixed with "pdf.", html options are prefixed w
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
 
-# (2.2)
+## 2.1.4
 
-I have been away from this tool for quite some time playing with Vert.x and React. But I feel it is time to give this project some time again. I will look at implementing table support. This might however require a rewrite of the markdown parser, it is nothing that will be done over a weekend!
+Added possibility to specify @PDFMSS(path) in document comment to override default mss for document. This will also work in the Editor which currently does not support specifying an MSS file. A bit of a lazy workaround.
+
+Also added "Grey" to default.mss with same color as "Gray". There seems to be 2 spellings of this color.
 
 ## 2.1.3
 

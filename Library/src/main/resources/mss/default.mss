@@ -62,6 +62,7 @@
     "GhostWhite": "F8F8FF",
     "Gold": "FFD700",
     "GoldenRod": "DAA520",
+    "Grey": "808080",
     "Gray": "808080",
     "Green": "008000",
     "GreenYellow": "ADFF2F",

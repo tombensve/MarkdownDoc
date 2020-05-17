@@ -2,7 +2,7 @@
 
 Copyright (C) 2012 Natusoft AB
 
-__Version:__ 2.1.3
+__Version:__ 2.1.4
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
@@ -18,9 +18,9 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 Available through maven at bintray JCentral: [http://jcenter.bintray.com/](http://jcenter.bintray.com/). MarkdownDoc on [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/).
 
-Command line [[markdowndoc-cmd-line-2.1.3.exec.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/2.1.3/markdowndoc-cmd-line-2.1.3.exec.jar)]
+Command line [[markdowndoc-cmd-line-2.1.4.exec.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/2.1.4/markdowndoc-cmd-line-2.1.4.exec.jar)]
 
-Editor [[MarkdownDocEditor-2.1.3.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/2.1.3/MarkdownDocEditor-2.1.3.App.jar)].
+Editor [[MarkdownDocEditor-2.1.4.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/2.1.4/MarkdownDocEditor-2.1.4.App.jar)].
 
 [Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md)
 
@@ -74,9 +74,11 @@ The editor is also using filedrop.jar from [http://iharder.sourceforge.net/curre
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
 
-# (2.2)
+## 2.1.4
 
-I have been away from this tool for quite some time playing with Vert.x and React. But I feel it is time to give this project some time again. I will look at implementing table support. This might however require a rewrite of the markdown parser, it is nothing that will be done over a weekend!
+Added possibility to specify @PDFMSS(path) in document comment to override default mss for document. This will also work in the Editor which currently does not support specifying an MSS file. A bit of a lazy workaround.
+
+Also added "Grey" to default.mss with same color as "Gray". There seems to be 2 spellings of this color.
 
 ## 2.1.3
 

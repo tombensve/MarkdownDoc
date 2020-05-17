@@ -139,6 +139,7 @@ The following annotation options are available:
 - @PDFGenerateTOC(true/false)
 - @PDFGenerateTitlePage(true/false)
 - @PDFTitlePageImage(imageref)
+- @PDFMSS(path)
 
 Put this comment block at the top of the document! The optoins provided this way will not have an effect until the comment block have been processed by the generator, and the annotations found. Thereby it is also theoretically possible to change options further down the document. This should be seen as a side effect rather than a feature!!
 

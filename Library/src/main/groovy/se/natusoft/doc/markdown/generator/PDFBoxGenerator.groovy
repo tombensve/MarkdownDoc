@@ -3,28 +3,28 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
@@ -103,9 +103,6 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
     /** This will get an instance if header numbering is enabled in the options. */
     private StructuredNumber headerNumber = null
 
-    /** The current header level. */
-//    private int currentHeaderLevel = 1
-
     //
     // Methods
     //
@@ -163,6 +160,28 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
     }
 
     /**
+     * Loads MSS data.
+     *
+     * @param context The context holding the MSS data.
+     */
+    private static void loadMSS( PDFGeneratorContext context ) {
+        if ( context.options.mss != null && !context.options.mss.isEmpty() ) {
+            final File mssFile = context.fileResource.getResourceFile( context.options.mss )
+            final BufferedInputStream bis = new BufferedInputStream( new FileInputStream( mssFile ) )
+            try {
+                context.pdfStyles.mss = MSS.fromInputStream( bis )
+            }
+            finally {
+                bis.close()
+            }
+        }
+        else {
+            System.out.println( "Using default MSS!" )
+            context.pdfStyles.mss = MSS.defaultMSS()
+        }
+    }
+
+    /**
      * Generates output from DocItem model.
      *
      * @param document The model to generate from.
@@ -187,7 +206,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                     options: options as PDFGeneratorOptions,
                     rootDir: rootDir,
                     fileResource:
-                            new FileResource( rootDir: rootDir, optsRootDir: ( options as PDFGeneratorOptions ).rootDir ),
+                            new FileResource( rootDir: rootDir, optsRootDir: ( options as PDFGeneratorOptions )
+                                    .rootDir ),
                     resultFile:
                             rootDir != null ? new File( rootDir, options.resultFile ) : new File( options.resultFile )
             )
@@ -195,20 +215,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
             context.pdfStyles.fileResource = context.fileResource
 
             // Load MSS file if specified
-            if ( context.options.mss != null && !context.options.mss.isEmpty() ) {
-                final File mssFile = context.fileResource.getResourceFile( context.options.mss )
-                final BufferedInputStream bis = new BufferedInputStream( new FileInputStream( mssFile ) )
-                try {
-                    context.pdfStyles.mss = MSS.fromInputStream( bis )
-                }
-                finally {
-                    bis.close()
-                }
-            }
-            else {
-                System.out.println( "Using default MSS!" )
-                context.pdfStyles.mss = MSS.defaultMSS()
-            }
+            loadMSS( context )
 
             if ( !"A0 A1 A2 A3 A4 A5 A6 LEGAL LETTER".contains( context.pdfStyles.mss.pageFormat ) ) {
                 throw new GenerateException( message: "Used MSS file declares bad 'pageFormat'! Valid values are A0-A6, LEGAL, LETTER." )
@@ -236,8 +243,10 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                         if ( comment.text.indexOf( "@PB" ) >= 0 || comment.text.indexOf( "@PageBreak" ) >= 0 ) {
                             renderer.newPage()
                         }
-                        // and also act on @PDFTitle, @PDFSubject, @PDFKeywords, @PDFAuthor, @PDFVersion, and @PDFCopyright
-                        // for overriding those settings in the options. This allows the document rather than the generate
+                        // and also act on @PDFTitle, @PDFSubject, @PDFKeywords, @PDFAuthor, @PDFVersion, and
+                        // @PDFCopyright
+                        // for overriding those settings in the options. This allows the document rather than the
+                        // generate
                         // config to provide this information.
                         extractCommentOptionsAnnotations( comment, context )
                         break
@@ -290,7 +299,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                         break
 
                     default:
-                        throw new GenerateException( message: "Unknown format model in Doc! [" + docItem.class.name + "]" )
+                        throw new GenerateException( message: "Unknown format model in Doc! [" + docItem.class.name +
+                                "]" )
                 }
             }
 
@@ -419,47 +429,52 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
         updated |= updateOptsFromAnnotation( "@PDFTitle", comment ) { final String text ->
             context.options.title = text
-            println( "Document override of options: title=${ text }" )
+            println( "Document override of options: title=${text}" )
         }
         updated |= updateOptsFromAnnotation( "@PDFSubject", comment ) { final String text ->
             context.options.subject = text
-            println( "Document override of options: subject=${ text }" )
+            println( "Document override of options: subject=${text}" )
         }
         updated |= updateOptsFromAnnotation( "@PDFAuthor", comment ) { final String text ->
             context.options.author = text
-            println( "Document override of options: author=${ text }" )
+            println( "Document override of options: author=${text}" )
         }
         updated |= updateOptsFromAnnotation( "@PDFVersion", comment ) { final String text ->
             context.options.version = text
-            println( "Document override of options: version=${ text }" )
+            println( "Document override of options: version=${text}" )
         }
         updated |= updateOptsFromAnnotation( "@PDFCopyright", comment ) { final String text ->
             context.options.copyright = text
-            println( "Document override of options: copyright=${ text }" )
+            println( "Document override of options: copyright=${text}" )
         }
         updated |= updateOptsFromAnnotation( "@PDFHideLinks", comment ) { final String text ->
             context.options.hideLinks = Boolean.valueOf( text )
-            println( "Document override of options: hideLinks=${ text }" )
+            println( "Document override of options: hideLinks=${text}" )
         }
         updated |= updateOptsFromAnnotation( "@PDFUnorderedListItemPrefix", comment ) { final String text ->
             context.options.unorderedListItemPrefix = text
-            println( "Document override of options: unorderedListItemPrefix=${ text }" )
+            println( "Document override of options: unorderedListItemPrefix=${text}" )
         }
         updated |= updateOptsFromAnnotation( "@PDFGenerateSectionNumbers", comment ) { final String text ->
             context.options.generateSectionNumbers = Boolean.valueOf( text )
-            println( "Document override of options: generateSectionNumbers=${ text }" )
+            println( "Document override of options: generateSectionNumbers=${text}" )
         }
         updated |= updateOptsFromAnnotation( "@PDFGenerateTOC", comment ) { final String text ->
             context.options.generateTOC = Boolean.valueOf( text )
-            println( "Document override of options: generateToc=${ text }" )
+            println( "Document override of options: generateToc=${text}" )
         }
         updated |= updateOptsFromAnnotation( "@PDFGenerateTitlePage", comment ) { final String text ->
             context.options.generateTitlePage = Boolean.valueOf( text )
-            println( "Document override of options: generateTitlePage=${ text }" )
+            println( "Document override of options: generateTitlePage=${text}" )
         }
         updated |= updateOptsFromAnnotation( "@PDFTitlePageImage", comment ) { final String text ->
             context.options.titlePageImage = text
-            println( "Document override of options: titlePageImage=${ text }" )
+            println( "Document override of options: titlePageImage=${text}" )
+        }
+        updated |= updateOptsFromAnnotation( "@PDFMSS", comment ) { final String text ->
+            context.options.mss = text
+            loadMSS( context )
+            println( "Document override of options: mss=${text}" )
         }
 
         updated
@@ -491,7 +506,9 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
         renderer.handleFreeFloating()
 
-        if ( xReset ) renderer.resetXForNewParagraph()
+        if ( xReset ) {
+            renderer.resetXForNewParagraph()
+        }
 
         ParagraphWriter pw = new ParagraphWriter( renderer: renderer, context: context )
 
@@ -579,7 +596,6 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
         MSS_Pages section = MSS_Pages.valueOf( "h" + header.level.level )
 
-        //noinspection GroovyMissingReturnStatement
         Closure<Void> styleApplicator = {
             MSSColorPair colorPair = context.pdfStyles.mss.forDocument.getColorPair( section )
             renderer.setColorPair( colorPair )
@@ -723,12 +739,14 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                 renderer.leftInset = leftInset
 
                 if ( item instanceof ListItem ) {
-                    if ( first != null && item != first ) renderer.newLine()
+                    if ( first != null && item != first ) {
+                        renderer.newLine()
+                    }
                     renderer.resetXForNewParagraph()
                     if ( num != null ) {
                         num.increment()
-                        renderer.text( "${ num.root } " )
-                        renderer.leftInset += renderer.calcTextWidth( "${ num.root } " )
+                        renderer.text( "${num.root} " )
+                        renderer.leftInset += renderer.calcTextWidth( "${num.root} " )
                     }
                     else {
                         // Note that renderer.text(...) parses the string into separate words,so that it can wrap
@@ -737,8 +755,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                         // to rendered.text(...) below this comment, which does not include a space, a space will
                         // still be rendered! This is why we have to add an additional space when calculating the
                         // inset.
-                        renderer.text( "${ context.options.unorderedListItemPrefix }" )
-                        renderer.leftInset += renderer.calcTextWidth( "${ context.options.unorderedListItemPrefix } " )
+                        renderer.text( "${context.options.unorderedListItemPrefix}" )
+                        renderer.leftInset += renderer.calcTextWidth( "${context.options.unorderedListItemPrefix} " )
                     }
 
                     item.items.each { final DocItem pg ->
@@ -828,10 +846,12 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
             }
         }
         catch ( IOException ioe ) {
-            throw new GenerateException( message: "Failed to read image! (${ imgUrl })", cause: ioe )
+            throw new GenerateException( message: "Failed to read image! (${imgUrl})", cause: ioe )
         }
         finally {
-            if ( imageStream != null ) imageStream.close()
+            if ( imageStream != null ) {
+                imageStream.close()
+            }
         }
     }
 
@@ -880,11 +900,21 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
             int topItems = 0
             int bottomItems = 0
-            if ( title != null ) ++topItems
-            if ( subject != null ) ++topItems
-            if ( version != null ) ++topItems
-            if ( author != null ) ++bottomItems
-            if ( copyRight != null ) ++bottomItems
+            if ( title != null ) {
+                ++topItems
+            }
+            if ( subject != null ) {
+                ++topItems
+            }
+            if ( version != null ) {
+                ++topItems
+            }
+            if ( author != null ) {
+                ++bottomItems
+            }
+            if ( copyRight != null ) {
+                ++bottomItems
+            }
 
             float pageSizeVert = renderer.pageFormat.height - renderer.margins.topMargin - renderer.margins.bottomMargin
             float startOfPageV = renderer.pageFormat.height - renderer.margins.topMargin
@@ -893,8 +923,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
             final float yItemSizeTop = ( ( pageSizeVert / 2 ) / topItems ) as float
             final float yItemSizeBottom = ( ( pageSizeVert / 2 ) / bottomItems ) as float
 
-            float yTop = startOfPageV - ( float ) ( yItemSizeTop / 2 ) + 15
-            float yBottom = endOFPageV + ( float ) ( yItemSizeBottom / 2 )
+            float yTop = startOfPageV - (float) ( yItemSizeTop / 2 ) + 15
+            float yBottom = endOFPageV + (float) ( yItemSizeBottom / 2 )
 
             // Rendered from top of page
 
@@ -907,16 +937,16 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
                     renderer.setStyle( context.pdfStyles, MSS.MSS_Front_Page.title )
                 }
-                yTop = ( float ) ( yTop - ( yItemSizeTop / 2.0f ) )
+                yTop = (float) ( yTop - ( yItemSizeTop / 2.0f ) )
             }
-
 
 
             if ( subject != null ) {
                 renderer.pageY = yTop
                 //noinspection GroovyMissingReturnStatement
                 renderer.center( subject ) {
-                    MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair( MSS.MSS_Front_Page.subject )
+                    MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair( MSS.MSS_Front_Page
+                            .subject )
                     renderer.setColorPair( colorPair )
 
                     renderer.setStyle( context.pdfStyles, MSS.MSS_Front_Page.subject )
@@ -928,7 +958,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                 renderer.pageY = yTop
                 //noinspection GroovyMissingReturnStatement
                 renderer.center( version ) {
-                    MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair( MSS.MSS_Front_Page.version )
+                    MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair( MSS.MSS_Front_Page
+                            .version )
                     renderer.setColorPair( colorPair )
 
                     renderer.setStyle( context.pdfStyles, MSS.MSS_Front_Page.version )
@@ -941,7 +972,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                 renderer.pageY = yBottom
                 //noinspection GroovyMissingReturnStatement
                 renderer.center( copyRight ) {
-                    MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair( MSS.MSS_Front_Page.copyright )
+                    MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair( MSS.MSS_Front_Page
+                            .copyright )
                     renderer.setColorPair( colorPair )
 
                     renderer.setStyle( context.pdfStyles, MSS.MSS_Front_Page.copyright )
@@ -953,7 +985,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                 renderer.pageY = yBottom
                 //noinspection GroovyMissingReturnStatement
                 renderer.center( author ) {
-                    MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair( MSS.MSS_Front_Page.author )
+                    MSSColorPair colorPair = context.pdfStyles.mss.forFrontPage.getColorPair( MSS.MSS_Front_Page
+                            .author )
                     renderer.setColorPair( colorPair )
 
                     renderer.setStyle( context.pdfStyles, MSS.MSS_Front_Page.author )
@@ -964,7 +997,8 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                 final MSSImage mssImage = context.pdfStyles.mss.forFrontPage.getImageData()
 
                 // Note that http:// does contain a ':'!
-                final String imageRef = context.options.titlePageImage.replace( "http:", "http§" ).replace( "https:", "https§" ).
+                final String imageRef = context.options.titlePageImage.replace( "http:", "http§" ).replace( "https:",
+                        "https§" ).
                         replace( "ftp:", "ftp§" )
                 final String[] parts = imageRef.split( ":" )
                 if ( parts.length != 3 ) {
@@ -1109,7 +1143,8 @@ class ParagraphWriter implements BoxedTrait {
         image.url = image.url.trim()
         InputStream imageStream
         try {
-            if ( image.url.startsWith( "http:" ) || image.url.startsWith( "https:" ) || image.url.startsWith( "ftp:" ) ) {
+            if ( image.url.startsWith( "http:" ) || image.url.startsWith( "https:" ) || image.url.startsWith( "ftp:"
+            ) ) {
                 URL url = new URL( image.url )
                 imageStream = url.openStream()
             }
@@ -1153,10 +1188,12 @@ class ParagraphWriter implements BoxedTrait {
             renderer.image( params )
         }
         catch ( IOException ioe ) {
-            throw new GenerateException( message: "Failed to read image! (${ image.url })", cause: ioe )
+            throw new GenerateException( message: "Failed to read image! (${image.url})", cause: ioe )
         }
         finally {
-            if ( imageStream != null ) imageStream.close()
+            if ( imageStream != null ) {
+                imageStream.close()
+            }
         }
 
         clearParagraphBoxed( MSS_Pages.image, this.renderer, this.context.pdfStyles.mss )
