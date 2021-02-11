@@ -16,7 +16,13 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 # Binaries
 
-Available through maven at bintray JCentral: [http://jcenter.bintray.com/](http://jcenter.bintray.com/). MarkdownDoc on [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/).
+26223 downloads so far according to Bintray. 
+
+I'm very sad to see Bintray shut down! It has been an excellent service!
+
+I will setup for GitHub packages and publish binaries here, ASAP. 
+
+Available through maven at bintray JCentral (for 2 more months I think): [http://jcenter.bintray.com/](http://jcenter.bintray.com/). MarkdownDoc on [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/).
 
 Command line [[markdowndoc-cmd-line-2.1.4.exec.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/2.1.4/markdowndoc-cmd-line-2.1.4.exec.jar)]
 
