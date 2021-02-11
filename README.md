@@ -26,7 +26,7 @@ Editor [[MarkdownDocEditor-2.1.4.App.jar](http://dl.bintray.com/tommy/maven/se/n
 
 # JDK version support
 
-MarkdownDoc is written in Groovy (A JVM language, extremely java compatible. Convert from java to grovvy: mv MyClass.java MyClass.grovvy :-)) 2.5 which produces JDK 5 compatible bytecode. In JDK 11 it still works, but you get the warning. In 12+ it will fail. Groovy 3.0 produced 1.8 bytecode. 
+MarkdownDoc is written in Groovy 2.5 (A JVM language, extremely java compatible. Convert from java to grovvy: mv MyClass.java MyClass.grovvy :-)) which produces JDK 5 compatible bytecode. In JDK 11 it still works, but you get the warning. In 12+ it will fail. Groovy 3.0 produced 1.8 bytecode. 
 
 I currently have not plans to modularize this. Modularizing will force me to keep 2 different versions due to incompatibilities caused by 9+ modularization). 
 
