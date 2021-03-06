@@ -12,6 +12,7 @@
     "white": "255:255:255",
     "black": "0:0:0",
     "mddgrey": "128:128:128",
+    "textgrey": "55:55:55",
     "AliceBlue": "F0F8FF",
     "AntiqueWhite": "FAEBD7",
     "Aqua": "00FFFF",
@@ -156,7 +157,7 @@
   },
   "document": {
     "pageFormat": "A4",
-    "color": "black",
+    "color": "textgrey",
     "background": "white",
     "family": "HELVETICA",
     "size": 10,
@@ -280,7 +281,7 @@
   },
 
   "toc": {
-    "color": "black",
+    "color": "textgrey",
     "background": "255:255:255",
     "family": "HELVETICA",
     "size": 9,

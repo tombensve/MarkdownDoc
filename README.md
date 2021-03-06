@@ -2,7 +2,7 @@
 
 Copyright (C) 2012 Natusoft AB
 
-__Version:__ 2.1.4
+__Version:__ 2.1.5
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
@@ -16,25 +16,21 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 # Binaries
 
-26223 downloads so far according to Bintray. 
+Since bintray is shutting down binaries are for the moment available at https://download.natusoft.se/maven.
 
-I'm very sad to see Bintray shut down! It has been an excellent service!
-
-I will setup for GitHub packages and publish binaries here, ASAP. 
-
-Available through maven at bintray JCentral (for 2 more months I think): [http://jcenter.bintray.com/](http://jcenter.bintray.com/). MarkdownDoc on [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/).
-
-Command line [[markdowndoc-cmd-line-2.1.4.exec.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/2.1.4/markdowndoc-cmd-line-2.1.4.exec.jar)]
-
-Editor [[MarkdownDocEditor-2.1.4.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/2.1.4/MarkdownDocEditor-2.1.4.App.jar)].
-
-[Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md)
+See [Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md)
 
 # JDK version support
 
-MarkdownDoc is written in Groovy 2.5 (A JVM language, extremely java compatible. Convert from java to grovvy: mv MyClass.java MyClass.grovvy :-)) which produces JDK 5 compatible bytecode. In JDK 11 it still works, but you get the warning. In 12+ it will fail. Groovy 3.0 produces 1.8 bytecode. Next version will go up to higher groovy version, but since current work upp to 11 its not urgent. 
+MarkdownDoc is written in Groovy 2.5 which produces JDK 5 compatible bytecode. In JDK 11 it still works, but you get the warning. If I fix this, then MarkdownDoc will not run on anything less than JDK 11 (maybe 10). I think a lot of people still is using JDK 8 due to the crazyness of 9+ (using modules requires ALL other dependencies to be modules also, that is 9+ and modularized!! Few of the third party libraries used by many are modularized, sticking you between a rock and a hard place), and as of JDK 12 there is a guaranteed backwards incompatibility. You need 2 versions of code one for <9 and one for >=9. Java does not have a preprocessor so no #ifdef ! You need to keep 2 different versions of the code. With GIT it would be possible to have <9 branches and >=9 branches, but it can get messy.
 
-I currently have no plans to modularize this. Modularizing will force me to keep 2 different versions due to incompatibilities caused by 9+ modularization. 
+I have found a project that does an attempt at some form of remedy for this: [https://github.com/moditect/moditect](https://github.com/moditect/moditect). It requires a lot of config and intimate knowledge of all 3rd party libs you need to convert to 9+ modules.
+
+There is a catch to Moditect: It updates 3rd party jars with a module-info! Note that dependency jars contain compiled code! So if it is JDK 8 compiled code ? If so even with a module-info it is likely to crash due to bytecode not supported on 12+.
+
+Maybe it is possible to avoid code that differs in [12 & 12+, but since you don't have control over 3rd party libraries you have to write all code your self, and not use third party libraries. There seem to be only stupid/annoying solutions to the problem.](12 & 12+, but since you don't have control over 3rd party libraries you have to write all code your self, and not use third party libraries. There seem to be only stupid/annoying solutions to the problem.)
+
+As I said above, MarkdownDoc is written in Groovy! The current version produces Java 5 bytecode. If I bring Groovy version up to 3.0 then it will produce Java 8 bytecode. It is Groovy (org.codehaus.groovy.reflectionCachedClass) that produces a warning in Java 11. It will not work on Java 12, and there is nothing I can do about that until Groovy has a Java 12 supporting version. Or I need to port it to Java, but that does not of course automatically solve everything. There is a reason I have chosen Groovy as language, and it wasn't just for the heck of it!
 
 [https://dzone.com/articles/java-8-bastion-of-long-term-support](https://dzone.com/articles/java-8-bastion-of-long-term-support)
 
@@ -71,6 +67,12 @@ The editor is also using filedrop.jar from [http://iharder.sourceforge.net/curre
 # Version history
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
+
+## 2.1.5
+
+No functional change other than dropping files on editor window is no longer supported since it required a library that is not mine and was included, checked in with source, and not an optimal solution. I also suspect that there are very few people other than myself that uses the editor.
+
+Fixed dependencies so that it will now build cleanly from checkout.
 
 ## 2.1.4
 

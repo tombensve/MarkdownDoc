@@ -2,7 +2,7 @@
 
 Copyright (C) 2012 Natusoft AB
 
-__Version:__ 2.1.4
+__Version:__ 2.1.5
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
@@ -16,15 +16,9 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 # Binaries
 
-Available through maven at bintray JCentral: [http://jcenter.bintray.com/](http://jcenter.bintray.com/).
-MarkdownDoc on [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/).
+Since bintray is shutting down binaries are for the moment available at https://download.natusoft.se/maven.
 
-Command line \[[markdowndoc-cmd-line-2.1.4.exec.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/markdowndoc-cmd-line/2.1.4/markdowndoc-cmd-line-2.1.4.exec.jar)\]
-
-
-Editor \[[MarkdownDocEditor-2.1.4.App.jar](http://dl.bintray.com/tommy/maven/se/natusoft/tools/doc/markdowndoc/MarkdownDocEditor/2.1.4/MarkdownDocEditor-2.1.4.App.jar)\].
-
-[Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md)
+See [Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md)
 
 # JDK version support
 
@@ -37,8 +31,6 @@ There is a catch to Moditect: It updates 3rd party jars with a module-info! Note
 Maybe it is possible to avoid code that differs in <12 & 12+, but since you don't have control over 3rd party libraries you have to write all code your self, and not use third party libraries. There seem to be only stupid/annoying solutions to the problem. 
 
 As I said above, MarkdownDoc is written in Groovy! The current version produces Java 5 bytecode. If I bring Groovy version up to 3.0 then it will produce Java 8 bytecode. It is Groovy (org.codehaus.groovy.reflectionCachedClass) that produces a warning in Java 11. It will not work on Java 12, and there is nothing I can do about that until Groovy has a Java 12 supporting version. Or I need to port it to Java, but that does not of course automatically solve everything. There is a reason I have chosen Groovy as language, and it wasn't just for the heck of it!
-
-Personally I'm a bit scared for the future of Java. In Sweden I have still not seen any company using anything higher than 8. There probably are, but the majority is still sticking to 8.
 
 <https://dzone.com/articles/java-8-bastion-of-long-term-support>
 

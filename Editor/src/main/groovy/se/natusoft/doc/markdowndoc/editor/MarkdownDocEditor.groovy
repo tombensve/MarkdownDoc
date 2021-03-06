@@ -3,28 +3,28 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -36,7 +36,7 @@ package se.natusoft.doc.markdowndoc.editor
 import groovy.io.FileType
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
-import net.iharder.dnd.FileDrop
+//import net.iharder.dnd.FileDrop
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.util.SourcePaths
@@ -212,16 +212,16 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
             )
 
     private static IntegerConfigEntry topMargin = new IntegerConfigEntry("editor.pane.top.margin",
-            "The top margin.", 40, 0, 500, CONFIG_GROUP_EDITING)
+            "The top margin.", 40, 0, 2000, CONFIG_GROUP_EDITING)
 
     private static IntegerConfigEntry bottomMargin = new IntegerConfigEntry("editor.pane.bottom.margin",
-            "The bottom margin.", 40, 0, 500, CONFIG_GROUP_EDITING)
+            "The bottom margin.", 40, 0, 2000, CONFIG_GROUP_EDITING)
 
     private static IntegerConfigEntry leftMargin = new IntegerConfigEntry("editor.pane.left.margin",
-            "The left margin.", 60, 0, 500, CONFIG_GROUP_EDITING)
+            "The left margin.", 60, 0, 2000, CONFIG_GROUP_EDITING)
 
     private static IntegerConfigEntry rightMargin = new IntegerConfigEntry("editor.pane.right.margin",
-            "The right margin.", 60, 0, 500, CONFIG_GROUP_EDITING)
+            "The right margin.", 60, 0, 2000, CONFIG_GROUP_EDITING)
 
 //    private static DoubleConfigEntry editorOpacity = new DoubleConfigEntry("editor.window.opacity",
 //            "The editor opacity.", 1.0d, 0.0d,1.0d, CONFIG_GROUP_EDITING)
@@ -1022,7 +1022,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
     @Override
     void setEditable(@NotNull final Editable editable) {
         if (this.editable != null) {
-            FileDrop.remove(this.editable.editorPane)
+            //FileDrop.remove(this.editable.editorPane)
             this.editable.editorPane.removeKeyListener(this)
             this.mouseMotionProviders.remove(this.editable)
             this.mouseMotionListeners.each { final MouseMotionListener listener ->
@@ -1047,13 +1047,13 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
 
         // If the arguments to FileDrop is red marked, then you are using IDEA.
         //noinspection GroovyResultOfObjectAllocationIgnored
-        new FileDrop(this.editable.editorPane, new  FileDrop.Listener() {
-            void filesDropped(final File[] files) {
-                if (files.length >= 1) {
-                    dropFile(files[0])
-                }
-            }
-        })
+//        new FileDrop(this.editable.editorPane, new  FileDrop.Listener() {
+//            void filesDropped(final File[] files) {
+//                if (files.length >= 1) {
+//                    dropFile(files[0])
+//                }
+//            }
+//        })
 
         this.mouseMotionProviders.add(this.editable)
         this.mouseMotionListeners.each { final MouseMotionListener listener ->
