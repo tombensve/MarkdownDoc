@@ -6,6 +6,8 @@ __Version:__ 2.1.5
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
+![ci_status](https://github.com/tombensve/MarkdownDoc/actions/workflows/maven.yml/badge.svg?branch=master)
+
 ----
 
 _A tool for generating HTML and PDF from markdown for the purpose of documentation._
