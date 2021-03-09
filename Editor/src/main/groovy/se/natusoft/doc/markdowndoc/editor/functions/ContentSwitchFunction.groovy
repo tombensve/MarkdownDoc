@@ -1,35 +1,35 @@
-/* 
- * 
+/*
+ *
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
  *         2016-01-08: Created!
- *         
+ *
  */
 package se.natusoft.doc.markdowndoc.editor.functions
 
@@ -57,8 +57,8 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_K
  * For the lack of a better name this function allows the user to keyboard wise rotate among the open files.
  */
 @CompileStatic
-@TypeChecked
 class ContentSwitchFunction implements EditorFunction, Configurable, GuiEnvToolsTrait, ColorsTrait {
+    // IDEA bug: Fails to comprehend that a Trait actually provides an implementation.
 
     //
     // Config
@@ -202,6 +202,7 @@ class ContentSwitchFunction implements EditorFunction, Configurable, GuiEnvTools
      * currently shown editable, and then sets showName to false again. An end time is also set and when that end time is
      * reached the popup is closed. Every time show() is called the end time is prolonged.
      */
+    @CompileStatic
     private class NamePopupThread extends Thread {
 
         //

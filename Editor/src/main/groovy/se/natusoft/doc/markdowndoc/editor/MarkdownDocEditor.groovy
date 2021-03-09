@@ -71,7 +71,6 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_T
  * This is an editorPane for editing markdown documents.
  */
 @CompileStatic
-@TypeChecked
 @Singleton
 class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, MouseListenersTrait, Configurable,
         MouseMotionProvider, GuiEnvToolsTrait {

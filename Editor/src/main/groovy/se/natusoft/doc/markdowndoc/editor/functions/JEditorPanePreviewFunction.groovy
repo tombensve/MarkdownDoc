@@ -64,7 +64,6 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_P
  * This provides formatted markdown preview function.
  */
 @CompileStatic
-@TypeChecked
 class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMotionProvider, Configurable {
 
     //
