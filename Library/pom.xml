@@ -5,7 +5,7 @@
     <parent>
         <artifactId>markdown-doc</artifactId>
         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
-        <version>2.1.5</version>
+        <version>3.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -30,16 +30,15 @@
 
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
-            <artifactId>${groovy.artifact}</artifactId>
+            <artifactId>groovy</artifactId>
             <scope>compile</scope>
-            <classifier>indy</classifier>
         </dependency>
     </dependencies>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>${mdd.java.source}</maven.compiler.source>
+        <maven.compiler.target>${mdd.java.target}</maven.compiler.target>
     </properties>
 
     <build>
@@ -47,13 +46,13 @@
         <testSourceDirectory>src/test/groovy</testSourceDirectory>
 
         <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <source>1.8</source>-->
+<!--                    <target>1.8</target>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
 
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
@@ -67,7 +66,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <targetBytecode>1.7</targetBytecode>
+                    <targetBytecode>${mdd.groovy.target}</targetBytecode>
                     <invokeDynamic>true</invokeDynamic>
                 </configuration>
             </plugin>

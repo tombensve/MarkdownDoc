@@ -149,8 +149,8 @@ class EditableSelectorPopup extends PopupWindow implements MouseListenersTrait {
 
         // If the ".size()" part is red marked as a non existing method then you are using IDEA.
         // Just ignore it, Set do have a size() method.
-        final int moveToOnOpenFileNo = (Editables.inst.files.size() / 2) as int
-        final int mtofCount = 0
+        final int moveToOnOpenFileNo = (Editables.inst.files.size() / 2) as int // size is red ? IDEA fail!
+        int mtofCount = 0
 
         // Then add them to the component.
         groups.keySet().each { final String key ->

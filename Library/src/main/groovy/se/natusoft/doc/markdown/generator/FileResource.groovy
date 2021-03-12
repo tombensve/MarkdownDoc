@@ -77,7 +77,8 @@ class FileResource {
      * @throws IOException If resource file cannot be found.
      */
     File getResourceFile(@NotNull final String path, @Nullable File relativeFile) throws IOException {
-        final File resourceFile
+
+        File resourceFile
 
         // Suggested by Mikhail Kopylov.
         if (relativeFile != null) {

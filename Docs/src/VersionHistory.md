@@ -3,11 +3,13 @@
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
 
+## 3.0.0
+
+Now built with Groovy 3.0.7. Groovy 3 produces 1.8 bytecode, while 2.5 produced 1.5 bytecode! I thought that this warranted a bump of first version number. That said, this should not cause any problems as long as minimum is 1.8. I can't imagine anyone running a JVM lower that 1.8 today. 
+
 ## 2.1.5
 
-No functional change other than dropping files on editor window is no longer supported
-since it required a library that is not mine and was included, checked in with source,
-and not an optimal solution. I also suspect that there are very few people other than myself that uses the editor.
+No functional change other than dropping files on editor window is no longer supported since it required a library that is not mine and was included, checked in with source, and not an optimal solution. I also suspect that there are very few people other than myself that uses the editor.
 
 Fixed dependencies so that it will now build cleanly from checkout.
 

@@ -163,7 +163,8 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
             )
 
     private static DoubleConfigEntry fontSizeConfig =
-            new DoubleConfigEntry("editor.pane.font.size", "The size of the font.", 16.0, 8.0, 50.0, CONFIG_GROUP_EDITING)
+            new DoubleConfigEntry("editor.pane.font.size", "The size of the font.",
+                    16.0 as double, 8.0 as double, 50.0 as double, CONFIG_GROUP_EDITING)
 
     private static ColorConfigEntry backgroundColorConfig =
             new ColorConfigEntry("editor.pane.background.color", "The editorPane background color.", 240, 240, 240, CONFIG_GROUP_EDITING)
@@ -499,6 +500,8 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
         // Toolbar
 
         toolbarConfigChanged(toolbarConfig)
+        // If above arg is red underlined you are probably using IDEA and IDEA is wrong! The closure takes
+        // a ConfigEntry, and toolbarConfig is a ConfigEntry. The compiler has no problem with this.
 
     }
 

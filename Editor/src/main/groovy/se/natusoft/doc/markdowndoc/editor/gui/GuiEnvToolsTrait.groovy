@@ -130,9 +130,10 @@ trait GuiEnvToolsTrait {
         Window window
 
         @Override
-        public void componentResized(final ComponentEvent e) {
-            window.setShape(new RoundRectangle2D.Double(0.0, 0.0, this.window.width as double,
-                    this.window.height as double, 10.0, 10.0))
+        void componentResized(final ComponentEvent e) {
+            // Groovy uses BigDecimal for decimal constants! Maybe they want banks to use Groovy :-).
+            window.setShape(new RoundRectangle2D.Double(0.0 as double, 0.0 as double, this.window.width as double,
+                    this.window.height as double, 10.0 as double, 10.0 as double))
         }
     }
 

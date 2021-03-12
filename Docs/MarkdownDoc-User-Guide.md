@@ -5,7 +5,7 @@
 
     @PDFTitle("MarkdownDoc")
     @PDFSubject("User Guide")
-    @PDFVersion(2 . 1 . 4) Due to the font used I put a space between to make the dot more visible.
+    @PDFVersion(3 . 0 . 0) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
     @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
@@ -52,7 +52,17 @@ In short MarkdownDoc provides the following:
 
 ### Binaries
 
-Binaries are made available at [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/view) and Bintrays JCenter repository: [http://jcenter.bintray.com](http://jcenter.bintray.com) which also mirrors everything in maven central.
+Due to Bintray shutting down binaries are temporarily available at [TempBin](https://download.natusoft.se/maven).
+
+You need to add this under `<repositories>` in settings.xml:
+
+            <repository>
+                <id>natusoft-repo</id>
+                <name>NS GitHub stuff temp repo</name>
+                <url>https://download.natusoft.se/maven</url>
+            </repository>
+
+Hopefully submissions to Maven Central have become less horrible than they used to be, so I will look into that when I have the time.
 
 ### Thanks
 
@@ -122,7 +132,7 @@ What the generator options are depends on the specified generator.
 
 The markdowndoc-cmd-line-n.n[.n]-exec.jar is a jar generated to contain all dependencies in the same jar, making it easy to execute with java -jar.
 
-The _<generator>_ part should be either _pdf_, _html_, or _md_. 
+The _<generator>_ part should be either _pdf_, _html_, or _md_.
 
 The _<filespec/>_ part is a comma separated list of paths relative to the current directory. The filename part of the path can contain regular expressions and the directory part of the path can specify `.../**/...` to mean any levels of subdirectories.
 
@@ -1373,6 +1383,10 @@ As you can see pdf options are prefixed with "pdf.", html options are prefixed w
 # Version history
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
+
+## 3.0.0
+
+Now built with Groovy 3.0.7. Groovy 3 produces 1.8 bytecode, while 2.5 produced 1.5 bytecode! I thought that this warranted a bump of first version number. That said, this should not cause any problems as long as minimum is 1.8. I can't imagine anyone running a JVM lower that 1.8 today.
 
 ## 2.1.5
 
