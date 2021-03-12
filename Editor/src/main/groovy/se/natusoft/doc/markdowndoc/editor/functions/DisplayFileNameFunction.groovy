@@ -34,25 +34,20 @@
 package se.natusoft.doc.markdowndoc.editor.functions
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
 import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
-import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
 import se.natusoft.doc.markdowndoc.editor.gui.ColorsTrait
 import se.natusoft.doc.markdowndoc.editor.gui.FileNamePopup
 import se.natusoft.doc.markdowndoc.editor.gui.GuiEnvToolsTrait
 import se.natusoft.doc.markdowndoc.editor.gui.PopupLock
-import se.natusoft.doc.markdowndoc.editor.gui.PopupWindow
 
 import javax.swing.*
-import javax.swing.border.EmptyBorder
-import java.awt.*
 import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionListener
 

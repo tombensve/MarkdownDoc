@@ -34,7 +34,6 @@
 package se.natusoft.doc.markdowndoc.editor
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 
 /**
  * This defines the standard tool bar group names.

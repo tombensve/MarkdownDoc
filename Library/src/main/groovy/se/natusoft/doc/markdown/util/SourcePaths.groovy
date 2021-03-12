@@ -31,10 +31,9 @@
  *         2012-11-21: Created!
  *
  */
-package se.natusoft.doc.markdown.util;
+package se.natusoft.doc.markdown.util
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 
 /**

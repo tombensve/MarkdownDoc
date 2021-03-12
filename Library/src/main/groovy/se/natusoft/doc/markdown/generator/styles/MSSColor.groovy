@@ -36,8 +36,6 @@ package se.natusoft.doc.markdown.generator.styles
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import groovy.transform.TypeChecked
-import org.apache.pdfbox.pdmodel.PDPageContentStream
 import org.jetbrains.annotations.NotNull
 
 /**

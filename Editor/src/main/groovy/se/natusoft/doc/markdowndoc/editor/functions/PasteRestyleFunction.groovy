@@ -34,7 +34,6 @@
 package se.natusoft.doc.markdowndoc.editor.functions
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
@@ -45,10 +44,10 @@ import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
-import static se.natusoft.doc.markdowndoc.editor.api.Constants.*
 
 import javax.swing.*
 
+import static se.natusoft.doc.markdowndoc.editor.api.Constants.NOT_SUPPORTED
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD
 
 /**

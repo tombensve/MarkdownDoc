@@ -34,14 +34,12 @@
 package se.natusoft.doc.markdown.util
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.api.Parser
 import se.natusoft.doc.markdown.exception.ParseException
 import se.natusoft.doc.markdown.generator.HTMLGenerator
 import se.natusoft.doc.markdown.generator.MarkdownGenerator
-
 import se.natusoft.doc.markdown.model.Doc
 import se.natusoft.doc.markdown.parser.ParserProvider
 import se.natusoft.tools.optionsmgr.CommandLineOptionsManager

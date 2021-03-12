@@ -35,9 +35,7 @@ package se.natusoft.doc.markdowndoc.editor.gui
 
 import groovy.transform.CompileStatic
 import groovy.transform.PackageScope
-import groovy.transform.TypeChecked
 
-import javax.swing.*
 import java.awt.*
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent

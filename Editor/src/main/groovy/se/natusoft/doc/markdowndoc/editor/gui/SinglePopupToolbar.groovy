@@ -34,20 +34,14 @@
 package se.natusoft.doc.markdowndoc.editor.gui
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
-import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
-import se.natusoft.doc.markdowndoc.editor.api.Configurable
-import se.natusoft.doc.markdowndoc.editor.api.Editor
-import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
-import se.natusoft.doc.markdowndoc.editor.api.ToolBar
+import se.natusoft.doc.markdowndoc.editor.api.*
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 
 import javax.swing.*
 import java.awt.*
 import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionListener
-import java.util.*
 import java.util.List
 
 /**

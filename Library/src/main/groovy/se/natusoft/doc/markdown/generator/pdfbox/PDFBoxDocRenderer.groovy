@@ -34,7 +34,6 @@
 package se.natusoft.doc.markdown.generator.pdfbox
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 import org.apache.pdfbox.multipdf.Overlay
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
@@ -52,10 +51,13 @@ import org.apache.pdfbox.util.Matrix
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.generator.models.TOC
-import se.natusoft.doc.markdown.generator.styles.*
+import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.generator.styles.MSS.MSS_Front_Page
 import se.natusoft.doc.markdown.generator.styles.MSS.MSS_Pages
 import se.natusoft.doc.markdown.generator.styles.MSS.MSS_TOC
+import se.natusoft.doc.markdown.generator.styles.MSSColor
+import se.natusoft.doc.markdown.generator.styles.MSSColorPair
+import se.natusoft.doc.markdown.generator.styles.MSSFont
 import se.natusoft.doc.markdown.generator.utils.RequiresWithSection
 import se.natusoft.doc.markdown.generator.utils.Sectionizer
 import se.natusoft.doc.markdown.util.NotNullTrait

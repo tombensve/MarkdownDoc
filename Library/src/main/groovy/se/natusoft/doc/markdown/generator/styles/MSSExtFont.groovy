@@ -36,7 +36,6 @@ package se.natusoft.doc.markdown.generator.styles
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import groovy.transform.TypeChecked
 
 /**
  * This represents information about a TTF font.

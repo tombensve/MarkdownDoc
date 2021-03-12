@@ -34,11 +34,9 @@
 package se.natusoft.doc.markdowndoc.editor.gui
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 
 import javax.swing.*
 import java.awt.*
-import java.awt.font.TextAttribute
 
 /**
  * This is a simple label component that centers the label horizontally and renders in bold.

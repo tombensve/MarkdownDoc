@@ -41,9 +41,8 @@ import se.natusoft.doc.markdowndoc.editor.api.Configurable
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.IntegerConfigEntry
 
-import javax.swing.JFrame
-import java.awt.Color
-import java.awt.Window
+import javax.swing.*
+import java.awt.*
 
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_TOOL
 

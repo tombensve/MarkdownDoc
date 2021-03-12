@@ -34,7 +34,6 @@
 package se.natusoft.doc.markdown.model
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 
 /**
  * This defines all available formats represented by the different models.

@@ -34,7 +34,6 @@
 package se.natusoft.doc.markdown.parser.markdown.model
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.model.DocItem
 import se.natusoft.doc.markdown.model.List

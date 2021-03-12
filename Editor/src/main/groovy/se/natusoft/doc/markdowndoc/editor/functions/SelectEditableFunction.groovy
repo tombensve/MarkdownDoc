@@ -34,7 +34,6 @@
 package se.natusoft.doc.markdowndoc.editor.functions
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
@@ -47,12 +46,10 @@ import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey
 import se.natusoft.doc.markdowndoc.editor.exceptions.FunctionException
 import se.natusoft.doc.markdowndoc.editor.gui.EditableSelectorPopup
-import se.natusoft.doc.markdowndoc.editor.gui.PopupLock
 
 import javax.swing.*
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
-import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionListener
 
 import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_KEYBOARD

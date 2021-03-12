@@ -34,7 +34,6 @@
 package se.natusoft.doc.markdowndoc.editor.gui
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 import se.natusoft.doc.markdowndoc.editor.api.Editable
 
 import javax.swing.*

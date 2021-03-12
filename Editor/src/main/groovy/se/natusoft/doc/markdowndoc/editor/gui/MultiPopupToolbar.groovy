@@ -34,7 +34,6 @@
 package se.natusoft.doc.markdowndoc.editor.gui
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
@@ -44,7 +43,6 @@ import javax.swing.*
 import java.awt.*
 import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionListener
-import java.util.*
 import java.util.List
 
 /**

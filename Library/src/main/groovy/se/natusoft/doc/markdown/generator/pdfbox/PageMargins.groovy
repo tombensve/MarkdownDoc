@@ -34,7 +34,6 @@
 package se.natusoft.doc.markdown.generator.pdfbox
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.generator.styles.MSS.MSS_Pages
 import se.natusoft.doc.markdown.generator.utils.Sectionizer

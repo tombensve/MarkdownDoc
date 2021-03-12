@@ -34,12 +34,9 @@
 package se.natusoft.doc.markdown.generator.pdfbox
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
-import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.PDPageContentStream
 import org.apache.pdfbox.pdmodel.font.PDFont
 import org.apache.pdfbox.pdmodel.font.PDType1Font
-import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationTextMarkup
 import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.generator.styles.MSSFont
 import se.natusoft.doc.markdown.generator.styles.MSSFontStyle

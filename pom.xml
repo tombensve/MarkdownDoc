@@ -7,7 +7,7 @@
     <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
     <artifactId>markdown-doc</artifactId>
     <packaging>pom</packaging>
-    <version>3.0.0</version>
+    <version>3.1.0</version>
 
     <modules>
         <module>Docs</module>
@@ -26,17 +26,6 @@
     <url>https://github.com/tombensve/MarkdownDoc</url>
 
     <properties>
-        <!--
-            Versions
-        -->
-
-        <!--
-            This is the real project version! When changing version change here, and then
-            run the 'set-version' profile with generate-sources:
-
-                mvn -Pset-version generate-sources
-        -->
-        <projectVersion>2.1.1</projectVersion>
 
         <!--
             These are used in dependencyManagement and pluginManagement below, but here the versions are
@@ -469,54 +458,6 @@
                         </executions>
                     </plugin>
 
-                </plugins>
-            </build>
-        </profile>
-
-        <!--
-            This changes the version of this pom and all module poms, including parent.
-            ${projectVersion} must be defined in properties above! So to update version,
-            set it above and run this profile.
-        -->
-        <profile>
-            <id>set-version</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>se.natusoft.tools.fileeditor</groupId>
-                        <artifactId>file-editor-maven-support-plugin</artifactId>
-
-                        <executions>
-                            <execution>
-                                <id>upd-parent</id>
-                                <goals>
-                                    <goal>edit</goal>
-                                </goals>
-                                <phase>generate-sources</phase>
-                                <configuration>
-                                    <scripts>
-                                        <!--
-                                            Do note that IDE's tend to have a problem with plugin specific configuration
-                                            and red mark it. It would make a ton of more sense if they would just say
-                                            "I don't know what should be here, so I wont make any assumptions about it".
-                                            Instead they go with "I don't know what should be here, so I'll assume it is wrong!".
-                                            I've been told that I have too high expectations on people. Maybe I do.
-                                        -->
-                                        <script>
-                                            <scriptFile>script:pom_change_version.bsh</scriptFile>
-                                            <sourcePath>${basedir}/pom.xml</sourcePath>
-                                            <variables>
-                                                <variable>
-                                                    <name>pomVersion</name>
-                                                    <value>${projectVersion}</value>
-                                                </variable>
-                                            </variables>
-                                        </script>
-                                    </scripts>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
                 </plugins>
             </build>
         </profile>

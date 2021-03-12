@@ -34,15 +34,10 @@
 package se.natusoft.doc.markdowndoc.editor.functions
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdowndoc.editor.ToolBarGroups
-import se.natusoft.doc.markdowndoc.editor.api.ConfigProvider
-import se.natusoft.doc.markdowndoc.editor.api.Configurable
-import se.natusoft.doc.markdowndoc.editor.api.Editable
-import se.natusoft.doc.markdowndoc.editor.api.Editor
-import se.natusoft.doc.markdowndoc.editor.api.EditorFunction
+import se.natusoft.doc.markdowndoc.editor.api.*
 import se.natusoft.doc.markdowndoc.editor.config.ConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyConfigEntry
 import se.natusoft.doc.markdowndoc.editor.config.KeyboardKey

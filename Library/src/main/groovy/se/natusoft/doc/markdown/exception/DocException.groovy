@@ -31,10 +31,9 @@
  *         2012-11-04: Created!
  *
  */
-package se.natusoft.doc.markdown.exception;
+package se.natusoft.doc.markdown.exception
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 
 /**
  * This is a base exception that supports Groovys bean instantiation of all exception data.

@@ -34,7 +34,6 @@
 package se.natusoft.doc.markdown.util
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 
 /**
  * Handles not null check.

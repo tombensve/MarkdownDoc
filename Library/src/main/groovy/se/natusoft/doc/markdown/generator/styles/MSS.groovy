@@ -35,18 +35,10 @@ package se.natusoft.doc.markdown.generator.styles
 
 import groovy.transform.CompileStatic
 import groovy.transform.ToString
-import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.util.TestSafeResource
-import se.natusoft.json.JSON
-import se.natusoft.json.JSONArray
-import se.natusoft.json.JSONBoolean
-import se.natusoft.json.JSONErrorHandler
-import se.natusoft.json.JSONNumber
-import se.natusoft.json.JSONObject
-import se.natusoft.json.JSONString
-import se.natusoft.json.JSONValue
+import se.natusoft.json.*
 
 /**
  * Markdown Style Sheet. This can be used for all non HTML generators to allow users

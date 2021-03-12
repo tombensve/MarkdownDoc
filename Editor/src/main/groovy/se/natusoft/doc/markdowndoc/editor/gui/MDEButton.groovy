@@ -35,7 +35,7 @@ package se.natusoft.doc.markdowndoc.editor.gui
 
 import groovy.transform.CompileStatic
 
-import javax.swing.JButton
+import javax.swing.*
 
 /**
  * Button component that allows for specifying text color.

@@ -34,7 +34,6 @@
 package se.natusoft.doc.markdown.generator.pdfbox
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline.PDDocumentOutline

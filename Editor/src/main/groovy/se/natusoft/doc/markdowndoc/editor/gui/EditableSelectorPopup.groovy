@@ -34,18 +34,12 @@
 package se.natusoft.doc.markdowndoc.editor.gui
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 import se.natusoft.doc.markdowndoc.editor.api.Editor
 import se.natusoft.doc.markdowndoc.editor.file.Editables
 
 import javax.swing.*
 import java.awt.*
-import java.awt.event.ComponentAdapter
-import java.awt.event.ComponentEvent
-import java.awt.event.KeyAdapter
-import java.awt.event.KeyEvent
-import java.awt.event.KeyListener
-import java.awt.event.MouseEvent
+import java.awt.event.*
 import java.util.List
 
 /**

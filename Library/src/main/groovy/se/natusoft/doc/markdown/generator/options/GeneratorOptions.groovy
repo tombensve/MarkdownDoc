@@ -34,7 +34,6 @@
 package se.natusoft.doc.markdown.generator.options
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 import se.natusoft.tools.optionsmgr.annotations.*
 
 /**
