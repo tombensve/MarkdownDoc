@@ -37,8 +37,6 @@ import groovy.io.FileType
 import groovy.transform.CompileStatic
 import org.jetbrains.annotations.NotNull
 
-//import net.iharder.dnd.FileDrop
-
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.util.SourcePaths
 import se.natusoft.doc.markdowndoc.editor.adapters.WindowListenerAdapter

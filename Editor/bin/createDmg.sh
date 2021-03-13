@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-cd  ../target
-hdiutil create -srcfolder MarkdownDocEditor-1.4.2/MarkdownDocEditor.app MarkdownDocEditor-1.4.2.dmg
+hdiutil create -srcfolder Editor/target/MarkdownDocEditor-3.1.0-App.jar MarkdownDocEditor-3.1.0.dmg
+
