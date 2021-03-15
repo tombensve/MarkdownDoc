@@ -60,14 +60,14 @@ abstract class DocItem {
     @Nullable String addBetweenKeepTogether = null
 
     /** If true the this belongs in an hierarchy of items. */
-    boolean isHierarchy = false;
+    boolean isHierarchy = false
 
     /** This is a rendering hint. */
     boolean renderPrefixedSpace = true
 
     /** The input file this item comes from. */
     @NotNull("Must be set by parsers.")
-    File parseFile = null;
+    File parseFile = null
 
     //
     // Methods
@@ -115,7 +115,7 @@ abstract class DocItem {
      */
     void addItems(@NotNull final JList<DocItem> items) {
         items.each { final DocItem item ->
-            addItem(item);
+            addItem(item)
         }
     }
 
@@ -126,7 +126,7 @@ abstract class DocItem {
      */
     void addItem(@NotNull final String text) {
         final PlainText pt = new PlainText(text: text)
-        this.items.add(pt);
+        this.items.add(pt)
     }
 
     /**
@@ -192,8 +192,8 @@ abstract class DocItem {
 
         for (final DocItem di : this.items) {
             if (!di.validate()) {
-                valid = false;
-                break;
+                valid = false
+                break
             }
         }
 

@@ -62,5 +62,6 @@ enum DocFormat {
     Comment,
     Space,
     Div,
+    Table,
     NOT_RELEVANT
 }

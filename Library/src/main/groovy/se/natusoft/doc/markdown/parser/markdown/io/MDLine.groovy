@@ -61,6 +61,7 @@ class MDLine extends Line  {
      *
      * @param line The original Line to turn into an MDLine.
      */
+    @SuppressWarnings('unused')
     MDLine(@NotNull final Line line) {
         super(line.toString(), line.lineNumber)
     }
@@ -110,7 +111,7 @@ class MDLine extends Line  {
      * Returns true if this starts a list item.
      */
     boolean isList() {
-        boolean list = false;
+        boolean list = false
 
         if (super.origLine != null && super.origLine.trim().length() >= 1) {
             final StringTokenizer lineTokenizer = new StringTokenizer(super.origLine, " ")
@@ -118,16 +119,16 @@ class MDLine extends Line  {
 
             if (firstWord.endsWith(".")) {
                 firstWord = firstWord.substring(0, firstWord.length() - 1)
-                boolean onlyDigits = true;
+                boolean onlyDigits = true
                 for (int i = 0; i < firstWord.length(); i++) {
                     if (!(firstWord.charAt(i) as Character).isDigit()) {
-                        onlyDigits = false;
-                        break;
+                        onlyDigits = false
+                        break
                     }
                 }
 
                 if (onlyDigits) {
-                    list = true;
+                    list = true
                 }
             }
             else {
@@ -174,7 +175,7 @@ class MDLine extends Line  {
      * @param urls The current known urls.
      */
     boolean isLinkURLSpec(@NotNull final Map urls) {
-        boolean found = false;
+        boolean found = false
 
         for (final String urlText : urls.keySet()) {
             if (this.origLine.trim().startsWith("[" + urlText + "]:")) {

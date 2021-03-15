@@ -140,7 +140,7 @@ class Javadoc2MDParser implements Parser {
         this.declaration = null
         this.parserOptions = parserOptions
 
-        final Doc localDoc = new Doc();
+        final Doc localDoc = new Doc()
 
         parseFile.eachLine { final String line ->
             if (!inJavadocBlock && !inDeclarationBlock && line.trim().startsWith("package")) {
@@ -270,7 +270,7 @@ class Javadoc2MDParser implements Parser {
         if (isFieldOrConst(this.declaration) || isMethod(this.declaration) || isEnumConst(this.declaration)) {
             inDeclarationBlock = false
 
-            boolean classOrInterface = false;
+            boolean classOrInterface = false
             final Paragraph p = new Paragraph()
             if ((declType.isClass() || declType.isInterface() || declType.isEnum()) && (visibility.isPublic() || visibility.isProtected())) {
 
@@ -350,7 +350,7 @@ class Javadoc2MDParser implements Parser {
      * @return The update line without annotations.
      */
     private static String removeAnnotations(@NotNull final String line) {
-        line.replaceAll("(@[A-Z,a-z]+){1} ", "")
+        line.replaceAll("(@[A-Z,a-z]+) ", "")
     }
 
     /**
@@ -359,6 +359,7 @@ class Javadoc2MDParser implements Parser {
      * @param document The document model to add javadoc information to.
      * @param classOrInterface true if this javadoc is for a class or interface.
      */
+    @SuppressWarnings('DuplicatedCode')
     private void parseJavadoc(@NotNull final Doc document, final boolean classOrInterface) {
         final List<String> text = new LinkedList<>()
         final List<String> params = new LinkedList<>()
@@ -549,28 +550,28 @@ class Javadoc2MDParser implements Parser {
         }
 
         boolean isPublic() {
-            this.visibility.equals("public")
+            this.visibility == "public"
         }
 
         static boolean isPublic(@NotNull final String word) {
-            word.equals("public")
+            word == "public"
         }
 
         boolean isProtected() {
-            this.visibility.equals("protected")
+            this.visibility == "protected"
         }
 
         static boolean isProtected(@NotNull final String word) {
-            word.equals("protected")
+            word == "protected"
         }
 
         boolean isPrivate() {
-            this.visibility.equals("private")
+            this.visibility == "private"
         }
 
         @SuppressWarnings("GroovyUnusedDeclaration")
         static isPrivate(@NotNull final String word) {
-            word.equals("private")
+            word == "private"
         }
 
         boolean isPackage() {
@@ -586,24 +587,24 @@ class Javadoc2MDParser implements Parser {
 
         private String declaration
 
-        public DeclarationTypeUtil(final String declaration) {
+        DeclarationTypeUtil(final String declaration) {
             this.declaration = declaration
         }
 
-        public boolean isClass() {
+        boolean isClass() {
             this.declaration.contains("class ")
         }
 
-        public boolean isInterface() {
+        boolean isInterface() {
             this.declaration.contains("interface ")
         }
 
-        public boolean isEnum() {
+        boolean isEnum() {
             this.declaration.contains("enum ")
         }
 
-        public static boolean isDeclarationType(@NotNull final String word) {
-            word.equals("class") || word.equals("interface") || word.equals("enum")
+        static boolean isDeclarationType(@NotNull final String word) {
+            word == "class" || word == "interface" || word == "enum"
         }
     }
 
@@ -613,8 +614,8 @@ class Javadoc2MDParser implements Parser {
     @CompileStatic
     private static class ModifierUtil {
 
-        public static boolean isModifier(@NotNull final String word) {
-            word.equals("final") || word.equals("abstract") || word.equals("static")
+        static boolean isModifier(@NotNull final String word) {
+            word == "final" || word == "abstract" || word == "static"
         }
     }
 }

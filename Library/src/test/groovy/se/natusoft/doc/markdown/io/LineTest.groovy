@@ -8,7 +8,7 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class LineTest extends GroovyTestCase {
 
-    public void testLine1() throws Exception {
+    void testLine1() throws Exception {
         Line line = new Line("This is a test!", 0)
 
         assert line.currentWord == "This"
@@ -20,7 +20,7 @@ class LineTest extends GroovyTestCase {
 
     }
 
-    public void testLine2() throws Exception {
+    void testLine2() throws Exception {
         Line line = new Line("This is a test!", 0)
 
         String result = ""

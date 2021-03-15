@@ -71,7 +71,7 @@ class MarkdownParser implements Parser {
     private Map<String, Link> links = new HashMap<String, Link>()
 
     /** The file we are parsing. We save this to pass to ParseException. */
-    private File file;
+    private File file
 
     //
     // Methods
@@ -93,7 +93,7 @@ class MarkdownParser implements Parser {
 
         this.file = parseFile
 
-        parse(doc, new FileInputStream(parseFile), parserOptions);
+        parse(doc, new FileInputStream(parseFile), parserOptions)
     }
 
     /**
@@ -135,7 +135,7 @@ class MarkdownParser implements Parser {
                     def horizRulerCase   = { final MDLine it -> it.horizRuler }
                     def linkUrlCSpecCase = { final MDLine it -> it.isLinkURLSpec(this.links) }
 
-                    switch (line) {
+                    switch (line) {                                          // Red underlined ? IDEA fail!
                         case commentStartCase : docItem = parseComment       (line, lineReader); break
                         case headerCase       : docItem = parseHeader        (line, lineReader); break
                         case listCase         : docItem = parseList          (line, lineReader); break
@@ -203,7 +203,7 @@ class MarkdownParser implements Parser {
             }
         }
         catch (final ParseException pe) {
-            throw pe;
+            throw pe
         }
         catch (final Exception e) {
             throw new ParseException(
@@ -322,7 +322,7 @@ class MarkdownParser implements Parser {
             case { lineReader.hasLine() && lineReader.peekNextLine().contains("===") } :
                 level = Header.Level.H1
                 lineReader.readLine()
-                break;
+                break
 
             case { lineReader.hasLine() && lineReader.peekNextLine().contains("---") } :
                 level = Header.Level.H2
@@ -410,7 +410,7 @@ class MarkdownParser implements Parser {
         mdLine = (MDLine)mdLine.removeBeg("*")
         mdLine = (MDLine)mdLine.removeBeg("+")
         mdLine = (MDLine)mdLine.removeBeg("-")
-        mdLine = (MDLine)mdLine.removeBegNumberDot();
+        mdLine = (MDLine)mdLine.removeBegNumberDot()
 
         final ListItem listItem = new ListItem()
         Paragraph liParagraph = new Paragraph()
@@ -538,14 +538,14 @@ class MarkdownParser implements Parser {
                                 final boolean isList)
             throws IOException, ParseException {
 
-        final StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder()
 
         Line parseLine = line
-        boolean done = false;
+        boolean done = false
         String space = ""
         while (!done) {
             if (removeBeginningWord != null &&
-                    parseLine.numberOfWords > 0 && parseLine.getWord(0).equals(removeBeginningWord)) {
+                    parseLine.numberOfWords > 0 && parseLine.getWord(0) == removeBeginningWord) {
 
                 parseLine = parseLine.removeFirstWord()
             }
@@ -580,7 +580,7 @@ class MarkdownParser implements Parser {
         for (int i = 0 ; i < sb.length(); i++) {
             int j = (i + 1) < sb.length() ? i + 1 : -1
 
-            char c = sb.charAt(i);
+            char c = sb.charAt(i)
             char n = j > 0 ? sb.charAt(j) : (char)0 as char
 
             if (escapeChar) {
@@ -591,15 +591,15 @@ class MarkdownParser implements Parser {
 
                 switch (c) {
                     case '\\':
-                        escapeChar = true;
+                        escapeChar = true
                         break
 
                     case { it == '.' && !(current instanceof Link)}:
                     case { it == ',' && !(current instanceof Link)}:
-                    case { it == '!' && n != '[' && !(current instanceof Link)} :
+                    case { it == '!' && n != '[' as char && !(current instanceof Link)} :
                     case { it == '?' && !(current instanceof Link)}:
                         current << c
-                        if (n == ' ') {
+                        if (n == ' ' as char) {
                             paragraph.addItem(current)
                             current = current.createNewWithSameConfig()
                         }
@@ -614,8 +614,8 @@ class MarkdownParser implements Parser {
                                 (current instanceof Emphasis)
                             ) ||
                             (
-                                (i+2) < sb.length() &&
-                                sb.substring(i+2).contains("_")
+                                (i + 2) < sb.length() &&
+                                sb.substring(i + 2).contains("_")
                             )
                         )
                     }:
@@ -628,13 +628,13 @@ class MarkdownParser implements Parser {
                                 (current instanceof Emphasis)
                             ) ||
                             (
-                                (i+2) < sb.length() &&
+                                (i + 2) < sb.length() &&
                                  sb.substring(i+2).contains("*")
                             )
                         )
                     }:
                         paragraph.addItem(current)
-                        if (n == '_' || n == '*') {
+                        if (n == '_' as char || n == '*' as char) {
                             ++i
                             if (current instanceof Strong) {
                                 current = itemStack.pop().createNewWithSameConfig()
@@ -656,28 +656,28 @@ class MarkdownParser implements Parser {
                         break
 
                     // &nbsp;
-                    case {it == "&" && n == "n" && !ignoreFormatting} :
+                    case {it == '&' && n == 'n' as char && !ignoreFormatting} :
                         paragraph.addItem(new Space())
                         i = i + 5
-                        break;
+                        break
 
                     // &gt;
-                    case {it == "&" && n == "g" && !ignoreFormatting} :
+                    case {it == '&' && n == 'g'as char && !ignoreFormatting} :
                         current << ">"
                         i = i + 3
-                        break;
+                        break
 
                     // &lt;
-                    case {it == "&" && n == "l" && !ignoreFormatting} :
+                    case {it == '&' && n == 'l' as char && !ignoreFormatting} :
                         current << "<"
                         i = i + 3
-                        break;
+                        break
 
                     // &amp;
-                    case {it == "&" && n =="a" && !ignoreFormatting} :
+                    case {it == '&' && n == 'a' as char && !ignoreFormatting} :
                         current << "&"
                         i = i + 4
-                        break;
+                        break
 
                     case '`':
                         paragraph.addItem(current)
@@ -692,14 +692,14 @@ class MarkdownParser implements Parser {
                         }
                         break
 
-                    case { it == '[' && !ignoreFormatting && p != '!' && !(current instanceof Link) &&
+                    case { it == '[' && !ignoreFormatting && p != '!' as char && !(current instanceof Link) &&
                             !(current instanceof Code)}:
                         paragraph.addItem(current)
                         itemStack.push((DocItem)current)
                         current = new MDLink(renderPrefixedSpace: false)
                         break
 
-                    case { it == '!' && !ignoreFormatting && n == '[' && !(current instanceof Link)}:
+                    case { it == '!' && !ignoreFormatting && n == '[' as char && !(current instanceof Link)}:
                         paragraph.addItem(current)
                         itemStack.push((DocItem)current)
                         current = new MDImage(renderPrefixedSpace: false)
@@ -708,7 +708,7 @@ class MarkdownParser implements Parser {
 
                     case ']':
                         if (current instanceof Link) {
-                            if (n != '(') {
+                            if (n != '(' as char) {
                                 paragraph.addItem(current)
                                 this.links.put(((Link)current).text, (Link)current)
                                 current = itemStack.pop().createNewWithSameConfig()
@@ -717,7 +717,7 @@ class MarkdownParser implements Parser {
                         else {
                             current << c
                         }
-                        break;
+                        break
 
                     case ')':
                         if (current instanceof Link) {
@@ -734,7 +734,7 @@ class MarkdownParser implements Parser {
                         paragraph.addItem(current)
                         itemStack.push(current)
                         current = new AutoLink(renderPrefixedSpace: false)
-                        break;
+                        break
 
                     case { it == '>' && !ignoreFormatting && (current.class == AutoLink.class)}:
                         paragraph.addItem(current)

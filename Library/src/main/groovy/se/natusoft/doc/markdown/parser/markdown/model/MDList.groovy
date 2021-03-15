@@ -75,7 +75,7 @@ class MDList extends List {
 
     @Override
     @NotNull String toString() {
-        final StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder()
         sb.append("List: ordered:${ordered}\n")
         sb.append(toString(this.indentLevel))
 
