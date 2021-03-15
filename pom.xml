@@ -37,7 +37,7 @@
         <fileeditor-maven-support.ver>1.1</fileeditor-maven-support.ver>
         <ftp-maven-plugin.ver>1.0.1</ftp-maven-plugin.ver>
         <groovy.ver>3.0.7</groovy.ver>
-        <gmaven-plus.ver>1.5</gmaven-plus.ver>
+        <gmaven-plus.ver>1.12.1</gmaven-plus.ver>
         <jb.annotations.ver>13.0</jb.annotations.ver>
 
         <mdd.groovy.target>1.8</mdd.groovy.target>
@@ -269,13 +269,13 @@
         Distribution Management
     -->
 
-    <distributionManagement>
-        <repository>
-            <id>bintray-tommy-maven-MarkdownDoc</id>
-            <name>tommy-maven-MarkdownDoc</name>
-            <url>https://api.bintray.com/maven/tommy/maven/MarkdownDoc</url>
-        </repository>
-    </distributionManagement>
+<!--    <distributionManagement>-->
+<!--        <repository>-->
+<!--            <id>bintray-tommy-maven-MarkdownDoc</id>-->
+<!--            <name>tommy-maven-MarkdownDoc</name>-->
+<!--            <url>https://api.bintray.com/maven/tommy/maven/MarkdownDoc</url>-->
+<!--        </repository>-->
+<!--    </distributionManagement>-->
 
     <!--
         Profiles

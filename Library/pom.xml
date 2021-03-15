@@ -60,14 +60,16 @@
                 <executions>
                     <execution>
                         <goals>
+                            <goal>addSources</goal>
+                            <goal>addTestSources</goal>
                             <goal>compile</goal>
-                            <goal>testCompile</goal>
+                            <goal>compileTests</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
                     <targetBytecode>${mdd.groovy.target}</targetBytecode>
-                    <invokeDynamic>true</invokeDynamic>
+<!--                    <invokeDynamic>true</invokeDynamic>-->
                 </configuration>
             </plugin>
 
