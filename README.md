@@ -24,7 +24,7 @@ See [Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs
 
 # JDK version support
 
-MarkdownDoc is written in Groovy 3.0 which produces JDK 1.8 compatible bytecode. In JDK 11 it still works, but you get this warning:
+MarkdownDoc is written in Groovy 32.4 which produces JDK 1.5 compatible bytecode. In JDK 11 it still works, but you get this warning:
 
         WARNING: Illegal reflective access by org.codehaus.groovy.vmplugin.v9.Java9 ...
 
