@@ -269,13 +269,13 @@
         Distribution Management
     -->
 
-<!--    <distributionManagement>-->
-<!--        <repository>-->
-<!--            <id>bintray-tommy-maven-MarkdownDoc</id>-->
-<!--            <name>tommy-maven-MarkdownDoc</name>-->
-<!--            <url>https://api.bintray.com/maven/tommy/maven/MarkdownDoc</url>-->
-<!--        </repository>-->
-<!--    </distributionManagement>-->
+    <distributionManagement>
+        <repository>
+            <id>download.natusoft.se</id>
+            <name>DNS-MarkdownDoc</name>
+            <url>ftps://download.natusoft.se/${maven.base.path}</url>
+        </repository>
+    </distributionManagement>
 
     <!--
         Profiles
