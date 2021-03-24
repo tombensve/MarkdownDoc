@@ -4,7 +4,7 @@
 
     @PDFTitle("MarkdownDoc")
     @PDFSubject("User Guide")
-    @PDFVersion(2 . 1 . 4) Due to the font used I put a space between to make the dot more visible.
+    @PDFVersion(3 . 0 . 0) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
     @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
@@ -44,7 +44,18 @@ In short MarkdownDoc provides the following:
 
 ### Binaries
 
-Binaries are made available at [Bintray](https://bintray.com/tommy/maven/MarkdownDoc/view) and Bintrays JCenter repository: <http://jcenter.bintray.com> which also mirrors everything in maven central.
+Due to Bintray shutting down binaries are temporarily available at [TempBin](https://download.natusoft.se/maven). 
+
+You need to add this under `<repositories>` in settings.xml:
+
+        <repository>
+            <id>natusoft-repo</id>
+            <name>NS GitHub stuff temp repo</name>
+            <url>https://download.natusoft.se/maven</url>
+        </repository>
+
+Hopefully submissions to Maven Central have become less horrible than
+they used to be, so I will look into that when I have the time.
 
 ### Thanks
 

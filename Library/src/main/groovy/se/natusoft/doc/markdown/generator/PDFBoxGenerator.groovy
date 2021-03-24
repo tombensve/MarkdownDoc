@@ -60,7 +60,6 @@ import static se.natusoft.doc.markdown.generator.utils.Sectionizer.withSection
  * Generates a PDF document using PDFBox to generate PDF.
  */
 @CompileStatic
-@TypeChecked
 class PDFBoxGenerator implements Generator, BoxedTrait {
     //
     // Inner Classes
@@ -69,6 +68,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
     /**
      * A context for the generation process.
      */
+    @CompileStatic
     static class PDFGeneratorContext extends GeneratorContext {
         //
         // Properties
@@ -1018,7 +1018,6 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
  * Handles writing paragraph formats.
  */
 @CompileStatic
-@TypeChecked
 class ParagraphWriter implements BoxedTrait {
     //
     // Properties
@@ -1235,7 +1234,6 @@ class ParagraphWriter implements BoxedTrait {
  * Support for boxing sections.
  */
 @CompileStatic
-@TypeChecked
 trait BoxedTrait {
 
     //

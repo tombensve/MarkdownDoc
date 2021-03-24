@@ -64,7 +64,6 @@ import static se.natusoft.doc.markdowndoc.editor.config.Constants.CONFIG_GROUP_P
  * This provides formatted markdown preview function.
  */
 @CompileStatic
-@TypeChecked
 class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMotionProvider, Configurable {
 
     //
@@ -105,7 +104,8 @@ class JEditorPanePreviewFunction implements EditorFunction, KeyListener, MouseMo
 
 
     private static DoubleConfigEntry fontSizeConfig =
-            new DoubleConfigEntry("preview.pane.font.size", "The size of the preview font.", 16.0, 8.0, 50.0, CONFIG_GROUP_PREVIEW)
+            new DoubleConfigEntry("preview.pane.font.size", "The size of the preview font.",
+                    16.0 as double, 8.0 as double, 50.0 as double, CONFIG_GROUP_PREVIEW)
 
     private static IntegerConfigEntry topMarginConfig = new IntegerConfigEntry("preview.pane.top.margin",
             "The top margin.", 40, 0, 500, CONFIG_GROUP_PREVIEW)

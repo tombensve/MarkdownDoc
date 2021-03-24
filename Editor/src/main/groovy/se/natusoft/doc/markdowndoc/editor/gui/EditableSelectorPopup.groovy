@@ -3,28 +3,28 @@
  * PROJECT
  *     Name
  *         MarkdownDocEditor
- *     
+ *
  *     Description
  *         An editor that supports editing markdown with formatting preview.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
@@ -52,7 +52,6 @@ import java.util.List
  * This class is responsible for selecting one of the open editables for editing.
  */
 @CompileStatic
-@TypeChecked
 class EditableSelectorPopup extends PopupWindow implements MouseListenersTrait {
 
     //
@@ -150,8 +149,8 @@ class EditableSelectorPopup extends PopupWindow implements MouseListenersTrait {
 
         // If the ".size()" part is red marked as a non existing method then you are using IDEA.
         // Just ignore it, Set do have a size() method.
-        final int moveToOnOpenFileNo = (Editables.inst.files.size() / 2) as int
-        final int mtofCount = 0
+        final int moveToOnOpenFileNo = (Editables.inst.files.size() / 2) as int // size is red ? IDEA fail!
+        int mtofCount = 0
 
         // Then add them to the component.
         groups.keySet().each { final String key ->
@@ -185,7 +184,7 @@ class EditableSelectorPopup extends PopupWindow implements MouseListenersTrait {
         this.addKeyListener(new KeyHandler())
     }
 
-
+    @CompileStatic
     private class CloseClickHandler implements MouseListenersTrait {
         @Override
         void mouseClicked(final MouseEvent e) {
@@ -193,6 +192,7 @@ class EditableSelectorPopup extends PopupWindow implements MouseListenersTrait {
         }
     }
 
+    @CompileStatic
     private class KeyHandler extends KeyAdapter implements KeyListener {
 
         /**

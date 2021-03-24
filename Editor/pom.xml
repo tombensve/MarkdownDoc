@@ -5,7 +5,7 @@
     <parent>
         <artifactId>markdown-doc</artifactId>
         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
-        <version>2.1.5</version>
+        <version>3.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -26,9 +26,8 @@
 
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
-            <artifactId>${groovy.artifact}</artifactId>
+            <artifactId>groovy</artifactId>
             <scope>compile</scope>
-            <classifier>indy</classifier>
         </dependency>
 
         <!--
@@ -61,14 +60,14 @@
         <testSourceDirectory>src/test/groovy</testSourceDirectory>
 
         <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <version>3.8.1</version>-->
+<!--                <configuration>-->
+<!--                    <source>1.7</source>-->
+<!--                    <target>1.7</target>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
@@ -81,7 +80,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <targetBytecode>1.7</targetBytecode>
+                    <targetBytecode>${mdd.groovy.target}</targetBytecode>
                     <invokeDynamic>true</invokeDynamic>
                 </configuration>
             </plugin>

@@ -3,28 +3,28 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Library
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML and PDF.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     tommy ()
  *         Changes:
@@ -101,7 +101,6 @@ import static se.natusoft.doc.markdown.generator.utils.Sectionizer.withSection
  *
  */
 @CompileStatic
-@TypeChecked
 class PDFBoxDocRenderer implements NotNullTrait {
 
     //
@@ -167,6 +166,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * This represents a location with an x and a y.
      */
+    @CompileStatic
     static class Location {
         float x = 0.0f, y = -1.0f
 
@@ -181,6 +181,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
     /**
      * This represents a background box, below text.
      */
+    @CompileStatic
     static class Box {
         Location startLocation
         Location endLocation
@@ -197,6 +198,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * This represents an internal document layer. This is not a PDFBox concept! Each layer is a PDF document.
      * They are merged at the end. There is a front layer, the main document layer, and a background layer.
      */
+    @CompileStatic
     class PDFDocLayer { // No, I have not missed static keyword here! This needs to be an instance member.
 
         /** Represents the whole document. */
@@ -243,6 +245,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * This holds 2 documents in parallel. One is used to render text, while the other
      * is used to render rects, etc below the text. These documents are merged on save.
      */
+    @CompileStatic
     private class DocMgr {
         //
         // Constants
@@ -315,6 +318,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         /**
          * This is input to newPage(...) and is used to position the page within the document.
          */
+        @CompileStatic
         enum NewPagePosition {
             FIRST,
             LAST,
@@ -417,6 +421,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      * Creates a new page at the top of the document, and provides for inserting more pages under the first, but over the
      * rest of the document. This allows for rendering TOC and title page after the content is rendered.
      */
+    @CompileStatic
     class TopPage {
         TopPage() {
             docMgr.newPage( DocMgr.NewPagePosition.FIRST )
@@ -534,6 +539,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
     // Handle saving and restoring of state for properties and members for freeFloating MSS feature.
     //
 
+    @CompileStatic
     private static class SaveState {
         boolean restoreLocation = true
         Location pageLocation
@@ -1264,6 +1270,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         }
     }
 
+    @CompileStatic
     private static class AdaptParams {
         float holeMargin, wordSize
     }
@@ -1669,6 +1676,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         restoreForegroundColor()
     }
 
+    @CompileStatic
     static final class ImageParam {
         /** If non null, the url to the image. */
         @NotNull
