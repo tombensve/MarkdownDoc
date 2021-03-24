@@ -8,6 +8,9 @@ __Author:__ Tommy Svensson (tommy@natusoft.se)
 
 ![ci_status](https://github.com/tombensve/MarkdownDoc/actions/workflows/maven.yml/badge.svg?branch=master)
 
+
+**Note** that I have not been receiving email notification on issues! I found "Comments on Issues and Pull Requests [ ]" for email in settings unchecked! If that is default value then that is rather bad. It is now checked!
+
 ----
 
 _A tool for generating HTML and PDF from markdown for the purpose of documentation._
