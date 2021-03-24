@@ -43,7 +43,7 @@
             more collected together and I only have to specify them once.
         -->
 
-        <clm.ver>2.2.1</clm.ver>
+        <clm.ver>3.0.0</clm.ver>
         <optmgr.ver>2.0.3</optmgr.ver>
         <fileeditor-maven-support.ver>1.1</fileeditor-maven-support.ver>
         <ftp-maven-plugin.ver>1.0.1</ftp-maven-plugin.ver>
@@ -282,9 +282,9 @@
 
     <distributionManagement>
         <repository>
-            <id>bintray-tommy-maven-MarkdownDoc</id>
-            <name>tommy-maven-MarkdownDoc</name>
-            <url>https://api.bintray.com/maven/tommy/maven/MarkdownDoc</url>
+            <id>download.natusoft.se</id>
+            <name>DownloadNatusoftSe-MarkdownDoc</name>
+            <url>ftp://${maven.repo.upload}/${maven.base.path}</url>
         </repository>
     </distributionManagement>
 

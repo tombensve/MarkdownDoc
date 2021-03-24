@@ -358,7 +358,7 @@ class MarkdownGenerator implements Generator {
     private static String resolveUrl(@NotNull final String url, @NotNull final File parseFile,
                                      @NotNull final MarkdownGeneratorContext context) {
         String resolvedUrl = url
-        if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http:")) {
+        if (!resolvedUrl.startsWith("file:") && !resolvedUrl.startsWith("http:") && !resolvedUrl.startsWith("https:")) {
             resolvedUrl = "file:" + resolvedUrl
         }
         if (resolvedUrl.startsWith("file:")) {

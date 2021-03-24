@@ -2,11 +2,11 @@
 
 Copyright (C) 2012 Natusoft AB
 
-__Version:__ 2.1.5
+__Version:__ 3.0.0
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
-![ci_status](file:/Volumes/Main/Development/projects/Tools/MarkdownDoc//Volumes/Main/Development/projects/Tools/MarkdownDoc/Docs/readme/https://github.com/tombensve/MarkdownDoc/actions/workflows/maven.yml/badge.svg?branch=master)
+![ci_status](https://github.com/tombensve/MarkdownDoc/actions/workflows/maven.yml/badge.svg?branch=master)
 
 ----
 
