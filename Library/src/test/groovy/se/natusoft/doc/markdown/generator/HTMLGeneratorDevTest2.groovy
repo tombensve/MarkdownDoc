@@ -1,6 +1,7 @@
 package se.natusoft.doc.markdown.generator
 
 import groovy.transform.CompileStatic
+import org.junit.Test
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.api.Parser
@@ -12,8 +13,9 @@ import se.natusoft.tools.optionsmgr.CommandLineOptionsManager
  * Test for MarkdownParser.
  */
 @CompileStatic
-class HTMLGeneratorDevTest2 extends GroovyTestCase {
+class HTMLGeneratorDevTest2 {
 
+    @Test
     /*
      * Note that this test only tests that the parsing and result generation executes
      * without throwing any exception. The content of the generated result is not verified.

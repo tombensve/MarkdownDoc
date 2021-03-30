@@ -91,6 +91,19 @@ class MDLine extends Line  {
     }
 
     /**
+     *
+     * @return A new MDLine with the first and last '|' character removed.
+     */
+    MDLine removeFirstAndLastPipeCharForTable() {
+        String strline = super.toString().trim()
+        if (strline.startsWith("|") && strline.endsWith("|")) {
+            strline = strline.substring(1, strline.length() - 1)
+        }
+
+        newLine(strline) as MDLine
+    }
+
+    /**
      * Returns true if this is part of a code block.
      */
     boolean isCodeBlock() {
@@ -152,6 +165,21 @@ class MDLine extends Line  {
             return c.isDigit()
         }
         false
+    }
+
+    /**
+     * Returns true if this starts a table.
+     */
+    boolean isTable() {
+        boolean table = false
+
+        String testline = super.origLine != null ?  super.origLine.trim() : ""
+
+        if (testline.startsWith("|") && testline.endsWith("|") && testline.contains(" ")) {
+            table = true
+        }
+
+        table
     }
 
     /**

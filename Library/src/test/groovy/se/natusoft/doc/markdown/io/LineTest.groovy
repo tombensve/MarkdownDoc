@@ -1,13 +1,15 @@
 package se.natusoft.doc.markdown.io
 
 import groovy.transform.CompileStatic
+import org.junit.Test
 
 /**
  * Test of the Line class.
  */
 @CompileStatic
-class LineTest extends GroovyTestCase {
+class LineTest {
 
+    @Test
     void testLine1() throws Exception {
         Line line = new Line("This is a test!", 0)
 

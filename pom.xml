@@ -32,7 +32,7 @@
             more collected together and I only have to specify them once.
         -->
 
-        <clm.ver>2.2.1</clm.ver>
+        <clm.ver>3.1.0</clm.ver>
         <optmgr.ver>2.0.3</optmgr.ver>
         <fileeditor-maven-support.ver>1.1</fileeditor-maven-support.ver>
         <ftp-maven-plugin.ver>1.0.1</ftp-maven-plugin.ver>
@@ -186,6 +186,7 @@
                 </plugin>
 
 
+<!--
                 <plugin>
                     <groupId>se.natusoft.tools.fileeditor</groupId>
                     <artifactId>file-editor-maven-support-plugin</artifactId>
@@ -199,6 +200,7 @@
                         </dependency>
                     </dependencies>
                 </plugin>
+-->
 
                 <plugin>
                     <groupId>se.natusoft.tools.codelicmgr</groupId>
@@ -272,8 +274,8 @@
     <distributionManagement>
         <repository>
             <id>download.natusoft.se</id>
-            <name>DNS-MarkdownDoc</name>
-            <url>ftps://download.natusoft.se/${maven.base.path}</url>
+            <name>DownloadNatusoftSe-MarkdownDoc</name>
+            <url>ftp://${maven.repo.upload}/${maven.base.path}</url>
         </repository>
     </distributionManagement>
 

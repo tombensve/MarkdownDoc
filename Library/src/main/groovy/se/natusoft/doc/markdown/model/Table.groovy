@@ -33,7 +33,7 @@ class Table extends DocFormatItem {
     //
 
     /** The header if any */
-    private TableRow header = null
+    private JUList<String> header = null
 
     /** Represents the table contents */
     private JUList<TableRow> rows = [ ]
@@ -74,6 +74,10 @@ class Table extends DocFormatItem {
      */
     JUList<Align> getColumnAlign() {
         this.colAlign
+    }
+
+    JUList<String> getHeader() {
+        this.header
     }
 
     /**
@@ -164,12 +168,10 @@ class Table extends DocFormatItem {
      */
     void addHeader(String headerEntry) {
         if (this.header == null) {
-            this.header = new TableRow()
+            this.header = new LinkedList<>()
         }
 
-        Paragraph paragraph = new Paragraph()
-        paragraph.addItem(headerEntry)
-        this.header.add(paragraph)
+        this.header.add(headerEntry)
     }
 
     /**

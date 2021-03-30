@@ -62,6 +62,7 @@ import java.util.Properties;
 /**
  * Goal which touches a timestamp file.
  *
+ * @threadsafe
  * @phase generate-sources
  */
 @SuppressWarnings({ "unused", "JavaDoc" })

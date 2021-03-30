@@ -134,6 +134,7 @@ class MarkdownParser implements Parser {
                     def blockQuoteCase   = { final MDLine it -> it.blockQuote }
                     def horizRulerCase   = { final MDLine it -> it.horizRuler }
                     def linkUrlCSpecCase = { final MDLine it -> it.isLinkURLSpec(this.links) }
+                    def tableCase        = { final MDLine it -> it.table }
 
                     switch (line) {                                          // Red underlined ? IDEA fail!
                         case commentStartCase : docItem = parseComment       (line, lineReader); break
@@ -142,9 +143,10 @@ class MarkdownParser implements Parser {
                         case codeBlockCase    : docItem = parseCodeBlock     (line, lineReader); break
                         case blockQuoteCase   : docItem = parseBlockQuote    (line, lineReader); break
                         case horizRulerCase   : docItem = new HorizontalRule ();                 break
-                        case linkUrlCSpecCase : parseLinkUrlSpec             (line);             break
+                        case linkUrlCSpecCase :           parseLinkUrlSpec   (line);             break
                         case divStartCase     : docItem = parseStartDiv      (line);             break
                         case divEndCase       : docItem = endDiv             ();                 break
+                        case tableCase        : docItem = parseTable         (line, lineReader); break
 
                         // The annoying underline header format.
                         case { lineReader.hasLine() && (lineReader.peekNextLine().contains("----") ||
@@ -468,6 +470,50 @@ class MarkdownParser implements Parser {
             }
             link.title = link.title.substring(1, link.title.length() - 1)
         }
+    }
+
+    /**
+     * Parses a table.
+     *
+     * This is entirely based on "Tables" section at https://guides.github.com/features/mastering-markdown/
+     * and in its absolutely simplest form:
+     * <pre>
+     *   First Header | Second Header
+     *   ------------ | -------------
+     *   Content from cell 1 | Content from cell 2
+     *   Content in the first column | Content in the second column
+     * </pre>
+     *
+     * @param line The current line being parsed.
+     * @param lineReader The md file reader, actually an MDLineReader!
+     *
+     * @return A parsed DocItem.
+     */
+    private static @NotNull DocItem parseTable(@NotNull final MDLine line, @NotNull final LineReader lineReader) {
+
+        Table table = new Table()
+
+        MDLine workingLine = line.removeFirstAndLastPipeCharForTable()
+
+        workingLine.toString().split("|").each {String col ->
+            table.addHeader(col.trim())
+        }
+
+        // The header content divider, just skip.
+        workingLine = lineReader.readLine() as MDLine
+
+        while (lineReader.hasLine()) {
+
+            table.addRow()
+
+            workingLine = lineReader.readLine() as MDLine
+
+            workingLine.toString().split("\\|").each {String colValue ->
+                table.addItem(colValue)
+            }
+        }
+
+        table
     }
 
     /**
