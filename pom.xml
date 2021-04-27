@@ -82,13 +82,33 @@
         <url>https://github.com/tombensve/MarkdownDoc</url>
     </scm>
 
+    <!--
+        Make sure we have access to ns repo.
+    -->
     <repositories>
         <repository>
-            <id>natusoft-repo</id>
-            <name>NS GitHub stuff temp repo</name>
+            <id>ns-repo</id>
+            <name>ns-artifact-repository</name>
             <url>https://download.natusoft.se/maven</url>
         </repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>ns-plugin-repo</id>
+            <name>na-plugin-repository</name>
+            <url>https://download.natusoft.se/maven</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled>-->
+<!--            </snapshots>-->
+        </pluginRepository>
+    </pluginRepositories>
+
+    <!-- __________________ -->
+
 
     <dependencies>
         <dependency>
