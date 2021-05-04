@@ -18,7 +18,7 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 # Binaries
 
-Since bintray is shutting down binaries are for the moment available at https://download.natusoft.se/maven.
+Since bintray has shut down binaries are now available at https://download.natusoft.se/maven.
 
 You need to add the following to your pom:
 ```xml
@@ -41,6 +41,9 @@ You need to add the following to your pom:
         </pluginRepository>
     </pluginRepositories>
 ```
+
+I'm choosing this solution for now since getting things into maven central is still painful even tough it has gotten a little bit better than before. 
+The stuff at my GitHub account are things I work on in my spare time. I don't want that time wasted by an overly complicated way of sharing binaries. Bintray really made everyhing as simple as it should be and I mourn its passing! 
 
 # JDK version support
 
