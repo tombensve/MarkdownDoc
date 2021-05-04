@@ -42,8 +42,6 @@ You need to add the following to your pom:
     </pluginRepositories>
 ```
 
-See [Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md)
-
 # JDK version support
 
 MarkdownDoc is written in Groovy 3.0 which produces JDK 1.8 compatible bytecode. In JDK 11 it still works, but you get this warning:
