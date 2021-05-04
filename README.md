@@ -20,6 +20,28 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 Since bintray is shutting down binaries are for the moment available at https://download.natusoft.se/maven.
 
+You need to add the following to your pom:
+```xml
+    <repositories>
+        <repository>
+            <id>ns-repo</id>
+            <name>ns-artifact-repository</name>
+            <url>https://download.natusoft.se/maven</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>ns-plugin-repo</id>
+            <name>ns-plugin-repository</name>
+            <url>https://download.natusoft.se/maven</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+```
+
 See [Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md)
 
 # JDK version support
