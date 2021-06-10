@@ -18,7 +18,9 @@ _A tool for generating HTML and PDF from markdown for the purpose of documentati
 
 # Binaries
 
-[Accessing binaries](https://github.com/tombensve/CommonStuff/blob/master/docs/AccessingBinaries.md)
+Since bintray is shutting down binaries are for the moment available at https://download.natusoft.se/maven.
+
+See [Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs/MavenRepository.md)
 
 # JDK version support
 
