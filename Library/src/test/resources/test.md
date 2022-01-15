@@ -162,7 +162,7 @@ Here is a feature best illustrated with a tree and some latin:
 
 Lorem ipsum dolor sit amet,
 consectetur adipiscing elit. Nulla non velit feugiat neque maximus ultricies.
-![image](http://download.natusoft.se/Images/test.png)
+![image](https://download.natusoft.se/Images/test.png)
 Aenean sed elit lectus. Donec fermentum dapibus dapibus.
 Cras facilisis odio at dolor ultricies, eu pharetra leo tristique.
 

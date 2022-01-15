@@ -101,7 +101,7 @@ Any of:
 
     [This is a link to markdown syntax on daringfireball.net](http://daringfireball.net/projects/markdown/syntax)
 
-[This is a link to markdown syntax on daringfireball.net](http://daringfireball.net/projects/markdown/syntax)
+[This is a link to markdown syntax on daringfireball.net](https://daringfireball.net/projects/markdown/syntax)
 
 Short "autolink" version:
 

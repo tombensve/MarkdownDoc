@@ -51,6 +51,7 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary
 import org.apache.pdfbox.util.Matrix
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
+import se.natusoft.doc.markdown.exception.GenerateException
 import se.natusoft.doc.markdown.generator.models.TOC
 import se.natusoft.doc.markdown.generator.styles.*
 import se.natusoft.doc.markdown.generator.styles.MSS.MSS_Front_Page
@@ -124,20 +125,20 @@ class PDFBoxDocRenderer implements NotNullTrait {
     static final String LETTER = "LETTER"
 
     /** Indicates that image should be left aligned. */
-    static final float X_OFFSET_LEFT_ALIGNED = 1000000.0f
+    public static final float X_OFFSET_LEFT_ALIGNED = 1000000.0f
 
     /** Indicates that the image should be centered on the page X wise. This applies to xOffset. */
-    static final float X_OFFSET_CENTER = 1000001.0f
+    public static final float X_OFFSET_CENTER = 1000001.0f
 
     /** Indicates that image should be right aligned. */
-    static final float X_OFFSET_RIGHT_ALIGNED = 1000002.0f
+    public static final float X_OFFSET_RIGHT_ALIGNED = 1000002.0f
 
     /** Indicates that the image should be rendererd at the current position. */
-    static final float X_OFFSET_CURRENT = 1000003.0f
+    public static final float X_OFFSET_CURRENT = 1000003.0f
 
     /** The default color pair to use if none other is provided. */
     @SuppressWarnings( "GroovyUnusedDeclaration" )
-    static final MSSColorPair DEFAULT_COLOR_PAIR =
+    public static final MSSColorPair DEFAULT_COLOR_PAIR =
             new MSSColorPair( foreground: MSSColor.BLACK, background: MSSColor.WHITE )
 
     //
@@ -252,21 +253,25 @@ class PDFBoxDocRenderer implements NotNullTrait {
         //
 
         final Closure DOC_TEXT_AND_FILL_COLOR = { int red, int green, int blue ->
-            this.middleLayer.docStream.setNonStrokingColor( red, green, blue )
-            this.fgLayer.docStream.setNonStrokingColor( red, green, blue )
+            this.middleLayer.docStream.setNonStrokingColor( toFloatColor( red ), toFloatColor( green ), toFloatColor( blue ) )
+            this.fgLayer.docStream.setNonStrokingColor( toFloatColor( red ), toFloatColor( green ), toFloatColor( blue ) )
         }
 
         final Closure DOC_LINES_ETC_COLOR = { int red, int green, int blue ->
-            this.middleLayer.docStream.setStrokingColor( red, green, blue )
-            this.fgLayer.docStream.setStrokingColor( red, green, blue )
+            this.middleLayer.docStream.setStrokingColor( toFloatColor( red ), toFloatColor( green ), toFloatColor( blue ) )
+            this.fgLayer.docStream.setStrokingColor( toFloatColor( red ), toFloatColor( green ), toFloatColor( blue ) )
         }
 
         final Closure BG_DOC_TEXT_AND_FILL_COLOR = { int red, int green, int blue ->
-            this.bgLayer.docStream.setNonStrokingColor( red, green, blue )
+            this.bgLayer.docStream.setNonStrokingColor( toFloatColor( red ), toFloatColor( green ), toFloatColor( blue ) )
         }
 
         final Closure BG_DOC_LINES_ETC_COLOR = { int red, int green, int blue ->
-            this.bgLayer.docStream.setStrokingColor( red, green, blue )
+            this.bgLayer.docStream.setStrokingColor( toFloatColor( red ), toFloatColor( green ), toFloatColor( blue ) )
+        }
+
+        final static float toFloatColor(int intColor) {
+            (intColor != 0 ? intColor / 255f : 0.0f)
         }
 
         //
@@ -597,7 +602,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
     float getPageY() {
         if ( this.pageLocation.y < 0.0f ) {
             this.pageLocation.y = pageFormat.height - ( this.fontMSSAdapter.size as float ) -
-                    this.margins.topMargin
+                    this.margins.topMargin as float
         }
         this.pageLocation.y
     }
@@ -932,7 +937,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     protected void applyFontInternal() {
         if ( this.fontMSSAdapter != null ) {
-            this.docMgr.middleLayer.docStream.leading = this.fontMSSAdapter.size + 2
+            this.docMgr.middleLayer.docStream.leading = (float)(this.fontMSSAdapter.size as float + 2.0f)
             this.fontMSSAdapter.applyFont( this.docMgr.middleLayer.docStream )
         }
     }
@@ -1072,7 +1077,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
             if ( tocEntry.sectionNumber != null ) {
                 positionTextAtPageLocation()
                 rawText( tocEntry.sectionNumber )
-                this.pageX = this.margins.leftMargin + calcTextWidth( "0.0.0.0.0.0   " )
+                this.pageX = this.margins.leftMargin + calcTextWidth( "0.0.0.0.0.0   " ) as float
             }
 
             // Section title
@@ -1160,7 +1165,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         }
 
         textArea.upperRightX = this.pageX
-        textArea.upperRightY = s_pageY + this.fontMSSAdapter.size
+        textArea.upperRightY = s_pageY + this.fontMSSAdapter.size as float
 
         textArea
     }
@@ -1259,14 +1264,14 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     private void adaptToTextHoles( @NotNull AdaptParams adaptParams ) {
         float x = this.pageX
-        float y = this.pageY + ( this.fontMSSAdapter.size * 2 )
+        float y = this.pageY + ( this.fontMSSAdapter.size * 2 ) as float
         TextHole hole = checkForHole( x, y )
         if ( hole == null ) {
-            x = this.pageX + adaptParams.holeMargin + adaptParams.wordSize
+            x = this.pageX + adaptParams.holeMargin + adaptParams.wordSize as float
             hole = checkForHole( x, y )
         }
         if ( hole != null ) {
-            this.pageX = hole.x + hole.width + adaptParams.holeMargin
+            this.pageX = hole.x + hole.width + adaptParams.holeMargin as float
         }
     }
 
@@ -1302,7 +1307,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         ensureTextMode()
 
-        float rightMarginPos = this.pageFormat.width - this.margins.rightMargin
+        float rightMarginPos = this.pageFormat.width - this.margins.rightMargin as float
 
         PDRectangle textArea = new PDRectangle( lowerLeftX: this.pageX, lowerLeftY: this.pageY )
         PDRectangle boxedTextArea = new PDRectangle( lowerLeftX: this.pageX - 1, lowerLeftY: this.pageY )
@@ -1359,7 +1364,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         this.stylesApplicator = null
 
         textArea.upperRightX = this.pageX
-        textArea.upperRightY = this.pageY + this.fontMSSAdapter.size
+        textArea.upperRightY = this.pageY + this.fontMSSAdapter.size as float
 
         textArea
     }
@@ -1443,8 +1448,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
      */
     @RequiresWithSection
     void endParagraphBox( @NotNull PDRectangle textArea ) {
-        textArea.upperRightX = this.pageX + 1
-        textArea.upperRightY = this.pageY + this.fontMSSAdapter.size
+        textArea.upperRightX = this.pageX + 1 as float
+        textArea.upperRightY = this.pageY + this.fontMSSAdapter.size as float
 
         // Since it does not seem possible to have other background color than white, the only way I found to have another
         // background color on text is to render a rect behind the text of the desired background color. This is really
@@ -1473,8 +1478,8 @@ class PDFBoxDocRenderer implements NotNullTrait {
                 ),
                 color: boxColor
         ).validate()
-        this.margins.leftMargin = this.margins.leftMargin + 10.0f
-        this.margins.rightMargin = this.margins.rightMargin + 10.0f
+        this.margins.leftMargin = this.margins.leftMargin + 10.0f as float
+        this.margins.rightMargin = this.margins.rightMargin + 10.0f as float
         ensureTextModeOff()
 
         this.pageX = this.margins.leftMargin
@@ -1542,7 +1547,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
         else {
             //newLine()
             ensureTextModeOff()
-            float hrY = this.pageY + ( this.fontMSSAdapter.size / 2 ) + 4
+            float hrY = this.pageY + ( this.fontMSSAdapter.size / 2 ) + 4 as float
 
             if ( color != null ) {
                 color.applyColor this.docMgr.DOC_TEXT_AND_FILL_COLOR
@@ -1613,7 +1618,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
     @RequiresWithSection
     void positionAtTopOfPage() {
         this.pageX = this.margins.leftMargin
-        this.pageY = this.pageFormat.height - this.margins.topMargin
+        this.pageY = this.pageFormat.height - this.margins.topMargin as float
 
         // See Note-1 at top of file!
         if ( this.savedState != null ) {
@@ -1682,6 +1687,9 @@ class PDFBoxDocRenderer implements NotNullTrait {
         @NotNull
         InputStream imageStream
 
+        /** What is the source of the image. */
+        String imageSource
+
         /** Set to true if image stream contans a JPEG. */
         boolean jpeg = false
 
@@ -1736,13 +1744,24 @@ class PDFBoxDocRenderer implements NotNullTrait {
         }
         else {
             BufferedImage bufferedImage = ImageIO.read( param.imageStream )
-            image = LosslessFactory.createFromImage( this.docMgr.mainLayer.document, bufferedImage )
+            try {
+                image = LosslessFactory.createFromImage( this.docMgr.mainLayer.document, bufferedImage )
+            }
+            catch ( NullPointerException npe ) {
+                throw new GenerateException(
+                        message: "Failed to read image: " + param.imageSource,
+                        cause: npe
+                )
+
+                ensureTextMode( this.pageX, this.pageY )
+                return // Must break here!
+            }
         }
 
-        float scaledWidth = image.width * param.scale
-        float scaledHeight = image.height * param.scale
+        float scaledWidth = image.width * param.scale as float
+        float scaledHeight = image.height * param.scale as float
 
-        float imageX = this.pageX, imageY = ( this.pageY - scaledHeight ) + this.fontMSSAdapter.size
+        float imageX = this.pageX, imageY = ( this.pageY - scaledHeight ) + this.fontMSSAdapter.size as float
 
         // TODO: A better formula for calculating how many font sizes to add to Y and how many for the hole.
 
@@ -1772,7 +1791,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
                 }
             }
             else if ( param.xOffset == X_OFFSET_RIGHT_ALIGNED ) {
-                imageX = this.pageFormat.width - ( this.margins.rightMargin + scaledWidth )
+                imageX = this.pageFormat.width - ( this.margins.rightMargin + scaledWidth ) as float
                 if ( this.pageX >= ( this.pageFormat.width - this.margins.rightMargin - scaledWidth ) ) {
                     imageY -= ( this.fontMSSAdapter.size + 2.0f )
                 }
@@ -1784,7 +1803,7 @@ class PDFBoxDocRenderer implements NotNullTrait {
 
         if ( imageY - ( param.yOffset + param.bottomAdd + 8.0f ) < this.margins.bottomMargin ) {
             newPage()
-            imageY = this.pageY - scaledHeight
+            imageY = this.pageY - scaledHeight as float
         }
         ensureTextModeOff()
 

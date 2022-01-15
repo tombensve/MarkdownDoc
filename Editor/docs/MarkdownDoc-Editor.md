@@ -88,8 +88,8 @@ Due to GUI bugs in the editor component of earlier versions of Java, Java 1.8 or
   
 ## Running
 
-Can be run with java -jar or double clicked on. If you are using Windows 7 or 8 take a look at this page: [http://johann.loefflmann.net/en/software/jarfix/index.html]
-(http://johann.loefflmann.net/en/software/jarfix/index.html). 
+Can be run with java -jar or double clicked on. If you are using Windows 7 or 8 take a look at this page: [https://johann.loefflmann.net/en/software/jarfix/index.html]
+(https://johann.loefflmann.net/en/software/jarfix/index.html). 
 
 The executable jar have the following name: MarkdownDocEditor-n.n.n-App.jar
 
@@ -113,13 +113,13 @@ Move the mouse to the top of the editor window and the toolbar will automaticall
 
 ### Save file(s)
  
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2save.png)Default key: Ctrl+S. This is changeable in the settings.
+![](https://download.natusoft.se/Images/MarkdownDoc/mdd2save.png)Default key: Ctrl+S. This is changeable in the settings.
 
 This saves all open files that have been modified and not saved. A small pupup appears for a short while in the upper left corner of the window to indicate how many files were saved. If it the number is 0 then there were no modified files needing save.
 
 ### Open file
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2open.png)Default key: Ctrl+O. This is changeable in the settings.
+![](https://download.natusoft.se/Images/MarkdownDoc/mdd2open.png)Default key: Ctrl+O. This is changeable in the settings.
 
 This opens a file chooser to select one markdown file to open. The opened file will be selected for editing in the window.
 
@@ -129,7 +129,7 @@ In addition to markdown files the open function will also allow opening the same
 
 ### Open / Create
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2new.png)Default key: Ctrl+N. This is changeable in the settings.
+![](https://download.natusoft.se/Images/MarkdownDoc/mdd2new.png)Default key: Ctrl+N. This is changeable in the settings.
 
 This opens a file chooser where you can also enter a filename in the chooser dialog. Here you can navigate to a directory, and then enter the name of a new file that will then be created and opened. In this file chooser you can alternatively navigate to a directory and then select one or more existing files and have all selected files being opened. 
 
@@ -141,7 +141,7 @@ In addition to markdown files the open function will also allow opening the same
 
 ### List of open files popup
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2openfiles.png)Default key: Ctrl+1. This is changeable in the settings.
+![](https://download.natusoft.se/Images/MarkdownDoc/mdd2openfiles.png)Default key: Ctrl+1. This is changeable in the settings.
 
 This will popup a window to the left of the editor window, or to the left on top of the edtitor window if fullscreen. It will list all open files with filename, and some starting file content to make it easier to identify. This idea was borrowed from other tools. If there are more open files than fits vertically the popup is scrollable vertically. Click on any file to set that file as the currently edited. The popup window till not close until you click in the editor window. 
 
@@ -149,50 +149,50 @@ Keyboard use in the popup are currently not supported.
 
 ### Insert heading
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2heading.png)Default key: Ctrl+T. This is changeable in the settings.
+![](https://download.natusoft.se/Images/MarkdownDoc/mdd2heading.png)Default key: Ctrl+T. This is changeable in the settings.
 
 This just adds a # character which is the markdown heading character. Insert as many as the heading level you want, max 6.
 
 ### Insert bold
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2bold.png)Default key: Ctrl+B. This is changeable in the settings.
+![](https://download.natusoft.se/Images/MarkdownDoc/mdd2bold.png)Default key: Ctrl+B. This is changeable in the settings.
 
 This adds 4 '\_' characters with the cursor placed between the first 2 and the last 2. 2 underscores before and after makes bold text in markdown. 2 asterisks before and after does the same thing, but the editor uses underscores for this specific help function. 
 
 ### Insert italics
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2italics.png) Default key: Ctrl+I. This is changeable in the settings.
+![](https://download.natusoft.se/Images/MarkdownDoc/mdd2italics.png) Default key: Ctrl+I. This is changeable in the settings.
 
 This adds 2 '\_' characters with the cursor placed between them. 1 underscore before and after makes italic text in markdown. 1 asterisk before and after does the same thing, but the editor uses underscores for this specific help funciton. Asterisks also means other things in markdown so underscores in this case is less confusing. 
 
 <!-- @PageBreak -->
 ### Insert list
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2list.png)Default key: Ctrl+L. This is changeable in the settings.
+![](https://download.natusoft.se/Images/MarkdownDoc/mdd2list.png)Default key: Ctrl+L. This is changeable in the settings.
 
 This adds and asterisk and a space which is how you make a list entry for an unordered list in markdown. Do note that it is also possible to make a numbered list, in which case you replace the asterisk with a number like 1. See the markdown reference section of this document for more information.
 
 ### Insert quote
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2quote.png)Default key: Ctrl+Q. This is changeable in the settings.
+![](https://download.natusoft.se/Images/MarkdownDoc/mdd2quote.png)Default key: Ctrl+Q. This is changeable in the settings.
 
 This inserts a '>' character and a space which is how you make quoted text in markdown.
 
 ### Insert image
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2image.png)Default key: Ctrl+M. This is changeable in the settings.
+![](https://download.natusoft.se/Images/MarkdownDoc/mdd2image.png)Default key: Ctrl+M. This is changeable in the settings.
 
 This function will open a small popup window where you can enter 3 pieces of information: 1) An alt text. 2) A URL to the image. 3) An image title. Only the URL is required. When you press the "Insert" button in the popup window, then the image reference will be inserted into the text in markdown format:  `![Alt text](url "title")` .
 
 ### Insert link
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2link.png)Default key: Ctrl+N. This is changeable in the settings.
+![](https://download.natusoft.se/Images/MarkdownDoc/mdd2link.png)Default key: Ctrl+N. This is changeable in the settings.
 
 This function will open a small popup window where you can enter 3 pieces of information: 1) The link text. 2) The link URL. 3) A link title. You should provide a link text and an URL as minimum. When you press the "Insert" button in the popup window, then the link will be inserted into the text in markdown format: `[link text](url "title")`. 
 
 ### Preview
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2preview.png)Default key: Ctrl+F. This is changeable in the settings.
+![](https://download.natusoft.se/Images/MarkdownDoc/mdd2preview.png)Default key: Ctrl+F. This is changeable in the settings.
 
 This will format the markdown in the editor into HTML and show it in readonly mode instead of the editable content. To go back to editing again do a Ctrl+F again or use the toolbar button. Do note that while in preview mode it is possible to drag and drop markdown files into the window to have them previewed. This does not affect what you are editing in any way. When you go back to edit mode again your edited text will be there and a new preview will preview that text. 
 
@@ -201,7 +201,7 @@ _Please also note that the preview HTML rendering is done by the Java GUI librar
 <!-- @PageBreak -->
 ### Generate PDF
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2pdf.png)Default key: Ctrl+P. This is changeable in the settings.
+![](https://download.natusoft.se/Images/MarkdownDoc/mdd2pdf.png)Default key: Ctrl+P. This is changeable in the settings.
 
 This will first open a file chooser to select target PDF file to generate to. Then a popup window with meta data for the PDF generation will open. 
 
@@ -209,7 +209,7 @@ Press the "Generate" button to actually generate the PDF document.
 
 The choices are: (Note that pic is old, keywords no longer exists!)
 
-![](http://download.natusoft.se/Images/MarkdownDoc/PDFOptions.png)
+![](https://download.natusoft.se/Images/MarkdownDoc/PDFOptions.png)
 
 ##### Title
 
@@ -255,12 +255,12 @@ If this is selected then the generated PDF will be opened by the system default 
 
 ### Generate HTML
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2html.png)Default key: Ctrl+H. This is changeable in the settings. 
+![](https://download.natusoft.se/Images/MarkdownDoc/mdd2html.png)Default key: Ctrl+H. This is changeable in the settings. 
 
 
 This will first open a file chooser to select HTML file to generate to. Then a popup window will be opened containing meta data for generation of the HTML.
 
-![](http://download.natusoft.se/Images/MarkdownDoc/HTMLOptions.png)
+![](https://download.natusoft.se/Images/MarkdownDoc/HTMLOptions.png)
 
 ##### Inline CSS
 
@@ -280,7 +280,7 @@ If this is selected then the generated HTML will be opened by the system default
 
 ### Setting
 
-![](http://download.natusoft.se/Images/MarkdownDoc/mdd2settings.png)Default key: Ctrl+E. This is changeable in the settings.
+![](https://download.natusoft.se/Images/MarkdownDoc/mdd2settings.png)Default key: Ctrl+E. This is changeable in the settings.
 
 This opens the settings popup window where you can configure keys, margins, colors, etc. 
 

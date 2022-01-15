@@ -34,7 +34,6 @@
 package se.natusoft.doc.markdown.generator
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.api.Generator
@@ -51,8 +50,10 @@ import se.natusoft.doc.markdown.generator.styles.MSSColor
 import se.natusoft.doc.markdown.generator.styles.MSSColorPair
 import se.natusoft.doc.markdown.generator.styles.MSSImage
 import se.natusoft.doc.markdown.generator.utils.Sectionizer
+import se.natusoft.doc.markdown.generator.utils.HttpsUpgradingURL
 import se.natusoft.doc.markdown.model.*
 import se.natusoft.doc.markdown.util.StructuredNumber
+
 
 import static se.natusoft.doc.markdown.generator.utils.Sectionizer.withSection
 
@@ -802,8 +803,12 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
         imgUrl = imgUrl.trim()
         InputStream imageStream
         try {
-            if ( imgUrl.startsWith( "http:" ) || imgUrl.startsWith( "https:" ) || imgUrl.startsWith( "ftp:" ) ) {
-                URL url = new URL( imgUrl )
+            if ( imgUrl.startsWith( "http:" ) ||
+                    imgUrl.startsWith( "https:" ) ||
+                    imgUrl.startsWith( "ftp:" ) ||
+                    imgUrl.startsWith( "ftps:" )) { // Not entirely sure Javas URLConnection supports ftps.
+
+                HttpsUpgradingURL url = HttpsUpgradingURL.fromString( imgUrl )
                 imageStream = url.openStream()
             }
             else {
@@ -829,6 +834,7 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
 
             PDFBoxDocRenderer.ImageParam params = new PDFBoxDocRenderer.ImageParam(
                     imageStream: imageStream,
+                    imageSource: imgUrl,
                     holeMargin: mssImage.imgFlowMargin,
                     createHole: false,
                     xOverride: x,
@@ -916,15 +922,15 @@ class PDFBoxGenerator implements Generator, BoxedTrait {
                 ++bottomItems
             }
 
-            float pageSizeVert = renderer.pageFormat.height - renderer.margins.topMargin - renderer.margins.bottomMargin
-            float startOfPageV = renderer.pageFormat.height - renderer.margins.topMargin
+            float pageSizeVert = renderer.pageFormat.height - renderer.margins.topMargin - renderer.margins.bottomMargin as float
+            float startOfPageV = renderer.pageFormat.height - renderer.margins.topMargin as float
             float endOFPageV = renderer.margins.bottomMargin
 
             final float yItemSizeTop = ( ( pageSizeVert / 2 ) / topItems ) as float
             final float yItemSizeBottom = ( ( pageSizeVert / 2 ) / bottomItems ) as float
 
-            float yTop = startOfPageV - (float) ( yItemSizeTop / 2 ) + 15
-            float yBottom = endOFPageV + (float) ( yItemSizeBottom / 2 )
+            float yTop = startOfPageV - (float) ( yItemSizeTop / 2 ) + 15 as float
+            float yBottom = endOFPageV + (float) ( yItemSizeBottom / 2 ) as float
 
             // Rendered from top of page
 
@@ -1144,8 +1150,8 @@ class ParagraphWriter implements BoxedTrait {
         try {
             if ( image.url.startsWith( "http:" ) || image.url.startsWith( "https:" ) || image.url.startsWith( "ftp:"
             ) ) {
-                URL url = new URL( image.url )
-                imageStream = url.openStream()
+                HttpsUpgradingURL url = HttpsUpgradingURL.fromString( image.url )
+                imageStream = url.openStream(  )
             }
             else {
                 String imageRef = image.url
@@ -1163,6 +1169,7 @@ class ParagraphWriter implements BoxedTrait {
 
             PDFBoxDocRenderer.ImageParam params = new PDFBoxDocRenderer.ImageParam(
                     imageStream: imageStream,
+                    imageSource: image.url,
                     xOffset: xOffset,
                     holeMargin: mssImage.imgFlowMargin,
                     createHole: mssImage.imgFlow
@@ -1221,7 +1228,7 @@ class ParagraphWriter implements BoxedTrait {
 
         String url = autoLink.url
         if ( !url.startsWith( "http" ) ) {
-            url = "http://" + url
+            url = "https://" + url
         }
         renderer.link( autoLink.url, url )
 

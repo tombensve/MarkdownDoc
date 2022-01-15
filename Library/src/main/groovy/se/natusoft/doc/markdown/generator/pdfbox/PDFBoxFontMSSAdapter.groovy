@@ -34,12 +34,9 @@
 package se.natusoft.doc.markdown.generator.pdfbox
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
-import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.PDPageContentStream
 import org.apache.pdfbox.pdmodel.font.PDFont
 import org.apache.pdfbox.pdmodel.font.PDType1Font
-import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationTextMarkup
 import org.jetbrains.annotations.NotNull
 import se.natusoft.doc.markdown.generator.styles.MSSFont
 import se.natusoft.doc.markdown.generator.styles.MSSFontStyle
@@ -99,7 +96,7 @@ class PDFBoxFontMSSAdapter {
         contentStream.setFont(this.font, this.size)
     }
 
-    /**
+    /**∫
      * Returns true if the specified font name is a standard font.
      *
      * @param font The name of the font to check.
@@ -113,6 +110,7 @@ class PDFBoxFontMSSAdapter {
         PDType1Font font
 
         switch (fontStyle) {
+
             case MSSFontStyle.NORMAL:
                 switch (family.toUpperCase()) {
                     case "COURIER":
@@ -120,15 +118,15 @@ class PDFBoxFontMSSAdapter {
                         break
                     case "HELVETICA":
                         font = PDType1Font.HELVETICA
-                        break;
+                        break
                     case "TIMES ROMAN":
-                    case "TIMES_ROMAN":
                         font = PDType1Font.TIMES_ROMAN
                         break
                     default:
                         font = PDType1Font.HELVETICA
                 }
                 break
+
             case MSSFontStyle.BOLD:
                 switch (family.toUpperCase()) {
                     case "COURIER":
@@ -136,15 +134,15 @@ class PDFBoxFontMSSAdapter {
                         break
                     case "HELVETICA":
                         font = PDType1Font.HELVETICA_BOLD
-                        break;
-                    case "TIMES ROMAN":
+                        break
                     case "TIMES_ROMAN":
                         font = PDType1Font.TIMES_BOLD
                         break
                     default:
                         font = PDType1Font.HELVETICA_BOLD
                 }
-                break;
+                break
+
             case MSSFontStyle.ITALIC:
                 switch (family.toUpperCase()) {
                     case "COURIER":
@@ -152,15 +150,15 @@ class PDFBoxFontMSSAdapter {
                         break
                     case "HELVETICA":
                         font = PDType1Font.HELVETICA_OBLIQUE
-                        break;
-                    case "TIMES ROMAN":
+                        break
                     case "TIMES_ROMAN":
                         font = PDType1Font.TIMES_ITALIC
                         break
                     default:
                         font = PDType1Font.HELVETICA
                 }
-                break;
+                break
+
             case MSSFontStyle.UNDERLINE:
                 switch (family.toUpperCase()) {
                     case "COURIER":
@@ -168,8 +166,7 @@ class PDFBoxFontMSSAdapter {
                         break
                     case "HELVETICA":
                         font = PDType1Font.HELVETICA
-                        break;
-                    case "TIMES ROMAN":
+                        break
                     case "TIMES_ROMAN":
                         font = PDType1Font.TIMES_ROMAN
                         break

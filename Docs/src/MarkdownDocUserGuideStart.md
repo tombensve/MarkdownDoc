@@ -7,7 +7,7 @@
     @PDFVersion(3 . 0 . 0) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
-    @PDFTitlePageImage("http://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
+    @PDFTitlePageImage("https://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
 
     @PDFGenerateTitlePage(true)
     @PDFGenerateTOC(true)
@@ -59,11 +59,11 @@ they used to be, so I will look into that when I have the time.
 
 ### Thanks
 
-Thanks to [John Gruber](http://www.daringfireball.net) for the brilliant [markdown](http://daringfireball.net/projects/markdown) document format, and to [PDFBox Apache Project](https://pdfbox.apache.org) for making a completely open source PDF renderer under the sensible Apache 2.0 license.
+Thanks to [John Gruber](https://www.daringfireball.net) for the brilliant [markdown](https://daringfireball.net/projects/markdown) document format, and to [PDFBox Apache Project](https://pdfbox.apache.org) for making a completely open source PDF renderer under the sensible Apache 2.0 license.
 
 ### How markdown is MarkdownDoc ?
 
-Well, it implements the "specification" as documented on [daringfireball.net](http://daringfireball.net/projects/markdown/syntax).
+Well, it implements the "specification" as documented on [daringfireball.net](https://daringfireball.net/projects/markdown/syntax).
 This specification however is not extremely exact so there might be some differences.
 
 The known (and intentional) differences are:

@@ -137,7 +137,7 @@ class MarkdownParser implements Parser {
                     def linkUrlCSpecCase = { final MDLine it -> it.isLinkURLSpec(this.links) }
 
                     switch (line) {
-                        case commentStartCase : docItem = parseComment       (line, lineReader); break
+                        case commentStartCase : docItem = parseComment       (line, lineReader as MDLineReader ); break
                         case headerCase       : docItem = parseHeader        (line, lineReader); break
                         case listCase         : docItem = parseList          (line, lineReader); break
                         case codeBlockCase    : docItem = parseCodeBlock     (line, lineReader); break
