@@ -7,7 +7,7 @@
     <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
     <artifactId>markdown-doc</artifactId>
     <packaging>pom</packaging>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
 
     <modules>
         <module>Docs</module>
@@ -36,14 +36,14 @@
 
                 mvn -Pset-version generate-sources
         -->
-        <projectVersion>2.1.1</projectVersion>
+        <projectVersion>3.0.1</projectVersion>
 
         <!--
             These are used in dependencyManagement and pluginManagement below, but here the versions are
             more collected together and I only have to specify them once.
         -->
 
-        <clm.ver>3.0.0</clm.ver>
+        <clm.ver>3.0.1</clm.ver>
         <optmgr.ver>2.0.3</optmgr.ver>
         <fileeditor-maven-support.ver>1.1</fileeditor-maven-support.ver>
         <ftp-maven-plugin.ver>1.0.1</ftp-maven-plugin.ver>
@@ -85,6 +85,7 @@
     <!--
         Make sure we have access to ns repo.
     -->
+
     <repositories>
         <repository>
             <id>ns-repo</id>
@@ -96,14 +97,11 @@
     <pluginRepositories>
         <pluginRepository>
             <id>ns-plugin-repo</id>
-            <name>na-plugin-repository</name>
+            <name>ns-plugin-repository</name>
             <url>https://download.natusoft.se/maven</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
-<!--            <snapshots>-->
-<!--                <enabled>true</enabled>-->
-<!--            </snapshots>-->
         </pluginRepository>
     </pluginRepositories>
 
