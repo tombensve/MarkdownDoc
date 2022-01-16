@@ -57,6 +57,7 @@ import se.natusoft.doc.markdown.util.SourcePaths;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -199,7 +200,7 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
             throw new MojoExecutionException( "Unknown generator: '" + selGenerator + "'!" );
         }
 
-        // Hmm ... We can't get around having an options model for a generator declared as a private member and
+        // Hmm ... I can't get around having an options model for a generator declared as a private member and
         // plugin parameter. But with this reflection match we only need to add it above.
         for ( Field field : getClass().getDeclaredFields() ) {
             if ( field.getType().equals( generator.getOptionsClass() ) ) {
@@ -291,6 +292,7 @@ public class MarkdownDocMavenPlugin extends AbstractMojo {
      * @return true if found, false otherwise.
      */
     private boolean havePOM( File[] files ) {
+
         for ( File file : files ) {
             if ( file.getName().toLowerCase().equals( "pom.xml" ) ) {
                 return true;
