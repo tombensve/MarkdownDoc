@@ -35,7 +35,7 @@ next version.
 
 As I said above, MarkdownDoc is written in Groovy! The current version produces Java 8 bytecode. It is Groovy (org.codehaus.groovy.reflectionCachedClass) that produces a warning in Java 11. It will not work on Java 12, and there is nothing I can do about that until Groovy has a Java 12 supporting version. There i
 
-There is a version 4.0 of groovy available now, that will support JDKs up to 17 (I think it was), but it is very fresh (this written 2022-01-21) and GMavenPlus maven plugin does not yet support it, which will make things messy. I have decided to wait going upp to 4.0 until GMavenPlus supports it. I really like Groovy, it is a very nice language that have continously been far ahead of Java but still very compatible with Java. Groovy have been ahead of Java with features and when Java has gotten the features Groovy have still done it better than Java in many cases IMHO. 
+There is a version 4.0 of groovy available now, that will support JDKs up to 17 (I think it was), but it is very fresh (this written 2022-01-21) and GMavenPlus maven plugin does not yet support it, which will make things messy. I have decided to wait going upp to 4.0 until GMavenPlus supports it. I really like Groovy, it is a very nice language that have continously been far ahead of Java but still very compatible with Java. Groovy have been ahead of Java with features and when Java has gotten the features Groovy has still done it better than Java in many cases IMHO. 
 
 <https://dzone.com/articles/java-8-bastion-of-long-term-support>
 
