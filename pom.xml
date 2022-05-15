@@ -55,6 +55,11 @@
         <mdd.java.target>1.8</mdd.java.target>
         <mdd.java.source>1.8</mdd.java.source>
 
+        <!-- For groovy build -->
+        <byte-code>11</byte-code>
+        <groovy>4.0.1</groovy>
+
+
     </properties>
 
     <licenses>
