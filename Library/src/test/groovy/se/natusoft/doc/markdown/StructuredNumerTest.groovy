@@ -7,7 +7,7 @@ import se.natusoft.doc.markdown.util.StructuredNumber
 class StructuredNumerTest {
 
     @Test
-    public void testSN() {
+    void testSN() {
 
         StructuredNumber sn = new StructuredNumber()
         println sn

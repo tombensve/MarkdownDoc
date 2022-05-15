@@ -1,6 +1,7 @@
 package se.natusoft.doc.markdown.parser
 
 import groovy.transform.CompileStatic
+import org.junit.Test
 import se.natusoft.doc.markdown.api.Parser
 import se.natusoft.doc.markdown.model.Doc
 import se.natusoft.doc.markdown.model.DocItem
@@ -9,9 +10,10 @@ import se.natusoft.doc.markdown.model.DocItem
  * Test for MarkdownParser.
  */
 @CompileStatic
-class MarkdownParserDevTest extends GroovyTestCase {
+class MarkdownParserDevTest {
 
-    public void testParser() throws Exception {
+    @Test
+    void testParser() throws Exception {
 
         Parser parser = new MarkdownParser();
 

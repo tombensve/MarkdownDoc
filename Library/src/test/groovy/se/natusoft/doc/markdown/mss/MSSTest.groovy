@@ -1,14 +1,16 @@
 package se.natusoft.doc.markdown.mss
 
 import groovy.transform.CompileStatic
+import org.junit.Test
 import se.natusoft.doc.markdown.generator.styles.MSS
 import se.natusoft.doc.markdown.generator.styles.MSSColor
 import se.natusoft.doc.markdown.generator.styles.MSSFontStyle
 import se.natusoft.doc.markdown.generator.styles.MSSExtFont
 
 @CompileStatic
-class MSSTest extends GroovyTestCase {
+class MSSTest {
 
+    @Test
     void testMSSColor() throws Exception {
         MSSColor c1 = new MSSColor(color: "127:128:129")
         assert c1.red == 127
@@ -26,6 +28,7 @@ class MSSTest extends GroovyTestCase {
         assert c3.blue == 0xd7
     }
 
+    @Test
     void testMSS() throws Exception {
         File testFile = new File("src/test/resources/test.mss") // Maven
         if (!testFile.exists()) {
