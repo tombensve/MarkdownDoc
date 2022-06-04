@@ -7,7 +7,7 @@
     <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
     <artifactId>markdown-doc</artifactId>
     <packaging>pom</packaging>
-    <version>3.0.1</version>
+    <version>3.1.0</version>
 
     <modules>
         <module>Docs</module>
@@ -43,17 +43,22 @@
             more collected together and I only have to specify them once.
         -->
 
-        <clm.ver>3.0.1</clm.ver>
+        <clm.ver>3.1.0</clm.ver>
         <optmgr.ver>2.0.3</optmgr.ver>
         <fileeditor-maven-support.ver>1.1</fileeditor-maven-support.ver>
         <ftp-maven-plugin.ver>1.0.1</ftp-maven-plugin.ver>
-        <groovy.ver>3.0.7</groovy.ver>
+        <groovy.ver>4.0.0-alpha-2</groovy.ver>
         <gmaven-plus.ver>1.5</gmaven-plus.ver>
         <jb.annotations.ver>13.0</jb.annotations.ver>
 
         <mdd.groovy.target>1.8</mdd.groovy.target>
         <mdd.java.target>1.8</mdd.java.target>
         <mdd.java.source>1.8</mdd.java.source>
+
+        <!-- For groovy build -->
+        <byte-code>11</byte-code>
+        <groovy>4.0.1</groovy>
+
 
     </properties>
 
@@ -126,12 +131,12 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-test</artifactId>
-            <version>${groovy.ver}</version>
-            <scope>test</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.apache.groovy</groupId>-->
+<!--            <artifactId>groovy-test</artifactId>-->
+<!--            <version>${groovy.ver}</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
     </dependencies>
 
     <dependencyManagement>
@@ -162,7 +167,7 @@
             </dependency>
 
             <dependency>
-                <groupId>org.codehaus.groovy</groupId>
+                <groupId>org.apache.groovy</groupId>
                 <artifactId>groovy</artifactId>
                 <version>${groovy.ver}</version>
             </dependency>

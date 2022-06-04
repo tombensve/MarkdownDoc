@@ -1,14 +1,16 @@
 package se.natusoft.doc.markdown.io
 
 import groovy.transform.CompileStatic
+import org.junit.Test
 
 /**
  * Test of the Line class.
  */
 @CompileStatic
-class LineTest extends GroovyTestCase {
+class LineTest {
 
-    public void testLine1() throws Exception {
+    @Test
+    void testLine1() throws Exception {
         Line line = new Line("This is a test!", 0)
 
         assert line.currentWord == "This"
@@ -20,7 +22,8 @@ class LineTest extends GroovyTestCase {
 
     }
 
-    public void testLine2() throws Exception {
+    @Test
+    void testLine2() throws Exception {
         Line line = new Line("This is a test!", 0)
 
         String result = ""

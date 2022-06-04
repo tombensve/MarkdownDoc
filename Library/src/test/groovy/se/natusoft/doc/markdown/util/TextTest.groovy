@@ -5,7 +5,7 @@ import org.junit.Test
 class TextTest {
 
     @Test
-    public void testTestStd() {
+    void testTestStd() {
         String content = "This is a test  of a   string to parse."
         Text text = new Text(content: content)
         text.words.each {Word word ->

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>markdown-doc</artifactId>
         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
-        <version>3.0.1</version>
+        <version>3.1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -18,6 +18,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.apache.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>pdfbox</artifactId>
             <scope>compile</scope>
@@ -28,11 +33,6 @@
             <artifactId>basic-json-lib</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy</artifactId>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
 
     <properties>
@@ -55,41 +55,41 @@
 <!--            </plugin>-->
 
             <plugin>
-                <groupId>org.codehaus.gmavenplus</groupId>
-                <artifactId>gmavenplus-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <groupId>com.github.odavid.maven.plugins</groupId>
+                <artifactId>mixin-maven-plugin</artifactId>
+                <version>0.1-alpha-39</version>
+                <extensions>true</extensions>
                 <configuration>
-                    <targetBytecode>${mdd.groovy.target}</targetBytecode>
-                    <invokeDynamic>true</invokeDynamic>
+                    <mixins>
+                        <mixin>
+                            <groupId>se.natusoft.tools.toolbox</groupId>
+                            <artifactId>groovy-build-mixin</artifactId>
+                            <version>1.0.0_G${groovy}-BC${byte-code}</version>
+                        </mixin>
+                    </mixins>
                 </configuration>
             </plugin>
 
-            <plugin>
-                <groupId>com.bluetrainsoftware.maven</groupId>
-                <artifactId>groovydoc-maven-plugin</artifactId>
-                <version>1.3</version>
-                <executions>
-                    <execution>
-                        <id>attach-docs</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>attach-docs</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>com.bluetrainsoftware.maven</groupId>-->
+<!--                <artifactId>groovydoc-maven-plugin</artifactId>-->
+<!--                <version>1.3</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>attach-docs</id>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>attach-docs</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
 
         </plugins>
     </build>
 
     <profiles>
+        <!--
         <profile>
             <id>apidoc-upload</id>
             <build>
@@ -119,5 +119,7 @@
                 </plugins>
             </build>
         </profile>
+        -->
     </profiles>
+
 </project>

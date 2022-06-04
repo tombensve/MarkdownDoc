@@ -3,7 +3,7 @@
     <parent>
         <artifactId>markdown-doc</artifactId>
         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
-        <version>3.0.1</version>
+        <version>3.1.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -20,12 +20,12 @@
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
-            <version>3.3.3</version>
+            <version>3.3.9</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.plugin-tools</groupId>
             <artifactId>maven-plugin-annotations</artifactId>
-            <version>3.3</version>
+            <version>3.5</version>
         </dependency>
         <dependency>
             <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
