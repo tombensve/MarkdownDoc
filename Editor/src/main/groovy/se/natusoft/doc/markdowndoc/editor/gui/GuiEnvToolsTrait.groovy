@@ -84,7 +84,7 @@ trait GuiEnvToolsTrait {
         this.window = window
     }
 
-    @PackageScope Window getManagedWindow() {
+    Window getManagedWindow() {
         this.window
     }
 

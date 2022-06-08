@@ -47,7 +47,7 @@
         <optmgr.ver>2.0.3</optmgr.ver>
         <fileeditor-maven-support.ver>1.1</fileeditor-maven-support.ver>
         <ftp-maven-plugin.ver>1.0.1</ftp-maven-plugin.ver>
-        <groovy.ver>4.0.0-alpha-2</groovy.ver>
+        <groovy.ver>4.0.1</groovy.ver>
         <gmaven-plus.ver>1.5</gmaven-plus.ver>
         <jb.annotations.ver>13.0</jb.annotations.ver>
 
@@ -175,7 +175,7 @@
             <dependency>
                 <groupId>org.apache.maven</groupId>
                 <artifactId>maven-plugin-api</artifactId>
-                <version>3.0.5</version>
+                <version>3.8.5</version>
             </dependency>
 
             <dependency>
