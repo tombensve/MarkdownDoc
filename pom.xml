@@ -51,10 +51,6 @@
         <gmaven-plus.ver>1.5</gmaven-plus.ver>
         <jb.annotations.ver>13.0</jb.annotations.ver>
 
-        <mdd.groovy.target>1.8</mdd.groovy.target>
-        <mdd.java.target>1.8</mdd.java.target>
-        <mdd.java.source>1.8</mdd.java.source>
-
         <!-- For groovy build -->
         <byte-code>11</byte-code>
         <groovy>4.0.1</groovy>
@@ -193,8 +189,8 @@
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
+                        <source>11</source>
+                        <target>11</target>
                     </configuration>
                 </plugin>
 

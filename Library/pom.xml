@@ -20,7 +20,7 @@
         <dependency>
             <groupId>org.apache.groovy</groupId>
             <artifactId>groovy</artifactId>
-            <version>4.0.1</version>
+            <version>${groovy.ver}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
