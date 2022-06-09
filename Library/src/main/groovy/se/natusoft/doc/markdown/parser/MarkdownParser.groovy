@@ -34,7 +34,6 @@
 package se.natusoft.doc.markdown.parser
 
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.api.Parser
@@ -107,7 +106,6 @@ class MarkdownParser implements Parser {
      * @throws IOException on failure.
      * @throws ParseException on parse failures.
      */
-    @Override
     void parse(@NotNull final Doc doc, @NotNull final InputStream parseStream, @Nullable final Properties parserOptions)
             throws IOException, ParseException {
 
@@ -117,7 +115,6 @@ class MarkdownParser implements Parser {
 
             DocItem prevDocItem = null
             final Stack<DocItem> hierarchyStack = new Stack<DocItem>()
-
 
             while (lineReader.hasLine()) {
                 MDLine line = (MDLine)lineReader.readLine()

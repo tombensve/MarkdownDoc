@@ -1,6 +1,7 @@
 package se.natusoft.doc.markdown.generator
 
 import groovy.transform.CompileStatic
+import org.junit.Test
 import se.natusoft.doc.markdown.api.Generator
 import se.natusoft.doc.markdown.api.Options
 import se.natusoft.doc.markdown.api.Parser
@@ -12,12 +13,13 @@ import se.natusoft.tools.optionsmgr.CommandLineOptionsManager
  * Test for MarkdownParser.
  */
 @CompileStatic
-class HTMLGeneratorDevTest extends GroovyTestCase {
+class HTMLGeneratorDevTest {
 
     /*
      * Note that this test only tests that the parsing and result generation executes
      * without throwing any exception. The content of the generated result is not verified.
      */
+    @Test
     public void testParser() throws Exception {
 
         // Handle both IntelliJ and Maven who runs from different roots! (I see this as a bug in IntelliJ)

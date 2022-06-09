@@ -7,7 +7,7 @@
     <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
     <artifactId>markdown-doc</artifactId>
     <packaging>pom</packaging>
-    <version>3.0.1</version>
+    <version>3.1.0</version>
 
     <modules>
         <module>Docs</module>
@@ -36,24 +36,41 @@
 
                 mvn -Pset-version generate-sources
         -->
-        <projectVersion>3.0.1</projectVersion>
+        <projectVersion>3.1.0</projectVersion>
 
         <!--
             These are used in dependencyManagement and pluginManagement below, but here the versions are
             more collected together and I only have to specify them once.
         -->
 
-        <clm.ver>3.0.1</clm.ver>
+        <clm.ver>3.1.0</clm.ver>
         <optmgr.ver>2.0.3</optmgr.ver>
         <fileeditor-maven-support.ver>1.1</fileeditor-maven-support.ver>
         <ftp-maven-plugin.ver>1.0.1</ftp-maven-plugin.ver>
-        <groovy.ver>3.0.7</groovy.ver>
         <gmaven-plus.ver>1.5</gmaven-plus.ver>
         <jb.annotations.ver>13.0</jb.annotations.ver>
 
-        <mdd.groovy.target>1.8</mdd.groovy.target>
-        <mdd.java.target>1.8</mdd.java.target>
-        <mdd.java.source>1.8</mdd.java.source>
+        <!--
+            For groovy build
+
+            Note that bytecode version can be set to any supported by the project
+            JDK level. That is if you want to produce JDK 17 bytecode, change below
+            to 17, AND MAKE SURE YOU ARE BUILDING WITH A JDK 17+!
+
+            Note (1) that when building with JDK 1.8 it takes 2 minutes to build.
+            When built with JDK 17 it takes 30 seconds.
+
+            Note (2) that when build with a JDK 17 all Groovy code will have
+            bytecode level as specified below.
+
+            I have tested with 11 and 17. If you are using IDEA then set project
+            bytecode level in IDEA also so that the java modules get the same
+            bytecode level.
+
+        -->
+        <byte-code>11</byte-code><!-- Keep 11 as default for  now. -->
+        <groovy>4.0.1</groovy>
+
 
     </properties>
 
@@ -126,12 +143,6 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-test</artifactId>
-            <version>${groovy.ver}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -162,15 +173,15 @@
             </dependency>
 
             <dependency>
-                <groupId>org.codehaus.groovy</groupId>
+                <groupId>org.apache.groovy</groupId>
                 <artifactId>groovy</artifactId>
-                <version>${groovy.ver}</version>
+                <version>${groovy}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.maven</groupId>
                 <artifactId>maven-plugin-api</artifactId>
-                <version>3.0.5</version>
+                <version>3.8.5</version>
             </dependency>
 
             <dependency>
@@ -188,8 +199,8 @@
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
+                        <source>11</source>
+                        <target>11</target>
                     </configuration>
                 </plugin>
 

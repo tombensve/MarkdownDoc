@@ -2,7 +2,7 @@
 
 Copyright (C) 2012 Natusoft AB
 
-__Version:__ 3.0.1
+__Version:__ 3.1.0
 
 __Author:__ Tommy Svensson (tommy@natusoft.se)
 
@@ -24,17 +24,11 @@ See [Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs
 
 # JDK version support
 
-MarkdownDoc is written in Groovy 3.0 which produces JDK 1.8 compatible bytecode. In JDK 11 it still works, but you get this warning:
+MarkdownDoc is now upgraded to Groovy 4.0.1 producing JDK 11 bytecode by default.
 
-        WARNING: Illegal reflective access by org.codehaus.groovy.vmplugin.v9.Java9 ...
+It is now also, since Groovy 4, possible to specify which level of bytecode to generate by groovy code. Currently 11 is specified: `<byte-code>11</byte-code>` in top pom. I have tested JDK 17 also, and it works fine.
 
-When run with openjdk version "11.0.9.1" 2020-11-04 LTS.
-
-This is a groovy problem I have no control over. There seem to be a groovy 4.x now, which I'll consider for the next version.
-
-As I said above, MarkdownDoc is written in Groovy! The current version produces Java 8 bytecode. It is Groovy (org.codehaus.groovy.reflectionCachedClass) that produces a warning in Java 11. It will not work on Java 12, and there is nothing I can do about that until Groovy has a Java 12 supporting version.
-
-[https://dzone.com/articles/java-8-bastion-of-long-term-support](https://dzone.com/articles/java-8-bastion-of-long-term-support)
+Everything but the maven plugin is now done in Groovy. This so that when the byte code version specified in `<byte-code>11</byte-code>` in the root POM is changed and an `mvn clean install` is done, then all code will be compiled to that byte code level.
 
 # Licenses
 
@@ -69,6 +63,10 @@ The editor is also using filedrop.jar from [http://iharder.sourceforge.net/curre
 # Version history
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
+
+## 3.1.0
+
+Now uses Groovy 4 and produces JDK 11 bytecode.
 
 ## 3.0.1
 

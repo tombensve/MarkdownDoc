@@ -35,9 +35,8 @@ package se.natusoft.doc.markdowndoc.editor
 
 import groovy.io.FileType
 import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
-//import net.iharder.dnd.FileDrop
 import org.jetbrains.annotations.NotNull
+
 import org.jetbrains.annotations.Nullable
 import se.natusoft.doc.markdown.util.SourcePaths
 import se.natusoft.doc.markdowndoc.editor.adapters.WindowListenerAdapter
@@ -282,7 +281,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
                     !cval.startsWith("se.natusoft.doc.markdowndoc.editor.gui")) {
                 cval = cval.replace("se.natusoft.doc.markdowndoc.editor","se.natusoft.doc.markdowndoc.editor.gui")
             }
-            this.toolBar = (ToolBar)Class.forName(cval).newInstance()
+            this.toolBar = (ToolBar)Class.forName(cval).getDeclaredConstructor().newInstance()
             if (this.toolBar instanceof Configurable) {
                 (this.toolBar as Configurable).registerConfigs(Services.configs)
                 Services.configurables.add(this.toolBar as Configurable)
@@ -413,7 +412,7 @@ class MarkdownDocEditor extends JFrame implements Editor, GUI, KeyListener, Mous
         if (lookAndFeelConfig.getValue().length() > 0) {
             try {
                 UIManager.setLookAndFeel(lookAndFeelConfig.getValue())
-            } catch (final
+            } catch (final // This is a groovy structure that IDEA doesn't get.
                     ClassNotFoundException |
                     InstantiationException |
                     IllegalAccessException |

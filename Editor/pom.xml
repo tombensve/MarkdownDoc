@@ -5,7 +5,7 @@
     <parent>
         <artifactId>markdown-doc</artifactId>
         <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
-        <version>3.0.1</version>
+        <version>3.1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -24,30 +24,13 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- Groovy runtime libs -->
         <dependency>
-            <groupId>org.codehaus.groovy</groupId>
+            <groupId>org.apache.groovy</groupId>
             <artifactId>groovy</artifactId>
+            <version>${groovy}</version>
             <scope>compile</scope>
         </dependency>
-
-        <!--
-            NOTE TO SELF: DO READ THIS BEFORE YOU TRY TO SOLVE THIS AGAIN!!!
-
-            This jar in not available in a maven repository and using "system" packaging and pointing
-            out the jar in lib/filedrop.jar works fine when run from IntelliJ Idea, but both the
-            maven-assembly-plugin and appbundle-maven-plugin refused to include that jar then.
-            Therefor you must install it in your local maven repository before this can be build.
-
-            Do this:
-
-                mvn install:install-file -Dfile=lib/filedrop.jar -DgroupId=net.iharder -DartifactId=filedrop -Dversion=1.1 -Dpackaging=jar
-        <dependency>
-            <groupId>net.iharder</groupId>
-            <artifactId>filedrop</artifactId>
-            <version>1.1</version>
-            <scope>compile</scope>
-        </dependency>
-        -->
 
     </dependencies>
 
@@ -60,14 +43,6 @@
         <testSourceDirectory>src/test/groovy</testSourceDirectory>
 
         <plugins>
-<!--            <plugin>-->
-<!--                <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                <version>3.8.1</version>-->
-<!--                <configuration>-->
-<!--                    <source>1.7</source>-->
-<!--                    <target>1.7</target>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
@@ -80,7 +55,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <targetBytecode>${mdd.groovy.target}</targetBytecode>
+                    <targetBytecode>${byte-code}</targetBytecode>
                     <invokeDynamic>true</invokeDynamic>
                 </configuration>
             </plugin>

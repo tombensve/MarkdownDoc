@@ -1384,6 +1384,10 @@ As you can see pdf options are prefixed with "pdf.", html options are prefixed w
 
 About versions, they are hell! After personal experience of having different versions for each module / produced jar which was close to impossible to keep track of which was compatible with which, I decided to go with just one and the same version for all modules of the tool. This has the side effect of changes in any submodule, even the editor, which probably not everyone uses, will change the version for all even though no changes have been done for some modules. What have changed for each version is documented below so that you can determine if upgrading to the latest version is wanted/needed or not.
 
+## 3.1.0
+
+Now uses Groovy 4 and produces JDK 11 bytecode.
+
 ## 3.0.1
 
 Small bugfixes.

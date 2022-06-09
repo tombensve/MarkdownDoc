@@ -154,10 +154,12 @@ class Line {
      * Removes any number directly followed by a dot ('.') from the beginning of the string.
      */
     @NotNull Line removeBegNumberDot() {
-        Line line = this;
+        Line line = this
         if (this.origLine.trim() =~ /^[0-9]+\..*/) {
             final int ix = this.origLine.indexOf(".")
-            line = newLine(this.origLine[(ix+1)..-1])
+            // As of Groovy 4 this no longer works!
+            // line = newLine(this.origLine[(ix+1)..-1])
+            line = newLine(this.origLine[(ix+1)..-1]) // <--
         }
 
         line
