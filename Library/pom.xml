@@ -44,27 +44,21 @@
         <testSourceDirectory>src/test/groovy</testSourceDirectory>
 
         <plugins>
-<!--            <plugin>-->
-<!--                <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <source>1.8</source>-->
-<!--                    <target>1.8</target>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
 
             <plugin>
-                <groupId>com.github.odavid.maven.plugins</groupId>
-                <artifactId>mixin-maven-plugin</artifactId>
-                <version>0.1-alpha-39</version>
-                <extensions>true</extensions>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
-                    <mixins>
-                        <mixin>
-                            <groupId>se.natusoft.tools.toolbox</groupId>
-                            <artifactId>groovy-build-mixin</artifactId>
-                            <version>1.0.0_G${groovy}-BC${byte-code}</version>
-                        </mixin>
-                    </mixins>
+                    <targetBytecode>${byte-code}</targetBytecode>
+                    <invokeDynamic>true</invokeDynamic>
                 </configuration>
             </plugin>
 
