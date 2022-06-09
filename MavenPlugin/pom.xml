@@ -20,7 +20,7 @@
         <dependency>
             <groupId>org.apache.groovy</groupId>
             <artifactId>groovy</artifactId>
-            <version>${groovy.ver}</version>
+            <version>${groovy}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>

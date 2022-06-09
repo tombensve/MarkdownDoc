@@ -20,7 +20,7 @@
         <dependency>
             <groupId>org.apache.groovy</groupId>
             <artifactId>groovy</artifactId>
-            <version>${groovy.ver}</version>
+            <version>${groovy}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
@@ -37,8 +37,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>${mdd.java.source}</maven.compiler.source>
-        <maven.compiler.target>${mdd.java.target}</maven.compiler.target>
     </properties>
 
     <build>

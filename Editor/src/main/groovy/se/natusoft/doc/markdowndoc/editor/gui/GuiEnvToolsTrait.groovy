@@ -149,7 +149,7 @@ trait GuiEnvToolsTrait {
         @Override
         void run() {
             Thread.sleep(500)
-            for (float op = 0.0f; op <= maxOpacity; op = op + 0.02f) {
+            for (float op = 0.0f; op <= maxOpacity; op = op + 0.02f as float) {
                 guiGoodies.safeOpacity = op
                 Thread.sleep(5)
             }
@@ -204,10 +204,12 @@ trait GuiEnvToolsTrait {
                         e.printStackTrace()
                     }
 
-                    // Me:
                     // IDEA claims this return is "unnecessary", but that is obviously not true
                     // if you look where it is!! It can't apparently figure out that .each {...}
-                    // is a loop.
+                    // is a loop. AND YES, THIS IS KIND OF UGLY BREAKING OUT LIKE THIS!! That
+                    // said, there is no cleaner way of breaking out of a .each {...} since it
+                    // provides no additional criteria.
+
                     //noinspection GroovyUnnecessaryReturn
                     return
                 }

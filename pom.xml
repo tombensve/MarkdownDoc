@@ -36,7 +36,7 @@
 
                 mvn -Pset-version generate-sources
         -->
-        <projectVersion>3.0.1</projectVersion>
+        <projectVersion>3.1.0</projectVersion>
 
         <!--
             These are used in dependencyManagement and pluginManagement below, but here the versions are
@@ -47,7 +47,6 @@
         <optmgr.ver>2.0.3</optmgr.ver>
         <fileeditor-maven-support.ver>1.1</fileeditor-maven-support.ver>
         <ftp-maven-plugin.ver>1.0.1</ftp-maven-plugin.ver>
-        <groovy.ver>4.0.1</groovy.ver>
         <gmaven-plus.ver>1.5</gmaven-plus.ver>
         <jb.annotations.ver>13.0</jb.annotations.ver>
 
@@ -127,12 +126,6 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.apache.groovy</groupId>-->
-<!--            <artifactId>groovy-test</artifactId>-->
-<!--            <version>${groovy.ver}</version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
     </dependencies>
 
     <dependencyManagement>
@@ -165,7 +158,7 @@
             <dependency>
                 <groupId>org.apache.groovy</groupId>
                 <artifactId>groovy</artifactId>
-                <version>${groovy.ver}</version>
+                <version>${groovy}</version>
             </dependency>
 
             <dependency>
