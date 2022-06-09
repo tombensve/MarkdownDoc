@@ -3,28 +3,28 @@
  * PROJECT
  *     Name
  *         MarkdownDoc Command Line
- *     
+ *
  *     Description
  *         Parses markdown and generates HTML, PDF, and markdown.
- *         
+ *
  * COPYRIGHTS
  *     Copyright (C) 2012 by Natusoft AB All rights reserved.
- *     
+ *
  * LICENSE
  *     Apache 2.0 (Open Source)
- *     
+ *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *     
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
- *     
+ *
  * AUTHORS
  *     Tommy Svensson (tommy@natusoft.se)
  *         Changes:
@@ -56,7 +56,7 @@ import java.util.Properties;
 /**
  * This is the main for running from command line.
  */
-public class Main {
+class Main {
 
     // Non instantiable.
     private Main() {}
@@ -66,66 +66,66 @@ public class Main {
      *
      * @param args The arguments.
      */
-    public static void main(final String[] args) {
+    static void main(final String[] args) {
         try {
             if (args.length == 1 && args[0].endsWith(".mddoc")) {
-                MDDocFileHandler.execute(args[0], true);
+                MDDocFileHandler.execute(args[0], true)
             }
             else {
                 if (args.length < 2) {
                     help1();
-                    System.exit(-1);
+                    System.exit(-1)
                 }
 
-                final Properties parserOptions = new Properties();
-                final String selGenerator = args[0].toLowerCase();
-                Generator generator = null;
+                final Properties parserOptions = new Properties()
+                final String selGenerator = args[0].toLowerCase()
+                Generator generator = null
                 int startArg = 1;
                 if (args.length >= 3 && args[2].startsWith("parserOptions:")) {
                     startArg = 3;
-                    final String parserOptsStr = args[2].substring(14);
+                    final String parserOptsStr = args[2].substring(14)
                     for (String parserOpt : parserOptsStr.split(",")) {
-                        final String[] nameValue = parserOpt.split("=");
-                        parserOptions.put(nameValue[0], nameValue[1]);
+                        final String[] nameValue = parserOpt.split("=")
+                        parserOptions.put(nameValue[0], nameValue[1])
                     }
                 }
                 else {
-                    startArg = args[1].startsWith("--") ? 1 : 2;
+                    startArg = args[1].startsWith("--") ? 1 : 2
                 }
 
-                generator = GeneratorProvider.getGeneratorByName(selGenerator);
+                generator = GeneratorProvider.getGeneratorByName(selGenerator)
                 if (generator == null) {
-                    System.err.println("Unknown generator: " + selGenerator + "!");
-                    help1();
-                    System.exit(-1);
+                    System.err.println("Unknown generator: " + selGenerator + "!")
+                    help1()
+                    System.exit(-1)
                 }
 
                 final CommandLineOptionsManager<Options> optMgr =
-                        new CommandLineOptionsManager<Options>(generator.getOptionsClass());
-                final Options options = optMgr.loadOptions("--", args, startArg);
+                        new CommandLineOptionsManager<Options>(generator.getOptionsClass())
+                final Options options = optMgr.loadOptions("--", args, startArg)
                 if (options.isHelp()) {
-                    optMgr.printHelpText("--","", System.out);
+                    optMgr.printHelpText("--","", System.out)
                 }
                 else {
                     String fileSpec = args[1];
-                    generate(generator, fileSpec, options, parserOptions);
+                    generate(generator, fileSpec, options, parserOptions)
                 }
             }
         }
         catch (final OptionsModelException ome) {
-            System.err.println("Failure: " + ome.getMessage());
+            System.err.println("Failure: " + ome.getMessage())
         }
         catch (final OptionsException oe) {
-            System.err.println("Failure: " + oe.getMessage());
+            System.err.println("Failure: " + oe.getMessage())
         }
         catch (final IOException ioe) {
-            System.err.println("I/O failure: " + ioe.getMessage());
+            System.err.println("I/O failure: " + ioe.getMessage())
         }
         catch (final ParseException pe) {
-            System.err.println("Failed parsing input: " + pe.getMessage());
+            System.err.println("Failed parsing input: " + pe.getMessage())
         }
         catch (final GenerateException ge) {
-            System.err.println("Failed to generate: " + ge.getMessage());
+            System.err.println("Failed to generate: " + ge.getMessage())
         }
     }
 
@@ -133,20 +133,20 @@ public class Main {
      * Prints the help that can be given without selecting a generator.
      */
     private static void help1() {
-        System.out.println("Bad arguments!");
-        System.out.println("Usage: java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar <generator> --help");
+        System.out.println("Bad arguments!")
+        System.out.println("Usage: java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar <generator> --help")
         System.out.println("       or");
-        System.out.println("       java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar <generator> <fileSpec> --<generator option> ...");
+        System.out.println("       java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar <generator> <fileSpec> --<generator option> ...")
         System.out.println("       or");
-        System.out.println("       java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar <generator> <fileSpec> parserOptions:<parserOptions> —<generator option> ...");
+        System.out.println("       java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar <generator> <fileSpec> parserOptions:<parserOptions> —<generator option> ...")
         System.out.println("       or");
-        System.out.println("       java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar <path to a .mddoc file>");
-        System.out.println("");
-        System.out.println("Where <generator> is one of 'html' or 'pdf'. Specify generator and --help to se generator specific options.");
-        System.out.println("and <fileSpec> is a comma separated set of paths to files to parse as input. Wildcards like /**/ and ");
-        System.out.println("regular expressions can be used. No space on either side of the commas!");
-        System.out.println("Example: src/main/docs/**/.*\\.md,...");
-        System.out.println("");
+        System.out.println("       java -jar markdowndoc-cmd-line-n.n[.n]-exec.jar <path to a .mddoc file>")
+        System.out.println("")
+        System.out.println("Where <generator> is one of 'html' or 'pdf'. Specify generator and --help to se generator specific options.")
+        System.out.println("and <fileSpec> is a comma separated set of paths to files to parse as input. Wildcards like /**/ and ")
+        System.out.println("regular expressions can be used. No space on either side of the commas!")
+        System.out.println("Example: src/main/docs/**/.*\\.md,...")
+        System.out.println("")
     }
 
     /**
@@ -164,22 +164,22 @@ public class Main {
                                  @NotNull final Options options, @Nullable final Properties parserOptions)
             throws ParseException, GenerateException, IOException {
 
-        final Doc document = new Doc();
+        final Doc document = new Doc()
 
-        final SourcePaths sourcePaths = new SourcePaths(fileSpec);
+        final SourcePaths sourcePaths = new SourcePaths(fileSpec)
         for (File file : sourcePaths.getSourceFiles()) {
-            final Parser parser = ParserProvider.getParserForFile(file);
+            final Parser parser = ParserProvider.getParserForFile(file)
             if (parser == null) {
-                ParseException parseException = new ParseException();
-                parseException.setFile(file.getAbsolutePath());
-                parseException.setLineNo(0);
-                parseException.setLine("");
-                parseException.setMessage("Don't know how to parse this file!");
-                throw parseException;
+                ParseException parseException = new ParseException()
+                parseException.setFile(file.getAbsolutePath())
+                parseException.setLineNo(0)
+                parseException.setLine("")
+                parseException.setMessage("Don't know how to parse this file!")
+                throw parseException
             }
-            parser.parse(document, file, parserOptions);
+            parser.parse(document, file, parserOptions)
         }
 
-        generator.generate(document, options, null);
+        generator.generate(document, options, null)
     }
 }

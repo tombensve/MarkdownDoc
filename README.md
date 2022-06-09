@@ -26,7 +26,9 @@ See [Maven repo setup](https://github.com/tombensve/CommonStuff/blob/master/docs
 
 MarkdownDoc is now upgraded to Groovy 4.0.1 producing JDK 11 bytecode by default.
 
-It is now also, since Groovy 4, possible to specify which level of bytecode to generate by groovy code. Currently 11 is specified: `<byte-code>11</byte-code>` in top pom. I have tested JDK 17 also, and it works fine. For some reason when I change the `<byte-code>...</byte-code>` value to 17 the Java modules are also producing 17 bytecode.
+It is now also, since Groovy 4, possible to specify which level of bytecode to generate by groovy code. Currently 11 is specified: `<byte-code>11</byte-code>` in top pom. I have tested JDK 17 also, and it works fine.
+
+Everything but the maven plugin is now done in Groovy. This so that when the byte code version specified in `<byte-code>11</byte-code>` in the root POM is changed and an `mvn clean install` is done, then all code will be compiled to that byte code level.
 
 # Licenses
 
