@@ -5,7 +5,7 @@
 
     @PDFTitle("MarkdownDoc")
     @PDFSubject("User Guide")
-    @PDFVersion(3 . 0 . 0) Due to the font used I put a space between to make the dot more visible.
+    @PDFVersion(3 . 1 . 0) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
     @PDFTitlePageImage("https://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
@@ -1386,7 +1386,7 @@ About versions, they are hell! After personal experience of having different ver
 
 ## 3.1.0
 
-Now uses Groovy 4 and produces JDK 11 bytecode.
+Now uses Groovy 4 and produces JDK 11 bytecode. There is also a 3.1.0_17 version available in my repo which have JDK 17 bytecode.
 
 ## 3.0.1
 
