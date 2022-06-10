@@ -57,15 +57,16 @@
             JDK level. That is if you want to produce JDK 17 bytecode, change below
             to 17, AND MAKE SURE YOU ARE BUILDING WITH A JDK 17+!
 
-            Note (1) that when building with JDK 1.8 it takes 2 minutes to build.
-            When built with JDK 17 it takes 30 seconds.
-
-            Note (2) that when build with a JDK 17 all Groovy code will have
+            Note (2) that when build with a JDK > "byte-code" all Groovy code will have
             bytecode level as specified below.
 
             I have tested with 11 and 17. If you are using IDEA then set project
             bytecode level in IDEA also so that the java modules get the same
-            bytecode level.
+            bytecode level. This note to myself since I stupidly missed that!
+
+            Note (3) that when building with JDK 11 it takes 2 minutes to build.
+            When built with JDK 17 it takes 30 seconds. Just an interesting
+            observation.
 
         -->
         <byte-code>11</byte-code><!-- Keep 11 as default for  now. -->
