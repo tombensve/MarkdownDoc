@@ -68,6 +68,14 @@ Hopefully submissions to Maven Central have become less horrible than they used 
 
 Thanks to [John Gruber](https://www.daringfireball.net) for the brilliant [markdown](https://daringfireball.net/projects/markdown) document format, and to [PDFBox Apache Project](https://pdfbox.apache.org) for making a completely open source PDF renderer under the sensible Apache 2.0 license.
 
+### Known Bugs
+
+#### Editor open files
+
+The editor function to show all open files and let you switch file to edit (can also be done without this view) causes an exception. It is very unclear why and exactly where. This has worked before and this code has not changed. The only thing that have changed are the JDKs and version of operating system. It started failing on Windows first, and with same jar file and JDK level on my Mac it worked, but now it fails on both Mac and Windows, and Linux. I guess that is good :-).
+
+Some day I will solve this, but it is not prio. I might be the only one using the editor, it is made very much for me. I basically have to write my own editor component to solve this I believe. I have so much else I want to do, so this is not a prio for me.
+
 ### How markdown is MarkdownDoc ?
 
 Well, it implements the "specification" as documented on [daringfireball.net](https://daringfireball.net/projects/markdown/syntax). This specification however is not extremely exact so there might be some differences.
@@ -1946,8 +1954,4 @@ To apply the Apache License to your work, attach the following boilerplate notic
         WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
         See the License for the specific language governing permissions and
         limitations under the License.
-
-## filedrop.jar
-
-The editor is also using filedrop.jar from [http://iharder.sourceforge.net/current/java/filedrop/](http://iharder.sourceforge.net/current/java/filedrop/). This is open source not under any license.
 

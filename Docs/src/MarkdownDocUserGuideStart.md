@@ -61,6 +61,20 @@ they used to be, so I will look into that when I have the time.
 
 Thanks to [John Gruber](https://www.daringfireball.net) for the brilliant [markdown](https://daringfireball.net/projects/markdown) document format, and to [PDFBox Apache Project](https://pdfbox.apache.org) for making a completely open source PDF renderer under the sensible Apache 2.0 license.
 
+### Known Bugs
+
+#### Editor open files
+
+The editor function to show all open files and let you switch file to edit (can also be done without this view) causes
+an exception. It is very unclear why and exactly where. This has worked before and this code has not changed. The only
+thing that have changed are the JDKs and version of operating system. It started failing on Windows first, and with same
+jar file and JDK level on my Mac it worked, but now it fails on both Mac and Windows, and Linux. I guess that is good
+:-).
+
+Some day I will solve this, but it is not prio. I might be the only one using the editor, it is made very much
+for me. I basically have to write my own editor component to solve this I believe. I have so much else I want to
+do, so this is not a prio for me.
+
 ### How markdown is MarkdownDoc ?
 
 Well, it implements the "specification" as documented on [daringfireball.net](https://daringfireball.net/projects/markdown/syntax).
