@@ -44,7 +44,7 @@
         -->
 
         <clm.ver>3.1.0</clm.ver>
-        <optmgr.ver>2.0.3</optmgr.ver>
+        <optmgr.ver>3.0.11</optmgr.ver>
         <fileeditor-maven-support.ver>1.1</fileeditor-maven-support.ver>
         <ftp-maven-plugin.ver>1.0.1</ftp-maven-plugin.ver>
         <gmaven-plus.ver>1.5</gmaven-plus.ver>
@@ -99,47 +99,6 @@
         <developerConnection>scm:git:git@github.com:tombensve/MarkdownDoc.git</developerConnection>
         <url>https://github.com/tombensve/MarkdownDoc</url>
     </scm>
-
-    <!--
-        Make sure we have access to ns repo.
-    -->
-
-    <repositories>
-        <repository>
-            <id>repsy</id>
-            <name>My Private Maven Repository on Repsy</name>
-            <url>https://repo.repsy.io/mvn/tombensve/natusoft-os</url>
-        </repository>
-
-        <repository>
-            <id>ns-repo</id>
-            <name>ns-artifact-repository</name>
-            <url>https://download.natusoft.se/maven</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>repsy</id>
-            <name>repsy</name>
-            <url>https://repo.repsy.io/mvn/tombensve/natusoft-os</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </pluginRepository>
-
-        <pluginRepository>
-            <id>ns-plugin-repo</id>
-            <name>ns-plugin-repository</name>
-            <url>https://download.natusoft.se/maven</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </pluginRepository>
-    </pluginRepositories>
-
-    <!-- __________________ -->
-
 
     <dependencies>
         <dependency>
@@ -327,11 +286,35 @@
 
     <distributionManagement>
         <repository>
-            <id>download.natusoft.se</id>
-            <name>DownloadNatusoftSe-MarkdownDoc</name>
-            <url>ftp://${maven.repo.upload}/${maven.base.path}</url>
+            <id>repsy</id>
+            <name>repsy</name>
+            <url>https://repo.repsy.io/mvn/tombensve/natusoft-os</url>
         </repository>
     </distributionManagement>
+
+
+    <repositories>
+
+        <repository>
+            <id>repsy</id>
+            <name>My Private Maven Repository on Repsy</name>
+            <url>https://repo.repsy.io/mvn/tombensve/natusoft-os</url>
+        </repository>
+
+    </repositories>
+
+    <pluginRepositories>
+
+        <pluginRepository>
+            <id>repsy</id>
+            <name>repsy</name>
+            <url>https://repo.repsy.io/mvn/tombensve/natusoft-os</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
+
+    </pluginRepositories>
 
     <!--
         Profiles

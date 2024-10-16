@@ -127,7 +127,7 @@ This is a paragraph between 2 horizontal rulers.
 <div class="ff">
 This is some _freefloating_ text.
 
-### This is an h3 in a free floating text
+### This is a h3 in a free floating text
 
 bla bla bla
 
@@ -162,7 +162,6 @@ Here is a feature best illustrated with a tree and some latin:
 
 Lorem ipsum dolor sit amet,
 consectetur adipiscing elit. Nulla non velit feugiat neque maximus ultricies.
-![image](https://download.natusoft.se/Images/test.png)
 Aenean sed elit lectus. Donec fermentum dapibus dapibus.
 Cras facilisis odio at dolor ultricies, eu pharetra leo tristique.
 
@@ -182,13 +181,3 @@ __Note__ that the above paragraph has a different left margin!
 Some more text in new paragraph. <www.somewhere.net> ends this paragraph.
 
 \* This is not a list since the \'\*\' is escaped!
-
-![imageref]
-
-Note that this text does not follow on the right of the image! This is because the 'imgFlow' MSS value is false here.
-
-[imageref]: https://raw.githubusercontent.com/dcurtis/markdown-mark/master/png/32x20-solid.png
-
-<!--
-
--->

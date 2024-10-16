@@ -7,8 +7,7 @@
     @PDFVersion(3 . 1 . 0) Due to the font used I put a space between to make the dot more visible.
     @PDFAuthor("Tommy Svensson")
     @PDFCopyright("Copyright (C) 2012 Natusoft AB")
-    @PDFTitlePageImage("https://download.natusoft.se/Images/MarkdownDoc/MDD_Laptop_2_Fotor.png:200:320")
-
+ 
     @PDFGenerateTitlePage(true)
     @PDFGenerateTOC(true)
     @PDFGenerateSectionNumbers(false)
@@ -118,4 +117,3 @@ as input. These are basically a comma separated list of files, but with the foll
 /my/path/fileset.fs
 
 > The above rules are applied to all file specifications in files having the .fs extension. # are comment lines within .fs files.
-
