@@ -36,7 +36,7 @@
 
                 mvn -Pset-version generate-sources
         -->
-        <projectVersion>3.1.0</projectVersion>
+        <projectVersion>3.1.11</projectVersion>
 
         <!--
             These are used in dependencyManagement and pluginManagement below, but here the versions are
