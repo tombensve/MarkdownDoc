@@ -7,7 +7,7 @@
     <groupId>se.natusoft.tools.doc.markdowndoc</groupId>
     <artifactId>markdown-doc</artifactId>
     <packaging>pom</packaging>
-    <version>3.1.0</version>
+    <version>3.1.11</version>
 
     <modules>
         <module>Docs</module>
@@ -43,7 +43,7 @@
             more collected together and I only have to specify them once.
         -->
 
-        <clm.ver>3.1.0</clm.ver>
+        <clm.ver>3.1.11</clm.ver>
         <optmgr.ver>3.0.11</optmgr.ver>
         <fileeditor-maven-support.ver>1.1</fileeditor-maven-support.ver>
         <ftp-maven-plugin.ver>1.0.1</ftp-maven-plugin.ver>
