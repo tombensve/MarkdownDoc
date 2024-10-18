@@ -51,17 +51,26 @@ In short MarkdownDoc provides the following:
 
 ### Binaries
 
-Due to Bintray shutting down binaries are temporarily available at [TempBin](https://download.natusoft.se/maven).
+You need to add the following to your pom:
 
-You need to add this under `<repositories>` in settings.xml:
+#### repositories
 
             <repository>
-                <id>natusoft-repo</id>
-                <name>NS GitHub stuff temp repo</name>
-                <url>https://download.natusoft.se/maven</url>
+                <id>repsy</id>
+                <name>My Private Maven Repository on Repsy</name>
+                <url>https://repo.repsy.io/mvn/tombensve/natusoft-os</url>
             </repository>
 
-Hopefully submissions to Maven Central have become less horrible than they used to be, so I will look into that when I have the time.
+#### pluginRepositories
+
+            <pluginRepository>
+                <id>repsy</id>
+                <name>repsy</name>
+                <url>https://repo.repsy.io/mvn/tombensve/natusoft-os</url>
+                <releases>
+                    <enabled>true</enabled>
+                </releases>
+            </pluginRepository>
 
 ### Thanks
 
